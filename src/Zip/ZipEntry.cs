@@ -401,13 +401,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public DateTime DateTime {
 			get {
-				uint sec  = 2 * (dosTime & 0x1f);
-				uint min  = (dosTime >> 5) & 0x3f;
-				uint hrs  = (dosTime >> 11) & 0x1f;
-				uint day  = (dosTime >> 16) & 0x1f;
-				uint mon  = ((dosTime >> 21) & 0xf);
-				uint year = ((dosTime >> 25) & 0x7f) + 1980;
-				return new System.DateTime((int)year, (int)mon, (int)day, (int)hrs, (int)min, (int)sec);
+				// Although technically not valid some archives have dates set to zero.
+				// This mimics some archivers handling and is a good a cludge as any probably.
+				if ( dosTime == 0 ) {
+					return DateTime.Now;
+				}
+				else {
+					uint sec  = 2 * (dosTime & 0x1f);
+					uint min  = (dosTime >> 5) & 0x3f;
+					uint hrs  = (dosTime >> 11) & 0x1f;
+					uint day  = (dosTime >> 16) & 0x1f;
+					uint mon  = ((dosTime >> 21) & 0xf);
+					uint year = ((dosTime >> 25) & 0x7f) + 1980;
+					return new System.DateTime((int)year, (int)mon, (int)day, (int)hrs, (int)min, (int)sec);
+				}
 			}
 			set {
 				DosTime = ((uint)value.Year - 1980 & 0x7f) << 25 | 
@@ -665,9 +672,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public bool IsDirectory {
 			get {
-				bool result = false;
 				int nlen = name.Length;
-				result = nlen > 0 && name[nlen - 1] == '/';
+				bool result = nlen > 0 && name[nlen - 1] == '/';
 				
 				if (result == false && (known & KNOWN_EXTERN_ATTRIBUTES) != 0) {
 					if (HostSystem == 0 && (ExternalFileAttributes & 16) != 0) {
