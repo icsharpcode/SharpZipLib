@@ -137,13 +137,21 @@ public class Tar
 		
 		int argIdx = this.ProcessArguments(argv);
 
-		if (this.archiveName != null && ! this.archiveName.Equals("-") && operation != Operation.Create) {
-			if (File.Exists(this.archiveName) == false) {
-				Console.Error.WriteLine("File does not exist " + this.archiveName);
-				return;
+		if (this.archiveName != null && ! this.archiveName.Equals("-")) {
+			if (operation == Operation.Create) {
+				if (!Directory.Exists(Path.GetDirectoryName(archiveName))) {
+					Console.Error.WriteLine("Directory for archive doesnt exist");
+					return;
+				}
+			}
+			else {
+				if (File.Exists(this.archiveName) == false) {
+					Console.Error.WriteLine("File does not exist " + this.archiveName);
+					return;
+				}
 			}
 		}
-
+		
 		if (operation == Operation.Create) { 		               // WRITING
 			Stream outStream = Console.OpenStandardOutput();
 			
@@ -545,7 +553,7 @@ public class Tar
 	/// </summary>
 	void Version()
 	{
-		Console.Error.WriteLine( "tar 2.0.6.1" );
+		Console.Error.WriteLine( "tar 2.0.6.2" );
 		Console.Error.WriteLine( "" );
 		Console.Error.WriteLine( "{0}", SharpZipVersion() );
 		Console.Error.WriteLine( "Copyright (c) 2002 by Mike Krueger" );
