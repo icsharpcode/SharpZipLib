@@ -92,6 +92,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		string     comment;
 		Stream     baseStream;
 		bool       isStreamOwner = true;
+		long       offsetOfFirstEntry = 0;
 		ZipEntry[] entries;
 		
 		/// <summary>
@@ -105,9 +106,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </exception>
 		public ZipFile(string name)
 		{
+			this.name = name;
 			isStreamOwner = true;
 			this.baseStream = File.OpenRead(name);
-			this.name = name;
 			try {
 				ReadEntries();
 			}
@@ -181,6 +182,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Read an unsigned short in little endian byte order.
 		/// </summary>
+		/// <returns>Returns the value read.</returns>
 		/// <exception cref="IOException">
 		/// An i/o error occurs.
 		/// </exception>
@@ -195,6 +197,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Read an int in little endian byte order.
 		/// </summary>
+		/// <returns>Returns the value read.</returns>
 		/// <exception cref="IOException">
 		/// An i/o error occurs.
 		/// </exception>
@@ -204,6 +207,28 @@ namespace ICSharpCode.SharpZipLib.Zip
 		int ReadLeInt()
 		{
 			return ReadLeShort() | ReadLeShort() << 16;
+		}
+		
+		// NOTE this returns the offset of the first byte after the signature.
+		long LocateBlockWithSignature(int signature, long endLocation, int minimumBlockSize, int maximumVariableData)
+		{
+			long pos = endLocation - minimumBlockSize;
+			if (pos <= 0) {
+				return -1;
+			}
+		
+			long giveUpMarker = Math.Max(pos - maximumVariableData, 0);
+		
+			// TODO this loop could be optimised for speed.
+			do 
+			{
+				if (pos < giveUpMarker) {
+					return -1;
+				}
+				baseStream.Seek(pos--, SeekOrigin.Begin);
+			} while (ReadLeInt() != signature);
+	
+			return baseStream.Position;
 		}
 		
 		/// <summary>
@@ -224,27 +249,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// TODO: The search is limited to 64K which is the maximum size of a trailing comment field to aid speed.
 			// This should be compatible with both SFX and ZIP files but has only been tested for Zip files
 			// Need to confirm this is valid in all cases.
-			// Could also speed this up by reading memory in larger blocks?
-			
+			// Could also speed this up by reading memory in larger blocks.			
 
 			if (baseStream.CanSeek == false) {
 				throw new ZipException("ZipFile stream must be seekable");
 			}
-
-			long pos = baseStream.Length - ZipConstants.ENDHDR;
-			if (pos <= 0) {
-				throw new ZipException("File is too small to be a Zip file");
+			
+			long locatedCentralDirOffset = LocateBlockWithSignature(ZipConstants.ENDSIG, baseStream.Length, ZipConstants.ENDHDR, 0xffff);
+			if (locatedCentralDirOffset < 0) {
+				throw new ZipException("Cannot find central directory");
 			}
 
-			long giveUpMarker = Math.Max(pos - 0x10000, 0);
-			
-			do {
-				if (pos < giveUpMarker) {
-					throw new ZipException("central directory not found, probably not a zip file");
-				}
-				baseStream.Seek(pos--, SeekOrigin.Begin);
-			} while (ReadLeInt() != ZipConstants.ENDSIG);
-			
 			int thisDiskNumber            = ReadLeShort();
 			int startCentralDirDisk       = ReadLeShort();
 			int entriesForThisDisk        = ReadLeShort();
@@ -264,9 +279,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 */
 
 			entries = new ZipEntry[entriesForWholeCentralDir];
-			baseStream.Seek(offsetOfCentralDir, SeekOrigin.Begin);
 			
-			for (int i = 0; i < entriesForWholeCentralDir; i++) {
+			// SFX support, find the offset of the first entry vis the start of the stream
+			// This applies to Zip files that are appended to the end of the SFX stub.
+			// Zip files created by some archivers have the offsets altered to reflect the true offsets
+			// and so dont require any adjustment here...
+			if (offsetOfCentralDir < locatedCentralDirOffset - (4 + centralDirSize)) {
+				offsetOfFirstEntry = locatedCentralDirOffset - (4 + centralDirSize + offsetOfCentralDir);
+				if (offsetOfFirstEntry <= 0) {
+					throw new ZipException("Invalid SFX file");
+				}
+			}
+
+			baseStream.Seek(offsetOfFirstEntry + offsetOfCentralDir, SeekOrigin.Begin);
+			
+			for (int i = 0; i < entriesForThisDisk; i++) {
 				if (ReadLeInt() != ZipConstants.CENSIG) {
 					throw new ZipException("Wrong Central Directory signature");
 				}
