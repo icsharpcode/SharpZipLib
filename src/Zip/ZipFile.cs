@@ -91,6 +91,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		string     name;
 		string     comment;
 		Stream     baseStream;
+		bool       isStreamOwner = true;
 		ZipEntry[] entries;
 		
 		/// <summary>
@@ -102,8 +103,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ZipException">
 		/// The file doesn't contain a valid zip archive.
 		/// </exception>
-		public ZipFile(string name) : this(File.OpenRead(name))
+		public ZipFile(string name)
 		{
+			isStreamOwner = true;
+			this.baseStream = File.OpenRead(name);
+			this.name = name;
+			try {
+				ReadEntries();
+			}
+			catch {
+				Close();
+				throw;
+			}
 		}
 		
 		/// <summary>
@@ -119,7 +130,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			this.baseStream  = file;
 			this.name = file.Name;
-			ReadEntries();
+			try {
+				ReadEntries();
+			}
+			catch {
+				entries = null;
+				throw;
+			}
+			
 		}
 		
 		/// <summary>
@@ -136,9 +154,29 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			this.baseStream  = baseStream;
 			this.name = null;
-			ReadEntries();
+			try {
+				ReadEntries();
+			}
+			catch {
+				entries = null;
+				throw;
+			}
+				
 		}
 		
+		
+		/// <summary>
+		/// Get/set a flag indicating if the underlying stream is owned by the ZipFile instance.
+		/// If the flag is true then the stream will be closed when <see cref="Close">Close</see> is called.
+		/// </summary>
+		/// <remarks>
+		/// The default value is true in all cases.
+		/// </remarks>
+		bool IsStreamOwner
+		{
+			get { return isStreamOwner; }
+			set { isStreamOwner = value; }
+		}
 		
 		/// <summary>
 		/// Read an unsigned short in little endian byte order.
@@ -284,9 +322,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Closes the ZipFile.  This also closes all input streams managed by
-		/// this class.  Once closed, no further instance methods should be
-		/// called.
+		/// Closes the ZipFile.  If the stream is <see cref="IsStreamOwner">owned</see> then this also closes the underlying input stream.
+		/// Once closed, no further instance methods should be called.
 		/// </summary>
 		/// <exception cref="System.IO.IOException">
 		/// An i/o error occurs.
@@ -294,8 +331,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public void Close()
 		{
 			entries = null;
-			lock(baseStream) {
-				baseStream.Close();
+			if ( isStreamOwner ) {
+				lock(baseStream) {
+					baseStream.Close();
+				}
 			}
 		}
 		
