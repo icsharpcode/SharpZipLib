@@ -169,6 +169,14 @@ namespace ICSharpCode.SharpZipLib.GZip
 		}
 		
 		/// <summary>
+		/// Get the current compression level.
+		/// </summary>
+		/// <returns>The current compression level.</returns>
+		public int GetLevel()
+		{
+			return def.GetLevel();
+		}
+		/// <summary>
 		/// Finish compression and write any footer information required to stream
 		/// </summary>
 		public override void Finish()
