@@ -42,8 +42,7 @@ namespace ICSharpCode.SharpZipLib
 {
 	/// <summary>
 	/// SharpZipBaseException is the base exception class for the SharpZipLibrary.
-	/// The majority of exceptions thrown by the library are derived from this.
-	/// The exceptions are 
+	/// All library exceptions are derived from this.
 	/// </summary>
 	public class SharpZipBaseException : ApplicationException
 	{
