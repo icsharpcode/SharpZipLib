@@ -52,7 +52,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		public override bool CanRead {
 			get {
-//				return baseStream.CanRead
 				return false;
 			}
 		}
@@ -62,7 +61,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		public override bool CanSeek {
 			get {
-//				return baseStream.CanSeek;
 				return false;
 			}
 		}
@@ -93,7 +91,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				return baseStream.Position;
 			}
 			set {
-//				baseStream.Position = value;
 				throw new NotSupportedException("BZip2OutputStream position cannot be set");
 			}
 		}
@@ -103,7 +100,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		public override long Seek(long offset, SeekOrigin origin)
 		{
-//			return baseStream.Seek(offset, origin);
 			throw new NotSupportedException("BZip2OutputStream Seek not supported");
 		}
 		
@@ -112,7 +108,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		public override void SetLength(long val)
 		{
-//			baseStream.SetLength(val);
 			throw new NotSupportedException("BZip2OutputStream SetLength not supported");
 		}
 		
@@ -121,7 +116,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		public override int ReadByte()
 		{
-//			return baseStream.ReadByte();
 			throw new NotSupportedException("BZip2OutputStream ReadByte not supported");
 		}
 		
@@ -130,7 +124,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		public override int Read(byte[] b, int off, int len)
 		{
-//			return baseStream.Read(b, off, len);
 			throw new NotSupportedException("BZip2OutputStream Read not supported");
 		}
 		
