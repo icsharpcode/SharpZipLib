@@ -18,12 +18,12 @@ using ICSharpCode.SharpZipLib.Tar;
 public class Tar
 {
 	/// <summary>
-	/// Flag that determines if verbose feedback is provided.
+	/// Flag that determines if verbose feedback is to be provided.
 	/// </summary>
 	bool verbose;
 	
 	/// <summary>
-	/// enum that determines compression in use
+	/// The compresion to use when creating archives.
 	/// </summary>
 	enum Compression
 	{
@@ -193,8 +193,6 @@ public class Tar
 		}
 		
 		if (archive != null) {						// SET ARCHIVE OPTIONS
-			archive.IsVerbose = this.verbose;
-			
 			archive.SetKeepOldFiles(this.keepOldFiles);
 			archive.SetAsciiTranslation(this.asciiTranslate);
 			
@@ -547,7 +545,7 @@ public class Tar
 	/// </summary>
 	void Version()
 	{
-		Console.Error.WriteLine( "tar 2.0.6" );
+		Console.Error.WriteLine( "tar 2.0.6.1" );
 		Console.Error.WriteLine( "" );
 		Console.Error.WriteLine( "{0}", SharpZipVersion() );
 		Console.Error.WriteLine( "Copyright (c) 2002 by Mike Krueger" );
