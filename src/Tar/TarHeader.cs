@@ -103,6 +103,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// The length of the checksum field in a header buffer.
 		/// </summary>
 		public readonly static int CHKSUMLEN = 8;
+
+		/// <summary>
+		/// Offset of checksum in a header buffer.
+		/// </summary>
+		public const int CHKSUMOFS = 148;
 		
 		/// <summary>
 		/// The length of the size field in a header buffer.
@@ -371,6 +376,16 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public int Checksum
 		{
 			get { return checksum; }
+		}
+		
+		bool isChecksumValid;
+		
+		/// <summary>
+		/// Get true if the checksum is valid for , false otherwise
+		/// </summary>
+		public bool IsChecksumValid
+		{
+			get { return isChecksumValid; }
 		}
 		
 		byte typeFlag;
@@ -661,8 +676,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 		
 		/// <summary>
-		/// Parse an octal string from a header buffer. This is used for the
-		/// file permission mode value.
+		/// Parse an octal string from a header buffer.
 		/// </summary>
 		/// <param name = "header">The header buffer from which to parse.</param>
 		/// <param name = "offset">The offset into the buffer from which to parse.</param>
@@ -737,17 +751,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>The next free index in the <paramref name="buf">buffer</paramref></returns>
 		public static int GetNameBytes(StringBuilder name, int nameOffset, byte[] buf, int bufferOffset, int length)
 		{
-			int i;
-			
-			for (i = 0 ; i < length && nameOffset + i < name.Length; ++i) {
-				buf[bufferOffset + i] = (byte)name[nameOffset + i];
-			}
-			
-			for (; i < length ; ++i) {
-				buf[bufferOffset + i] = 0;
-			}
-			
-			return bufferOffset + length;
+			return GetNameBytes(name.ToString(), nameOffset, buf, bufferOffset, length);
 		}
 		
 		/// <summary>
@@ -763,7 +767,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			int i;
 			
-			for (i = 0 ; i < length && nameOffset + i < name.Length; ++i) {
+			for (i = 0 ; i < length - 1 && nameOffset + i < name.Length; ++i) {
 				buf[bufferOffset + i] = (byte)name[nameOffset + i];
 			}
 			
@@ -794,7 +798,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </returns>
 		public static int GetNameBytes(StringBuilder name, byte[] buf, int offset, int length)
 		{
-			return GetNameBytes(name, 0, buf, offset, length);
+			return GetNameBytes(name.ToString(), 0, buf, offset, length);
 		}
 		
 		/// <summary>
@@ -810,6 +814,24 @@ namespace ICSharpCode.SharpZipLib.Tar
 			return GetNameBytes(name, 0, buf, offset, length);
 		}
 		
+		/// <summary>
+		/// Add a string to a buffer as a collection of ascii bytes.
+		/// </summary>
+		/// <param name="toAdd">The string to add</param>
+		/// <param name="nameOffset">The offset of the first character to add.</param>
+		/// <param name="buffer">The buffer to add to.</param>
+		/// <param name="bufferOffset">The offset to start adding at.</param>
+		/// <param name="length">The number of ascii characters to add.</param>
+		/// <returns>The next free index in the buffer.</returns>
+		public static int GetAsciiBytes(string toAdd, int nameOffset, byte[] buffer, int bufferOffset, int length )
+		{
+			for (int i = 0 ; i < length && nameOffset + i < toAdd.Length; ++i) 
+		 	{
+				buffer[bufferOffset + i] = (byte)toAdd[nameOffset + i];
+		 	}
+		 	return bufferOffset + length;
+		}
+
 		/// <summary>
 		/// Put an octal representation of a value into a buffer
 		/// </summary>
@@ -895,6 +917,32 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 			return sum;
 		}
+		
+		/// <summary>
+		/// Make a checksum for a tar entry ignoring the checksum contents.
+		/// </summary>
+		/// <param name = "buf">The tar entry's header buffer.</param>
+		/// <returns>The checksum for the buffer</returns>
+		private static int MakeCheckSum(byte[] buf)
+		{
+			int sum = 0;
+			for ( int i = 0; i < CHKSUMOFS; ++i )
+			{
+				sum += buf[i];
+			}
+		
+			for ( int i = 0; i < TarHeader.CHKSUMLEN; ++i)
+			{
+				sum += (byte)' ';
+			}
+		
+			for (int i = CHKSUMOFS + CHKSUMLEN; i < buf.Length; ++i) 
+			{
+				sum += buf[i];
+			}
+			return sum;
+		}
+		
 
 		readonly static long     timeConversionFactor = 10000000L;           // 1 tick == 100 nanoseconds
 		readonly static DateTime dateTime1970        = new DateTime(1970, 1, 1, 0, 0, 0, 0); 
@@ -973,6 +1021,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 			// Fields past this point not currently parsed or used...
 			
 			// TODO: prefix information.
+			
+			isChecksumValid = Checksum == TarHeader.MakeCheckSum(header);
 		}
 
 		/// <summary>
@@ -1001,7 +1051,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			outbuf[offset++] = this.TypeFlag;
 			
 			offset = GetNameBytes(this.LinkName, outbuf, offset, NAMELEN);
-			offset = GetNameBytes(this.Magic, outbuf, offset, MAGICLEN);
+			offset = GetAsciiBytes(this.Magic, 0, outbuf, offset, MAGICLEN);
 			offset = GetNameBytes(this.Version, outbuf, offset, VERSIONLEN);
 			offset = GetNameBytes(this.UserName, outbuf, offset, UNAMELEN);
 			offset = GetNameBytes(this.GroupName, outbuf, offset, GNAMELEN);

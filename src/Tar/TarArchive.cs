@@ -1,4 +1,4 @@
-// TarInputStream.cs
+// TarArchive.cs
 //
 // Copyright (C) 2001 Mike Krueger
 //
@@ -203,6 +203,27 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		{
 			this.asciiTranslate = asciiTranslate;
 		}
+
+		/// <summary>
+		/// PathPrefix is added to entry names as they are written if the value is not null.
+		/// A slash character is appended after PathPrefix 
+		/// </summary>
+		public string PathPrefix
+		{
+			get { return pathPrefix; }
+			set { pathPrefix = value; }
+		
+		}
+		
+		/// <summary>
+		/// RootPath is removed from entry names if it is found at the
+		/// beginning of the name.
+		/// </summary>
+		public string RootPath
+		{
+			get { return rootPath; }
+			set { rootPath = value; }
+		}
 		
 		/// <summary>
 		/// Set user and group information that will be used to fill in the
@@ -386,7 +407,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 			}
 		}
 		
-		// TODO: Assess how valid this test really is.
+		// TODO: Is there a better way to test for a text file?
 		// No longer reads entire file into memory but is still a weak test!
 		// assumes that ascii 0-7, 14-31 or 255 are binary
 		// and that all non text files contain one of these values
@@ -455,7 +476,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 				
 				if (process) {
 					bool asciiTrans = false;
-					// TODO: file may exist and be read-only at this point!
+					
 					Stream outputStream = File.Create(destFile);
 					if (this.asciiTranslate) {
 						asciiTrans = !IsBinary(destFile);

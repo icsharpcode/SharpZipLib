@@ -60,8 +60,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 		/// <summary>
 		/// bytes written for this entry so far
-		/// </summary>		
-		protected int       currBytes;
+		/// </summary>
+		protected long       currBytes;
 		
 		/// <summary>
 		/// single block working buffer 
@@ -102,7 +102,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public override bool CanSeek {
 			get {
-				return outputStream.CanSeek;     // -jr- Should be false?
+				return outputStream.CanSeek;
 			}
 		}
 		
@@ -249,7 +249,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </param>
 		public void PutNextEntry(TarEntry entry)
 		{
-			if (entry.TarHeader.Name.Length > TarHeader.NAMELEN) {
+			if (entry.TarHeader.Name.Length >= TarHeader.NAMELEN) {
 				TarHeader longHeader = new TarHeader();
 				longHeader.TypeFlag = TarHeader.LF_GNU_LONGNAME;
 				longHeader.Name = longHeader.Name + "././@LongLink";
@@ -267,7 +267,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				int nameCharIndex = 0;
 
 				while (nameCharIndex < entry.TarHeader.Name.Length) {
-					TarHeader.GetNameBytes(entry.TarHeader.Name, nameCharIndex, this.blockBuf, 0, TarBuffer.BlockSize);
+					TarHeader.GetAsciiBytes(entry.TarHeader.Name, nameCharIndex, this.blockBuf, 0, TarBuffer.BlockSize);
 					nameCharIndex += TarBuffer.BlockSize;
 					this.buffer.WriteBlock(this.blockBuf);
 				}

@@ -358,7 +358,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public void AdjustEntryName(byte[] outbuf, string newName)
 		{
 			int offset = 0;
-			TarHeader.GetNameBytes(new StringBuilder(newName), outbuf, offset, TarHeader.NAMELEN);
+			TarHeader.GetNameBytes(newName, outbuf, offset, TarHeader.NAMELEN);
 		}
 		
 		/// <summary>
@@ -405,7 +405,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 #endif
 			
-/*			
+/*
 			if (Path.DirectorySeparatorChar == '\\') 
 			{  // check if the OS is Windows
 				// Strip off drive letters!
@@ -421,7 +421,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				}
 			}
 */
-			
+
 			name = name.Replace(Path.DirectorySeparatorChar, '/');
 
 			// No absolute pathnames

@@ -56,12 +56,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Size of this entry as recorded in header
 		/// </summary>
-		protected int entrySize;
+		protected long entrySize;
 		
 		/// <summary>
 		/// Number of bytes read for this entry so far
 		/// </summary>
-		protected int entryOffset;
+		protected long entryOffset;
 
 		/// <summary>
 		/// Buffer used with calls to <code>Read()</code>
@@ -247,7 +247,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The number of available bytes for the current entry.
 		/// </returns>
-		public int Available {
+		public long Available {
 			get {
 				return this.entrySize - this.entryOffset;
 			}
@@ -262,7 +262,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="numToSkip">
 		/// The number of bytes to skip.
 		/// </param>
-		public void Skip(int numToSkip)
+		public void Skip(long numToSkip)
 		{
 			// TODO: REVIEW
 			// This is horribly inefficient, but it ensures that we
@@ -270,8 +270,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 			//
 			byte[] skipBuf = new byte[8 * 1024];
 			
-			for (int num = numToSkip; num > 0;) {
-				int numRead = this.Read(skipBuf, 0, (num > skipBuf.Length ? skipBuf.Length : num));
+			for (long num = numToSkip; num > 0;) {
+				int toRead = num > skipBuf.Length ? skipBuf.Length : (int)num;
+				int numRead = this.Read(skipBuf, 0, toRead);
 				
 				if (numRead == -1) {
 					break;
@@ -309,7 +310,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		
 		void SkipToNextEntry()
 		{
-			int numToSkip = this.entrySize - this.entryOffset;
+			long numToSkip = this.entrySize - this.entryOffset;
 			
 			if (numToSkip > 0) {
 				this.Skip(numToSkip);
@@ -355,8 +356,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 				try {
 					TarHeader header = new TarHeader();
 					header.ParseBuffer(headerBuf);
+					if ( !header.IsChecksumValid )
+					{
+						throw new TarException("Header checksum is invalid");
+					}
 					this.entryOffset = 0;
-					this.entrySize = (int)header.Size;
+					this.entrySize = header.Size;
 					
 					StringBuilder longName = null;
 					
@@ -364,12 +369,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 						
 						byte[] nameBuffer = new byte[TarBuffer.BlockSize];
 						
-						int numToRead = this.entrySize;
+						long numToRead = this.entrySize;
 						
 						longName = new StringBuilder();
 						
 						while (numToRead > 0) {
-							int numRead = this.Read(nameBuffer, 0, (numToRead > nameBuffer.Length ? nameBuffer.Length : numToRead));
+							int numRead = this.Read(nameBuffer, 0, (numToRead > nameBuffer.Length ? nameBuffer.Length : (int)numToRead));
 							
 							if (numRead == -1) {
 								throw new InvalidHeaderException("Failed to read long name entry");
@@ -416,7 +421,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					this.entryOffset = 0;
 					
 					// TODO: Review How do we resolve this discrepancy?!
-					this.entrySize = (int) this.currEntry.Size;
+					this.entrySize = this.currEntry.Size;
 				} catch (InvalidHeaderException ex) {
 					this.entrySize = 0;
 					this.entryOffset = 0;
@@ -453,13 +458,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="offset">
 		/// The offset at which to place bytes read.
 		/// </param>
-		/// <param name="numToRead">
+		/// <param name="count">
 		/// The number of bytes to read.
 		/// </param>
 		/// <returns>
 		/// The number of bytes read, or 0 at end of stream/EOF.
 		/// </returns>
-		public override int Read(byte[] outputBuffer, int offset, int numToRead)
+		public override int Read(byte[] outputBuffer, int offset, int count)
 		{
 			int totalRead = 0;
 			
@@ -467,12 +472,14 @@ namespace ICSharpCode.SharpZipLib.Tar
 				return 0;
 			}
 			
+			long numToRead = count;
+			
 			if ((numToRead + this.entryOffset) > this.entrySize) {
 				numToRead = this.entrySize - this.entryOffset;
 			}
 			
 			if (this.readBuf != null) {
-				int sz = (numToRead > this.readBuf.Length) ? this.readBuf.Length : numToRead;
+				int sz = (numToRead > this.readBuf.Length) ? this.readBuf.Length : (int)numToRead;
 				
 				Array.Copy(this.readBuf, 0, outputBuffer, offset, sz);
 				
@@ -497,7 +504,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					throw new TarException("unexpected EOF with " + numToRead + " bytes unread");
 				}
 				
-				int sz     = numToRead;
+				int sz     = (int)numToRead;
 				int recLen = rec.Length;
 				
 				if (recLen > sz) {
