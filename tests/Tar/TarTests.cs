@@ -46,6 +46,61 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 			Assert.AreEqual(0, entryCount, "Expected 0 tar entries");
 		}
 		
+		void TryLongName(string name)
+		{
+			MemoryStream ms = new MemoryStream();
+			TarOutputStream tarOut = new TarOutputStream(ms);
+
+			DateTime modTime = DateTime.Now;
+
+			TarEntry entry = TarEntry.CreateTarEntry(name);
+
+			tarOut.PutNextEntry(entry);
+			tarOut.Close();
+
+			MemoryStream ms2 = new MemoryStream();
+			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+			ms2.Seek(0, SeekOrigin.Begin);
+
+			TarInputStream tarIn = new TarInputStream(ms2);
+			TarEntry nextEntry = tarIn.GetNextEntry();
+			
+			Assert.AreEqual(nextEntry.Name, name, "Name match failure");
+		}
+		/// <summary>
+		/// Check that long names are handled correctly for reading and writing.
+		/// </summary>
+		[Test]
+		[Category("Tar")]
+		public void LongNames()
+		{
+			TryLongName("11111111112222222222333333333344444444445555555555" +
+			            "6666666666777777777788888888889999999999000000000");
+			
+			TryLongName("11111111112222222222333333333344444444445555555555" +
+			            "66666666667777777777888888888899999999990000000000");
+			
+			TryLongName("11111111112222222222333333333344444444445555555555" +
+			            "66666666667777777777888888888899999999990000000000" +
+			            "1");
+			
+			TryLongName("11111111112222222222333333333344444444445555555555" +
+			            "66666666667777777777888888888899999999990000000000" +
+			            "11111111112222222222333333333344444444445555555555" +
+			            "66666666667777777777888888888899999999990000000000");
+			
+			TryLongName("11111111112222222222333333333344444444445555555555" +
+			            "66666666667777777777888888888899999999990000000000" +
+			            "11111111112222222222333333333344444444445555555555" +
+			            "66666666667777777777888888888899999999990000000000" +
+			            "11111111112222222222333333333344444444445555555555" +
+			            "66666666667777777777888888888899999999990000000000" +
+			            "11111111112222222222333333333344444444445555555555" +
+			            "66666666667777777777888888888899999999990000000000" +
+			            "11111111112222222222333333333344444444445555555555" +
+			            "66666666667777777777888888888899999999990000000000");
+		}
+
 		/// <summary>
 		/// Test equals function for tar headers.
 		/// </summary>
@@ -55,19 +110,19 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		{
 			TarHeader h1 = new TarHeader();
 			TarHeader h2 = new TarHeader();
-			
+
 			Assert.IsTrue(h1.Equals(h2));
-			
+
 			h1.Name = "ABCDEFG";
 			Assert.IsFalse(h1.Equals(h2));
 			h2.Name = h1.Name;
 			Assert.IsTrue(h1.Equals(h2));
-			
-			h1.Mode = 47;
+
+			h1.Mode = 33188;
 			Assert.IsFalse(h1.Equals(h2));
 			h2.Mode = h1.Mode;
 			Assert.IsTrue(h1.Equals(h2));
-			
+
 			h1.UserId = 654;
 			Assert.IsFalse(h1.Equals(h2));
 			h2.UserId = h1.UserId;
@@ -77,17 +132,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 			Assert.IsFalse(h1.Equals(h2));
 			h2.GroupId = h1.GroupId;
 			Assert.IsTrue(h1.Equals(h2));
-			
+
 			h1.Size = 654;
 			Assert.IsFalse(h1.Equals(h2));
 			h2.Size = h1.Size;
 			Assert.IsTrue(h1.Equals(h2));
-		
+
 			h1.ModTime = DateTime.Now;
 			Assert.IsFalse(h1.Equals(h2));
 			h2.ModTime = h1.ModTime;
 			Assert.IsTrue(h1.Equals(h2));
-			
+
 			h1.TypeFlag = 165;
 			Assert.IsFalse(h1.Equals(h2));
 			h2.TypeFlag = h1.TypeFlag;
@@ -131,6 +186,51 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 			
 		}
 		
+		[Test]
+		[Category("Tar")]
+		public void Checksum()
+		{
+			MemoryStream ms = new MemoryStream();
+			TarOutputStream tarOut = new TarOutputStream(ms);
+
+			DateTime modTime = DateTime.Now;
+
+			TarEntry entry = TarEntry.CreateTarEntry("TestEntry");
+			entry.TarHeader.Mode = 12345;
+
+			tarOut.PutNextEntry(entry);
+			tarOut.Close();
+
+			MemoryStream ms2 = new MemoryStream();
+			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+			ms2.Seek(0, SeekOrigin.Begin);
+
+			TarInputStream tarIn = new TarInputStream(ms2);
+			TarEntry nextEntry = tarIn.GetNextEntry();
+			
+			Assert.IsTrue(nextEntry.TarHeader.IsChecksumValid, "Checksum should be valid");
+			
+			MemoryStream ms3 = new MemoryStream();
+			ms3.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+			ms3.Seek(0, SeekOrigin.Begin);
+			ms3.Write(new byte[1] { 34 }, 0, 1);
+			ms3.Seek(0, SeekOrigin.Begin);
+
+			tarIn = new TarInputStream(ms3);
+			bool trapped = false;
+			
+			try
+			{
+				nextEntry = tarIn.GetNextEntry();
+			}
+			catch (TarException)
+			{
+				trapped = true;
+			}
+			
+			Assert.IsTrue(trapped, "Checksum should be invalid");
+		}
+
 		/// <summary>
 		/// Check that values set are preserved when writing and reading archives.
 		/// </summary>
@@ -164,7 +264,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 			
 			Assert.IsTrue(nextEntry.Equals(entry), "Entries should be equal");
 			Assert.IsTrue(nextEntry.TarHeader.Equals(entry.TarHeader), "Headers should match");
-			
+
 			// Tar only stores seconds 
 			DateTime truncatedTime = new DateTime(modTime.Year, modTime.Month, modTime.Day, 
 			                                      modTime.Hour, modTime.Minute, modTime.Second);
