@@ -371,7 +371,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		int checksum;
 		
 		/// <summary>
-		/// The entry's checksum.  This is only valid/updated after writing or reading an entry.
+		/// Get the entry's checksum.  This is only valid/updated after writing or reading an entry.
 		/// </summary>
 		public int Checksum
 		{
@@ -381,7 +381,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		bool isChecksumValid;
 		
 		/// <summary>
-		/// Get true if the checksum is valid for , false otherwise
+		/// Get value of true if the header checksum is valid, false otherwise.
 		/// </summary>
 		public bool IsChecksumValid
 		{
@@ -1068,6 +1068,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			checksum = ComputeCheckSum(outbuf);
 			
 			GetCheckSumOctalBytes(checksum, outbuf, csOffset, CHKSUMLEN);
+			isChecksumValid = true;
 		}
 	}
 }
