@@ -406,9 +406,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		void WriteEOFRecord()
 		{
-			for (int i = 0; i < this.blockBuf.Length; ++i) {
-				this.blockBuf[i] = 0;
-			}
+			Array.Clear(blockBuf, 0, blockBuf.Length);
 			this.buffer.WriteBlock(this.blockBuf);
 		}
 	}
