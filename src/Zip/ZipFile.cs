@@ -38,6 +38,7 @@
 // exception statement from your version.
 
 using System;
+using System.Security.Cryptography;
 using System.Collections;
 using System.IO;
 using System.Text;
@@ -45,6 +46,7 @@ using System.Text;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using ICSharpCode.SharpZipLib.Zip.Compression;
+using ICSharpCode.SharpZipLib.Encryption;
 
 namespace ICSharpCode.SharpZipLib.Zip 
 {
@@ -96,6 +98,84 @@ namespace ICSharpCode.SharpZipLib.Zip
 		long       offsetOfFirstEntry = 0;
 		ZipEntry[] entries;
 		
+		#region KeyHandling
+		
+		public class KeysRequiredEventArgs : EventArgs
+		{
+			string fileName;
+		
+			public string FileName
+			{
+				get { return fileName; }
+				set { fileName = value; }
+			}
+		
+			byte[] key;
+			public byte[] Key
+			{
+				get { return key; }
+				set { key = value; }
+			}
+		
+			public KeysRequiredEventArgs(string name)
+			{
+				fileName = name;
+			}
+		
+			public KeysRequiredEventArgs(string name, byte[] keyValue)
+			{
+				fileName = name;
+				key = keyValue;
+				}
+			}
+		
+			public delegate void KeysRequiredEventHandler(
+				object sender,
+				KeysRequiredEventArgs e
+			);
+		
+			public KeysRequiredEventHandler KeysRequired;
+		
+			void OnKeysRequired(string fileName)
+			{
+				if (KeysRequired != null) {
+					KeysRequiredEventArgs krea = new KeysRequiredEventArgs(fileName, key);
+					KeysRequired(this, krea);
+					key = krea.Key;
+			}
+		}
+		
+		byte[] key = null;
+		byte[] Key
+		{
+			get { return key; }
+			set { key = value; }
+		}
+		
+		/// <summary>
+		/// Password to be used for encrypting/decrypting files.
+		/// </summary>
+		/// <remarks>Set to null if no password is required.</remarks>
+		public string Password
+		{
+			set 
+			{
+				if (value == null)
+					key = null;
+				else {
+					key = PkzipClassic.GenerateKeys(Encoding.ASCII.GetBytes(value));
+				}
+			}
+		}
+		
+		byte[] iv = null;
+		
+		bool HaveKeys
+		{
+		 get { return key != null; }
+		}
+		#endregion
+	
 		/// <summary>
 		/// Opens a Zip file with the given name for reading.
 		/// </summary>
@@ -108,7 +188,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public ZipFile(string name)
 		{
 			this.name = name;
-			isStreamOwner = true;
 			this.baseStream = File.OpenRead(name);
 			try {
 				ReadEntries();
@@ -136,7 +215,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				ReadEntries();
 			}
 			catch {
-				entries = null;
+				Close();
 				throw;
 			}
 			
@@ -160,7 +239,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				ReadEntries();
 			}
 			catch {
-				entries = null;
+				Close();
 				throw;
 			}
 				
@@ -508,7 +587,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if (localFlags != entry.Flags) {
 				   throw new ZipException("Central header/local header flags mismatch");
 				}
-	
+
 				if (entry.CompressionMethod != (CompressionMethod)ReadLeShort()) {
 				   throw new ZipException("Central header/local header compression method mismatch");
 				}
@@ -559,6 +638,124 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return TestLocalHeader(entry, false, true);
 		}
 		
+		// Refactor this, its done elsewhere as well
+		void ReadFully(Stream s, byte[] outBuf)
+		{
+			int off = 0;
+			int len = outBuf.Length;
+			while (len > 0) {
+				int count = s.Read(outBuf, off, len);
+				if (count <= 0) {
+					throw new ZipException("Unexpected EOF"); 
+				}
+				off += count;
+				len -= count;
+			}
+		}
+
+		void CheckClassicPassword(CryptoStream classicCryptoStream, ZipEntry entry)
+		{
+			byte[] cryptbuffer = new byte[ZipConstants.CRYPTO_HEADER_SIZE];
+			ReadFully(classicCryptoStream, cryptbuffer);
+
+			if ((entry.Flags & (int)GeneralBitFlags.Descriptor) == 0) {
+				if (cryptbuffer[ZipConstants.CRYPTO_HEADER_SIZE - 1] != (byte)(entry.Crc >> 24)) {
+					throw new ZipException("Invalid password");
+				}
+			}
+			else {
+				if (cryptbuffer[ZipConstants.CRYPTO_HEADER_SIZE - 1] != (byte)((entry.DosTime >> 8) & 0xff)) {
+					throw new ZipException("Invalid password");
+				}
+			}
+		}
+
+		Stream CreateAndInitDecryptionStream(Stream baseStream, ZipEntry entry)
+		{
+			CryptoStream result = null;
+
+			if (entry.Version < ZipConstants.VERSION_STRONG_ENCRYPTION 
+             || (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0) {
+				PkzipClassicManaged classicManaged = new PkzipClassicManaged();
+
+				OnKeysRequired(entry.Name);
+				if (HaveKeys == false) {
+					throw new ZipException("No password available for encrypted stream");
+				}
+
+				result = new CryptoStream(baseStream, classicManaged.CreateDecryptor(key, iv), CryptoStreamMode.Read);
+				CheckClassicPassword(result, entry);
+			}
+			else {
+				throw new ZipException("Decryption method not supported");
+			}
+
+			return result;
+		}
+
+		void WriteEncryptionHeader(Stream stream, long crcValue)
+		{
+			byte[] cryptBuffer = new byte[ZipConstants.CRYPTO_HEADER_SIZE];
+			Random rnd = new Random();
+			rnd.NextBytes(cryptBuffer);
+			cryptBuffer[11] = (byte)(crcValue >> 24);
+			stream.Write(cryptBuffer, 0, cryptBuffer.Length);
+		}
+
+		Stream CreateAndInitEncryptionStream(Stream baseStream, ZipEntry entry)
+		{
+			CryptoStream result = null;
+			if (entry.Version < ZipConstants.VERSION_STRONG_ENCRYPTION 
+			    || (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0) {
+				PkzipClassicManaged classicManaged = new PkzipClassicManaged();
+
+				OnKeysRequired(entry.Name);
+				if (HaveKeys == false) {
+					throw new ZipException("No password available for encrypted stream");
+				}
+
+				result = new CryptoStream(baseStream, classicManaged.CreateEncryptor(key, iv), CryptoStreamMode.Write);
+				if (entry.Crc < 0 || (entry.Flags & 8) != 0) {
+					WriteEncryptionHeader(result, entry.DosTime << 16);
+				}
+				else {
+					WriteEncryptionHeader(result, entry.Crc);
+				}
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// Gets an output stream for the specified <see cref="ZipEntry"/>
+		/// </summary>
+		/// <param name="entry">The entry to get an outputstream for.</param>
+		/// <param name="fileName"></param>
+		/// <returns>The output stream obtained for the entry.</returns>
+		Stream GetOutputStream(ZipEntry entry, string fileName)
+		{
+			baseStream.Seek(0, SeekOrigin.End);
+			Stream result = File.OpenWrite(fileName);
+		
+			if (entry.IsCrypted == true)
+			{
+				result = CreateAndInitEncryptionStream(result, entry);
+			}
+		
+			switch (entry.CompressionMethod) 
+			{
+				case CompressionMethod.Stored:
+					break;
+		
+				case CompressionMethod.Deflated:
+					result = new DeflaterOutputStream(result);
+					break;
+					
+				default:
+					throw new ZipException("Unknown compression method " + entry.CompressionMethod);
+			}
+			return result;
+		}
+
 		/// <summary>
 		/// Creates an input stream reading the given zip entry as
 		/// uncompressed data.  Normally zip entry should be an entry
@@ -592,17 +789,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return GetInputStream(index);			
 		}
 		
-
 		/// <summary>
-		/// Creates an input stream reading the zip entry based on the index passed
+		/// Creates an input stream reading a zip entry
 		/// </summary>
+		/// <param name="entryIndex">The index of the entry to obtain an input stream for.</param>
 		/// <returns>
 		/// An input stream.
 		/// </returns>
 		/// <exception cref="InvalidOperationException">
 		/// The ZipFile has already been closed
 		/// </exception>
-		/// <exception cref="ICSharpCode.SharpZipLib.Zip.ZipException">
+		/// <exception cref="ICSharpCode.SharpZipLib.ZipException">
 		/// The compression method for the entry is unknown
 		/// </exception>
 		/// <exception cref="IndexOutOfRangeException">
@@ -617,16 +814,24 @@ namespace ICSharpCode.SharpZipLib.Zip
 			long start = CheckLocalHeader(entries[entryIndex]);
 			CompressionMethod method = entries[entryIndex].CompressionMethod;
 			Stream istr = new PartialInputStream(baseStream, start, entries[entryIndex].CompressedSize);
-			
+
+			if (entries[entryIndex].IsCrypted == true) {
+				istr = CreateAndInitDecryptionStream(istr, entries[entryIndex]);
+				if (istr == null) {
+					throw new ZipException("Unable to decrypt this entry");
+				}
+			}
+
 			switch (method) {
 				case CompressionMethod.Stored:
 					return istr;
 				case CompressionMethod.Deflated:
 					return new InflaterInputStream(istr, new Inflater(true));
 				default:
-					throw new ZipException("Unknown compression method " + method);
+					throw new ZipException("Unsupported compression method " + method);
 			}
 		}
+
 		
 		/// <summary>
 		/// Gets the comment for the zip file.
@@ -745,6 +950,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						return 0;
 					}
 				}
+				
 				lock(baseStream) {
 					baseStream.Seek(filepos, SeekOrigin.Begin);
 					int count = baseStream.Read(b, off, len);

@@ -81,10 +81,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="directory">The directory for this event.</param>
 		/// <param name="isEmpty">Flag indicating if directory is empty as determined by the current filter.</param>
-		public void OnProcessDirectory(string directory, bool isEmpty)
+		public void OnProcessDirectory(string directory, bool hasMatchingFiles)
 		{
 			if ( ProcessDirectory != null ) {
-				DirectoryEventArgs args = new DirectoryEventArgs(directory, isEmpty);
+				DirectoryEventArgs args = new DirectoryEventArgs(directory, hasMatchingFiles);
 				ProcessDirectory(this, args);
 			}
 		}
@@ -123,7 +123,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 		public void CreateZip(string zipFileName, string sourceDirectory, bool recurse, string fileFilter, string directoryFilter)
 		{
-			NameTransform = new ZipNameTransform(sourceDirectory);
+			NameTransform = new ZipNameTransform(true, sourceDirectory);
 			this.sourceDirectory = sourceDirectory;
 			
 			outputStream = new ZipOutputStream(File.Create(zipFileName));

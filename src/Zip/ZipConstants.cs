@@ -60,34 +60,60 @@ namespace ICSharpCode.SharpZipLib.Zip
 		Deflated   = 8,
 		
 		/// <summary>
-		/// An extension to deflate with a 64KB window. Not supported
+		/// An extension to deflate with a 64KB window. Not supported by #Zip
 		/// </summary>
 		Deflate64  = 9,
 		
 		/// <summary>
-		/// Not supported
+		/// Not supported by #Zip
 		/// </summary>
 		BZip2      = 11,
 		
 		/// <summary>
-		/// WinZip special for AES encryption, Not supported
+		/// WinZip special for AES encryption, Not supported by #Zip
 		/// </summary>
 		WinZipAES  = 99,
 		
 	}
+	
 	/// <summary>
 	/// Defines the contents of the general bit flags field for an archive entry.
 	/// </summary>
 	[Flags]
 	enum GeneralBitFlags : int
 	{
+		/// <summary>
+		/// If set indicates that the file is encrypted
+		/// </summary>
 		Encrypted         = 0x0001,
+		/// <summary>
+		/// Two bits defining the compression method (only for Method 6 Imploding and 8,9 Deflating)
+		/// </summary>
 		Method            = 0x0006,
+		/// <summary>
+		/// If set a trailing data desciptor is appended to the entry data
+		/// </summary>
 		Descriptor        = 0x0008,
 		Reserved          = 0x0010,
+		/// <summary>
+		/// If set indicates the file contains Pkzip compressed patched data.
+		/// </summary>
 		Patched           = 0x0020,
+		/// <summary>
+		/// If set strong encryption has been used for this entry.
+		/// </summary>
 		StrongEncryption  = 0x0040,
+		/// <summary>
+		/// Reserved by PKWare for enhanced compression.
+		/// </summary>
 		EnhancedCompress  = 0x1000,
+		/// <summary>
+		/// If set indicates that values in the local header are masked to hide
+		/// their actual values.
+		/// </summary>
+		/// <remarks>
+		/// Used when encrypting ht ecentral directory contents.
+		/// </remarks>
 		HeaderMasked      = 0x2000
 	}
 	
@@ -104,6 +130,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// for an entry.  See <see cref="ZipInputStream.CanDecompressEntry">ZipInputStream.CanDecompressEntry</see>.
 		/// </remarks>
 		public const int VERSION_MADE_BY = 20;
+		
+		/// <summary>
+		/// The minimum version required to support strong encryption
+		/// </summary>
+		public const int VERSION_STRONG_ENCRYPTION = 50;
 		
 		// The local entry header
 		
@@ -180,7 +211,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// This is only used where the length, Crc, or compressed size isnt known when the
 		/// entry is created and the output stream doesnt support seeking.
 		/// The local entry cannot be 'patched' with the correct values in this case
-		/// so the values are recorded after the data prefixed by this header, as well as in the central directory.<br/>
+		/// so the values are recorded after the data prefixed by this header, as well as in the central directory.
 		/// </remarks>
 		public const int EXTSIG = 'P' | ('K' << 8) | (7 << 16) | (8 << 24);
 		
@@ -364,7 +395,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		static int defaultCodePage = 0;
 		
 		/// <summary>
-		/// Default encoding used for string conversion.  0 gives default system ansi code page.
+		/// Default encoding used for string conversion.  0 gives the default system Ansi code page.
 		/// Dont use unicode encodings if you want to be Zip compatible!
 		/// Using the default code page isnt the full solution neccessarily
 		/// there are many variable factors, codepage 850 is often a good choice for

@@ -424,6 +424,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </param>
 		protected void EncryptBlock(byte[] buffer, int offset, int length)
 		{
+         // TODO refactor to use encryptor?
 			for (int i = offset; i < offset + length; ++i) {
 				byte oldbyte = buffer[i];
 				buffer[i] ^= EncryptByte();

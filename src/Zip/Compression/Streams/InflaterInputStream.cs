@@ -38,6 +38,7 @@
 // exception statement from your version.
 
 using System;
+using System.Security.Cryptography;
 using System.IO;
 
 using ICSharpCode.SharpZipLib.Zip.Compression;
@@ -45,6 +46,219 @@ using ICSharpCode.SharpZipLib.Checksums;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams 
 {
+
+   /// <summary>
+   /// An input buffer customised for use by <see cref="InflaterInputStream"/>
+   /// </summary>
+	public class InflaterInputBuffer
+	{
+		public InflaterInputBuffer(Stream stream)
+		{
+			inputStream = stream;
+			rawData = new byte[4096];
+			clearText = rawData;
+		}
+		
+		int rawLength;
+		
+		public int RawLength
+		{
+			get { return rawLength; }
+		}
+		
+		byte[] rawData;
+
+		public byte[] RawData
+		{
+			get {
+				return rawData;
+			}
+		}
+		
+		byte[] clearText;
+		public byte[] ClearText
+		{
+			get {
+				return clearText;
+			}
+		}
+		
+		int clearTextLength;
+		
+		public int ClearTextLength
+		{
+			get {
+				return clearTextLength;
+			}
+		}
+		
+		int available;
+		public int Available
+		{
+			get { return available; }
+			set { available = value; }
+		}
+		
+		public void SetInflaterInput(Inflater inflater)
+		{
+			if ( available > 0 ) {
+				inflater.SetInput(clearText, clearTextLength - available, available);
+				available = 0;
+			}
+		}
+
+		/// <summary>
+		/// Fill the buffer from the underlying input stream.
+		/// </summary>
+		public void Fill()
+		{
+			rawLength = 0;
+			int toRead = rawData.Length;
+			
+			while (toRead > 0) {
+				int count = inputStream.Read(rawData, rawLength, toRead);
+				if ( count <= 0 ) {
+					if (rawLength == 0) {
+						throw new SharpZipBaseException("Unexpected EOF"); 
+					}
+					break;
+				}
+				rawLength += count;
+				toRead -= count;
+			}
+
+			if ( cryptoTransform != null ) {
+				clearTextLength = cryptoTransform.TransformBlock(rawData, 0, rawLength, clearText, 0);
+			}
+			else {
+				clearTextLength = rawLength;
+			}
+
+			available = clearTextLength;
+		}
+		
+		public int ReadRawBuffer(byte[] buffer)
+		{
+			return ReadRawBuffer(buffer, 0, buffer.Length);
+		}
+
+		/// <summary>
+		/// Read a buffer directly from the input stream
+		/// </summary>
+		/// <param name="outBuffer">The buffer to read into</param>
+		/// <param name="offset">The offset to start reading data into.</param>
+		/// <param name="length">The number of bytes to read.</param>
+		/// <returns>Returns the number of bytes read.</returns>
+		public int ReadRawBuffer(byte[] outBuffer, int offset, int length)
+		{
+			if ( length <= 0 ) {
+				throw new ArgumentOutOfRangeException("length");
+			}
+			
+			int currentOffset = offset;
+			int currentLength = length;
+			
+			while ( currentLength > 0 ) {
+				if ( available <= 0 ) {
+					Fill();
+					if (available <= 0) {
+						return 0;
+					}
+				}
+				int toCopy = Math.Min(currentLength, available);
+				System.Array.Copy(rawData, rawLength - (int)available, outBuffer, currentOffset, toCopy);
+            currentOffset += toCopy;
+				currentLength -= toCopy;
+				available -= toCopy;
+			}
+			return length;
+		}
+		
+		public int ReadClearTextBuffer(byte[] outBuffer, int offset, int length)
+		{
+			if ( length <= 0 ) {
+				throw new ArgumentOutOfRangeException("length");
+			}
+			
+			int currentOffset = offset;
+			int currentLength = length;
+			
+			while ( currentLength > 0 ) {
+				if ( available <= 0 ) {
+					Fill();
+					if (available <= 0) {
+						return 0;
+					}
+				}
+				
+				int toCopy = Math.Min(currentLength, available);
+				System.Array.Copy(clearText, clearTextLength - (int)available, outBuffer, currentOffset, toCopy);
+            currentOffset += toCopy;
+				currentLength -= toCopy;
+				available -= toCopy;
+			}
+			return length;
+		}
+		
+		public int ReadLeByte()
+		{
+			if (available <= 0) {
+				Fill();
+				if (available <= 0) {
+					throw new ZipException("EOF in header");
+				}
+			}
+			byte result = (byte)(rawData[rawLength - available] & 0xff);
+			available -= 1;
+			return result;
+		}
+		
+		/// <summary>
+		/// Read an unsigned short baseInputStream little endian byte order.
+		/// </summary>
+		public int ReadLeShort()
+		{
+			return ReadLeByte() | (ReadLeByte() << 8);
+		}
+		
+		/// <summary>
+		/// Read an int baseInputStream little endian byte order.
+		/// </summary>
+		public int ReadLeInt()
+		{
+			return ReadLeShort() | (ReadLeShort() << 16);
+		}
+		
+		/// <summary>
+		/// Read an int baseInputStream little endian byte order.
+		/// </summary>
+		public long ReadLeLong()
+		{
+			return ReadLeInt() | (ReadLeInt() << 32);
+		}
+		
+		ICryptoTransform cryptoTransform;
+		public ICryptoTransform CryptoTransform
+		{
+			set { 
+				cryptoTransform = value;
+				if ( cryptoTransform != null )
+            {
+               if ( rawData == clearText ) 
+               {
+                  clearText = new byte[4096];
+               }
+               clearTextLength = rawLength;
+               if ( available > 0 ) 
+               {
+                  cryptoTransform.TransformBlock(rawData, rawLength - available, available, clearText, rawLength - available);
+					}
+				}
+			}
+		}
+		
+		Stream inputStream;
+	}
 	
 	/// <summary>
 	/// This filter stream is used to decompress data compressed using the "deflate"
@@ -61,19 +275,22 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Decompressor for this stream
 		/// </summary>
 		protected Inflater inf;
-		
+
+		protected InflaterInputBuffer inputBuffer;
+/*	Encryption	
 		/// <summary>
 		/// Byte array used for buffering input.
 		/// </summary>
-		protected byte[] buf;
+		protected byte[] dataBuffer;
 
 		/// <summary>
-		/// Size of buffer <see cref="buf"></see>
+		/// Size of buffer <see cref="dataBuffer"></see>
 		/// </summary>
 		protected int len;
-		
+*/
+
 		// Used for reading single bytes the ReadByte() call
-		private byte[] onebytebuffer = new byte[1];
+//		private byte[] onebytebuffer = new byte[1];  Encryption
 		
 		/// <summary>
 		/// Base stream the inflater reads from.
@@ -132,7 +349,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		public override long Length {
 			get {
-				return len;
+				return inputBuffer.RawLength; // Encryption
 			}
 		}
 		
@@ -267,13 +484,16 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			
 			this.baseInputStream = baseInputStream;
 			this.inf = inflater;
-			buf = new byte[bufferSize];
+			
+			inputBuffer = new InflaterInputBuffer(baseInputStream);
+/* Encryption	dataBuffer = new byte[bufferSize];
 			
 			if (baseInputStream.CanSeek) {
 				this.len = (int)baseInputStream.Length;
 			} else {
 				this.len = 0;
 			}
+*/			
 		}
 		
 		/// <summary>
@@ -297,40 +517,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 		}
 
-		int readChunkSize = 0;
-
-		/// <summary>
-		/// Sets the size of chunks to read from the input stream
-		/// 0 means as larger as possible.
-		/// </summary>
-		/// <remarks>
-		/// Used to handle decryption where the length of stream is unknown.
-		/// </remarks>
-		protected int BufferReadSize {
-			get { 
-				return readChunkSize;
-			}
-			
-			set {
-				readChunkSize = value;
-			}
-		}
-
-		/// <summary>
-		/// Fill input buffer with a chunk of data.
-		/// </summary>		
-		/// <exception cref="ZipException">
-		/// Stream ends early
-		/// </exception>
-		protected void FillInputBuffer()
-		{
-			if (readChunkSize <= 0) {
-				len = baseInputStream.Read(buf, 0, buf.Length);
-			} else {
-				len = baseInputStream.Read(buf, 0, readChunkSize);
-			}
-			
-		}
 		/// <summary>
 		/// Fills the buffer with more data to decompress.
 		/// </summary>
@@ -339,41 +525,30 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </exception>
 		protected void Fill()
 		{
-			FillInputBuffer();
-			
-			if (keys != null) {
-				DecryptBlock(buf, 0, len);
-			}
-			
-#if READ_SINGLE_WHEN_DECRYPTING
-			// This solves some decryption problems but there are still some lurking.
-			// At issue is exactly where the stream and decryption should finish.
-			if (keys == null) {
-				len = baseInputStream.Read(buf, 0, buf.Length);
+/* Encryption			
+			if (csize > 0) {
+				len = baseInputStream.Read(dataBuffer, 0, dataBuffer.Length);
 			} else {
-				len = baseInputStream.Read(buf, 0, 1);
+				len = baseInputStream.Read(dataBuffer, 0, 1);
 			}
 			
-			if (keys != null) {
-				DecryptBlock(buf, 0, len);
-			}
-#endif
-
-#if STANDARD
-			len = baseInputStream.Read(buf, 0, buf.Length);
-			
-			if (keys != null) {
-				DecryptBlock(buf, 0, System.Math.Min((int)(csize - inf.TotalIn), len));
-			}
-#endif
-
 			if (len <= 0) {
 				throw new SharpZipBaseException("Deflated stream ends early.");
 			}
 			
-			inf.SetInput(buf, 0, len);
+			if (keys != null) {
+				// TODO: Encryption here we need to shuffle buffers....
+				if ( csize > 0 )
+					DecryptBlock(dataBuffer, 0, System.Math.Min((int)(csize - inf.TotalIn), len));
+				else
+					DecryptBlock(dataBuffer, 0, len);
+			}
+			inf.SetInput(dataBuffer, 0, len);
+*/
+			inputBuffer.Fill();
+			inputBuffer.SetInflaterInput(inf);
 		}
-		
+/* Encryption		
 		/// <summary>
 		/// Reads one byte of decompressed data.
 		///
@@ -388,9 +563,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			if (nread > 0) {
 				return onebytebuffer[0] & 0xff;
 			}
-			return -1; // ok
+			return -1;
 		}
-		
+*/
+
 		/// <summary>
 		/// Decompresses data into the byte array
 		/// </summary>
@@ -467,7 +643,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		#region Encryption stuff
-		
+/* Encryption		
 		// TODO  Refactor this code.  The presence of Zip specific code in this low level class is wrong
 		
 		/// <summary>
@@ -528,14 +704,16 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			keys[1] = keys[1] * 134775813 + 1;
 			keys[2] = Crc32.ComputeCrc32(keys[2], (byte)(keys[1] >> 24));
 		}
+*/
 
 		/// <summary>
 		/// Clear any cryptographic state.
 		/// </summary>		
 		protected void StopDecrypting()
 		{
-			keys = null;
-			cryptbuffer = null;
+// Encryption			keys = null;
+//			cryptbuffer = null;
+			inputBuffer.CryptoTransform = null;
 		}
 		#endregion
 	}

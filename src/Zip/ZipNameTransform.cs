@@ -46,22 +46,42 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	public class ZipNameTransform : INameTransform
 	{
+		/// <summary>
+		/// Initialize a new instance of <see cref="ZipNameTransform"></see>
+		/// </summary>
+		/// <remarks>Relative paths default to true with this constructor.</remarks>
 		public ZipNameTransform()
 		{
 			relativePath = true;
 		}
-		
+
+		/// <summary>
+		/// Initialize a new instance of <see cref="ZipNameTransform"></see>
+		/// </summary>
+		/// <param name="useRelativePaths">If true relative paths are created, 
+		/// if false absolute paths are created. </param>
 		public ZipNameTransform(bool useRelativePaths)
 		{
 			relativePath = useRelativePaths;
 		}
 
-		public ZipNameTransform(string relativePathPrefix)
+		/// <summary>
+		/// Initialize a new instance of <see cref="ZipNameTransform"></see>
+		/// </summary>
+		/// <param name="useRelativePaths">If true relative paths are created, 
+		/// if false absolute paths are created. </param>
+		/// <param name="trimPrefix">The string to trim from front of paths if found.</param>
+		public ZipNameTransform(bool useRelativePaths, string trimPrefix)
 		{
-			relativePrefix = relativePathPrefix;
-			relativePath = true;
+			this.trimPrefix = trimPrefix;
+			relativePath = useRelativePaths;
 		}
 		
+		/// <summary>
+		/// Transform a directory name according to the Zip file naming conventions.
+		/// </summary>
+		/// <param name="name">The directory name to transform.</param>
+		/// <returns>The transformed name.</returns>
 		public string TransformDirectory(string name)
 		{
 			name = TransformFile(name);
@@ -76,11 +96,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return name;
 		}
 		
+		/// <summary>
+		/// Transform a file name according to the Zip file naming conventions.
+		/// </summary>
+		/// <param name="name">The file name to transform.</param>
+		/// <returns>The transformed name.</returns>
 		public string TransformFile(string name)
 		{
 			if (name != null) {
-				if ( relativePath && relativePrefix != null && name.IndexOf(relativePrefix) == 0 ) {
-					name = name.Substring(relativePrefix.Length);
+				if ( trimPrefix != null && name.IndexOf(trimPrefix) == 0 ) {
+					name = name.Substring(trimPrefix.Length);
 				}
 				
 				if (Path.IsPathRooted(name) == true) {
@@ -106,13 +131,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return name;
 		}
 
-		public string RelativePrefix
+		string trimPrefix;
+		
+		/// <summary>
+		/// Get/set the path prefix to be trimmed from paths if present.
+		/// </summary>
+		public string TrimPrefix
 		{
-			get { return relativePrefix; }
-			set { relativePrefix = value; }
+			get { return trimPrefix; }
+			set { trimPrefix = value; }
 		}
 		
 		bool relativePath;
-		string relativePrefix;
 	}
 }

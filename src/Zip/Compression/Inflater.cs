@@ -675,7 +675,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			
 			// Special case: len may be zero
 			if (len == 0) {
-				if (IsFinished == false) {// -jr- 08-Nov-2003 INFLATE_BUG fix..
+				if (IsFinished == false) { // -jr- 08-Nov-2003 INFLATE_BUG fix..
 					Decode();
 				}
 				return 0;
