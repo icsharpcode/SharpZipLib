@@ -399,7 +399,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			
 			ZipFile testFile = new ZipFile(ms);
 			
-			testFile.TestArchive(true);
+			Assert.IsTrue(testFile.TestArchive(true), "Unexpected error in archive detected");
 
 			byte[] corrupted = new byte[compressedData.Length];
 			Array.Copy(compressedData, corrupted, compressedData.Length);
