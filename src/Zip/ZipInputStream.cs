@@ -329,7 +329,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 			
-			
 			entry.DosTime = dostime;
 			
 			if (extraLen > 0) {

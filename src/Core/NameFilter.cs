@@ -1,4 +1,4 @@
-// ZipConstants.cs
+// NameFilter.cs
 //
 // Copyright 2005 John Reilly
 //
@@ -41,14 +41,14 @@ using System.Text.RegularExpressions;
 namespace ICSharpCode.SharpZipLib.Core
 {
 	/// <summary>
-	/// NameFilter is a string matching class which allows for both include and exclude
-	/// expressions.  Its a string filter rather than a filename filter specifically.
-	/// A filter is a sequence of independant regular expressions separated by as semi-colon ';'
+	/// NameFilter is a string matching class which allows for both positive and negative
+	/// matching.
+	/// A filter is a sequence of independant <see cref="Regex"></see> regular expressions separated by semi-colons ';'
 	/// Each expression can be prefixed by a plus '+' sign or a minus '-' sign to denote the expression
-	/// is intended to include or exclude files.  If neither a plus or minus sign is found include is the default
-	/// A given file name is tested for inclusion before checking exclusions.  Only filenames matching an include spec 
+	/// is intended to include or exclude names.  If neither a plus or minus sign is found include is the default
+	/// A given name is tested for inclusion before checking exclusions.  Only names matching an include spec 
 	/// and not matching an exclude spec are deemed to match the filter.
-	/// An empty filter is equivalent to all files matching with none excluded.
+	/// An empty filter matches any name.
 	/// </summary>
 	public class NameFilter
 	{
@@ -65,7 +65,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 
 		/// <summary>
-		/// Test a string to see if it is a valig regular expression.
+		/// Test a string to see if it is a valid regular expression.
 		/// </summary>
 		/// <param name="e">The expression to test.</param>
 		/// <returns>True if expression is a valid <see cref="RegEx"/> false otherwise.</returns>
@@ -82,7 +82,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 
 		/// <summary>
-		/// Test an expression to see if it valid as a filter.
+		/// Test an expression to see if it is valid as a filter.
 		/// </summary>
 		/// <param name="toTest">The filter expression to test.</param>
 		/// <returns>True if the expression is valid, false otherwise.</returns>
@@ -154,12 +154,12 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			bool result = false;
 			foreach (Regex r in exclusions) {
-			if (r.IsMatch(testValue)) {
-				result = true;
-				break;
+				if (r.IsMatch(testValue)) {
+					result = true;
+					break;
+				}
 			}
-		 }
-		 return result;
+			return result;
 		}
 
 		/// <summary>
@@ -172,9 +172,9 @@ namespace ICSharpCode.SharpZipLib.Core
 			return IsIncluded(testValue) == true && IsExcluded(testValue) == false;
 		}
 
-      /// <summary>
-      /// Compile this filter.
-      /// </summary>
+		/// <summary>
+		/// Compile this filter.
+		/// </summary>
 		void Compile()
 		{
 			if (filter == null)
@@ -193,9 +193,9 @@ namespace ICSharpCode.SharpZipLib.Core
 					else
 						toCompile = items[i];
 
-               // NOTE: Regular expressions can fail to compile here for a number of reasons that cause an exception
-               // these are left unhandled here as the caller is responsible for ensuring all is valid.
-               // several functions IsValidFilterExpression and IsValidExpression are provided for such checking
+					// NOTE: Regular expressions can fail to compile here for a number of reasons that cause an exception
+					// these are left unhandled here as the caller is responsible for ensuring all is valid.
+					// several functions IsValidFilterExpression and IsValidExpression are provided for such checking
 					if (include)
 						inclusions.Add(new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline));
 					else

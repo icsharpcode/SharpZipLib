@@ -44,7 +44,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("#ZipLibrary")]
-[assembly: AssemblyCopyright("Copyright Mike Krueger 2001-2005")]
+[assembly: AssemblyCopyright("Copyright 2001-2005 Mike Krueger")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -292,7 +292,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (name == null)  {
 				throw new System.ArgumentNullException("ZipEntry name");
 			}
-		
+
+			if ( name.Length == 0 ) {
+				throw new ArgumentException("ZipEntry name is empty");
+			}
+
 			if (versionRequiredToExtract != 0 && versionRequiredToExtract < 10) {
 				throw new ArgumentOutOfRangeException("versionRequiredToExtract");
 			}
@@ -668,6 +672,27 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if (result == false && (known & KNOWN_EXTERN_ATTRIBUTES) != 0) {
 					if (HostSystem == 0 && (ExternalFileAttributes & 16) != 0) {
 						result = true;
+					}
+				}
+				return result;
+			}
+		}
+		
+		/// <summary>
+		/// Get a value of true if the entry appears to be a file; false otherwise
+		/// </summary>
+		/// <remarks>
+		/// This only takes account Windows attributes.  Other operating systems are ignored.
+		/// For linux and others the result may be incorrect.
+		/// </remarks>
+		public bool IsFile {
+			get {
+				bool result = !IsDirectory;
+
+				// Exclude volume labels
+				if ( result && (known & KNOWN_EXTERN_ATTRIBUTES) != 0) {
+					if (HostSystem == 0 && (ExternalFileAttributes & 8) != 0) {
+						result = false;
 					}
 				}
 				return result;

@@ -41,9 +41,22 @@ using System.IO;
 namespace ICSharpCode.SharpZipLib.Core
 {
 	/// <summary>
-	/// FileFilter filters files.
+	/// File filters support these operations.
 	/// </summary>
-	public class FileFilter
+	public interface IFileFilter
+	{
+		/// <summary>
+		/// Test a name to see if is 'matches' the filter.
+		/// </summary>
+		/// <param name="name">The name to test.</param>
+		/// <returns>Returns true if the name matches the filter, false if it does not match.</returns>
+		bool IsMatch(string name);
+	}
+	
+	/// <summary>
+	/// FileFilter filters files by name.
+	/// </summary>
+	public class FileFilter : IFileFilter
 	{
 		public FileFilter(string filter)
 		{
@@ -93,22 +106,5 @@ namespace ICSharpCode.SharpZipLib.Core
 			get { return maxSize; }
 			set { maxSize = value; }
 		}
-		
-		DateTime minDateTime;
-		
-		public DateTime MinDateTime
-		{
-			get { return minDateTime; }
-			set { minDateTime = value; }
-		}
-
-		DateTime maxDateTime;
-		
-		public DateTime MaxDateTime
-		{
-			get { return maxDateTime; }
-			set { maxDateTime = value; }
-		}
-		
 	}
 }

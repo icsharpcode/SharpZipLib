@@ -43,11 +43,41 @@ namespace ICSharpCode.SharpZipLib.Core
 	{
 		public ScanEventArgs(string name)
 		{
-			Name = name;
+			this.name = name;
 			Continue = true;
 		}
-		public string Name;
+		
+		string name;
+		public string Name
+		{
+			get { return name; }
+		}
+		
 		public bool Continue;
+	}
+
+	public class DirectoryEventArgs : ScanEventArgs
+	{
+		/// <summary>
+		/// Initialize an instance of <see cref="DirectoryEventsArgs"></see>.
+		/// </summary>
+		/// <param name="name">The name for this directory.</param>
+		/// <param name="isEmpty">Flag value indicating if any matching files are contained in this directory.</param>
+		public DirectoryEventArgs(string name, bool isEmpty)
+			: base (name)
+		{
+			this.isEmpty = isEmpty;
+		}
+		
+		/// <summary>
+		/// Geta value indicating if the directory contains any matching files or not.
+		/// </summary>
+		public bool IsEmpty
+		{
+			get { return isEmpty; }
+		}
+		
+		bool isEmpty;
 	}
 	
 	public class ScanFailureEventArgs
@@ -63,7 +93,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		public bool Continue;
 	}
 	
-	public delegate void ProcessDirectoryDelegate(object Sender, ScanEventArgs e);
+	public delegate void ProcessDirectoryDelegate(object Sender, DirectoryEventArgs e);
 	public delegate void ProcessFileDelegate(object sender, ScanEventArgs e);
 	public delegate void DirectoryFailureDelegate(object sender, ScanFailureEventArgs e);
 	public delegate void FileFailureDelegate(object sender, ScanFailureEventArgs e);
@@ -84,11 +114,11 @@ namespace ICSharpCode.SharpZipLib.Core
 			this.dirFilter = new NameFilter(dirFilter);
 		}
 		
-		public event ProcessDirectoryDelegate ProcessDirectory;
-		public event ProcessFileDelegate ProcessFile;
+		public ProcessDirectoryDelegate ProcessDirectory;
+		public ProcessFileDelegate ProcessFile;
 
-		public event DirectoryFailureDelegate DirectoryFailure;
-		public event FileFailureDelegate FileFailure;
+		public DirectoryFailureDelegate DirectoryFailure;
+		public FileFailureDelegate FileFailure;
 		
 		public void OnDirectoryFailure(string directory, Exception e)
 		{
@@ -117,10 +147,10 @@ namespace ICSharpCode.SharpZipLib.Core
 			}
 		}
 		
-		public void OnProcessDirectory(string directory)
+		public void OnProcessDirectory(string directory, bool isEmpty)
 		{
 			if ( ProcessDirectory != null ) {
-				ScanEventArgs args = new ScanEventArgs(directory);
+				DirectoryEventArgs args = new DirectoryEventArgs(directory, isEmpty);
 				ProcessDirectory(this, args);
 				alive = args.Continue;
 			}
@@ -135,13 +165,29 @@ namespace ICSharpCode.SharpZipLib.Core
 		void ScanDir(string directory, bool recurse)
 		{
 
-			string[] names = new string[0];
-
 			try {
-				names = System.IO.Directory.GetFiles(directory);
-				OnProcessDirectory(directory);
+				string[] names = System.IO.Directory.GetFiles(directory);
+				OnProcessDirectory(directory, names.Length == 0);
 				if ( !alive ) {
 					return;
+				}
+				
+				foreach (string fileName in names) {
+					try {
+						if ( fileFilter.IsMatch(fileName) ) {
+							OnProcessFile(fileName);
+							if ( !alive ) {
+								return;
+							}
+						}
+					}
+					catch (Exception e)
+					{
+						OnFileFailure(fileName, e);
+						if ( !alive ) {
+							return;
+						}
+					}
 				}
 			}
 			catch (Exception e) {
@@ -151,39 +197,19 @@ namespace ICSharpCode.SharpZipLib.Core
 				}
 			}
 
-			foreach (string fileName in names) {
+			if (recurse) {
 				try {
-					if ( fileFilter.IsMatch(fileName) ) {
-						OnProcessFile(fileName);
-						if ( !alive ) {
-							return;
+					string[] names = System.IO.Directory.GetDirectories(directory);
+					foreach (string fulldir in names) {
+						if ((dirFilter == null) || (dirFilter.IsMatch(fulldir))) {
+							ScanDir(fulldir, true);
 						}
 					}
-				}
-				catch (Exception e)
-				{
-					OnFileFailure(fileName, e);
-					if ( !alive ) {
-						return;
-					}
-				}
-			}
-			
-			if (recurse) {
-				names = new string[0];
-				try {
-					names = System.IO.Directory.GetDirectories(directory);
 				}
 				catch (Exception e) {
 					OnDirectoryFailure(directory, e);
 					if ( !alive ) {
 						return;
-					}
-				}
-
-				foreach (string fulldir in names) {
-					if ((dirFilter == null) || (dirFilter.IsMatch(fulldir))) {
-						ScanDir(fulldir, true);
 					}
 				}
 			}
