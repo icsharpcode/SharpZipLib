@@ -1,9 +1,9 @@
 //------------------------------------------------------------------------------
 //
 // sz - A command line archiver using SharpZipLib for actual compression
-//      Currently only creates Zip archives.
+//      Currently only handles Zip archives.
 //
-// Copyright 2004 John Reilly
+// Copyright 2004, 2005 John Reilly
 //
 //------------------------------------------------------------------------------
 
@@ -529,6 +529,17 @@ namespace SharpZip {
 						ZipEntry theEntry;
 						
 						while ((theEntry = stream.GetNextEntry()) != null) {
+
+							if ( theEntry.IsDirectory ) {
+								Console.Out.WriteLine("Directory {0}", theEntry.Name);
+								continue;
+							}
+							
+							if ( !theEntry.IsFile ) {
+								Console.Out.WriteLine("Non file entry {0}", theEntry.Name);
+								continue;
+							}
+							
 							if (entryCount == 0) {
 								Console.Out.WriteLine(headerTitles);
 								Console.Out.WriteLine(headerUnderline);
@@ -630,6 +641,16 @@ namespace SharpZip {
 				
 		 		foreach (ZipEntry theEntry in zipFile) {
 						
+					if ( theEntry.IsDirectory ) {
+						Console.Out.WriteLine("Directory {0}", theEntry.Name);
+						continue;
+					}
+					
+					if ( !theEntry.IsFile ) {
+						Console.Out.WriteLine("Non file entry {0}", theEntry.Name);
+						continue;
+					}
+					
 					if (entryCount == 0) {
 						Console.Out.WriteLine(headerTitles);
 						Console.Out.WriteLine(headerUnderline);
