@@ -367,7 +367,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Get current compression level
 		/// </summary>
-		/// <returns>compression level</returns>
+		/// <returns>Returns the current compression level</returns>
 		public int GetLevel() {
 			return level;
 		}
