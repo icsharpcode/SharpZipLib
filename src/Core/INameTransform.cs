@@ -1,4 +1,4 @@
-// FileFilter.cs
+// INameTransform.cs
 //
 // Copyright 2005 John Reilly
 //
@@ -33,78 +33,25 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-
-
-using System;
-using System.IO;
-
 namespace ICSharpCode.SharpZipLib.Core
 {
 	/// <summary>
-	/// File filters support these operations.
+	/// INameTransform defines how file system names are transformed.
 	/// </summary>
-	public interface IFileFilter
+	public interface INameTransform
 	{
 		/// <summary>
-		/// Test a name to see if is 'matches' the filter.
+		/// Given a file name determine the transformed equivalent.
 		/// </summary>
-		/// <param name="name">The name to test.</param>
-		/// <returns>Returns true if the name matches the filter, false if it does not match.</returns>
-		bool IsMatch(string name);
-	}
-	
-	/// <summary>
-	/// FileFilter filters files by name.
-	/// </summary>
-	public class FileFilter : IFileFilter
-	{
-		public FileFilter(string filter)
-		{
-			nameFilter = new NameFilter(filter);
-		}
-
-		public virtual bool IsMatch(string fileName)
-		{
-			FileInfo fileInfo = new FileInfo(fileName);
-			return nameFilter.IsMatch(fileInfo.FullName);
-		}
+		/// <param name="name">The name to transform.</param>
+		/// <returns>The transformed name.</returns>
+		string TransformFile(string name);
 		
-		#region Instance Fields
-		NameFilter nameFilter;
-		#endregion
-	}
-	
-	public class NameAndSizeFilter : FileFilter
-	{
-		
-		public NameAndSizeFilter(string filter, long minSize, long maxSize) : base(filter)
-		{
-			this.minSize = minSize;
-			this.maxSize = maxSize;
-		}
-		
-		public override bool IsMatch(string fileName)
-		{
-			FileInfo fileInfo = new FileInfo(fileName);
-			long length = fileInfo.Length;
-			return base.IsMatch(fileName) &&
-				(MinSize <= length) && (MaxSize >= length);
-		}
-		
-		long minSize = 0;
-		
-		public long MinSize
-		{
-			get { return minSize; }
-			set { minSize = value; }
-		}
-		
-		long maxSize = long.MaxValue;
-		
-		public long MaxSize
-		{
-			get { return maxSize; }
-			set { maxSize = value; }
-		}
+		/// <summary>
+		/// Given a directory name determine the transformed equivalent.
+		/// </summary>
+		/// <param name="name">The name to transform.</param>
+		/// <returns>The transformed directory name</returns>
+		string TransformDirectory(string name);
 	}
 }

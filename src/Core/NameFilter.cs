@@ -94,7 +94,7 @@ namespace ICSharpCode.SharpZipLib.Core
 			{
 				string[] items = toTest.Split(';');
 				for (int i = 0; i < items.Length; ++i) {
-					if (items[i] != null && items[i].Length >= 2) {
+					if (items[i] != null && items[i].Length > 0) {
 						string toCompile;
 			
 						if (items[i][0] == '+')
@@ -182,7 +182,7 @@ namespace ICSharpCode.SharpZipLib.Core
 
 			string[] items = filter.Split(';');
 			for (int i = 0; i < items.Length; ++i) {
-				if (items[i] != null && items[i].Length >= 2) {
+				if (items[i] != null && items[i].Length > 0) {
 					bool include = items[i][0] != '-';
 					string toCompile;
 

@@ -99,19 +99,39 @@ namespace ICSharpCode.SharpZipLib.Core
 	public delegate void FileFailureDelegate(object sender, ScanFailureEventArgs e);
 
 	/// <summary>
-	/// FileScanner allows for scanning of files and directories.
+	/// FileSystemScanner provides facilities scanning of files and directories.
 	/// </summary>
-	public class FileScanner
+	public class FileSystemScanner
 	{
-		public FileScanner(string filter)
+		/// <summary>
+		/// Initialise a new instance of <see cref="FileScanner"></see>
+		/// </summary>
+		/// <param name="filter">The file filter to apply when scanning.</param>
+		public FileSystemScanner(string filter)
 		{
-			fileFilter = new FileFilter(filter);
+			fileFilter = new PathFilter(filter);
 		}
 		
-		public FileScanner(string dirFilter, string fileFilter)
+		/// <summary>
+		/// Initialise a new instance of <see cref="FileSystemScanner"></see>
+		/// </summary>
+		/// <param name="fileFilter"></param>
+		/// <param name="directoryFilter">The directory <see cref="NameFilter"></see>filter to apply.</param>
+		public FileSystemScanner(string fileFilter, string directoryFilter)
 		{
-			this.fileFilter = new FileFilter(fileFilter);
-			this.dirFilter = new NameFilter(dirFilter);
+			this.fileFilter = new PathFilter(fileFilter);
+			this.directoryFilter = new PathFilter(directoryFilter);
+		}
+		
+		public FileSystemScanner(IScanFilter fileFilter)
+		{
+			this.fileFilter = fileFilter;
+		}
+		
+		public FileSystemScanner(IScanFilter fileFilter, IScanFilter directoryFilter)
+		{
+			this.fileFilter = fileFilter;
+			this.directoryFilter = directoryFilter;
 		}
 		
 		public ProcessDirectoryDelegate ProcessDirectory;
@@ -155,7 +175,12 @@ namespace ICSharpCode.SharpZipLib.Core
 				alive = args.Continue;
 			}
 		}
-		
+
+		/// <summary>
+		/// Scan a directory.
+		/// </summary>
+		/// <param name="directory">The base directory to scan.</param>
+		/// <param name="recurse">True to recurse subdirectories, false to do a single directory.</param>
 		public void Scan(string directory, bool recurse)
 		{
 			alive = true;
@@ -201,7 +226,7 @@ namespace ICSharpCode.SharpZipLib.Core
 				try {
 					string[] names = System.IO.Directory.GetDirectories(directory);
 					foreach (string fulldir in names) {
-						if ((dirFilter == null) || (dirFilter.IsMatch(fulldir))) {
+						if ((directoryFilter == null) || (directoryFilter.IsMatch(fulldir))) {
 							ScanDir(fulldir, true);
 						}
 					}
@@ -216,8 +241,17 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 		
 		#region Instance Fields
-		FileFilter fileFilter;
-		NameFilter dirFilter;
+		/// <summary>
+		/// The file filter currently in use.
+		/// </summary>
+		IScanFilter fileFilter;
+		/// <summary>
+		/// The directory filter currently in use.
+		/// </summary>
+		IScanFilter directoryFilter;
+		/// <summary>
+		/// Falg indicating if scanning is still alive.  Used to cancel a scan.
+		/// </summary>
 		bool alive;
 		#endregion
 	}
