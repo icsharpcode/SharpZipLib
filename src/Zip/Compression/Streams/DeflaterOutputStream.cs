@@ -68,6 +68,18 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		protected Stream baseOutputStream;
 
+		bool isStreamOwner = true;
+		
+		/// <summary>
+		/// Get/set flag indicating ownership of underlying stream.
+		/// When the flag is true <see cref="">Close</see> will close the underlying stream also.
+		/// </summary>
+		public bool IsStreamOwner
+		{
+			get { return isStreamOwner; }
+			set { isStreamOwner = value; }
+		}
+		
 		///	<summary>
 		/// Allows client to determine if an entry can be patched after its added
 		/// </summary>
@@ -124,7 +136,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				return baseOutputStream.Position;
 			}
 			set {
-//				baseOutputStream.Position = value;
 				throw new NotSupportedException("DefalterOutputStream Position not supported");
 			}
 		}
@@ -136,7 +147,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		public override long Seek(long offset, SeekOrigin origin)
 		{
 			throw new NotSupportedException("DeflaterOutputStream Seek not supported");
-//			return baseOutputStream.Seek(offset, origin);
 		}
 		
 		/// <summary>
@@ -145,7 +155,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override void SetLength(long val)
 		{
-//			baseOutputStream.SetLength(val);
 			throw new NotSupportedException("DeflaterOutputStream SetLength not supported");
 		}
 		
@@ -155,7 +164,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override int ReadByte()
 		{
-//			return baseOutputStream.ReadByte();
 			throw new NotSupportedException("DeflaterOutputStream ReadByte not supported");
 		}
 		
@@ -165,7 +173,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override int Read(byte[] b, int off, int len)
 		{
-//			return baseOutputStream.Read(b, off, len);
 			throw new NotSupportedException("DeflaterOutputStream Read not supported");
 		}
 		
@@ -335,7 +342,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		public override void Close()
 		{
 			Finish();
-			baseOutputStream.Close();
+			if ( isStreamOwner ) {
+				baseOutputStream.Close();
+			}
 		}
 		
 		/// <summary>

@@ -80,10 +80,22 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		protected Stream baseInputStream;
 		
+		bool isStreamOwner = true;
+		
 		/// <summary>
 		/// The compressed size
 		/// </summary>
 		protected long csize;
+		
+		/// <summary>
+		/// Get/set flag indicating ownership of underlying stream.
+		/// When the flag is true <see cref="">Close</see> will close the underlying stream also.
+		/// </summary>
+		public bool IsStreamOwner
+		{
+			get { return isStreamOwner; }
+			set { isStreamOwner = value; }
+		}
 		
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports reading
@@ -256,21 +268,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			this.inf = inflater;
 			buf = new byte[bufferSize];
 			
-			// TODO rework this!!  The original code will mask real exceptions.
-/*			Is this valid in all cases?
 			if (baseInputStream.CanSeek) {
-				this.len = baseInputStream.Length;
+				this.len = (int)baseInputStream.Length;
 			} else {
 				this.len = 0;
 			}
-*/			
-			try {
-				this.len = (int)baseInputStream.Length;
-			} catch (Exception) {
-				// the stream may not support Length property
-				this.len = 0;
-			}
-			
 		}
 		
 		/// <summary>
@@ -289,12 +291,14 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		public override void Close()
 		{
-			baseInputStream.Close();
+			if ( isStreamOwner ) {
+				baseInputStream.Close();
+			}
 		}
 
 		int readChunkSize = 0;
 
-		// TODO  this is an ineficient way of handling this situation
+		// TODO  this is an inefficient way of handling this situation
 		// revamp this to operate better...
 		
 		/// <summary>
