@@ -10,7 +10,7 @@ using ICSharpCode.SharpZipLib.GZip;
 namespace ICSharpCode.SharpZipLib.Tests.Base
 {
 	/// <summary>
-	/// This class contains test cases for the Adler32 and Crc32 checksums
+	/// This class contains test cases for Deflater/Inflater streams.
 	/// </summary>
 	[TestFixture]
 	public class InflaterDeflaterTestSuite

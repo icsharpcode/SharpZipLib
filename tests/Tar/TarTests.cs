@@ -67,6 +67,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 			
 			Assert.AreEqual(nextEntry.Name, name, "Name match failure");
 		}
+		
 		/// <summary>
 		/// Check that long names are handled correctly for reading and writing.
 		/// </summary>
@@ -99,6 +100,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 			            "66666666667777777777888888888899999999990000000000" +
 			            "11111111112222222222333333333344444444445555555555" +
 			            "66666666667777777777888888888899999999990000000000");
+			
+			for (int n = 1; n < 1024; ++n)
+			{
+				string format = "{0," + n + "}";
+				string formatted = string.Format(format, "A");
+				TryLongName(formatted);
+			}
 		}
 
 		/// <summary>

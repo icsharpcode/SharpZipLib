@@ -386,6 +386,31 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 		
+		[Test]
+		[Category("Zip")]
+		public void ArchiveTesting()
+		{
+			byte[] originalData = null;
+			byte[] compressedData = MakeMemZip(ref originalData, CompressionMethod.Deflated,
+			                                   6, 1024, null, true);
+			
+			MemoryStream ms = new MemoryStream(compressedData);
+			ms.Seek(0, SeekOrigin.Begin);
+			
+			ZipFile testFile = new ZipFile(ms);
+			
+			testFile.TestArchive(true);
+
+			byte[] corrupted = new byte[compressedData.Length];
+			Array.Copy(compressedData, corrupted, compressedData.Length);
+
+			corrupted[123] = (byte)(~corrupted[123] & 0xff);
+			ms = new MemoryStream(corrupted);
+			
+			testFile = new ZipFile(ms);
+
+			Assert.IsFalse(testFile.TestArchive(true), "Error in archive not detected");
+		}
 		
 		/// <summary>
 		/// Basic stored file test, with encryption.
