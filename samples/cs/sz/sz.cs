@@ -969,7 +969,9 @@ namespace SharpZip {
 						string entryFileName;
 						
 						if (Path.IsPathRooted(theEntry.Name)) {
-							entryFileName = Path.Combine(Path.GetDirectoryName(theEntry.Name), Path.GetFileName(theEntry.Name));
+							string workName = Path.GetPathRoot(theEntry.Name);
+							workName = theEntry.Name.Substring(workName.Length);
+							entryFileName = Path.Combine(Path.GetDirectoryName(workName), Path.GetFileName(theEntry.Name));
 						} else {
 							entryFileName = theEntry.Name;
 						}
