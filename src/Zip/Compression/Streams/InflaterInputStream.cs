@@ -80,16 +80,16 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		protected Stream baseInputStream;
 		
-		bool isStreamOwner = true;
-		
 		/// <summary>
 		/// The compressed size
 		/// </summary>
 		protected long csize;
 		
+		bool isStreamOwner = true;
+		
 		/// <summary>
 		/// Get/set flag indicating ownership of underlying stream.
-		/// When the flag is true <see cref="">Close</see> will close the underlying stream also.
+		/// When the flag is true <see cref="Close"/> will close the underlying stream also.
 		/// </summary>
 		public bool IsStreamOwner
 		{
