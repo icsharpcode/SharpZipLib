@@ -613,6 +613,36 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			
 		}
 		
+		[Test]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void PartialStreamClosing()
+		{
+			string tempFile = null;
+			try
+			{
+				 tempFile = Path.GetTempPath();
+			}
+			catch (SecurityException)
+			{
+			}
+			
+			Assert.IsNotNull(tempFile, "No permission to execute this test?");
+			
+			if (tempFile != null) {
+				tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
+				MakeZipFile(tempFile, new String[] {"Farriera", "Champagne", "Urban myth" }, 10, "Aha");
+				
+				ZipFile zipFile = new ZipFile(tempFile);
+				
+				Stream stream = zipFile.GetInputStream(0);
+				stream.Close();
+				stream = zipFile.GetInputStream(1);
+				zipFile.Close();
+				File.Delete(tempFile);
+			}
+		}
+		
 		/// <summary>
 		/// Test ZipFile find method operation
 		/// </summary>
