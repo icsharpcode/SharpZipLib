@@ -1,6 +1,7 @@
 Changes since v0.83a
 + Added SFX read support to ZipFile class.
 + Added code to test archive contents to ZipFile class.
++ Added SimpleZip to allow direct compression and decompression of zip files.
 
 Changes since v0.83
 + Bug with long file names in TAR fixed
