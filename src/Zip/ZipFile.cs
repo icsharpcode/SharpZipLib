@@ -630,6 +630,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 			
+
+			/// <summary>
+			/// Close this partial input stream.
+			/// </summary>
+			/// <remarks>
+			/// The underlying stream is not closed.  Close the parent ZipFile class to do that.
+			/// </remarks>
+			public override void Close()
+			{
+				// Do nothing at all!
+			}
+			
 			public override int Read(byte[] b, int off, int len)
 			{
 				if (len > end - filepos) {
