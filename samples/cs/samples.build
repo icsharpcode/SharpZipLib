@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+
+<project name="SharpZLib Examples" default="build" basedir=".">
+
+	<target name="build">
+		
+		<!-- compile CreateZipFile example -->
+		<echo message="Building CreateZipFile example"/>
+		<copy todir="bin">
+			<fileset basedir="../../bin">
+	                	<includes name="ICSharpCode.SharpZipLib.dll"/>
+	            	</fileset>
+        	</copy>
+        	
+		<csc 
+			target="exe" 
+			output="bin/createzipfile.exe" 
+			debug="False">
+			
+			<sources basedir="CreateZipFile">
+				<includes name="**/*.cs"/>
+			</sources>
+			<references basedir="bin">
+				<includes name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</csc>
+
+		<!-- compile minigzip example -->
+		<echo message="Building minigzip example"/>
+		<csc 
+			target="exe" 
+			output="bin/minigzip.exe" 
+			debug="False">
+			
+			<sources basedir="minigzip">
+				<includes name="**/*.cs"/>
+			</sources>
+			<references basedir="bin">
+				<includes name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</csc>
+
+		<!-- compile sz archvier example -->
+		<echo message="Building sz example"/>
+		<csc 
+			target="exe" 
+			output="bin/sz.exe" 
+			debug="False">
+			
+			<sources basedir="sz">
+				<includes name="**/*.cs"/>
+			</sources>
+			<references basedir="bin">
+				<includes name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</csc>
+
+		<!-- compile viewzipfile example -->
+		<echo message="Building viewzipfile example"/>
+		<csc 
+			target="exe" 
+			output="bin/viewzipfile.exe" 
+			debug="False">
+			
+			<sources basedir="viewzipfile">
+				<includes name="**/*.cs"/>
+			</sources>
+			<references basedir="bin">
+				<includes name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</csc>
+		
+		<!-- compile unzipfile example -->
+		<echo message="Building unzipfile example"/>
+		<csc 
+			target="exe" 
+			output="bin/unzipfile.exe" 
+			debug="False">
+			
+			<sources basedir="unzipfile">
+				<includes name="**/*.cs"/>
+			</sources>
+			<references basedir="bin">
+				<includes name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</csc>
+
+		<!-- compile minibzip2 example -->
+		<echo message="Building minibzip2 example"/>
+		<csc 
+			target="exe" 
+			output="bin/minibzip2.exe" 
+			debug="False">
+			
+			<sources basedir="minibzip2">
+				<includes name="**/*.cs"/>
+			</sources>
+			<references basedir="bin">
+				<includes name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</csc>
+		
+		<!-- compile tar example -->
+		<echo message="Building tar example"/>
+		<csc 
+			target="exe" 
+			output="bin/tar.exe" 
+			debug="False">
+			
+			<sources basedir="tar">
+				<includes name="**/*.cs"/>
+			</sources>
+			<references basedir="bin">
+				<includes name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</csc>
+
+		<!-- compile zipfiletest example -->
+		<echo message="Building zipfiletest example"/>
+		<csc 
+			target="exe" 
+			output="bin/zipfiletest.exe" 
+			debug="False">
+			
+			<sources basedir="zipfiletest">
+				<includes name="**/*.cs"/>
+			</sources>
+			<references basedir="bin">
+				<includes name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</csc>
+	
+	</target>
+	
+	<target name="clean">
+	        <delete verbose="true" >
+			<fileset basedir="bin">
+				<includes name="*.exe"/>
+				<includes name="ICSharpCode.SharpZipLib.dll"/>
+			</fileset>
+		</delete>
+	</target>
+</project>

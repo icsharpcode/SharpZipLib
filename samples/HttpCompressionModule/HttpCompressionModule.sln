@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpCompressionModule", "src\HttpCompressionModule.csproj", "{24B5F8DA-F11C-4B77-8BF9-5D2E4534DDE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "example\Example.csproj", "{621AAC3C-38EC-4F70-80D3-68DE4829AA33}"
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		ConfigName.0 = Debug
+		ConfigName.1 = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{24B5F8DA-F11C-4B77-8BF9-5D2E4534DDE5}.Debug.ActiveCfg = Debug|.NET
+		{24B5F8DA-F11C-4B77-8BF9-5D2E4534DDE5}.Debug.Build.0 = Debug|.NET
+		{24B5F8DA-F11C-4B77-8BF9-5D2E4534DDE5}.Release.ActiveCfg = Release|.NET
+		{24B5F8DA-F11C-4B77-8BF9-5D2E4534DDE5}.Release.Build.0 = Release|.NET
+		{621AAC3C-38EC-4F70-80D3-68DE4829AA33}.Debug.ActiveCfg = Debug|.NET
+		{621AAC3C-38EC-4F70-80D3-68DE4829AA33}.Debug.Build.0 = Debug|.NET
+		{621AAC3C-38EC-4F70-80D3-68DE4829AA33}.Release.ActiveCfg = Release|.NET
+		{621AAC3C-38EC-4F70-80D3-68DE4829AA33}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,23 @@
+<Project name="unzipfile" description="creates an empty C# project" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
+  <Contents>
+    <File name=".\readme.txt" subtype="Code" buildaction="Exclude" />
+    <File name=".\build.bat" subtype="Code" buildaction="Exclude" />
+    <File name=".\UnZipFile.cs" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <References>
+    <Reference type="Assembly" refto=".\bin\SharpZipLib.dll" />
+  </References>
+  <DeploymentInformation target="" script="" strategy="File" />
+  <Configurations active="Debug">
+    <Configuration runwithwarnings="False" name="Debug">
+      <CodeGeneration warninglevel="0" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Exe" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+      <Execution commandlineparameters="" consolepause="True" />
+      <Output directory=".\bin" assembly="unzipfile" />
+    </Configuration>
+    <Configuration runwithwarnings="False" name="Release">
+      <CodeGeneration warninglevel="4" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Exe" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+      <Execution commandlineparameters="" consolepause="True" />
+      <Output directory=".\" assembly="viewzipfile" />
+    </Configuration>
+  </Configurations>
+</Project>

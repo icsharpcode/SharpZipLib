@@ -1,0 +1,16 @@
+<Combine fileversion="1.0" name="VBCreateZipFile" description="">
+  <StartMode startupentry="VBCreateZipFile" single="True">
+    <Execute entry="VBCreateZipFile" type="None" />
+  </StartMode>
+  <Entries>
+    <Entry filename=".\CreateZipFile.prjx" />
+  </Entries>
+  <Configurations active="Debug">
+    <Configuration name="Release">
+      <Entry name="VBCreateZipFile" configurationname="Debug" build="False" />
+    </Configuration>
+    <Configuration name="Debug">
+      <Entry name="VBCreateZipFile" configurationname="Debug" build="False" />
+    </Configuration>
+  </Configurations>
+</Combine>

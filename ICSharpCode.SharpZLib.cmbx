@@ -1,0 +1,10 @@
+<Combine fileversion="1.0" name="SharpZipLib" description="">
+  <StartMode startupentry="ICSharpCode.SharpZipLib" single="True" />
+  <Entries>
+    <Entry filename=".\src\ICSharpCode.SharpZLib.prjx" />
+  </Entries>
+  <Configurations active="Debug">
+    <Configuration name="Release" />
+    <Configuration name="Debug" />
+  </Configurations>
+</Combine>

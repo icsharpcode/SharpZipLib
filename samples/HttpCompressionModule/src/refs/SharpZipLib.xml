@@ -1,0 +1,3450 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SharpZipLib</name>
+    </assembly>
+    <members>
+        <member name="T:ICSharpCode.SharpZipLib.BZip2.BZip2">
+            <summary>
+            Does all the compress and decompress pre-operation stuff.
+            Sets up the streams and file header characters.
+            Uses multiply overloaded methods to call for the compress/decompress.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.BZip2.BZip2Constants">
+            <summary>
+            Base class for both the compress and decompress classes.
+            Holds common arrays, and static data.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream">
+            <summary>
+            An input stream that decompresses from the BZip2 format (without the file
+            header chars) to be read as any other stream.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Flush">
+            <summary>
+            Flushes the baseInputStream
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.SetLength(System.Int64)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.WriteByte(System.Byte)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Close">
+            <summary>
+            Closes the input stream
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.CanRead">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.CanSeek">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.CanWrite">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Length">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Position">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream">
+            <summary>
+            An output stream that compresses into the BZip2 format (without the file
+            header chars) into another stream.
+            TODO: Update to BZip2 1.0.1, 1.0.2
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.SetLength(System.Int64)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.ReadByte">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.CanRead">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.CanSeek">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.CanWrite">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.Length">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.Position">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Checksums.Adler32">
+            <summary>
+            Computes Adler32 checksum for a stream of data. An Adler32
+            checksum is not as reliable as a CRC32 checksum, but a lot faster to
+            compute.
+            
+            The specification for Adler32 may be found in RFC 1950.
+            ZLIB Compressed Data Format Specification version 3.3)
+            
+            
+            From that document:
+            
+                 "ADLER32 (Adler-32 checksum)
+                  This contains a checksum value of the uncompressed data
+                  (excluding any dictionary data) computed according to Adler-32
+                  algorithm. This algorithm is a 32-bit extension and improvement
+                  of the Fletcher algorithm, used in the ITU-T X.224 / ISO 8073
+                  standard.
+            
+                  Adler-32 is composed of two sums accumulated per byte: s1 is
+                  the sum of all bytes, s2 is the sum of all s1 values. Both sums
+                  are done modulo 65521. s1 is initialized to 1, s2 to zero.  The
+                  Adler-32 checksum is stored as s2*65536 + s1 in most-
+                  significant-byte first (network) order."
+            
+             "8.2. The Adler-32 algorithm
+            
+               The Adler-32 algorithm is much faster than the CRC32 algorithm yet
+               still provides an extremely low probability of undetected errors.
+            
+               The modulo on unsigned long accumulators can be delayed for 5552
+               bytes, so the modulo operation time is negligible.  If the bytes
+               are a, b, c, the second sum is 3a + 2b + c + 3, and so is position
+               and order sensitive, unlike the first sum, which is just a
+               checksum.  That 65521 is prime is important to avoid a possible
+               large class of two-byte errors that leave the check unchanged.
+               (The Fletcher checksum uses 255, which is not prime and which also
+               makes the Fletcher check insensitive to single byte changes 0 -
+               255.)
+            
+               The sum s1 is initialized to 1 instead of zero to make the length
+               of the sequence part of s2, so that the length does not have to be
+               checked separately. (Any sequence of zeroes has a Fletcher
+               checksum of zero.)"
+            </summary>
+            <see cref="T:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream"/>
+            <see cref="T:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream"/>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Checksums.IChecksum">
+            <summary>
+            Interface to compute a data checksum used by checked input/output streams.
+            A data checksum can be updated by one byte or with a byte array. After each
+            update the value of the current checksum can be returned by calling
+            <code>getValue</code>. The complete checksum object can also be reset
+            so it can be used again with new data.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Checksums.IChecksum.Reset">
+            <summary>
+            Resets the data checksum as if no update was ever called.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Checksums.IChecksum.Update(System.Int32)">
+            <summary>
+            Adds one byte to the data checksum.
+            </summary>
+            <param name = "bval">
+            the data value to add. The high byte of the int is ignored.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Checksums.IChecksum.Update(System.Byte[])">
+            <summary>
+            Updates the data checksum with the bytes taken from the array.
+            </summary>
+            <param name="buffer">
+            buffer an array of bytes
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Checksums.IChecksum.Update(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Adds the byte array to the data checksum.
+            </summary>
+            <param name = "buf">
+            the buffer which contains the data
+            </param>
+            <param name = "off">
+            the offset in the buffer where the data starts
+            </param>
+            <param name = "len">
+            the length of the data
+            </param>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Checksums.IChecksum.Value">
+            <summary>
+            Returns the data checksum computed so far.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Checksums.Adler32.BASE">
+            <summary>
+            largest prime smaller than 65536
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Checksums.Adler32.#ctor">
+            <summary>
+            Creates a new instance of the <code>Adler32</code> class.
+            The checksum starts off with a value of 1.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Checksums.Adler32.Reset">
+            <summary>
+            Resets the Adler32 checksum to the initial value.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Checksums.Adler32.Update(System.Int32)">
+            <summary>
+            Updates the checksum with the byte b.
+            </summary>
+            <param name="bval">
+            the data value to add. The high byte of the int is ignored.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Checksums.Adler32.Update(System.Byte[])">
+            <summary>
+            Updates the checksum with the bytes taken from the array.
+            </summary>
+            <param name="buffer">
+            buffer an array of bytes
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Checksums.Adler32.Update(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Updates the checksum with the bytes taken from the array.
+            </summary>
+            <param name="buf">
+            an array of bytes
+            </param>
+            <param name="off">
+            the start of the data used for this update
+            </param>
+            <param name="len">
+            the number of bytes to use for this update
+            </param>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Checksums.Adler32.Value">
+            <summary>
+            Returns the Adler32 data checksum computed so far.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Checksums.Crc32">
+            <summary>
+            Generate a table for a byte-wise 32-bit CRC calculation on the polynomial:
+            x^32+x^26+x^23+x^22+x^16+x^12+x^11+x^10+x^8+x^7+x^5+x^4+x^2+x+1.
+            
+            Polynomials over GF(2) are represented in binary, one bit per coefficient,
+            with the lowest powers in the most significant bit.  Then adding polynomials
+            is just exclusive-or, and multiplying a polynomial by x is a right shift by
+            one.  If we call the above polynomial p, and represent a byte as the
+            polynomial q, also with the lowest power in the most significant bit (so the
+            byte 0xb1 is the polynomial x^7+x^3+x+1), then the CRC is (q*x^32) mod p,
+            where a mod b means the remainder after dividing a by b.
+            
+            This calculation is done using the shift-register method of multiplying and
+            taking the remainder.  The register is initialized to zero, and for each
+            incoming bit, x^32 is added mod p to the register if the bit is a one (where
+            x^32 mod p is p+x^32 = x^26+...+1), and the register is multiplied mod p by
+            x (which is shifting right by one and adding x^32 mod p if the bit shifted
+            out is a one).  We start with the highest power (least significant bit) of
+            q and repeat for all eight bits of q.
+            
+            The table is simply the CRC of all possible eight bit values.  This is all
+            the information needed to generate CRC's on data a byte at a time for all
+            combinations of CRC register values and incoming bytes.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Checksums.Crc32.crc">
+            <summary>
+            The crc data checksum so far.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Checksums.Crc32.Reset">
+            <summary>
+            Resets the CRC32 data checksum as if no update was ever called.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Checksums.Crc32.Update(System.Int32)">
+            <summary>
+            Updates the checksum with the int bval.
+            </summary>
+            <param name = "bval">
+            the byte is taken as the lower 8 bits of bval
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Checksums.Crc32.Update(System.Byte[])">
+            <summary>
+            Updates the checksum with the bytes taken from the array.
+            </summary>
+            <param name="buffer">
+            buffer an array of bytes
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Checksums.Crc32.Update(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Adds the byte array to the data checksum.
+            </summary>
+            <param name = "buf">
+            the buffer which contains the data
+            </param>
+            <param name = "off">
+            the offset in the buffer where the data starts
+            </param>
+            <param name = "len">
+            the length of the data
+            </param>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Checksums.Crc32.Value">
+            <summary>
+            Returns the CRC32 data checksum computed so far.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.GZip.GZipConstants">
+            <summary>
+            This class contains constants used for gzip.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipConstants.GZIP_MAGIC">
+            <summary>
+            Magic number found at start of GZIP header
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.GZip.GZipInputStream">
+            <summary>
+            This filter stream is used to decompress a "GZIP" format stream.
+            The "GZIP" format is described baseInputStream RFC 1952.
+            
+            author of the original java version : John Leuner
+            </summary>
+            <example> This sample shows how to unzip a gzipped file
+            <code>
+            using System;
+            using System.IO;
+            
+            using NZlib.GZip;
+            
+            class MainClass
+            {
+            	public static void Main(string[] args)
+            	{
+            		Stream s = new GZipInputStream(File.OpenRead(args[0]));
+            		FileStream fs = File.Create(Path.GetFileNameWithoutExtension(args[0]));
+            		int size = 2048;
+            		byte[] writeData = new byte[2048];
+            		while (true) {
+            			size = s.Read(writeData, 0, size);
+            			if (size > 0) {
+            				fs.Write(writeData, 0, size);
+            			} else {
+            				break;
+            			}
+            		}
+            		s.Close();
+            	}
+            }	
+            </code>
+            </example>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream">
+            <summary>
+            This filter stream is used to decompress data compressed baseInputStream the "deflate"
+            format. The "deflate" format is described baseInputStream RFC 1951.
+            
+            This stream may form the basis for other decompression filters, such
+            as the <code>GzipInputStream</code>.
+            
+            author of the original java version : John Leuner
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.inf">
+            <summary>
+            Decompressor for this filter
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.buf">
+            <summary>
+            Byte array used as a buffer
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.len">
+            <summary>
+            Size of buffer
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.baseInputStream">
+            <summary>
+            base stream the inflater depends on.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Flush">
+            <summary>
+            Flushes the baseInputStream
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.SetLength(System.Int64)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.WriteByte(System.Byte)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(System.IO.Stream)">
+            <summary>
+            Create an InflaterInputStream with the default decompresseor
+            and a default buffer size.
+            </summary>
+            <param name = "baseInputStream">
+            the InputStream to read bytes from
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.Compression.Inflater)">
+            <summary>
+            Create an InflaterInputStream with the specified decompresseor
+            and a default buffer size.
+            </summary>
+            <param name = "baseInputStream">
+            the InputStream to read bytes from
+            </param>
+            <param name = "inf">
+            the decompressor used to decompress data read from baseInputStream
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.Compression.Inflater,System.Int32)">
+            <summary>
+            Create an InflaterInputStream with the specified decompresseor
+            and a specified buffer size.
+            </summary>
+            <param name = "baseInputStream">
+            the InputStream to read bytes from
+            </param>
+            <param name = "inf">
+            the decompressor used to decompress data read from baseInputStream
+            </param>
+            <param name = "size">
+            size of the buffer to use
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Close">
+            <summary>
+            Closes the input stream
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Fill">
+            <summary>
+            Fills the buffer with more data to decompress.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.ReadByte">
+            <summary>
+            Reads one byte of decompressed data.
+            
+            The byte is baseInputStream the lower 8 bits of the int.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Decompresses data into the byte array
+            </summary>
+            <param name ="b">
+            the array to read and decompress data into
+            </param>
+            <param name ="off">
+            the offset indicating where the data should be placed
+            </param>
+            <param name ="len">
+            the number of bytes to decompress
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Skip(System.Int64)">
+            <summary>
+            Skip specified number of bytes of uncompressed data
+            </summary>
+            <param name ="n">
+            number of bytes to skip
+            </param>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.CanRead">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.CanSeek">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.CanWrite">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Length">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Position">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Available">
+            <summary>
+            Returns 0 once the end of the stream (EOF) has been reached.
+            Otherwise returns 1.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipInputStream.crc">
+            <summary>
+            CRC-32 value for uncompressed data
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipInputStream.eos">
+            <summary>
+            Indicates end of stream
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor(System.IO.Stream)">
+            <summary>
+            Creates a GzipInputStream with the default buffer size
+            </summary>
+            <param name="baseInputStream">
+            The stream to read compressed data from (baseInputStream GZIP format)
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor(System.IO.Stream,System.Int32)">
+            <summary>
+            Creates a GZIPInputStream with the specified buffer size
+            </summary>
+            <param name="baseInputStream">
+            The stream to read compressed data from (baseInputStream GZIP format)
+            </param>
+            <param name="size">
+            Size of the buffer to use
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.GZip.GZipInputStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Reads uncompressed data into an array of bytes
+            </summary>
+            <param name="buf">
+            the buffer to read uncompressed data into
+            </param>
+            <param name="offset">
+            the offset indicating where the data should be placed
+            </param>
+            <param name="len">
+            the number of uncompressed bytes to be read
+            </param>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.GZip.GZipOutputStream">
+            <summary>
+            This filter stream is used to compress a stream into a "GZIP" stream.
+            The "GZIP" format is described in RFC 1952.
+            
+            author of the original java version : John Leuner
+            </summary>
+            <example> This sample shows how to gzip a file
+            <code>
+            using System;
+            using System.IO;
+            
+            using NZlib.GZip;
+            
+            class MainClass
+            {
+            	public static void Main(string[] args)
+            	{
+            		Stream s = new GZipOutputStream(File.Create(args[0] + ".gz"));
+            		FileStream fs = File.OpenRead(args[0]);
+            		byte[] writeData = new byte[fs.Length];
+            		fs.Read(writeData, 0, (int)fs.Length);
+            		s.Write(writeData, 0, writeData.Length);
+            		s.Close();
+            	}
+            }	
+            </code>
+            </example>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream">
+            <summary>
+            This is a special FilterOutputStream deflating the bytes that are
+            written through it.  It uses the Deflater for deflating.
+            
+            authors of the original java version : Tom Tromey, Jochen Hoenicke 
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.buf">
+            <summary>
+            This buffer is used temporarily to retrieve the bytes from the
+            deflater and write them to the underlying output stream.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.def">
+            <summary>
+            The deflater which is used to deflate the stream.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.baseOutputStream">
+            <summary>
+            base stream the deflater depends on.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.SetLength(System.Int64)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.ReadByte">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.deflate">
+            <summary>
+            Deflates everything in the def's input buffers.  This will call
+            <code>def.deflate()</code> until all bytes from the input buffers
+            are processed.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(System.IO.Stream)">
+            <summary>
+            Creates a new DeflaterOutputStream with a default Deflater and default buffer size.
+            </summary>
+            <param name="baseOutputStream">
+            the output stream where deflated output should be written.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.Compression.Deflater)">
+            <summary>
+            Creates a new DeflaterOutputStream with the given Deflater and
+            default buffer size.
+            </summary>
+            <param name="baseOutputStream">
+            the output stream where deflated output should be written.
+            </param>
+            <param name="defl">
+            the underlying deflater.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.Compression.Deflater,System.Int32)">
+            <summary>
+            Creates a new DeflaterOutputStream with the given Deflater and
+            buffer size.
+            </summary>
+            <param name="baseOutputStream">
+            the output stream where deflated output should be written.
+            </param>
+            <param name="defl">
+            the underlying deflater.
+            </param>
+            <param name="bufsize">
+            the buffer size.
+            </param>
+            <exception cref="T:System.InvalidOperationException">
+            if bufsize isn't positive.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Flush">
+            <summary>
+            Flushes the stream by calling flush() on the deflater and then
+            on the underlying stream.  This ensures that all bytes are
+            flushed.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Finish">
+            <summary>
+            Finishes the stream by calling finish() on the deflater. 
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Close">
+            <summary>
+            Calls finish () and closes the stream.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.WriteByte(System.Byte)">
+            <summary>
+            Writes a single byte to the compressed output stream.
+            </summary>
+            <param name="bval">
+            the byte value.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Writes a len bytes from an array to the compressed stream.
+            </summary>
+            <param name="buf">
+            the byte array.
+            </param>
+            <param name="off">
+            the offset into the byte array where to start.
+            </param>
+            <param name="len">
+            the number of bytes to write.
+            </param>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.CanRead">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.CanSeek">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.CanWrite">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Length">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Position">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.crc">
+            <summary>
+            CRC-32 value for uncompressed data
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.#ctor(System.IO.Stream)">
+            <summary>
+            Creates a GzipOutputStream with the default buffer size
+            </summary>
+            <param name="baseOutputStream">
+            The stream to read data (to be compressed) from
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.#ctor(System.IO.Stream,System.Int32)">
+            <summary>
+            Creates a GZIPOutputStream with the specified buffer size
+            </summary>
+            <param name="baseOutputStream">
+            The stream to read data (to be compressed) from
+            </param>
+            <param name="size">
+            Size of the buffer to use
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.Close">
+            <summary>
+            Writes remaining compressed output data to the output stream
+            and closes it.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Tar.InvalidHeaderException">
+            <summary>
+            This exception is used to indicate that there is a problem
+            with a TAR archive header.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Tar.TarArchive">
+            <summary>
+            The TarArchive class implements the concept of a
+            tar archive. A tar archive is a series of entries, each of
+            which represents a file system object. Each entry in
+            the archive consists of a header record. Directory entries
+            consist only of the header record, and are followed by entries
+            for the directory's contents. File entries consist of a
+            header record followed by the number of records needed to
+            contain the file's contents. All entries are written on
+            record boundaries. Records are 512 bytes long.
+            
+            TarArchives are instantiated in either read or write mode,
+            based upon whether they are instantiated with an InputStream
+            or an OutputStream. Once instantiated TarArchives read/write
+            mode can not be changed.
+            
+            There is currently no support for random access to tar archives.
+            However, it seems that subclassing TarArchive, and using the
+            TarBuffer.getCurrentRecordNum() and TarBuffer.getCurrentBlockNum()
+            methods, this would be rather trvial.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream)">
+            <summary>
+            The InputStream based constructors create a TarArchive for the
+            purposes of e'x'tracting or lis't'ing a tar archive. Thus, use
+            these constructors when you wish to extract files from or list
+            the contents of an existing tar archive.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream)">
+            <summary>
+            The OutputStream based constructors create a TarArchive for the
+            purposes of 'c'reating a tar archive. Thus, use these constructors
+            when you wish to create a new tar archive and write files into it.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarArchive.Initialize(System.Int32)">
+            <summary>
+            Common constructor initialization code.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarArchive.SetKeepOldFiles(System.Boolean)">
+            <summary>
+            Set the flag that determines whether existing files are
+            kept, or overwritten during extraction.
+            </summary>
+            <param name="keepOldFiles">
+            If true, do not overwrite existing files.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarArchive.SetAsciiTranslation(System.Boolean)">
+            <summary>
+            Set the ascii file translation flag. If ascii file translatio
+            is true, then the MIME file type will be consulted to determine
+            if the file is of type 'text/*'. If the MIME type is not found,
+            then the TransFileTyper is consulted if it is not null. If
+            either of these two checks indicates the file is an ascii text
+            file, it will be translated. The translation converts the local
+            operating system's concept of line ends into the UNIX line end,
+            '\n', which is the defacto standard for a TAR archive. This makes
+            text files compatible with UNIX, and since most tar implementations
+            text files compatible with UNIX, and since most tar implementations
+            </summary>
+            <param name= "asciiTranslate">
+            If true, translate ascii text files.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarArchive.SetUserInfo(System.Int32,System.String,System.Int32,System.String)">
+            <summary>
+            Set user and group information that will be used to fill in the
+            tar archive's entry headers. Since Java currently provides no means
+            of determining a user name, user id, group name, or group id for
+            a given File, TarArchive allows the programmer to specify values
+            to be used in their place.
+            </summary>
+            <param name="userId">
+            The user Id to use in the headers.
+            </param>
+            <param name="userName">
+            The user name to use in the headers.
+            </param>
+            <param name="groupId">
+            The group id to use in the headers.
+            </param>
+            <param name="groupName">
+            The group name to use in the headers.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarArchive.CloseArchive">
+            <summary>
+            Close the archive. This simply calls the underlying
+            tar stream's close() method.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarArchive.ListContents">
+            <summary>
+            Perform the "list" command and list the contents of the archive.
+            
+            NOTE That this method uses the progress display to actually list
+            the conents. If the progress display is not set, nothing will be
+            listed!
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarArchive.ExtractContents(System.String)">
+            <summary>
+            Perform the "extract" command and extract the contents of the archive.
+            </summary>
+            <param name="destDir">
+            The destination directory into which to extract.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarArchive.ExtractEntry(System.String,ICSharpCode.SharpZipLib.Tar.TarEntry)">
+            <summary>
+            Extract an entry from the archive. This method assumes that the
+            tarIn stream has been properly set with a call to getNextEntry().
+            </summary>
+            <param name="destDir">
+            The destination directory into which to extract.
+            </param>
+            <param name="entry">
+            The TarEntry returned by tarIn.getNextEntry().
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarArchive.WriteEntry(ICSharpCode.SharpZipLib.Tar.TarEntry,System.Boolean)">
+            <summary>
+            Write an entry to the archive. This method will call the putNextEntry
+            and then write the contents of the entry, and finally call closeEntry()()
+            for entries that are files. For directories, it will call putNextEntry(),
+            and then, if the recurse flag is true, process each entry that is a
+            child of the directory.
+            </summary>
+            <param name="entry">
+            The TarEntry representing the entry to write to the archive.
+            </param>
+            <param name="recurse">
+            If true, process the children of directory entries.
+            </param>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarArchive.IsVerbose">
+            <summary>
+            Get/Set the verbosity setting.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarArchive.UserId">
+            <summary>
+            Get the user id being used for archive entry headers.
+            </summary>
+            <returns>
+            The current user id.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarArchive.UserName">
+            <summary>
+            Get the user name being used for archive entry headers.
+            </summary>
+            <returns>
+            The current user name.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarArchive.GroupId">
+            <summary>
+            Get the group id being used for archive entry headers.
+            </summary>
+            <returns>
+            The current group id.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarArchive.GroupName">
+            <summary>
+            Get the group name being used for archive entry headers.
+            </summary>
+            <returns>
+            The current group name.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarArchive.RecordSize">
+            <summary>
+            Get the archive's record size. Because of its history, tar
+            supports the concept of buffered IO consisting of BLOCKS of
+            RECORDS. This allowed tar to match the IO characteristics of
+            the physical device being used. Of course, in the Java world,
+            this makes no sense, WITH ONE EXCEPTION - archives are expected
+            to be propertly "blocked". Thus, all of the horrible TarBuffer
+            support boils down to simply getting the "boundaries" correct.
+            </summary>
+            <returns>
+            The record size this archive is using.
+            </returns>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Tar.TarBuffer">
+            <summary>
+            The TarBuffer class implements the tar archive concept
+            of a buffered input stream. This concept goes back to the
+            days of blocked tape drives and special io devices. In the
+            C# universe, the only real function that this class
+            performs is to ensure that files have the correct "block"
+            size, or other tars will complain.
+            <p>
+            You should never have a need to access this class directly.
+            TarBuffers are created by Tar IO Streams.
+            </p>
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.Initialize(System.Int32,System.Int32)">
+            <summary>
+            Initialization common to all constructors.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.GetBlockSize">
+            <summary>
+            Get the TAR Buffer's block size. Blocks consist of multiple records.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.GetRecordSize">
+            <summary>
+            Get the TAR Buffer's record size.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.SetDebug(System.Boolean)">
+            <summary>
+            Set the debugging flag for the buffer.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.IsEOFRecord(System.Byte[])">
+            <summary>
+            Determine if an archive record indicate End of Archive. End of
+            archive is indicated by a record that consists entirely of null bytes.
+            </summary>
+            <param name = "record">
+            The record data to check.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.SkipRecord">
+            <summary>
+            Skip over a record on the input stream.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.ReadRecord">
+            <summary>
+            Read a record from the input stream and return the data.
+            </summary>
+            <returns>
+            The record data.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.ReadBlock">
+            <returns>
+            false if End-Of-File, else true
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.GetCurrentBlockNum">
+            <summary>
+            Get the current block number, zero based.
+            </summary>
+            <returns>
+            The current zero based block number.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.GetCurrentRecordNum">
+            <summary>
+            Get the current record number, within the current block, zero based.
+            Thus, current offset = (currentBlockNum * recsPerBlk) + currentRecNum.
+            </summary>
+            <returns>
+            The current zero based record number.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.WriteRecord(System.Byte[])">
+            <summary>
+            Write an archive record to the archive.
+            </summary>
+            <param name="record">
+            The record data to write to the archive.
+            </param>
+            
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.WriteRecord(System.Byte[],System.Int32)">
+            <summary>
+            Write an archive record to the archive, where the record may be
+            inside of a larger array buffer. The buffer must be "offset plus
+            record size" long.
+            </summary>
+            <param name="buf">
+            The buffer containing the record data to write.
+            </param>
+            <param name="offset">
+            The offset of the record data within buf.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.WriteBlock">
+            <summary>
+            Write a TarBuffer block to the archive.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.Flush">
+            <summary>
+            Flush the current data block if it has any data in it.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarBuffer.Close">
+            <summary>
+            Close the TarBuffer. If this is an output buffer, also flush the
+            current block before closing.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Tar.TarEntry">
+            <summary>
+            This class represents an entry in a Tar archive. It consists
+            of the entry's header, as well as the entry's File. Entries
+            can be instantiated in one of three ways, depending on how
+            they are to be used.
+            <p>
+            TarEntries that are created from the header bytes read from
+            an archive are instantiated with the TarEntry( byte[] )
+            constructor. These entries will be used when extracting from
+            or listing the contents of an archive. These entries have their
+            header filled in using the header bytes. They also set the File
+            to null, since they reference an archive entry not a file.</p>
+            <p>
+            TarEntries that are created from Files that are to be written
+            into an archive are instantiated with the TarEntry( File )
+            constructor. These entries have their header filled in using
+            the File's information. They also keep a reference to the File
+            for convenience when writing entries.</p>
+            <p>
+            Finally, TarEntries can be constructed from nothing but a name.
+            This allows the programmer to construct the entry by hand, for
+            instance when only an InputStream is available for writing to
+            the archive, and the header information is constructed from
+            other information. In this case the header fields are set to
+            defaults and the File is set to null.</p>
+            
+            <p>
+            The C structure for a Tar Entry's header is:
+            <pre>
+            struct header {
+            	char	name[NAMSIZ];
+            	char	mode[8];
+            	char	uid[8];
+            	char	gid[8];
+            	char	size[12];
+            	char	mtime[12];
+            	char	chksum[8];
+            	char	linkflag;
+            	char	linkname[NAMSIZ];
+            	char	magic[8];
+            	char	uname[TUNMLEN];
+            	char	gname[TGNMLEN];
+            	char	devmajor[8];
+            	char	devminor[8];
+            	} header;
+            </pre>
+            </p>
+            <see cref="P:ICSharpCode.SharpZipLib.Tar.TarEntry.TarHeader"/>
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarEntry.file">
+            <summary>
+            If this entry represents a File, this references it.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarEntry.header">
+            <summary>
+            This is the entry's header information.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.#ctor">
+            <summary>
+            Only Create Entries with the static CreateXYZ methods or a headerBuffer.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.#ctor(System.Byte[])">
+            <summary>
+            Construct an entry from an archive's header bytes. File is set
+            to null.
+            </summary>
+            <param name = "headerBuf">
+            The header bytes from a tar archive entry.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.CreateTarEntry(System.String)">
+            <summary>
+            Construct an entry with only a name. This allows the programmer
+            to construct the entry's header "by hand". File is set to null.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.CreateEntryFromFile(System.String)">
+            <summary>
+            Construct an entry for a file. File is set to file, and the
+            header is constructed from information from the file.
+            </summary>
+            <param name = "fileName">
+            The file that the entry represents.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.Initialize">
+            <summary>
+            Initialization code common to all constructors.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.Equals(System.Object)">
+            <summary>
+            Determine if the two entries are equal. Equality is determined
+            by the header names being equal.
+            </summary>
+            <returns>
+            True if the entries are equal.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.GetHashCode">
+            <summary>
+            Must be overridden when you override Equals.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.IsDescendent(ICSharpCode.SharpZipLib.Tar.TarEntry)">
+            <summary>
+            Determine if the given entry is a descendant of this entry.
+            Descendancy is determined by the name of the descendant
+            starting with this entry's name.
+            </summary>
+            <param name = "desc">
+            Entry to be checked as a descendent of this.
+            </param>
+            <returns>
+            True if entry is a descendant of this.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.SetIds(System.Int32,System.Int32)">
+            <summary>
+            Convenience method to set this entry's group and user ids.
+            </summary>
+            <param name="userId">
+            This entry's new user id.
+            </param>
+            <param name="groupId">
+            This entry's new group id.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.SetNames(System.String,System.String)">
+            <summary>
+            Convenience method to set this entry's group and user names.
+            </summary>
+            <param name="userName">
+            This entry's new user name.
+            </param>
+            <param name="groupName">
+            This entry's new group name.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName(System.Byte[],System.String)">
+            <summary>
+            Convenience method that will modify an entry's name directly
+            in place in an entry header buffer byte array.
+            </summary>
+            <param name="outbuf">
+            The buffer containing the entry header to modify.
+            </param>
+            <param name="newName">
+            The new name to place into the header buffer.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.GetFileTarHeader(ICSharpCode.SharpZipLib.Tar.TarHeader,System.String)">
+            <summary>
+            Fill in a TarHeader with information from a File.
+            </summary>
+            <param name="hdr">
+            The TarHeader to fill in.
+            </param>
+            <param name="file">
+            The file from which to get the header information.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.GetDirectoryEntries">
+            <summary>
+            If this entry represents a file, and the file is a directory, return
+            an array of TarEntries for this entry's children.
+            </summary>
+            <returns>
+            An array of TarEntry's for this entry's children.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.ComputeCheckSum(System.Byte[])">
+            <summary>
+            Compute the checksum of a tar entry header.
+            </summary>
+            <param name = "buf">
+            The tar entry's header buffer.
+            </param>
+            <returns>
+            The computed checksum.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader(System.Byte[])">
+            <summary>
+            Write an entry's header information to a header buffer.
+            </summary>
+            <param name = "outbuf">
+            The tar entry header buffer to fill in.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.ParseTarHeader(ICSharpCode.SharpZipLib.Tar.TarHeader,System.Byte[])">
+            <summary>
+            Parse an entry's TarHeader information from a header buffer.
+            </summary>
+            <param name ="hdr">
+            Parse an entry's TarHeader information from a header buffer.
+            </param>
+            <param name = "header">
+            The tar entry header buffer to get information from.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarEntry.NameTarHeader(ICSharpCode.SharpZipLib.Tar.TarHeader,System.String)">
+            <summary>
+            Fill in a TarHeader given only the entry's name.
+            </summary>
+            <param name="hdr">
+            The TarHeader to fill in.
+            </param>
+            <param name="name">
+            The tar entry name.
+            </param>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarEntry.TarHeader">
+            <summary>
+            Get this entry's header.
+            </summary>
+            <returns>
+            This entry's TarHeader.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarEntry.Name">
+            <summary>
+            Get/Set this entry's name.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarEntry.UserId">
+            <summary>
+            Get/set this entry's user id.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarEntry.GroupId">
+            <summary>
+            Get/set this entry's group id.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarEntry.UserName">
+            <summary>
+            Get/set this entry's user name.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarEntry.GroupName">
+            <summary>
+            Get/set this entry's group name.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarEntry.ModTime">
+            Convert time to DateTimes
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarEntry.File">
+            <summary>
+            Get this entry's file.
+            </summary>
+            <returns>
+            This entry's file.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarEntry.Size">
+            <summary>
+            Get/set this entry's file size.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarEntry.IsDirectory">
+            <summary>
+            Return whether or not this entry represents a directory.
+            </summary>
+            <returns>
+            True if this entry is a directory.
+            </returns>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Tar.TarHeader">
+            <summary>
+            This class encapsulates the Tar Entry Header used in Tar Archives.
+            The class also holds a number of tar constants, used mostly in headers.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.NAMELEN">
+            <summary>
+            The length of the name field in a header buffer.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.MODELEN">
+            <summary>
+            The length of the mode field in a header buffer.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.UIDLEN">
+            <summary>
+            The length of the user id field in a header buffer.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.GIDLEN">
+            <summary>
+            The length of the group id field in a header buffer.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.CHKSUMLEN">
+            <summary>
+            The length of the checksum field in a header buffer.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.SIZELEN">
+            <summary>
+            The length of the size field in a header buffer.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.MAGICLEN">
+            <summary>
+            The length of the magic field in a header buffer.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.MODTIMELEN">
+            <summary>
+            The length of the modification time field in a header buffer.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.UNAMELEN">
+            <summary>
+            The length of the user name field in a header buffer.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.GNAMELEN">
+            <summary>
+            The length of the group name field in a header buffer.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.DEVLEN">
+            <summary>
+            The length of the devices field in a header buffer.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.LF_OLDNORM">
+            <summary>
+            LF_ constants represent the "link flag" of an entry, or more commonly,
+            the "entry type". This is the "old way" of indicating a normal file.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.LF_NORMAL">
+            <summary>
+            Normal file type.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.LF_LINK">
+            <summary>
+            Link file type.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.LF_SYMLINK">
+            <summary>
+            Symbolic link file type.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.LF_CHR">
+            <summary>
+            Character device file type.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.LF_BLK">
+            <summary>
+            Block device file type.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.LF_DIR">
+            <summary>
+            Directory file type.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.LF_FIFO">
+            <summary>
+            FIFO (pipe) file type.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.LF_CONTIG">
+            <summary>
+            Contiguous file type.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.TMAGIC">
+            <summary>
+            The magic tag representing a POSIX tar archive.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.GNU_TMAGIC">
+            <summary>
+            The magic tag representing a GNU tar archive.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.name">
+            <summary>
+            The entry's name.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.mode">
+            <summary>
+            The entry's permission mode.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.userId">
+            <summary>
+            The entry's user id.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.groupId">
+            <summary>
+            The entry's group id.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.size">
+            <summary>
+            The entry's size.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.modTime">
+            <summary>
+            The entry's modification time.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.checkSum">
+            <summary>
+            The entry's checksum.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.linkFlag">
+            <summary>
+            The entry's link flag.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.linkName">
+            <summary>
+            The entry's link name.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.magic">
+            <summary>
+            The entry's magic tag.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.userName">
+            <summary>
+            The entry's user name.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.groupName">
+            <summary>
+            The entry's group name.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.devMajor">
+            <summary>
+            The entry's major device number.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Tar.TarHeader.devMinor">
+            <summary>
+            The entry's minor device number.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarHeader.Clone">
+            <summary>
+            TarHeaders can be cloned.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarHeader.GetName">
+            <summary>
+            Get the name of this entry.
+            </summary>
+            <returns>
+            The entry's name.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarHeader.ParseOctal(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Parse an octal string from a header buffer. This is used for the
+            file permission mode value.
+            </summary>
+            <param name = "header">
+            The header buffer from which to parse.
+            </param>
+            <param name = "offset">
+            The offset into the buffer from which to parse.
+            </param>
+            <param name = "length">
+            The number of header bytes to parse.
+            </param>
+            <returns>
+            The long value of the octal string.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarHeader.ParseName(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Parse an entry name from a header buffer.
+            </summary>
+            <param name="header">
+            The header buffer from which to parse.
+            </param>
+            <param name="offset">
+            The offset into the buffer from which to parse.
+            </param>
+            <param name="length">
+            The number of header bytes to parse.
+            </param>
+            <returns>
+            The header's entry name.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Determine the number of bytes in an entry name.
+            </summary>
+            <param name="name">
+            </param>
+            <param name="buf">
+            The header buffer from which to parse.
+            </param>
+            <param name="offset">
+            The offset into the buffer from which to parse.
+            </param>
+            <param name="length">
+            The number of header bytes to parse.
+            </param>
+            <returns>
+            The number of bytes in a header's entry name.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarHeader.GetOctalBytes(System.Int64,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Parse an octal integer from a header buffer.
+            </summary>
+            <param name = "val">
+            </param>
+            <param name = "buf">
+            The header buffer from which to parse.
+            </param>
+            <param name = "offset">
+            The offset into the buffer from which to parse.
+            </param>
+            <param name = "length">
+            The number of header bytes to parse.
+            </param>
+            <returns>
+            The integer value of the octal bytes.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarHeader.GetLongOctalBytes(System.Int64,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Parse an octal long integer from a header buffer.
+            </summary>
+            <param name = "val">
+            </param>
+            <param name = "buf">
+            The header buffer from which to parse.
+            </param>
+            <param name = "offset">
+            The offset into the buffer from which to parse.
+            </param>
+            <param name = "length">
+            The number of header bytes to parse.
+            </param>
+            <returns>
+            The long value of the octal bytes.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarHeader.GetCheckSumOctalBytes(System.Int64,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Parse the checksum octal integer from a header buffer.
+            </summary>
+            <param name = "val">
+            </param>
+            <param name = "buf">
+            The header buffer from which to parse.
+            </param>
+            <param name = "offset">
+            The offset into the buffer from which to parse.
+            </param>
+            <param name = "length">
+            The number of header bytes to parse.
+            </param>
+            <returns>
+            The integer value of the entry's checksum.
+            </returns>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Tar.TarInputStream">
+            <summary>
+            The TarInputStream reads a UNIX tar archive as an InputStream.
+            methods are provided to position at each successive entry in
+            the archive, and the read each entry as a normal input stream
+            using read().
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarInputStream.Flush">
+            <summary>
+            Flushes the baseInputStream
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarInputStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarInputStream.SetLength(System.Int64)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarInputStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarInputStream.WriteByte(System.Byte)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarInputStream.Close">
+            <summary>
+            Closes this stream. Calls the TarBuffer's close() method.
+            The underlying stream is closed by the TarBuffer.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarInputStream.GetRecordSize">
+            <summary>
+            Get the record size being used by this stream's TarBuffer.
+            </summary>
+            <returns>
+            TarBuffer record size.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarInputStream.Skip(System.Int32)">
+            <summary>
+            Skip bytes in the input buffer. This skips bytes in the
+            current entry's data, not the entire archive, and will
+            stop at the end of the current entry's data if the number
+            to skip extends beyond that point.
+            </summary>
+            <param name="numToSkip">
+            The number of bytes to skip.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarInputStream.Mark(System.Int32)">
+            <summary>
+            Since we do not support marking just yet, we do nothing.
+            </summary>
+            <param name ="markLimit">
+            The limit to mark.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarInputStream.Reset">
+            <summary>
+            Since we do not support marking just yet, we do nothing.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarInputStream.GetNextEntry">
+            <summary>
+            Get the next entry in this tar archive. This will skip
+            over any remaining data in the current entry, if there
+            is one, and place the input stream at the header of the
+            next entry, and read the header and instantiate a new
+            TarEntry from the header bytes and return that entry.
+            If there are no more entries in the archive, null will
+            be returned to indicate that the end of the archive has
+            been reached.
+            </summary>
+            <returns>
+            The next TarEntry in the archive, or null.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarInputStream.ReadByte">
+            <summary>
+            Reads a byte from the current tar archive entry.
+            This method simply calls read(byte[], int, int).
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarInputStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Reads bytes from the current tar archive entry.
+            
+            This method is aware of the boundaries of the current
+            entry in the archive and will deal with them as if they
+            entry in the archive and will deal with them as if they
+            </summary>
+            <param name="buf">
+            The buffer into which to place bytes read.
+            </param>
+            <param name="offset">
+            The offset at which to place bytes read.
+            </param>
+            <param name="numToRead">
+            The number of bytes to read.
+            </param>
+            <returns>
+            The number of bytes read, or -1 at EOF.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents(System.IO.Stream)">
+            <summary>
+            Copies the contents of the current tar archive entry directly into
+            an output stream.
+            </summary>
+            <param name="outputStream">
+            The OutputStream into which to write the entry's data.
+            </param>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarInputStream.CanRead">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarInputStream.CanSeek">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarInputStream.CanWrite">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarInputStream.Length">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarInputStream.Position">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarInputStream.Available">
+            <summary>
+            Get the available data that can be read from the current
+            entry in the archive. This does not indicate how much data
+            is left in the entire archive, only in the current entry.
+            This value is determined from the entry's size header field
+            and the amount of data already read from the current entry.
+            </summary>
+            <returns>
+            The number of available bytes for the current entry.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarInputStream.IsMarkSupported">
+            <summary>
+            Since we do not support marking just yet, we return false.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Tar.TarInputStream.IEntryFactory">
+            <summary>
+            This interface is provided, with the method setEntryFactory(), to allow
+            the programmer to have their own TarEntry subclass instantiated for the
+            entries return from getNextEntry().
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Tar.TarOutputStream">
+            <summary>
+            The TarOutputStream writes a UNIX tar archive as an OutputStream.
+            Methods are provided to put entries, and then write their contents
+            by writing to this stream using write().
+            </summary>
+            public
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.SetLength(System.Int64)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.ReadByte">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.SetDebug(System.Boolean)">
+            <summary>
+            Sets the debugging flag.
+            </summary>
+            <param name = "debugF">
+            True to turn on debugging.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.Finish">
+            <summary>
+            Ends the TAR archive without closing the underlying OutputStream.
+            The result is that the EOF record of nulls is written.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.Close">
+            <summary>
+            Ends the TAR archive and closes the underlying OutputStream.
+            This means that finish() is called followed by calling the
+            TarBuffer's close().
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.GetRecordSize">
+            <summary>
+            Get the record size being used by this stream's TarBuffer.
+            </summary>
+            <returns>
+            The TarBuffer record size.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.PutNextEntry(ICSharpCode.SharpZipLib.Tar.TarEntry)">
+            <summary>
+            Put an entry on the output stream. This writes the entry's
+            header record and positions the output stream for writing
+            the contents of the entry. Once this method is called, the
+            stream is ready for calls to write() to write the entry's
+            contents. Once the contents are written, closeEntry()
+            <B>MUST</B> be called to ensure that all buffered data
+            is completely written to the output stream.
+            </summary>
+            <param name="entry">
+            The TarEntry to be written to the archive.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.CloseEntry">
+            <summary>
+            Close an entry. This method MUST be called for all file
+            entries that contain data. The reason is that we must
+            buffer data written to the stream in order to satisfy
+            the buffer's record based writes. Thus, there may be
+            data fragments still being assembled that must be written
+            to the output stream before this entry is closed and the
+            next entry written.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.WriteByte(System.Byte)">
+            <summary>
+            Writes a byte to the current tar archive entry.
+            This method simply calls Write(byte[], int, int).
+            </summary>
+            <param name="b">
+            The byte written.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Writes bytes to the current tar archive entry. This method
+            is aware of the current entry and will throw an exception if
+            you attempt to write bytes past the length specified for the
+            current entry. The method is also (painfully) aware of the
+            record buffering required by TarBuffer, and manages buffers
+            that are not a multiple of recordsize in length, including
+            assembling records from small buffers.
+            </summary>
+            <param name = "wBuf">
+            The buffer to write to the archive.
+            </param>
+            <param name = "wOffset">
+            The offset in the buffer from which to get bytes.
+            </param>
+            <param name = "numToWrite">
+            The number of bytes to write.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.WriteEOFRecord">
+            <summary>
+            Write an EOF (end of archive) record to the tar archive.
+            An EOF record consists of a record of all zeros.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanRead">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanSeek">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanWrite">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarOutputStream.Length">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Tar.TarOutputStream.Position">
+            <summary>
+            I needed to implement the abstract member.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.Compression.Streams.OutputWindow">
+            <summary>
+            Contains the output from the Inflation process.
+            We need to have a window so that we can refer backwards into the output stream
+            to repeat stuff.
+            
+            author of the original java version : John Leuner
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator">
+            <summary>
+            This class allows us to retrieve a specified amount of bits from
+            the input buffer, as well as copy big byte blocks.
+            
+            It uses an int buffer to store up to 31 bits for direct
+            manipulation.  This guarantees that we can get at least 16 bits,
+            but we only need at most 15, so this is all safe.
+            
+            There are some optimizations in this class, for example, you must
+            never peek more then 8 bits more than needed, and you must first
+            peek bits before you may drop them.  This is not a general purpose
+            class but optimized for the behaviour of the Inflater.
+            
+            authors of the original java version : John Leuner, Jochen Hoenicke
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator.PeekBits(System.Int32)">
+            <summary>
+            Get the next n bits but don't increase input pointer.  n must be
+            less or equal 16 and if you if this call succeeds, you must drop
+            at least n-8 bits in the next call.
+            </summary>
+            <returns>
+            the value of the bits, or -1 if not enough bits available.  */
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator.DropBits(System.Int32)">
+            <summary>
+            Drops the next n bits from the input.  You should have called peekBits
+            with a bigger or equal n before, to make sure that enough bits are in
+            the bit buffer.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator.GetBits(System.Int32)">
+            <summary>
+            Gets the next n bits and increases input pointer.  This is equivalent
+            to peekBits followed by dropBits, except for correct error handling.
+            </summary>
+            <returns>
+            the value of the bits, or -1 if not enough bits available.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator.SkipToByteBoundary">
+            <summary>
+            Skips to the next byte boundary.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator.CopyBytes(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Copies length bytes from input buffer to output buffer starting
+            at output[offset].  You have to make sure, that the buffer is
+            byte aligned.  If not enough bytes are available, copies fewer
+            bytes.
+            </summary>
+            <param name="output">
+            the buffer.
+            </param>
+            <param name="offset">
+            the offset in the buffer.
+            </param>
+            <param name="length">
+            the length to copy, 0 is allowed.
+            </param>
+            <returns>
+            the number of bytes copied, 0 if no byte is available.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator.AvailableBits">
+            <summary>
+            Gets the number of bits available in the bit buffer.  This must be
+            only called when a previous peekBits() returned -1.
+            </summary>
+            <returns>
+            the number of bits available.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator.AvailableBytes">
+            <summary>
+            Gets the number of bytes available.
+            </summary>
+            <returns>
+            the number of bytes available.
+            </returns>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.Compression.Deflater">
+            <summary>
+            This is the Deflater class.  The deflater class compresses input
+            with the deflate algorithm described in RFC 1951.  It has several
+            compression levels and three different strategies described below.
+            
+            This class is <i>not</i> thread safe.  This is inherent in the API, due
+            to the split of deflate and setInput.
+            
+            author of the original java version : Jochen Hoenicke
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.BEST_COMPRESSION">
+            <summary>
+            The best and slowest compression level.  This tries to find very
+            long and distant string repetitions.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.BEST_SPEED">
+            <summary>
+            The worst but fastest compression level.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.DEFAULT_COMPRESSION">
+            <summary>
+            The default compression level.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.NO_COMPRESSION">
+            <summary>
+            This level won't compress at all but output uncompressed blocks.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.DEFLATED">
+            <summary>
+            The compression method.  This is the only method supported so far.
+            There is no need to use this constant at all.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.level">
+            <summary>
+            Compression level.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.noHeader">
+            <summary>
+            should we include a header.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.state">
+            <summary>
+            The current state.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.totalOut">
+            <summary>
+            The total bytes of output written.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.pending">
+            <summary>
+            The pending output.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.engine">
+            <summary>
+            The deflater engine.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.#ctor">
+            <summary>
+            Creates a new deflater with default compression level.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.#ctor(System.Int32)">
+            <summary>
+            Creates a new deflater with given compression level.
+            </summary>
+            <param name="lvl">
+            the compression level, a value between NO_COMPRESSION
+            and BEST_COMPRESSION, or DEFAULT_COMPRESSION.
+            </param>
+            <exception cref="T:System.ArgumentOutOfRangeException">if lvl is out of range.</exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.#ctor(System.Int32,System.Boolean)">
+            <summary>
+            Creates a new deflater with given compression level.
+            </summary>
+            <param name="lvl">
+            the compression level, a value between NO_COMPRESSION
+            and BEST_COMPRESSION.
+            </param>
+            <param name="nowrap">
+            true, if we should suppress the deflate header at the
+            beginning and the adler checksum at the end of the output.  This is
+            useful for the GZIP format.
+            </param>
+            <exception cref="T:System.ArgumentOutOfRangeException">if lvl is out of range.</exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.Reset">
+            <summary>
+            Resets the deflater.  The deflater acts afterwards as if it was
+            just created with the same compression level and strategy as it
+            had before.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.Flush">
+            <summary>
+            Flushes the current input block.  Further calls to deflate() will
+            produce enough output to inflate everything in the current input
+            block.  This is not part of Sun's JDK so I have made it package
+            private.  It is used by DeflaterOutputStream to implement
+            flush().
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.Finish">
+            <summary>
+            Finishes the deflater with the current input block.  It is an error
+            to give more input after this method was called.  This method must
+            be called to force all bytes to be flushed.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.SetInput(System.Byte[])">
+            <summary>
+            Sets the data which should be compressed next.  This should be only
+            called when needsInput indicates that more input is needed.
+            If you call setInput when needsInput() returns false, the
+            previous input that is still pending will be thrown away.
+            The given byte array should not be changed, before needsInput() returns
+            true again.
+            This call is equivalent to <code>setInput(input, 0, input.length)</code>.
+            </summary>
+            <param name="input">
+            the buffer containing the input data.
+            </param>
+            <exception cref="T:System.InvalidOperationException">
+            if the buffer was finished() or ended().
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.SetInput(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Sets the data which should be compressed next.  This should be
+            only called when needsInput indicates that more input is needed.
+            The given byte array should not be changed, before needsInput() returns
+            true again.
+            </summary>
+            <param name="input">
+            the buffer containing the input data.
+            </param>
+            <param name="off">
+            the start of the data.
+            </param>
+            <param name="len">
+            the length of the data.
+            </param>
+            <exception cref="T:System.InvalidOperationException">
+            if the buffer was finished() or ended() or if previous input is still pending.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.SetLevel(System.Int32)">
+            <summary>
+            Sets the compression level.  There is no guarantee of the exact
+            position of the change, but if you call this when needsInput is
+            true the change of compression level will occur somewhere near
+            before the end of the so far given input.
+            </summary>
+            <param name="lvl">
+            the new compression level.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.SetStrategy(ICSharpCode.SharpZipLib.Zip.Compression.DeflateStrategy)">
+            <summary>
+            Sets the compression strategy. Strategy is one of
+            DEFAULT_STRATEGY, HUFFMAN_ONLY and FILTERED.  For the exact
+            position where the strategy is changed, the same as for
+            setLevel() applies.
+            </summary>
+            <param name="stgy">
+            the new compression strategy.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.Deflate(System.Byte[])">
+            <summary>
+            Deflates the current input block to the given array.  It returns
+            the number of bytes compressed, or 0 if either
+            needsInput() or finished() returns true or length is zero.
+            </summary>
+            <param name="output">
+            the buffer where to write the compressed data.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.Deflate(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Deflates the current input block to the given array.  It returns
+            the number of bytes compressed, or 0 if either
+            needsInput() or finished() returns true or length is zero.
+            </summary>
+            <param name="output">
+            the buffer where to write the compressed data.
+            </param>
+            <param name="offset">
+            the offset into the output array.
+            </param>
+            <param name="length">
+            the maximum number of bytes that may be written.
+            </param>
+            <exception cref="T:System.InvalidOperationException">
+            if end() was called.
+            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            if offset and/or length don't match the array length.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.SetDictionary(System.Byte[])">
+            <summary>
+            Sets the dictionary which should be used in the deflate process.
+            This call is equivalent to <code>setDictionary(dict, 0, dict.Length)</code>.
+            </summary>
+            <param name="dict">
+            the dictionary.
+            </param>
+            <exception cref="T:System.InvalidOperationException">
+            if setInput () or deflate () were already called or another dictionary was already set.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.SetDictionary(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Sets the dictionary which should be used in the deflate process.
+            The dictionary should be a byte array containing strings that are
+            likely to occur in the data which should be compressed.  The
+            dictionary is not stored in the compressed output, only a
+            checksum.  To decompress the output you need to supply the same
+            dictionary again.
+            </summary>
+            <param name="dict">
+            the dictionary.
+            </param>
+            <param name="offset">
+            an offset into the dictionary.
+            </param>
+            <param name="length">
+            the length of the dictionary.
+            </param>
+            <exception cref="T:System.InvalidOperationException">
+            if setInput () or deflate () were already called or another dictionary was already set.
+            </exception>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.Adler">
+            <summary>
+            Gets the current adler checksum of the data that was processed so far.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.TotalIn">
+            <summary>
+            Gets the number of input bytes processed so far.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.TotalOut">
+            <summary>
+            Gets the number of output bytes so far.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.IsFinished">
+            <summary>
+            Returns true if the stream was finished and no more output bytes
+            are available.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Deflater.IsNeedingInput">
+            <summary>
+            Returns true, if the input buffer is empty.
+            You should then call setInput(). 
+            NOTE: This method can also return true when the stream
+            was finished.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.Compression.DeflaterConstants">
+            <summary>
+            This class contains constants used for the deflater.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.comprFunc">
+            <summary>
+            The current compression function.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.inputBuf">
+            <summary>
+            The input data for compression.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.totalIn">
+            <summary>
+            The total bytes of input read.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.inputOff">
+            <summary>
+            The offset into inputBuf, where input data starts.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.inputEnd">
+            <summary>
+            The end offset of the input data.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.adler">
+            <summary>
+            The adler checksum
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.Compression.DeflaterHuffman">
+            <summary>
+            This is the DeflaterHuffman class.
+            
+            This class is <i>not</i> thread safe.  This is inherent in the API, due
+            to the split of deflate and setInput.
+            
+            author of the original java version : Jochen Hoenicke
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.DeflaterHuffman.BitReverse(System.Int32)">
+            <summary>
+            Reverse the bits of a 16 bit value.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending">
+            <summary>
+            This class stores the pending output of the Deflater.
+            
+            author of the original java version : Jochen Hoenicke
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer">
+            <summary>
+            This class is general purpose class for writing data to a buffer.
+            
+            It allows you to write bits as well as bytes
+            Based on DeflaterPending.java
+            
+            author of the original java version : Jochen Hoenicke
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.Flush(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Flushes the pending buffer into the given output array.  If the
+            output array is to small, only a partial flush is done.
+            </summary>
+            <param name="output">
+            the output array;
+            </param>
+            <param name="offset">
+            the offset into output array;
+            </param>
+            <param name="length">		
+            length the maximum number of bytes to store;
+            </param>
+            <exception name="ArgumentOutOfRangeException">
+            IndexOutOfBoundsException if offset or length are invalid.
+            </exception>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.Compression.Inflater">
+            <summary>
+            Inflater is used to decompress data that has been compressed according
+            to the "deflate" standard described in rfc1950.
+            
+            The usage is as following.  First you have to set some input with
+            <code>setInput()</code>, then inflate() it.  If inflate doesn't
+            inflate any bytes there may be three reasons:
+            <ul>
+            <li>needsInput() returns true because the input buffer is empty.
+            You have to provide more input with <code>setInput()</code>.
+            NOTE: needsInput() also returns true when, the stream is finished.
+            </li>
+            <li>needsDictionary() returns true, you have to provide a preset
+               dictionary with <code>setDictionary()</code>.</li>
+            <li>finished() returns true, the inflater has finished.</li>
+            </ul>
+            Once the first output byte is produced, a dictionary will not be
+            needed at a later stage.
+            
+            author of the original java version : John Leuner, Jochen Hoenicke
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.DECODE_HEADER">
+            <summary>
+            This are the state in which the inflater can be.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.CPLENS">
+            <summary>
+            Copy lengths for literal codes 257..285
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.CPLEXT">
+            <summary>
+            Extra bits for literal codes 257..285
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.CPDIST">
+            <summary>
+            Copy offsets for distance codes 0..29
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.CPDEXT">
+            <summary>
+            Extra bits for distance codes
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.mode">
+            <summary>
+            This variable contains the current state.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.readAdler">
+            <summary>
+            The adler checksum of the dictionary or of the decompressed
+            stream, as it is written in the header resp. footer of the
+            compressed stream. 
+            Only valid if mode is DECODE_DICT or DECODE_CHKSUM.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.neededBits">
+            <summary>
+            The number of bits needed to complete the current state.  This
+            is valid, if mode is DECODE_DICT, DECODE_CHKSUM,
+            DECODE_HUFFMAN_LENBITS or DECODE_HUFFMAN_DISTBITS.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.isLastBlock">
+            <summary>
+            True, if the last block flag was set in the last block of the
+            inflated stream.  This means that the stream ends after the
+            current block.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.totalOut">
+            <summary>
+            The total number of inflated bytes.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.totalIn">
+            <summary>
+            The total number of bytes set with setInput().  This is not the
+            value returned by getTotalIn(), since this also includes the
+            unprocessed input.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.nowrap">
+            <summary>
+            This variable stores the nowrap flag that was given to the constructor.
+            True means, that the inflated stream doesn't contain a header nor the
+            checksum in the footer.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.#ctor">
+            <summary>
+            Creates a new inflater.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.#ctor(System.Boolean)">
+            <summary>
+            Creates a new inflater.
+            </summary>
+            <param name="nowrap">
+            true if no header and checksum field appears in the
+            stream.  This is used for GZIPed input.  For compatibility with
+            Sun JDK you should provide one byte of input more than needed in
+            this case.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Reset">
+            <summary>
+            Resets the inflater so that a new stream can be decompressed.  All
+            pending input and output will be discarded.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.DecodeHeader">
+            <summary>
+            Decodes the deflate header.
+            </summary>
+            <returns>
+            false if more input is needed.
+            </returns>
+            <exception cref="T:System.FormatException">
+            if header is invalid.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.DecodeDict">
+            <summary>
+            Decodes the dictionary checksum after the deflate header.
+            </summary>
+            <returns>
+            false if more input is needed.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.DecodeHuffman">
+            <summary>
+            Decodes the huffman encoded symbols in the input stream.
+            </summary>
+            <returns>
+            false if more input is needed, true if output window is
+            full or the current block ends.
+            </returns>
+            <exception cref="T:System.FormatException">
+            if deflated stream is invalid.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.DecodeChksum">
+            <summary>
+            Decodes the adler checksum after the deflate stream.
+            </summary>
+            <returns>
+            false if more input is needed.
+            </returns>
+            <exception cref="T:System.FormatException">
+            DataFormatException, if checksum doesn't match.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Decode">
+            <summary>
+            Decodes the deflated stream.
+            </summary>
+            <returns>
+            false if more input is needed, or if finished.
+            </returns>
+            <exception cref="T:System.FormatException">
+            DataFormatException, if deflated stream is invalid.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetDictionary(System.Byte[])">
+            <summary>
+            Sets the preset dictionary.  This should only be called, if
+            needsDictionary() returns true and it should set the same
+            dictionary, that was used for deflating.  The getAdler()
+            function returns the checksum of the dictionary needed.
+            </summary>
+            <param name="buffer">
+            the dictionary.
+            </param>
+            <exception cref="T:System.InvalidOperationException">
+            if no dictionary is needed.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            if the dictionary checksum is wrong.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetDictionary(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Sets the preset dictionary.  This should only be called, if
+            needsDictionary() returns true and it should set the same
+            dictionary, that was used for deflating.  The getAdler()
+            function returns the checksum of the dictionary needed.
+            </summary>
+            <param name="buffer">
+            the dictionary.
+            </param>
+            <param name="off">
+            the offset into buffer where the dictionary starts.
+            </param>
+            <param name="len">
+            the length of the dictionary.
+            </param>
+            <exception cref="T:System.InvalidOperationException">
+            if no dictionary is needed.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            if the dictionary checksum is wrong.
+            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            if the off and/or len are wrong.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetInput(System.Byte[])">
+            <summary>
+            Sets the input.  This should only be called, if needsInput()
+            returns true.
+            </summary>
+            <param name="buf">
+            the input.
+            </param>
+            <exception cref="T:System.InvalidOperationException">
+            if no input is needed.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetInput(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Sets the input.  This should only be called, if needsInput()
+            returns true.
+            </summary>
+            <param name="buf">
+            the input.
+            </param>
+            <param name="off">
+            the offset into buffer where the input starts.
+            </param>
+            <param name="len">
+            the length of the input.
+            </param>
+            <exception cref="T:System.InvalidOperationException">
+            if no input is needed.
+            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            if the off and/or len are wrong.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Inflate(System.Byte[])">
+            <summary>
+            Inflates the compressed stream to the output buffer.  If this
+            returns 0, you should check, whether needsDictionary(),
+            needsInput() or finished() returns true, to determine why no
+            further output is produced.
+            </summary>
+            <param name="buf">
+            the output buffer.
+            </param>
+            <returns>
+            the number of bytes written to the buffer, 0 if no further
+            output can be produced.
+            </returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            if buf has length 0.
+            </exception>
+            <exception cref="T:System.FormatException">
+            if deflated stream is invalid.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Inflate(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Inflates the compressed stream to the output buffer.  If this
+            returns 0, you should check, whether needsDictionary(),
+            needsInput() or finished() returns true, to determine why no
+            further output is produced.
+            </summary>
+            <param name="buf">
+            the output buffer.
+            </param>
+            <param name="off">
+            the offset into buffer where the output should start.
+            </param>
+            <param name="len">
+            the maximum length of the output.
+            </param>
+            <returns>
+            the number of bytes written to the buffer, 0 if no further output can be produced.
+            </returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            if len is &lt;= 0.
+            </exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            if the off and/or len are wrong.
+            </exception>
+            <exception cref="T:System.FormatException">
+            if deflated stream is invalid.
+            </exception>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.IsNeedingInput">
+            <summary>
+            Returns true, if the input buffer is empty.
+            You should then call setInput(). 
+            NOTE: This method also returns true when the stream is finished.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.IsNeedingDictionary">
+            <summary>
+            Returns true, if a preset dictionary is needed to inflate the input.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.IsFinished">
+            <summary>
+            Returns true, if the inflater has finished.  This means, that no
+            input is needed and no output can be produced.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Adler">
+            <summary>
+            Gets the adler checksum.  This is either the checksum of all
+            uncompressed bytes returned by inflate(), or if needsDictionary()
+            returns true (and thus no output was yet produced) this is the
+            adler checksum of the expected dictionary.
+            </summary>
+            <returns>
+            the adler checksum.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.TotalOut">
+            <summary>
+            Gets the total number of output bytes returned by inflate().
+            </summary>
+            <returns>
+            the total number of output bytes.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.TotalIn">
+            <summary>
+            Gets the total number of processed compressed input bytes.
+            </summary>
+            <returns>
+            the total number of bytes of processed input bytes.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.Compression.Inflater.RemainingInput">
+            <summary>
+            Gets the number of unprocessed input.  Useful, if the end of the
+            stream is reached and you want to further process the bytes after
+            the deflate stream.
+            </summary>
+            <returns>
+            the number of bytes of the input which were not processed.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.#ctor(System.Byte[])">
+            <summary>
+            Constructs a Huffman tree from the array of code lengths.
+            </summary>
+            <param name = "codeLengths">
+            the array of code lengths
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.GetSymbol(ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator)">
+            <summary>
+            Reads the next symbol from input.  The symbol is encoded using the
+            huffman tree.
+            </summary>
+            <param name="input">
+            input the input source.
+            </param>
+            <returns>
+            the next symbol, or -1 if not enough input is available.
+            </returns>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.ZipConstants">
+            <summary>
+            This class contains constants used for zip.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.ZipEntry">
+            <summary>
+            This class represents a member of a zip archive.  ZipFile and
+            ZipInputStream will give you instances of this class as information
+            about the members in an archive.  On the other hand ZipOutputStream
+            needs an instance of this class to create a new member.
+            
+            author of the original java version : Jochen Hoenicke
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipEntry.#ctor(System.String)">
+            <summary>
+            Creates a zip entry with the given name.
+            </summary>
+            <param name="name">
+            the name. May include directory components separated by '/'.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipEntry.#ctor(ICSharpCode.SharpZipLib.Zip.ZipEntry)">
+            <summary>
+            Creates a copy of the given zip entry.
+            </summary>
+            <param name="e">
+            the entry to copy.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipEntry.Clone">
+            <summary>
+            Creates a copy of this zip entry.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipEntry.ToString">
+            <summary>
+            Gets the string representation of this ZipEntry.  This is just
+            the name as returned by getName().
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.DateTime">
+            <summary>
+            Gets/Sets the time of last modification of the entry.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.Name">
+            <summary>
+            Returns the entry name.  The path components in the entry are
+            always separated by slashes ('/').
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.Size">
+            <summary>
+            Gets/Sets the size of the uncompressed data.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            if size is not in 0..0xffffffffL
+            </exception>
+            <returns>
+            the size or -1 if unknown.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.CompressedSize">
+            <summary>
+            Gets/Sets the size of the compressed data.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            if csize is not in 0..0xffffffffL
+            </exception>
+            <returns>
+            the size or -1 if unknown.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.Crc">
+            <summary>
+            Gets/Sets the crc of the uncompressed data.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            if crc is not in 0..0xffffffffL
+            </exception>
+            <returns>
+            the crc or -1 if unknown.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.CompressionMethod">
+            <summary>
+            Gets/Sets the compression method. Only DEFLATED and STORED are supported.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            if method is not supported.
+            </exception>
+            <returns>
+            the compression method or -1 if unknown.
+            </returns>
+            <see cref="F:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.DEFLATED"/>
+            <see cref="F:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.STORED"/>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.ExtraData">
+            <summary>
+            Gets/Sets the extra data.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            if extra is longer than 0xffff bytes.
+            </exception>
+            <returns>
+            the extra data or null if not set.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.Comment">
+            <summary>
+            Gets/Sets the entry comment.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            if comment is longer than 0xffff.
+            </exception>
+            <returns>
+            the comment or null if not set.
+            </returns>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.ZipEntry.IsDirectory">
+            <summary>
+            Gets true, if the entry is a directory.  This is solely
+            determined by the name, a trailing slash '/' marks a directory.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.ZipFile">
+            <summary>
+            This class represents a Zip archive.  You can ask for the contained
+            entries, or get an input stream for a file entry.  The entry is
+            automatically decompressed.
+            
+            This class is thread safe:  You can open input streams for arbitrary
+            entries in different threads.
+            
+            author of the original java version : Jochen Hoenicke
+            </summary>
+            <example>
+            using System;
+            using System.Text;
+            using System.Collections;
+            using System.IO;
+            
+            using NZlib.Zip;
+            
+            class MainClass
+            {
+            	static public void Main(string[] args)
+            	{
+            		ZipFile zFile = new ZipFile(args[0]);
+            		Console.WriteLine("Listing of : " + zFile.Name);
+            		Console.WriteLine("");
+            		Console.WriteLine("Raw Size    Size      Date     Time     Name");
+            		Console.WriteLine("--------  --------  --------  ------  ---------");
+            		foreach (ZipEntry e in zFile) {
+            			DateTime d = e.DateTime;
+            			Console.WriteLine("{0, -10}{1, -10}{2}  {3}   {4}", e.Size, e.CompressedSize,
+            			                                                    d.ToString("dd-MM-yy"), d.ToString("t"),
+            			                                                    e.Name);
+            		}
+            	}
+            }
+            </example>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.String)">
+            <summary>
+            Opens a Zip file with the given name for reading.
+            </summary>
+            <exception name="System.IO.IOException">
+            IOException if a i/o error occured.
+            </exception>
+            <exception name="ICSharpCode.SharpZipLib.ZipException">
+            if the file doesn't contain a valid zip archive.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.FileStream)">
+            <summary>
+            Opens a Zip file reading the given FileStream
+            </summary>
+            <exception name="System.IO.IOException">
+            IOException if a i/o error occured.
+            </exception>
+            <exception name="ICSharpCode.SharpZipLib.ZipException">
+            if the file doesn't contain a valid zip archive.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.Stream)">
+            <summary>
+            Opens a Zip file reading the given Stream
+            </summary>
+            <exception name="System.IO.IOException">
+            IOException if a i/o error occured.
+            </exception>
+            <exception name="ICSharpCode.SharpZipLib.ZipException">
+            if the file doesn't contain a valid zip archive.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipFile.ReadLeShort">
+            <summary>
+            Read an unsigned short in little endian byte order.
+            </summary>
+            <exception name="System.IO.IOException">
+            if a i/o error occured.
+            </exception>
+            <exception name="System.IO.EndOfStreamException">
+            if the file ends prematurely
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipFile.ReadLeInt">
+            <summary>
+            Read an int in little endian byte order.
+            </summary>
+            <exception name="System.IO.IOException">
+            if a i/o error occured.
+            </exception>
+            <exception name="System.IO.EndOfStreamException">
+            if the file ends prematurely
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipFile.ReadEntries">
+            <summary>
+            Read the central directory of a zip file and fill the entries
+            array.  This is called exactly once by the constructors.
+            </summary>
+            <exception name="System.IO.IOException">
+            if a i/o error occured.
+            </exception>
+            <exception name="ICSharpCode.SharpZipLib.ZipException">
+            if the central directory is malformed
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipFile.Close">
+            <summary>
+            Closes the ZipFile.  This also closes all input streams given by
+            this class.  After this is called, no further method should be
+            called.
+            </summary>
+            <exception name="System.IO.IOException">
+            if a i/o error occured.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipFile.GetEnumerator">
+            <summary>
+            Returns an IEnumerator of all Zip entries in this Zip file.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipFile.GetEntry(System.String)">
+            <summary>
+            Searches for a zip entry in this archive with the given name.
+            </summary>
+            <param name="name">
+            the name. May contain directory components separated by slashes ('/').
+            </param>
+            <returns>
+            the zip entry, or null if no entry with that name exists.
+            </returns>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipFile.CheckLocalHeader(ICSharpCode.SharpZipLib.Zip.ZipEntry)">
+            <summary>
+            Checks, if the local header of the entry at index i matches the
+            central directory, and returns the offset to the data.
+            </summary>
+            <returns>
+            the start offset of the (compressed) data.
+            </returns>
+            <exception name="System.IO.IOException">
+            if a i/o error occured.
+            </exception>
+            <exception name="ICSharpCode.SharpZipLib.ZipException">
+            if the local header doesn't match the central directory header
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipFile.GetInputStream(ICSharpCode.SharpZipLib.Zip.ZipEntry)">
+            <summary>
+            Creates an input stream reading the given zip entry as
+            uncompressed data.  Normally zip entry should be an entry
+            returned by GetEntry().
+            </summary>
+            <returns>
+            the input stream.
+            </returns>
+            <exception name="System.IO.IOException">
+            if a i/o error occured.
+            </exception>
+            <exception name="ICSharpCode.SharpZipLib.ZipException">
+            if the Zip archive is malformed.
+            </exception>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.ZipFile.Name">
+            <summary>
+            Returns the name of this zip file.
+            </summary>
+        </member>
+        <member name="P:ICSharpCode.SharpZipLib.Zip.ZipFile.Size">
+            <summary>
+            Returns the number of entries in this zip file.
+            </summary>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.ZipInputStream">
+            <summary>
+            This is a FilterInputStream that reads the files baseInputStream an zip archive
+            one after another.  It has a special method to get the zip entry of
+            the next file.  The zip entry contains information about the file name
+            size, compressed size, CRC, etc.
+            It includes support for STORED and DEFLATED entries.
+            
+            author of the original java version : Jochen Hoenicke
+            </summary>
+            <example> This sample shows how to read a zip file
+            <code>
+            using System;
+            using System.Text;
+            using System.IO;
+            
+            using NZlib.Zip;
+            
+            class MainClass
+            {
+            	public static void Main(string[] args)
+            	{
+            		ZipInputStream s = new ZipInputStream(File.OpenRead(args[0]));
+            		
+            		ZipEntry theEntry;
+            		while ((theEntry = s.GetNextEntry()) != null) {
+            			Console.WriteLine("File " + theEntry.Name);
+            			int size = 2048;
+            			byte[] data = new byte[2048];
+            			
+            			Console.Write("Show contents (y/n) ?");
+            			if (Console.ReadLine() == "y") {
+            				while (true) {
+            					size = s.Read(data, 0, data.Length);
+            					if (size > 0) {
+            						Console.Write(new ASCIIEncoding().GetString(data, 0, size));
+            					} else {
+            						break;
+            					}
+            				}
+            			}
+            			Console.WriteLine();
+            		}
+            		s.Close();
+            	}
+            }	
+            </code>
+            </example>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(System.IO.Stream)">
+            <summary>
+            Creates a new Zip input stream, reading a zip archive.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.ReadLeShort">
+            <summary>
+            Read an unsigned short baseInputStream little endian byte order.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.ReadLeInt">
+            <summary>
+            Read an int baseInputStream little endian byte order.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.ReadLeLong">
+            <summary>
+            Read an int baseInputStream little endian byte order.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.GetNextEntry">
+            <summary>
+            Open the next entry from the zip archive, and return its description.
+            If the previous entry wasn't closed, this method will close it.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.CloseEntry">
+            <summary>
+            Closes the current zip entry and moves to the next one.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.ReadByte">
+            <summary>
+            Reads a byte from the current zip entry.
+            </summary>
+            <returns>
+            the byte or -1 on EOF.
+            </returns>
+            <exception name="System.IO.IOException">
+            IOException if a i/o error occured.
+            </exception>
+            <exception name="ICSharpCode.SharpZipLib.ZipException">
+            ZipException if the deflated stream is corrupted.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Reads a block of bytes from the current zip entry.
+            </summary>
+            <returns>
+            the number of bytes read (may be smaller, even before EOF), or -1 on EOF.
+            </returns>
+            <exception name="Exception">
+            IOException if a i/o error occured.
+            ZipException if the deflated stream is corrupted.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.Close">
+            <summary>
+            Closes the zip file.
+            </summary>
+            <exception name="Exception">
+            if a i/o error occured.
+            </exception>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.Zip.ZipOutputStream">
+            <summary>
+            This is a FilterOutputStream that writes the files into a zip
+            archive one after another.  It has a special method to start a new
+            zip entry.  The zip entries contains information about the file name
+            size, compressed size, CRC, etc.
+            
+            It includes support for STORED and DEFLATED entries.
+            This class is not thread safe.
+            
+            author of the original java version : Jochen Hoenicke
+            </summary>
+            <example> This sample shows how to create a zip file
+            <code>
+            using System;
+            using System.IO;
+            
+            using NZlib.Zip;
+            
+            class MainClass
+            {
+            	public static void Main(string[] args)
+            	{
+            		string[] filenames = Directory.GetFiles(args[0]);
+            		
+            		ZipOutputStream s = new ZipOutputStream(File.Create(args[1]));
+            		
+            		s.SetLevel(5); // 0 - store only to 9 - means best compression
+            		
+            		foreach (string file in filenames) {
+            			FileStream fs = File.OpenRead(file);
+            			
+            			byte[] buffer = new byte[fs.Length];
+            			fs.Read(buffer, 0, buffer.Length);
+            			
+            			ZipEntry entry = new ZipEntry(file);
+            			
+            			s.PutNextEntry(entry);
+            			
+            			s.Write(buffer, 0, buffer.Length);
+            			
+            		}
+            		
+            		s.Finish();
+            		s.Close();
+            	}
+            }	
+            </code>
+            </example>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.ZIP_STORED_VERSION">
+            <summary>
+            Our Zip version is hard coded to 1.0 resp. 2.0
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.STORED">
+            <summary>
+            Compression method.  This method doesn't compress at all.
+            </summary>
+        </member>
+        <member name="F:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.DEFLATED">
+            <summary>
+            Compression method.  This method uses the Deflater.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(System.IO.Stream)">
+            <summary>
+            Creates a new Zip output stream, writing a zip archive.
+            </summary>
+            <param name="baseOutputStream">
+            the output stream to which the zip archive is written.
+            </param>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.SetComment(System.String)">
+            <summary>
+            Set the zip file comment.
+            </summary>
+            <param name="comment">
+            the comment.
+            </param>
+            <exception name ="ArgumentException">
+            if UTF8 encoding of comment is longer than 0xffff bytes.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.SetMethod(System.Int32)">
+            <summary>
+            Sets default compression method.  If the Zip entry specifies
+            another method its method takes precedence.
+            </summary>
+            <param name = "method">
+            the method.
+            </param>
+            <exception name = "ArgumentException">
+            if method is not supported.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.SetLevel(System.Int32)">
+            <summary>
+            Sets default compression level.  The new level will be activated
+            immediately.
+            </summary>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+            if level is not supported.
+            </exception>
+            <see cref="T:ICSharpCode.SharpZipLib.Zip.Compression.Deflater"/>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.WriteLeShort(System.Int32)">
+            <summary>
+            Write an unsigned short in little endian byte order.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.WriteLeInt(System.Int32)">
+            <summary>
+            Write an int in little endian byte order.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.WriteLeLong(System.Int64)">
+            <summary>
+            Write an int in little endian byte order.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.PutNextEntry(ICSharpCode.SharpZipLib.Zip.ZipEntry)">
+            <summary>
+            Starts a new Zip entry. It automatically closes the previous
+            entry if present.  If the compression method is stored, the entry
+            must have a valid size and crc, otherwise all elements (except
+            name) are optional, but must be correct if present.  If the time
+            is not set in the entry, the current time is used.
+            </summary>
+            <param name="entry">
+            the entry.
+            </param>
+            <exception cref="T:System.IO.IOException">
+            if an I/O error occured.
+            </exception>
+            <exception cref="T:System.InvalidOperationException">
+            if stream was finished
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.CloseEntry">
+            <summary>
+            Closes the current entry.
+            </summary>
+            <exception cref="T:System.IO.IOException">
+            if an I/O error occured.
+            </exception>
+            <exception cref="T:System.InvalidOperationException">
+            if no entry is active.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Writes the given buffer to the current entry.
+            </summary>
+            <exception cref="T:System.IO.IOException">
+            if an I/O error occured.
+            </exception>
+            <exception cref="T:System.InvalidOperationException">
+            if no entry is active.
+            </exception>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Finish">
+            <summary>
+            Finishes the stream.  This will write the central directory at the
+            end of the zip file and flush the stream.
+            </summary>
+            <exception cref="T:System.IO.IOException">
+            if an I/O error occured.
+            </exception>
+        </member>
+        <member name="T:ICSharpCode.SharpZipLib.ZipException">
+            <summary>
+            Is thrown during the creation or input of a zip file.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.ZipException.#ctor">
+            <summary>
+            Initializes a new instance of the ZipException class with default properties.
+            </summary>
+        </member>
+        <member name="M:ICSharpCode.SharpZipLib.ZipException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the ZipException class with a specified error message.
+            </summary>
+        </member>
+    </members>
+</doc>

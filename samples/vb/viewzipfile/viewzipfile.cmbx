@@ -1,0 +1,16 @@
+<Combine fileversion="1.0" name="viewzipfile" description="">
+  <StartMode startupentry="viewzipfile" single="True">
+    <Execute entry="viewzipfile" type="None" />
+  </StartMode>
+  <Entries>
+    <Entry filename=".\viewzipfile.prjx" />
+  </Entries>
+  <Configurations active="Debug">
+    <Configuration name="Release">
+      <Entry name="viewzipfile" configurationname="Debug" build="False" />
+    </Configuration>
+    <Configuration name="Debug">
+      <Entry name="viewzipfile" configurationname="Debug" build="False" />
+    </Configuration>
+  </Configurations>
+</Combine>

@@ -1,0 +1,16 @@
+<Combine fileversion="1.0" name="CreateZipFile" description="">
+  <StartMode startupentry="CreateZipFile" single="True">
+    <Execute entry="CreateZipFile" type="None" />
+  </StartMode>
+  <Entries>
+    <Entry filename=".\CreateZipFile.prjx" />
+  </Entries>
+  <Configurations active="Debug">
+    <Configuration name="Release" description="">
+      <Entry name="CreateZipFile" configurationname="Debug" build="False" />
+    </Configuration>
+    <Configuration name="Debug" description="">
+      <Entry name="CreateZipFile" configurationname="Debug" build="False" />
+    </Configuration>
+  </Configurations>
+</Combine>

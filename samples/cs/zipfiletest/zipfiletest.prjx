@@ -1,0 +1,23 @@
+<Project fileversion="1.0" name="ZipFileTest" projecttype="C#" description="creates an empty C# project" newfilesearch="OnLoad" enableviewstate="True" projectdocumentation="">
+  <DeploymentInformation target="" script="" strategy="File" />
+  <References>
+    <Reference assembly=".\NZipLib.dll" />
+  </References>
+  <Contents>
+    <File name=".\readme.txt" subtype="Code" buildaction="Exclude" />
+    <File name=".\build.bat" subtype="Code" buildaction="Exclude" />
+    <File name=".\ZipFileTest.cs" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <Configurations active="Debug">
+    <Configuration name="Debug" description="">
+      <Output directory=".\bin" assembly="ziplist" />
+      <CodeGeneration warninglevel="4" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Exe" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+      <Execution consolepause="True" runwithwarnings="False" commandlineparameters="" />
+    </Configuration>
+    <Configuration name="Release" description="">
+      <Output directory=".\" assembly="ZipList" />
+      <CodeGeneration warninglevel="4" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Exe" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+      <Execution consolepause="True" runwithwarnings="False" commandlineparameters="" />
+    </Configuration>
+  </Configurations>
+</Project>

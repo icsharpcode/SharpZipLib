@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s0="http://tempuri.org/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" targetNamespace="http://tempuri.org/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetDataSet">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetDataSetResponse">
+        <s:complexType />
+      </s:element>
+    </s:schema>
+  </types>
+  <message name="GetDataSetSoapIn">
+    <part name="parameters" element="s0:GetDataSet" />
+  </message>
+  <message name="GetDataSetSoapOut">
+    <part name="parameters" element="s0:GetDataSetResponse" />
+  </message>
+  <message name="GetDataSetHttpGetIn" />
+  <message name="GetDataSetHttpGetOut" />
+  <message name="GetDataSetHttpPostIn" />
+  <message name="GetDataSetHttpPostOut" />
+  <portType name="Service1Soap">
+    <operation name="GetDataSet">
+      <input message="s0:GetDataSetSoapIn" />
+      <output message="s0:GetDataSetSoapOut" />
+    </operation>
+  </portType>
+  <portType name="Service1HttpGet">
+    <operation name="GetDataSet">
+      <input message="s0:GetDataSetHttpGetIn" />
+      <output message="s0:GetDataSetHttpGetOut" />
+    </operation>
+  </portType>
+  <portType name="Service1HttpPost">
+    <operation name="GetDataSet">
+      <input message="s0:GetDataSetHttpPostIn" />
+      <output message="s0:GetDataSetHttpPostOut" />
+    </operation>
+  </portType>
+  <binding name="Service1Soap" type="s0:Service1Soap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+    <operation name="GetDataSet">
+      <soap:operation soapAction="http://tempuri.org/GetDataSet" style="document" />
+      <input>
+        <soap:body use="literal" />
+      </input>
+      <output>
+        <soap:body use="literal" />
+      </output>
+    </operation>
+  </binding>
+  <binding name="Service1HttpGet" type="s0:Service1HttpGet">
+    <http:binding verb="GET" />
+    <operation name="GetDataSet">
+      <http:operation location="/GetDataSet" />
+      <input>
+        <http:urlEncoded />
+      </input>
+      <output />
+    </operation>
+  </binding>
+  <binding name="Service1HttpPost" type="s0:Service1HttpPost">
+    <http:binding verb="POST" />
+    <operation name="GetDataSet">
+      <http:operation location="/GetDataSet" />
+      <input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </input>
+      <output />
+    </operation>
+  </binding>
+  <service name="Service1">
+    <port name="Service1Soap" binding="s0:Service1Soap">
+      <soap:address location="http://localhost/DimeDataSetService/Service1.asmx" />
+    </port>
+    <port name="Service1HttpGet" binding="s0:Service1HttpGet">
+      <http:address location="http://localhost/DimeDataSetService/Service1.asmx" />
+    </port>
+    <port name="Service1HttpPost" binding="s0:Service1HttpPost">
+      <http:address location="http://localhost/DimeDataSetService/Service1.asmx" />
+    </port>
+  </service>
+</definitions>

@@ -1,0 +1,16 @@
+<Combine fileversion="1.0" name="minibzip2" description="">
+  <StartMode startupentry="minibzip2" single="True">
+    <Execute entry="minibzip2" type="None" />
+  </StartMode>
+  <Entries>
+    <Entry filename=".\minibzip2.prjx" />
+  </Entries>
+  <Configurations active="Debug">
+    <Configuration name="Release">
+      <Entry name="minibzip2" configurationname="Debug" build="False" />
+    </Configuration>
+    <Configuration name="Debug">
+      <Entry name="minibzip2" configurationname="Debug" build="False" />
+    </Configuration>
+  </Configurations>
+</Combine>

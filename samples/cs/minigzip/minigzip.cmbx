@@ -1,0 +1,16 @@
+<Combine fileversion="1.0" name="minigzip" description="">
+  <StartMode startupentry="minigzip" single="True">
+    <Execute entry="minigzip" type="None" />
+  </StartMode>
+  <Entries>
+    <Entry filename=".\minigzip.prjx" />
+  </Entries>
+  <Configurations active="Debug">
+    <Configuration name="Release">
+      <Entry name="minigzip" configurationname="Debug" build="False" />
+    </Configuration>
+    <Configuration name="Debug">
+      <Entry name="minigzip" configurationname="Debug" build="False" />
+    </Configuration>
+  </Configurations>
+</Combine>

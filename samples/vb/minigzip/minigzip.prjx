@@ -1,0 +1,23 @@
+<Project fileversion="1.0" name="minigzip" projecttype="VBNET" description="erzeugt eine leere Forms Anwendung in VB.NET" newfilesearch="None" enableviewstate="True" projectdocumentation="">
+  <DeploymentInformation target="" script="" strategy="File" />
+  <References>
+    <Reference gac="System.Windows.Forms, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <Reference gac="System, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  </References>
+  <Contents>
+    <File name=".\Main.vb" subtype="Code" buildaction="Compile" />
+    <File name=".\AssemblyInfo.vb" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <Configurations active="Debug">
+    <Configuration name="Debug" description="">
+      <Output directory=".\bin" assembly="createzipfile" />
+      <CodeGeneration includedebuginformation="True" optimize="True" mainclass="" win32Icon="" target="Exe" definesymbols="" />
+      <Execution consolepause="True" runwithwarnings="False" />
+    </Configuration>
+    <Configuration name="Release" description="">
+      <Output directory=".\" assembly="sdffds" />
+      <CodeGeneration includedebuginformation="True" optimize="True" mainclass="" win32Icon="" target="Exe" definesymbols="" />
+      <Execution consolepause="True" runwithwarnings="False" />
+    </Configuration>
+  </Configurations>
+</Project>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<project name="#ZLib" default="build" basedir=".">
+	<property name="debug" value="False"/>
+	<property name="optimize" value="True"/>
+
+	<target name="build">
+		<!-- compile SharpZipLib -->
+
+		<echo message="Building #ZLib"/>
+		<csc 
+			target="library" 
+			output="bin/ICSharpCode.SharpZipLib.dll" 
+			optimize="${optimize}"
+			debug="${debug}">
+			
+			<sources basedir="src">
+				<includes name="**/*.cs"/>
+			</sources>
+		</csc>
+		<nant buildfile = "samples/cs/samples.build" />
+	</target>
+	
+	<target name="clean">
+	        <delete verbose="true" >
+			<fileset basedir=".">
+				<includes name="bin/ICSharpCode.SharpZipLib.dll"/>
+				<includes name="bin/ICSharpCode.SharpZipLib.pdb"/>
+			</fileset>
+		</delete>
+		<nant buildfile = "samples/cs/samples.build" target="clean"/>
+		<nant buildfile = "samples/vb/samples.build" target="clean"/>
+	</target>
+</project>

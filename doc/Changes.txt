@@ -1,0 +1,110 @@
+Changes since 0.1
+
++ Added new property in ZipEntry: DateTime Datetime {get; set;}
+  (gets/sets datetime of an entry; should be easier to handle than the dos time. (int value))
++ Added new class: ZipFile
+  This class allows easy reading of a zipped file and it's entries.
++ Changed the ZipOutputStream behavior:
+  Now it writes the Size, Crc, Compressed size in the header, if the baseOutputStream is able to
+  seek (which should be true for all files). Some crunchers had problems unpacking the files which had
+  the Size, Crc, Compressed size fields in the data descriptor after the file data.
++ CompressionMethod is now an enumeration instead of a int.
++ Changed many internal Get/Set methods into C# properties.
++ The base methods in the Deflater/Inflater Streams are now called correctly; it should 
+  work to use this construct (at least in my CVS library it does):
+  new InflaterInputStream(new DeflaterOutputStream(new IOStream());
++ Fixed bug: DeflateFast had a bug which is now (hopefully) gone. This bug was in the original
+  Java version too. (But please test fast deflate (compression level 1-3))
+
+Changes since 0.2
+
++ Problem description:
+  "The BinaryDeserializer explicitly checks the length of the input stream you hand it, and throws an exception if
+  you try to deserialize from a stream that reports a length of zero. Unfortunately, InflaterInputStream reports a 
+  length of zero when you first query it."
+  Fixed by Joel Mueller <jmueller@delani.com>:
+  The InflaterInputStream constructor (Stream, Inflater, int) is changed so that InflaterInputStream.len is initialized to 
+  baseInputStream.Length instead of zero.
++ Problem description:
+  "When you try to get all entries of your ZipFile class over a
+  foreach(ZipEntry e in zFile) loop, you get all except the first one.
+  
+  I think the reason for this is: your index member (ptr) is initialized
+  with value 0. Because your function MoveNext() first increases ptr and then
+  the entry is accessed the first entry is skipped.
++ Bugfix date/time bug by Rainer Prem <Rainer@Prem.de>
++ Renamed the library to SharpZipLib (#ZipLib for short)
++ Added bzip2 compression/decompression
++ The Read method returns 0 instead of -1, when the end of the stream is reached.
+  (this is defined by the .NET library)
++ Added tar support
++ The Date/Time now works better when reading zip files.
++ Fixed a rare compression bug (exception while zip/gzip specific files)
+
+Changes since 0.3
++ The Read method in the gzipstream returned still -1 instead of 0 at the eos
+
+Changes since 0.31
++ Compact Framework support
++ Tar bug fixed by Lloyd Dupont
++ Hopefully this time the date bug is fixed :)
++ SharpZipLib is now strong named and installGAC/uninstallGAC scripts are provided
+
+Changes since 0.4
++ Support for crypted files (decryption)
++ WinZip can't delete bug fixed (thanx to JackmanG from the SharpDevelop forum)
++ The ZipFile class has now a 'ZipFileComment' property containing the comment for the whole zip file. Contributed by John Carto.
+
+Changes since 0.51
++ some return -1 bugs fixed
++ added gzipoutputstream mods from ben@blowery.org:
+"It writes out the GZip header to the base stream as part of its constructor.
+Unfortunately, I cannot write to the underlying stream (the
+HttpResponse.Filter) upon construction.  I need to delay the header write
+until just before the first real write to the GZipOutputStream.  I went
+ahead and made the modifications to the library and it seems to work
+wonderfully."
++ Added patches from John Reilly <jfreilly@hotmail.com> many, many bugs got fixed.
++ Added unit tests to ensure a certain level of stability
+
+Changes since 0.6
++ Fix from John Reilly <jfreilly@hotmail.com>: A couple of things to fix up in TarInputStream.  Some Console.WriteLine stuff which should be removed/commented and a fix for handling directories.
++ 
+
+Changes since 0.6.1
++ Further encryption problems resolved
++ More tests added
++ More summary comments included
++ ZipFile locating central header optimised for case where file is not a zip file.
++ Add sample sz a commandline cs archiver for Zip files
++ Fix more end of stream return value bugs
++ Some tar bugs fixed
+
+Changes since 0.7
++ Add functionality to support cleaning of names to Zip file convention added to ZipEntry class
++ External file and attributes are now handled
++ IsDirectory now handles the attributes for archives made on DOS/Windows
++ ZipFile class now has an indexer property
++ ZipFile class has new functionality for searching for entries by name
++ ZipFile class now reads external attributes from central header entries
++ Fixed bug in ZipInputStream class where extra bytes containing unix attributes altered date and time causing checking of password to fail
++ ZipInputStream class now checks version required to extract.
++ ZipOutputStream class version made by is now fixed at 2.0
++ Cleaned up summary comments all over the place.
++ Some changes to Tar classes to allow Compact Framework compilation.
++ Add checking for invalid entries when scanning through extra data.
++ Decryption of entries from Zip files created on non-seekable output now works.
++ Deflating of zero length files is automatically converted to stored if possible to save a little space.
++ More tests.
+
+Changes since v0.8
++ ZipFile test checking for seekable stream shifted so it covers all constructors.
++ Flaw when checking local entry name against central directory name for MCBS strings worked around.
++ Some ZipEntry constructors made internal as they should have been originally
++ Some changes to allow compact framework compilation made.
++ Small alteration to TarEntry.cs to allow 1.0 compilation as well as 1.1 .
+
+Changes since v0.81
++ Exception hierarchy altered so all internal library exceptions are derived from the same base class
++ A bug in tar handling where case wasnt correctly preserved has been repaired
++ ZipFile class was failing to set the bit flags field when reading entries, this has been corrected.
