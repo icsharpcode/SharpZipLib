@@ -527,11 +527,24 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 		
 		// Values used during recursive operations.
+		static internal int userIdAsSet = 0;
+		static internal int groupIdAsSet = 0;
+		static internal string userNameAsSet = null;
+		static internal string groupNameAsSet = "None";
+		
 		static internal int defaultUserId = 0;
 		static internal int defaultGroupId = 0;
 		static internal string defaultGroupName = "None";
 		static internal string defaultUser = null;
-		
+
+		static internal void RestoreSetValues()
+		{
+			defaultUserId = userIdAsSet;
+			defaultUser = userNameAsSet;
+			defaultGroupId = groupIdAsSet;
+			defaultGroupName = groupNameAsSet;
+		}
+
 		/// <summary>
 		/// Set defaults for values used when constructing a TarHeader instance.
 		/// </summary>
@@ -540,6 +553,14 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="groupId">Value to apply as a default for groupId.</param>
 		/// <param name="groupName">Value to apply as a default for groupName.</param>
 		static public void SetValueDefaults(int userId, string userName, int groupId, string groupName)
+		{
+			defaultUserId = userIdAsSet = userId;
+			defaultUser = userNameAsSet = userName;
+			defaultGroupId = groupIdAsSet = groupId;
+			defaultGroupName = groupNameAsSet = groupName;
+		}
+		
+		static internal void SetActiveDefaults(int userId, string userName, int groupId, string groupName)
 		{
 			defaultUserId = userId;
 			defaultUser = userName;
@@ -951,7 +972,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			
 			// Fields past this point not currently parsed or used...
 			
-			// TODO prefix information.
+			// TODO: prefix information.
 		}
 
 		/// <summary>

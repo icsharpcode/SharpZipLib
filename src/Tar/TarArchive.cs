@@ -66,7 +66,6 @@ namespace ICSharpCode.SharpZipLib.Tar {
 	/// </summary>
 	public class TarArchive
 	{
-		bool verbose;
 		bool keepOldFiles;
 		bool asciiTranslate;
 		
@@ -166,29 +165,14 @@ namespace ICSharpCode.SharpZipLib.Tar {
 			this.rootPath   = null;
 			this.pathPrefix = null;
 			
-//			this.tempPath   = System.getProperty( "user.dir" );
-			
 			this.userId    = 0;
 			this.userName  = String.Empty;
 			this.groupId   = 0;
 			this.groupName = String.Empty;
 			
-			this.verbose         = false;
 			this.keepOldFiles    = false;
 			
 			this.recordBuf = new byte[RecordSize];
-		}
-		
-		/// <summary>
-		/// Get/Set the verbosity setting.
-		/// </summary>
-		public bool IsVerbose {
-			get {
-				return verbose;
-			}
-			set {
-				verbose = value;
-			}
 		}
 		
 		/// <summary>
@@ -402,26 +386,26 @@ namespace ICSharpCode.SharpZipLib.Tar {
 			}
 		}
 		
-		// TODO  Assess how valid this test really is.
+		// TODO: Assess how valid this test really is.
 		// No longer reads entire file into memory but is still a weak test!
 		// assumes that ascii 0-7, 14-31 or 255 are binary
 		// and that all non text files contain one of these values
 		bool IsBinary(string filename)
 		{
-			FileStream fs = File.OpenRead(filename);
+			using (FileStream fs = File.OpenRead(filename))
+			{
+				int sampleSize = System.Math.Min(4096, (int)fs.Length);
+				byte[] content = new byte[sampleSize];
 			
-			int sampleSize = System.Math.Min(4096, (int)fs.Length);
-			byte[] content = new byte[sampleSize];
+				int bytesRead = fs.Read(content, 0, sampleSize);
 			
-			fs.Read(content, 0, sampleSize);
-			fs.Close();
-			
-			foreach (byte b in content) {
-				if (b < 8 || (b > 13 && b < 32) || b == 255) {
-					return true;
+				for (int i = 0; i < bytesRead; ++i) {
+					byte b = content[i];
+					if (b < 8 || (b > 13 && b < 32) || b == 255) {
+						return true;
+					}
 				}
 			}
-			
 			return false;
 		}		
 		
@@ -437,9 +421,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		/// </param>
 		void ExtractEntry(string destDir, TarEntry entry)
 		{
-			if (this.verbose) {
-				OnProgressMessageEvent(entry, null);
-			}
+			OnProgressMessageEvent(entry, null);
 			
 			string name = entry.Name;
 			
@@ -473,7 +455,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 				
 				if (process) {
 					bool asciiTrans = false;
-					// TODO file may exist and be read-only at this point!
+					// TODO: file may exist and be read-only at this point!
 					Stream outputStream = File.Create(destFile);
 					if (this.asciiTranslate) {
 						asciiTrans = !IsBinary(destFile);
@@ -541,7 +523,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 			finally
 			{
 				if ( recurse ) {
-					TarHeader.ResetValueDefaults();
+					TarHeader.RestoreSetValues();
 				}
 			}
 		}
@@ -575,9 +557,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 				entry.UserName = userName;
 			}
 			
-			if (this.verbose) {
-				OnProgressMessageEvent(entry, null);
-			}
+			OnProgressMessageEvent(entry, null);
 			
 			if (this.asciiTranslate && !entry.IsDirectory) {
 				asciiTrans = !IsBinary(entryFilename);
