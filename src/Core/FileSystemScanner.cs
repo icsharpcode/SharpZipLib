@@ -168,8 +168,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			if ( DirectoryFailure == null ) {
 				alive = false;
-			}
-			else {
+			} else {
 				ScanFailureEventArgs args = new ScanFailureEventArgs(directory, e);
 				DirectoryFailure(this, args);
 				alive = args.ContinueRunning;
@@ -180,8 +179,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			if ( FileFailure == null ) {
 				alive = false;
-			}
-			else {
+			} else {
 				ScanFailureEventArgs args = new ScanFailureEventArgs(file, e);
 				FileFailure(this, args);
 				alive = args.ContinueRunning;
@@ -226,8 +224,7 @@ namespace ICSharpCode.SharpZipLib.Core
 				for (int fileIndex = 0; fileIndex < names.Length; ++fileIndex) {
 					if ( !fileFilter.IsMatch(names[fileIndex]) ) {
 						names[fileIndex] = null;
-					}
-					else {
+					} else {
 						hasMatch = true;
 					}
 				}
