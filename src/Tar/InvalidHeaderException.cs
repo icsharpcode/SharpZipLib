@@ -32,11 +32,6 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-using System;
-using System.IO;
-
-using ICSharpCode.SharpZipLib.Checksums;
-
 namespace ICSharpCode.SharpZipLib.Tar {
 	
 	/// <summary>
@@ -46,16 +41,14 @@ namespace ICSharpCode.SharpZipLib.Tar {
 	public class InvalidHeaderException : TarException
 	{
 		/// <summary>
-		/// Construct default instance
-		/// Used to indicate problems with Tar archive headers
+		/// Initialise a new instance of the InvalidHeaderException class.
 		/// </summary>
 		public InvalidHeaderException()
 		{
 		}
 
 		/// <summary>
-		/// Construct instance with a message
-		/// Used to indicate problems with Tar archive headers
+		/// Initialises a new instance of the InvalidHeaderException class with a specified message.
 		/// </summary>
 		public InvalidHeaderException(string msg) : base(msg)
 		{

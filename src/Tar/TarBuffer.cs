@@ -121,17 +121,7 @@ or which contains garbage records after a zero block.
 			}
 		}
 
-		bool   debug = false;
 
-		/// <summary>
-		/// Set the debugging flag for the buffer.
-		/// </summary>
-		public void SetDebug(bool debug)
-		{
-			this.debug = debug;
-		}
-		
-		
 		/// <summary>
 		/// Construct a default TarBuffer
 		/// </summary>
@@ -196,7 +186,6 @@ or which contains garbage records after a zero block.
 		/// </summary>
 		void Initialize(int blockFactor)
 		{
-			this.debug        = false;
 			this.blockFactor  = blockFactor;
 			this.recordSize   = blockFactor * BlockSize;
 
@@ -253,10 +242,6 @@ or which contains garbage records after a zero block.
 		/// </summary>
 		public void SkipBlock()
 		{
-			if (this.debug) {
-				//Console.WriteLine.WriteLine("SkipBlock: recIdx = " + this.currentRecordIndex + " blkIdx = " + this.currentBlockIndex);
-			}
-			
 			if (this.inputStream == null) {
 				throw new TarException("no input stream defined");
 			}
@@ -278,10 +263,6 @@ or which contains garbage records after a zero block.
 		/// </returns>
 		public byte[] ReadBlock()
 		{
-			if (this.debug) {
-				//Console.WriteLine.WriteLine( "ReadBlock: blockIndex = " + this.currentBlockIndex + " recordIndex = " + this.currentRecordIndex );
-			}
-			
 			if (this.inputStream == null) {
 				throw new TarException("TarBuffer.ReadBlock - no input stream defined");
 			}
@@ -307,10 +288,6 @@ or which contains garbage records after a zero block.
 		/// </returns>
 		bool ReadRecord()
 		{
-			if (this.debug) {
-				//Console.WriteLine.WriteLine("ReadRecord: recordIndex = " + this.currentRecordIndex);
-			}
-			
 			if (this.inputStream == null) {
 				throw new TarException("no input stream stream defined");
 			}
@@ -342,11 +319,6 @@ or which contains garbage records after a zero block.
 				
 				offset      += (int)numBytes;
 				bytesNeeded -= (int)numBytes;
-				if (numBytes != RecordSize) {
-					if (this.debug) {
-						//Console.WriteLine.WriteLine("ReadRecord: INCOMPLETE READ " + numBytes + " of " + this.blockSize + " bytes read.");
-					}
-				}
 			}
 			
 			this.currentRecordIndex++;
@@ -385,10 +357,6 @@ or which contains garbage records after a zero block.
 		/// 
 		public void WriteBlock(byte[] block)
 		{
-			if (this.debug) {
-				//Console.WriteLine.WriteLine("WriteRecord: recIdx = " + this.currentRecordIndex + " blkIdx = " + this.currentBlockIndex );
-			}
-			
 			if (this.outputStream == null) {
 				throw new TarException("TarBuffer.WriteBlock - no output stream defined");
 			}
@@ -418,10 +386,6 @@ or which contains garbage records after a zero block.
 		/// </param>
 		public void WriteBlock(byte[] buf, int offset)
 		{
-			if (this.debug) {
-				//Console.WriteLine.WriteLine("WriteBlock: recIdx = " + this.currentRecordIndex + " blkIdx = " + this.currentBlockIndex );
-			}
-			
 			if (this.outputStream == null) {
 				throw new TarException("TarBuffer.WriteBlock - no output stream stream defined");
 			}
@@ -444,10 +408,6 @@ or which contains garbage records after a zero block.
 		/// </summary>
 		void WriteRecord()
 		{
-			if (this.debug) {
-				//Console.WriteLine.WriteLine("Writerecord: record index = " + this.currentRecordIndex);
-			}
-			
 			if (this.outputStream == null)
 			{
 				throw new TarException("TarBuffer.WriteRecord no output stream defined");
@@ -465,11 +425,6 @@ or which contains garbage records after a zero block.
 		/// </summary>
 		void Flush()
 		{
-			if (this.debug) 
-			{
-				//Console.WriteLine.WriteLine("TarBuffer.FlushBlock() called.");
-			}
-			
 			if (this.outputStream == null) 
 			{
 				throw new TarException("TarBuffer.Flush no output stream defined");
@@ -488,11 +443,6 @@ or which contains garbage records after a zero block.
 		/// </summary>
 		public void Close()
 		{
-			if (this.debug)
-			{
-				//Console.WriteLine.WriteLine("TarBuffer.Close().");
-			}
-			
 			if (outputStream != null)
 			{
 				Flush();

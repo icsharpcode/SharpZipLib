@@ -205,28 +205,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 		
 		/// <summary>
-		/// Sets the debugging flag.
-		/// </summary>
-		/// <param name = "debugFlag">
-		/// True to turn on debugging.
-		/// </param>
-		public void SetDebug(bool debugFlag)
-		{
-			this.debug = debugFlag;
-			SetBufferDebug(debugFlag);
-		}
-
-
-		/// <summary>
-		///  Set the debug flag for the buffer
-		/// </summary>
-		/// <param name="debug">True for debug on false for debug off</param>
-		public void SetBufferDebug(bool debug)
-		{
-			this.buffer.SetDebug(debug);
-		}
-		
-		/// <summary>
 		/// Ends the TAR archive without closing the underlying OutputStream.
 		/// The result is that the EOF record of nulls is written.
 		/// </summary>
@@ -271,25 +249,25 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </param>
 		public void PutNextEntry(TarEntry entry)
 		{
-			if (entry.TarHeader.name.Length > TarHeader.NAMELEN) {
+			if (entry.TarHeader.Name.Length > TarHeader.NAMELEN) {
 				TarHeader longHeader = new TarHeader();
-				longHeader.typeFlag = TarHeader.LF_GNU_LONGNAME;
-				longHeader.name.Append("././@LongLink");
-				longHeader.userId = 0;
-				longHeader.groupId = 0;
-				longHeader.groupName.Length = 0;
-				longHeader.userName.Length = 0;
-				longHeader.linkName.Length = 0;
+				longHeader.TypeFlag = TarHeader.LF_GNU_LONGNAME;
+				longHeader.Name = longHeader.Name + "././@LongLink";
+				longHeader.UserId = 0;
+				longHeader.GroupId = 0;
+				longHeader.GroupName = "";
+				longHeader.UserName = "";
+				longHeader.LinkName = "";
 
-				longHeader.size = entry.TarHeader.name.Length;
+				longHeader.Size = entry.TarHeader.Name.Length;
 
 				longHeader.WriteHeader(this.blockBuf);
 				this.buffer.WriteBlock(this.blockBuf);  // Add special long filename header block
 
 				int nameCharIndex = 0;
 
-				while (nameCharIndex < entry.TarHeader.name.Length) {
-					TarHeader.GetNameBytes(entry.TarHeader.name, nameCharIndex, this.blockBuf, 0, TarBuffer.BlockSize);
+				while (nameCharIndex < entry.TarHeader.Name.Length) {
+					TarHeader.GetNameBytes(entry.TarHeader.Name, nameCharIndex, this.blockBuf, 0, TarBuffer.BlockSize);
 					nameCharIndex += TarBuffer.BlockSize;
 					this.buffer.WriteBlock(this.blockBuf);
 				}

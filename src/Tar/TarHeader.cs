@@ -35,7 +35,8 @@
 
 
 /* The tar format and its POSIX successor PAX have a long history which makes for compatability
-   issues when creating and reading files...
+   issues when creating and reading files.
+   
    This is further complicated by a large number of programs with variations on formats
    One common issue is the handling of names longer than 100 characters.
    GNU style long names are currently supported.
@@ -264,140 +265,375 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public readonly static string	GNU_TMAGIC	= "ustar  ";
 		
+
+		string name;
+
 		/// <summary>
-		/// The entry's name.
+		/// Get/set the name for this tar entry.
 		/// </summary>
-		public StringBuilder name;
+		/// <exception cref="ArgumentNullException">Thrown when attempting to set the property to null.</exception>
+		public string Name
+		{
+			get { return name; }
+			set { 
+				if ( value == null ) {
+					throw new ArgumentNullException();
+				}
+				name = value;	
+			}
+		}
+		
+		int mode;
 		
 		/// <summary>
-		/// The entry's Unix style permission mode.
+		/// Get/set the entry's Unix style permission mode.
 		/// </summary>
-		public int mode;
+		public int Mode
+		{
+			get { return mode; }
+			set { mode = value; }
+		}
+		
+		int userId;
 		
 		/// <summary>
 		/// The entry's user id.
 		/// </summary>
-		public int userId;
+		/// <remarks>
+		/// This is only directly relevant to unix systems.
+		/// The default is zero which can be altered by calling <see cref="SetDefaultValues">SetDefaultValues</see>.
+		/// </remarks>
+		public int UserId
+		{
+			get { return userId; }
+			set { userId = value; }
+		}
+		
+		int groupId;
 		
 		/// <summary>
 		/// The entry's group id.
 		/// </summary>
-		public int groupId;
+		/// <remarks>
+		/// This is only directly relevant to unix systems.
+		/// The default is zero which can be altered by calling <see cref="SetDefaultValues">SetDefaultValues</see>.
+		/// </remarks>
+		public int GroupId
+		{
+			get { return groupId; }
+			set { groupId = value; }
+		}
+		
+
+		long size;
 		
 		/// <summary>
 		/// The entry's size.
 		/// </summary>
-		public long size;
+		/// <exception cref="ArgumentOutOfRangeException">Thrown when setting the size to less than zero.</exception>
+		public long Size
+		{
+			get { return size; }
+			set { 
+				if ( value < 0 ) {
+					throw new ArgumentOutOfRangeException();
+				}
+				size = value; 
+			}
+		}
+		
+		DateTime modTime;
 		
 		/// <summary>
 		/// The entry's modification time.
 		/// </summary>
-		public DateTime modTime;
+		/// <remarks>
+		/// The modification time is only accurate to within a second.
+		/// </remarks>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown when setting the date time to less than 1/1/1970.</exception>
+		public DateTime ModTime
+		{
+			get { return modTime; }
+			set {
+				if ( value < dateTime1970 )
+				{
+					throw new ArgumentOutOfRangeException();
+				}
+				modTime = new DateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second);
+			}
+		}
+		
+		int checksum;
 		
 		/// <summary>
-		/// The entry's checksum.
+		/// The entry's checksum.  This is only valid/updated after writing or reading an entry.
 		/// </summary>
-		public int checkSum;
+		public int Checksum
+		{
+			get { return checksum; }
+		}
+		
+		byte typeFlag;
 		
 		/// <summary>
 		/// The entry's type flag.
 		/// </summary>
-		public byte typeFlag;
+		public byte TypeFlag
+		{
+			get { return typeFlag; }
+			set { typeFlag = value; }
+		}
+
+		string linkName;
 		
 		/// <summary>
 		/// The entry's link name.
 		/// </summary>
-		public StringBuilder linkName;
+		/// <exception cref="ArgumentNullException">Thrown when attempting to set LinkName to null.</exception>
+		public string LinkName
+		{
+			get { return linkName; }
+			set {
+				if ( value == null ) {
+					throw new ArgumentNullException();
+				}
+				linkName = value; 
+			}
+		}
+		
+		string magic;
 		
 		/// <summary>
 		/// The entry's magic tag.
 		/// </summary>
-		public StringBuilder magic;
+		/// <exception cref="ArgumentNullException">Thrown when attempting to set Magic to null.</exception>
+		public string Magic
+		{
+			get { return magic; }
+			set { 
+				if ( value == null ) {
+					throw new ArgumentNullException();
+				}
+				magic = value; 
+			}
+		}
+		
+		string version;
 		
 		/// <summary>
 		/// The entry's version.
 		/// </summary>
-		public StringBuilder version;
+		/// <exception cref="ArgumentNullException">Thrown when attempting to set Version to null.</exception>
+		public string Version
+		{
+			get { return version; }
+			set { 
+				if ( value == null ) {
+					throw new ArgumentNullException();
+				}
+				version = value; 
+			}
+		}
+		
+		string userName;
 		
 		/// <summary>
 		/// The entry's user name.
 		/// </summary>
-		public StringBuilder userName;
+		/// <remarks>
+		/// See <see cref="ResetValueDefaults">ResetValueDefaults</see>
+		/// for detail on how this value is derived.
+		/// </remarks>
+		public string UserName
+		{
+			get { return userName; }
+			set {
+				if (value != null) {
+					userName = value.Substring(0, Math.Min(UNAMELEN, value.Length));
+				}
+				else {
+#if COMPACT_FRAMEWORK
+					string currentUser = "PocketPC";
+#else
+					string currentUser = Environment.UserName;
+#endif
+					if (currentUser.Length > UNAMELEN) {
+						currentUser = currentUser.Substring(0, UNAMELEN);
+					}
+					userName = currentUser;
+				}
+			}
+		}
+		
+		string groupName;
 		
 		/// <summary>
 		/// The entry's group name.
 		/// </summary>
-		public StringBuilder groupName;
+		/// <remarks>
+		/// This is only directly relevant to unix systems.
+		/// </remarks>
+		public string GroupName
+		{
+			get { return groupName; }
+			set { 
+				if ( value == null ) {
+					groupName = "None";
+				}
+				else {
+					groupName = value; 
+				}
+			}
+		}
+		
+		int devMajor;
 		
 		/// <summary>
 		/// The entry's major device number.
 		/// </summary>
-		public int devMajor;
+		public int DevMajor
+		{
+			get { return devMajor; }
+			set { devMajor = value; }
+		}
+		
+		int devMinor;
 		
 		/// <summary>
 		/// The entry's minor device number.
 		/// </summary>
-		public int devMinor;
-		
-		/// <summary>
-		/// Construct default TarHeader instance
-		/// </summary>
-		public TarHeader()
+		public int DevMinor
 		{
-			this.magic = new StringBuilder(TarHeader.TMAGIC);
-			this.version = new StringBuilder(" ");
-			
-			this.name     = new StringBuilder();
-			this.linkName = new StringBuilder();
-			
-#if COMPACT_FRAMEWORK
-			string user = "PocketPC";
-#else
-			string user = Environment.UserName;
-#endif
-			if (user.Length > 31) {
-				user = user.Substring(0, 31);
-			}
-			
-			this.userId    = 0;
-			this.groupId   = 0;
-			this.userName  = new StringBuilder(user);
-			this.groupName = new StringBuilder("None");
-			this.size      = 0;
+			get { return devMinor; }
+			set { devMinor = value; }
 		}
 		
 		/// <summary>
-		/// TarHeaders can be cloned.
+		/// Construct a default TarHeader instance
+		/// </summary>
+		public TarHeader()
+		{
+			this.Magic = TarHeader.TMAGIC;
+			this.Version = " ";
+			
+			this.Name     = "";
+			this.LinkName = "";
+			
+			this.UserId    = defaultUserId;
+			this.GroupId   = defaultGroupId;
+			this.UserName  = defaultUser;
+			this.GroupName = defaultGroupName;
+			this.Size      = 0;
+		}
+		
+		// Values used during recursive operations.
+		static internal int defaultUserId = 0;
+		static internal int defaultGroupId = 0;
+		static internal string defaultGroupName = "None";
+		static internal string defaultUser = null;
+		
+		/// <summary>
+		/// Set defaults for values used when constructing a TarHeader instance.
+		/// </summary>
+		/// <param name="userId">Value to apply as a default for userId.</param>
+		/// <param name="userName">Value to apply as a default for userName.</param>
+		/// <param name="groupId">Value to apply as a default for groupId.</param>
+		/// <param name="groupName">Value to apply as a default for groupName.</param>
+		static public void SetValueDefaults(int userId, string userName, int groupId, string groupName)
+		{
+			defaultUserId = userId;
+			defaultUser = userName;
+			defaultGroupId = groupId;
+			defaultGroupName = groupName;
+		}
+		
+		/// <summary>
+		/// Reset value defaults to initial values.
+		/// </summary>
+		/// <remarks>
+		/// The default values are user id=0, group id=0, groupname="None", user name=null.
+		/// When the default user name is null the value from Environment.UserName is used. Or "PocketPC" for the Compact framework.
+		/// When the default group name is null the value "None" is used.
+		/// </remarks>
+		static public void ResetValueDefaults()
+		{
+			defaultUserId = 0;
+			defaultGroupId = 0;
+			defaultGroupName = "None";
+			defaultUser = null;
+		}
+		
+		/// <summary>
+		/// Clone a TAR header.
 		/// </summary>
 		public object Clone()
 		{
 			TarHeader hdr = new TarHeader();
 			
-			hdr.name      = (this.name == null) ? null : new StringBuilder(this.name.ToString());
-			hdr.mode      = this.mode;
-			hdr.userId    = this.userId;
-			hdr.groupId   = this.groupId;
-			hdr.size      = this.size;
-			hdr.modTime   = this.modTime;
-			hdr.checkSum  = this.checkSum;
-			hdr.typeFlag  = this.typeFlag;
-			hdr.linkName  = (this.linkName == null)  ? null : new StringBuilder(this.linkName.ToString());
-			hdr.magic     = (this.magic == null)     ? null : new StringBuilder(this.magic.ToString());
-			hdr.version   = (this.version == null)   ? null : new StringBuilder(this.version.ToString());
-			hdr.userName  = (this.userName == null)  ? null : new StringBuilder(this.userName.ToString());
-			hdr.groupName = (this.groupName == null) ? null : new StringBuilder(this.groupName.ToString());
-			hdr.devMajor  = this.devMajor;
-			hdr.devMinor  = this.devMinor;
+			hdr.Name      = Name;
+			hdr.Mode      = this.Mode;
+			hdr.UserId    = this.UserId;
+			hdr.GroupId   = this.GroupId;
+			hdr.Size      = this.Size;
+			hdr.ModTime   = this.ModTime;
+			hdr.TypeFlag  = this.TypeFlag;
+			hdr.LinkName  = this.LinkName;
+			hdr.Magic     = this.Magic;
+			hdr.Version   = this.Version;
+			hdr.UserName  = this.UserName;
+			hdr.GroupName = this.GroupName;
+			hdr.DevMajor  = this.DevMajor;
+			hdr.DevMinor  = this.DevMinor;
 			
 			return hdr;
+		}
+		/// <summary>
+		/// Get a hash code for the current object.
+		/// </summary>
+		/// <returns>A hash code for the current object.</returns>
+		public override int GetHashCode()
+		{
+			return Name.GetHashCode();
+		}
+		
+		/// <summary>
+		/// Determines if this instance is equal to the specified object.
+		/// </summary>
+		/// <param name="obj">The object to compare with.</param>
+		/// <returns>true if the objects are equal, false otherwise.</returns>
+		public override bool Equals(object obj)
+		{
+			if ( obj is TarHeader ) {
+				TarHeader th = obj as TarHeader;
+				return name == th.name
+					&& mode == th.mode
+					&& UserId == th.UserId
+					&& GroupId == th.GroupId
+					&& Size == th.Size
+					&& ModTime == th.ModTime
+					&& Checksum == th.Checksum
+					&& TypeFlag == th.TypeFlag
+					&& LinkName == th.LinkName
+					&& Magic == th.Magic
+					&& Version == th.Version
+					&& UserName == th.UserName
+					&& GroupName == th.GroupName
+					&& DevMajor == th.DevMajor
+					&& DevMinor == th.DevMinor;
+			}
+			else {
+				return false;
+			}
 		}
 		
 		/// <summary>
 		/// Get the name of this entry.
 		/// </summary>
-		/// <returns>
-		/// The entry's name.
-		/// </returns>
+		/// <returns>The entry's name.</returns>
+		/// <remarks>
+		/// This is obsolete use the Name property instead.
+		/// </remarks>
+		[Obsolete]
 		public string GetName()
 		{
 			return this.name.ToString();
@@ -407,18 +643,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Parse an octal string from a header buffer. This is used for the
 		/// file permission mode value.
 		/// </summary>
-		/// <param name = "header">
-		/// The header buffer from which to parse.
-		/// </param>
-		/// <param name = "offset">
-		/// The offset into the buffer from which to parse.
-		/// </param>
-		/// <param name = "length">
-		/// The number of header bytes to parse.
-		/// </param>
-		/// <returns>
-		/// The long value of the octal string.
-		/// </returns>
+		/// <param name = "header">The header buffer from which to parse.</param>
+		/// <param name = "offset">The offset into the buffer from which to parse.</param>
+		/// <param name = "length">The number of header bytes to parse.</param>
+		/// <returns>The long equivalent of the octal string.</returns>
 		public static long ParseOctal(byte[] header, int offset, int length)
 		{
 			long result = 0;
@@ -449,7 +677,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 		
 		/// <summary>
-		/// Parse an entry name from a header buffer.
+		/// Parse a name from a header buffer.
 		/// </summary>
 		/// <param name="header">
 		/// The header buffer from which to parse.
@@ -461,7 +689,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// The number of header bytes to parse.
 		/// </param>
 		/// <returns>
-		/// The header's entry name.
+		/// The name parsed.
 		/// </returns>
 		public static StringBuilder ParseName(byte[] header, int offset, int length)
 		{
@@ -480,13 +708,37 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Add <paramref name="name">name</paramref> to the buffer as a collection of bytes
 		/// </summary>
-		/// <param name="name">the name to add</param>
-		/// <param name="nameOffset">the offset of the first character</param>
-		/// <param name="buf">the buffer to add to</param>
-		/// <param name="bufferOffset">the index of the first byte to add</param>
-		/// <param name="length">the number of characters/bytes to add</param>
-		/// <returns>the next free index in the <paramref name="buf">buffer</paramref></returns>
+		/// <param name="name">The name to add</param>
+		/// <param name="nameOffset">The offset of the first character</param>
+		/// <param name="buf">The buffer to add to</param>
+		/// <param name="bufferOffset">The index of the first byte to add</param>
+		/// <param name="length">The number of characters/bytes to add</param>
+		/// <returns>The next free index in the <paramref name="buf">buffer</paramref></returns>
 		public static int GetNameBytes(StringBuilder name, int nameOffset, byte[] buf, int bufferOffset, int length)
+		{
+			int i;
+			
+			for (i = 0 ; i < length && nameOffset + i < name.Length; ++i) {
+				buf[bufferOffset + i] = (byte)name[nameOffset + i];
+			}
+			
+			for (; i < length ; ++i) {
+				buf[bufferOffset + i] = 0;
+			}
+			
+			return bufferOffset + length;
+		}
+		
+		/// <summary>
+		/// Add <paramref name="name">name</paramref> to the buffer as a collection of bytes
+		/// </summary>
+		/// <param name="name">The name to add</param>
+		/// <param name="nameOffset">The offset of the first character</param>
+		/// <param name="buf">The buffer to add to</param>
+		/// <param name="bufferOffset">The index of the first byte to add</param>
+		/// <param name="length">The number of characters/bytes to add</param>
+		/// <returns>The next free index in the <paramref name="buf">buffer</paramref></returns>
+		public static int GetNameBytes(string name, int nameOffset, byte[] buf, int bufferOffset, int length)
 		{
 			int i;
 			
@@ -520,6 +772,19 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// The index of the next free byte in the buffer
 		/// </returns>
 		public static int GetNameBytes(StringBuilder name, byte[] buf, int offset, int length)
+		{
+			return GetNameBytes(name, 0, buf, offset, length);
+		}
+		
+		/// <summary>
+		/// Add an entry name to the buffer
+		/// </summary>
+		/// <param name="name">The name to add</param>
+		/// <param name="buf">The buffer to add to</param>
+		/// <param name="offset">The offset into the buffer from which to start adding</param>
+		/// <param name="length">The number of header bytes to add</param>
+		/// <returns>The index of the next free byte in the buffer</returns>
+		public static int GetNameBytes(string name, byte[] buf, int offset, int length)
 		{
 			return GetNameBytes(name, 0, buf, offset, length);
 		}
@@ -567,51 +832,31 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Put an octal representation of a value into a buffer
 		/// </summary>
-		/// <param name = "val">
-		/// Value to be convert to octal
-		/// </param>
-		/// <param name = "buf">
-		/// The buffer to update
-		/// </param>
-		/// <param name = "offset">
-		/// The offset into the buffer to store the value
-		/// </param>
-		/// <param name = "length">
-		/// The length of the octal string
-		/// </param>
-		/// <returns>
-		/// Index of next byte
-		/// </returns>
+		/// <param name = "val">Value to be convert to octal</param>
+		/// <param name = "buf">The buffer to update</param>
+		/// <param name = "offset">The offset into the buffer to store the value</param>
+		/// <param name = "length">The length of the octal string</param>
+		/// <returns>Index of next byte</returns>
 		public static int GetLongOctalBytes(long val, byte[] buf, int offset, int length)
 		{
 			return GetOctalBytes(val, buf, offset, length);
 		}
 		
 		/// <summary>
-		/// Add the checksum octal integer to header buffer.
+		/// Add the checksum integer to header buffer.
 		/// </summary>
-		/// <param name = "val">
-		/// </param>
-		/// <param name = "buf">
-		/// The header buffer to set the checksum for
-		/// </param>
-		/// <param name = "offset">
-		/// The offset into the buffer for the checksum
-		/// </param>
-		/// <param name = "length">
-		/// The number of header bytes to update.
+		/// <param name = "val"></param>
+		/// <param name = "buf">The header buffer to set the checksum for</param>
+		/// <param name = "offset">The offset into the buffer for the checksum</param>
+		/// <param name = "length">The number of header bytes to update.
 		/// It's formatted differently from the other fields: it has 6 digits, a
 		/// null, then a space -- rather than digits, a space, then a null.
 		/// The final space is already there, from checksumming
 		/// </param>
-		/// <returns>
-		/// The modified buffer offset
-		/// </returns>
+		/// <returns>The modified buffer offset</returns>
 		private static int GetCheckSumOctalBytes(long val, byte[] buf, int offset, int length)
 		{
 			TarHeader.GetOctalBytes(val, buf, offset, length - 1);
-//			buf[offset + length - 1] = (byte)' ';  -jr- 23-Jan-2004 this causes failure!!!
-//			buf[offset + length - 2] = 0;
 			return offset + length;
 		}
 		
@@ -619,33 +864,36 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Compute the checksum for a tar entry header.  
 		/// The checksum field must be all spaces prior to this happening
 		/// </summary>
-		/// <param name = "buf">
-		/// The tar entry's header buffer.
-		/// </param>
-		/// <returns>
-		/// The computed checksum.
-		/// </returns>
-		private static long ComputeCheckSum(byte[] buf)
+		/// <param name = "buf">The tar entry's header buffer.</param>
+		/// <returns>The computed checksum.</returns>
+		private static int ComputeCheckSum(byte[] buf)
 		{
-			long sum = 0;
+			int sum = 0;
 			for (int i = 0; i < buf.Length; ++i) {
 				sum += buf[i];
 			}
 			return sum;
 		}
 
-		readonly static long     timeConversionFactor = 10000000L;                                    // -jr- 1 tick == 100 nanoseconds
-		readonly static DateTime datetTime1970        = new DateTime(1970, 1, 1, 0, 0, 0, 0); 
-//		readonly static DateTime datetTime1970        = new DateTime(1970, 1, 1, 0, 0, 0, 0).ToUniversalTime(); // -jr- Should be UTC?  doesnt match Gnutar if this is so though, why?
+		readonly static long     timeConversionFactor = 10000000L;           // 1 tick == 100 nanoseconds
+		readonly static DateTime dateTime1970        = new DateTime(1970, 1, 1, 0, 0, 0, 0); 
 		
 		static int GetCTime(System.DateTime dateTime)
 		{
-			return (int)((dateTime.Ticks - datetTime1970.Ticks) / timeConversionFactor);
+			return (int)((dateTime.Ticks - dateTime1970.Ticks) / timeConversionFactor);
 		}
 		
 		static DateTime GetDateTimeFromCTime(long ticks)
 		{
-			return new DateTime(datetTime1970.Ticks + ticks * timeConversionFactor);
+			DateTime result;
+			
+			try {
+				result = new DateTime(dateTime1970.Ticks + ticks * timeConversionFactor);
+			}
+			catch {
+				result = dateTime1970;
+			}
+			return result;
 		}
 
 		/// <summary>
@@ -658,95 +906,97 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			int offset = 0;
 			
-			name = TarHeader.ParseName(header, offset, TarHeader.NAMELEN);
+			name = TarHeader.ParseName(header, offset, TarHeader.NAMELEN).ToString();
 			offset += TarHeader.NAMELEN;
 			
 			mode = (int)TarHeader.ParseOctal(header, offset, TarHeader.MODELEN);
 			offset += TarHeader.MODELEN;
 			
-			userId = (int)TarHeader.ParseOctal(header, offset, TarHeader.UIDLEN);
+			UserId = (int)TarHeader.ParseOctal(header, offset, TarHeader.UIDLEN);
 			offset += TarHeader.UIDLEN;
 			
-			groupId = (int)TarHeader.ParseOctal(header, offset, TarHeader.GIDLEN);
+			GroupId = (int)TarHeader.ParseOctal(header, offset, TarHeader.GIDLEN);
 			offset += TarHeader.GIDLEN;
 			
-			size = TarHeader.ParseOctal(header, offset, TarHeader.SIZELEN);
+			Size = TarHeader.ParseOctal(header, offset, TarHeader.SIZELEN);
 			offset += TarHeader.SIZELEN;
 			
-			modTime = GetDateTimeFromCTime(TarHeader.ParseOctal(header, offset, TarHeader.MODTIMELEN));
+			ModTime = GetDateTimeFromCTime(TarHeader.ParseOctal(header, offset, TarHeader.MODTIMELEN));
 			offset += TarHeader.MODTIMELEN;
 			
-			checkSum = (int)TarHeader.ParseOctal(header, offset, TarHeader.CHKSUMLEN);
+			checksum = (int)TarHeader.ParseOctal(header, offset, TarHeader.CHKSUMLEN);
 			offset += TarHeader.CHKSUMLEN;
 			
-			typeFlag = header[ offset++ ];
+			TypeFlag = header[ offset++ ];
 
-			linkName = TarHeader.ParseName(header, offset, TarHeader.NAMELEN);
+			LinkName = TarHeader.ParseName(header, offset, TarHeader.NAMELEN).ToString();
 			offset += TarHeader.NAMELEN;
 			
-			magic = TarHeader.ParseName(header, offset, TarHeader.MAGICLEN);
+			Magic = TarHeader.ParseName(header, offset, TarHeader.MAGICLEN).ToString();
 			offset += TarHeader.MAGICLEN;
 			
-			version = TarHeader.ParseName(header, offset, TarHeader.VERSIONLEN);
+			Version = TarHeader.ParseName(header, offset, TarHeader.VERSIONLEN).ToString();
 			offset += TarHeader.VERSIONLEN;
 			
-			userName = TarHeader.ParseName(header, offset, TarHeader.UNAMELEN);
+			UserName = TarHeader.ParseName(header, offset, TarHeader.UNAMELEN).ToString();
 			offset += TarHeader.UNAMELEN;
 			
-			groupName = TarHeader.ParseName(header, offset, TarHeader.GNAMELEN);
+			GroupName = TarHeader.ParseName(header, offset, TarHeader.GNAMELEN).ToString();
 			offset += TarHeader.GNAMELEN;
 			
-			devMajor = (int)TarHeader.ParseOctal(header, offset, TarHeader.DEVLEN);
+			DevMajor = (int)TarHeader.ParseOctal(header, offset, TarHeader.DEVLEN);
 			offset += TarHeader.DEVLEN;
 			
-			devMinor = (int)TarHeader.ParseOctal(header, offset, TarHeader.DEVLEN);
+			DevMinor = (int)TarHeader.ParseOctal(header, offset, TarHeader.DEVLEN);
 			
 			// Fields past this point not currently parsed or used...
+			
+			// TODO prefix information.
 		}
 
 		/// <summary>
-		/// 'Write' header information to buffer provided
+		/// 'Write' header information to buffer provided, updating the <see cref="Checksum">check sum</see>.
 		/// </summary>
 		/// <param name="outbuf">output buffer for header information</param>
 		public void WriteHeader(byte[] outbuf)
 		{
 			int offset = 0;
 			
-			offset = GetNameBytes(this.name, outbuf, offset, TarHeader.NAMELEN);
+			offset = GetNameBytes(this.Name, outbuf, offset, TarHeader.NAMELEN);
 			offset = GetOctalBytes(this.mode, outbuf, offset, TarHeader.MODELEN);
-			offset = GetOctalBytes(this.userId, outbuf, offset, TarHeader.UIDLEN);
-			offset = GetOctalBytes(this.groupId, outbuf, offset, TarHeader.GIDLEN);
+			offset = GetOctalBytes(this.UserId, outbuf, offset, TarHeader.UIDLEN);
+			offset = GetOctalBytes(this.GroupId, outbuf, offset, TarHeader.GIDLEN);
 			
-			long size = this.size;
+			long size = this.Size;
 			
 			offset = GetLongOctalBytes(size, outbuf, offset, TarHeader.SIZELEN);
-			offset = GetLongOctalBytes(GetCTime(this.modTime), outbuf, offset, TarHeader.MODTIMELEN);
+			offset = GetLongOctalBytes(GetCTime(this.ModTime), outbuf, offset, TarHeader.MODTIMELEN);
 			
 			int csOffset = offset;
 			for (int c = 0; c < TarHeader.CHKSUMLEN; ++c) {
 				outbuf[offset++] = (byte)' ';
 			}
 			
-			outbuf[offset++] = this.typeFlag;
+			outbuf[offset++] = this.TypeFlag;
 			
-			offset = GetNameBytes(this.linkName, outbuf, offset, NAMELEN);
-			offset = GetNameBytes(this.magic, outbuf, offset, MAGICLEN);
-			offset = GetNameBytes(this.version, outbuf, offset, VERSIONLEN);
-			offset = GetNameBytes(this.userName, outbuf, offset, UNAMELEN);
-			offset = GetNameBytes(this.groupName, outbuf, offset, GNAMELEN);
+			offset = GetNameBytes(this.LinkName, outbuf, offset, NAMELEN);
+			offset = GetNameBytes(this.Magic, outbuf, offset, MAGICLEN);
+			offset = GetNameBytes(this.Version, outbuf, offset, VERSIONLEN);
+			offset = GetNameBytes(this.UserName, outbuf, offset, UNAMELEN);
+			offset = GetNameBytes(this.GroupName, outbuf, offset, GNAMELEN);
 			
-			if (this.typeFlag == LF_CHR || this.typeFlag == LF_BLK) {
-				offset = GetOctalBytes(this.devMajor, outbuf, offset, DEVLEN);
-				offset = GetOctalBytes(this.devMinor, outbuf, offset, DEVLEN);
+			if (this.TypeFlag == LF_CHR || this.TypeFlag == LF_BLK) {
+				offset = GetOctalBytes(this.DevMajor, outbuf, offset, DEVLEN);
+				offset = GetOctalBytes(this.DevMinor, outbuf, offset, DEVLEN);
 			}
 			
 			for ( ; offset < outbuf.Length; ) {
 				outbuf[offset++] = 0;
 			}
 			
-			long checkSum = ComputeCheckSum(outbuf);
+			checksum = ComputeCheckSum(outbuf);
 			
-			GetCheckSumOctalBytes(checkSum, outbuf, csOffset, CHKSUMLEN);
+			GetCheckSumOctalBytes(checksum, outbuf, csOffset, CHKSUMLEN);
 		}
 	}
 }
