@@ -38,7 +38,7 @@
 
 using System;
 
-namespace ICSharpCode.SharpZipLib 
+namespace ICSharpCode.SharpZipLib.Zip 
 {
 	
 	/// <summary>

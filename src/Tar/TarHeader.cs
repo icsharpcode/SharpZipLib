@@ -306,7 +306,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <remarks>
 		/// This is only directly relevant to unix systems.
-		/// The default is zero which can be altered by calling <see cref="SetDefaultValues">SetDefaultValues</see>.
+		/// The default is zero.
 		/// </remarks>
 		public int UserId
 		{
@@ -321,7 +321,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <remarks>
 		/// This is only directly relevant to unix systems.
-		/// The default is zero which can be altered by calling <see cref="SetDefaultValues">SetDefaultValues</see>.
+		/// The default is zero.
 		/// </remarks>
 		public int GroupId
 		{

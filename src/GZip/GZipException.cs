@@ -43,10 +43,17 @@ namespace ICSharpCode.SharpZipLib.GZip
 	/// </summary>
 	public class GZipException : SharpZipBaseException
 	{
+		/// <summary>
+		/// Initialise a new instance of GZipException
+		/// </summary>
 		public GZipException()
 		{
 		}
 		
+		/// <summary>
+		/// Initialise a new instance of GZipException with its message string.
+		/// </summary>
+		/// <param name="message">A <see cref="string"></see>string that describes the error.</param>
 		public GZipException(string message) : base(message)
 		{
 		}

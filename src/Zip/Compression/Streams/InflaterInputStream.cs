@@ -91,6 +91,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Get/set flag indicating ownership of underlying stream.
 		/// When the flag is true <see cref="Close"/> will close the underlying stream also.
 		/// </summary>
+		/// <remarks>
+		/// The default value is true.
+		/// </remarks>
 		public bool IsStreamOwner
 		{
 			get { return isStreamOwner; }
@@ -107,8 +110,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// Value of false indicating seeking is not supported for this stream
-		/// This property always returns false
+		/// Gets a value of false indicating seeking is not supported for this stream.
 		/// </summary>
 		public override bool CanSeek {
 			get {
@@ -117,8 +119,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// Get true if stream is writeable
-		/// This property always returns false
+		/// Gets a value of false indicating that this stream is not writeable.
 		/// </summary>
 		public override bool CanWrite {
 			get {
@@ -136,7 +137,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// The current position within the stream
+		/// The current position within the stream.
 		/// Throws a NotSupportedException when attempting to set the position
 		/// </summary>
 		/// <exception cref="NotSupportedException">Attempting to set the position</exception>
@@ -287,7 +288,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// Closes the input stream
+		/// Closes the input stream.  When <see cref="IsStreamOwner"></see>
+		/// is true the underelying stream is also closed.
 		/// </summary>
 		public override void Close()
 		{

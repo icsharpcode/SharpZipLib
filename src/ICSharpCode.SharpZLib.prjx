@@ -1,4 +1,4 @@
-<Project name="ICSharpCode.SharpZipLib" standardNamespace="NewProject" description="A nifty C# compression library" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
+<Project name="ICSharpCode.SharpZipLib" standardNamespace="ICSharpCode.SharpZipLib" description="A nifty C# compression library" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
   <Contents>
     <File name=".\build.bat" subtype="Code" buildaction="Exclude" dependson="" data="" />
     <File name=".\Main.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
@@ -53,12 +53,12 @@
   </Contents>
   <References />
   <DeploymentInformation target="" script="" strategy="File" />
-  <Configuration runwithwarnings="True" name="Release">
-    <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
+  <Configuration runwithwarnings="False" name="Debug">
+    <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
     <Execution commandlineparameters="" consolepause="True" />
     <Output directory="..\bin" assembly="ICSharpCode.SharpZipLib" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
   </Configuration>
-  <Configurations active="Release">
+  <Configurations active="Debug">
     <Configuration runwithwarnings="True" name="Release">
       <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="Standard" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="False" generateoverflowchecks="False" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
       <Execution commandlineparameters="" consolepause="True" />

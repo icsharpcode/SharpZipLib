@@ -70,7 +70,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		public override bool CanWrite {
 			get {
-//				return baseStream.CanWrite;
 				return false;
 			}
 		}
@@ -85,7 +84,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		}
 		
 		/// <summary>
-		/// Gets or sets the streams position
+		/// Gets or sets the streams position.
 		/// Setting the position is not supported and will throw a NotSupportException
 		/// </summary>
 		/// <exception cref="NotSupportedException">Any attempt to set the position</exception>
@@ -94,13 +93,12 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				return baseStream.Position;
 			}
 			set {
-//				baseStream.Position = value;
 				throw new NotSupportedException("BZip2InputStream position cannot be set");
 			}
 		}
 		
 		/// <summary>
-		/// Flushes the baseInputStream
+		/// Flushes the stream.
 		/// </summary>
 		public override void Flush()
 		{
@@ -149,29 +147,29 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		}
 		
 		/// <summary>
-		/// Read a sequence of bytes and advance position in stream
+		/// Read a sequence of bytes and advances the read position by one byte.
 		/// </summary>
 		/// <param name="b">Array of bytes to store values in</param>
-		/// <param name="off">Offset in array to begin storing data</param>
-		/// <param name="len">The maximum number of bytes to read</param>
+		/// <param name="offset">Offset in array to begin storing data</param>
+		/// <param name="count">The maximum number of bytes to read</param>
 		/// <returns>The total number of bytes read into the buffer. This might be less
 		/// than the number of bytes requested if that number of bytes are not 
 		/// currently available or zero if the end of the stream is reached.
 		/// </returns>
-		public override int Read(byte[] b, int off, int len)
+		public override int Read(byte[] b, int offset, int count)
 		{
-			for (int i = 0; i < len; ++i) {
+			for (int i = 0; i < count; ++i) {
 				int rb = ReadByte();
 				if (rb == -1) {
 					return i;
 				}
-				b[off + i] = (byte)rb;
+				b[offset + i] = (byte)rb;
 			}
-			return len;
+			return count;
 		}
 		
 		/// <summary>
-		/// Closes the input stream
+		/// Closes the stream, releasing any associated resources.
 		/// </summary>
 		public override void Close()
 		{

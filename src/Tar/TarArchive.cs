@@ -227,9 +227,9 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		
 		/// <summary>
 		/// Set user and group information that will be used to fill in the
-		/// tar archive's entry headers. Since Java currently provides no means
-		/// of determining a user name, user id, group name, or group id for
-		/// a given File, TarArchive allows the programmer to specify values
+		/// tar archive's entry headers. This information based on that available 
+		/// for the linux operating system, which is not always available on other
+		/// operating systems.  TarArchive allows the programmer to specify values
 		/// to be used in their place.
 		/// </summary>
 		/// <param name="userId">
@@ -408,7 +408,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		}
 		
 		// TODO: Is there a better way to test for a text file?
-		// No longer reads entire file into memory but is still a weak test!
+		// It no longer reads entire files into memory but is still a weak test!
 		// assumes that ascii 0-7, 14-31 or 255 are binary
 		// and that all non text files contain one of these values
 		bool IsBinary(string filename)
@@ -525,7 +525,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		/// and then, if the recurse flag is true, process each entry that is a
 		/// child of the directory.
 		/// </summary>
-		/// <param name="entry">
+		/// <param name="sourceEntry">
 		/// The TarEntry representing the entry to write to the archive.
 		/// </param>
 		/// <param name="recurse">
@@ -556,7 +556,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		/// and then, if the recurse flag is true, process each entry that is a
 		/// child of the directory.
 		/// </summary>
-		/// <param name="entry">
+		/// <param name="sourceEntry">
 		/// The TarEntry representing the entry to write to the archive.
 		/// </param>
 		/// <param name="recurse">

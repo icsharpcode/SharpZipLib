@@ -46,9 +46,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 	/// <summary>
 	/// A special stream deflating or compressing the bytes that are
-	/// written to it.  It uses a Deflater to perform actual deflating.
-	/// 
-	/// authors of the original java version : Tom Tromey, Jochen Hoenicke 
+	/// written to it.  It uses a Deflater to perform actual deflating.<br/>
+	/// Authors of the original java version : Tom Tromey, Jochen Hoenicke 
 	/// </summary>
 	public class DeflaterOutputStream : Stream
 	{
@@ -72,7 +71,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		
 		/// <summary>
 		/// Get/set flag indicating ownership of underlying stream.
-		/// When the flag is true <see cref="">Close</see> will close the underlying stream also.
+		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
 		/// </summary>
 		public bool IsStreamOwner
 		{
@@ -207,7 +206,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// Deflates everything in the def's input buffers.  This will call
+		/// Deflates everything in the input buffers.  This will call
 		/// <code>def.deflate()</code> until all bytes from the input buffers
 		/// are processed.
 		/// </summary>
@@ -337,7 +336,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// Calls finish() and closes the stream.
+		/// Calls finish() and closes the underlying
+		/// stream when <see cref="IsStreamOwner"></see> is true.
 		/// </summary>
 		public override void Close()
 		{

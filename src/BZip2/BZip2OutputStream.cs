@@ -40,10 +40,11 @@ using ICSharpCode.SharpZipLib.Checksums;
 namespace ICSharpCode.SharpZipLib.BZip2 
 {
 	
+	// TODO: Update to BZip2 1.0.1, 1.0.2
+	
 	/// <summary>
 	/// An output stream that compresses into the BZip2 format 
 	/// including file header chars into another stream.
-	/// TODO: Update to BZip2 1.0.1, 1.0.2
 	/// </summary>
 	public class BZip2OutputStream : Stream
 	{
@@ -366,40 +367,45 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Construct a default output stream with maximum block size
 		/// </summary>
-		/// <param name="inStream"></param>
-		public BZip2OutputStream(Stream inStream) : this(inStream, 9)
+		/// <param name="stream">The stream to write BZip data onto.</param>
+		public BZip2OutputStream(Stream stream) : this(stream, 9)
 		{
 		}
 		
 		/// <summary>
-		/// Construct output stream with custom block size
+		/// Initialise a new instance of the <see cref="BZip2OutputStream"></see> 
+		/// for the specified stream, using the given blocksize.
 		/// </summary>
-		/// <param name="inStream"></param>
-		/// <param name="inBlockSize"></param>
-		public BZip2OutputStream(Stream inStream, int inBlockSize)
+		/// <param name="stream">The stream to write compressed data to.</param>
+		/// <param name="blockSize">The block size to use.</param>
+		/// <remarks>
+		/// Valid block sizes are in the range 1..9, with 1 giving 
+		/// the lowest compression and 9 the highest.
+		/// </remarks>
+		public BZip2OutputStream(Stream stream, int blockSize)
 		{
 			block    = null;
 			quadrant = null;
 			zptr     = null;
 			ftab     = null;
 			
-			BsSetStream(inStream);
+			BsSetStream(stream);
 			
 			workFactor = 50;
-			if (inBlockSize > 9) {
-				inBlockSize = 9;
+			if (blockSize > 9) {
+				blockSize = 9;
 			}
-			if (inBlockSize < 1) {
-				inBlockSize = 1;
+			if (blockSize < 1) {
+				blockSize = 1;
 			}
-			blockSize100k = inBlockSize;
+			blockSize100k = blockSize;
 			AllocateCompressStructures();
 			Initialize();
 			InitBlock();
 		}
 		
 		/// <summary>
-		/// write a byte to output
+		/// Write a byte to the stream.
 		/// </summary>
 		public override void WriteByte(byte bv)
 		{
