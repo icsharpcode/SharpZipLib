@@ -402,8 +402,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 			// 23-Jan-2004 GnuTar allows device names in path where the name is not local to the current directory
 			// TODO: Fix this up its wrong and evil.... only works for current dir not children.....
 			
-			if (Environment.CurrentDirectory == Path.GetDirectoryName(name)) {
-				name = Path.GetFileName(name);
+			if (name.IndexOf(Environment.CurrentDirectory) == 0) {
+				name = name.Substring(Environment.CurrentDirectory.Length);
+//				name = Path.GetFileName(name);
 			}
 #endif
 			
