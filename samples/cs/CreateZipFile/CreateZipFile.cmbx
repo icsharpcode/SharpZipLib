@@ -6,10 +6,10 @@
     <Entry filename=".\CreateZipFile.prjx" />
   </Entries>
   <Configurations active="Debug">
-    <Configuration name="Release" description="">
+    <Configuration name="Release">
       <Entry name="CreateZipFile" configurationname="Debug" build="False" />
     </Configuration>
-    <Configuration name="Debug" description="">
+    <Configuration name="Debug">
       <Entry name="CreateZipFile" configurationname="Debug" build="False" />
     </Configuration>
   </Configurations>

@@ -6,10 +6,10 @@
     <Entry filename=".\viewzipfile.prjx" />
   </Entries>
   <Configurations active="Debug">
-    <Configuration name="Release" description="">
+    <Configuration name="Release">
       <Entry name="viewzipfile" configurationname="Debug" build="False" />
     </Configuration>
-    <Configuration name="Debug" description="">
+    <Configuration name="Debug">
       <Entry name="viewzipfile" configurationname="Debug" build="False" />
     </Configuration>
   </Configurations>

@@ -1,23 +1,28 @@
-<Project fileversion="1.0" name="viewzipfile" projecttype="C#" description="creates an empty C# project" newfilesearch="OnLoad" enableviewstate="True" projectdocumentation="">
-  <DeploymentInformation target="" script="" strategy="File" />
-  <References>
-    <Reference assembly=".\SharpZipLib.dll" />
-  </References>
+<Project name="viewzipfile" standardNamespace="NewProject" description="creates an empty C# project" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
   <Contents>
-    <File name=".\readme.txt" subtype="Code" buildaction="Exclude" />
-    <File name=".\build.bat" subtype="Code" buildaction="Exclude" />
-    <File name=".\ViewZipFile.cs" subtype="Code" buildaction="Compile" />
+    <File name=".\readme.txt" subtype="Code" buildaction="Exclude" dependson="" data="" />
+    <File name=".\build.bat" subtype="Code" buildaction="Exclude" dependson="" data="" />
+    <File name=".\ViewZipFile.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
+  <References>
+    <Reference type="Assembly" refto="..\..\..\bin\ICSharpCode.SharpZipLib.dll" localcopy="True" />
+  </References>
+  <DeploymentInformation target="" script="" strategy="File" />
+  <Configuration runwithwarnings="True" name="Debug">
+    <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="0" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Exe" definesymbols="" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
+    <Execution commandlineparameters="" consolepause="True" />
+    <Output directory=".\bin" assembly="viewzipfile" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
+  </Configuration>
   <Configurations active="Debug">
-    <Configuration name="Debug" description="">
-      <Output directory=".\bin" assembly="viewzipfile" />
-      <CodeGeneration warninglevel="0" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Exe" definesymbols="" generatexmldocumentation="False" win32Icon="" />
-      <Execution consolepause="True" runwithwarnings="False" commandlineparameters="" />
+    <Configuration runwithwarnings="True" name="Debug">
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="0" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Exe" definesymbols="" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
+      <Execution commandlineparameters="" consolepause="True" />
+      <Output directory=".\bin" assembly="viewzipfile" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
     </Configuration>
-    <Configuration name="Release" description="">
-      <Output directory=".\" assembly="viewzipfile" />
-      <CodeGeneration warninglevel="4" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Exe" definesymbols="" generatexmldocumentation="False" win32Icon="" />
-      <Execution consolepause="True" runwithwarnings="False" commandlineparameters="" />
+    <Configuration runwithwarnings="True" name="Release">
+      <CodeGeneration runtime="MsNet" compiler="Csc" compilerversion="" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Exe" definesymbols="" generatexmldocumentation="False" win32Icon="" noconfig="False" nostdlib="False" />
+      <Execution commandlineparameters="" consolepause="True" />
+      <Output directory=".\" assembly="viewzipfile" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
     </Configuration>
   </Configurations>
 </Project>
