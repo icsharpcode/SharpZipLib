@@ -36,7 +36,7 @@
 namespace ICSharpCode.SharpZipLib.Core
 {
 	/// <summary>
-	/// INameTransform defines how file system names are transformed.
+	/// INameTransform defines how file system names are transformed for use with archives.
 	/// </summary>
 	public interface INameTransform
 	{
