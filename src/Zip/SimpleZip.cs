@@ -64,6 +64,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 		
+		/// <summary>
+		/// Raises the ProcessFileEvent.
+		/// </summary>
+		/// <param name="file">The file for this event.</param>
 		public void OnProcessFile(string file)
 		{
 			if ( ProcessFile != null ) {
@@ -72,6 +76,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 		
+		/// <summary>
+		/// Raises the ProcessDirectoryEvent.
+		/// </summary>
+		/// <param name="directory">The directory for this event.</param>
+		/// <param name="isEmpty">Flag indicating if directory is empty as determined by the current filter.</param>
 		public void OnProcessDirectory(string directory, bool isEmpty)
 		{
 			if ( ProcessDirectory != null ) {
@@ -174,9 +183,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 		void ProcessDirectory(object sender, DirectoryEventArgs e)
 		{
-			if ( e.IsEmpty && createEmptyDirectories ) {
+			if ( !e.HasMatchingFiles && createEmptyDirectories ) {
 				if ( events != null ) {
-					events.OnProcessDirectory(e.Name, e.IsEmpty);
+					events.OnProcessDirectory(e.Name, e.HasMatchingFiles);
 				}
 				
 				if (e.Name != sourceDirectory) {
@@ -302,6 +311,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 		
+		/// <summary>
+		/// Get or set the <see cref="ZipNameTransform"> active when creating Zip files.</see>
+		/// </summary>
 		public ZipNameTransform NameTransform
 		{
 			get { return nameTransform; }
