@@ -283,22 +283,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		protected Inflater inf;
 
 		protected InflaterInputBuffer inputBuffer;
-/*	Encryption	
-		/// <summary>
-		/// Byte array used for buffering input.
-		/// </summary>
-		protected byte[] dataBuffer;
 
-		/// <summary>
-		/// Size of buffer <see cref="dataBuffer"></see>
-		/// </summary>
-		protected int len;
-*/
-
-		// Used for reading single bytes the ReadByte() call
-//		private byte[] onebytebuffer = new byte[1];  Encryption
-		
-		/// <summary>
+      /// <summary>
 		/// Base stream the inflater reads from.
 		/// </summary>
 		protected Stream baseInputStream;
@@ -355,7 +341,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		public override long Length {
 			get {
-				return inputBuffer.RawLength; // Encryption
+				return inputBuffer.RawLength;
 			}
 		}
 		
@@ -492,14 +478,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			this.inf = inflater;
 			
 			inputBuffer = new InflaterInputBuffer(baseInputStream);
-/* Encryption	dataBuffer = new byte[bufferSize];
-			
-			if (baseInputStream.CanSeek) {
-				this.len = (int)baseInputStream.Length;
-			} else {
-				this.len = 0;
-			}
-*/			
 		}
 		
 		/// <summary>
@@ -531,47 +509,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </exception>
 		protected void Fill()
 		{
-/* Encryption			
-			if (csize > 0) {
-				len = baseInputStream.Read(dataBuffer, 0, dataBuffer.Length);
-			} else {
-				len = baseInputStream.Read(dataBuffer, 0, 1);
-			}
-			
-			if (len <= 0) {
-				throw new SharpZipBaseException("Deflated stream ends early.");
-			}
-			
-			if (keys != null) {
-				// TODO: Encryption here we need to shuffle buffers....
-				if ( csize > 0 )
-					DecryptBlock(dataBuffer, 0, System.Math.Min((int)(csize - inf.TotalIn), len));
-				else
-					DecryptBlock(dataBuffer, 0, len);
-			}
-			inf.SetInput(dataBuffer, 0, len);
-*/
 			inputBuffer.Fill();
 			inputBuffer.SetInflaterInput(inf);
 		}
-/* Encryption		
-		/// <summary>
-		/// Reads one byte of decompressed data.
-		///
-		/// The byte is baseInputStream the lower 8 bits of the int.
-		/// </summary>
-		/// <returns>
-		/// The byte read cast to an int, or -1 on end of stream.
-		/// </returns>
-		public override int ReadByte()
-		{
-			int nread = Read(onebytebuffer, 0, 1); // read one byte
-			if (nread > 0) {
-				return onebytebuffer[0] & 0xff;
-			}
-			return -1;
-		}
-*/
 
 		/// <summary>
 		/// Decompresses data into the byte array

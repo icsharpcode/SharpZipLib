@@ -380,7 +380,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		
 		#region Encryption
 		
-		// TODO  Refactor this code.  The presence of Zip specific code in this low level class is wrong
+		// TODO:  Refactor this code.  The presence of Zip specific code in this low level class is wrong
 		string password = null;
 		uint[] keys     = null;
 		

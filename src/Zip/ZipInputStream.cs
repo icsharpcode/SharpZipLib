@@ -102,7 +102,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		long size;
 		int method;
 		int flags;
-//		long avail;
 		string password = null;
 		
 		/// <summary>
