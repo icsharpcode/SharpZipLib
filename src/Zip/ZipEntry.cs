@@ -589,7 +589,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						
 						if (len < 0 || pos + len > extra.Length) {
 							// This is still lenient but the extra data is corrupt
-							// TODO drop the extra data? or somehow indicate to user 
+							// TODO: drop the extra data? or somehow indicate to user 
 							// there is a problem...
 							break;
 						}
@@ -643,7 +643,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return comment;
 			}
 			set {
-				// TODO this test is strictly incorrect as the length is in characters
+				// TODO: this test is strictly incorrect as the length is in characters
 				// While the test is correct in that a comment of this length or greater 
 				// is definitely invalid, shorter comments may also have an invalid length.
 				if (value != null && value.Length > 0xffff) {

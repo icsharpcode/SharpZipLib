@@ -338,7 +338,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				entry.ExtraData = extra;
 			}
 			
-			// TODO How to handle this?
+			// TODO: How to handle this?
 			// This library cannot handle versions greater than 20
 			// Throwing an exception precludes getting at later possibly useable entries.
 			// Could also skip this entry entirely

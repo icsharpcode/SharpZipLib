@@ -220,7 +220,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 			long giveUpMarker = Math.Max(pos - maximumVariableData, 0);
 		
-			// TODO this loop could be optimised for speed.
+			// TODO: this loop could be optimised for speed.
 			do 
 			{
 				if (pos < giveUpMarker) {
@@ -449,7 +449,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					long offset = TestLocalHeader(this[i], true, true);
 					if (testData) {
 						Stream entryStream = this.GetInputStream(this[i]);
-						// TODO events for updating info, recording errors etc
+						// TODO: events for updating info, recording errors etc
 						Crc32 crc = new Crc32();
 						byte[] buffer = new byte[4096];
 						int bytesRead;
@@ -459,7 +459,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	
 						if (this[i].Crc != crc.Value) {
 							result = false;
-							// TODO Event here....
+							// TODO: Event here....
 							break; // Do all entries giving more info at some point?
 						}
 					}
@@ -528,7 +528,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				intValue = ReadLeInt();	   // compressed Size
 				intValue = ReadLeInt();	   // uncompressed size
 	
-				// TODO make test more correct...  can't compare lengths as was done originally as this can fail for MBCS strings
+				// TODO: make test more correct...  can't compare lengths as was done originally as this can fail for MBCS strings
 				// Assuming a code page at this point is not valid?  Best is to store the name length in the ZipEntry probably
 				int storedNameLength = ReadLeShort();
 				if (entry.Name.Length > storedNameLength) {
