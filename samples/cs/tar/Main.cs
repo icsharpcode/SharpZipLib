@@ -18,11 +18,6 @@ using ICSharpCode.SharpZipLib.Tar;
 public class Tar
 {
 	/// <summary>
-	/// Flag that determines if debugging information is displayed.
-	/// </summary>
-	bool debug;
-	
-	/// <summary>
 	/// Flag that determines if verbose feedback is provided.
 	/// </summary>
 	bool verbose;
@@ -107,7 +102,6 @@ public class Tar
 	/// </summary>
 	public Tar()
 	{
-		this.debug          = false;
 		this.verbose        = false;
 		this.archiveName    = null;
 		this.keepOldFiles   = false;
@@ -120,7 +114,7 @@ public class Tar
 		this.userName = ((sysUserName == null) ? "" : sysUserName);
 		
 		this.groupId   = 0;
-		this.groupName = "";
+		this.groupName = "None";
 	}
 
 	string[] GetFilesForSpec(string spec)
@@ -199,7 +193,6 @@ public class Tar
 		}
 		
 		if (archive != null) {						// SET ARCHIVE OPTIONS
-			archive.SetDebug(this.debug);
 			archive.IsVerbose = this.verbose;
 			
 			archive.SetKeepOldFiles(this.keepOldFiles);
@@ -406,10 +399,6 @@ public class Tar
 							this.verbose = true;
 							break;
 
-						case 'D':
-							this.debug = true;
-							break;
-
 						default:
 							Console.Error.WriteLine("unknown option: " + arg[cIdx]);
 							this.ShowHelp();
@@ -527,15 +516,15 @@ public class Tar
 	/// </summary>
 	public void ShowTarProgressMessage(TarArchive archive, TarEntry entry, string message)
 	{
-		if (entry.TarHeader.typeFlag != TarHeader.LF_NORMAL && entry.TarHeader.typeFlag != TarHeader.LF_OLDNORM) {
-			Console.WriteLine("Entry type " + (char)entry.TarHeader.typeFlag + " found!");
+		if (entry.TarHeader.TypeFlag != TarHeader.LF_NORMAL && entry.TarHeader.TypeFlag != TarHeader.LF_OLDNORM) {
+			Console.WriteLine("Entry type " + (char)entry.TarHeader.TypeFlag + " found!");
 		}
 
 		if (message != null)
 			Console.Write(entry.Name + " " + message);
 		else {
 			if (this.verbose) {
-				string modeString = decodeType(entry.TarHeader.typeFlag, entry.Name.EndsWith("/")) + decodeMode(entry.TarHeader.mode);
+				string modeString = decodeType(entry.TarHeader.TypeFlag, entry.Name.EndsWith("/")) + decodeMode(entry.TarHeader.Mode);
 				string userString = (entry.UserName == null || entry.UserName.Length == 0) ? entry.UserId.ToString() : entry.UserName;
 				string groupString = (entry.GroupName == null || entry.GroupName.Length == 0) ? entry.GroupId.ToString() : entry.GroupName;
 				
@@ -546,13 +535,21 @@ public class Tar
 		}
 	}
 	
+	string SharpZipVersion()
+	{
+		System.Reflection.Assembly zipAssembly = System.Reflection.Assembly.GetAssembly(new TarHeader().GetType());
+		Version v = zipAssembly.GetName().Version;
+		return "#ZipLib v" + v.Major + "." + v.Minor + "." + v.Build + "." + v.Revision;
+	}
+	
 	/// <summary>
 	/// Print version information.
 	/// </summary>
 	void Version()
 	{
-		Console.Error.WriteLine( "tar 2.0.5" );
+		Console.Error.WriteLine( "tar 2.0.6" );
 		Console.Error.WriteLine( "" );
+		Console.Error.WriteLine( "{0}", SharpZipVersion() );
 		Console.Error.WriteLine( "Copyright (c) 2002 by Mike Krueger" );
 		Console.Error.WriteLine( "Copyright (c) 1998,1999 by Tim Endres (Java version)" );
 		Console.Error.WriteLine( "" );
@@ -588,10 +585,9 @@ public class Tar
 		Console.Error.WriteLine( "  -z, --gzip                 use gzip compression" );
 		Console.Error.WriteLine( "  -Z, --compress             use unix compress" );
 		Console.Error.WriteLine( "  -j, --bzip2                use bzip2 compression" );
-		Console.Error.WriteLine( "  -D,                        debug archive and buffer operation" );
 		Console.Error.WriteLine( "  -k, --keep-old-files       dont overwrite existing files when extracting" );
 		Console.Error.WriteLine( "  -b blks,                   set blocking factor (blks * 512 bytes per record)" );
-		Console.Error.WriteLine( "     --record-size=SIZE      SIZE bytes per record, multiple of 512");
+		Console.Error.WriteLine( "      --record-size=SIZE     SIZE bytes per record, multiple of 512");
 		Console.Error.WriteLine( "  -u name,                   set user name to 'name'" );
 		Console.Error.WriteLine( "  -U id,                     set user id to 'id'" );
 		Console.Error.WriteLine( "  -g name,                   set group name to 'name'" );
