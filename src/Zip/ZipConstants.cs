@@ -37,6 +37,7 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+using System;
 using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Zip 
@@ -73,6 +74,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		WinZipAES  = 99,
 		
+	}
+	/// <summary>
+	/// Defines the contents of the general bit flags field for an archive entry.
+	/// </summary>
+	[Flags]
+	enum GeneralBitFlags : int
+	{
+		Encrypted         = 0x0001,
+		Method            = 0x0006,
+		Descriptor        = 0x0008,
+		Reserved          = 0x0010,
+		Patched           = 0x0020,
+		StrongEncryption  = 0x0040,
+		EnhancedCompress  = 0x1000,
+		HeaderMasked      = 0x2000
 	}
 	
 	/// <summary>

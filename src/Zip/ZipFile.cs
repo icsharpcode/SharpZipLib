@@ -42,6 +42,7 @@ using System.Collections;
 using System.IO;
 using System.Text;
 
+using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 
@@ -435,6 +436,109 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int index = FindEntry(name, true);
 			return index >= 0 ? (ZipEntry) entries[index].Clone() : null;
 		}
+		/// <summary>
+		/// Test an archive for integrity/validity
+		/// </summary>
+		/// <param name="testData">Perform low level data Crc check</param>
+		/// <returns>true iff the test passes, false otherwise</returns>
+		public bool TestArchive(bool testData)
+		{
+			bool result = true;
+			try {
+				for (int i = 0; i < Size; ++i) {
+					long offset = TestLocalHeader(this[i], true, true);
+					if (testData) {
+						Stream entryStream = this.GetInputStream(this[i]);
+						// TODO events for updating info, recording errors etc
+						Crc32 crc = new Crc32();
+						byte[] buffer = new byte[4096];
+						int bytesRead;
+						while ((bytesRead = entryStream.Read(buffer, 0, buffer.Length)) > 0) {
+							crc.Update(buffer, 0, bytesRead);
+						}
+	
+						if (this[i].Crc != crc.Value) {
+							result = false;
+							// TODO Event here....
+							break; // Do all entries giving more info at some point?
+						}
+					}
+				}
+			}
+			catch {
+				result = false;
+			}
+			return result;
+		}
+	
+		/// <summary>
+		/// Test the local header against that provided from the central directory
+		/// </summary>
+		/// <param name="entry">
+		/// The entry to test against
+		/// </param>
+		/// <param name="bePicky">
+		/// If true be extremely picky about the testing, otherwise be relaxed so extraction may be done if plausible
+		/// </param>
+		/// </param name="extractTest">
+		/// Apply extra testing to see if the entry can be extracted by the library
+		/// </param>
+		/// <returns>The offset of the entries data in the file</returns>
+		long TestLocalHeader(ZipEntry entry, bool bePicky, bool extractTest)
+		{
+			lock(baseStream) 
+			{
+				baseStream.Seek(offsetOfFirstEntry + entry.Offset, SeekOrigin.Begin);
+				if (ReadLeInt() != ZipConstants.LOCSIG) {
+					throw new ZipException("Wrong local header signature");
+				}
+				
+				short shortValue = (short)ReadLeShort();	 // version required to extract
+				if (extractTest == true && shortValue > ZipConstants.VERSION_MADE_BY) {
+					throw new ZipException(string.Format("Version required to extract this entry not supported ({0})", shortValue));
+				}
+
+				short localFlags = (short)ReadLeShort();				  // general purpose bit flags.
+				if (extractTest == true) {
+					if ((localFlags & (int)(GeneralBitFlags.Patched | GeneralBitFlags.StrongEncryption | GeneralBitFlags.EnhancedCompress | GeneralBitFlags.HeaderMasked)) != 0) {
+						throw new ZipException("The library doesnt support the zip version required to extract this entry");
+					}
+				}
+					
+				if (localFlags != entry.Flags) {
+				   throw new ZipException("Central header/local header flags mismatch");
+				}
+	
+				if (entry.CompressionMethod != (CompressionMethod)ReadLeShort()) {
+				   throw new ZipException("Central header/local header compression method mismatch");
+				}
+	
+				shortValue = (short)ReadLeShort();  // file time
+				shortValue = (short)ReadLeShort();  // file date
+	
+				int intValue = ReadLeInt();   // Crc
+	
+				if (bePicky == true) {
+					if ((localFlags & (int)GeneralBitFlags.Descriptor) == 0) {
+						if (intValue != (int)entry.Crc) 
+							throw new ZipException("Central header/local header crc mismatch");
+					}
+				}
+	
+				intValue = ReadLeInt();	   // compressed Size
+				intValue = ReadLeInt();	   // uncompressed size
+	
+				// TODO make test more correct...  can't compare lengths as was done originally as this can fail for MBCS strings
+				// Assuming a code page at this point is not valid?  Best is to store the name length in the ZipEntry probably
+				int storedNameLength = ReadLeShort();
+				if (entry.Name.Length > storedNameLength) {
+					throw new ZipException("file name length mismatch");
+				}
+					
+				int extraLen = storedNameLength + ReadLeShort();
+				return offsetOfFirstEntry + entry.Offset + ZipConstants.LOCHDR + extraLen;
+			}
+		}
 		
 		/// <summary>
 		/// Checks, if the local header of the entry at index i matches the
@@ -452,43 +556,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </exception>
 		long CheckLocalHeader(ZipEntry entry)
 		{
-			lock(baseStream) {
-				baseStream.Seek(entry.Offset, SeekOrigin.Begin);
-				if (ReadLeInt() != ZipConstants.LOCSIG) {
-					throw new ZipException("Wrong Local header signature");
-				}
-				
-				short shortValue = (short)ReadLeShort();     // version required to extract
-				if (shortValue > ZipConstants.VERSION_MADE_BY) {
-					throw new ZipException(string.Format("Version required to extract this entry not supported ({0})", shortValue));
-				}
-				
-				shortValue = (short)ReadLeShort();                  // general purpose bit flags.
-				if ((shortValue & 0x30) != 0) {
-					throw new ZipException("The library doesnt support the zip version required to extract this entry");
-				}
-				
-				if (entry.CompressionMethod != (CompressionMethod)ReadLeShort()) {
-					throw new ZipException("Compression method mismatch");
-				}
-				
-				// Skip time, crc, size and csize
-				long oldPos = baseStream.Position;
-				baseStream.Position += ZipConstants.LOCNAM - ZipConstants.LOCTIM;
-				
-				if (baseStream.Position - oldPos != ZipConstants.LOCNAM - ZipConstants.LOCTIM) {
-					throw new ZipException("End of stream");
-				}
-				
-				// TODO make test more correct...  cant compare lengths as was done originally as this can fail for MBCS strings
-				int storedNameLength = ReadLeShort();
-				if (entry.Name.Length > storedNameLength) {
-					throw new ZipException("file name length mismatch");
-				}
-				
-				int extraLen = storedNameLength + ReadLeShort();
-				return entry.Offset + ZipConstants.LOCHDR + extraLen;
-			}
+			return TestLocalHeader(entry, false, true);
 		}
 		
 		/// <summary>
