@@ -477,14 +477,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="entry">
 		/// The entry to test against
 		/// </param>
-		/// <param name="bePicky">
-		/// If true be extremely picky about the testing, otherwise be relaxed so extraction may be done if plausible
+		/// <param name="fullTest">
+		/// If true be extremely picky about the testing, otherwise be relaxed
 		/// </param>
 		/// </param name="extractTest">
 		/// Apply extra testing to see if the entry can be extracted by the library
 		/// </param>
 		/// <returns>The offset of the entries data in the file</returns>
-		long TestLocalHeader(ZipEntry entry, bool bePicky, bool extractTest)
+		long TestLocalHeader(ZipEntry entry, bool fullTest, bool extractTest)
 		{
 			lock(baseStream) 
 			{
@@ -516,9 +516,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				shortValue = (short)ReadLeShort();  // file time
 				shortValue = (short)ReadLeShort();  // file date
 	
-				int intValue = ReadLeInt();   // Crc
+				int intValue = ReadLeInt();         // Crc
 	
-				if (bePicky == true) {
+				if (fullTest) {
 					if ((localFlags & (int)GeneralBitFlags.Descriptor) == 0) {
 						if (intValue != (int)entry.Crc) 
 							throw new ZipException("Central header/local header crc mismatch");
