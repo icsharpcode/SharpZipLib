@@ -1,4 +1,4 @@
-// FileFilter.cs
+// PathFilter.cs
 //
 // Copyright 2005 John Reilly
 //
