@@ -317,11 +317,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		int groupId;
 		
 		/// <summary>
-		/// The entry's group id.
+		/// Get/set the entry's group id.
 		/// </summary>
 		/// <remarks>
-		/// This is only directly relevant to unix systems.
-		/// The default is zero.
+		/// This is only directly relevant to linux/unix systems.
+		/// The default value is zero.
 		/// </remarks>
 		public int GroupId
 		{
@@ -333,7 +333,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		long size;
 		
 		/// <summary>
-		/// The entry's size.
+		/// Get/set the entry's size.
 		/// </summary>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when setting the size to less than zero.</exception>
 		public long Size
@@ -350,7 +350,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		DateTime modTime;
 		
 		/// <summary>
-		/// The entry's modification time.
+		/// Get/set the entry's modification time.
 		/// </summary>
 		/// <remarks>
 		/// The modification time is only accurate to within a second.
@@ -391,7 +391,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		byte typeFlag;
 		
 		/// <summary>
-		/// The entry's type flag.
+		/// Get/set the entry's type flag.
 		/// </summary>
 		public byte TypeFlag
 		{
@@ -419,7 +419,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		string magic;
 		
 		/// <summary>
-		/// The entry's magic tag.
+		/// Get/set the entry's magic tag.
 		/// </summary>
 		/// <exception cref="ArgumentNullException">Thrown when attempting to set Magic to null.</exception>
 		public string Magic
@@ -483,7 +483,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		string groupName;
 		
 		/// <summary>
-		/// The entry's group name.
+		/// Get/set the entry's group name.
 		/// </summary>
 		/// <remarks>
 		/// This is only directly relevant to unix systems.
@@ -504,7 +504,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		int devMajor;
 		
 		/// <summary>
-		/// The entry's major device number.
+		/// Get/set the entry's major device number.
 		/// </summary>
 		public int DevMajor
 		{
@@ -515,7 +515,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		int devMinor;
 		
 		/// <summary>
-		/// The entry's minor device number.
+		/// Get/set the entry's minor device number.
 		/// </summary>
 		public int DevMinor
 		{
@@ -524,7 +524,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 		
 		/// <summary>
-		/// Construct a default TarHeader instance
+		/// Initialise a default TarHeader instance
 		/// </summary>
 		public TarHeader()
 		{

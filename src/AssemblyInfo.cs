@@ -44,11 +44,11 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("#ZipLibrary")]
-[assembly: AssemblyCopyright("Copyright Mike Krueger 2001-2004")]
+[assembly: AssemblyCopyright("Copyright Mike Krueger 2001-2005")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("0.83.0.0")]
+[assembly: AssemblyVersion("0.83.1.0")]
 
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("../ICSharpCode.SharpZipLib.key")]

@@ -267,6 +267,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				int nameCharIndex = 0;
 
 				while (nameCharIndex < entry.TarHeader.Name.Length) {
+					Array.Clear(blockBuf, 0, blockBuf.Length);
 					TarHeader.GetAsciiBytes(entry.TarHeader.Name, nameCharIndex, this.blockBuf, 0, TarBuffer.BlockSize);
 					nameCharIndex += TarBuffer.BlockSize;
 					this.buffer.WriteBlock(this.blockBuf);

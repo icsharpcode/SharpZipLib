@@ -280,7 +280,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Returns 0 once the end of the stream (EOF) has been reached.
 		/// Otherwise returns 1.
 		/// </summary>
-		/// TODO make this a bool property?
 		public virtual int Available {
 			get {
 				return inf.IsFinished ? 0 : 1;
@@ -289,7 +288,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		
 		/// <summary>
 		/// Closes the input stream.  When <see cref="IsStreamOwner"></see>
-		/// is true the underelying stream is also closed.
+		/// is true the underlying stream is also closed.
 		/// </summary>
 		public override void Close()
 		{
@@ -300,9 +299,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		int readChunkSize = 0;
 
-		// TODO  this is an inefficient way of handling this situation
-		// revamp this to operate better...
-		
 		/// <summary>
 		/// Sets the size of chunks to read from the input stream
 		/// 0 means as larger as possible.
