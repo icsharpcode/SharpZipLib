@@ -238,11 +238,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		ICryptoTransform cryptoTransform;
+
 		public ICryptoTransform CryptoTransform
 		{
 			set { 
 				cryptoTransform = value;
-				if ( cryptoTransform != null )
+            if ( cryptoTransform != null )
             {
                if ( rawData == clearText ) 
                {
@@ -252,8 +253,13 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
                if ( available > 0 ) 
                {
                   cryptoTransform.TransformBlock(rawData, rawLength - available, available, clearText, rawLength - available);
-					}
-				}
+               }
+            }
+            else
+            {
+               clearText = rawData;
+               clearTextLength = rawLength;
+            }
 			}
 		}
 		
