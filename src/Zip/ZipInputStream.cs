@@ -392,7 +392,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			return b[0] & 0xff;
 		}
-		
+
 		/// <summary>
 		/// Reads a block of bytes from the current zip entry.
 		/// </summary>
@@ -414,7 +414,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new InvalidOperationException("Closed.");
 			}
 			
-			if (entry == null) {
+			if (entry == null || len <= 0 ) {
 				return 0;
 			}
 			
