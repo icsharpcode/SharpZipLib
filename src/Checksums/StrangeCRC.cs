@@ -115,7 +115,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		int globalCrc;
 
 		/// <summary>
-		/// construct Crc
+		/// Initialise a default instance of <see cref="StrangeCrc"></see>
 		/// </summary>	
 		public StrangeCRC() 
 		{
@@ -123,7 +123,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		}
 
 		/// <summary>
-		/// reset state of Crc
+		/// Reset the state of Crc.
 		/// </summary>
 		public void Reset()
 		{
@@ -131,7 +131,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		}
 
 		/// <summary>
-		/// current Crc value
+		/// Get the current Crc value.
 		/// </summary>
 		public long Value {
 			get {
@@ -140,7 +140,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		}
 		
 		/// <summary>
-		/// update Crc value
+		/// Update the Crc value.
 		/// </summary>
 		/// <param name="inCh">data update is based on</param>
 		public void Update(int inCh)
@@ -161,7 +161,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		}
 		
 		/// <summary>
-		/// update Crc based on a portion of a block of data
+		/// Update Crc based on a portion of a block of data
 		/// </summary>
 		/// <param name="buf">block of data</param>
 		/// <param name="off">index of first byte to use</param>

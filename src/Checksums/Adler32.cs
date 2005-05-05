@@ -105,7 +105,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		}
 		
 		/// <summary>
-		/// Creates a new instance of the <code>Adler32</code> class.
+		/// Creates a new instance of the Adler32 class.
 		/// The checksum starts off with a value of 1.
 		/// </summary>
 		public Adler32()
@@ -118,19 +118,19 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		/// </summary>
 		public void Reset()
 		{
-			checksum = 1; //Initialize to 1
+			checksum = 1;
 		}
 		
 		/// <summary>
 		/// Updates the checksum with the byte b.
 		/// </summary>
 		/// <param name="bval">
-		/// the data value to add. The high byte of the int is ignored.
+		/// The data value to add. The high byte of the int is ignored.
 		/// </param>
 		public void Update(int bval)
 		{
-			//We could make a length 1 byte array and call update again, but I
-			//would rather not have that overhead
+			// We could make a length 1 byte array and call update again, but I
+			// would rather not have that overhead
 			uint s1 = checksum & 0xFFFF;
 			uint s2 = checksum >> 16;
 			
@@ -141,10 +141,10 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		}
 		
 		/// <summary>
-		/// Updates the checksum with the bytes taken from the array.
+		/// Updates the checksum with an array of bytes.
 		/// </summary>
 		/// <param name="buffer">
-		/// buffer an array of bytes
+		/// The source of the data to update with.
 		/// </param>
 		public void Update(byte[] buffer)
 		{
