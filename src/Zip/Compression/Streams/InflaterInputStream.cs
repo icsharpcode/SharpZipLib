@@ -584,76 +584,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		#region Encryption stuff
-/* Encryption		
-		// TODO  Refactor this code.  The presence of Zip specific code in this low level class is wrong
-		
-		/// <summary>
-		/// A buffer used for decrypting data.  Used to hold Zip crypto header.
-		/// </summary>
-		protected byte[] cryptbuffer = null;
-		
-		uint[] keys = null;
-		
-		/// <summary>
-		/// Decrypt a single byte
-		/// </summary>
-		/// <returns>plain text byte value</returns>
-		protected byte DecryptByte()
-		{
-			uint temp = ((keys[2] & 0xFFFF) | 2);
-			return (byte)((temp * (temp ^ 1)) >> 8);
-		}
-		
-		/// <summary>
-		/// Decrypt cipher text block, updating keys
-		/// </summary>
-		/// <param name="buf">Data to decrypt</param>
-		/// <param name="off">Offset of first byte to process</param>
-		/// <param name="len">Number of bytes to process</param>
-		protected void DecryptBlock(byte[] buf, int off, int len)
-		{
-			for (int i = off; i < off + len; ++i) {
-				buf[i] ^= DecryptByte();
-				UpdateKeys(buf[i]);
-			}
-		}
-		
-		/// <summary>
-		/// Initialise the decryption keys
-		/// </summary>
-		/// <param name="password">The password used to initialise the keys</param>
-		protected void InitializePassword(string password)
-		{
-			keys = new uint[] {
-				0x12345678,
-				0x23456789,
-				0x34567890
-			};
-			for (int i = 0; i < password.Length; ++i) {
-				UpdateKeys((byte)password[i]);
-			}
-		}
-		
-		/// <summary>
-		/// Update the decryption keys
-		/// </summary>
-		/// <param name="ch">Character to update the keys with</param>
-		protected void UpdateKeys(byte ch)
-		{
-			keys[0] = Crc32.ComputeCrc32(keys[0], ch);
-			keys[1] = keys[1] + (byte)keys[0];
-			keys[1] = keys[1] * 134775813 + 1;
-			keys[2] = Crc32.ComputeCrc32(keys[2], (byte)(keys[1] >> 24));
-		}
-*/
-
 		/// <summary>
 		/// Clear any cryptographic state.
 		/// </summary>		
 		protected void StopDecrypting()
 		{
-// Encryption			keys = null;
-//			cryptbuffer = null;
 			inputBuffer.CryptoTransform = null;
 		}
 		#endregion
