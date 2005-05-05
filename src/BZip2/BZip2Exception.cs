@@ -53,7 +53,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Initialise a new instance of BZip2Exception with its message set to message.
 		/// </summary>
-		/// <param name="message">The messaage describing the error.</param>
+		/// <param name="message">The message describing the error.</param>
 		public BZip2Exception(string message) : base(message)
 		{
 		}
