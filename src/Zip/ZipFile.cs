@@ -50,6 +50,53 @@ using ICSharpCode.SharpZipLib.Encryption;
 
 namespace ICSharpCode.SharpZipLib.Zip 
 {
+
+	/// <summary>
+	/// Arguments used with KeysRequiredEvent
+	/// </summary>
+	public class KeysRequiredEventArgs : EventArgs
+	{
+		string fileName;
+	
+		/// <summary>
+		/// Get the name of the file for which keys are required.
+		/// </summary>
+		public string FileName
+		{
+			get { return fileName; }
+		}
+	
+		byte[] key;
+		
+		/// <summary>
+		/// Get/set the key value
+		/// </summary>
+		public byte[] Key
+		{
+			get { return key; }
+			set { key = value; }
+		}
+	
+		/// <summary>
+		/// Initialise a new instance of <see cref="KeysRequiredEventArgs"></see>
+		/// </summary>
+		/// <param name="name">The name of the file for which keys are required.</param>
+		public KeysRequiredEventArgs(string name)
+		{
+			fileName = name;
+		}
+	
+		/// <summary>
+		/// Initialise a new instance of <see cref="KeysRequiredEventArgs"></see>
+		/// </summary>
+		/// <param name="name">The name of the file for which keys are required.</param>
+		/// <param name="keyValue">The current key value.</param>
+		public KeysRequiredEventArgs(string name, byte[] keyValue)
+		{
+			fileName = name;
+			key = keyValue;
+		}
+	}
 	
 	/// <summary>
 	/// This class represents a Zip archive.  You can ask for the contained
@@ -100,52 +147,37 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 		#region KeyHandling
 		
-		public class KeysRequiredEventArgs : EventArgs
+		/// <summary>
+		/// Delegate for handling keys/password setting during compresion/decompression.
+		/// </summary>
+		public delegate void KeysRequiredEventHandler(
+			object sender,
+			KeysRequiredEventArgs e
+		);
+
+		/// <summary>
+		/// Event handler for handling encryption keys.
+		/// </summary>
+		public KeysRequiredEventHandler KeysRequired;
+
+		/// <summary>
+		/// Handles getting of encryption keys when required.
+		/// </summary>
+		/// <param name="fileName">The file for which encryptino keys are required.</param>
+		void OnKeysRequired(string fileName)
 		{
-			string fileName;
-		
-			public string FileName
-			{
-				get { return fileName; }
-				set { fileName = value; }
-			}
-		
-			byte[] key;
-			public byte[] Key
-			{
-				get { return key; }
-				set { key = value; }
-			}
-		
-			public KeysRequiredEventArgs(string name)
-			{
-				fileName = name;
-			}
-		
-			public KeysRequiredEventArgs(string name, byte[] keyValue)
-			{
-				fileName = name;
-				key = keyValue;
-				}
-			}
-		
-			public delegate void KeysRequiredEventHandler(
-				object sender,
-				KeysRequiredEventArgs e
-			);
-		
-			public KeysRequiredEventHandler KeysRequired;
-		
-			void OnKeysRequired(string fileName)
-			{
-				if (KeysRequired != null) {
-					KeysRequiredEventArgs krea = new KeysRequiredEventArgs(fileName, key);
-					KeysRequired(this, krea);
-					key = krea.Key;
+			if (KeysRequired != null) {
+				KeysRequiredEventArgs krea = new KeysRequiredEventArgs(fileName, key);
+				KeysRequired(this, krea);
+				key = krea.Key;
 			}
 		}
 		
 		byte[] key = null;
+		
+		/// <summary>
+		/// Get/set the encryption key value.
+		/// </summary>
 		byte[] Key
 		{
 			get { return key; }
@@ -675,7 +707,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			CryptoStream result = null;
 
 			if (entry.Version < ZipConstants.VERSION_STRONG_ENCRYPTION 
-             || (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0) {
+				|| (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0) {
 				PkzipClassicManaged classicManaged = new PkzipClassicManaged();
 
 				OnKeysRequired(entry.Name);
@@ -917,7 +949,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 					return (int) amount;
 				}
 			}
-			
+
+			/// <summary>
+			/// Read a byte from this stream.
+			/// </summary>
+			/// <returns>Returns the byte read or -1 on end of stream.</returns>
 			public override int ReadByte()
 			{
 				if (filepos == end) {
