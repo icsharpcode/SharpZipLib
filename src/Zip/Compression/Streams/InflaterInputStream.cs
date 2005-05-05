@@ -243,23 +243,18 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			set { 
 				cryptoTransform = value;
-            if ( cryptoTransform != null )
-            {
-               if ( rawData == clearText ) 
-               {
-                  clearText = new byte[4096];
-               }
-               clearTextLength = rawLength;
-               if ( available > 0 ) 
-               {
-                  cryptoTransform.TransformBlock(rawData, rawLength - available, available, clearText, rawLength - available);
-               }
-            }
-            else
-            {
-               clearText = rawData;
-               clearTextLength = rawLength;
-            }
+				if ( cryptoTransform != null ) {
+					if ( rawData == clearText ) {
+						clearText = new byte[4096];
+					}
+					clearTextLength = rawLength;
+					if ( available > 0 ) {
+						cryptoTransform.TransformBlock(rawData, rawLength - available, available, clearText, rawLength - available);
+					}
+				} else {
+					clearText = rawData;
+					clearTextLength = rawLength;
+				}
 			}
 		}
 		
