@@ -325,7 +325,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		long LocateBlockWithSignature(int signature, long endLocation, int minimumBlockSize, int maximumVariableData)
 		{
 			long pos = endLocation - minimumBlockSize;
-			if (pos <= 0) {
+			if (pos < 0) {
 				return -1;
 			}
 		
