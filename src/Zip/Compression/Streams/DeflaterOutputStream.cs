@@ -219,7 +219,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					break;
 				}
 				
-				if (this.Password != null) {
+				if (this.keys != null) {
 					this.EncryptBlock(buf, 0, len);
 				}
 				
@@ -323,7 +323,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					break;
 				}
 				
-				if (this.Password != null) {
+				if (this.keys != null) {
 					this.EncryptBlock(buf, 0, len);
 				}
 				
@@ -333,6 +333,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				throw new SharpZipBaseException("Can't deflate all input?");
 			}
 			baseOutputStream.Flush();
+			keys = null;
 		}
 		
 		/// <summary>
@@ -428,7 +429,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </param>
 		protected void EncryptBlock(byte[] buffer, int offset, int length)
 		{
-			// TODO: refactor to use encryptor?
+			// TODO: refactor to use crypto transform
 			for (int i = offset; i < offset + length; ++i) {
 				byte oldbyte = buffer[i];
 				buffer[i] ^= EncryptByte();
