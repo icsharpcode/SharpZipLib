@@ -69,18 +69,18 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		HuffmanOnly = 2
 	}
 
-   // DEFLATE ALGORITHM:
-   // 
-   // The uncompressed stream is inserted into the window array.  When
-   // the window array is full the first half is thrown away and the
-   // second half is copied to the beginning.
-   //
-   // The head array is a hash table.  Three characters build a hash value
-   // and they the value points to the corresponding index in window of 
-   // the last string with this hash.  The prev array implements a
-   // linked list of matches with the same hash: prev[index & WMASK] points
-   // to the previous index with the same hash.
-   // 
+	// DEFLATE ALGORITHM:
+	// 
+	// The uncompressed stream is inserted into the window array.  When
+	// the window array is full the first half is thrown away and the
+	// second half is copied to the beginning.
+	//
+	// The head array is a hash table.  Three characters build a hash value
+	// and they the value points to the corresponding index in window of 
+	// the last string with this hash.  The prev array implements a
+	// linked list of matches with the same hash: prev[index & WMASK] points
+	// to the previous index with the same hash.
+	// 
 
 	
 	/// <summary>
@@ -93,45 +93,45 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		
 		int ins_h;
 
-      /// <summary>
-      /// Hashtable, hashing three characters to an index for window, so
-      /// that window[index]..window[index+2] have this hash code.  
-      /// Note that the array should really be unsigned short, so you need
-      /// to and the values with 0xffff.
-      /// </summary>
-      short[] head;
+		/// <summary>
+		/// Hashtable, hashing three characters to an index for window, so
+		/// that window[index]..window[index+2] have this hash code.  
+		/// Note that the array should really be unsigned short, so you need
+		/// to and the values with 0xffff.
+		/// </summary>
+		short[] head;
 
-      /// <summary>
-      /// prev[index & WMASK] points to the previous index that has the
-      /// same hash code as the string starting at index.  This way 
-      /// entries with the same hash code are in a linked list.
-      /// Note that the array should really be unsigned short, so you need
-      /// to and the values with 0xffff.
-      /// </summary>
+		/// <summary>
+		/// prev[index & WMASK] points to the previous index that has the
+		/// same hash code as the string starting at index.  This way 
+		/// entries with the same hash code are in a linked list.
+		/// Note that the array should really be unsigned short, so you need
+		/// to and the values with 0xffff.
+		/// </summary>
 		short[] prev;
 		
 		int    matchStart;
-      int    matchLen;
+		int    matchLen;
 		bool   prevAvailable;
 		int    blockStart;
 
-      /// <summary>
-      /// Points to the current character in the window.
-      /// </summary>
+		/// <summary>
+		/// Points to the current character in the window.
+		/// </summary>
 		int    strstart;
 
-      /// <summary>
-      /// lookahead is the number of characters starting at strstart in
-      /// window that are valid.
-      /// So window[strstart] until window[strstart+lookahead-1] are valid
-      /// characters.
-      /// </summary>
-      int    lookahead;
+		/// <summary>
+		/// lookahead is the number of characters starting at strstart in
+		/// window that are valid.
+		/// So window[strstart] until window[strstart+lookahead-1] are valid
+		/// characters.
+		/// </summary>
+		int    lookahead;
 
-      /// <summary>
-      /// This array contains the part of the uncompressed stream that 
-      /// is of relevance.  The current character is indexed by strstart.
-      /// </summary>
+		/// <summary>
+		/// This array contains the part of the uncompressed stream that 
+		/// is of relevance.  The current character is indexed by strstart.
+		/// </summary>
 		byte[] window;
 		
 		DeflateStrategy strategy;
@@ -267,7 +267,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				   Console.WriteLine("Change from " + comprFunc + " to "
 									      + DeflaterConstants.COMPR_FUNC[lvl]);
 				}
-*/            
+*/
 				switch (comprFunc) {
 					case DEFLATE_STORED:
 						if (strstart > blockStart) {
@@ -304,17 +304,17 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		{
 /*
 			if (DEBUGGING) {
-			   Console.WriteLine("updateHash: "+strstart);
+				Console.WriteLine("updateHash: "+strstart);
 			}
-*/         
+*/
 			ins_h = (window[strstart] << HASH_SHIFT) ^ window[strstart + 1];
 		}
 		
-      /// <summary>
-      /// Inserts the current string in the head hash and returns the previous
-      /// value for this hash.
-      /// </summary>
-      /// <returns>The previous hash value</returns>
+		/// <summary>
+		/// Inserts the current string in the head hash and returns the previous
+		/// value for this hash.
+		/// </summary>
+		/// <returns>The previous hash value</returns>
 		int InsertString() 
 		{
 			short match;
@@ -394,16 +394,16 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			}
 		}
 		
-      /// <summary>
-      /// Find the best (longest) string in the window matching the 
-      /// string starting at strstart.
-      ///
-      /// Preconditions:
-      /// <code>
-      /// strstart + MAX_MATCH <= window.length.</code>
-      /// </summary>
-      /// <param name="curMatch"></param>
-      /// <returns>True if a match greater than the minimum length is found</returns>
+		/// <summary>
+		/// Find the best (longest) string in the window matching the 
+		/// string starting at strstart.
+		///
+		/// Preconditions:
+		/// <code>
+		/// strstart + MAX_MATCH <= window.length.</code>
+		/// </summary>
+		/// <param name="curMatch"></param>
+		/// <returns>True if a match greater than the minimum length is found</returns>
 		bool FindLongestMatch(int curMatch) 
 		{
 			int chainLength = this.max_chain;
@@ -468,8 +468,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				if (scan > best_end) {
 /*
 					if (DeflaterConstants.DEBUGGING && ins_h == 0)
-					   System.err.println("Found match: "+curMatch+"-"+(scan-strstart));
-*/                  
+						System.err.println("Found match: "+curMatch+"-"+(scan-strstart));
+*/
 					matchStart = curMatch;
 					best_end = scan;
 					best_len = scan - strstart;
@@ -497,7 +497,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			if (DeflaterConstants.DEBUGGING && strstart != 1) {
 				throw new InvalidOperationException("strstart not 1");
 			}
-*/         
+*/
 			adler.Update(buffer, offset, length);
 			if (length < MIN_MATCH) {
 				return;
