@@ -1,3 +1,11 @@
+Changes since v0.83b
++ When skipping to an entry in a zip archive no data is read.  This allows password setting after examining the entry to
+  see if a password is required, and also allows skipping of entries that cannot be extracted.  You cannot skip
+  an entry that cannot be extracted if the length is not in the local header.
++ Refactored decryption to make it robust and remove bugs.
++ Fix for reads of zero length in ip files.
++ Fix encryption bug in DeflatorOutputStream.
+
 Changes since v0.83a
 + Added SFX read support to ZipFile class.
 + Added code to test archive contents to ZipFile class.
