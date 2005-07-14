@@ -96,6 +96,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </example>
 	public class ZipInputStream : InflaterInputStream
 	{
+		// Delegate for reading bytes from a stream.
+		delegate int ReaderDelegate(byte[] b, int offset, int length);
+
+		/// <summary>
+		/// The current reader this instance.
+		/// </summary>
+		ReaderDelegate internalReader;
+
 		Crc32 crc = new Crc32();
 		ZipEntry entry = null;
 		
@@ -103,11 +111,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		int method;
 		int flags;
 		string password = null;
+
+		/// <summary>
+		/// Creates a new Zip input stream, for reading a zip archive.
+		/// </summary>
+		public ZipInputStream(Stream baseInputStream) : base(baseInputStream, new Inflater(true))
+		{
+			internalReader = new ReaderDelegate(InitialRead);
+		}
+
 		
 		/// <summary>
 		/// Optional password used for encryption when non-null
 		/// </summary>
-		public string Password {
+		public string Password 
+		{
 			get {
 				return password;
 			}
@@ -130,13 +148,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 		
-		/// <summary>
-		/// Creates a new Zip input stream, for reading a zip archive.
-		/// </summary>
-		public ZipInputStream(Stream baseInputStream) : base(baseInputStream, new Inflater(true))
-		{
-		}
-
 		/// <summary>
 		/// Advances to the next entry in the archive
 		/// </summary>
@@ -242,56 +253,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 				inputBuffer.ReadRawBuffer(extra);
 				entry.ExtraData = extra;
 			}
-			
-			// TODO: How to handle this?
-			// This library cannot handle versions greater than 20
-			// Throwing an exception precludes getting at later possibly useable entries.
-			// Could also skip this entry entirely
-			// Letting it slip past here isnt so great as it wont work in all cases.
-			// For non-seekable input the choices are restricted however.  Another flaw in streams.
-			if (versionRequiredToExtract > 20) {
-				throw new ZipException("Libray cannot extract this entry version required (" + versionRequiredToExtract.ToString() + ")");
-			}
-			
-			// test for encryption
-			if (isCrypted) {
-				if (password == null) {
-					throw new ZipException("No password set.");
-				}
 
-				/// Generate and set crypto transform...
-				PkzipClassicManaged managed = new PkzipClassicManaged();
-				byte[] key = PkzipClassic.GenerateKeys(Encoding.ASCII.GetBytes(password));
-				
-				inputBuffer.CryptoTransform = managed.CreateDecryptor(key, null);;
-
-				byte[] cryptbuffer = new byte[ZipConstants.CRYPTO_HEADER_SIZE];
-				inputBuffer.ReadClearTextBuffer(cryptbuffer, 0, ZipConstants.CRYPTO_HEADER_SIZE);
-				
-				if ((flags & 8) == 0) {
-					if (cryptbuffer[ZipConstants.CRYPTO_HEADER_SIZE - 1] != (byte)(crc2 >> 24)) {
-						throw new ZipException("Invalid password");
-					}
-				}
-				else {
-					if (cryptbuffer[ZipConstants.CRYPTO_HEADER_SIZE - 1] != (byte)((dostime >> 8) & 0xff)) {
-						throw new ZipException("Invalid password");
-					}
-				}
-				
-				if (csize >= ZipConstants.CRYPTO_HEADER_SIZE) {
-					csize -= ZipConstants.CRYPTO_HEADER_SIZE;
-				}
-			} else {
-				inputBuffer.CryptoTransform = null;
-			}
-
-         if (method == (int)CompressionMethod.Deflated && inputBuffer.Available > 0) {
-				inputBuffer.SetInflaterInput(inf);
-			}
+			internalReader = new ReaderDelegate(InitialRead);
 			return entry;
 		}
 		
+		// Read data descriptor at the end of compressed data.
 		void ReadDataDescriptor()
 		{
 			if (inputBuffer.ReadLeInt() != ZipConstants.EXTSIG) {
@@ -335,10 +302,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 					return;
 				}
 				csize -= inf.TotalIn;
-				inputBuffer.Available = inf.RemainingInput;	
+				inputBuffer.Available -= inf.RemainingInput;	
 			}
 
-         if (inputBuffer.Available > csize && csize >= 0) {
+			if (inputBuffer.Available > csize && csize >= 0) {
 				inputBuffer.Available = (int)((long)inputBuffer.Available - csize);
 			} else {
 				csize -= inputBuffer.Available;
@@ -393,6 +360,70 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return b[0] & 0xff;
 		}
 
+		// Perform the initial read on an entry which may include reading encryption headers and setting up inflation.
+		int InitialRead(byte[] destination, int offset, int count)
+		{
+			if (entry.Version > ZipConstants.VERSION_MADE_BY) {
+				throw new ZipException("Libray cannot extract this entry version required (" + entry.Version.ToString() + ")");
+			}
+			
+			// test for encryption
+			if (entry.IsCrypted) {
+		
+				if (password == null) {
+					throw new ZipException("No password set.");
+				}
+			
+				/// Generate and set crypto transform...
+				PkzipClassicManaged managed = new PkzipClassicManaged();
+				byte[] key = PkzipClassic.GenerateKeys(Encoding.ASCII.GetBytes(password));
+					
+				inputBuffer.CryptoTransform = managed.CreateDecryptor(key, null);
+			
+				byte[] cryptbuffer = new byte[ZipConstants.CRYPTO_HEADER_SIZE];
+				inputBuffer.ReadClearTextBuffer(cryptbuffer, 0, ZipConstants.CRYPTO_HEADER_SIZE);
+					
+				if ((flags & 8) == 0) {
+					if (cryptbuffer[ZipConstants.CRYPTO_HEADER_SIZE - 1] != (byte)(entry.Crc >> 24)) {
+						throw new ZipException("Invalid password");
+					}
+				}
+				else {
+					if (cryptbuffer[ZipConstants.CRYPTO_HEADER_SIZE - 1] != (byte)((entry.DosTime >> 8) & 0xff)) {
+						throw new ZipException("Invalid password");
+					}
+				}
+					
+				if (csize >= ZipConstants.CRYPTO_HEADER_SIZE) {
+					csize -= ZipConstants.CRYPTO_HEADER_SIZE;
+				}
+			} 
+			else {
+				inputBuffer.CryptoTransform = null;
+			}
+			
+			if (method == (int)CompressionMethod.Deflated && inputBuffer.Available > 0) {
+				inputBuffer.SetInflaterInput(inf);
+			}
+			
+			internalReader = new ReaderDelegate(BodyRead);
+			return BodyRead(destination, offset, count);
+		}
+		
+
+		/// <summary>
+		/// Read a block of bytes from the stream.
+		/// </summary>
+		/// <param name="destination">The destination for the bytes.</param>
+		/// <param name="index">The index to start storing data.</param>
+		/// <param name="count">The number of bytes to attempt to read.</param>
+		/// <returns>Returns the number of bytes read.</returns>
+		/// <remarks>Zero bytes read means end of stream.</remarks>
+		public override int Read(byte[] destination, int index, int count)
+		{
+			return internalReader(destination, index, count);
+		}
+
 		/// <summary>
 		/// Reads a block of bytes from the current zip entry.
 		/// </summary>
@@ -408,7 +439,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="InvalidOperationException">
 		/// The stream is not open.
 		/// </exception>
-		public override int Read(byte[] b, int off, int len)
+		public int BodyRead(byte[] b, int off, int len)
 		{
 			if (crc == null) {
 				throw new InvalidOperationException("Closed.");

@@ -264,6 +264,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						headerInfoAvailable = false;
 					}
 					else {
+                  // Cant patch entries so storing is not possible.
 						method = CompressionMethod.Deflated;
 						compressionLevel = 0;
 					}
@@ -272,6 +273,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				
 			if (method == CompressionMethod.Deflated) {
 				if (entry.Size == 0) {
+               // No need to compress - no data.
 					entry.CompressedSize = entry.Size;
 					entry.Crc = 0;
 					method = CompressionMethod.Stored;
@@ -291,6 +293,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (Password != null) {
 				entry.IsCrypted = true;
 				if (entry.Crc < 0) {
+               // Need to append data descriptor as crc is used for encryption and its not known.
 					entry.Flags |= 8;
 				}
 			}

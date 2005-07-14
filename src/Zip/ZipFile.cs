@@ -250,7 +250,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				Close();
 				throw;
 			}
-			
 		}
 		
 		/// <summary>
@@ -274,7 +273,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				Close();
 				throw;
 			}
-				
 		}
 		
 		

@@ -50,6 +50,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
    /// <summary>
    /// An input buffer customised for use by <see cref="InflaterInputStream"/>
    /// </summary>
+   /// <remarks>
+   /// The buffer supports decryption of incoming data.
+   /// </remarks>
 	public class InflaterInputBuffer
 	{
 		public InflaterInputBuffer(Stream stream)
@@ -59,15 +62,20 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			clearText = rawData;
 		}
 		
-		int rawLength;
-		
+		/// <summary>
+		/// Get the length of bytes bytes in the <see cref="RawData"/>
+		/// </summary>
 		public int RawLength
 		{
-			get { return rawLength; }
+			get { 
+				return rawLength; 
+			}
 		}
 		
-		byte[] rawData;
-
+		/// <summary>
+		/// Get the contents of the raw data buffer.
+		/// </summary>
+		/// <remarks>This may contain encrypted data.</remarks>
 		public byte[] RawData
 		{
 			get {
@@ -75,16 +83,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 		}
 		
-		byte[] clearText;
-		public byte[] ClearText
-		{
-			get {
-				return clearText;
-			}
-		}
-		
-		int clearTextLength;
-		
+		/// <summary>
+		/// Get the number of useable bytes in <see cref="ClearText"/>
+		/// </summary>
 		public int ClearTextLength
 		{
 			get {
@@ -92,13 +93,29 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 		}
 		
-		int available;
+		/// <summary>
+		/// Get the contents of the clear text buffer.
+		/// </summary>
+		public byte[] ClearText
+		{
+			get {
+				return clearText;
+			}
+		}
+		
+		/// <summary>
+		/// Get/set the number of bytes available
+		/// </summary>
 		public int Available
 		{
 			get { return available; }
 			set { available = value; }
 		}
-		
+
+		/// <summary>
+		/// Call <see cref="Inflater.SetInput"/> passing the current clear text buffer contents.
+		/// </summary>
+		/// <param name="inflater">The inflater to set input for.</param>
 		public void SetInflaterInput(Inflater inflater)
 		{
 			if ( available > 0 ) {
@@ -137,6 +154,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			available = clearTextLength;
 		}
 		
+		/// <summary>
+		/// Read a buffer directly from the input stream
+		/// </summary>
+		/// <param name="buffer">The buffer to fill</param>
+		/// <returns>Returns the number of bytes read.</returns>
 		public int ReadRawBuffer(byte[] buffer)
 		{
 			return ReadRawBuffer(buffer, 0, buffer.Length);
@@ -174,6 +196,13 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			return length;
 		}
 		
+		/// <summary>
+		/// Read clear text data from the input stream.
+		/// </summary>
+		/// <param name="outBuffer">The buffer to add data to.</param>
+		/// <param name="offset">The offset to start adding data at.</param>
+		/// <param name="length">The number of bytes to read.</param>
+		/// <returns>Returns the number of bytes actually read.</returns>
 		public int ReadClearTextBuffer(byte[] outBuffer, int offset, int length)
 		{
 			if ( length <= 0 ) {
@@ -193,13 +222,17 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				
 				int toCopy = Math.Min(currentLength, available);
 				System.Array.Copy(clearText, clearTextLength - (int)available, outBuffer, currentOffset, toCopy);
-            currentOffset += toCopy;
+				currentOffset += toCopy;
 				currentLength -= toCopy;
 				available -= toCopy;
 			}
 			return length;
 		}
 		
+		/// <summary>
+		/// Read a byte from the input stream.
+		/// </summary>
+		/// <returns>Returns the byte read.</returns>
 		public int ReadLeByte()
 		{
 			if (available <= 0) {
@@ -214,7 +247,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// Read an unsigned short baseInputStream little endian byte order.
+		/// Read an unsigned short in little endian byte order.
 		/// </summary>
 		public int ReadLeShort()
 		{
@@ -222,7 +255,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// Read an int baseInputStream little endian byte order.
+		/// Read an int in little endian byte order.
 		/// </summary>
 		public int ReadLeInt()
 		{
@@ -236,16 +269,21 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			return ReadLeInt() | (ReadLeInt() << 32);
 		}
-		
-		ICryptoTransform cryptoTransform;
 
+		/// <summary>
+		/// Get/set the <see cref="ICryptoTransform"/> to apply to any data.
+		/// </summary>
+		/// <remarks>Set this value to null to have no transform applied.</remarks>
 		public ICryptoTransform CryptoTransform
 		{
 			set { 
 				cryptoTransform = value;
 				if ( cryptoTransform != null ) {
 					if ( rawData == clearText ) {
-						clearText = new byte[4096];
+						if ( internalClearText == null ) {
+							internalClearText = new byte[4096];
+						}
+						clearText = internalClearText;
 					}
 					clearTextLength = rawLength;
 					if ( available > 0 ) {
@@ -257,8 +295,21 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				}
 			}
 		}
+
+		#region Instance Fields
+		int rawLength;
+		byte[] rawData;
 		
+		int clearTextLength;
+		byte[] clearText;
+		
+		byte[] internalClearText;
+		
+		int available;
+		
+		ICryptoTransform cryptoTransform;
 		Stream inputStream;
+		#endregion
 	}
 	
 	/// <summary>
@@ -279,7 +330,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		protected InflaterInputBuffer inputBuffer;
 
-      /// <summary>
+		/// <summary>
 		/// Base stream the inflater reads from.
 		/// </summary>
 		protected Stream baseInputStream;
@@ -583,7 +634,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 		}
 		
-		#region Encryption stuff
 		/// <summary>
 		/// Clear any cryptographic state.
 		/// </summary>		
@@ -591,6 +641,5 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			inputBuffer.CryptoTransform = null;
 		}
-		#endregion
 	}
 }
