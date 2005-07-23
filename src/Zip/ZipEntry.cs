@@ -379,6 +379,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Gets a value indicating if the entry requires Zip64 extensions to be stored
+		/// </summary>
+		public bool RequiresZip64 {
+			get {
+				return (this.size > uint.MaxValue) || (this.compressedSize > uint.MaxValue);
+			}
+		}
+		
+		/// <summary>
 		/// Get/Set DosTime
 		/// </summary>		
 		public long DosTime {

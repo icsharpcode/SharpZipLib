@@ -164,11 +164,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 			this.directoryFilter = new NameFilter(directoryFilter);
 			
 			inputStream = new ZipInputStream(File.OpenRead(zipFileName));
-			if (password != null) {
-				inputStream.Password = password;
-			}
-
+			
 			try {
+				
+				if (password != null) {
+					inputStream.Password = password;
+				}
+
 				ZipEntry entry;
 				while ( (entry = inputStream.GetNextEntry()) != null ) {
 					if ( this.directoryFilter.IsMatch(Path.GetDirectoryName(entry.Name)) && this.fileFilter.IsMatch(entry.Name) ) {

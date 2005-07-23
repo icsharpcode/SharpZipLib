@@ -174,7 +174,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				CloseEntry();
 			}
 
-         int header = inputBuffer.ReadLeInt();
+			int header = inputBuffer.ReadLeInt();
 
 			if (header == ZipConstants.CENSIG || 
 			    header == ZipConstants.ENDSIG || 
