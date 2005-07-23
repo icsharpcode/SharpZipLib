@@ -339,7 +339,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// The compressed size
 		/// </summary>
 		protected long csize;
-		
+
+		bool isClosed = false;
 		bool isStreamOwner = true;
 		
 		/// <summary>
@@ -542,8 +543,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		public override void Close()
 		{
-			if ( isStreamOwner ) {
-				baseInputStream.Close();
+			if ( !isClosed ) {
+				isClosed = true;
+				if ( isStreamOwner ) {
+					baseInputStream.Close();
+				}
 			}
 		}
 
