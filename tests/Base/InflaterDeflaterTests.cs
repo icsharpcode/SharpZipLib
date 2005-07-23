@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Security;
 
 using NUnit.Framework;
 
@@ -143,6 +144,64 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			
 			for (int i = 0; i < buf.Length; ++i) {
 				Assert.AreEqual(buf2[i], buf[i]);
+			}
+		}
+		
+		[Test]
+		[Category("Base")]
+		public void CloseDeflatorWithNestedUsing()
+		{
+			string tempFile = null;
+			try	{
+				tempFile = Path.GetTempPath();
+			} 
+			catch (SecurityException) {
+			}
+			
+			Assert.IsNotNull(tempFile, "No permission to execute this test?");
+			if (tempFile != null) {
+				tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
+				
+				using (FileStream diskFile = File.Create(tempFile))
+				using (DeflaterOutputStream deflator = new DeflaterOutputStream(diskFile))
+				using (StreamWriter txtFile = new StreamWriter(deflator)) {
+					txtFile.Write("Hello");
+					txtFile.Flush();
+				}
+		
+				File.Delete(tempFile);
+			}
+		}
+
+		[Test]
+		[Category("Base")]
+		public void CloseInflatorWithNestedUsing()
+		{
+			string tempFile = null;
+			try	{
+				tempFile = Path.GetTempPath();
+			} 
+			catch (SecurityException) {
+			}
+				
+			Assert.IsNotNull(tempFile, "No permission to execute this test?");
+			if (tempFile != null) {
+				tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
+				using (FileStream diskFile = File.Create(tempFile))
+				using (DeflaterOutputStream deflator = new DeflaterOutputStream(diskFile))
+				using (StreamWriter txtFile = new StreamWriter(deflator)) {
+					txtFile.Write("Hello");
+					txtFile.Flush();
+				}
+				
+				// This wont actually fail...  Test is not valid
+				using (FileStream diskFile = File.OpenRead(tempFile))
+				using (InflaterInputStream deflator = new InflaterInputStream(diskFile))
+				using (StreamReader reader = new StreamReader(deflator)) {
+					reader.Peek();
+				}
+				
+				File.Delete(tempFile);
 			}
 		}
 	}
