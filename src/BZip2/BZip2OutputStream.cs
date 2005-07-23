@@ -482,7 +482,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Free any resources and other cleanup before garbage collection reclaims memory
 		/// </summary>
-		public void Finalize()
+		~BZip2OutputStream()
 		{
 			Close();
 		}
@@ -493,20 +493,19 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		public override void Close()
 		{
-			if (closed) {
-				return;
-			}
+			if (!closed) {
+				closed = true;
 			
-			if (runLength > 0) {
-				WriteRun();
-			}
+				if (runLength > 0) {
+					WriteRun();
+				}
 			
-			currentChar = -1;
-			EndBlock();
-			EndCompression();
-			closed = true;
-			Flush();
-			baseStream.Close();
+				currentChar = -1;
+				EndBlock();
+				EndCompression();
+				Flush();
+				baseStream.Close();
+			}
 		}
 
 		/// <summary>
