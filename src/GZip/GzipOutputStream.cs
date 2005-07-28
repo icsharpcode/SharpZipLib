@@ -149,7 +149,10 @@ namespace ICSharpCode.SharpZipLib.GZip
 		public override void Close()
 		{
 			Finish();
-			baseOutputStream.Close();
+			
+			if ( IsStreamOwner ) {
+				baseOutputStream.Close();
+			}
 		}
 		
 		/// <summary>
@@ -176,6 +179,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		{
 			return def.GetLevel();
 		}
+		
 		/// <summary>
 		/// Finish compression and write any footer information required to stream
 		/// </summary>
