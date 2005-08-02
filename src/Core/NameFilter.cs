@@ -68,7 +68,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Test a string to see if it is a valid regular expression.
 		/// </summary>
 		/// <param name="e">The expression to test.</param>
-		/// <returns>True if expression is a valid <see cref="RegEx"/> false otherwise.</returns>
+		/// <returns>True if expression is a valid <see cref="System.Text.RegularExpressions.Regex"/> false otherwise.</returns>
 		public static bool IsValidExpression(string e)
 		{
 			bool result = true;

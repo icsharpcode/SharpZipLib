@@ -590,7 +590,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="fullTest">
 		/// If true be extremely picky about the testing, otherwise be relaxed
 		/// </param>
-		/// </param name="extractTest">
+		/// <param name="extractTest">
 		/// Apply extra testing to see if the entry can be extracted by the library
 		/// </param>
 		/// <returns>The offset of the entries data in the file</returns>
@@ -830,7 +830,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="InvalidOperationException">
 		/// The ZipFile has already been closed
 		/// </exception>
-		/// <exception cref="ICSharpCode.SharpZipLib.ZipException">
+		/// <exception cref="ICSharpCode.SharpZipLib.Zip.ZipException">
 		/// The compression method for the entry is unknown
 		/// </exception>
 		/// <exception cref="IndexOutOfRangeException">

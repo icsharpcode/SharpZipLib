@@ -55,6 +55,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
    /// </remarks>
 	public class InflaterInputBuffer
 	{
+		/// <summary>
+		/// Initialise a new instance of <see cref="InflaterInputBuffer"/>
+		/// </summary>
+		/// <param name="stream">The stream to buffer.</param>
 		public InflaterInputBuffer(Stream stream)
 		{
 			inputStream = stream;
@@ -328,6 +332,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		protected Inflater inf;
 
+		/// <summary>
+		/// <see cref="InflaterInputBuffer">Input buffer</see> for this stream.
+		/// </summary>
 		protected InflaterInputBuffer inputBuffer;
 
 		/// <summary>

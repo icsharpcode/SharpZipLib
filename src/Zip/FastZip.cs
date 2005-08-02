@@ -40,14 +40,36 @@ using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
+	/// <summary>
+	/// FastZipEvents supports all events applicable to <see cref="FastZip">FastZip</see> operations.
+	/// </summary>
 	public class FastZipEvents
 	{
+		/// <summary>
+		/// Delegate to invoke when processing directories.
+		/// </summary>
 		public ProcessDirectoryDelegate ProcessDirectory;
+		
+		/// <summary>
+		/// Delegate to invoke when processing files.
+		/// </summary>
 		public ProcessFileDelegate ProcessFile;
 
+		/// <summary>
+		/// Delegate to invoke when processing directory failures.
+		/// </summary>
 		public DirectoryFailureDelegate DirectoryFailure;
+		
+		/// <summary>
+		/// Delegate to invoke when processing file failures.
+		/// </summary>
 		public FileFailureDelegate FileFailure;
 		
+		/// <summary>
+		/// Raise the directory failure event.
+		/// </summary>
+		/// <param name="directory">The directory.</param>
+		/// <param name="e">The exception for this event.</param>
 		public void OnDirectoryFailure(string directory, Exception e)
 		{
 			if ( DirectoryFailure != null ) {
@@ -56,6 +78,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 		
+		/// <summary>
+		/// Raises the file failure event.
+		/// </summary>
+		/// <param name="file">The file for this event.</param>
+		/// <param name="e">The exception for this event.</param>
 		public void OnFileFailure(string file, Exception e)
 		{
 			if ( FileFailure != null ) {
@@ -80,7 +107,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Raises the ProcessDirectoryEvent.
 		/// </summary>
 		/// <param name="directory">The directory for this event.</param>
-		/// <param name="isEmpty">Flag indicating if directory is empty as determined by the current filter.</param>
+		/// <param name="hasMatchingFiles">Flag indicating if directory has matching files as determined by the current filter.</param>
 		public void OnProcessDirectory(string directory, bool hasMatchingFiles)
 		{
 			if ( ProcessDirectory != null ) {
@@ -97,30 +124,63 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	public class FastZip
 	{
+		/// <summary>
+		/// Initialize a default instance of FastZip.
+		/// </summary>
 		public FastZip()
 		{
 			this.events = null;
 		}
 		
+		/// <summary>
+		/// Initialise a new instance of <see cref="FastZip"/>
+		/// </summary>
+		/// <param name="events"></param>
 		public FastZip(FastZipEvents events)
 		{
 			this.events = events;
 		}
 		
+		/// <summary>
+		/// Defines the desired handling when overwriting files.
+		/// </summary>
 		public enum Overwrite {
+			/// <summary>
+			/// Prompt the user to confirm overwriting
+			/// </summary>
 			Prompt,
+			/// <summary>
+			/// Never overwrite files.
+			/// </summary>
 			Never,
+			/// <summary>
+			/// Always overwrite files.
+			/// </summary>
 			Always
 		}
 
+		/// <summary>
+		/// Get/set a value indicating wether empty directories should be created.
+		/// </summary>
 		public bool CreateEmptyDirectories
 		{
 			get { return createEmptyDirectories; }
 			set { createEmptyDirectories = value; }
 		}
-		
+
+		/// <summary>
+		/// Delegate called when confirming overwriting of files.
+		/// </summary>
 		public delegate bool ConfirmOverwriteDelegate(string fileName);
 		
+		/// <summary>
+		/// Create a zip file.
+		/// </summary>
+		/// <param name="zipFileName">The name of the zip file to create.</param>
+		/// <param name="sourceDirectory">The directory to source files from.</param>
+		/// <param name="recurse">True to recurse directories, false for no recursion.</param>
+		/// <param name="fileFilter">The file filter to apply.</param>
+		/// <param name="directoryFilter">The directory filter to apply.</param>
 		public void CreateZip(string zipFileName, string sourceDirectory, bool recurse, string fileFilter, string directoryFilter)
 		{
 			NameTransform = new ZipNameTransform(true, sourceDirectory);
@@ -139,17 +199,39 @@ namespace ICSharpCode.SharpZipLib.Zip
 				outputStream.Close();
 			}
 		}
-		
+
+		/// <summary>
+		/// Create a zip file/archive.
+		/// </summary>
+		/// <param name="zipFileName">The name of the zip file to create.</param>
+		/// <param name="sourceDirectory">The directory to obtain files and directories from.</param>
+		/// <param name="recurse">True to recurse directories, false for no recursion.</param>
+		/// <param name="fileFilter">The file filter to apply.</param>
 		public void CreateZip(string zipFileName, string sourceDirectory, bool recurse, string fileFilter)
 		{
 			CreateZip(zipFileName, sourceDirectory, recurse, fileFilter, null);
 		}
-		
+
+		/// <summary>
+		/// Extract the contents of a zip file.
+		/// </summary>
+		/// <param name="zipFileName">The zip file to extract from.</param>
+		/// <param name="targetDirectory">The directory to save extracted information in.</param>
+		/// <param name="fileFilter">A filter to apply to files.</param>
 		public void ExtractZip(string zipFileName, string targetDirectory, string fileFilter) 
 		{
 			ExtractZip(zipFileName, targetDirectory, Overwrite.Always, null, fileFilter, null);
 		}
 		
+		/// <summary>
+		/// Exatract the contents of a zip file.
+		/// </summary>
+		/// <param name="zipFileName">The zip file to extract from.</param>
+		/// <param name="targetDirectory">The directory to save extracted information in.</param>
+		/// <param name="overwrite">The style of <see cref="Overwrite">overwriting</see> to apply.</param>
+		/// <param name="confirmDelegate">A delegate to invoke when confirming overwriting.</param>
+		/// <param name="fileFilter">A filter to apply to files.</param>
+		/// <param name="directoryFilter">A filter to apply to directories.</param>
 		public void ExtractZip(string zipFileName, string targetDirectory, 
 		                       Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate, 
 		                       string fileFilter, string directoryFilter)

@@ -48,7 +48,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("0.83.3.0")]
+[assembly: AssemblyVersion("0.84.0.0")]
 
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("../ICSharpCode.SharpZipLib.key")]

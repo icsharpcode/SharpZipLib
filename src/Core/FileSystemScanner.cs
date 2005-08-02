@@ -39,8 +39,15 @@ using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Core
 {
+	/// <summary>
+	/// Event arguments for scanning.
+	/// </summary>
 	public class ScanEventArgs : EventArgs
 	{
+		/// <summary>
+		/// Initialise a new instance of <see cref="ScanEventArgs"/>
+		/// </summary>
+		/// <param name="name"></param>
 		public ScanEventArgs(string name)
 		{
 			this.name = name;
@@ -49,6 +56,9 @@ namespace ICSharpCode.SharpZipLib.Core
 		
 		string name;
 		
+		/// <summary>
+		/// The name for this event.
+		/// </summary>
 		public string Name
 		{
 			get { return name; }
@@ -56,6 +66,9 @@ namespace ICSharpCode.SharpZipLib.Core
 		
 		bool continueRunning;
 		
+		/// <summary>
+		/// Get set a value indicating if scanning should continue or not.
+		/// </summary>
 		public bool ContinueRunning
 		{
 			get { return continueRunning; }
@@ -63,13 +76,16 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 	}
 
+	/// <summary>
+	/// Event arguments for directories.
+	/// </summary>
 	public class DirectoryEventArgs : ScanEventArgs
 	{
 		/// <summary>
-		/// Initialize an instance of <see cref="DirectoryEventsArgs"></see>.
+		/// Initialize an instance of <see cref="DirectoryEventArgs"></see>.
 		/// </summary>
 		/// <param name="name">The name for this directory.</param>
-		/// <param name="isEmpty">Flag value indicating if any matching files are contained in this directory.</param>
+		/// <param name="hasMatchingFiles">Flag value indicating if any matching files are contained in this directory.</param>
 		public DirectoryEventArgs(string name, bool hasMatchingFiles)
 			: base (name)
 		{
@@ -77,7 +93,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 		
 		/// <summary>
-		/// Geta value indicating if the directory contains any matching files or not.
+		/// Get a value indicating if the directory contains any matching files or not.
 		/// </summary>
 		public bool HasMatchingFiles
 		{
@@ -87,8 +103,16 @@ namespace ICSharpCode.SharpZipLib.Core
 		bool hasMatchingFiles;
 	}
 	
+	/// <summary>
+	/// Arguments passed when scan failures are detected.
+	/// </summary>
 	public class ScanFailureEventArgs
 	{
+		/// <summary>
+		/// Initialise a new instance of <see cref="ScanFailureEventArgs"></see>
+		/// </summary>
+		/// <param name="name">The name to apply.</param>
+		/// <param name="e">The exception to use.</param>
 		public ScanFailureEventArgs(string name, Exception e)
 		{
 			this.name = name;
@@ -97,12 +121,20 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 		
 		string name;
+		
+		/// <summary>
+		/// The applicable name.
+		/// </summary>
 		public string Name
 		{
 			get { return name; }
 		}
 		
 		Exception exception;
+		
+		/// <summary>
+		/// The applicable exception.
+		/// </summary>
 		public Exception Exception
 		{
 			get { return exception; }
@@ -110,6 +142,9 @@ namespace ICSharpCode.SharpZipLib.Core
 
 		bool continueRunning;
 		
+		/// <summary>
+		/// Get / set a value indicating wether scanning should continue.
+		/// </summary>
 		public bool ContinueRunning
 		{
 			get { return continueRunning; }
@@ -117,9 +152,24 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 	}
 	
+	/// <summary>
+	/// Delegate invokked when a directory is processed.
+	/// </summary>
 	public delegate void ProcessDirectoryDelegate(object Sender, DirectoryEventArgs e);
+	
+	/// <summary>
+	/// Delegate invoked when a file is processed.
+	/// </summary>
 	public delegate void ProcessFileDelegate(object sender, ScanEventArgs e);
+	
+	/// <summary>
+	/// Delegate invoked when a directory failure is detected.
+	/// </summary>
 	public delegate void DirectoryFailureDelegate(object sender, ScanFailureEventArgs e);
+	
+	/// <summary>
+	/// Delegate invoked when a file failure is detected.
+	/// </summary>
 	public delegate void FileFailureDelegate(object sender, ScanFailureEventArgs e);
 
 	/// <summary>
@@ -128,7 +178,7 @@ namespace ICSharpCode.SharpZipLib.Core
 	public class FileSystemScanner
 	{
 		/// <summary>
-		/// Initialise a new instance of <see cref="FileScanner"></see>
+		/// Initialise a new instance of <see cref="FileSystemScanner"></see>
 		/// </summary>
 		/// <param name="filter">The file filter to apply when scanning.</param>
 		public FileSystemScanner(string filter)
@@ -139,7 +189,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Initialise a new instance of <see cref="FileSystemScanner"></see>
 		/// </summary>
-		/// <param name="fileFilter"></param>
+		/// <param name="fileFilter">The file <see cref="NameFilter"></see>filter to apply.</param>
 		/// <param name="directoryFilter">The directory <see cref="NameFilter"></see>filter to apply.</param>
 		public FileSystemScanner(string fileFilter, string directoryFilter)
 		{
@@ -147,23 +197,51 @@ namespace ICSharpCode.SharpZipLib.Core
 			this.directoryFilter = new PathFilter(directoryFilter);
 		}
 		
+		/// <summary>
+		/// Initialise a new instance of <see cref="FileSystemScanner"></see>
+		/// </summary>
+		/// <param name="fileFilter">The file <see cref="NameFilter"></see>filter to apply.</param>
 		public FileSystemScanner(IScanFilter fileFilter)
 		{
 			this.fileFilter = fileFilter;
 		}
 		
+		/// <summary>
+		/// Initialise a new instance of <see cref="FileSystemScanner"></see>
+		/// </summary>
+		/// <param name="fileFilter">The file <see cref="IScanFilter"></see>filter to apply.</param>
+		/// <param name="directoryFilter">The directory <see cref="IScanFilter"></see>filter to apply.</param>
 		public FileSystemScanner(IScanFilter fileFilter, IScanFilter directoryFilter)
 		{
 			this.fileFilter = fileFilter;
 			this.directoryFilter = directoryFilter;
 		}
 		
+		/// <summary>
+		/// Delegate to invoke when a directory is processed.
+		/// </summary>
 		public ProcessDirectoryDelegate ProcessDirectory;
+		
+		/// <summary>
+		/// Delegate to invoke when a file is processed.
+		/// </summary>
 		public ProcessFileDelegate ProcessFile;
 
+		/// <summary>
+		/// Delegate to invoke when a directory failure is detected.
+		/// </summary>
 		public DirectoryFailureDelegate DirectoryFailure;
+		
+		/// <summary>
+		/// Delegate to invoke when a file failure is detected.
+		/// </summary>
 		public FileFailureDelegate FileFailure;
 		
+		/// <summary>
+		/// Raise the DirectoryFailure event.
+		/// </summary>
+		/// <param name="directory">Rhe directory name.</param>
+		/// <param name="e">The exception detected.</param>
 		public void OnDirectoryFailure(string directory, Exception e)
 		{
 			if ( DirectoryFailure == null ) {
@@ -175,6 +253,11 @@ namespace ICSharpCode.SharpZipLib.Core
 			}
 		}
 		
+		/// <summary>
+		/// Raise the FileFailure event.
+		/// </summary>
+		/// <param name="file">The file name.</param>
+		/// <param name="e">The exception detected.</param>
 		public void OnFileFailure(string file, Exception e)
 		{
 			if ( FileFailure == null ) {
@@ -185,7 +268,11 @@ namespace ICSharpCode.SharpZipLib.Core
 				alive = args.ContinueRunning;
 			}
 		}
-		
+
+		/// <summary>
+		/// Raise the ProcessFile event.
+		/// </summary>
+		/// <param name="file">The file name.</param>
 		public void OnProcessFile(string file)
 		{
 			if ( ProcessFile != null ) {
@@ -195,6 +282,11 @@ namespace ICSharpCode.SharpZipLib.Core
 			}
 		}
 		
+		/// <summary>
+		/// Raise the ProcessDirectory event.
+		/// </summary>
+		/// <param name="directory">The directory name.</param>
+		/// <param name="hasMatchingFiles">Flag indicating if the directory has matching files.</param>
 		public void OnProcessDirectory(string directory, bool hasMatchingFiles)
 		{
 			if ( ProcessDirectory != null ) {

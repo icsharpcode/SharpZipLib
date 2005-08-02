@@ -102,7 +102,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		short[] head;
 
 		/// <summary>
-		/// prev[index & WMASK] points to the previous index that has the
+		/// <code>prev[index &amp; WMASK]</code> points to the previous index that has the
 		/// same hash code as the string starting at index.  This way 
 		/// entries with the same hash code are in a linked list.
 		/// Note that the array should really be unsigned short, so you need
@@ -400,7 +400,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		///
 		/// Preconditions:
 		/// <code>
-		/// strstart + MAX_MATCH <= window.length.</code>
+		/// strstart + MAX_MATCH &lt;= window.length.</code>
 		/// </summary>
 		/// <param name="curMatch"></param>
 		/// <returns>True if a match greater than the minimum length is found</returns>
@@ -752,8 +752,14 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			return progress;
 		}
 
+
+		/// <summary>
 		/// Sets input data to be deflated.  Should only be called when <code>NeedsInput()</code>
 		/// returns true
+		/// </summary>
+		/// <param name="buf">The buffer containing input data.</param>
+		/// <param name="off">The index of the first byte of data.</param>
+		/// <param name="len">The number of bytes of data to use as input.</param>
 		public void SetInput(byte[] buf, int off, int len)
 		{
 			if (inputOff < inputEnd) {
@@ -775,7 +781,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		}
 
 		/// <summary>
-		/// Return true if input is needed <see cref="SetInput"> via SetInput</see>
+		/// Return true if input is needed via <see cref="SetInput"> SetInput</see>
 		/// </summary>		
 		public bool NeedsInput()
 		{

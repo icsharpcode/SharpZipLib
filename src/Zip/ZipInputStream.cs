@@ -375,7 +375,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					throw new ZipException("No password set.");
 				}
 			
-				/// Generate and set crypto transform...
+				// Generate and set crypto transform...
 				PkzipClassicManaged managed = new PkzipClassicManaged();
 				byte[] key = PkzipClassic.GenerateKeys(Encoding.ASCII.GetBytes(password));
 					

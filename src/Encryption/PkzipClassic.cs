@@ -161,7 +161,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Initialise a new instance of <see cref="PkzipClassicEncryptCryptoTransform"></see>
 		/// </summary>
-		/// <param name="keyBlock">The key block to <see cref="SetKeys"></see>with.</param>
+		/// <param name="keyBlock">The key block to use.</param>
 		internal PkzipClassicEncryptCryptoTransform(byte[] keyBlock)
 		{
 			SetKeys(keyBlock);
@@ -267,7 +267,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Initialise a new instance of <see cref="PkzipClassicDecryptCryptoTransform"></see>.
 		/// </summary>
-		/// <param name="keyBlock">The key block to <see cref="SetKeys"></see> with.</param>
+		/// <param name="keyBlock">The key block to decrypt with.</param>
 		internal PkzipClassicDecryptCryptoTransform(byte[] keyBlock)
 		{
 			SetKeys(keyBlock);
@@ -370,6 +370,10 @@ namespace ICSharpCode.SharpZipLib.Encryption
 	/// </summary>
 	public sealed class PkzipClassicManaged : PkzipClassic
 	{
+		/// <summary>
+		/// Get / set the applicable block size.
+		/// </summary>
+		/// <remarks>The only valid block size is 8.</remarks>
 		public override int BlockSize 
 		{
 			get { return 8; }
@@ -379,6 +383,9 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			}
 		}
 
+		/// <summary>
+		/// Get an array of legal <see cref="KeySizes">key sizes.</see>
+		/// </summary>
 		public override KeySizes[] LegalKeySizes
 		{
 			get {
@@ -388,11 +395,17 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			}
 		}
 
+		/// <summary>
+		/// Generate an initial vector.
+		/// </summary>
 		public override void GenerateIV()
 		{
 			// Do nothing.
 		}
 
+		/// <summary>
+		/// Get an array of legal <see cref="KeySizes">block sizes</see>.
+		/// </summary>
 		public override KeySizes[] LegalBlockSizes
 		{
 			get {
@@ -404,6 +417,9 @@ namespace ICSharpCode.SharpZipLib.Encryption
 
 		byte[] key;
 
+		/// <summary>
+		/// Get / set the key value applicable.
+		/// </summary>
 		public override byte[] Key
 		{
 			get {

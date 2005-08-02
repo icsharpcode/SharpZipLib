@@ -115,7 +115,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		int globalCrc;
 
 		/// <summary>
-		/// Initialise a default instance of <see cref="StrangeCrc"></see>
+		/// Initialise a default instance of <see cref="StrangeCRC"></see>
 		/// </summary>	
 		public StrangeCRC() 
 		{
