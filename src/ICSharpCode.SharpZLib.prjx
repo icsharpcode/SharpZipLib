@@ -59,7 +59,6 @@
     <File name=".\Zip\ZipNameTransform.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\Encryption" subtype="Directory" buildaction="Compile" dependson="" data="" />
     <File name=".\Encryption\PkzipClassic.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
-    <File name=".\ICSharpCode.SharpZLib.build" subtype="Code" buildaction="Nothing" dependson="" data="" />
   </Contents>
   <References />
   <DeploymentInformation target="" script="" strategy="File" />
