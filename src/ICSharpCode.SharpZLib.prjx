@@ -52,13 +52,14 @@
     <File name=".\BZip2\BZip2Exception.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\Core" subtype="Directory" buildaction="Compile" dependson="" data="" />
     <File name=".\Core\NameFilter.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
-    <File name=".\Zip\SimpleZip.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Zip\FastZip.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\Core\FileSystemScanner.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\Core\PathFilter.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\Core\INameTransform.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\Zip\ZipNameTransform.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\Encryption" subtype="Directory" buildaction="Compile" dependson="" data="" />
     <File name=".\Encryption\PkzipClassic.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\ICSharpCode.SharpZLib.build" subtype="Code" buildaction="Nothing" dependson="" data="" />
   </Contents>
   <References />
   <DeploymentInformation target="" script="" strategy="File" />
