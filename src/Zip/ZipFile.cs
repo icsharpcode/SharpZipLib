@@ -192,8 +192,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			set 
 			{
-				if (value == null)
+				if ( (value == null) || (value.Length == 0) ) {
 					key = null;
+				}
 				else {
 					key = PkzipClassic.GenerateKeys(Encoding.ASCII.GetBytes(value));
 				}
