@@ -40,7 +40,7 @@ using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
-	public class SimpleZipEvents
+	public class FastZipEvents
 	{
 		public ProcessDirectoryDelegate ProcessDirectory;
 		public ProcessFileDelegate ProcessFile;
@@ -92,17 +92,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 	}
 	
 	/// <summary>
-	/// SimpleZip provides facilities for creating and extracting zip files.
+	/// FastZip provides facilities for creating and extracting zip files.
 	/// Only relative paths are supported.
 	/// </summary>
-	public class SimpleZip
+	public class FastZip
 	{
-		public SimpleZip()
+		public FastZip()
 		{
 			this.events = null;
 		}
 		
-		public SimpleZip(SimpleZipEvents events)
+		public FastZip(FastZipEvents events)
 		{
 			this.events = events;
 		}
@@ -218,8 +218,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			FileStream stream = File.OpenRead(name);
 			try {
 				int length;
-				do
-				{
+				do {
 					length = stream.Read(buffer, 0, buffer.Length);
 					outputStream.Write(buffer, 0, length);
 				} while ( length > 0 );
@@ -342,7 +341,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		ConfirmOverwriteDelegate confirmDelegate;
 		bool restoreDateTime = false;
 		bool createEmptyDirectories = false;
-		SimpleZipEvents events;
+		FastZipEvents events;
 		ZipNameTransform nameTransform;
 		#endregion
 	}

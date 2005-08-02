@@ -343,8 +343,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		public override void Close()
 		{
-			if ( !isClosed )
-			{
+			if ( !isClosed ) {
 				isClosed = true;
 				Finish();
 				if ( isStreamOwner ) {
