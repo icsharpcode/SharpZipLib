@@ -556,7 +556,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		
 		void EndBlock()
 		{
-			if (last < 0) {       //-jr- dont do anything for empty files, (makes empty files compatible with original Bzip)
+			if (last < 0) {       // dont do anything for empty files, (makes empty files compatible with original Bzip)
 				return;
 			}
 			
