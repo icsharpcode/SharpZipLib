@@ -1,0 +1,20 @@
+<Combine fileversion="1.0" name="FastZip" description="">
+  <StartMode startupentry="FastZip" single="True">
+    <Execute entry="FastZip" type="None" />
+    <Execute entry="SharpZipLib" type="None" />
+  </StartMode>
+  <Entries>
+    <Entry filename=".\FastZip.prjx" />
+    <Entry filename="..\..\..\ICSharpCode.SharpZLib.cmbx" />
+  </Entries>
+  <Configurations active="Debug">
+    <Configuration name="Release">
+      <Entry name="FastZip" configurationname="Debug" build="False" />
+      <Entry name="SharpZipLib" configurationname="Debug" build="False" />
+    </Configuration>
+    <Configuration name="Debug">
+      <Entry name="FastZip" configurationname="Debug" build="False" />
+      <Entry name="SharpZipLib" configurationname="Debug" build="False" />
+    </Configuration>
+  </Configurations>
+</Combine>
