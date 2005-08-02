@@ -360,7 +360,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return b[0] & 0xff;
 		}
 
-		// Perform the initial read on an entry which may include reading encryption headers and setting up inflation.
+		// Perform the initial read on an entry which may include 
+		// reading encryption headers and setting up inflation.
 		int InitialRead(byte[] destination, int offset, int count)
 		{
 			if (entry.Version > ZipConstants.VERSION_MADE_BY) {
