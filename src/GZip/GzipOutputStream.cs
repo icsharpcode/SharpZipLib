@@ -106,7 +106,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		
 		void WriteHeader()
 		{
-			int mod_time = (int)(DateTime.Now.Ticks / 10000L);  // Ticks give back 100ns intervals
+			int mod_time = (int)((DateTime.Now.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000L);  // Ticks give back 100ns intervals
 			byte[] gzipHeader = {
 				/* The two magic bytes */
 				(byte) (GZipConstants.GZIP_MAGIC >> 8), (byte) GZipConstants.GZIP_MAGIC,
