@@ -22,86 +22,81 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 	}
 
-   class RuntimeInfo
-   {
-      public RuntimeInfo(CompressionMethod method, int compressionLevel, int size, string password, bool getCrc)
-      {
-         this.method = method;
-         this.compressionLevel = compressionLevel;
-         this.password = password;
-         this.size = size;
-         this.random = false;
-
-         original = new byte[Size];
-         if ( random )
-         {
-            System.Random rnd = new Random();
-            rnd.NextBytes(original);
-         }
-         else
-         {
-            for ( int i = 0; i < size; ++i)
-            {
-               original[i] = (byte)'A';
-            }
-         }
-
-         if ( getCrc )
-         {
-            Crc32 crc32 = new Crc32();
-            crc32.Update(original, 0, size);
-            crc = crc32.Value;
-         }
-      }
-
-      byte[] original;
-      public byte[] Original
-      {
-         get { return original; }
-      }
-
-      public CompressionMethod Method
-      {
-         get { return method; }
-      }
-
-      CompressionMethod method;
-
-      public int CompressionLevel
-      {
-         get { return compressionLevel; }
-      }
-
-      int compressionLevel;
-
-      public int Size
-      {
-         get { return size; }
-      }
-
-      int size;
-
-      public string Password
-      {
-         get { return password; }
-      }
-
-      string password;
-
-      bool Random
-      {
-         get { return random; }
-      }
-
-      bool random;
-
-      public long Crc
-      {
-         get { return crc; }
-      }
-
-      long crc = -1;
-   }
+	class RuntimeInfo
+	{
+		public RuntimeInfo(CompressionMethod method, int compressionLevel, int size, string password, bool getCrc)
+		{
+			this.method = method;
+			this.compressionLevel = compressionLevel;
+			this.password = password;
+			this.size = size;
+			this.random = false;
+		
+			original = new byte[Size];
+			if ( random ) {
+				System.Random rnd = new Random();
+				rnd.NextBytes(original);
+			} else {
+				for ( int i = 0; i < size; ++i) {
+					original[i] = (byte)'A';
+				}
+			}
+		
+			if ( getCrc ) {
+				Crc32 crc32 = new Crc32();
+				crc32.Update(original, 0, size);
+				crc = crc32.Value;
+			}
+		}
+		
+		byte[] original;
+		public byte[] Original
+		{
+			get { return original; }
+		}
+		
+		public CompressionMethod Method
+		{
+			get { return method; }
+		}
+		
+		CompressionMethod method;
+		
+		public int CompressionLevel
+		{
+			get { return compressionLevel; }
+		}
+		
+		int compressionLevel;
+		
+		public int Size
+		{
+			get { return size; }
+		}
+		
+		int size;
+		
+		public string Password
+		{
+			get { return password; }
+		}
+		
+		string password;
+		
+		bool Random
+		{
+			get { return random; }
+		}
+		
+		bool random;
+		
+		public long Crc
+		{
+			get { return crc; }
+		}
+		
+		long crc = -1;
+	}
 
 	/// <summary>
 	/// This class contains test cases for Zip compression and decompression
@@ -138,49 +133,43 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
-      byte[] MakeMemZip(bool withSeek, params object[] createSpecs)
-      {
-         MemoryStream ms;
+		byte[] MakeMemZip(bool withSeek, params object[] createSpecs)
+		{
+			MemoryStream ms;
 			
-         if (withSeek == true) 
-         {
-            ms = new MemoryStream();
-         } 
-         else 
-         {
-            ms = new MemStreamWithoutSeek();
-         }
+			if (withSeek == true) {
+				ms = new MemoryStream();
+			} else {
+				ms = new MemStreamWithoutSeek();
+			}
 			
-         ZipOutputStream outStream = new ZipOutputStream(ms);
+			ZipOutputStream outStream = new ZipOutputStream(ms);
 
-         int counter;
+			int counter;
 
-         for ( counter = 0; counter < createSpecs.Length; ++counter )
-         {
-            RuntimeInfo info = createSpecs[counter] as RuntimeInfo;
-            outStream.Password = info.Password;
+			for ( counter = 0; counter < createSpecs.Length; ++counter ) {
+				RuntimeInfo info = createSpecs[counter] as RuntimeInfo;
+				outStream.Password = info.Password;
 
-            if (info.Method != CompressionMethod.Stored)
-               outStream.SetLevel(info.CompressionLevel); // 0 - store only to 9 - means best compression
+				if (info.Method != CompressionMethod.Stored) {
+					outStream.SetLevel(info.CompressionLevel); // 0 - store only to 9 - means best compression
+				}
 
-            ZipEntry entry = new ZipEntry("entry" + counter + ".tst");
-            entry.CompressionMethod = info.Method;
-            if ( info.Crc >= 0 )
-            {
-               entry.Crc = info.Crc;
-            }
-
-            outStream.PutNextEntry(entry);
+				ZipEntry entry = new ZipEntry("entry" + counter + ".tst");
+				entry.CompressionMethod = info.Method;
+				if ( info.Crc >= 0 ) {
+					entry.Crc = info.Crc;
+				}
+					outStream.PutNextEntry(entry);
+		
+				if (info.Size > 0) {
+					outStream.Write(info.Original, 0, info.Original.Length);
+				}
+			}
 			
-            if (info.Size > 0) 
-            {
-               outStream.Write(info.Original, 0, info.Original.Length);
-            }
-         }
-      			
-         outStream.Close();
-         return ms.ToArray();
-      }
+	 		outStream.Close();
+	 		return ms.ToArray();
+		}
 		
 		byte[] MakeMemZip(ref byte[] original, CompressionMethod method, int compressionLevel, int size, string password, bool withSeek)
 		{
@@ -409,6 +398,24 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			s.PutNextEntry(new ZipEntry("dummyfile.tst"));
 		}
 		
+		[Test]
+		[Category("Zip")]
+		[ExpectedException(typeof(ZipException))]
+		public void EntrySizeTooLarge()
+		{
+			ZipEntry e = new ZipEntry("Bill");
+			e.Size = 0x100000000L;
+		}
+
+		[Test]
+		[Category("Zip")]
+		[ExpectedException(typeof(ZipException))]
+		public void EntryOffsetTooLarge()
+		{
+			ZipEntry e = new ZipEntry("Bill");
+			e.Offset = 0x100000000L;
+		}
+		
 		/// <summary>
 		/// Test setting file commment to a value that is too long
 		/// </summary>
@@ -513,6 +520,28 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		
 		[Test]
 		[Category("Zip")]
+		public void SkipEncryptedEntriesWithoutSettingPassword()
+		{
+			byte[] compressedData = MakeMemZip(true, 
+				new RuntimeInfo(CompressionMethod.Deflated, 2, 1, null, true),
+				new RuntimeInfo(CompressionMethod.Deflated, 9, 1, "1234", true),
+				new RuntimeInfo(CompressionMethod.Deflated, 2, 1, null, true),
+				new RuntimeInfo(CompressionMethod.Stored, 2, 1, "4321", true),
+				new RuntimeInfo(CompressionMethod.Deflated, 9, 1, "1234", true)
+				);
+		
+			MemoryStream ms = new MemoryStream(compressedData);
+			ZipInputStream inStream = new ZipInputStream(ms);
+		
+			ZipEntry entry;
+			while ((entry = inStream.GetNextEntry()) != null) {
+			}
+		
+			inStream.Close();
+		}
+
+		[Test]
+		[Category("Zip")]
 		public void MixedEncryptedAndPlain()
 		{
 			byte[] compressedData = MakeMemZip(true, 
@@ -520,12 +549,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				new RuntimeInfo(CompressionMethod.Deflated, 9, 1, "1234", false),
 				new RuntimeInfo(CompressionMethod.Deflated, 2, 1, null, false),
 				new RuntimeInfo(CompressionMethod.Deflated, 9, 1, "1234", true)
-			);
-
+				);
+		
 			MemoryStream ms = new MemoryStream(compressedData);
 			ZipInputStream inStream = new ZipInputStream(ms);
 			inStream.Password = "1234";
-
+		
 			int  extractCount  = 0;
 			ZipEntry entry;
 			byte[] decompressedData = new byte[100];
