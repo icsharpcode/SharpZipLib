@@ -163,7 +163,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Handles getting of encryption keys when required.
 		/// </summary>
-		/// <param name="fileName">The file for which encryptino keys are required.</param>
+		/// <param name="fileName">The file for which encryption keys are required.</param>
 		void OnKeysRequired(string fileName)
 		{
 			if (KeysRequired != null) {
@@ -203,6 +203,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 		byte[] iv = null;
 		
+		/// <summary>
+		/// Get a value indicating wether encryption keys are currently available.
+		/// </summary>
 		bool HaveKeys
 		{
 		 get { return key != null; }
@@ -376,7 +379,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int entriesForThisDisk        = ReadLeShort();
 			int entriesForWholeCentralDir = ReadLeShort();
 			int centralDirSize            = ReadLeInt();
-			int offsetOfCentralDir        = ReadLeInt();
+			long offsetOfCentralDir       = (uint)ReadLeInt();
 			int commentSize               = ReadLeShort();
 			
 			byte[] zipComment = new byte[commentSize]; 
@@ -392,7 +395,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			entries = new ZipEntry[entriesForWholeCentralDir];
 			
 			// SFX support, find the offset of the first entry vis the start of the stream
-			// This applies to Zip files that are appended to the end of the SFX stub.
+			// This applies to Zip files that are appended to the end of an SFX stub.
 			// Zip files created by some archivers have the offsets altered to reflect the true offsets
 			// and so dont require any adjustment here...
 			if (offsetOfCentralDir < locatedCentralDirOffset - (4 + centralDirSize)) {
@@ -425,7 +428,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				int internalAttributes = ReadLeShort();  // Not currently used
 
 				int externalAttributes = ReadLeInt();
-				int offset             = ReadLeInt();
+				long offset            = (uint)ReadLeInt();
 				
 				byte[] buffer = new byte[Math.Max(nameLen, commentLen)];
 				
@@ -600,7 +603,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				baseStream.Seek(offsetOfFirstEntry + entry.Offset, SeekOrigin.Begin);
 				if (ReadLeInt() != ZipConstants.LOCSIG) {
-					throw new ZipException("Wrong local header signature");
+					throw new ZipException(string.Format("Wrong local header signature @{0:X}", offsetOfFirstEntry + entry.Offset));
 				}
 				
 				short shortValue = (short)ReadLeShort();	 // version required to extract

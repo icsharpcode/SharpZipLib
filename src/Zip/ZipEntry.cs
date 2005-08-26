@@ -80,7 +80,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		int flags;                             // general purpose bit flags
 
 		int zipFileIndex = -1;                 // used by ZipFile
-		int offset;                            // used by ZipFile and ZipOutputStream
+		long offset;                           // used by ZipFile and ZipOutputStream
 		
 		/// <summary>
 		/// Get/Set flag indicating if entry is encrypted.
@@ -150,14 +150,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get/set offset for use in central header
 		/// </summary>
-		public int Offset {
+		public long Offset {
 			get {
 				return offset;
 			}
 			set {
-				if (((ulong)value & 0xFFFFFFFF00000000L) != 0) {
-					throw new ArgumentOutOfRangeException("Offset");
-				}
+            if ( value > 0xffffffff ) {
+               throw new ZipException("Zip entry size exceeded");
+            }
 				offset = value;
 			}
 		}
@@ -495,7 +495,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Gets/Sets the size of the uncompressed data.
 		/// </summary>
-		/// <exception cref="System.ArgumentOutOfRangeException">
+		/// <exception cref="ZipException">
 		/// If the size is not in the range 0..0xffffffffL
 		/// </exception>
 		/// <returns>
@@ -507,7 +507,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			set {
 				if (((ulong)value & 0xFFFFFFFF00000000L) != 0) {
-					throw new ArgumentOutOfRangeException("size");
+					throw new ZipException("Entry size exceeded");
 				}
 				this.size  = (ulong)value;
 				this.known |= (ushort)KNOWN_SIZE;
