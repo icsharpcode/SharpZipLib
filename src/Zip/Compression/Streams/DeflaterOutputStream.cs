@@ -94,7 +94,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		public override bool CanRead {
 			get {
-				return baseOutputStream.CanRead;
+				return false;
 			}
 		}
 		

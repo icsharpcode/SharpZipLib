@@ -56,13 +56,26 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 	public class InflaterInputBuffer
 	{
 		/// <summary>
+		/// Initialise a new instace of <see cref="InflaterInputBuffer"/> with a default buffer size
+		/// </summary>
+		/// <param name="stream">The stream to buffer.</param>
+		public InflaterInputBuffer(Stream stream) : this(stream , 4096)
+		{
+		}
+		
+		/// <summary>
 		/// Initialise a new instance of <see cref="InflaterInputBuffer"/>
 		/// </summary>
 		/// <param name="stream">The stream to buffer.</param>
-		public InflaterInputBuffer(Stream stream)
+		/// <param name="bufferSize">The size to use for the buffer</param>
+		/// <remarks>A minimum buffer size of 1KB is permitted.  Lower sizes are treated as 1KB.</remarks>
+		public InflaterInputBuffer(Stream stream, int bufferSize)
 		{
 			inputStream = stream;
-			rawData = new byte[4096];
+			if ( bufferSize < 1024 ) {
+				bufferSize = 1024;
+			}
+			rawData = new byte[bufferSize];
 			clearText = rawData;
 		}
 		
@@ -531,7 +544,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			this.baseInputStream = baseInputStream;
 			this.inf = inflater;
 			
-			inputBuffer = new InflaterInputBuffer(baseInputStream);
+			inputBuffer = new InflaterInputBuffer(baseInputStream, bufferSize);
 		}
 		
 		/// <summary>
