@@ -220,11 +220,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="fileFilter">A filter to apply to files.</param>
 		public void ExtractZip(string zipFileName, string targetDirectory, string fileFilter) 
 		{
-			ExtractZip(zipFileName, targetDirectory, Overwrite.Always, null, fileFilter, null);
+			ExtractZip(zipFileName, targetDirectory, Overwrite.Always, null, fileFilter, null, restoreDateTime);
 		}
 		
 		/// <summary>
-		/// Exatract the contents of a zip file.
+		/// Extract the contents of a zip file.
 		/// </summary>
 		/// <param name="zipFileName">The zip file to extract from.</param>
 		/// <param name="targetDirectory">The directory to save extracted information in.</param>
@@ -232,9 +232,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="confirmDelegate">A delegate to invoke when confirming overwriting.</param>
 		/// <param name="fileFilter">A filter to apply to files.</param>
 		/// <param name="directoryFilter">A filter to apply to directories.</param>
+		/// <param name="restoreDateTime">Flag indiating wether to restore the date and time for extracted files.</param>
 		public void ExtractZip(string zipFileName, string targetDirectory, 
 		                       Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate, 
-		                       string fileFilter, string directoryFilter)
+		                       string fileFilter, string directoryFilter, bool restoreDateTime)
 		{
 			if ((overwrite == Overwrite.Prompt) && (confirmDelegate == null)) {
 				throw new ArgumentNullException("confirmDelegate");
@@ -244,6 +245,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			this.targetDirectory = targetDirectory;
 			this.fileFilter = new NameFilter(fileFilter);
 			this.directoryFilter = new NameFilter(directoryFilter);
+			this.restoreDateTime = restoreDateTime;
 			
 			inputStream = new ZipInputStream(File.OpenRead(zipFileName));
 			
@@ -407,6 +409,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 				else {
 					nameTransform = value;
 				}
+			}
+		}
+
+		/// <summary>
+		/// Get/set a value indicating wether file dates and times should 
+		/// be restored when extracting files from an archive.
+		/// </summary>
+		/// <remarks>The default value is false.</remarks>
+		public bool RestoreDateTimeOnExtract
+		{
+			get {
+				return restoreDateTime;
+			}
+			set {
+				restoreDateTime = value;
 			}
 		}
 		
