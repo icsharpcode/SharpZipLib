@@ -82,7 +82,7 @@ namespace ICSharpCode.SharpZipLib.Core
 	}
 
 	/// <summary>
-	/// NameAnsSizeFilter filters based on name and file size.
+	/// NameAndSizeFilter filters based on name and file size.
 	/// </summary>
 	public class NameAndSizeFilter : PathFilter
 	{
