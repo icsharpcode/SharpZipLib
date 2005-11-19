@@ -1,4 +1,4 @@
-// SimpleZip.cs
+// FastZip.cs
 //
 // Copyright 2005 John Reilly
 //
@@ -125,7 +125,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	public class FastZip
 	{
 		/// <summary>
-		/// Initialize a default instance of FastZip.
+		/// Initialise a default instance of FastZip.
 		/// </summary>
 		public FastZip()
 		{
