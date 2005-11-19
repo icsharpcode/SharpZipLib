@@ -473,10 +473,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 					if (len > csize && csize >= 0) {
 						len = (int)csize;
 					}
-					len = inputBuffer.ReadClearTextBuffer(b, off, len);
-					if (len > 0) {
-						csize -= len;
-						size -= len;
+					
+					if ( len > 0 ) {
+						len = inputBuffer.ReadClearTextBuffer(b, off, len);
+						if (len > 0) {
+							csize -= len;
+							size -= len;
+						}
 					}
 					
 					if (csize == 0) {
