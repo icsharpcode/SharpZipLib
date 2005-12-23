@@ -48,6 +48,18 @@ namespace ICSharpCode.SharpZipLib.BZip2
 	/// </summary>
 	public class BZip2OutputStream : Stream
 	{
+		bool isStreamOwner = true;
+		
+		/// <summary>
+		/// Get/set flag indicating ownership of underlying stream.
+		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
+		/// </summary>
+		public bool IsStreamOwner
+		{
+			get { return isStreamOwner; }
+			set { isStreamOwner = value; }
+		}
+		
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports reading
 		/// </summary>
@@ -395,6 +407,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			if (blockSize > 9) {
 				blockSize = 9;
 			}
+			
 			if (blockSize < 1) {
 				blockSize = 1;
 			}
@@ -504,7 +517,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				EndBlock();
 				EndCompression();
 				Flush();
-				baseStream.Close();
+				
+				if ( IsStreamOwner ) {
+					baseStream.Close();
+				}
 			}
 		}
 
