@@ -95,12 +95,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Raises the ProcessFileEvent.
 		/// </summary>
 		/// <param name="file">The file for this event.</param>
-		public void OnProcessFile(string file)
+		/// <returns>A boolean indicating if execution should continue or not.</returns>
+		public bool OnProcessFile(string file)
 		{
+			bool result = true;
 			if ( ProcessFile != null ) {
 				ScanEventArgs args = new ScanEventArgs(file);
 				ProcessFile(this, args);
+				result = args.ContinueRunning;
 			}
+			return result;
 		}
 		
 		/// <summary>
@@ -115,7 +119,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				ProcessDirectory(this, args);
 			}
 		}
-		
 	}
 	
 	/// <summary>
@@ -220,7 +223,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="fileFilter">A filter to apply to files.</param>
 		public void ExtractZip(string zipFileName, string targetDirectory, string fileFilter) 
 		{
-			ExtractZip(zipFileName, targetDirectory, Overwrite.Always, null, fileFilter, null, restoreDateTime);
+			ExtractZip(zipFileName, targetDirectory, Overwrite.Always, null, fileFilter, null, restoreDateTimeOnExtract);
 		}
 		
 		/// <summary>
@@ -232,20 +235,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="confirmDelegate">A delegate to invoke when confirming overwriting.</param>
 		/// <param name="fileFilter">A filter to apply to files.</param>
 		/// <param name="directoryFilter">A filter to apply to directories.</param>
-		/// <param name="restoreDateTime">Flag indiating wether to restore the date and time for extracted files.</param>
+		/// <param name="restoreDateTime">Flag indicating wether to restore the date and time for extracted files.</param>
 		public void ExtractZip(string zipFileName, string targetDirectory, 
 		                       Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate, 
 		                       string fileFilter, string directoryFilter, bool restoreDateTime)
 		{
-			if ((overwrite == Overwrite.Prompt) && (confirmDelegate == null)) {
+			if ( (overwrite == Overwrite.Prompt) && (confirmDelegate == null) ) {
 				throw new ArgumentNullException("confirmDelegate");
 			}
+			continueRunning_ = true;
 			this.overwrite = overwrite;
 			this.confirmDelegate = confirmDelegate;
 			this.targetDirectory = targetDirectory;
 			this.fileFilter = new NameFilter(fileFilter);
 			this.directoryFilter = new NameFilter(directoryFilter);
-			this.restoreDateTime = restoreDateTime;
+			this.restoreDateTimeOnExtract = restoreDateTime;
 			
 			inputStream = new ZipInputStream(File.OpenRead(zipFileName));
 			
@@ -256,7 +260,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				ZipEntry entry;
-				while ( (entry = inputStream.GetNextEntry()) != null ) {
+				while ( continueRunning_ && (entry = inputStream.GetNextEntry()) != null ) {
 					if ( this.directoryFilter.IsMatch(Path.GetDirectoryName(entry.Name)) && this.fileFilter.IsMatch(entry.Name) ) {
 						ExtractEntry(entry);
 					}
@@ -284,13 +288,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 		void ProcessFile(object sender, ScanEventArgs e)
 		{
-			if ( events != null ) {
-				events.OnProcessFile(e.Name);
+			if ( (events != null) && (events.ProcessFile != null) ) {
+				events.ProcessFile(sender, e);
 			}
-			string cleanedName = nameTransform.TransformFile(e.Name);
-			ZipEntry entry = new ZipEntry(cleanedName);
-			outputStream.PutNextEntry(entry);
-			AddFileContents(e.Name);
+			
+			if ( e.ContinueRunning ) {
+				string cleanedName = nameTransform.TransformFile(e.Name);
+				ZipEntry entry = new ZipEntry(cleanedName);
+				outputStream.PutNextEntry(entry);
+				AddFileContents(e.Name);
+			}
 		}
 
 		void AddFileContents(string name)
@@ -315,45 +322,46 @@ namespace ICSharpCode.SharpZipLib.Zip
 		void ExtractFileEntry(ZipEntry entry, string targetName)
 		{
 			bool proceed = true;
-			if ((overwrite == Overwrite.Prompt) && (confirmDelegate != null)) {
+			if ( (overwrite == Overwrite.Prompt) && (confirmDelegate != null) ) {
 				if (File.Exists(targetName) == true) {
 					proceed = confirmDelegate(targetName);
 				}
 			}
 
 			if ( proceed ) {
-				
 				if ( events != null ) {
-					events.OnProcessFile(entry.Name);
+					continueRunning_ = events.OnProcessFile(entry.Name);
 				}
 			
-				FileStream streamWriter = File.Create(targetName);
+				if ( continueRunning_ ) {
+					FileStream streamWriter = File.Create(targetName);
+				
+					try {
+						if ( buffer == null ) {
+							buffer = new byte[4096];
+						}
+						
+						int size;
 			
-				try {
-					if ( buffer == null ) {
-						buffer = new byte[4096];
+						do {
+							size = inputStream.Read(buffer, 0, buffer.Length);
+							streamWriter.Write(buffer, 0, size);
+						} while (size > 0);
 					}
-					
-					int size;
+					finally {
+						streamWriter.Close();
+					}
 		
-					do {
-						size = inputStream.Read(buffer, 0, buffer.Length);
-						streamWriter.Write(buffer, 0, size);
-					} while (size > 0);
-				}
-				finally {
-					streamWriter.Close();
-				}
-	
-				if (restoreDateTime) {
-					File.SetLastWriteTime(targetName, entry.DateTime);
+					if (restoreDateTimeOnExtract) {
+						File.SetLastWriteTime(targetName, entry.DateTime);
+					}
 				}
 			}
 		}
 
 		bool NameIsValid(string name)
 		{
-			return name != null && name.Length > 0 && name.IndexOfAny(Path.InvalidPathChars) < 0;
+			return (name != null) && (name.Length > 0) && (name.IndexOfAny(Path.InvalidPathChars) < 0);
 		}
 		
 		void ExtractEntry(ZipEntry entry)
@@ -376,7 +384,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				targetName = Path.Combine(targetDirectory, entryFileName);
 				dirName = Path.GetDirectoryName(Path.GetFullPath(targetName));
 	
-				doExtraction = doExtraction && (entryFileName.Length > 0);
+				doExtraction = (entryFileName.Length > 0);
 			}
 			
 			if ( doExtraction && !Directory.Exists(dirName) )
@@ -420,14 +428,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public bool RestoreDateTimeOnExtract
 		{
 			get {
-				return restoreDateTime;
+				return restoreDateTimeOnExtract;
 			}
 			set {
-				restoreDateTime = value;
+				restoreDateTimeOnExtract = value;
 			}
 		}
 		
 		#region Instance Fields
+		bool continueRunning_;
 		byte[] buffer;
 		ZipOutputStream outputStream;
 		ZipInputStream inputStream;
@@ -438,7 +447,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		NameFilter directoryFilter;
 		Overwrite overwrite;
 		ConfirmOverwriteDelegate confirmDelegate;
-		bool restoreDateTime = false;
+		bool restoreDateTimeOnExtract = false;
 		bool createEmptyDirectories = false;
 		FastZipEvents events;
 		ZipNameTransform nameTransform;
