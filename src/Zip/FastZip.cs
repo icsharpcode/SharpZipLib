@@ -182,8 +182,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="zipFileName">The name of the zip file to create.</param>
 		/// <param name="sourceDirectory">The directory to source files from.</param>
 		/// <param name="recurse">True to recurse directories, false for no recursion.</param>
-		/// <param name="fileFilter">The file filter to apply.</param>
-		/// <param name="directoryFilter">The directory filter to apply.</param>
+		/// <param name="fileFilter">The <see cref="PathFilter">file filter</see> to apply.</param>
+		/// <param name="directoryFilter">The <see cref="PathFilter">directory filter</see> to apply.</param>
 		public void CreateZip(string zipFileName, string sourceDirectory, bool recurse, string fileFilter, string directoryFilter)
 		{
 			NameTransform = new ZipNameTransform(true, sourceDirectory);
