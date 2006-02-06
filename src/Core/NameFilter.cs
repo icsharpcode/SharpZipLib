@@ -43,13 +43,16 @@ namespace ICSharpCode.SharpZipLib.Core
 	/// <summary>
 	/// NameFilter is a string matching class which allows for both positive and negative
 	/// matching.
-	/// A filter is a sequence of independant <see cref="Regex"></see> regular expressions separated by semi-colons ';'
+	/// A filter is a sequence of independant <see cref="Regex">regular expressions</see> separated by semi-colons ';'
 	/// Each expression can be prefixed by a plus '+' sign or a minus '-' sign to denote the expression
 	/// is intended to include or exclude names.  If neither a plus or minus sign is found include is the default
 	/// A given name is tested for inclusion before checking exclusions.  Only names matching an include spec 
 	/// and not matching an exclude spec are deemed to match the filter.
 	/// An empty filter matches any name.
 	/// </summary>
+	/// <example>The following expression includes all files ending in '.dat' with the exception of 'dummy.dat'
+	/// "+\.dat$;-dummy\.dat$"
+	/// </example>
 	public class NameFilter
 	{
 		/// <summary>

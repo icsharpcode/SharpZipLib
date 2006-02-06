@@ -180,7 +180,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Initialise a new instance of <see cref="FileSystemScanner"></see>
 		/// </summary>
-		/// <param name="filter">The file filter to apply when scanning.</param>
+		/// <param name="filter">The <see cref="PathFilter">file filter</see> to apply when scanning.</param>
 		public FileSystemScanner(string filter)
 		{
 			fileFilter = new PathFilter(filter);
@@ -189,8 +189,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Initialise a new instance of <see cref="FileSystemScanner"></see>
 		/// </summary>
-		/// <param name="fileFilter">The file <see cref="NameFilter"></see>filter to apply.</param>
-		/// <param name="directoryFilter">The directory <see cref="NameFilter"></see>filter to apply.</param>
+		/// <param name="fileFilter">The <see cref="NameFilter">file filter</see> to apply.</param>
+		/// <param name="directoryFilter">The <see cref="NameFilter">directory filter</see> to apply.</param>
 		public FileSystemScanner(string fileFilter, string directoryFilter)
 		{
 			this.fileFilter = new PathFilter(fileFilter);
