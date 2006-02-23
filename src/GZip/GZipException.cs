@@ -34,6 +34,8 @@
 // exception statement from your version.
 
 using System;
+using System.Runtime.Serialization;
+
 using ICSharpCode.SharpZipLib;
 
 namespace ICSharpCode.SharpZipLib.GZip
@@ -41,8 +43,20 @@ namespace ICSharpCode.SharpZipLib.GZip
 	/// <summary>
 	/// GZipException represents a Gzip specific exception	
 	/// </summary>
+	[Serializable]
 	public class GZipException : SharpZipBaseException
 	{
+		/// <summary>
+		/// Deserialization constructor 
+		/// </summary>
+		/// <param name="info"><see cref="SerializationInfo"/> for this constructor</param>
+		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
+		protected GZipException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+
+		{
+		}
+
 		/// <summary>
 		/// Initialise a new instance of GZipException
 		/// </summary>

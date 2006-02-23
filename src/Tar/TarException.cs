@@ -33,6 +33,9 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+using System;
+using System.Runtime.Serialization;
+
 using ICSharpCode.SharpZipLib;
 
 namespace ICSharpCode.SharpZipLib.Tar {
@@ -40,8 +43,20 @@ namespace ICSharpCode.SharpZipLib.Tar {
 	/// <summary>
 	/// TarExceptions are used for exceptions specific to tar classes and code.	
 	/// </summary>
+	[Serializable]
 	public class TarException : SharpZipBaseException
 	{
+		/// <summary>
+		/// Deserialization constructor 
+		/// </summary>
+		/// <param name="info"><see cref="SerializationInfo"/> for this constructor</param>
+		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
+		protected TarException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+
+		{
+		}
+
 		/// <summary>
 		/// Initialises a new instance of the TarException class.
 		/// </summary>

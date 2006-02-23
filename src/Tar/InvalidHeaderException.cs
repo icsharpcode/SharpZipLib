@@ -32,14 +32,29 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+using System;
+using System.Runtime.Serialization;
+
 namespace ICSharpCode.SharpZipLib.Tar {
 	
 	/// <summary>
 	/// This exception is used to indicate that there is a problem
 	/// with a TAR archive header.
 	/// </summary>
+	[Serializable]
 	public class InvalidHeaderException : TarException
 	{
+		/// <summary>
+		/// Deserialization constructor 
+		/// </summary>
+		/// <param name="info"><see cref="SerializationInfo"/> for this constructor</param>
+		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
+		protected InvalidHeaderException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+
+		{
+		}
+
 		/// <summary>
 		/// Initialise a new instance of the InvalidHeaderException class.
 		/// </summary>

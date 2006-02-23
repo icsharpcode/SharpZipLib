@@ -37,6 +37,7 @@
 // exception statement from your version.
 
 using System;
+using System.Runtime.Serialization;
 
 namespace ICSharpCode.SharpZipLib
 {
@@ -44,8 +45,19 @@ namespace ICSharpCode.SharpZipLib
 	/// SharpZipBaseException is the base exception class for the SharpZipLibrary.
 	/// All library exceptions are derived from this.
 	/// </summary>
+	[Serializable]
 	public class SharpZipBaseException : ApplicationException
 	{
+		/// <summary>
+		/// Deserialization constructor 
+		/// </summary>
+		/// <param name="info"><see cref="SerializationInfo"/> for this constructor</param>
+		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
+		protected SharpZipBaseException(SerializationInfo info, StreamingContext context )
+			: base( info, context )
+		{
+		}
+
 		/// <summary>
 		/// Initializes a new instance of the SharpZipLibraryException class.
 		/// </summary>
