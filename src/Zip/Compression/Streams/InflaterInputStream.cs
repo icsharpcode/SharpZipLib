@@ -38,8 +38,13 @@
 // exception statement from your version.
 
 using System;
-using System.Security.Cryptography;
 using System.IO;
+
+#if !COMPACT_FRAMEWORK
+using System.Security.Cryptography;
+#else
+using ICSharpCode.SharpZipLib.Encryption;
+#endif
 
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Checksums;
@@ -190,7 +195,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <returns>Returns the number of bytes read.</returns>
 		public int ReadRawBuffer(byte[] outBuffer, int offset, int length)
 		{
-			if ( length <= 0 ) {
+			if ( length < 0 ) {
 				throw new ArgumentOutOfRangeException("length");
 			}
 			
@@ -206,7 +211,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				}
 				int toCopy = Math.Min(currentLength, available);
 				System.Array.Copy(rawData, rawLength - (int)available, outBuffer, currentOffset, toCopy);
-            currentOffset += toCopy;
+				currentOffset += toCopy;
 				currentLength -= toCopy;
 				available -= toCopy;
 			}
