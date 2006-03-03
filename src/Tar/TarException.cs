@@ -34,7 +34,10 @@
 // exception statement from your version.
 
 using System;
+
+#if !COMPACT_FRAMEWORK
 using System.Runtime.Serialization;
+#endif
 
 using ICSharpCode.SharpZipLib;
 
@@ -43,9 +46,12 @@ namespace ICSharpCode.SharpZipLib.Tar {
 	/// <summary>
 	/// TarExceptions are used for exceptions specific to tar classes and code.	
 	/// </summary>
+#if !COMPACT_FRAMEWORK 
 	[Serializable]
+#endif
 	public class TarException : SharpZipBaseException
 	{
+#if !COMPACT_FRAMEWORK 
 		/// <summary>
 		/// Deserialization constructor 
 		/// </summary>
@@ -56,6 +62,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 
 		{
 		}
+#endif
 
 		/// <summary>
 		/// Initialises a new instance of the TarException class.

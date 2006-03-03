@@ -34,7 +34,10 @@
 // exception statement from your version.
 
 using System;
+
+#if !COMPACT_FRAMEWORK
 using System.Runtime.Serialization;
+#endif
 
 using ICSharpCode.SharpZipLib;
 
@@ -43,9 +46,12 @@ namespace ICSharpCode.SharpZipLib.GZip
 	/// <summary>
 	/// GZipException represents a Gzip specific exception	
 	/// </summary>
+#if !COMPACT_FRAMEWORK 
 	[Serializable]
+#endif	
 	public class GZipException : SharpZipBaseException
 	{
+#if !COMPACT_FRAMEWORK 
 		/// <summary>
 		/// Deserialization constructor 
 		/// </summary>
@@ -56,6 +62,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 		{
 		}
+#endif
 
 		/// <summary>
 		/// Initialise a new instance of GZipException
