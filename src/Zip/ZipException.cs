@@ -37,7 +37,10 @@
 // exception statement from your version.
 
 using System;
+
+#if !COMPACT_FRAMEWORK 
 using System.Runtime.Serialization;
+#endif
 
 namespace ICSharpCode.SharpZipLib.Zip 
 {
@@ -45,9 +48,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// <summary>
 	/// Represents errors specific to Zip file handling
 	/// </summary>
+#if !COMPACT_FRAMEWORK 
 	[Serializable]
+#endif
 	public class ZipException : SharpZipBaseException
 	{
+#if !COMPACT_FRAMEWORK 
 		/// <summary>
 		/// Deserialization constructor 
 		/// </summary>
@@ -58,6 +64,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		{
 		}
+#endif
 
 		/// <summary>
 		/// Initializes a new instance of the ZipException class.
