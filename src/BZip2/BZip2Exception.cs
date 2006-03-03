@@ -34,7 +34,10 @@
 // exception statement from your version.
 
 using System;
+
+#if !COMPACT_FRAMEWORK
 using System.Runtime.Serialization;
+#endif
 
 using ICSharpCode.SharpZipLib;
 
@@ -43,9 +46,12 @@ namespace ICSharpCode.SharpZipLib.BZip2
 	/// <summary>
 	/// BZip2Exception represents exceptions specific to Bzip2 algorithm
 	/// </summary>
+#if !COMPACT_FRAMEWORK 
 	[Serializable]
+#endif	
 	public class BZip2Exception : SharpZipBaseException
 	{
+#if !COMPACT_FRAMEWORK 
 		/// <summary>
 		/// Deserialization constructor 
 		/// </summary>
@@ -56,7 +62,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		{
 		}
-
+#endif
 		/// <summary>
 		/// Initialise a new instance of BZip2Exception.
 		/// </summary>
