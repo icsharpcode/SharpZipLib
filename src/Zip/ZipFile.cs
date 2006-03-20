@@ -38,10 +38,13 @@
 // exception statement from your version.
 
 using System;
-using System.Security.Cryptography;
 using System.Collections;
 using System.IO;
 using System.Text;
+
+#if !COMPACT_FRAMEWORK
+using System.Security.Cryptography;
+#endif
 
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;

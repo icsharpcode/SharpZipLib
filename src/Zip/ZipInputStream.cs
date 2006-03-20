@@ -46,7 +46,7 @@ using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using ICSharpCode.SharpZipLib.Encryption;
 
-namespace ICSharpCode.SharpZipLib.Zip 
+namespace ICSharpCode.SharpZipLib.Zip
 {
 	/// <summary>
 	/// This is an InflaterInputStream that reads the files baseInputStream an zip archive
@@ -71,12 +71,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// 	public static void Main(string[] args)
 	/// 	{
 	/// 		ZipInputStream s = new ZipInputStream(File.OpenRead(args[0]));
-	/// 		
+	///
 	/// 		ZipEntry theEntry;
 	/// 		while ((theEntry = s.GetNextEntry()) != null) {
 	/// 			int size = 2048;
 	/// 			byte[] data = new byte[2048];
-	/// 			
+	///
 	/// 			Console.Write("Show contents (y/n) ?");
 	/// 			if (Console.ReadLine() == "y") {
 	/// 				while (true) {
@@ -91,19 +91,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// 		}
 	/// 		s.Close();
 	/// 	}
-	/// }	
+	/// }
 	/// </code>
 	/// </example>
 	public class ZipInputStream : InflaterInputStream
 	{
 		// Delegate for reading bytes from a stream.
 		delegate int ReaderDelegate(byte[] b, int offset, int length);
-
+		
 		/// <summary>
 		/// The current reader this instance.
 		/// </summary>
 		ReaderDelegate internalReader;
-
+		
 		Crc32 crc = new Crc32();
 		ZipEntry entry = null;
 		
@@ -111,7 +111,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		int method;
 		int flags;
 		string password = null;
-
+		
 		/// <summary>
 		/// Creates a new Zip input stream, for reading a zip archive.
 		/// </summary>
@@ -119,12 +119,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			internalReader = new ReaderDelegate(InitialRead);
 		}
-
+		
 		
 		/// <summary>
 		/// Optional password used for encryption when non-null
 		/// </summary>
-		public string Password 
+		public string Password
 		{
 			get {
 				return password;
@@ -134,7 +134,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 		
-
+		
 		/// <summary>
 		/// Gets a value indicating if the entry can be decompressed
 		/// </summary>
@@ -161,7 +161,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Input stream is closed
 		/// </exception>
 		/// <exception cref="ZipException">
-		/// Password is not set, password is invalid, compression method is invalid, 
+		/// Password is not set, password is invalid, compression method is invalid,
 		/// version required to extract is not supported
 		/// </exception>
 		public ZipEntry GetNextEntry()
@@ -173,18 +173,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (entry != null) {
 				CloseEntry();
 			}
-
+			
 			int header = inputBuffer.ReadLeInt();
-
-			if (header == ZipConstants.CENSIG || 
-			    header == ZipConstants.ENDSIG || 
-			    header == ZipConstants.CENDIGITALSIG || 
+			
+			if (header == ZipConstants.CENSIG ||
+			    header == ZipConstants.ENDSIG ||
+			    header == ZipConstants.CENDIGITALSIG ||
 			    header == ZipConstants.CENSIG64) {
-			    // No more individual entries exist
+				// No more individual entries exist
 				Close();
 				return null;
 			}
-
+			
 			// -jr- 07-Dec-2003 Ignore spanning temporary signatures if found
 			// SPANNINGSIG is same as descriptor signature and is untested as yet.
 			if (header == ZipConstants.SPANTEMPSIG || header == ZipConstants.SPANNINGSIG) {
@@ -253,7 +253,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				inputBuffer.ReadRawBuffer(extra);
 				entry.ExtraData = extra;
 			}
-
+			
 			internalReader = new ReaderDelegate(InitialRead);
 			return entry;
 		}
@@ -302,9 +302,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 					return;
 				}
 				csize -= inf.TotalIn;
-				inputBuffer.Available -= inf.RemainingInput;	
+				inputBuffer.Available -= inf.RemainingInput;
 			}
-
+			
 			if (inputBuffer.Available > csize && csize >= 0) {
 				inputBuffer.Available = (int)((long)inputBuffer.Available - csize);
 			} else {
@@ -359,8 +359,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			return b[0] & 0xff;
 		}
-
-		// Perform the initial read on an entry which may include 
+		
+		// Perform the initial read on an entry which may include
 		// reading encryption headers and setting up inflation.
 		int InitialRead(byte[] destination, int offset, int count)
 		{
@@ -370,20 +370,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 			
 			// test for encryption
 			if (entry.IsCrypted) {
-		
+				
 				if (password == null) {
 					throw new ZipException("No password set.");
 				}
-			
+				
 				// Generate and set crypto transform...
 				PkzipClassicManaged managed = new PkzipClassicManaged();
 				byte[] key = PkzipClassic.GenerateKeys(Encoding.ASCII.GetBytes(password));
-					
+				
 				inputBuffer.CryptoTransform = managed.CreateDecryptor(key, null);
-			
+				
 				byte[] cryptbuffer = new byte[ZipConstants.CRYPTO_HEADER_SIZE];
 				inputBuffer.ReadClearTextBuffer(cryptbuffer, 0, ZipConstants.CRYPTO_HEADER_SIZE);
-					
+				
 				if ((flags & 8) == 0) {
 					if (cryptbuffer[ZipConstants.CRYPTO_HEADER_SIZE - 1] != (byte)(entry.Crc >> 24)) {
 						throw new ZipException("Invalid password");
@@ -394,11 +394,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 						throw new ZipException("Invalid password");
 					}
 				}
-					
+				
 				if (csize >= ZipConstants.CRYPTO_HEADER_SIZE) {
 					csize -= ZipConstants.CRYPTO_HEADER_SIZE;
 				}
-			} 
+			}
 			else {
 				inputBuffer.CryptoTransform = null;
 			}
@@ -411,7 +411,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return BodyRead(destination, offset, count);
 		}
 		
-
+		
 		/// <summary>
 		/// Read a block of bytes from the stream.
 		/// </summary>
@@ -424,7 +424,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			return internalReader(destination, index, count);
 		}
-
+		
 		/// <summary>
 		/// Reads a block of bytes from the current zip entry.
 		/// </summary>
@@ -468,7 +468,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						finished = true;
 					}
 					break;
-				
+					
 				case (int)CompressionMethod.Stored:
 					if (len > csize && csize >= 0) {
 						len = (int)csize;
@@ -491,7 +491,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 					break;
 			}
-				
+			
 			if (len > 0) {
 				crc.Update(b, off, len);
 			}
@@ -511,7 +511,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			return len;
 		}
-
+		
 		/// <summary>
 		/// Closes the zip input stream
 		/// </summary>

@@ -571,6 +571,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return method;
 			}
 			set {
+				if ( (value != CompressionMethod.Deflated) && (value != CompressionMethod.Stored) )
+				{
+					throw new NotSupportedException("Compression method not supported");
+				}
 				this.method = value;
 			}
 		}
