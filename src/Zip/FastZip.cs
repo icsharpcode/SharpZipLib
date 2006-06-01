@@ -322,12 +322,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		void ExtractFileEntry(ZipEntry entry, string targetName)
 		{
 			bool proceed = true;
-			if ( (overwrite == Overwrite.Prompt) && (confirmDelegate != null) ) {
-				if (File.Exists(targetName) == true) {
-					proceed = confirmDelegate(targetName);
+			if ( overwrite != Overwrite.Always ) {
+				if ( File.Exists(targetName) ) {
+					if ( (overwrite == Overwrite.Prompt) && (confirmDelegate != null) ) {
+						proceed = confirmDelegate(targetName);
+					}
+					else {
+						proceed = false;
+					}
 				}
 			}
-
+			
 			if ( proceed ) {
 				if ( events != null ) {
 					continueRunning_ = events.OnProcessFile(entry.Name);
