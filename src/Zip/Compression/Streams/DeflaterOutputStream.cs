@@ -51,6 +51,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 	/// </summary>
 	public class DeflaterOutputStream : Stream
 	{
+		#region Instance Fields
 		/// <summary>
 		/// This buffer is used temporarily to retrieve the bytes from the
 		/// deflater and write them to the underlying output stream.
@@ -69,9 +70,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		bool isClosed = false;
 		bool isStreamOwner = true;
+		#endregion
 		
 		/// <summary>
-		/// Get/set flag indicating ownership of underlying stream.
+		/// Get/set flag indicating ownership of the underlying stream.
 		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
 		/// </summary>
 		public bool IsStreamOwner
@@ -127,8 +129,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// The current position within the stream.
-		/// Always throws a NotSupportedExceptionNotSupportedException
+		/// Gets the current position within the stream.
 		/// </summary>
 		/// <exception cref="NotSupportedException">Any attempt to set position</exception>
 		public override long Position {
@@ -232,13 +233,15 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 		}
 		
+		#region Constructors
 		/// <summary>
 		/// Creates a new DeflaterOutputStream with a default Deflater and default buffer size.
 		/// </summary>
 		/// <param name="baseOutputStream">
 		/// the output stream where deflated output should be written.
 		/// </param>
-		public DeflaterOutputStream(Stream baseOutputStream) : this(baseOutputStream, new Deflater(), 512)
+		public DeflaterOutputStream(Stream baseOutputStream)
+			: this(baseOutputStream, new Deflater(), 512)
 		{
 		}
 		
@@ -252,7 +255,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <param name="defl">
 		/// the underlying deflater.
 		/// </param>
-		public DeflaterOutputStream(Stream baseOutputStream, Deflater defl) : this(baseOutputStream, defl, 512)
+		public DeflaterOutputStream(Stream baseOutputStream, Deflater defl)
+			: this(baseOutputStream, defl, 512)
 		{
 		}
 		
@@ -296,6 +300,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			buf = new byte[bufsize];
 			def = deflater;
 		}
+		#endregion
 		
 		/// <summary>
 		/// Flushes the stream by calling flush() on the deflater and then
@@ -433,7 +438,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </param>
 		protected void EncryptBlock(byte[] buffer, int offset, int length)
 		{
-			// TODO: refactor to use crypto transform
+			// TODO: Refactor deflator output stream to use crypto transform
 			for (int i = offset; i < offset + length; ++i) {
 				byte oldbyte = buffer[i];
 				buffer[i] ^= EncryptByte();
