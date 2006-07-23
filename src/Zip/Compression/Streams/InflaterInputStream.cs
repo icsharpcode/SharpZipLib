@@ -227,7 +227,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <returns>Returns the number of bytes actually read.</returns>
 		public int ReadClearTextBuffer(byte[] outBuffer, int offset, int length)
 		{
-			if ( length <= 0 ) {
+			if ( length < 0 ) {
 				throw new ArgumentOutOfRangeException("length");
 			}
 			
