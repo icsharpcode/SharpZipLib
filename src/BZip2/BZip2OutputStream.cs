@@ -416,7 +416,15 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			Initialize();
 			InitBlock();
 		}
-		
+
+		/// <summary>
+		/// Get the number of bytes written to output.
+		/// </summary>
+		public int BytesWritten
+		{
+			get { return bytesOut; }
+		}
+
 		/// <summary>
 		/// Write a byte to the stream.
 		/// </summary>
