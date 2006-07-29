@@ -41,12 +41,12 @@ namespace ICSharpCode.SharpZipLib.GZip
 	/// <summary>
 	/// This class contains constants used for gzip.
 	/// </summary>
-	public class GZipConstants
+	sealed public class GZipConstants
 	{
 		/// <summary>
 		/// Magic number found at start of GZIP header
 		/// </summary>
-		public static readonly int GZIP_MAGIC = 0x1F8B;
+		public const int GZIP_MAGIC = 0x1F8B;
 		
 		/*  The flag byte is divided into individual bits as follows:
 			
