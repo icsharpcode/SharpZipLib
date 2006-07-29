@@ -36,6 +36,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 [assembly: CLSCompliant(true)]
 
@@ -48,7 +49,15 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-[assembly: AssemblyVersion("0.84.0.0")]
+[assembly: AssemblyVersion("0.85.0.0")]
+
+// Setting ComVisible to false makes the types in this assembly not visible 
+// to COM components.  If you need to access a type in this assembly from 
+// COM, set the ComVisible attribute to true on that type.
+[assembly: ComVisible(false)]
 
 [assembly: AssemblyDelaySign(false)]
+
+#if NET_VER_1
 [assembly: AssemblyKeyFile("../ICSharpCode.SharpZipLib.key")]
+#endif
