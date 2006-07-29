@@ -108,23 +108,23 @@ namespace ICSharpCode.SharpZipLib.GZip
 		{
 			int mod_time = (int)((DateTime.Now.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000L);  // Ticks give back 100ns intervals
 			byte[] gzipHeader = {
-				/* The two magic bytes */
-				(byte) (GZipConstants.GZIP_MAGIC >> 8), (byte) GZipConstants.GZIP_MAGIC,
+				// The two magic bytes
+				(byte) (GZipConstants.GZIP_MAGIC >> 8), (byte) (GZipConstants.GZIP_MAGIC & 0xff),
 				
-				/* The compression type */
+				// The compression type
 				(byte) Deflater.DEFLATED,
 				
-				/* The flags (not set) */
+				// The flags (not set)
 				0,
 				
-				/* The modification time */
+				// The modification time
 				(byte) mod_time, (byte) (mod_time >> 8),
 				(byte) (mod_time >> 16), (byte) (mod_time >> 24),
 				
-				/* The extra flags */
+				// The extra flags
 				0,
 				
-				/* The OS type (unknown) */
+				// The OS type (unknown)
 				(byte) 255
 			};
 			baseOutputStream.Write(gzipHeader, 0, gzipHeader.Length);
@@ -133,13 +133,13 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <summary>
 		/// Write given buffer to output updating crc
 		/// </summary>
-		/// <param name="buf">Buffer to write</param>
-		/// <param name="off">Offset of first byte in buf to write</param>
-		/// <param name="len">Number of bytes to write</param>
-		public override void Write(byte[] buf, int off, int len)
+		/// <param name="buffer">Buffer to write</param>
+		/// <param name="offset">Offset of first byte in buf to write</param>
+		/// <param name="count">Number of bytes to write</param>
+		public override void Write(byte[] buffer, int offset, int count)
 		{
-			crc.Update(buf, off, len);
-			base.Write(buf, off, len);
+			crc.Update(buffer, offset, count);
+			base.Write(buffer, offset, count);
 		}
 		
 		/// <summary>
