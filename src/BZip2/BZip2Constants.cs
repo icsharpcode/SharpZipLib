@@ -102,52 +102,52 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// When multiplied by compression parameter (1-9) gives the block size for compression
 		/// 9 gives the best compresssion but uses the most memory.
 		/// </summary>		
-		public readonly static int baseBlockSize = 100000;
+		public const int baseBlockSize = 100000;
 		
 		/// <summary>
 		/// Backend constant
 		/// </summary>
-		public readonly static int MAX_ALPHA_SIZE = 258;
+		public const int MAX_ALPHA_SIZE = 258;
 		
 		/// <summary>
 		/// Backend constant
 		/// </summary>
-		public readonly static int MAX_CODE_LEN = 23;
+		public const int MAX_CODE_LEN = 23;
 		
 		/// <summary>
 		/// Backend constant
 		/// </summary>
-		public readonly static int RUNA = 0;
+		public const int RUNA = 0;
 		
 		/// <summary>
 		/// Backend constant
 		/// </summary>
-		public readonly static int RUNB = 1;
+		public const int RUNB = 1;
 		
 		/// <summary>
 		/// Backend constant
 		/// </summary>
-		public readonly static int N_GROUPS = 6;
+		public const int N_GROUPS = 6;
 		
 		/// <summary>
 		/// Backend constant
 		/// </summary>
-		public readonly static int G_SIZE = 50;
+		public const int G_SIZE = 50;
 		
 		/// <summary>
 		/// Backend constant
 		/// </summary>
-		public readonly static int N_ITERS = 4;
+		public const int N_ITERS = 4;
 		
 		/// <summary>
 		/// Backend constant
 		/// </summary>
-		public readonly static int MAX_SELECTORS = (2 + (900000 / G_SIZE));
+		public const int MAX_SELECTORS = (2 + (900000 / G_SIZE));
 		
 		/// <summary>
 		/// Backend constant
 		/// </summary>
-		public readonly static int NUM_OVERSHOOT_BYTES = 20;
+		public const int NUM_OVERSHOOT_BYTES = 20;
 		
 		private BZip2Constants()
 		{
