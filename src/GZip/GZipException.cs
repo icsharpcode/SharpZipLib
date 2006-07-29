@@ -78,5 +78,16 @@ namespace ICSharpCode.SharpZipLib.GZip
 		public GZipException(string message) : base(message)
 		{
 		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message">A <see cref="string"></see>string that describes the error.</param>
+		/// <param name="innerException">The inner exception.</param>
+		public GZipException(string message, Exception innerException)
+			: base (message, innerException)
+		{
+			
+		}
 	}
 }
