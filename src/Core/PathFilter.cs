@@ -40,20 +40,8 @@ using System.IO;
 namespace ICSharpCode.SharpZipLib.Core
 {
 	/// <summary>
-	/// Scanning filters support these operations.
-	/// </summary>
-	public interface IScanFilter
-	{
-		/// <summary>
-		/// Test a name to see if it 'matches' the filter.
-		/// </summary>
-		/// <param name="name">The name to test.</param>
-		/// <returns>Returns true if the name matches the filter, false if it does not match.</returns>
-		bool IsMatch(string name);
-	}
-	
-	/// <summary>
-	/// PathFilter filters directories and files using a form of <see cref="System.Text.RegularExpressions.Regex">regular expressions</see> by full path name.  See <see cref="NameFilter">NameFilter</see> for more detail on filtering.
+	/// PathFilter filters directories and files using a form of <see cref="System.Text.RegularExpressions.Regex">regular expressions</see> by full path name.
+	/// See <see cref="NameFilter">NameFilter</see> for more detail on filtering.
 	/// </summary>
 	public class PathFilter : IScanFilter
 	{
@@ -63,7 +51,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="filter">The <see cref="NameFilter"></see>filter expression to apply.</param>
 		public PathFilter(string filter)
 		{
-			nameFilter = new NameFilter(filter);
+			nameFilter_ = new NameFilter(filter);
 		}
 
 		/// <summary>
@@ -73,11 +61,11 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <returns>True if the name matches, false otherwise.</returns>
 		public virtual bool IsMatch(string name)
 		{
-			return nameFilter.IsMatch(Path.GetFullPath(name));
+			return nameFilter_.IsMatch(Path.GetFullPath(name));
 		}
 		
 		#region Instance Fields
-		NameFilter nameFilter;
+		NameFilter nameFilter_;
 		#endregion
 	}
 
@@ -86,10 +74,6 @@ namespace ICSharpCode.SharpZipLib.Core
 	/// </summary>
 	public class NameAndSizeFilter : PathFilter
 	{
-		#region Instance Fields
-		long minSize_ = 0;
-		long maxSize_ = long.MaxValue;
-		#endregion
 
 		/// <summary>
 		/// Initialise a new instance of NameAndSizeFilter.
@@ -97,10 +81,11 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="filter">The filter to apply.</param>
 		/// <param name="minSize">The minimum file size to include.</param>
 		/// <param name="maxSize">The maximum file size to include.</param>
-		public NameAndSizeFilter(string filter, long minSize, long maxSize) : base(filter)
+		public NameAndSizeFilter(string filter, long minSize, long maxSize)
+			: base(filter)
 		{
-			minSize_ = minSize;
-			maxSize_ = maxSize;
+			MinSize = minSize;
+			MaxSize = maxSize;
 		}
 		
 		/// <summary>
@@ -113,25 +98,47 @@ namespace ICSharpCode.SharpZipLib.Core
 			FileInfo fileInfo = new FileInfo(fileName);
 			long length = fileInfo.Length;
 			return base.IsMatch(fileName) &&
-				(MinSize <= length) && (MaxSize >= length);
+				(MinSize <= length) &&
+				(MaxSize >= length);
 		}
 		
 		/// <summary>
-		/// The minimum size for a file that will match this filter.
+		/// Get/set the minimum size for a file that will match this filter.
 		/// </summary>
 		public long MinSize
 		{
 			get { return minSize_; }
-			set { minSize_ = value; }
+			set
+			{
+				if ( (value < 0) || (maxSize_ < value) )
+				{
+					throw new ArgumentOutOfRangeException("value");
+				}
+
+				minSize_ = value;
+			}
 		}
 		
 		/// <summary>
-		/// The maximum size for a file that will match this filter.
+		/// Get/set the maximum size for a file that will match this filter.
 		/// </summary>
 		public long MaxSize
 		{
 			get { return maxSize_; }
-			set { maxSize_ = value; }
+			set
+			{
+				if ( (value < 0) || (minSize_ > value) )
+				{
+					throw new ArgumentOutOfRangeException("value");
+				}
+
+				maxSize_ = value;
+			}
 		}
-	}
+
+		#region Instance Fields
+		long minSize_ = 0;
+		long maxSize_ = long.MaxValue;
+		#endregion
+}
 }
