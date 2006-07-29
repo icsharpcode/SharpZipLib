@@ -48,37 +48,46 @@ namespace ICSharpCode.SharpZipLib.BZip2
 	{
 		/// <summary>
 		/// Decompress <paramref name="instream">input</paramref> writing 
-		/// decompressed data to <paramref name="outstream">output stream</paramref>
+		/// decompressed data to <paramref name="outStream">output stream</paramref>
 		/// </summary>
-		public static void Decompress(Stream instream, Stream outstream) 
+		/// <param name="inStream">The stream to decompress.</param>
+		/// <param name="outStream">The stream to write decompressed data to.</param>
+		public static void Decompress(Stream inStream, Stream outStream) 
 		{
-			System.IO.Stream bos = outstream;
-			System.IO.Stream bis = instream;
-			BZip2InputStream bzis = new BZip2InputStream(bis);
-			int ch = bzis.ReadByte();
-			while (ch != -1) {
-				bos.WriteByte((byte)ch);
-				ch = bzis.ReadByte();
+			if ( inStream == null ) {
+				throw new ArgumentNullException("inStream");
 			}
-			bos.Flush();
+			
+			if ( outStream == null ) {
+				throw new ArgumentNullException("outStream");
+			}
+			
+			using ( BZip2InputStream bzis = new BZip2InputStream(inStream) ) {
+				int ch = bzis.ReadByte();
+				while (ch != -1) {
+					outStream.WriteByte((byte)ch);
+					ch = bzis.ReadByte();
+				}
+				outStream.Close();
+			}
 		}
 		
 		/// <summary>
-		/// Compress <paramref name="instream">input stream</paramref> sending 
+		/// Compress <paramref name="inStream">input stream</paramref> sending 
 		/// result to <paramref name="outputstream">output stream</paramref>
 		/// </summary>
-		public static void Compress(Stream instream, Stream outstream, int blockSize) 
+		/// <param name="inStream">The stream to compress.</param>
+		/// <param name="outStream">The stream to write compressed data to.</param>
+		public static void Compress(Stream inStream, Stream outStream, int blockSize) 
 		{			
-			System.IO.Stream bos = outstream;
-			System.IO.Stream bis = instream;
-			int ch = bis.ReadByte();
-			BZip2OutputStream bzos = new BZip2OutputStream(bos, blockSize);
-			while (ch != -1) {
-				bzos.WriteByte((byte)ch);
-				ch = bis.ReadByte();
+			using (BZip2OutputStream bzos = new BZip2OutputStream(outStream, blockSize)) {
+				int ch = inStream.ReadByte();
+				while (ch != -1) {
+					bzos.WriteByte((byte)ch);
+					ch = inStream.ReadByte();
+				}
+				inStream.Close();
 			}
-			bis.Close();
-			bzos.Close();
 		}
 	}
 }
