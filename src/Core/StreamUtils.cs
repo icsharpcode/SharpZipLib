@@ -40,12 +40,12 @@ using System.IO;
 namespace ICSharpCode.SharpZipLib.Core
 {
 	/// <summary>
-	/// Provides simple <see cref="Stream>stream</see>" utilities.
+	/// Provides simple <see cref="Stream">stream</see>" utilities.
 	/// </summary>
 	sealed class StreamUtils
 	{
 		/// <summary>
-		/// Read from a <see cref="Stream>stream</see>" ensuring all the required data is read.
+		/// Read from a <see cref="Stream">stream</see>" ensuring all the required data is read.
 		/// </summary>
 		/// <param name="stream">The stream to read.</param>
 		/// <param name="buffer">The buffer to fill.</param>
@@ -55,7 +55,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 
 		/// <summary>
-		/// Read from a <see cref="Stream>stream</see>" ensuring all the required data is read.
+		/// Read from a <see cref="Stream">stream</see>" ensuring all the required data is read.
 		/// </summary>
 		/// <param name="stream">The stream to read data from.</param>
 		/// <param name="buffer">The buffer to store data in.</param>
