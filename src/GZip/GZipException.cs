@@ -1,4 +1,4 @@
-// GzipOutputStream.cs
+// GzipException.cs
 //
 // Copyright 2004 John Reilly
 //
@@ -74,20 +74,19 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <summary>
 		/// Initialise a new instance of GZipException with its message string.
 		/// </summary>
-		/// <param name="message">A <see cref="string"></see>string that describes the error.</param>
+		/// <param name="message">A <see cref="string"/> that describes the error.</param>
 		public GZipException(string message) : base(message)
 		{
 		}
 		
 		/// <summary>
-		/// 
+		/// Initialise a new instance of <see cref="GZipException"></see>.
 		/// </summary>
-		/// <param name="message">A <see cref="string"></see>string that describes the error.</param>
-		/// <param name="innerException">The inner exception.</param>
+		/// <param name="message">A <see cref="string"/> that describes the error.</param>
+		/// <param name="innerException">The <see cref="Exception"/> that caused this exception.</param>
 		public GZipException(string message, Exception innerException)
 			: base (message, innerException)
-		{
-			
+		{	
 		}
 	}
 }
