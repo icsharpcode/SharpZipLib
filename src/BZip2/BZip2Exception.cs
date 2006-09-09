@@ -51,6 +51,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 #endif	
 	public class BZip2Exception : SharpZipBaseException
 	{
+
 #if !COMPACT_FRAMEWORK 
 		/// <summary>
 		/// Deserialization constructor 
@@ -77,6 +78,15 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		public BZip2Exception(string message) : base(message)
 		{
 		}
-		
+
+		/// <summary>
+		/// Initialise an instance of BZip2Exception
+		/// </summary>
+		/// <param name="message">A message describing the error.</param>
+		/// <param name="exception">The exception that is the cause of the current exception.</param>
+		public BZip2Exception(string message, Exception exception)
+			: base(message, exception)
+		{
+		}
 	}
 }
