@@ -48,6 +48,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 	/// </summary>
 	public class TarInputStream : Stream
 	{
+		#region Instance Fields
 		/// <summary>
 		/// Flag set when last block has been read
 		/// </summary>
@@ -84,6 +85,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		protected IEntryFactory eFactory;
 		
 		Stream inputStream;
+		#endregion
 
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports reading
@@ -189,7 +191,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Construct a TarInputStream with default block factor
 		/// </summary>
 		/// <param name="inputStream">stream to source data from</param>
-		public TarInputStream(Stream inputStream) : this(inputStream, TarBuffer.DefaultBlockFactor)
+		public TarInputStream(Stream inputStream)
+			: this(inputStream, TarBuffer.DefaultBlockFactor)
 		{
 		}
 
@@ -202,10 +205,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			this.inputStream = inputStream;
 			this.buffer      = TarBuffer.CreateInputTarBuffer(inputStream, blockFactor);
-			
-			this.readBuf   = null;
-			this.hasHitEOF = false;
-			this.eFactory  = null;
 		}
 
 		/// <summary>
@@ -225,6 +224,14 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			this.buffer.Close();
 		}
+
+		/// <summary>
+		/// Get the record size for this instance.
+		/// </summary>
+		public int RecordSize
+		{
+			get { return buffer.RecordSize; }
+		}
 		
 		/// <summary>
 		/// Get the record size being used by this stream's TarBuffer.
@@ -232,9 +239,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// TarBuffer record size.
 		/// </returns>
+		[Obsolete("Use RecordSize property instead")]
 		public int GetRecordSize()
 		{
-			return this.buffer.GetRecordSize();
+			return this.buffer.RecordSize;
 		}
 		
 		/// <summary>
@@ -346,7 +354,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			
 			if (headerBuf == null) {
 				this.hasHitEOF = true;
-			} else if (this.buffer.IsEOFBlock(headerBuf)) {
+			} else if (buffer.IsEOFBlock(headerBuf)) {
 				this.hasHitEOF = true;
 			}
 			
@@ -426,7 +434,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					this.entrySize = 0;
 					this.entryOffset = 0;
 					this.currEntry = null;
-					throw new InvalidHeaderException("bad header in record " + this.buffer.GetCurrentBlockNum() + " block " + this.buffer.GetCurrentBlockNum() + ", " + ex.Message);
+					throw new InvalidHeaderException("bad header in record " + this.buffer.CurrentRecord + " block " + this.buffer.CurrentBlock + ", " + ex.Message);
 				}
 			}
 			return this.currEntry;
