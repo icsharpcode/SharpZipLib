@@ -225,14 +225,23 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 		
 		/// <summary>
+		/// Get the record size for this instance.
+		/// </summary>
+		public int RecordSize
+		{
+			get { return buffer.RecordSize; }
+		}
+		
+		/// <summary>
 		/// Get the record size being used by this stream's TarBuffer.
 		/// </summary>
 		/// <returns>
 		/// The TarBuffer record size.
 		/// </returns>
+		[Obsolete("Use RecordSize property instead")]
 		public int GetRecordSize()
 		{
-			return this.buffer.GetRecordSize();
+			return this.buffer.RecordSize;
 		}
 		
 		/// <summary>
