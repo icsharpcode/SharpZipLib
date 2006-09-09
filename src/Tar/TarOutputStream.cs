@@ -48,51 +48,43 @@ namespace ICSharpCode.SharpZipLib.Tar
 	/// public
 	public class TarOutputStream : Stream
 	{
+		#region Constructors
 		/// <summary>
-		/// flag indicating debugging code should be activated or not
+		/// Construct TarOutputStream using default block factor
 		/// </summary>
-		protected bool      debug;
+		/// <param name="outputStream">stream to write to</param>
+		public TarOutputStream(Stream outputStream)
+			: this(outputStream, TarBuffer.DefaultBlockFactor)
+		{
+		}
 		
 		/// <summary>
-		/// Size for the current entry
+		/// Construct TarOutputStream with user specified block factor
 		/// </summary>
-		protected long      currSize;
+		/// <param name="outputStream">stream to write to</param>
+		/// <param name="blockFactor">blocking factor</param>
+		public TarOutputStream(Stream outputStream, int blockFactor)
+		{
+			if ( outputStream == null )
+			{
+				throw new ArgumentNullException("outputStream");
+			}
 
-		/// <summary>
-		/// bytes written for this entry so far
-		/// </summary>
-		protected long       currBytes;
-		
-		/// <summary>
-		/// single block working buffer 
-		/// </summary>
-		protected byte[]    blockBuf;
+			this.outputStream = outputStream;
+			tarBuffer = TarBuffer.CreateOutputTarBuffer(outputStream, blockFactor);
+			
+			assemblyBuffer = new byte[TarBuffer.BlockSize];
+			blockBuffer  = new byte[TarBuffer.BlockSize];
+		}
+		#endregion		
 
-		/// <summary>
-		/// current 'Assembly' buffer length
-		/// </summary>		
-		protected int       assemLen;
-		
-		/// <summary>
-		/// 'Assembly' buffer used to assmble data before writing
-		/// </summary>
-		protected byte[]    assemBuf;
-		
-		/// <summary>
-		/// TarBuffer used to provide correct blocking factor
-		/// </summary>
-		protected TarBuffer buffer;
-		
-		/// <summary>
-		/// the destination stream for the archive contents
-		/// </summary>
-		protected Stream    outputStream;
-		
 		/// <summary>
 		/// true if the stream supports reading; otherwise, false.
 		/// </summary>
-		public override bool CanRead {
-			get {
+		public override bool CanRead 
+		{
+			get 
+			{
 				return outputStream.CanRead;
 			}
 		}
@@ -100,8 +92,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// true if the stream supports seeking; otherwise, false.
 		/// </summary>
-		public override bool CanSeek {
-			get {
+		public override bool CanSeek 
+		{
+			get 
+			{
 				return outputStream.CanSeek;
 			}
 		}
@@ -109,8 +103,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// true if stream supports writing; otherwise, false.
 		/// </summary>
-		public override bool CanWrite {
-			get {
+		public override bool CanWrite 
+		{
+			get 
+			{
 				return outputStream.CanWrite;
 			}
 		}
@@ -118,8 +114,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// length of stream in bytes
 		/// </summary>
-		public override long Length {
-			get {
+		public override long Length 
+		{
+			get 
+			{
 				return outputStream.Length;
 			}
 		}
@@ -127,10 +125,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// gets or sets the position within the current stream.
 		/// </summary>
-		public override long Position {
+		public override long Position 
+		{
 			get {
 				return outputStream.Position;
 			}
+			
 			set {
 				outputStream.Position = value;
 			}
@@ -147,9 +147,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// set the length of the current stream
 		/// </summary>
-		public override void SetLength(long val)
+		public override void SetLength(long value)
 		{
-			outputStream.SetLength(val);
+			outputStream.SetLength(value);
 		}
 		
 		/// <summary>
@@ -167,9 +167,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// stream by the number of bytes read.
 		/// </summary>
 		/// <returns>The total number of bytes read, or zero if at the end of the stream</returns>
-		public override int Read(byte[] b, int off, int len)
+		public override int Read(byte[] buffer, int offset, int count)
 		{
-			return outputStream.Read(b, off, len);
+			return outputStream.Read(buffer, offset, count);
 		}
 
 		/// <summary>
@@ -181,36 +181,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 				
 		/// <summary>
-		/// Construct TarOutputStream using default block factor
-		/// </summary>
-		/// <param name="outputStream">stream to write to</param>
-		public TarOutputStream(Stream outputStream) : this(outputStream, TarBuffer.DefaultBlockFactor)
-		{
-		}
-		
-		/// <summary>
-		/// Construct TarOutputStream with user specified block factor
-		/// </summary>
-		/// <param name="outputStream">stream to write to</param>
-		/// <param name="blockFactor">blocking factor</param>
-		public TarOutputStream(Stream outputStream, int blockFactor)
-		{
-			this.outputStream = outputStream;
-			this.buffer       = TarBuffer.CreateOutputTarBuffer(outputStream, blockFactor);
-			
-			this.debug        = false;
-			this.assemLen     = 0;
-			this.assemBuf     = new byte[TarBuffer.BlockSize];
-			this.blockBuf     = new byte[TarBuffer.BlockSize];
-		}
-		
-		/// <summary>
 		/// Ends the TAR archive without closing the underlying OutputStream.
 		/// The result is that the EOF record of nulls is written.
 		/// </summary>
 		public void Finish()
 		{
-			this.WriteEOFRecord();
+			WriteEOFRecord();
 		}
 		
 		/// <summary>
@@ -220,18 +196,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public override void Close()
 		{
-			this.Finish();
-			this.buffer.Close();
+			Finish();
+			tarBuffer.Close();
 		}
 		
 		/// <summary>
-		/// Get the record size for this instance.
+		/// Get the record size being used by this stream's TarBuffer.
 		/// </summary>
 		public int RecordSize
 		{
-			get { return buffer.RecordSize; }
+			get { return tarBuffer.RecordSize; }
 		}
-		
+
 		/// <summary>
 		/// Get the record size being used by this stream's TarBuffer.
 		/// </summary>
@@ -241,7 +217,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		[Obsolete("Use RecordSize property instead")]
 		public int GetRecordSize()
 		{
-			return this.buffer.RecordSize;
+			return tarBuffer.RecordSize;
 		}
 		
 		/// <summary>
@@ -258,6 +234,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </param>
 		public void PutNextEntry(TarEntry entry)
 		{
+			if ( entry == null ) {
+				throw new ArgumentNullException("entry");
+			}
+
 			if (entry.TarHeader.Name.Length >= TarHeader.NAMELEN) {
 				TarHeader longHeader = new TarHeader();
 				longHeader.TypeFlag = TarHeader.LF_GNU_LONGNAME;
@@ -270,25 +250,25 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 				longHeader.Size = entry.TarHeader.Name.Length;
 
-				longHeader.WriteHeader(this.blockBuf);
-				this.buffer.WriteBlock(this.blockBuf);  // Add special long filename header block
+				longHeader.WriteHeader(this.blockBuffer);
+				tarBuffer.WriteBlock(this.blockBuffer);  // Add special long filename header block
 
 				int nameCharIndex = 0;
 
 				while (nameCharIndex < entry.TarHeader.Name.Length) {
-					Array.Clear(blockBuf, 0, blockBuf.Length);
-					TarHeader.GetAsciiBytes(entry.TarHeader.Name, nameCharIndex, this.blockBuf, 0, TarBuffer.BlockSize);
+					Array.Clear(blockBuffer, 0, blockBuffer.Length);
+					TarHeader.GetAsciiBytes(entry.TarHeader.Name, nameCharIndex, this.blockBuffer, 0, TarBuffer.BlockSize);
 					nameCharIndex += TarBuffer.BlockSize;
-					this.buffer.WriteBlock(this.blockBuf);
+					tarBuffer.WriteBlock(blockBuffer);
 				}
 			}
 			
-			entry.WriteEntryHeader(this.blockBuf);
-			this.buffer.WriteBlock(this.blockBuf);
+			entry.WriteEntryHeader(blockBuffer);
+			tarBuffer.WriteBlock(blockBuffer);
 			
-			this.currBytes = 0;
+			currBytes = 0;
 			
-			this.currSize = entry.IsDirectory ? 0 : entry.Size;
+			currSize = entry.IsDirectory ? 0 : entry.Size;
 		}
 		
 		/// <summary>
@@ -302,19 +282,22 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public void CloseEntry()
 		{
-			if (this.assemLen > 0) {
-				for (int i = this.assemLen; i < this.assemBuf.Length; ++i) {
-					this.assemBuf[i] = 0;
+			if (assemblyBufferLength > 0) {
+				for (int i = assemblyBufferLength; i < assemblyBuffer.Length; ++i) {
+					assemblyBuffer[i] = 0;
 				}
 				
-				this.buffer.WriteBlock(this.assemBuf);
+				tarBuffer.WriteBlock(assemblyBuffer);
 				
-				this.currBytes += this.assemLen;
-				this.assemLen = 0;
+				currBytes += assemblyBufferLength;
+				assemblyBufferLength = 0;
 			}
 			
-			if (this.currBytes < this.currSize) {
-				throw new TarException("entry closed at '" + this.currBytes + "' before the '" + this.currSize + "' bytes specified in the header were written");
+			if (currBytes < currSize) {
+				string errorText = string.Format(
+					"Entry closed at '{0}' before the '{1}' bytes specified in the header were written",
+					currBytes, currSize);
+				throw new TarException(errorText);
 			}
 		}
 		
@@ -322,12 +305,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Writes a byte to the current tar archive entry.
 		/// This method simply calls Write(byte[], int, int).
 		/// </summary>
-		/// <param name="b">
+		/// <param name="value">
 		/// The byte to be written.
 		/// </param>
-		public override void WriteByte(byte b)
+		public override void WriteByte(byte value)
 		{
-			this.Write(new byte[] { b }, 0, 1);
+			Write(new byte[] { value }, 0, 1);
 		}
 		
 		/// <summary>
@@ -339,23 +322,36 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// that are not a multiple of recordsize in length, including
 		/// assembling records from small buffers.
 		/// </summary>
-		/// <param name = "wBuf">
+		/// <param name = "buffer">
 		/// The buffer to write to the archive.
 		/// </param>
-		/// <param name = "wOffset">
+		/// <param name = "offset">
 		/// The offset in the buffer from which to get bytes.
 		/// </param>
-		/// <param name = "numToWrite">
+		/// <param name = "count">
 		/// The number of bytes to write.
 		/// </param>
-		public override void Write(byte[] wBuf, int wOffset, int numToWrite)
+		public override void Write(byte[] buffer, int offset, int count)
 		{
-			if (wBuf == null) {
-				throw new ArgumentNullException("TarOutputStream.Write buffer null");
+			if (buffer == null) {
+				throw new ArgumentNullException("buffer");
 			}
 			
-			if ((this.currBytes + numToWrite) > this.currSize) {
-				throw new ArgumentOutOfRangeException("request to write '" + numToWrite + "' bytes exceeds size in header of '" + this.currSize + "' bytes");
+			if ( offset < 0 ) {
+				throw new ArgumentOutOfRangeException("offset");
+			}
+			
+			if ( count < 0 ) {
+				throw new ArgumentOutOfRangeException("count");
+			}
+			
+			if ( (buffer.Length - offset) < count ) {
+				throw new ArgumentException("offset and count combination is invalid");
+			}
+			
+			if ( (currBytes + count) > currSize ) {
+				string errorText = string.Format("request to write '{0}' bytes exceeds size in header of '{1}' bytes", count, this.currSize);
+				throw new ArgumentOutOfRangeException("count", errorText);
 			}
 			
 			//
@@ -365,47 +361,47 @@ namespace ICSharpCode.SharpZipLib.Tar
 			// TODO  REVIEW Maybe this should be in TarBuffer? Could that help to
 			//        eliminate some of the buffer copying.
 			//
-			if (this.assemLen > 0) {
-				if ((this.assemLen + numToWrite ) >= this.blockBuf.Length) {
-					int aLen = this.blockBuf.Length - this.assemLen;
+			if (assemblyBufferLength > 0) {
+				if ((assemblyBufferLength + count ) >= blockBuffer.Length) {
+					int aLen = blockBuffer.Length - assemblyBufferLength;
 					
-					Array.Copy(this.assemBuf, 0, this.blockBuf, 0, this.assemLen);
-					Array.Copy(wBuf, wOffset, this.blockBuf, this.assemLen, aLen);
+					Array.Copy(assemblyBuffer, 0, blockBuffer, 0, assemblyBufferLength);
+					Array.Copy(buffer, offset, blockBuffer, assemblyBufferLength, aLen);
 					
-					this.buffer.WriteBlock(this.blockBuf);
+					tarBuffer.WriteBlock(blockBuffer);
 					
-					this.currBytes += this.blockBuf.Length;
+					currBytes += blockBuffer.Length;
 					
-					wOffset    += aLen;
-					numToWrite -= aLen;
+					offset    += aLen;
+					count -= aLen;
 					
-					this.assemLen = 0;
-				} else {					// ( (this.assemLen + numToWrite ) < this.blockBuf.length )
-					Array.Copy(wBuf, wOffset, this.assemBuf, this.assemLen, numToWrite);
-					wOffset       += numToWrite;
-					this.assemLen += numToWrite;
-					numToWrite -= numToWrite;
+					assemblyBufferLength = 0;
+				} else {					// ( (assemblyBufferLength + count ) < this.blockBuffer.length )
+					Array.Copy(buffer, offset, assemblyBuffer, assemblyBufferLength, count);
+					offset += count;
+					assemblyBufferLength += count;
+					count -= count;
 				}
 			}
 			
 			//
 			// When we get here we have EITHER:
-			//   o An empty "assemble" buffer.
-			//   o No bytes to write (numToWrite == 0)
+			//   o An empty "assembly" buffer.
+			//   o No bytes to write (count == 0)
 			//
-			while (numToWrite > 0) {
-				if (numToWrite < this.blockBuf.Length) {
-					Array.Copy(wBuf, wOffset, this.assemBuf, this.assemLen, numToWrite);
-					this.assemLen += numToWrite;
+			while (count > 0) {
+				if (count < blockBuffer.Length) {
+					Array.Copy(buffer, offset, assemblyBuffer, assemblyBufferLength, count);
+					assemblyBufferLength += count;
 					break;
 				}
 				
-				this.buffer.WriteBlock(wBuf, wOffset);
+				tarBuffer.WriteBlock(buffer, offset);
 				
-				int num = this.blockBuf.Length;
-				this.currBytes += num;
-				numToWrite     -= num;
-				wOffset        += num;
+				int bufferLength = blockBuffer.Length;
+				currBytes += bufferLength;
+				count -= bufferLength;
+				offset += bufferLength;
 			}
 		}
 		
@@ -415,9 +411,46 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		void WriteEOFRecord()
 		{
-			Array.Clear(blockBuf, 0, blockBuf.Length);
-			this.buffer.WriteBlock(this.blockBuf);
+			Array.Clear(blockBuffer, 0, blockBuffer.Length);
+			tarBuffer.WriteBlock(blockBuffer);
 		}
+		
+		#region Instance Fields
+		/// <summary>
+		/// Size for the current entry
+		/// </summary>
+		protected long currSize;
+
+		/// <summary>
+		/// bytes written for this entry so far
+		/// </summary>
+		long currBytes;
+		
+		/// <summary>
+		/// single block working buffer 
+		/// </summary>
+		protected byte[] blockBuffer;
+
+		/// <summary>
+		/// current 'Assembly' buffer length
+		/// </summary>		
+		int assemblyBufferLength;
+		
+		/// <summary>
+		/// 'Assembly' buffer used to assemble data before writing
+		/// </summary>
+		protected byte[] assemblyBuffer;
+		
+		/// <summary>
+		/// TarBuffer used to provide correct blocking factor
+		/// </summary>
+		protected TarBuffer tarBuffer;
+		
+		/// <summary>
+		/// the destination stream for the archive contents
+		/// </summary>
+		protected Stream outputStream;
+		#endregion
 	}
 }
 

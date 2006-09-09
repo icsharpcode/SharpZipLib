@@ -32,6 +32,31 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+/*
+A quote from GNU tar man file on blocking and records
+
+A `tar' archive file contains a series of blocks.  Each block
+contains `BLOCKSIZE' bytes.  Although this format may be thought of as
+being on magnetic tape, other media are often used.
+
+Each file archived is represented by a header block which describes
+the file, followed by zero or more blocks which give the contents of
+the file.  At the end of the archive file there may be a block filled
+with binary zeros as an end-of-file marker.  A reasonable system should
+write a block of zeros at the end, but must not assume that such a
+block exists when reading an archive.
+
+The blocks may be "blocked" for physical I/O operations.  Each
+record of N blocks (where N is set by the `--blocking-factor=512-SIZE'
+(`-b 512-SIZE') option to `tar') is written with a single `write ()'
+operation.  On magnetic tapes, the result of such a write is a single
+record.  When writing an archive, the last record of blocks should be
+written at the full size, with blocks after the zero block containing
+all zeros.  When reading an archive, a reasonable system should
+properly handle an archive whose last record is shorter than the rest,
+or which contains garbage records after a zero block.
+*/
+
 using System;
 using System.IO;
 using System.Text;
@@ -53,30 +78,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 	/// </summary>
 	public class TarBuffer
 	{
-
-/* A quote from GNU tar man file on blocking and records
-   A `tar' archive file contains a series of blocks.  Each block
-contains `BLOCKSIZE' bytes.  Although this format may be thought of as
-being on magnetic tape, other media are often used.
-
-   Each file archived is represented by a header block which describes
-the file, followed by zero or more blocks which give the contents of
-the file.  At the end of the archive file there may be a block filled
-with binary zeros as an end-of-file marker.  A reasonable system should
-write a block of zeros at the end, but must not assume that such a
-block exists when reading an archive.
-
-   The blocks may be "blocked" for physical I/O operations.  Each
-record of N blocks (where N is set by the `--blocking-factor=512-SIZE'
-(`-b 512-SIZE') option to `tar') is written with a single `write ()'
-operation.  On magnetic tapes, the result of such a write is a single
-record.  When writing an archive, the last record of blocks should be
-written at the full size, with blocks after the zero block containing
-all zeros.  When reading an archive, a reasonable system should
-properly handle an archive whose last record is shorter than the rest,
-or which contains garbage records after a zero block.
-*/
-
+		#region Constants
 		/// <summary>
 		/// The size of a block in a tar archive in bytes.
 		/// </summary>
@@ -98,6 +100,7 @@ or which contains garbage records after a zero block.
 		/// The default size is 10KB.
 		/// </remarks>
 		public const int DefaultRecordSize = BlockSize * DefaultBlockFactor;
+		#endregion
 		
 		#region Instance Fields
 		Stream inputStream;
@@ -143,7 +146,7 @@ or which contains garbage records after a zero block.
 		/// <summary>
 		/// Get the TAR Buffer's block factor
 		/// </summary>
-		[Obsolete("Use BlockFactor property instead")]
+		[Obsolete("Use the BlockFactor property instead")]
 		public int GetBlockFactor()
 		{
 			return this.blockFactor;
@@ -174,6 +177,14 @@ or which contains garbage records after a zero block.
 		/// <returns>TarBuffer</returns>
 		public static TarBuffer CreateInputTarBuffer(Stream inputStream, int blockFactor)
 		{
+			if ( inputStream == null ) {
+				throw new ArgumentNullException("inputStream");
+			}
+			
+			if ( blockFactor <= 0 ) {
+				throw new ArgumentOutOfRangeException("blockFactor");
+			}
+			
 			TarBuffer tarBuffer = new TarBuffer();
 			tarBuffer.inputStream  = inputStream;
 			tarBuffer.outputStream = null;
@@ -200,6 +211,14 @@ or which contains garbage records after a zero block.
 		/// <returns>TarBuffer</returns>
 		public static TarBuffer CreateOutputTarBuffer(Stream outputStream, int blockFactor)
 		{
+			if ( outputStream == null ) {
+				throw new ArgumentNullException("outputStream");
+			}
+			
+			if ( blockFactor <= 0 ) {
+				throw new ArgumentOutOfRangeException("blockFactor");
+			}
+			
 			TarBuffer tarBuffer = new TarBuffer();
 			tarBuffer.inputStream  = null;
 			tarBuffer.outputStream = outputStream;
@@ -227,7 +246,7 @@ or which contains garbage records after a zero block.
 			}
 		}
 		
-		// TODO: IsEOFBlock should be static.
+		// TODO: IsEOFBlock should be static, but this is a breaking change.
 		
 		/// <summary>
 		/// Determine if an archive block indicates End of Archive. End of
@@ -243,6 +262,10 @@ or which contains garbage records after a zero block.
 				throw new ArgumentNullException("block");
 			}
 
+			if ( block.Length != BlockSize ) {
+				throw new ArgumentException("block length is invalid");
+			}
+			
 			for (int i = 0; i < BlockSize; ++i) {
 				if (block[i] != 0) {
 					return false;
@@ -390,7 +413,7 @@ or which contains garbage records after a zero block.
 		/// Write a block of data to the archive.
 		/// </summary>
 		/// <param name="block">
-		/// The data to write to the archive.
+		/// The block data to write to the archive.
 		/// </param>
 		public void WriteBlock(byte[] block)
 		{
@@ -417,15 +440,15 @@ or which contains garbage records after a zero block.
 		}
 		
 		/// <summary>
-		/// Write an archive record to the archive, where the record may be
+		/// Write an block to the archive, where the block may be
 		/// inside of a larger array buffer. The buffer must be "offset plus
-		/// record size" long.
+		/// block size" long.
 		/// </summary>
 		/// <param name="buffer">
-		/// The buffer containing the record data to write.
+		/// The buffer containing the block data to write.
 		/// </param>
 		/// <param name="offset">
-		/// The offset of the record data within buf.
+		/// The offset of the block data within buffer.
 		/// </param>
 		public void WriteBlock(byte[] buffer, int offset)
 		{

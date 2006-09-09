@@ -186,7 +186,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			throw new NotSupportedException("TarInputStream WriteByte not supported");
 		}
 			
-
+		#region Constructors
 		/// <summary>
 		/// Construct a TarInputStream with default block factor
 		/// </summary>
@@ -206,7 +206,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 			this.inputStream = inputStream;
 			this.buffer      = TarBuffer.CreateInputTarBuffer(inputStream, blockFactor);
 		}
-
+		#endregion
+		
 		/// <summary>
 		/// Set the entry factory for this instance.
 		/// </summary>
@@ -272,7 +273,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </param>
 		public void Skip(long numToSkip)
 		{
-			// TODO: REVIEW
+			// TODO: Review TarInputStream.Skip
 			// This is horribly inefficient, but it ensures that we
 			// properly skip over bytes via the TarBuffer...
 			//
