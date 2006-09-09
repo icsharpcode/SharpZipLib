@@ -30,7 +30,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		{
 			MemoryStream ms = new MemoryStream();
 			TarArchive tarOut = TarArchive.CreateOutputTarArchive(ms);
-			tarOut.CloseArchive();
+			tarOut.Close();
 			
 			Assert.IsTrue(ms.GetBuffer().Length > 0, "Archive size must be > zero");
 			Assert.AreEqual(ms.GetBuffer().Length % tarOut.RecordSize, 0, "Archive size must be a multiple of record size");
@@ -39,11 +39,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 			
-			TarArchive tarIn = TarArchive.CreateInputTarArchive(ms2);
-			entryCount = 0;
-			tarIn.ProgressMessageEvent += new ProgressMessageHandler(EntryCounter);
-			tarIn.ListContents();
-			Assert.AreEqual(0, entryCount, "Expected 0 tar entries");
+			using (TarArchive tarIn = TarArchive.CreateInputTarArchive(ms2)) {
+				entryCount = 0;
+				tarIn.ProgressMessageEvent += new ProgressMessageHandler(EntryCounter);
+				tarIn.ListContents();
+				Assert.AreEqual(0, entryCount, "Expected 0 tar entries");
+			}
 		}
 		
 		void TryLongName(string name)
