@@ -30,10 +30,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		{
 			MemoryStream ms = new MemoryStream();
 			TarArchive tarOut = TarArchive.CreateOutputTarArchive(ms);
+			int recordSize = tarOut.RecordSize;
 			tarOut.Close();
 			
 			Assert.IsTrue(ms.GetBuffer().Length > 0, "Archive size must be > zero");
-			Assert.AreEqual(ms.GetBuffer().Length % tarOut.RecordSize, 0, "Archive size must be a multiple of record size");
+			Assert.AreEqual(ms.GetBuffer().Length % recordSize, 0, "Archive size must be a multiple of record size");
 			
 			MemoryStream ms2 = new MemoryStream();
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
