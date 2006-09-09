@@ -37,7 +37,8 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace ICSharpCode.SharpZipLib.Tar {
+namespace ICSharpCode.SharpZipLib.Tar
+{
 	/// <summary>
 	/// Used to advise clients of 'events' while processing archives
 	/// </summary>
@@ -311,22 +312,20 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		}
 		
 		/// <summary>
-		/// Get the archive's record size. Because of its history, tar
-		/// supports the concept of buffered IO consisting of RECORDS of
-		/// BLOCKS. This allowed tar to match the IO characteristics of
-		/// the physical device being used. Of course, in the C# world,
-		/// this makes no sense, WITH ONE EXCEPTION - archives are expected
-		/// to be properly "blocked". Thus, all of the horrible TarBuffer
-		/// support boils down to simply getting the "boundaries" correct.
+		/// Get the archive's record size. Tar archives are composed of
+		/// a series of RECORDS each containing a number of BLOCKS.
+		/// This allowed tar archives to match the IO characteristics of
+		/// the physical device being used. Archives are expected
+		/// to be properly "blocked".
 		/// </summary>
 		/// <returns>
 		/// The record size this archive is using.
 		/// </returns>
 		public int RecordSize {
 			get {
-				if (this.tarIn != null) {
-					return this.tarIn.RecordSize;
-				} else if (this.tarOut != null) {
+				if (tarIn != null) {
+					return tarIn.RecordSize;
+				} else if (tarOut != null) {
 					return tarOut.RecordSize;
 				}
 				return TarBuffer.DefaultRecordSize;
@@ -363,10 +362,10 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		/// <summary>
 		/// Perform the "extract" command and extract the contents of the archive.
 		/// </summary>
-		/// <param name="destDir">
+		/// <param name="destinationDirectory">
 		/// The destination directory into which to extract.
 		/// </param>
-		public void ExtractContents(string destDir)
+		public void ExtractContents(string destinationDirectory)
 		{
 			while (true) {
 				TarEntry entry = this.tarIn.GetNextEntry();
@@ -375,7 +374,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 					break;
 				}
 				
-				this.ExtractEntry(destDir, entry);
+				this.ExtractEntry(destinationDirectory, entry);
 			}
 		}
 		
@@ -386,7 +385,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 					Directory.CreateDirectory(directoryName);
 				}
 				catch (Exception e) {
-					throw new TarException("Exception creating directory '" + directoryName + "', " + e.Message);
+					throw new TarException("Exception creating directory '" + directoryName + "', " + e.Message, e);
 				}
 			}
 		}
@@ -395,7 +394,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		// It no longer reads entire files into memory but is still a weak test!
 		// assumes that ascii 0-7, 14-31 or 255 are binary
 		// and that all non text files contain one of these values
-		bool IsBinary(string filename)
+		static bool IsBinary(string filename)
 		{
 			using (FileStream fs = File.OpenRead(filename))
 			{
@@ -517,6 +516,10 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		/// </param>
 		public void WriteEntry(TarEntry sourceEntry, bool recurse)
 		{
+			if ( sourceEntry == null ) {
+				throw new ArgumentNullException("sourceEntry");
+			}
+			
 			try
 			{
 				if ( recurse ) {
@@ -621,21 +624,20 @@ namespace ICSharpCode.SharpZipLib.Tar {
 				}
 			}
 			else {
-				Stream inputStream = File.OpenRead(entryFilename);
-				int numWritten = 0;
-				byte[] eBuf = new byte[32 * 1024];
-				while (true) {
-					int numRead = inputStream.Read(eBuf, 0, eBuf.Length);
-					
-					if (numRead <=0) {
-						break;
+				using (Stream inputStream = File.OpenRead(entryFilename)) {
+					int numWritten = 0;
+					byte[] eBuf = new byte[32 * 1024];
+					while (true) {
+						int numRead = inputStream.Read(eBuf, 0, eBuf.Length);
+						
+						if (numRead <=0) {
+							break;
+						}
+						
+						this.tarOut.Write(eBuf, 0, numRead);
+						numWritten +=  numRead;
 					}
-					
-					this.tarOut.Write(eBuf, 0, numRead);
-					numWritten +=  numRead;
 				}
-
-				inputStream.Close();
 				
 				if (tempFileName != null && tempFileName.Length > 0) {
 					File.Delete(tempFileName);
