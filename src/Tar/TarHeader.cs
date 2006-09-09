@@ -639,8 +639,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>true if the objects are equal, false otherwise.</returns>
 		public override bool Equals(object obj)
 		{
-			if ( obj is TarHeader ) {
-				TarHeader th = obj as TarHeader;
+			TarHeader th = obj as TarHeader;
+			if ( th != null ) {
 				return name == th.name
 					&& mode == th.mode
 					&& UserId == th.UserId

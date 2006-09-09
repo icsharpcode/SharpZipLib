@@ -61,27 +61,29 @@ namespace ICSharpCode.SharpZipLib.Tar {
 	/// 
 	/// There is currently no support for random access to tar archives.
 	/// However, it seems that subclassing TarArchive, and using the
-	/// TarBuffer.getCurrentRecordNum() and TarBuffer.getCurrentBlockNum()
-	/// methods, this would be rather trvial.
+	/// TarBuffer.CurrentRecord and TarBuffer.CurrentBlock
+	/// properties, this would be rather trivial.
 	/// </summary>
-	public class TarArchive
+	public class TarArchive : IDisposable
 	{
+		#region Instance Fields
 		bool keepOldFiles;
 		bool asciiTranslate;
 		
 		int    userId;
-		string userName;
+		string userName = string.Empty;
 		int    groupId;
-		string groupName;
+		string groupName = string.Empty;
 		
 		string rootPath;
 		string pathPrefix;
 		
-		int    recordSize;
 		byte[] recordBuf;
+		bool applyUserInfoOverrides;
 		
 		TarInputStream  tarIn;
 		TarOutputStream tarOut;
+		#endregion
 		
 		/// <summary>
 		/// Client hook allowing detailed information to be reported during processing
@@ -101,7 +103,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		}
 		
 		/// <summary>
-		/// Constructor for a TarArchive.
+		/// Constructor for a <see cref="TarArchive"/>.
 		/// </summary>
 		protected TarArchive()
 		{
@@ -130,7 +132,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		{
 			TarArchive archive = new TarArchive();
 			archive.tarIn = new TarInputStream(inputStream, blockFactor);
-			archive.Initialize(blockFactor * TarBuffer.BlockSize);
+			archive.Initialize();
 			return archive;
 		}
 		
@@ -152,26 +154,15 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		{
 			TarArchive archive = new TarArchive();
 			archive.tarOut = new TarOutputStream(outputStream, blockFactor);
-			archive.Initialize(blockFactor * TarBuffer.BlockSize);
+			archive.Initialize();
 			return archive;
 		}
 		
 		/// <summary>
 		/// Common constructor initialization code.
 		/// </summary>
-		void Initialize(int recordSize)
+		void Initialize()
 		{
-			this.recordSize = recordSize;
-			this.rootPath   = null;
-			this.pathPrefix = null;
-			
-			this.userId    = 0;
-			this.userName  = String.Empty;
-			this.groupId   = 0;
-			this.groupName = String.Empty;
-			
-			this.keepOldFiles    = false;
-			
 			this.recordBuf = new byte[RecordSize];
 		}
 		
@@ -253,8 +244,6 @@ namespace ICSharpCode.SharpZipLib.Tar {
 			applyUserInfoOverrides = true;
 		}
 		
-		bool applyUserInfoOverrides = false;
-
 		/// <summary>
 		/// Get or set a value indicating if overrides defined by <see cref="SetUserInfo">SetUserInfo</see> should be applied.
 		/// </summary>
@@ -336,26 +325,21 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		public int RecordSize {
 			get {
 				if (this.tarIn != null) {
-					return this.tarIn.GetRecordSize();
+					return this.tarIn.RecordSize;
 				} else if (this.tarOut != null) {
-					return this.tarOut.GetRecordSize();
+					return tarOut.RecordSize;
 				}
 				return TarBuffer.DefaultRecordSize;
 			}
 		}
 		
 		/// <summary>
-		/// Close the archive. This simply calls the underlying
-		/// tar stream's close() method.
+		/// Close the archive.
 		/// </summary>
+		[Obsolete("Use Close instead")]
 		public void CloseArchive()
 		{
-			if (this.tarIn != null) {
-				this.tarIn.Close();
-			} else if (this.tarOut != null) {
-				this.tarOut.Flush();
-				this.tarOut.Close();
-			}
+			Close();
 		}
 		
 		/// <summary>
@@ -635,7 +619,8 @@ namespace ICSharpCode.SharpZipLib.Tar {
 						InternalWriteEntry(list[i], recurse);
 					}
 				}
-			} else {
+			}
+			else {
 				Stream inputStream = File.OpenRead(entryFilename);
 				int numWritten = 0;
 				byte[] eBuf = new byte[32 * 1024];
@@ -659,6 +644,50 @@ namespace ICSharpCode.SharpZipLib.Tar {
 				this.tarOut.CloseEntry();
 			}
 		}
+
+		/// <summary>
+		/// Releases the unmanaged resources used by the FileStream and optionally releases the managed resources.
+		/// </summary>
+		/// <param name="disposing">true to release both managed and unmanaged resources;
+		/// false to release only unmanaged resources.</param>
+		protected virtual void Dispose(bool disposing)
+		{
+			if ( tarOut != null ) {
+				tarOut.Flush();
+				tarOut.Close();
+			}
+
+			if ( tarIn != null ) {
+				tarIn.Close();
+			}
+		}
+		
+		/// <summary>
+		/// Closes the archive and releases any associated resources.
+		/// </summary>
+		public virtual void Close()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		
+		/// <summary>
+		/// Ensures that resources are freed and other cleanup operations are performed
+		/// when the garbage collector reclaims the <see cref="TarArchive"/>.
+		/// </summary>
+		~TarArchive()
+		{
+			Dispose(false);
+		}
+		
+		#region IDisposable Members
+
+		void IDisposable.Dispose()
+		{
+			Close();
+		}
+
+		#endregion
 	}
 }
 
