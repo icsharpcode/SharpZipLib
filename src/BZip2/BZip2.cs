@@ -78,6 +78,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		/// <param name="inStream">The stream to compress.</param>
 		/// <param name="outStream">The stream to write compressed data to.</param>
+		/// <param name="blockSize">The block size to use.</param>
 		public static void Compress(Stream inStream, Stream outStream, int blockSize) 
 		{			
 			using (BZip2OutputStream bzos = new BZip2OutputStream(outStream, blockSize)) {
