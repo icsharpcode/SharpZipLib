@@ -133,7 +133,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// This operation is not supported and will throw a NotSupportedExceptionortedException
 		/// </summary>
 		/// <exception cref="NotSupportedException">Any access</exception>
-		public override void SetLength(long val)
+		public override void SetLength(long value)
 		{
 			throw new NotSupportedException("BZip2InputStream SetLength not supported");
 		}
@@ -143,7 +143,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// This operation is not supported and will throw a NotSupportedException
 		/// </summary>
 		/// <exception cref="NotSupportedException">Any access</exception>
-		public override void Write(byte[] array, int offset, int count)
+		public override void Write(byte[] buffer, int offset, int count)
 		{
 			throw new NotSupportedException("BZip2InputStream Write not supported");
 		}
@@ -152,8 +152,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// Writes a byte to the current position in the file stream.
 		/// This operation is not supported and will throw a NotSupportedException
 		/// </summary>
+		/// <param name="value">The value to write.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
-		public override void WriteByte(byte val)
+		public override void WriteByte(byte value)
 		{
 			throw new NotSupportedException("BZip2InputStream WriteByte not supported");
 		}
@@ -161,21 +162,26 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Read a sequence of bytes and advances the read position by one byte.
 		/// </summary>
-		/// <param name="b">Array of bytes to store values in</param>
+		/// <param name="buffer">Array of bytes to store values in</param>
 		/// <param name="offset">Offset in array to begin storing data</param>
 		/// <param name="count">The maximum number of bytes to read</param>
 		/// <returns>The total number of bytes read into the buffer. This might be less
 		/// than the number of bytes requested if that number of bytes are not 
 		/// currently available or zero if the end of the stream is reached.
 		/// </returns>
-		public override int Read(byte[] b, int offset, int count)
+		public override int Read(byte[] buffer, int offset, int count)
 		{
+			if ( buffer == null )
+			{
+				throw new ArgumentNullException("buffer");
+			}
+
 			for (int i = 0; i < count; ++i) {
 				int rb = ReadByte();
 				if (rb == -1) {
 					return i;
 				}
-				b[offset + i] = (byte)rb;
+				buffer[offset + i] = (byte)rb;
 			}
 			return count;
 		}
@@ -249,7 +255,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		int[] minLens     = new int[BZip2Constants.N_GROUPS];
 		
 		Stream baseStream;
-		bool   streamEnd = false;
+		bool   streamEnd;
 		
 		int currentChar = -1;
 		
@@ -269,8 +275,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		
 		int count, chPrev, ch2;
 		int tPos;
-		int rNToGo = 0;
-		int rTPos  = 0;
+		int rNToGo;
+		int rTPos;
 		int i2, j2;
 		byte z;
 		
@@ -287,8 +293,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				perm[i]  = new int[BZip2Constants.MAX_ALPHA_SIZE];
 			}
 			
-			ll8 = null;
-			tt  = null;
 			BsSetStream(stream);
 			Initialize();
 			InitBlock();
@@ -482,7 +486,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			return (int)BsGetint();
 		}
 		
-		void HbCreateDecodeTables(int[] limit, int[] baseArray, int[] perm, char[] length, int minLen, int maxLen, int alphaSize) 
+		static void HbCreateDecodeTables(int[] limit, int[] baseArray, int[] perm, char[] length, int minLen, int maxLen, int alphaSize) 
 		{
 			int pp = 0;
 			
@@ -533,7 +537,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			
 			bool[] inUse16 = new bool[16];
 			
-			/*--- Receive the mapping table ---*/
+			//--- Receive the mapping table ---
 			for (int i = 0; i < 16; i++) {
 				inUse16[i] = (BsR(1) == 1);
 			} 
@@ -553,7 +557,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			MakeMaps();
 			int alphaSize = nInUse + 2;
 			
-			/*--- Now the selectors ---*/
+			//--- Now the selectors ---
 			int nGroups    = BsR(3);
 			int nSelectors = BsR(15);
 			
@@ -565,7 +569,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				selectorMtf[i] = (byte)j;
 			}
 			
-			/*--- Undo the MTF values for the selectors. ---*/
+			//--- Undo the MTF values for the selectors. ---
 			byte[] pos = new byte[BZip2Constants.N_GROUPS];
 			for (int v = 0; v < nGroups; v++) {
 				pos[v] = (byte)v;
@@ -582,7 +586,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				selector[i] = tmp;
 			}
 			
-			/*--- Now the coding tables ---*/
+			//--- Now the coding tables ---
 			for (int t = 0; t < nGroups; t++) {
 				int curr = BsR(5);
 				for (int i = 0; i < alphaSize; i++) {
@@ -597,7 +601,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				}
 			}
 			
-			/*--- Create the Huffman decoding tables ---*/
+			//--- Create the Huffman decoding tables ---
 			for (int t = 0; t < nGroups; t++) {
 				int minLen = 32;
 				int maxLen = 0;
