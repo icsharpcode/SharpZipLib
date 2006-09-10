@@ -84,6 +84,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 		}
 		
+		#region Constructors
 		/// <summary>
 		/// Constructor for a default <see cref="TarArchive"/>.
 		/// </summary>
@@ -94,7 +95,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Initalise a TarArchive for input.
 		/// </summary>
-		/// <param name="stream">The <see cref="TarInputStream"</param> to use for input.
+		/// <param name="stream">The <see cref="TarInputStream"/> to use for input.</param>
 		protected TarArchive(TarInputStream stream)
 		{
 			if ( stream == null ) {
@@ -107,7 +108,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Initialise a TarArchive for output.
 		/// </summary>
-		/// <param name="stream">The <see cref="TarOutputStream"</param> to use for output.
+		/// <param name="stream">The <see cref="TarOutputStream"/> to use for output.</param> 
 		protected TarArchive(TarOutputStream stream)
 		{
 			if ( stream == null ) {
@@ -116,7 +117,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 			
 			tarOut = stream;
 		}
+		#endregion
 		
+		#region Static factory methods
 		/// <summary>
 		/// The InputStream based constructors create a TarArchive for the
 		/// purposes of extracting or listing a tar archive. Thus, use
@@ -175,6 +178,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			
 			return new TarArchive(new TarOutputStream(outputStream, blockFactor));
 		}
+		#endregion
 		
 		/// <summary>
 		/// Set the flag that determines whether existing files are
@@ -203,17 +207,31 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public bool AsciiTranslate
 		{
-			get { return asciiTranslate; }
-			set { asciiTranslate = value; }
+			get {
+				if ( isDisposed ) {
+					throw new ObjectDisposedException("TarArchive");
+				}
+			
+				return asciiTranslate;
+			}
+			
+			set { 
+				if ( isDisposed ) {
+					throw new ObjectDisposedException("TarArchive");
+				}
+			
+				asciiTranslate = value; 
+			}
 		
 		}
+		
 		/// <summary>
 		/// Set the ascii file translation flag.
 		/// </summary>
 		/// <param name= "asciiTranslate">
 		/// If true, translate ascii text files.
 		/// </param>
-		[Obsolete("Use thr AsciiTranslate property")]
+		[Obsolete("Use the AsciiTranslate property")]
 		public void SetAsciiTranslation(bool asciiTranslate)
 		{
 			if ( isDisposed ) {
