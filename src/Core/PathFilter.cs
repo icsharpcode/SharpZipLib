@@ -91,15 +91,21 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Test a filename to see if it matches the filter.
 		/// </summary>
-		/// <param name="fileName">The filename to test.</param>
+		/// <param name="name">The filename to test.</param>
 		/// <returns>True if the filter matches, false otherwise.</returns>
-		public override bool IsMatch(string fileName)
+		public override bool IsMatch(string name)
 		{
-			FileInfo fileInfo = new FileInfo(fileName);
-			long length = fileInfo.Length;
-			return base.IsMatch(fileName) &&
-				(MinSize <= length) &&
-				(MaxSize >= length);
+			bool result = base.IsMatch(name);
+
+			if ( result )
+			{
+				FileInfo fileInfo = new FileInfo(name);
+				long length = fileInfo.Length;
+				result = 
+					(MinSize <= length) &&
+					(MaxSize >= length);
+			}
+			return result;
 		}
 		
 		/// <summary>
@@ -137,8 +143,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 
 		#region Instance Fields
-		long minSize_ = 0;
+		long minSize_;
 		long maxSize_ = long.MaxValue;
 		#endregion
-}
+	}
 }
