@@ -34,7 +34,6 @@
 // exception statement from your version.
 
 using System;
-using System.Text;
 using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Core
@@ -63,6 +62,27 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="count">The number of bytes of data to store.</param>
 		static public void ReadFully(Stream stream, byte[] buffer, int offset, int count)
 		{
+			if ( stream == null )
+			{
+				throw new ArgumentNullException("stream");
+			}
+
+			if ( buffer == null )
+			{
+				throw new ArgumentNullException("buffer");
+			}
+
+			// Offset can equal length when buffer and count are 0.
+			if ( (offset < 0) || (offset > buffer.Length) )
+			{
+				throw new ArgumentOutOfRangeException("offset");
+			}
+
+			if ( (count < 0) || (offset + count > buffer.Length) )
+			{
+				throw new ArgumentOutOfRangeException("count");
+			}
+
 			while ( count > 0 )
 			{
 				int readCount = stream.Read(buffer, offset, count);
@@ -83,12 +103,11 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="buffer">The buffer to use during copying.</param>
 		static public void Copy(Stream source, Stream destination, byte[] buffer)
 		{
-			int bytesRead;
 			bool copying = true;
 
 			while ( copying )
 			{
-				bytesRead = source.Read(buffer, 0, buffer.Length);
+				int bytesRead = source.Read(buffer, 0, buffer.Length);
 				if ( bytesRead > 0 )
 				{
 					destination.Write(buffer, 0, bytesRead);
@@ -106,6 +125,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		private StreamUtils()
 		{
+			// Do nothing.
 		}
 	}
 }

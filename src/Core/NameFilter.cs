@@ -117,7 +117,7 @@ namespace ICSharpCode.SharpZipLib.Core
                             toCompile = items[i];
                         }
 
-                        Regex testRE = new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                        Regex testRegex = new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Singleline);
                     }
                 }
             }

@@ -41,14 +41,14 @@ namespace ICSharpCode.SharpZipLib.Core
 	public interface INameTransform
 	{
 		/// <summary>
-		/// Given a file name determine the transformed equivalent.
+		/// Given a file name determine the transformed value.
 		/// </summary>
 		/// <param name="name">The name to transform.</param>
 		/// <returns>The transformed name.</returns>
 		string TransformFile(string name);
 		
 		/// <summary>
-		/// Given a directory name determine the transformed equivalent.
+		/// Given a directory name determine the transformed value.
 		/// </summary>
 		/// <param name="name">The name to transform.</param>
 		/// <returns>The transformed directory name</returns>
