@@ -5,7 +5,6 @@ using System.Text;
 using NUnit.Framework;
 
 using ICSharpCode.SharpZipLib.Tar;
-
 namespace ICSharpCode.SharpZipLib.Tests.Tar {
 	
 	/// <summary>
@@ -29,9 +28,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		public void EmptyTar()
 		{
 			MemoryStream ms = new MemoryStream();
-			TarArchive tarOut = TarArchive.CreateOutputTarArchive(ms);
-			int recordSize = tarOut.RecordSize;
-			tarOut.Close();
+			int recordSize = 0;
+			using (TarArchive tarOut = TarArchive.CreateOutputTarArchive(ms)) {
+				recordSize = tarOut.RecordSize;
+			}
 			
 			Assert.IsTrue(ms.GetBuffer().Length > 0, "Archive size must be > zero");
 			Assert.AreEqual(ms.GetBuffer().Length % recordSize, 0, "Archive size must be a multiple of record size");
@@ -51,23 +51,19 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		void TryLongName(string name)
 		{
 			MemoryStream ms = new MemoryStream();
-			TarOutputStream tarOut = new TarOutputStream(ms);
-
-			DateTime modTime = DateTime.Now;
-
-			TarEntry entry = TarEntry.CreateTarEntry(name);
-
-			tarOut.PutNextEntry(entry);
-			tarOut.Close();
+			using (TarOutputStream tarOut = new TarOutputStream(ms)) {
+				TarEntry entry = TarEntry.CreateTarEntry(name);
+				tarOut.PutNextEntry(entry);
+			}
 
 			MemoryStream ms2 = new MemoryStream();
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 
-			TarInputStream tarIn = new TarInputStream(ms2);
-			TarEntry nextEntry = tarIn.GetNextEntry();
-			
-			Assert.AreEqual(nextEntry.Name, name, "Name match failure");
+			using (TarInputStream tarIn = new TarInputStream(ms2)) {
+				TarEntry nextEntry = tarIn.GetNextEntry();
+				Assert.AreEqual(nextEntry.Name, name, "Name match failure");
+			}
 		}
 		
 		/// <summary>
@@ -201,24 +197,22 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		public void Checksum()
 		{
 			MemoryStream ms = new MemoryStream();
-			TarOutputStream tarOut = new TarOutputStream(ms);
-
 			DateTime modTime = DateTime.Now;
-
-			TarEntry entry = TarEntry.CreateTarEntry("TestEntry");
-			entry.TarHeader.Mode = 12345;
-
-			tarOut.PutNextEntry(entry);
-			tarOut.Close();
+			using ( TarOutputStream tarOut = new TarOutputStream(ms) ) {
+				TarEntry entry = TarEntry.CreateTarEntry("TestEntry");
+				entry.TarHeader.Mode = 12345;
+				tarOut.PutNextEntry(entry);
+			}
 
 			MemoryStream ms2 = new MemoryStream();
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
-
-			TarInputStream tarIn = new TarInputStream(ms2);
-			TarEntry nextEntry = tarIn.GetNextEntry();
+			TarEntry nextEntry;
 			
-			Assert.IsTrue(nextEntry.TarHeader.IsChecksumValid, "Checksum should be valid");
+			using (TarInputStream tarIn = new TarInputStream(ms2)) {
+				nextEntry = tarIn.GetNextEntry();
+				Assert.IsTrue(nextEntry.TarHeader.IsChecksumValid, "Checksum should be valid");
+			}
 			
 			MemoryStream ms3 = new MemoryStream();
 			ms3.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
@@ -226,19 +220,20 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 			ms3.Write(new byte[1] { 34 }, 0, 1);
 			ms3.Seek(0, SeekOrigin.Begin);
 
-			tarIn = new TarInputStream(ms3);
-			bool trapped = false;
-			
-			try
-			{
-				nextEntry = tarIn.GetNextEntry();
+			using (TarInputStream tarIn = new TarInputStream(ms3)) {
+				bool trapped = false;
+				
+				try
+				{
+					nextEntry = tarIn.GetNextEntry();
+				}
+				catch (TarException)
+				{
+					trapped = true;
+				}
+				
+				Assert.IsTrue(trapped, "Checksum should be invalid");
 			}
-			catch (TarException)
-			{
-				trapped = true;
-			}
-			
-			Assert.IsTrue(trapped, "Checksum should be invalid");
 		}
 
 		/// <summary>
@@ -249,45 +244,47 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		public void ValuesPreserved()
 		{
 			MemoryStream ms = new MemoryStream();
-			TarOutputStream tarOut = new TarOutputStream(ms);
-			
+			TarEntry entry;
 			DateTime modTime = DateTime.Now;
-			
-			TarEntry entry = TarEntry.CreateTarEntry("TestEntry");
-			entry.GroupId = 12;
-			entry.UserId = 14;
-			entry.ModTime = modTime;
-			entry.UserName = "UserName";
-			entry.GroupName = "GroupName";
-			entry.TarHeader.Mode = 12345;
-			
-			tarOut.PutNextEntry(entry);
-			tarOut.Close();
+			using (TarOutputStream tarOut = new TarOutputStream(ms)) {
+				
+				
+				entry = TarEntry.CreateTarEntry("TestEntry");
+				entry.GroupId = 12;
+				entry.UserId = 14;
+				entry.ModTime = modTime;
+				entry.UserName = "UserName";
+				entry.GroupName = "GroupName";
+				entry.TarHeader.Mode = 12345;
+				
+				tarOut.PutNextEntry(entry);
+			}
 
 			MemoryStream ms2 = new MemoryStream();
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 			
-			TarInputStream tarIn = new TarInputStream(ms2);
-			TarEntry nextEntry = tarIn.GetNextEntry();
-			Assert.AreEqual(entry.TarHeader.Checksum, nextEntry.TarHeader.Checksum, "Checksum");
-			
-			Assert.IsTrue(nextEntry.Equals(entry), "Entries should be equal");
-			Assert.IsTrue(nextEntry.TarHeader.Equals(entry.TarHeader), "Headers should match");
-
-			// Tar only stores seconds 
-			DateTime truncatedTime = new DateTime(modTime.Year, modTime.Month, modTime.Day, 
-			                                      modTime.Hour, modTime.Minute, modTime.Second);
-			Assert.AreEqual(truncatedTime, nextEntry.ModTime, "Modtimes should match");
-			
-			int entryCount = 0;
-			while ( nextEntry != null )
-			{
-				++entryCount;
-				nextEntry = tarIn.GetNextEntry();
+			using ( TarInputStream tarIn = new TarInputStream(ms2) ) {
+				TarEntry nextEntry = tarIn.GetNextEntry();
+				Assert.AreEqual(entry.TarHeader.Checksum, nextEntry.TarHeader.Checksum, "Checksum");
+				
+				Assert.IsTrue(nextEntry.Equals(entry), "Entries should be equal");
+				Assert.IsTrue(nextEntry.TarHeader.Equals(entry.TarHeader), "Headers should match");
+	
+				// Tar only stores seconds 
+				DateTime truncatedTime = new DateTime(modTime.Year, modTime.Month, modTime.Day, 
+				                                      modTime.Hour, modTime.Minute, modTime.Second);
+				Assert.AreEqual(truncatedTime, nextEntry.ModTime, "Modtimes should match");
+				
+				int entryCount = 0;
+				while ( nextEntry != null )
+				{
+					++entryCount;
+					nextEntry = tarIn.GetNextEntry();
+				}
+				
+				Assert.AreEqual(1, entryCount, "Expected 1 entry");
 			}
-			
-			Assert.AreEqual(1, entryCount, "Expected 1 entry");
 		}
 		
 		/// <summary>
