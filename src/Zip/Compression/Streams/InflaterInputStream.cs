@@ -501,7 +501,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <param name = "baseInputStream">
 		/// The InputStream to read bytes from
 		/// </param>
-		public InflaterInputStream(Stream baseInputStream) : this(baseInputStream, new Inflater(), 4096)
+		public InflaterInputStream(Stream baseInputStream)
+			: this(baseInputStream, new Inflater(), 4096)
 		{
 		}
 		
@@ -645,7 +646,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </exception>
 		public long Skip(long n)
 		{
-			if (n <= 0) {
+			if (n < 0) {
 				throw new ArgumentOutOfRangeException("n");
 			}
 			
