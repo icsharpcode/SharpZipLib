@@ -46,6 +46,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	public class ZipNameTransform : INameTransform
 	{
+		#region Constructors
 		/// <summary>
 		/// Initialize a new instance of <see cref="ZipNameTransform"></see>
 		/// </summary>
@@ -77,6 +78,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			relativePath = useRelativePaths;
 		}
 		
+		#endregion
 		/// <summary>
 		/// Transform a directory name according to the Zip file naming conventions.
 		/// </summary>
@@ -126,12 +128,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				name = name.Replace(@"\", "/");
 			}
 			else {
-				name = "";
+				name = string.Empty;
 			}
 			return name;
 		}
-
-		string trimPrefix;
 		
 		/// <summary>
 		/// Get/set the path prefix to be trimmed from paths if present.
@@ -142,6 +142,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { trimPrefix = value; }
 		}
 		
+
+		#region Instance Fields
+		string trimPrefix;
 		bool relativePath;
+		#endregion
 	}
 }
