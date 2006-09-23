@@ -40,7 +40,8 @@ using System.IO;
 namespace ICSharpCode.SharpZipLib.Core
 {
 	/// <summary>
-	/// PathFilter filters directories and files using a form of <see cref="System.Text.RegularExpressions.Regex">regular expressions</see> by full path name.
+	/// PathFilter filters directories and files using a form of <see cref="System.Text.RegularExpressions.Regex">regular expressions</see>
+	/// by full path name.
 	/// See <see cref="NameFilter">NameFilter</see> for more detail on filtering.
 	/// </summary>
 	public class PathFilter : IScanFilter

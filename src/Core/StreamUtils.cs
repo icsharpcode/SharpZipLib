@@ -41,7 +41,7 @@ namespace ICSharpCode.SharpZipLib.Core
 	/// <summary>
 	/// Provides simple <see cref="Stream">stream</see>" utilities.
 	/// </summary>
-	sealed class StreamUtils
+	public sealed class StreamUtils
 	{
 		/// <summary>
 		/// Read from a <see cref="Stream">stream</see>" ensuring all the required data is read.
@@ -103,6 +103,26 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="buffer">The buffer to use during copying.</param>
 		static public void Copy(Stream source, Stream destination, byte[] buffer)
 		{
+			if ( source == null )
+			{
+				throw new ArgumentNullException("source");
+			}
+
+			if ( destination == null )
+			{
+				throw new ArgumentNullException("destination");
+			}
+
+			if ( buffer == null )
+			{
+				throw new ArgumentNullException("buffer");
+			}
+
+			if ( buffer.Length < 32 )
+			{
+				throw new ArgumentException("Buffer is too small", "buffer");
+			}
+
 			bool copying = true;
 
 			while ( copying )
