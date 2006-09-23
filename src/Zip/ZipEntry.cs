@@ -54,13 +54,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	public class ZipEntry : ICloneable
 	{
-		static int KNOWN_SIZE               = 1;
-		static int KNOWN_CSIZE              = 2;
-		static int KNOWN_CRC                = 4;
-		static int KNOWN_TIME               = 8;
-		static int KNOWN_EXTERN_ATTRIBUTES 	= 16;
-		
-		ushort known = 0;                       // Bit flags made up of above bits
+		[Flags]
+		enum Known : byte
+		{
+			None = 0,
+			Size = 0x01,
+			CompressedSize = 0x02,
+			Crc = 0x04,
+			Time = 0x08,
+			ExternalAttributes = 0x10,
+		}
+
+		#region Instance Fields
+		Known known;
 		int    externalFileAttributes = -1;     // contains external attributes (os dependant)
 		
 		ushort versionMadeBy;                   // Contains host system and version information
@@ -74,14 +80,139 @@ namespace ICSharpCode.SharpZipLib.Zip
 		uint   dosTime;
 		
 		CompressionMethod  method = CompressionMethod.Deflated;
-		byte[] extra = null;
-		string comment = null;
+		byte[] extra;
+		string comment;
 		
 		int flags;                             // general purpose bit flags
 
-		int zipFileIndex = -1;                 // used by ZipFile
+		long zipFileIndex = -1;                // used by ZipFile
 		long offset;                           // used by ZipFile and ZipOutputStream
 		
+		bool forceZip64_;
+		#endregion
+		
+		#region Constructors
+		/// <summary>
+		/// Creates a zip entry with the given name.
+		/// </summary>
+		/// <param name="name">
+		/// The name for this entry. Can include directory components.
+		/// The convention for names is 'unix'  style paths with no device names and 
+		/// path elements separated by '/' characters.  This is not enforced see <see cref="CleanName">CleanName</see>
+		/// on how to ensure names are valid if this is desired.
+		/// </param>
+		/// <exception cref="ArgumentNullException">
+		/// The name passed is null
+		/// </exception>
+		public ZipEntry(string name)
+			: this(name, 0, ZipConstants.VersionMadeBy)
+		{
+		}
+
+		/// <summary>
+		/// Creates a zip entry with the given name and version required to extract
+		/// </summary>
+		/// <param name="name">
+		/// The name for this entry. Can include directory components.
+		/// The convention for names is 'unix'  style paths with no device names and 
+		/// path elements separated by '/' characters.  This is not enforced see <see cref="CleanName">CleanName</see>
+		/// on how to ensure names are valid if this is desired.
+		/// </param>
+		/// <param name="versionRequiredToExtract">
+		/// The minimum 'feature version' required this entry
+		/// </param>
+		/// <exception cref="ArgumentNullException">
+		/// The name passed is null
+		/// </exception>
+		internal ZipEntry(string name, int versionRequiredToExtract)
+			: this(name, versionRequiredToExtract, ZipConstants.VersionMadeBy)
+		{
+		}
+		
+		/// <summary>
+		/// Initializes an entry with the given name and made by information
+		/// </summary>
+		/// <param name="name">Name for this entry</param>
+		/// <param name="madeByInfo">Version and HostSystem Information</param>
+		/// <param name="versionRequiredToExtract">Minimum required zip feature version required to extract this entry</param>
+		/// <exception cref="ArgumentNullException">
+		/// The name passed is null
+		/// </exception>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// versionRequiredToExtract should be 0 (auto-calculate) or > 10
+		/// </exception>
+		/// <remarks>
+		/// This constructor is used by the ZipFile class when reading from the central header
+		/// It is not generally useful, use the constructor specifying the name only.
+		/// </remarks>
+		internal ZipEntry(string name, int versionRequiredToExtract, int madeByInfo)
+		{
+			if (name == null)  {
+				throw new System.ArgumentNullException("ZipEntry name");
+			}
+
+			if ( name.Length > 0xffff )	{
+				throw new ArgumentException("Name is too long", "name");
+			}
+
+			if ( (versionRequiredToExtract != 0) && (versionRequiredToExtract < 10) ) {
+				throw new ArgumentOutOfRangeException("versionRequiredToExtract");
+			}
+			
+			this.DateTime         = System.DateTime.Now;
+			this.name             = name;
+			this.versionMadeBy    = (ushort)madeByInfo;
+			this.versionToExtract = (ushort)versionRequiredToExtract;
+		}
+		
+		/// <summary>
+		/// Creates a copy of the given zip entry.
+		/// </summary>
+		/// <param name="entry">
+		/// The entry to copy.
+		/// </param>
+		public ZipEntry(ZipEntry entry)
+		{
+			if ( entry == null ) {
+				throw new ArgumentNullException("entry");
+			}
+
+			known                  = entry.known;
+			name                   = entry.name;
+			size                   = entry.size;
+			compressedSize         = entry.compressedSize;
+			crc                    = entry.crc;
+			dosTime                = entry.dosTime;
+			method                 = entry.method;
+			comment                = entry.comment;
+			versionToExtract       = entry.versionToExtract;
+			versionMadeBy          = entry.versionMadeBy;
+			externalFileAttributes = entry.externalFileAttributes;
+			flags                  = entry.flags;
+
+			zipFileIndex           = entry.zipFileIndex;
+			offset                 = entry.offset;
+
+			forceZip64_			   = entry.forceZip64_;
+
+			if ( entry.extra != null )
+			{
+				extra = new byte[entry.extra.Length];
+				Array.Copy(entry.extra, 0, extra, 0, entry.extra.Length);
+			}
+		}
+
+		#endregion
+		
+		/// <summary>
+		/// Get a value indicating wether the entry has a CRC value available.
+		/// </summary>
+		public bool HasCrc {
+			get {
+				return (known & Known.Crc) != 0;
+			}
+		}
+
 		/// <summary>
 		/// Get/Set flag indicating if entry is encrypted.
 		/// A simple helper routine to aid interpretation of <see cref="Flags">flags</see>
@@ -98,7 +229,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Get/Set general purpose bit flag for entry
 		/// </summary>
@@ -134,11 +265,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
-
 		/// <summary>
 		/// Get/Set index of this entry in Zip file
 		/// </summary>
-		public int ZipFileIndex {
+		public long ZipFileIndex {
 			get {
 				return zipFileIndex;
 			}
@@ -155,13 +285,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return offset;
 			}
 			set {
-            if ( value > 0xffffffff ) {
-               throw new ZipException("Zip entry size exceeded");
-            }
 				offset = value;
 			}
 		}
-
 
 		/// <summary>
 		/// Get/Set external file attributes as an integer.
@@ -170,7 +296,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public int ExternalFileAttributes {
 			get {
-				if ((known & KNOWN_EXTERN_ATTRIBUTES) == 0) {
+				if ((known & Known.ExternalAttributes) == 0) {
 					return -1;
 				} else {
 					return externalFileAttributes;
@@ -179,7 +305,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			
 			set {
 				externalFileAttributes = value;
-				known |= (ushort)KNOWN_EXTERN_ATTRIBUTES;
+				known |= Known.ExternalAttributes;
 			}
 		}
 
@@ -190,7 +316,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public int VersionMadeBy {
 			get { 
-				return versionMadeBy & 0xff; 
+				return (versionMadeBy & 0xff);
 			}
 		}
 
@@ -237,103 +363,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Creates a zip entry with the given name.
-		/// </summary>
-		/// <param name="name">
-		/// The name for this entry. Can include directory components.
-		/// The convention for names is 'unix'  style paths with no device names and 
-		/// path elements separated by '/' characters.  This is not enforced see <see cref="CleanName">CleanName</see>
-		/// on how to ensure names are valid if this is desired.
-		/// </param>
-		/// <exception cref="ArgumentNullException">
-		/// The name passed is null
-		/// </exception>
-		public ZipEntry(string name) : this(name, 0, ZipConstants.VERSION_MADE_BY)
-		{
-		}
-
-		/// <summary>
-		/// Creates a zip entry with the given name and version required to extract
-		/// </summary>
-		/// <param name="name">
-		/// The name for this entry. Can include directory components.
-		/// The convention for names is 'unix'  style paths with no device names and 
-		/// path elements separated by '/' characters.  This is not enforced see <see cref="CleanName">CleanName</see>
-		/// on how to ensure names are valid if this is desired.
-		/// </param>
-		/// <param name="versionRequiredToExtract">
-		/// The minimum 'feature version' required this entry
-		/// </param>
-		/// <exception cref="ArgumentNullException">
-		/// The name passed is null
-		/// </exception>
-		internal ZipEntry(string name, int versionRequiredToExtract) : this(name, versionRequiredToExtract, ZipConstants.VERSION_MADE_BY)
-		{
-		}
-		
-		/// <summary>
-		/// Initializes an entry with the given name and made by information
-		/// </summary>
-		/// <param name="name">Name for this entry</param>
-		/// <param name="madeByInfo">Version and HostSystem Information</param>
-		/// <param name="versionRequiredToExtract">Minimum required zip feature version required to extract this entry</param>
-		/// <exception cref="ArgumentNullException">
-		/// The name passed is null
-		/// </exception>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// versionRequiredToExtract should be 0 (auto-calculate) or > 10
-		/// </exception>
-		/// <remarks>
-		/// This constructor is used by the ZipFile class when reading from the central header
-		/// It is not generally useful, use the constructor specifying the name only.
-		/// </remarks>
-		internal ZipEntry(string name, int versionRequiredToExtract, int madeByInfo)
-		{
-			if (name == null)  {
-				throw new System.ArgumentNullException("ZipEntry name");
-			}
-
-			if ( name.Length == 0 ) {
-				throw new ArgumentException("ZipEntry name is empty");
-			}
-
-			if (versionRequiredToExtract != 0 && versionRequiredToExtract < 10) {
-				throw new ArgumentOutOfRangeException("versionRequiredToExtract");
-			}
-			
-			this.DateTime         = System.DateTime.Now;
-			this.name             = name;
-			this.versionMadeBy    = (ushort)madeByInfo;
-			this.versionToExtract = (ushort)versionRequiredToExtract;
-		}
-		
-		/// <summary>
-		/// Creates a copy of the given zip entry.
-		/// </summary>
-		/// <param name="e">
-		/// The entry to copy.
-		/// </param>
-		public ZipEntry(ZipEntry e)
-		{
-			known                  = e.known;
-			name                   = e.name;
-			size                   = e.size;
-			compressedSize         = e.compressedSize;
-			crc                    = e.crc;
-			dosTime                = e.dosTime;
-			method                 = e.method;
-			ExtraData              = e.ExtraData;     // Note use of property ensuring data is unique
-			comment                = e.comment;
-			versionToExtract       = e.versionToExtract;
-			versionMadeBy          = e.versionMadeBy;
-			externalFileAttributes = e.externalFileAttributes;
-			flags                  = e.flags;
-
-			zipFileIndex           = -1;
-			offset                 = 0;
-		}
-
-		/// <summary>
 		/// Get minimum Zip feature version required to extract this entry
 		/// </summary>		
 		/// <remarks>
@@ -360,30 +389,62 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </remarks>
 		public int Version {
 			get {
+				// Return recorded version if known.
 				if (versionToExtract != 0) {
 					return versionToExtract;
 				} else {
 					int result = 10;
-					if (CompressionMethod.Deflated == method) {
+					if ( forceZip64_ || LocalHeaderRequiresZip64 ) {
+						result = ZipConstants.VersionZip64;	
+					}
+					else if (CompressionMethod.Deflated == method) {
 						result = 20;
 					} else if (IsDirectory == true) {
 						result = 20;
 					} else if (IsCrypted == true) {
 						result = 20;
-					} else if ((known & KNOWN_EXTERN_ATTRIBUTES) != 0 && (externalFileAttributes & 0x08) != 0) {
+					} else if ((known & Known.ExternalAttributes) != 0 && (externalFileAttributes & 0x08) != 0) {
 						result = 11;
 					}
 					return result;
 				}
 			}
 		}
-
+		
+		/// <summary>
+		/// Force this entry to be recorded using Zip64 extensions.
+		/// </summary>
+		public void ForceZip64()
+		{
+			// TODO: Sort out what this really does, its doesnt do much right now.
+			// Set this is size, or csize is not known (web stream?)
+			forceZip64_ = true;
+		}
+		
 		/// <summary>
 		/// Gets a value indicating if the entry requires Zip64 extensions to be stored
 		/// </summary>
-		public bool RequiresZip64 {
+		public bool LocalHeaderRequiresZip64 {
 			get {
-				return (this.size > uint.MaxValue) || (this.compressedSize > uint.MaxValue);
+				ulong trueCompressedSize = compressedSize;
+
+				if ( (versionToExtract == 0) && IsCrypted ) {
+					trueCompressedSize += ZipConstants.CryptoHeaderSize;
+				}
+
+				return (this.size >= uint.MaxValue) ||
+					(trueCompressedSize >= uint.MaxValue) ||
+					(versionToExtract >= ZipConstants.VersionZip64); // TODO: This part of the test is wrong?
+			}
+		}
+		
+		/// <summary>
+		/// Get a value indicating wether the central directory entry requires Zip64 extensions to be stored.
+		/// </summary>
+		public bool CentralHeaderRequiresZip64
+		{
+			get {
+				return LocalHeaderRequiresZip64 || (offset >= 0xffffffff);
 			}
 		}
 		
@@ -392,7 +453,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>		
 		public long DosTime {
 			get {
-				if ((known & KNOWN_TIME) == 0) {
+				if ((known & Known.Time) == 0) {
 					return 0;
 				} else {
 					return dosTime;
@@ -400,11 +461,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			set {
 				this.dosTime = (uint)value;
-				known |= (ushort)KNOWN_TIME;
+				known |= Known.Time;
 			}
 		}
-		
-		
+			
 		/// <summary>
 		/// Gets/Sets the time of last modification of the entry.
 		/// </summary>
@@ -438,7 +498,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Returns the entry name.  The path components in the entry should
 		/// always separated by slashes ('/').  Dos device names like C: should also
-		/// be removed.  See <see cref="CleanName">CleanName</see>.
+		/// be removed.  See the <see cref="ZipNameTransform"/> class, or <see cref="CleanName"/>
 		/// </summary>
 		public string Name {
 			get {
@@ -447,92 +507,34 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Cleans a name making it conform to Zip file conventions.
-		/// Devices names ('c:\') and UNC share names ('\\server\share') are removed
-		/// and forward slashes ('\') are converted to back slashes ('/').
-		/// </summary>
-		/// <param name="name">Name to clean</param>
-		/// <param name="relativePath">Make names relative if true or absolute if false</param>
-		static public string CleanName(string name, bool relativePath)
-		{
-			if (name == null) {
-				return "";
-			}
-			
-			if (Path.IsPathRooted(name) == true) {
-				// NOTE:
-				// for UNC names...  \\machine\share\zoom\beet.txt gives \zoom\beet.txt
-				name = name.Substring(Path.GetPathRoot(name).Length);
-			}
-
-			name = name.Replace(@"\", "/");
-			
-			if (relativePath == true) {
-				if (name.Length > 0 && (name[0] == Path.AltDirectorySeparatorChar || name[0] == Path.DirectorySeparatorChar)) {
-					name = name.Remove(0, 1);
-				}
-			} else {
-				if (name.Length > 0 && name[0] != Path.AltDirectorySeparatorChar && name[0] != Path.DirectorySeparatorChar) {
-					name = name.Insert(0, "/");
-				}
-			}
-			return name;
-		}
-		
-		/// <summary>
-		/// Cleans a name making it conform to Zip file conventions.
-		/// Devices names ('c:\') and UNC share names ('\\server\share') are removed
-		/// and forward slashes ('\') are converted to back slashes ('/').
-		/// Names are made relative by trimming leading slashes which is compatible
-		/// with Windows-XPs built in Zip file handling.
-		/// </summary>
-		/// <param name="name">Name to clean</param>
-		static public string CleanName(string name)
-		{
-			return CleanName(name, true);
-		}
-		
-		/// <summary>
 		/// Gets/Sets the size of the uncompressed data.
 		/// </summary>
-		/// <exception cref="ZipException">
-		/// If the size is not in the range 0..0xffffffffL
-		/// </exception>
 		/// <returns>
 		/// The size or -1 if unknown.
 		/// </returns>
 		public long Size {
 			get {
-				return (known & KNOWN_SIZE) != 0 ? (long)size : -1L;
+				return (known & Known.Size) != 0 ? (long)size : -1L;
 			}
 			set {
-				if (((ulong)value & 0xFFFFFFFF00000000L) != 0) {
-					throw new ZipException("Entry size exceeded");
-				}
 				this.size  = (ulong)value;
-				this.known |= (ushort)KNOWN_SIZE;
+				this.known |= Known.Size;
 			}
 		}
 		
 		/// <summary>
 		/// Gets/Sets the size of the compressed data.
 		/// </summary>
-		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// Size is not in the range 0..0xffffffff
-		/// </exception>
 		/// <returns>
 		/// The size or -1 if unknown.
 		/// </returns>
 		public long CompressedSize {
 			get {
-				return (known & KNOWN_CSIZE) != 0 ? (long)compressedSize : -1L;
+				return (known & Known.CompressedSize) != 0 ? (long)compressedSize : -1L;
 			}
 			set {
-				if (((ulong)value & 0xffffffff00000000L) != 0) {
-					throw new ArgumentOutOfRangeException();
-				}
 				this.compressedSize = (ulong)value;
-				this.known |= (ushort)KNOWN_CSIZE;
+				this.known |= Known.CompressedSize;
 			}
 		}
 		
@@ -547,14 +549,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </returns>
 		public long Crc {
 			get {
-				return (known & KNOWN_CRC) != 0 ? crc & 0xffffffffL : -1L;
+				return (known & Known.Crc) != 0 ? crc & 0xffffffffL : -1L;
 			}
 			set {
 				if (((ulong)crc & 0xffffffff00000000L) != 0) {
-					throw new ArgumentOutOfRangeException();
+					throw new ArgumentOutOfRangeException("value");
 				}
 				this.crc = (uint)value;
-				this.known |= (ushort)KNOWN_CRC;
+				this.known |= Known.Crc;
 			}
 		}
 		
@@ -571,7 +573,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return method;
 			}
 			set {
-				if ( (value != CompressionMethod.Deflated) && (value != CompressionMethod.Stored) )
+				if ( !IsCompressionMethodSupported(value) )
 				{
 					throw new NotSupportedException("Compression method not supported");
 				}
@@ -589,9 +591,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Extra data or null if not set.
 		/// </returns>
 		public byte[] ExtraData {
+			
 			get {
+// TODO: This is safer but less efficient.  Think about wether it should change.
+//				return (byte[]) extra.Clone();
 				return extra;
 			}
+
 			set {
 				if (value == null) {
 					this.extra = null;
@@ -599,59 +605,42 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				
 				if (value.Length > 0xffff) {
-					throw new System.ArgumentOutOfRangeException();
+					throw new System.ArgumentOutOfRangeException("value");
 				}
 				
 				this.extra = new byte[value.Length];
 				Array.Copy(value, 0, this.extra, 0, value.Length);
 				
-				try {
-					int pos = 0;
-					while (pos < extra.Length) {
-						int sig = (extra[pos++] & 0xff) | (extra[pos++] & 0xff) << 8;
-						int len = (extra[pos++] & 0xff) | (extra[pos++] & 0xff) << 8;
-						
-						if (len < 0 || pos + len > extra.Length) {
-							// This is still lenient but the extra data is corrupt
-							// TODO: drop the extra data? or somehow indicate to user 
-							// there is a problem...
-							break;
-						}
-						
-						if (sig == 0x5455) {
-							// extended time stamp, unix format by Rainer Prem <Rainer@Prem.de>
-							int flags = extra[pos];
-							// Can include other times but these are ignored.  Length of data should
-							// actually be 1 + 4 * no of bits in flags.
-							if ((flags & 1) != 0 && len >= 5) {
-								int iTime = ((extra[pos+1] & 0xff) |
-									(extra[pos + 2] & 0xff) << 8 |
-									(extra[pos + 3] & 0xff) << 16 |
-									(extra[pos + 4] & 0xff) << 24);
-								
-								DateTime = (new DateTime ( 1970, 1, 1, 0, 0, 0 ) + new TimeSpan ( 0, 0, 0, iTime, 0 )).ToLocalTime ();
-								known |= (ushort)KNOWN_TIME;
-							}
-						} else if (sig == 0x0001) { 
-							// ZIP64 extended information extra field
-							// Of variable size depending on which fields in header are too small
-							// fields appear here if the corresponding local or central directory record field
-							// is set to 0xFFFF or 0xFFFFFFFF and the entry is in Zip64 format.
-							//
-							// Original Size          8 bytes
-							// Compressed size        8 bytes
-							// Relative header offset 8 bytes
-							// Disk start number      4 bytes
-						}
-						pos += len;
+				ZipExtraData extraData = new ZipExtraData(extra);
+				
+				if ( extraData.Find(0x001) ) {
+					if ( extraData.ValueLength != 16 ) {
+						throw new ZipException("Extra data extended Zip64 information length is invalid");
 					}
-				} catch (Exception) {
-					/* be lenient */
-					return;
+					
+					Size = extraData.ReadLong();
+					CompressedSize = extraData.ReadLong();
+				}
+				
+				if ( extraData.Find(0x5455) ) {
+					int length = extraData.ValueLength;	
+					int flags = extraData.ReadByte();
+					
+					// Can include other times but these are ignored.  Length of data should
+					// actually be 1 + 4 * no of bits in flags.
+					if ( ((flags & 1) != 0) && (length >= 5) ) {
+						int iTime = (extraData.ReadByte()) |
+							(extraData.ReadByte() << 8) |
+							(extraData.ReadByte() << 16) |
+							(extraData.ReadByte() << 24);
+						
+						DateTime = (new DateTime ( 1970, 1, 1, 0, 0, 0 ) +
+						            new TimeSpan ( 0, 0, 0, iTime, 0 )).ToLocalTime ();
+						known |= Known.Time;
+					}
 				}
 			}
 		}
-		
 		
 		/// <summary>
 		/// Gets/Sets the entry comment.
@@ -670,25 +659,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// TODO: this test is strictly incorrect as the length is in characters
 				// While the test is correct in that a comment of this length or greater 
 				// is definitely invalid, shorter comments may also have an invalid length.
-				if (value != null && value.Length > 0xffff) {
-					throw new ArgumentOutOfRangeException();
+				if ( (value != null) && (value.Length > 0xffff) ) {
+					throw new ArgumentOutOfRangeException("value");
 				}
+				
 				this.comment = value;
 			}
 		}
 		
 		/// <summary>
-		/// Gets a value indicating of the if the entry is a directory.  A directory is determined by
+		/// Gets a value indicating if the entry is a directory.  A directory is determined by
 		/// an entry name with a trailing slash '/'.  The external file attributes
 		/// can also mark a file as a directory.  The trailing slash convention should always be followed
 		/// however.
 		/// </summary>
 		public bool IsDirectory {
 			get {
-				int nlen = name.Length;
-				bool result = nlen > 0 && name[nlen - 1] == '/';
+				int nameLength = name.Length;
+				bool result = (nameLength > 0) && ((name[nameLength - 1] == '/') || (name[nameLength - 1] == '\\'));
 				
-				if (result == false && (known & KNOWN_EXTERN_ATTRIBUTES) != 0) {
+				if ( !result && ((known & Known.ExternalAttributes) != 0) ) {
 					if (HostSystem == 0 && (ExternalFileAttributes & 16) != 0) {
 						result = true;
 					}
@@ -704,13 +694,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// This only takes account Windows attributes.  Other operating systems are ignored.
 		/// For linux and others the result may be incorrect.
 		/// </remarks>
-		public bool IsFile {
+		public bool IsFile
+		{
 			get {
 				bool result = !IsDirectory;
 
 				// Exclude volume labels
-				if ( result && (known & KNOWN_EXTERN_ATTRIBUTES) != 0) {
-					if (HostSystem == 0 && (ExternalFileAttributes & 8) != 0) {
+				if ( result && (known & Known.ExternalAttributes) != 0) {
+					if ( (HostSystem == 0) && ((ExternalFileAttributes & 8) != 0) ) {
 						result = false;
 					}
 				}
@@ -719,19 +710,95 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
+		/// Test entry to see if data can be extracted.
+		/// </summary>
+		/// <returns>Returns true if data can be extracted for this entry; false otherwise.</returns>
+		public bool IsCompressionMethodSupported()
+		{
+			return IsCompressionMethodSupported(CompressionMethod);
+		}
+		
+		#region ICloneable Members
+		/// <summary>
 		/// Creates a copy of this zip entry.
 		/// </summary>
 		public object Clone()
 		{
-			return this.MemberwiseClone();
+			return new ZipEntry(this);
 		}
 		
+		#endregion
 		/// <summary>
 		/// Gets the string representation of this ZipEntry.
 		/// </summary>
 		public override string ToString()
 		{
 			return name;
+		}
+		/// <summary>
+		/// Test a <see cref="CompressionMethod">compression method</see> to see if this library
+		/// supports extracting data compressed with that method
+		/// </summary>
+		/// <param name="method">The compression method to test.</param>
+		/// <returns>Returns true if supported; false otherwise</returns>
+		public static bool IsCompressionMethodSupported(CompressionMethod method)
+		{
+			return
+				( method == CompressionMethod.Deflated ) ||
+				( method == CompressionMethod.Stored);
+		}
+		
+		/// <summary>
+		/// Cleans a name making it conform to Zip file conventions.
+		/// Devices names ('c:\') and UNC share names ('\\server\share') are removed
+		/// and forward slashes ('\') are converted to back slashes ('/').
+		/// </summary>
+		/// <param name="name">Name to clean</param>
+		/// <param name="relativePath">Make names relative if true or absolute if false</param>
+		static public string CleanName(string name, bool relativePath)
+		{
+			if (name == null) 
+			{
+				return string.Empty;
+			}
+			
+			if (Path.IsPathRooted(name) == true) 
+			{
+				// NOTE:
+				// for UNC names...  \\machine\share\zoom\beet.txt gives \zoom\beet.txt
+				name = name.Substring(Path.GetPathRoot(name).Length);
+			}
+
+			name = name.Replace(@"\", "/");
+			
+			if (relativePath == true) 
+			{
+				if ( (name.Length > 0) && ((name[0] == Path.AltDirectorySeparatorChar) || (name[0] == Path.DirectorySeparatorChar))) 
+				{
+					name = name.Remove(0, 1);
+				}
+			} 
+			else 
+			{
+				if (name.Length > 0 && name[0] != Path.AltDirectorySeparatorChar && name[0] != Path.DirectorySeparatorChar) 
+				{
+					name = name.Insert(0, "/");
+				}
+			}
+			return name;
+		}
+		
+		/// <summary>
+		/// Cleans a name making it conform to Zip file conventions.
+		/// Devices names ('c:\') and UNC share names ('\\server\share') are removed
+		/// and forward slashes ('\') are converted to back slashes ('/').
+		/// Names are made relative by trimming leading slashes which is compatible
+		/// with Windows-XPs built in Zip file handling.
+		/// </summary>
+		/// <param name="name">Name to clean</param>
+		static public string CleanName(string name)
+		{
+			return CleanName(name, true);
 		}
 	}
 }
