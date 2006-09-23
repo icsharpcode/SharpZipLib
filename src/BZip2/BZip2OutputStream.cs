@@ -1,4 +1,5 @@
 // BZip2OutputStream.cs
+//
 // Copyright (C) 2001 Mike Krueger
 //
 // This program is free software; you can redistribute it and/or
@@ -48,8 +49,84 @@ namespace ICSharpCode.SharpZipLib.BZip2
 	/// </summary>
 	public class BZip2OutputStream : Stream
 	{
-		bool isStreamOwner = true;
+		#region Constants
+		const int SETMASK       = (1 << 21);
+		const int CLEARMASK     = (~SETMASK);
+		const int GREATER_ICOST = 15;
+		const int LESSER_ICOST = 0;
+		const int SMALL_THRESH = 20;
+		const int DEPTH_THRESH = 10;
 		
+		/*--
+		If you are ever unlucky/improbable enough
+		to get a stack overflow whilst sorting,
+		increase the following constant and try
+		again.  In practice I have never seen the
+		stack go above 27 elems, so the following
+		limit seems very generous.
+		--*/
+		const int QSORT_STACK_SIZE = 1000;
+
+		/*--
+		Knuth's increments seem to work better
+		than Incerpi-Sedgewick here.  Possibly
+		because the number of elems to sort is
+		usually small, typically <= 20.
+		--*/
+		readonly int[] increments = new int[] { 
+												  1, 4, 13, 40, 121, 364, 1093, 3280,
+												  9841, 29524, 88573, 265720,
+												  797161, 2391484 
+											  };
+		#endregion
+
+		#region Constructors
+		/// <summary>
+		/// Construct a default output stream with maximum block size
+		/// </summary>
+		/// <param name="stream">The stream to write BZip data onto.</param>
+		public BZip2OutputStream(Stream stream) : this(stream, 9)
+		{
+		}
+		
+		/// <summary>
+		/// Initialise a new instance of the <see cref="BZip2OutputStream"></see> 
+		/// for the specified stream, using the given blocksize.
+		/// </summary>
+		/// <param name="stream">The stream to write compressed data to.</param>
+		/// <param name="blockSize">The block size to use.</param>
+		/// <remarks>
+		/// Valid block sizes are in the range 1..9, with 1 giving 
+		/// the lowest compression and 9 the highest.
+		/// </remarks>
+		public BZip2OutputStream(Stream stream, int blockSize)
+		{
+			BsSetStream(stream);
+			
+			workFactor = 50;
+			if (blockSize > 9) {
+				blockSize = 9;
+			}
+			
+			if (blockSize < 1) {
+				blockSize = 1;
+			}
+			blockSize100k = blockSize;
+			AllocateCompressStructures();
+			Initialize();
+			InitBlock();
+		}
+		#endregion
+
+		/// <summary>
+		/// Ensures that resources are freed and other cleanup operations 
+		/// are performed when the garbage collector reclaims the BZip2OutputStream.
+		/// </summary>
+		~BZip2OutputStream()
+		{
+			Dispose(false);
+		}
+
 		/// <summary>
 		/// Get/set flag indicating ownership of underlying stream.
 		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
@@ -119,7 +196,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Sets the length of this stream to the given value.
 		/// </summary>
-		public override void SetLength(long val)
+		public override void SetLength(long value)
 		{
 			throw new NotSupportedException("BZip2OutputStream SetLength not supported");
 		}
@@ -135,7 +212,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Read a block of bytes
 		/// </summary>
-		public override int Read(byte[] b, int off, int len)
+		public override int Read(byte[] buffer, int offset, int count)
 		{
 			throw new NotSupportedException("BZip2OutputStream Read not supported");
 		}
@@ -143,30 +220,67 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Write a block of bytes to the stream
 		/// </summary>
-		public override void Write(byte[] buf, int off, int len)
+		public override void Write(byte[] buffer, int offset, int count)
 		{
-			for (int i = 0; i < len; ++i) {
-				WriteByte(buf[off + i]);
+			if ( buffer == null ) {
+				throw new ArgumentNullException("buffer");
+			}
+
+			if ( offset < 0 )
+			{
+				throw new ArgumentOutOfRangeException("offset");
+			}
+
+			if ( count < 0 )
+			{
+				throw new ArgumentOutOfRangeException("count");
+			}
+
+			if ( buffer.Length - offset < count )
+			{
+				throw new ArgumentException("Offset/count out of range");
+			}
+
+			for (int i = 0; i < count; ++i) {
+				WriteByte(buffer[offset + i]);
 			}
 		}
 		
-		readonly static int SETMASK       = (1 << 21);
-		readonly static int CLEARMASK     = (~SETMASK);
-		readonly static int GREATER_ICOST = 15;
-		readonly static int LESSER_ICOST  = 0;
-		readonly static int SMALL_THRESH  = 20;
-		readonly static int DEPTH_THRESH  = 10;
+		/// <summary>
+		/// Write a byte to the stream.
+		/// </summary>
+		public override void WriteByte(byte value)
+		{
+			int b = (256 + value) % 256;
+			if (currentChar != -1) {
+				if (currentChar == b) {
+					runLength++;
+					if (runLength > 254) {
+						WriteRun();
+						currentChar = -1;
+						runLength = 0;
+					}
+				} else {
+					WriteRun();
+					runLength = 1;
+					currentChar = b;
+				}
+			} else {
+				currentChar = b;
+				runLength++;
+			}
+		}
 		
-		/*--
-		If you are ever unlucky/improbable enough
-		to get a stack overflow whilst sorting,
-		increase the following constant and try
-		again.  In practice I have never seen the
-		stack go above 27 elems, so the following
-		limit seems very generous.
-		--*/
-		readonly static int QSORT_STACK_SIZE = 1000;
-		
+		/// <summary>
+		/// End the current block and end compression.
+		/// Close the stream and free any resources
+		/// </summary>
+		public override void Close()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
 		static void Panic() 
 		{
 			throw new BZip2Exception("BZip2 output stream panic");
@@ -319,137 +433,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 		}
 		
-		/*--
-		index of the last char in the block, so
-		the block size == last + 1.
-		--*/
-		int last;
-		
-		/*--
-		index in zptr[] of original string after sorting.
-		--*/
-		int origPtr;
-		
-		/*--
-		always: in the range 0 .. 9.
-		The current block size is 100000 * this number.
-		--*/
-		int blockSize100k;
-		
-		bool blockRandomised;
-		
-		int bytesOut;
-		int bsBuff;
-		int bsLive;
-		IChecksum mCrc = new StrangeCRC();
-		
-		bool[] inUse = new bool[256];
-		int nInUse;
-		
-		char[] seqToUnseq = new char[256];
-		char[] unseqToSeq = new char[256];
-		
-		char[] selector = new char[BZip2Constants.MAX_SELECTORS];
-		char[] selectorMtf = new char[BZip2Constants.MAX_SELECTORS];
-		
-		byte[]  block;
-		int[]   quadrant;
-		int[]   zptr;
-		short[] szptr;
-		int[]   ftab;
-		
-		int nMTF;
-		
-		int[] mtfFreq = new int[BZip2Constants.MAX_ALPHA_SIZE];
-		
-		/*
-		* Used when sorting.  If too many long comparisons
-		* happen, we stop sorting, randomise the block
-		* slightly, and try again.
-		*/
-		int workFactor;
-		int workDone;
-		int workLimit;
-		bool firstAttempt;
-		int nBlocksRandomised;
-		
-		int currentChar = -1;
-		int runLength = 0;
-		
-		/// <summary>
-		/// Construct a default output stream with maximum block size
-		/// </summary>
-		/// <param name="stream">The stream to write BZip data onto.</param>
-		public BZip2OutputStream(Stream stream) : this(stream, 9)
-		{
-		}
-		
-		/// <summary>
-		/// Initialise a new instance of the <see cref="BZip2OutputStream"></see> 
-		/// for the specified stream, using the given blocksize.
-		/// </summary>
-		/// <param name="stream">The stream to write compressed data to.</param>
-		/// <param name="blockSize">The block size to use.</param>
-		/// <remarks>
-		/// Valid block sizes are in the range 1..9, with 1 giving 
-		/// the lowest compression and 9 the highest.
-		/// </remarks>
-		public BZip2OutputStream(Stream stream, int blockSize)
-		{
-			block    = null;
-			quadrant = null;
-			zptr     = null;
-			ftab     = null;
-			
-			BsSetStream(stream);
-			
-			workFactor = 50;
-			if (blockSize > 9) {
-				blockSize = 9;
-			}
-			
-			if (blockSize < 1) {
-				blockSize = 1;
-			}
-			blockSize100k = blockSize;
-			AllocateCompressStructures();
-			Initialize();
-			InitBlock();
-		}
-
 		/// <summary>
 		/// Get the number of bytes written to output.
 		/// </summary>
-		public int BytesWritten
-		{
-			get { return bytesOut; }
-		}
-
-		/// <summary>
-		/// Write a byte to the stream.
-		/// </summary>
-		public override void WriteByte(byte bv)
-		{
-			int b = (256 + bv) % 256;
-			if (currentChar != -1) {
-				if (currentChar == b) {
-					runLength++;
-					if (runLength > 254) {
-						WriteRun();
-						currentChar = -1;
-						runLength = 0;
-					}
-				} else {
-					WriteRun();
-					runLength = 1;
-					currentChar = b;
-				}
-			} else {
-				currentChar = b;
-				runLength++;
-			}
-		}
-		
 		void WriteRun()
 		{
 			if (last < allowableBlockSize) {
@@ -498,36 +484,40 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 		}
 		
-		bool closed = false;
-		
 		/// <summary>
-		/// Free any resources and other cleanup before garbage collection reclaims memory
+		/// Get the number of bytes written to the output.
 		/// </summary>
-		~BZip2OutputStream()
+		public int BytesWritten
 		{
-			Close();
+			get { return bytesOut; }
 		}
-		
+
 		/// <summary>
-		/// End the current block and end compression.
-		/// Close the stream and free any resources
+		/// Releases the unmanaged resources used by the <see cref="BZip2OutputStream"/> and optionally releases the managed resources.
 		/// </summary>
-		public override void Close()
+		/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+		protected virtual void Dispose(bool disposing)
 		{
-			if (!closed) {
-				closed = true;
-			
-				if (runLength > 0) {
+			if ( !disposed_ )
+			{
+				disposed_ = true;
+
+				if (runLength > 0)
+				{
 					WriteRun();
 				}
-			
+		
 				currentChar = -1;
 				EndBlock();
 				EndCompression();
 				Flush();
-				
-				if ( IsStreamOwner ) {
-					baseStream.Close();
+			
+				if ( disposing )
+				{
+					if ( IsStreamOwner ) 
+					{
+						baseStream.Close();
+					}
 				}
 			}
 		}
@@ -539,9 +529,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		{
 			baseStream.Flush();
 		}
-		
-		uint blockCRC, combinedCRC;
-		
+				
 		void Initialize()
 		{
 			bytesOut = 0;
@@ -560,8 +548,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			
 			combinedCRC = 0;
 		}
-		
-		int allowableBlockSize;
 		
 		void InitBlock() 
 		{
@@ -647,7 +633,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			BsFinishedWithStream();
 		}
 		
-		void HbAssignCodes (int[] code, char[] length, int minLen, int maxLen, int alphaSize) 
+		static void HbAssignCodes (int[] code, char[] length, int minLen, int maxLen, int alphaSize) 
 		{
 			int vec = 0;
 			for (int n = minLen; n <= maxLen; ++n) {
@@ -661,9 +647,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 		}
 		
-		void BsSetStream(Stream f) 
+		void BsSetStream(Stream stream) 
 		{
-			baseStream = f;
+			baseStream = stream;
 			bsLive = 0;
 			bsBuff = 0;
 			bytesOut = 0;
@@ -721,7 +707,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			
 			int gs, ge, totc, bt, bc, iter;
 			int nSelectors = 0, alphaSize, minLen, maxLen, selCtr;
-			int nGroups, nBytes;
+			int nGroups;
 			
 			alphaSize = nInUse + 2;
 			for (int t = 0; t < BZip2Constants.N_GROUPS; t++) {
@@ -783,7 +769,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				rfreq[i] = new int[BZip2Constants.MAX_ALPHA_SIZE];
 			}
 			
-			int[]   fave = new int[BZip2Constants.N_GROUPS];
+			int[] fave = new int[BZip2Constants.N_GROUPS];
 			short[] cost = new short[BZip2Constants.N_GROUPS];
 			/*---
 			Iterate up to N_ITERS times to improve the tables.
@@ -951,7 +937,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				}
 			}
 			
-			nBytes = bytesOut;
 			for (int i = 0; i < 16; ++i) {
 				if (inUse16[i]) {
 					BsW(1,1);
@@ -973,7 +958,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 			
 			/*--- Now the selectors. ---*/
-			nBytes = bytesOut;
 			BsW(3, nGroups);
 			BsW(15, nSelectors);
 			for (int i = 0; i < nSelectors; ++i) {
@@ -984,8 +968,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 			
 			/*--- Now the coding tables. ---*/
-			nBytes = bytesOut;
-			
 			for (int t = 0; t < nGroups; ++t) {
 				int curr = len[t][0];
 				BsW(5, curr);
@@ -1003,7 +985,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 			
 			/*--- And finally, the block data proper ---*/
-			nBytes = bytesOut;
 			selCtr = 0;
 			gs = 0;
 			while (true) {
@@ -1032,9 +1013,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			BsPutIntVS(24, origPtr);
 			GenerateMTFValues();
 			SendMTFValues();
-		}
-		
-		Stream baseStream;
+		}	
 		
 		void SimpleSort(int lo, int hi, int d) 
 		{
@@ -1047,13 +1026,13 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 			
 			hp = 0;
-			while (incs[hp] < bigN) {
+			while (increments[hp] < bigN) {
 				hp++;
 			}
 			hp--;
 			
 			for (; hp >= 0; hp--) {
-				h = incs[hp];
+				h = increments[hp];
 				
 				i = lo + h;
 				while (true) {
@@ -1123,42 +1102,16 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 		}
 		
-		byte Med3(byte a, byte b, byte c ) 
-		{
-			byte t;
-			if (a > b) {
-				t = a;
-				a = b;
-				b = t;
-			}
-			if (b > c) {
-				t = b;
-				b = c;
-				c = t;
-			}
-			if (a > b) {
-				b = a;
-			}
-			return b;
-		}
-		
-		class StackElem 
-		{
-			public int ll;
-			public int hh;
-			public int dd;
-		}
-		
 		void QSort3(int loSt, int hiSt, int dSt) 
 		{
 			int unLo, unHi, ltLo, gtHi, med, n, m;
-			int sp, lo, hi, d;
-			StackElem[] stack = new StackElem[QSORT_STACK_SIZE];
+			int lo, hi, d;
+			StackElement[] stack = new StackElement[QSORT_STACK_SIZE];
 			for (int count = 0; count < QSORT_STACK_SIZE; count++) {
-				stack[count] = new StackElem();
+				stack[count] = new StackElement();
 			}
 			
-			sp = 0;
+			int sp = 0;
 			
 			stack[sp].ll = loSt;
 			stack[sp].hh = hiSt;
@@ -1210,6 +1163,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 						}
 						unLo++;
 					}
+
 					while (true) {
 						if (unLo > unHi) {
 							break;
@@ -1229,9 +1183,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 						}
 						unHi--;
 					}
+
 					if (unLo > unHi) {
 						break;
 					}
+
 					{
 						int temp = zptr[unLo];
 						zptr[unLo] = zptr[unHi];
@@ -1644,18 +1600,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			return false;
 		}
 		
-		/*--
-		Knuth's increments seem to work better
-		than Incerpi-Sedgewick here.  Possibly
-		because the number of elems to sort is
-		usually small, typically <= 20.
-		--*/
-		readonly int[] incs = new int[] { 
-			1, 4, 13, 40, 121, 364, 1093, 3280,
-			9841, 29524, 88573, 265720,
-			797161, 2391484 
-		};
-		
 		void AllocateCompressStructures() 
 		{
 			int n = BZip2Constants.baseBlockSize * blockSize100k;
@@ -1783,6 +1727,99 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			
 			nMTF = wr;
 		}
+
+		static byte Med3(byte a, byte b, byte c ) 
+		{
+			byte t;
+			if (a > b) 
+			{
+				t = a;
+				a = b;
+				b = t;
+			}
+			if (b > c) 
+			{
+				t = b;
+				b = c;
+				c = t;
+			}
+			if (a > b) 
+			{
+				b = a;
+			}
+			return b;
+		}
+		
+		class StackElement 
+		{
+			public int ll;
+			public int hh;
+			public int dd;
+		}
+		#region Instance Fields
+		bool isStreamOwner = true;
+		
+		/*--
+		index of the last char in the block, so
+		the block size == last + 1.
+		--*/
+		int last;
+		
+		/*--
+		index in zptr[] of original string after sorting.
+		--*/
+		int origPtr;
+		
+		/*--
+		always: in the range 0 .. 9.
+		The current block size is 100000 * this number.
+		--*/
+		int blockSize100k;
+		
+		bool blockRandomised;
+		
+		int bytesOut;
+		int bsBuff;
+		int bsLive;
+		IChecksum mCrc = new StrangeCRC();
+		
+		bool[] inUse = new bool[256];
+		int nInUse;
+		
+		char[] seqToUnseq = new char[256];
+		char[] unseqToSeq = new char[256];
+		
+		char[] selector = new char[BZip2Constants.MAX_SELECTORS];
+		char[] selectorMtf = new char[BZip2Constants.MAX_SELECTORS];
+		
+		byte[]  block;
+		int[]   quadrant;
+		int[]   zptr;
+		short[] szptr;
+		int[]   ftab;
+		
+		int nMTF;
+		
+		int[] mtfFreq = new int[BZip2Constants.MAX_ALPHA_SIZE];
+		
+		/*
+		* Used when sorting.  If too many long comparisons
+		* happen, we stop sorting, randomise the block
+		* slightly, and try again.
+		*/
+		int workFactor;
+		int workDone;
+		int workLimit;
+		bool firstAttempt;
+		int nBlocksRandomised;
+		
+		int currentChar = -1;
+		int runLength;
+		uint blockCRC, combinedCRC;
+		int allowableBlockSize;
+		Stream baseStream;
+		bool disposed_;
+		#endregion
 	}
 }
 
