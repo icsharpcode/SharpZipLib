@@ -202,7 +202,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 		bool patchEntryHeader = false;
 		
-		long headerPatchPos   = -1;
+		long crcPatchPos = -1;
+		long sizePatchPos = -1;
 
 		/// <summary>
 		/// Starts a new Zip entry. It automatically closes the previous
@@ -235,7 +236,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				CloseEntry();
 			}
 
-			if (entries.Count >= 0xffff) {
+			if (entries.Count == int.MaxValue) {
 				throw new ZipException("Too many entries for Zip file");
 			}
 			
@@ -277,13 +278,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 					entry.CompressedSize = entry.Size;
 					entry.Crc = 0;
 					method = CompressionMethod.Stored;
-				} else if (entry.CompressedSize < 0 || entry.Size < 0 || entry.Crc < 0) {
+				} else if ( (entry.CompressedSize < 0) || (entry.Size < 0) || (entry.Crc < 0) ) {
 					headerInfoAvailable = false;
 				}
 			}
 			
 			if (headerInfoAvailable == false) {
 				if (CanPatchEntries == false) {
+					// Only way to record size and compressed size is to append a data descriptor
+					// after compressed data.
 					entry.Flags |= 8;
 				} else {
 					patchEntryHeader = true;
@@ -293,7 +296,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (Password != null) {
 				entry.IsCrypted = true;
 				if (entry.Crc < 0) {
-					// Need to append data descriptor as crc is used for encryption and its not known.
+					// Need to append a data descriptor as the crc isnt available for use with encryption.
+					// the date is used instead.  Setting the flag indicates this to the decompressor.
 					entry.Flags |= 8;
 				}
 			}
@@ -304,7 +308,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			curMethod    = method;
 			
 			// Write the local file header
-			WriteLeInt(ZipConstants.LOCSIG);
+			WriteLeInt(ZipConstants.LocalHeaderSignature);
 			
 			WriteLeShort(entry.Version);
 			WriteLeShort(entry.Flags);
@@ -312,15 +316,32 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLeInt((int)entry.DosTime);
 			if (headerInfoAvailable == true) {
 				WriteLeInt((int)entry.Crc);
-				WriteLeInt(entry.IsCrypted ? (int)entry.CompressedSize + ZipConstants.CRYPTO_HEADER_SIZE : (int)entry.CompressedSize);
-				WriteLeInt((int)entry.Size);
+				if ( entry.LocalHeaderRequiresZip64 ) {
+					WriteLeInt(-1);
+					WriteLeInt(-1);
+				}
+				else {
+					WriteLeInt(entry.IsCrypted ? (int)entry.CompressedSize + ZipConstants.CryptoHeaderSize : (int)entry.CompressedSize);
+					WriteLeInt((int)entry.Size);
+				}
 			} else {
 				if (patchEntryHeader == true) {
-					headerPatchPos = baseOutputStream.Position;
+					crcPatchPos = baseOutputStream.Position;
 				}
 				WriteLeInt(0);	// Crc
-				WriteLeInt(0);	// Compressed size
-				WriteLeInt(0);	// Uncompressed size
+				
+				if ( patchEntryHeader ) {
+					sizePatchPos = baseOutputStream.Position;
+				}
+				
+				if ( entry.LocalHeaderRequiresZip64 ) {
+					WriteLeInt(-1);
+					WriteLeInt(-1);
+				}
+				else {
+					WriteLeInt(0);	// Compressed size
+					WriteLeInt(0);	// Uncompressed size
+				}
 			}
 			
 			byte[] name = ZipConstants.ConvertToArray(entry.Name);
@@ -329,21 +350,34 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ZipException("Entry name too long.");
 			}
 
-			byte[] extra = entry.ExtraData;
-			if (extra == null) {
-				extra = new byte[0];
-			}
+			ZipExtraData ed = new ZipExtraData(entry.ExtraData);
 
-			if (extra.Length > 0xFFFF) {
-				throw new ZipException("Extra data too long.");
+			if ( entry.LocalHeaderRequiresZip64 ) {
+				ed.StartNewEntry();
+				ed.AddLeLong(-1);
+				ed.AddLeLong(-1);
+				ed.AddNewEntry(1);
+			}
+			else {
+				ed.Delete(1);
 			}
 			
+			byte[] extra = ed.GetEntryData();
+
 			WriteLeShort(name.Length);
 			WriteLeShort(extra.Length);
 			baseOutputStream.Write(name, 0, name.Length);
+			
+			if ( entry.LocalHeaderRequiresZip64 ) {
+				if ( !ed.Find(1) ) {
+					throw new ZipException("Internal error cant find extra data");
+				}
+				
+				sizePatchPos = baseOutputStream.Position + ed.CurrentReadIndex;
+			}
 			baseOutputStream.Write(extra, 0, extra.Length);
 			
-			offset += ZipConstants.LOCHDR + name.Length + extra.Length;
+			offset += ZipConstants.LocalHeaderBaseSize + name.Length + extra.Length;
 			
 			// Activate the entry.
 			curEntry = entry;
@@ -405,32 +439,45 @@ namespace ICSharpCode.SharpZipLib.Zip
 			
 			offset += csize;
 
-			if (offset > 0xffffffff) {
-				throw new ZipException("Maximum Zip file size exceeded");
-			}
-				
 			if (curEntry.IsCrypted == true) {
-				curEntry.CompressedSize += ZipConstants.CRYPTO_HEADER_SIZE;
+				curEntry.CompressedSize += ZipConstants.CryptoHeaderSize;
 			}
 				
 			// Patch the header if possible
 			if (patchEntryHeader == true) {
-				long curPos = baseOutputStream.Position;
-				baseOutputStream.Seek(headerPatchPos, SeekOrigin.Begin);
-				WriteLeInt((int)curEntry.Crc);
-				WriteLeInt((int)curEntry.CompressedSize);
-				WriteLeInt((int)curEntry.Size);
-				baseOutputStream.Seek(curPos, SeekOrigin.Begin);
 				patchEntryHeader = false;
+
+				long curPos = baseOutputStream.Position;
+				baseOutputStream.Seek(crcPatchPos, SeekOrigin.Begin);
+				WriteLeInt((int)curEntry.Crc);
+				
+				if ( curEntry.LocalHeaderRequiresZip64 ) {
+					baseOutputStream.Seek(sizePatchPos, SeekOrigin.Begin);
+					WriteLeLong(curEntry.Size);
+					WriteLeLong(curEntry.CompressedSize);
+				}
+				else {
+					WriteLeInt((int)curEntry.CompressedSize);
+					WriteLeInt((int)curEntry.Size);
+				}
+				baseOutputStream.Seek(curPos, SeekOrigin.Begin);
 			}
 
 			// Add data descriptor if flagged as required
 			if ((curEntry.Flags & 8) != 0) {
-				WriteLeInt(ZipConstants.EXTSIG);
+				WriteLeInt(ZipConstants.DataDescriptorSignature);
 				WriteLeInt((int)curEntry.Crc);
-				WriteLeInt((int)curEntry.CompressedSize);
-				WriteLeInt((int)curEntry.Size);
-				offset += ZipConstants.EXTHDR;
+				
+				if ( curEntry.LocalHeaderRequiresZip64 ) {
+					WriteLeLong(curEntry.CompressedSize);
+					WriteLeLong(curEntry.Size);
+					offset += ZipConstants.Zip64DataDescriptorSize;
+				}
+				else {
+					WriteLeInt((int)curEntry.CompressedSize);
+					WriteLeInt((int)curEntry.Size);
+					offset += ZipConstants.DataDescriptorSize;
+				}
 			}
 			
 			entries.Add(curEntry);
@@ -439,11 +486,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 		void WriteEncryptionHeader(long crcValue)
 		{
-			offset += ZipConstants.CRYPTO_HEADER_SIZE;
+			offset += ZipConstants.CryptoHeaderSize;
 			
 			InitializePassword(Password);
 			
-			byte[] cryptBuffer = new byte[ZipConstants.CRYPTO_HEADER_SIZE];
+			byte[] cryptBuffer = new byte[ZipConstants.CryptoHeaderSize];
 			Random rnd = new Random();
 			rnd.NextBytes(cryptBuffer);
 			cryptBuffer[11] = (byte)(crcValue >> 24);
@@ -467,17 +514,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new InvalidOperationException("No open entry.");
 			}
 			
-			if (len <= 0)
+			if (len <= 0) {
 				return;
+			}
 			
 			crc.Update(b, off, len);
 			size += len;
 			
-			if (size > 0xffffffff || size < 0) {
-				throw new ZipException("Maximum entry size exceeded");
-			}
-				
-
 			switch (curMethod) {
 				case CompressionMethod.Deflated:
 					base.Write(b, off, len);
@@ -524,12 +567,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int sizeEntries = 0;
 			
 			foreach (ZipEntry entry in entries) {
-				CompressionMethod method = entry.CompressionMethod;
-				WriteLeInt(ZipConstants.CENSIG); 
-				WriteLeShort(ZipConstants.VERSION_MADE_BY);
+				WriteLeInt(ZipConstants.CentralHeaderSignature); 
+				WriteLeShort(ZipConstants.VersionMadeBy);
 				WriteLeShort(entry.Version);
 				WriteLeShort(entry.Flags);
-				WriteLeShort((short)method);
+				WriteLeShort((short)entry.CompressionMethod);
 				WriteLeInt((int)entry.DosTime);
 				WriteLeInt((int)entry.Crc);
 				WriteLeInt((int)entry.CompressedSize);
@@ -574,10 +616,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				baseOutputStream.Write(extra,   0, extra.Length);
 				baseOutputStream.Write(entryComment, 0, entryComment.Length);
 				++numEntries;
-				sizeEntries += ZipConstants.CENHDR + name.Length + extra.Length + entryComment.Length;
+				sizeEntries += ZipConstants.CentralHeaderBaseSize + name.Length + extra.Length + entryComment.Length;
 			}
 			
-			WriteLeInt(ZipConstants.ENDSIG);
+			WriteLeInt(ZipConstants.EndOfCentralDirectorySignature);
 			WriteLeShort(0);                    // number of this disk
 			WriteLeShort(0);                    // no of disk with start of central dir
 			WriteLeShort(numEntries);           // entries in central dir for this disk
