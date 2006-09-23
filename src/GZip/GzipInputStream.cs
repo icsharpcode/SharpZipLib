@@ -121,16 +121,16 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <summary>
 		/// Reads uncompressed data into an array of bytes
 		/// </summary>
-		/// <param name="buf">
+		/// <param name="buffer">
 		/// The buffer to read uncompressed data into
 		/// </param>
 		/// <param name="offset">
 		/// The offset indicating where the data should be placed
 		/// </param>
-		/// <param name="len">
+		/// <param name="count">
 		/// The number of uncompressed bytes to be read
 		/// </param>
-		public override int Read(byte[] buf, int offset, int len) 
+		public override int Read(byte[] buffer, int offset, int count) 
 		{
 			// We first have to read the GZIP header, then we feed all the
 			// rest of the data to the base class.
@@ -149,15 +149,15 @@ namespace ICSharpCode.SharpZipLib.GZip
 			}
 			
 			// We don't have to read the header, so we just grab data from the superclass
-			int numRead = base.Read(buf, offset, len);
-			if (numRead > 0) {
-				crc.Update(buf, offset, numRead);
+			int bytesRead = base.Read(buffer, offset, count);
+			if (bytesRead > 0) {
+				crc.Update(buffer, offset, bytesRead);
 			}
 			
 			if (inf.IsFinished) {
 				ReadFooter();
 			}
-			return numRead;
+			return bytesRead;
 		}
 		
 		void ReadHeader() 
