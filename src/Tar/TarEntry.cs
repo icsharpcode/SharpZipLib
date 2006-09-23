@@ -367,7 +367,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ArgumentNullException("header");
 			}
 
-			file = file;
+			if ( file == null ) {
+				throw new ArgumentNullException("file");
+			}
+			
+			this.file = file;
 
 			// bugfix from torhovl from #D forum:
 			string name = file;
