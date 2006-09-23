@@ -39,6 +39,7 @@
 
 using System;
 using System.Text;
+using System.Threading;
 
 namespace ICSharpCode.SharpZipLib.Zip 
 {
@@ -60,12 +61,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		Deflated   = 8,
 		
 		/// <summary>
-		/// An extension to deflate with a 64KB window. Not supported by #Zip
+		/// An extension to deflate with a 64KB window. Not supported by #Zip currently
 		/// </summary>
 		Deflate64  = 9,
 		
 		/// <summary>
-		/// Not supported by #Zip
+		/// Not supported by #Zip currently
 		/// </summary>
 		BZip2      = 11,
 		
@@ -94,6 +95,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// If set a trailing data desciptor is appended to the entry data
 		/// </summary>
 		Descriptor        = 0x0008,
+		/// <summary>
+		/// Reserved
+		/// </summary>
 		Reserved          = 0x0010,
 		/// <summary>
 		/// If set indicates the file contains Pkzip compressed patched data.
@@ -109,7 +113,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		EnhancedCompress  = 0x1000,
 		/// <summary>
 		/// If set indicates that values in the local header are masked to hide
-		/// their actual values.
+		/// their actual values, and the central directory is encrypted.
 		/// </summary>
 		/// <remarks>
 		/// Used when encrypting the central directory contents.
@@ -122,6 +126,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	public sealed class ZipConstants
 	{
+		#region Versions
 		/// <summary>
 		/// The version made by field for entries in the central header when created by this library
 		/// </summary>
@@ -129,79 +134,131 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// This is also the Zip version for the library when comparing against the version required to extract
 		/// for an entry.  See <see cref="ZipInputStream.CanDecompressEntry">ZipInputStream.CanDecompressEntry</see>.
 		/// </remarks>
-		public const int VERSION_MADE_BY = 20;
+		public const int VersionMadeBy = 45;
+		
+		/// <summary>
+		/// The version made by field for entries in the central header when created by this library
+		/// </summary>
+		/// <remarks>
+		/// This is also the Zip version for the library when comparing against the version required to extract
+		/// for an entry.  See <see cref="ZipInputStream.CanDecompressEntry">ZipInputStream.CanDecompressEntry</see>.
+		/// </remarks>
+		[Obsolete("Use VersionMadeBy instead")]
+		public const int VERSION_MADE_BY = 45;
 		
 		/// <summary>
 		/// The minimum version required to support strong encryption
 		/// </summary>
+		public const int VersionStrongEncryption = 50;
+
+		/// <summary>
+		/// The minimum version required to support strong encryption
+		/// </summary>
+		[Obsolete("Use VersionStrongEncryption instead")]
 		public const int VERSION_STRONG_ENCRYPTION = 50;
 		
-		// The local entry header
+		/// <summary>
+		/// The version required for Zip64 extensions
+		/// </summary>
+		public const int VersionZip64 = 45;
+		
+		#endregion
+		
+		#region Header Sizes
+		/// <summary>
+		/// Size of local entry header (excluding variable length fields at end)
+		/// </summary>
+		public const int LocalHeaderBaseSize = 30;
 		
 		/// <summary>
 		/// Size of local entry header (excluding variable length fields at end)
 		/// </summary>
+		[Obsolete("Use LocalHeaderBaseSize instead")]
 		public const int LOCHDR = 30;
+		
+		/// <summary>
+		/// Size of Zip64 data descriptor
+		/// </summary>
+		public const int Zip64DataDescriptorSize = 20;
+		
+		/// <summary>
+		/// Size of data descriptor
+		/// </summary>
+		public const int DataDescriptorSize = 16;
+		
+		/// <summary>
+		/// Size of data descriptor
+		/// </summary>
+		[Obsolete("Use DataDescriptorSize instead")]
+		public const int EXTHDR = 16;
+		
+		/// <summary>
+		/// Size of central header entry (excluding variable fields)
+		/// </summary>
+		public const int CentralHeaderBaseSize = 46;
+		
+		/// <summary>
+		/// Size of central header entry
+		/// </summary>
+		[Obsolete("Use CentralHeaderBaseSize instead")]
+		public const int CENHDR = 46;
+		
+		/// <summary>
+		/// Size of end of central record (excluding variable fields)
+		/// </summary>
+		public const int EndOfCentralRecordBaseSize = 22;
+		
+		/// <summary>
+		/// Size of end of central record (excluding variable fields)
+		/// </summary>
+		[Obsolete("Use EndOfCentralRecordBaseSize instead")]
+		public const int ENDHDR = 22;
+		
+		/// <summary>
+		/// Size of 'classic' cryptographic header stored before any entry data
+		/// </summary>
+		public const int CryptoHeaderSize = 12;
+		
+		/// <summary>
+		/// Size of cryptographic header stored before entry data
+		/// </summary>
+		[Obsolete("Use CryptoHeaderSize instead")]
+		public const int CRYPTO_HEADER_SIZE = 12;
+		#endregion
+		
+		#region Header Signatures
 		
 		/// <summary>
 		/// Signature for local entry header
 		/// </summary>
+		public const int LocalHeaderSignature = 'P' | ('K' << 8) | (3 << 16) | (4 << 24);
+
+		/// <summary>
+		/// Signature for local entry header
+		/// </summary>
+		[Obsolete("Use LocalHeaderSignature instead")]
 		public const int LOCSIG = 'P' | ('K' << 8) | (3 << 16) | (4 << 24);
 
 		/// <summary>
-		/// Offset of version to extract in local entry header
-		/// </summary>		
-		public const int LOCVER =  4;
-		
-		/// <summary>
-		/// Offset of general purpose flags in local entry header
+		/// Signature for spanning entry
 		/// </summary>
-		public const int LOCFLG =  6;
-		
-		/// <summary>
-		/// Offset of compression method in local entry header
-		/// </summary>
-		public const int LOCHOW =  8;
-		
-		/// <summary>
-		/// Offset of last mod file time + date in local entry header
-		/// </summary>
-		public const int LOCTIM = 10;
-		
-		/// <summary>
-		/// Offset of crc-32 in local entry header
-		/// </summary>
-		public const int LOCCRC = 14;
-		
-		/// <summary>
-		/// Offset of compressed size in local entry header
-		/// </summary>
-		public const int LOCSIZ = 18;
-		
-		/// <summary>
-		/// Offset of uncompressed size in local entry header
-		/// </summary>
-		public const int LOCLEN = 22;
-		
-		/// <summary>
-		/// Offset of file name length in local entry header
-		/// </summary>
-		public const int LOCNAM = 26;
-		
-		/// <summary>
-		/// Offset of extra field length in local entry header
-		/// </summary>
-		public const int LOCEXT = 28;
-
+		public const int SpanningSignature = 'P' | ('K' << 8) | (7 << 16) | (8 << 24);
 		
 		/// <summary>
 		/// Signature for spanning entry
 		/// </summary>
+		[Obsolete("Use SpanningSignature instead")]
 		public const int SPANNINGSIG = 'P' | ('K' << 8) | (7 << 16) | (8 << 24);
 		
 		/// <summary>
 		/// Signature for temporary spanning entry
 		/// </summary>
+		public const int SpanningTempSignature = 'P' | ('K' << 8) | ('0' << 16) | ('0' << 24);
+		
+		/// <summary>
+		/// Signature for temporary spanning entry
+		/// </summary>
+		[Obsolete("Use SpanningTempSignature instead")]
 		public const int SPANTEMPSIG = 'P' | ('K' << 8) | ('0' << 16) | ('0' << 24);
 		
 		/// <summary>
@@ -213,186 +270,79 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The local entry cannot be 'patched' with the correct values in this case
 		/// so the values are recorded after the data prefixed by this header, as well as in the central directory.
 		/// </remarks>
+		public const int DataDescriptorSignature = 'P' | ('K' << 8) | (7 << 16) | (8 << 24);
+		
+		/// <summary>
+		/// Signature for data descriptor
+		/// </summary>
+		/// <remarks>
+		/// This is only used where the length, Crc, or compressed size isnt known when the
+		/// entry is created and the output stream doesnt support seeking.
+		/// The local entry cannot be 'patched' with the correct values in this case
+		/// so the values are recorded after the data prefixed by this header, as well as in the central directory.
+		/// </remarks>
+		[Obsolete("Use DataDescriptorSignature instead")]
 		public const int EXTSIG = 'P' | ('K' << 8) | (7 << 16) | (8 << 24);
-		
-		/// <summary>
-		/// Size of data descriptor
-		/// </summary>
-		public const int EXTHDR = 16;
-		
-		/// <summary>
-		/// Offset of crc-32 in data descriptor
-		/// </summary>
-		public const int EXTCRC =  4;
-		
-		/// <summary>
-		/// Offset of compressed size in data descriptor
-		/// </summary>
-		public const int EXTSIZ =  8;
-		
-		/// <summary>
-		/// Offset of uncompressed length in data descriptor
-		/// </summary>
-		public const int EXTLEN = 12;
-		
 		
 		/// <summary>
 		/// Signature for central header
 		/// </summary>
+		[Obsolete("Use CentralHeaderSignature instead")]
 		public const int CENSIG = 'P' | ('K' << 8) | (1 << 16) | (2 << 24);
-		
+
 		/// <summary>
-		/// Size of central header entry
+		/// Signature for central header
 		/// </summary>
-		public const int CENHDR = 46;
-		
+		public const int CentralHeaderSignature = 'P' | ('K' << 8) | (1 << 16) | (2 << 24);
+
 		/// <summary>
-		/// Offset of version made by in central file header
+		/// Signature for Zip64 central file header
 		/// </summary>
-		public const int CENVEM =  4;
-		
-		/// <summary>
-		/// Offset of version needed to extract in central file header
-		/// </summary>
-		public const int CENVER =  6;
-		
-		/// <summary>
-		/// Offset of general purpose bit flag in central file header
-		/// </summary>
-		public const int CENFLG =  8;
-		
-		/// <summary>
-		/// Offset of compression method in central file header
-		/// </summary>
-		public const int CENHOW = 10;
-		
-		/// <summary>
-		/// Offset of time/date in central file header
-		/// </summary>
-		public const int CENTIM = 12;
-		
-		/// <summary>
-		/// Offset of crc-32 in central file header
-		/// </summary>
-		public const int CENCRC = 16;
-		
-		/// <summary>
-		/// Offset of compressed size in central file header
-		/// </summary>
-		public const int CENSIZ = 20;
-		
-		/// <summary>
-		/// Offset of uncompressed size in central file header
-		/// </summary>
-		public const int CENLEN = 24;
-		
-		/// <summary>
-		/// Offset of file name length in central file header
-		/// </summary>
-		public const int CENNAM = 28;
-		
-		/// <summary>
-		/// Offset of extra field length in central file header
-		/// </summary>
-		public const int CENEXT = 30;
-		
-		/// <summary>
-		/// Offset of file comment length in central file header
-		/// </summary>
-		public const int CENCOM = 32;
-		
-		/// <summary>
-		/// Offset of disk start number in central file header
-		/// </summary>
-		public const int CENDSK = 34;
-		
-		/// <summary>
-		/// Offset of internal file attributes in central file header
-		/// </summary>
-		public const int CENATT = 36;
-		
-		/// <summary>
-		/// Offset of external file attributes in central file header
-		/// </summary>
-		public const int CENATX = 38;
-		
-		/// <summary>
-		/// Offset of relative offset of local header in central file header
-		/// </summary>
-		public const int CENOFF = 42;
-		
+		public const int Zip64CentralFileHeaderSignature = 'P' | ('K' << 8) | (6 << 16) | (6 << 24);
 		
 		/// <summary>
 		/// Signature for Zip64 central file header
 		/// </summary>
+		[Obsolete("Use Zip64CentralFileHeaderSignature instead")]
 		public const int CENSIG64 = 'P' | ('K' << 8) | (6 << 16) | (6 << 24);
 		
+		/// <summary>
+		/// Signature for Zip64 central directory locator
+		/// </summary>
+		public const int Zip64CentralDirLocatorSignature = 'P' | ('K' << 8) | (6 << 16) | (7 << 24);
 		
+		/// <summary>
+		/// Signature for archive extra data signature (were headers are encrypted).
+		/// </summary>
+		public const int ArchiveExtraDataSignature = 'P' | ('K' << 8) | (6 << 16) | (7 << 24);
 		
 		/// <summary>
 		/// Central header digitial signature
 		/// </summary>
+		public const int CentralHeaderDigitalSignature = 'P' | ('K' << 8) | (5 << 16) | (5 << 24);
+		
+		/// <summary>
+		/// Central header digitial signature
+		/// </summary>
+		[Obsolete("Use CentralHeaderDigitalSignaure instead")]
 		public const int CENDIGITALSIG = 'P' | ('K' << 8) | (5 << 16) | (5 << 24);
-		
-		
-		// The entries at the end of central directory
+
+		/// <summary>
+		/// End of central directory record signature
+		/// </summary>
+		public const int EndOfCentralDirectorySignature = 'P' | ('K' << 8) | (5 << 16) | (6 << 24);
 		
 		/// <summary>
 		/// End of central directory record signature
 		/// </summary>
+		[Obsolete("Use EndOfCentralDirectorySignature instead")]
 		public const int ENDSIG = 'P' | ('K' << 8) | (5 << 16) | (6 << 24);
+		#endregion
 		
-		/// <summary>
-		/// Size of end of central record (excluding variable fields)
-		/// </summary>
-		public const int ENDHDR = 22;
-		
-		// The following two fields are missing in SUN JDK
-		
-		/// <summary>
-		/// Offset of number of this disk
-		/// </summary>
-		public const int ENDNRD =  4;
-		
-		/// <summary>
-		/// Offset of number of disk with start of central directory
-		/// </summary>
-		public const int ENDDCD =  6;
-		
-		/// <summary>
-		/// Offset of number of entries in the central directory of this disk
-		/// </summary>
-		public const int ENDSUB =  8;
-		
-		/// <summary>
-		/// Offset of total number of entries in the central directory
-		/// </summary>
-		public const int ENDTOT = 10;
-		
-		/// <summary>
-		/// Offset of size of central directory
-		/// </summary>
-		public const int ENDSIZ = 12;
-		
-		/// <summary>
-		/// Offset of offset of start of central directory with respect to starting disk number
-		/// </summary>
-		public const int ENDOFF = 16;
-		
-		/// <summary>
-		/// Offset of ZIP file comment length
-		/// </summary>
-		public const int ENDCOM = 20;
-		
-		/// <summary>
-		/// Size of cryptographic header stored before entry data
-		/// </summary>
-		public const int CRYPTO_HEADER_SIZE = 12;
 
-		
 #if !COMPACT_FRAMEWORK
 
-		static int defaultCodePage = 0;
+        static int defaultCodePage = Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage;
 		
 		/// <summary>
 		/// Default encoding used for string conversion.  0 gives the default system Ansi code page.
@@ -425,6 +375,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </returns>
 		public static string ConvertToString(byte[] data, int length)
 		{
+			if ( data == null ) {
+				return string.Empty;	
+			}
+			
 #if COMPACT_FRAMEWORK
 			return Encoding.ASCII.GetString(data, 0, length);
 #else
@@ -443,6 +397,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </returns>
 		public static string ConvertToString(byte[] data)
 		{
+			if ( data == null ) {
+				return string.Empty;	
+			}
 			return ConvertToString(data, data.Length);
 		}
 
@@ -455,11 +412,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Converted array</returns>
 		public static byte[] ConvertToArray(string str)
 		{
+			if ( str == null ) {
+				return new byte[0];
+			}
+			
 #if COMPACT_FRAMEWORK
 			return Encoding.ASCII.GetBytes(str);
 #else
 			return Encoding.GetEncoding(DefaultCodePage).GetBytes(str);
 #endif
+		}
+		
+		/// <summary>
+		/// Initialise default instance of <see cref="ZipConstants">ZipConstants</see>
+		/// </summary>
+		/// <remarks>
+		/// Private to prevent instances being created.
+		/// </remarks>
+		ZipConstants()
+		{
+			// Do nothing
 		}
 	}
 }
