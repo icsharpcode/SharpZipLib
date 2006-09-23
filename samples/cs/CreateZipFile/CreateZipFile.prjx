@@ -1,4 +1,4 @@
-<Project name="CreateZipFile" standardNamespace="NewProject" description="creates a console C# project" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
+<Project name="CreateZipFile" standardNamespace="NewProject" description="A console tool for creating a Zip file" newfilesearch="None" enableviewstate="True" version="1.1" projecttype="C#">
   <Contents>
     <File name=".\readme.txt" subtype="Code" buildaction="Exclude" dependson="" data="" />
     <File name=".\build.bat" subtype="Code" buildaction="Exclude" dependson="" data="" />
