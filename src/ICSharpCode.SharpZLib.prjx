@@ -60,6 +60,9 @@
     <File name=".\Encryption" subtype="Directory" buildaction="Compile" dependson="" data="" />
     <File name=".\Encryption\PkzipClassic.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\Core\IScanFilter.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Zip\ZipHelperStream.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Zip\ZipExtraData.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Core\StreamUtils.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References />
   <DeploymentInformation target="" script="" strategy="File" />
