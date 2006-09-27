@@ -515,5 +515,47 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 			TarEntry e = TarEntry.CreateTarEntry("test");
 			e.TarHeader.Version = null;
 		}
+
+		[Test]
+		public void CloningAndUniqueness()
+		{
+			// Partial test of cloning for TarHeader and TarEntry
+			TarEntry e = TarEntry.CreateTarEntry("ohsogood");
+			e.GroupId = 47;
+			e.GroupName = "GroupName";
+			e.ModTime = DateTime.Now;
+			e.Size = 123234;
+
+			TarHeader headerE = e.TarHeader;
+
+			headerE.DevMajor = 99;
+			headerE.DevMinor = 98;
+			headerE.LinkName = "LanceLink";
+
+			TarEntry d = (TarEntry)e.Clone();
+
+			Assert.AreEqual(d.File, e.File);
+			Assert.AreEqual(d.GroupId, e.GroupId);
+			Assert.AreEqual(d.GroupName, e.GroupName);
+			Assert.AreEqual(d.IsDirectory, e.IsDirectory);
+			Assert.AreEqual(d.ModTime, e.ModTime);
+			Assert.AreEqual(d.Size, e.Size);
+
+			TarHeader headerD = d.TarHeader;
+
+			Assert.AreEqual(headerE.Checksum, headerD.Checksum);
+			Assert.AreEqual(headerE.LinkName, headerD.LinkName);
+
+			Assert.AreEqual(99, headerD.DevMajor);
+			Assert.AreEqual(98, headerD.DevMinor);
+
+			Assert.AreEqual("LanceLink", headerD.LinkName);
+
+			TarEntry entryf = new TarEntry(headerD);
+
+			headerD.LinkName = "Something different";
+
+			Assert.AreNotEqual(headerD.LinkName, entryf.TarHeader.LinkName, "Entry headers should be unique");
+		}
 	}
 }

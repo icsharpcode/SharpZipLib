@@ -37,13 +37,15 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			
 			GZipInputStream inStream = new GZipInputStream(ms);
 			byte[] buf2 = new byte[buf.Length];
-			int    pos  = 0;
+			int    currentIndex  = 0;
+			int    count = buf2.Length;
 			while (true) {
-				int numRead = inStream.Read(buf2, pos, 4096);
+				int numRead = inStream.Read(buf2, currentIndex, count);
 				if (numRead <= 0) {
 					break;
 				}
-				pos += numRead;
+				currentIndex += numRead;
+				count -= numRead;
 			}
 			
 			for (int i = 0; i < buf.Length; ++i) {

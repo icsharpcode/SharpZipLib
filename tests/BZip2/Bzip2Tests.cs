@@ -1,9 +1,6 @@
 using System;
 using System.IO;
 
-using ICSharpCode.SharpZipLib.Zip;
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using ICSharpCode.SharpZipLib.BZip2;
 
 using NUnit.Framework;
@@ -35,19 +32,24 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 			ms = new MemoryStream(ms.GetBuffer());
 			ms.Seek(0, SeekOrigin.Begin);
 			
-			BZip2InputStream inStream = new BZip2InputStream(ms);
-			byte[] buf2 = new byte[buf.Length];
-			int    pos  = 0;
-			while (true) {
-				int numRead = inStream.Read(buf2, pos, 4096);
-				if (numRead <= 0) {
-					break;
+			using (BZip2InputStream inStream = new BZip2InputStream(ms))
+			{
+				byte[] buf2 = new byte[buf.Length];
+				int    pos  = 0;
+				while (true) 
+				{
+					int numRead = inStream.Read(buf2, pos, 4096);
+					if (numRead <= 0) 
+					{
+						break;
+					}
+					pos += numRead;
 				}
-				pos += numRead;
-			}
 			
-			for (int i = 0; i < buf.Length; ++i) {
-				Assert.AreEqual(buf2[i], buf[i]);
+				for (int i = 0; i < buf.Length; ++i) 
+				{
+					Assert.AreEqual(buf2[i], buf[i]);
+				}
 			}
 		}
 		
@@ -65,19 +67,22 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 			
 			ms.Seek(0, SeekOrigin.Begin);
 			
-			BZip2InputStream inStream = new BZip2InputStream(ms);
-			byte[] buffer = new byte[1024];
-			int    pos  = 0;
-			while (true) {
-				int numRead = inStream.Read(buffer, 0, buffer.Length);
-				if (numRead <= 0) {
-					break;
+			using (BZip2InputStream inStream = new BZip2InputStream(ms)) 
+			{
+				byte[] buffer = new byte[1024];
+				int    pos  = 0;
+				while (true) 
+				{
+					int numRead = inStream.Read(buffer, 0, buffer.Length);
+					if (numRead <= 0) 
+					{
+						break;
+					}
+					pos += numRead;
 				}
-				pos += numRead;
-			}
 			
-			Assert.AreEqual(pos, 0);
+				Assert.AreEqual(pos, 0);
+			}
 		}
-		
 	}
 }
