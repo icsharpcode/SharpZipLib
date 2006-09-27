@@ -44,30 +44,93 @@ namespace ICSharpCode.SharpZipLib.Zip
 {
 
 	/// <summary>
-	/// Defines known values for the <see cref="HostSystem"/> property.
+	/// Defines known values for the <see cref="HostSystemID"/> property.
 	/// </summary>
 	public enum HostSystemID
 	{
+		/// <summary>
+		/// Host system = MSDOS
+		/// </summary>
 		Msdos = 0,
+		/// <summary>
+		/// Host system = Amiga
+		/// </summary>
 		Amiga = 1,
+		/// <summary>
+		/// Host system = Open VMS
+		/// </summary>
 		OpenVms = 2,
+		/// <summary>
+		/// Host system = Unix
+		/// </summary>
 		Unix = 3,
+		/// <summary>
+		/// Host system = VMCms
+		/// </summary>
 		VMCms = 4,
+		/// <summary>
+		/// Host system = Atari ST
+		/// </summary>
 		AtariST = 5,
+		/// <summary>
+		/// Host system = OS2
+		/// </summary>
 		OS2 = 6,
+		/// <summary>
+		/// Host system = Macintosh
+		/// </summary>
 		Macintosh = 7,
+		/// <summary>
+		/// Host system = ZSystem
+		/// </summary>
 		ZSystem = 8,
+		/// <summary>
+		/// Host system = Cpm
+		/// </summary>
 		Cpm = 9,
+		/// <summary>
+		/// Host system = Windows NT
+		/// </summary>
 		WindowsNT = 10,
+		/// <summary>
+		/// Host system = MVS
+		/// </summary>
 		MVS = 11,
+		/// <summary>
+		/// Host system = VSE
+		/// </summary>
 		Vse = 12,
+		/// <summary>
+		/// Host system = Acorn RISC
+		/// </summary>
 		AcornRisc = 13,
+		/// <summary>
+		/// Host system = VFAT
+		/// </summary>
 		Vfat = 14,
+		/// <summary>
+		/// Host system = Alternate MVS
+		/// </summary>
 		AlternateMvs = 15,
+		/// <summary>
+		/// Host system = BEOS
+		/// </summary>
 		BeOS = 16,
+		/// <summary>
+		/// Host system = Tandem
+		/// </summary>
 		Tandem = 17,
+		/// <summary>
+		/// Host system = OS400
+		/// </summary>
 		OS400 = 18,
+		/// <summary>
+		/// Host system = OSX
+		/// </summary>
 		OSX = 19,
+		/// <summary>
+		/// Host system = WinZIP AES
+		/// </summary>
 		WinZipAES = 99,
 	}
 	
@@ -165,6 +228,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="name">Name for this entry</param>
 		/// <param name="madeByInfo">Version and HostSystem Information</param>
 		/// <param name="versionRequiredToExtract">Minimum required zip feature version required to extract this entry</param>
+		/// <param name="method">Compression method for this entry.</param>
 		/// <exception cref="ArgumentNullException">
 		/// The name passed is null
 		/// </exception>

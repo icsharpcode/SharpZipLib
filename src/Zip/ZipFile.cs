@@ -561,8 +561,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				StreamUtils.ReadFully(baseStream_, buffer, 0, nameLen);
 				string name = ZipConstants.ConvertToString(buffer, nameLen);
 				
-				ZipEntry entry = new ZipEntry(name, versionToExtract, versionMadeBy);
-				entry.CompressionMethod = (CompressionMethod)method;
+				ZipEntry entry = new ZipEntry(name, versionToExtract, versionMadeBy, (CompressionMethod)method);
 				entry.Crc = crc & 0xffffffffL;
 				entry.Size = size & 0xffffffffL;
 				entry.CompressedSize = csize & 0xffffffffL;

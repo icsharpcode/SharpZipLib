@@ -474,10 +474,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// The entry's user name.
 		/// </summary>
-		/// <remarks>
-		/// See <see cref="ResetValueDefaults">ResetValueDefaults</see>
-		/// for detail on how this value is derived.
-		/// </remarks>
 		public string UserName
 		{
 			get { return userName; }
@@ -963,7 +959,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name = "value">
 		/// the value to be converted to octal
 		/// </param>
-		/// <param name = "buf">
+		/// <param name = "buffer">
 		/// buffer to store the octal string
 		/// </param>
 		/// <param name = "offset">
@@ -1004,8 +1000,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Put an octal representation of a value into a buffer
 		/// </summary>
-		/// <param name = "val">Value to be convert to octal</param>
-		/// <param name = "buf">The buffer to update</param>
+		/// <param name = "value">Value to be convert to octal</param>
+		/// <param name = "buffer">The buffer to update</param>
 		/// <param name = "offset">The offset into the buffer to store the value</param>
 		/// <param name = "length">The length of the octal string</param>
 		/// <returns>Index of next byte</returns>
@@ -1017,8 +1013,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Add the checksum integer to header buffer.
 		/// </summary>
-		/// <param name = "val"></param>
-		/// <param name = "buf">The header buffer to set the checksum for</param>
+		/// <param name = "value"></param>
+		/// <param name = "buffer">The header buffer to set the checksum for</param>
 		/// <param name = "offset">The offset into the buffer for the checksum</param>
 		/// <param name = "length">The number of header bytes to update.
 		/// It's formatted differently from the other fields: it has 6 digits, a
@@ -1036,7 +1032,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Compute the checksum for a tar entry header.  
 		/// The checksum field must be all spaces prior to this happening
 		/// </summary>
-		/// <param name = "buf">The tar entry's header buffer.</param>
+		/// <param name = "buffer">The tar entry's header buffer.</param>
 		/// <returns>The computed checksum.</returns>
 		static int ComputeCheckSum(byte[] buffer)
 		{
