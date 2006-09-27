@@ -18,11 +18,6 @@ using ICSharpCode.SharpZipLib.Tar;
 public class Tar
 {
 	/// <summary>
-	/// Flag that determines if verbose feedback is to be provided.
-	/// </summary>
-	bool verbose;
-	
-	/// <summary>
 	/// The compresion to use when creating archives.
 	/// </summary>
 	enum Compression
@@ -32,8 +27,6 @@ public class Tar
 		Gzip,
 		Bzip2
 	}
-
-	Compression compression = Compression.None;
 
 	/// <summary>
 	/// Operation to perform on archive
@@ -45,6 +38,20 @@ public class Tar
 		Extract
 	}
 
+	#region Instance Fields
+	/// <summary>
+	/// Flag that determines if verbose feedback is to be provided.
+	/// </summary>
+	bool verbose;
+	
+	/// <summary>
+	/// What kind of <see cref="Compression"/> to use.
+	/// </summary>
+	Compression compression = Compression.None;
+
+	/// <summary>
+	/// The <see cref="Operation"/> to perform.
+	/// </summary>
 	Operation operation = Operation.List;
 
 	/// <summary>
@@ -87,26 +94,14 @@ public class Tar
 	/// The groupName to use for files written to archives. Set by '-g' option.
 	/// </summary>
 	string groupName;
-	
+	#endregion
+
 	/// <summary>
-	/// The main entry point of the tar class.
-	/// </summary>
-	public static void Main(string[] argv)
-	{
-		Tar app = new Tar();
-		app.InstanceMain(argv);
-	}
-	
-	/// <summary>
-	/// Establishes the default userName with the 'user.name' property.
+	/// Initialise default instance of <see cref="Tar"/>.
+	/// Sets up the default userName with the system 'UserName' property.
 	/// </summary>
 	public Tar()
 	{
-		this.verbose        = false;
-		this.archiveName    = null;
-		this.keepOldFiles   = false;
-		this.asciiTranslate = false;
-		
 		this.blockingFactor = TarBuffer.DefaultBlockFactor;
 		this.userId   = 0;
 		
@@ -117,15 +112,15 @@ public class Tar
 		this.groupName = "None";
 	}
 
-	string[] GetFilesForSpec(string spec)
+	/// <summary>
+	/// The main entry point of the tar class.
+	/// </summary>
+	public static void Main(string[] argv)
 	{
-		string dir = Path.GetDirectoryName(spec);
-		if (dir == null || dir.Length == 0)
-			dir = Directory.GetCurrentDirectory();
-
-		return System.IO.Directory.GetFiles(dir, Path.GetFileName(spec));
+		Tar tarApp = new Tar();
+		tarApp.InstanceMain(argv);
 	}
-
+	
 	/// <summary>
 	/// This is the "real" main. The class main() instantiates a tar object
 	/// for the application and then calls this method. Process the arguments
@@ -202,7 +197,7 @@ public class Tar
 		
 		if (archive != null) {						// SET ARCHIVE OPTIONS
 			archive.SetKeepOldFiles(this.keepOldFiles);
-			archive.SetAsciiTranslation(this.asciiTranslate);
+			archive.AsciiTranslate = this.asciiTranslate;
 			
 			archive.SetUserInfo(this.userId, this.userName, this.groupId, this.groupName);
 		}
@@ -240,7 +235,31 @@ public class Tar
 		}
 
 		if (archive != null) {                                   // CLOSE ARCHIVE
-			archive.CloseArchive();
+			archive.Close();
+		}
+	}
+	
+	/// <summary>
+	/// Display progress information on console
+	/// </summary>
+	public void ShowTarProgressMessage(TarArchive archive, TarEntry entry, string message)
+	{
+		if (entry.TarHeader.TypeFlag != TarHeader.LF_NORMAL && entry.TarHeader.TypeFlag != TarHeader.LF_OLDNORM) {
+			Console.WriteLine("Entry type " + (char)entry.TarHeader.TypeFlag + " found!");
+		}
+
+		if (message != null)
+			Console.Write(entry.Name + " " + message);
+		else {
+			if (this.verbose) {
+				string modeString = DecodeType(entry.TarHeader.TypeFlag, entry.Name.EndsWith("/")) + DecodeMode(entry.TarHeader.Mode);
+				string userString = (entry.UserName == null || entry.UserName.Length == 0) ? entry.UserId.ToString() : entry.UserName;
+				string groupString = (entry.GroupName == null || entry.GroupName.Length == 0) ? entry.GroupId.ToString() : entry.GroupName;
+				
+				Console.WriteLine(string.Format("{0} {1}/{2} {3,8} {4:yyyy-MM-dd HH:mm:ss} {5}", modeString, userString, groupString, entry.Size, entry.ModTime.ToLocalTime(), entry.Name));
+			} else {
+				Console.WriteLine(entry.Name);
+			}
 		}
 	}
 	
@@ -275,10 +294,10 @@ public class Tar
 				}
 
 				if (arg.Equals( "--help")) {
-					this.ShowHelp();
+					ShowHelp();
 					Environment.Exit(1);
 				} else if (arg.Equals( "--version")) {
-					this.Version();
+					Version();
 					Environment.Exit(1);
 				} else if (arg.Equals("--extract")) {
 					gotOP = true;
@@ -301,14 +320,18 @@ public class Tar
 					else {
 						try {
 							this.blockingFactor = Int32.Parse(argValue);
+							if ( blockingFactor <= 0 ) {
+								Console.Error.WriteLine("Blocking factor {0} is invalid", blockingFactor);
+								bailOut = true;
+							}
 						} catch {
 							Console.Error.WriteLine("invalid blocking factor");
 						}
 					}
 				} else if (arg.Equals("--verbose")) {
-					this.verbose = true;
+					verbose = true;
 				} else if (arg.Equals("--keep-old-files")) {
-					this.keepOldFiles = true;
+					keepOldFiles = true;
 				} else if (arg.Equals("--record-size")) {
 					if (argValue == null || argValue.Length == 0) {
 						Console.Error.WriteLine("expected numeric record size");
@@ -322,7 +345,7 @@ public class Tar
 								Console.Error.WriteLine("Record size must be a multiple of " + TarBuffer.BlockSize.ToString());
 								bailOut = true;
 							} else 
-								this.blockingFactor = size / TarBuffer.BlockSize;
+								blockingFactor = size / TarBuffer.BlockSize;
 						} catch {
 							Console.Error.WriteLine("non-numeric record size");
 							bailOut = true;
@@ -330,7 +353,7 @@ public class Tar
 					}
 				} else {
 					Console.Error.WriteLine("unknown option: " + arg);
-					this.ShowHelp();
+					ShowHelp();
 					Environment.Exit(1);
 				}
 			} else {
@@ -338,7 +361,7 @@ public class Tar
 					switch (arg[cIdx]) 
 					{
 						case '?':
-							this.ShowHelp();
+							ShowHelp();
 							Environment.Exit(1);
 							break;
 
@@ -347,19 +370,19 @@ public class Tar
 							break;
 
 						case 'j':
-							this.compression = Compression.Bzip2;
+							compression = Compression.Bzip2;
 							break;
 
 						case 'z':
-							this.compression = Compression.Gzip;
+							compression = Compression.Gzip;
 							break;
 
 						case 'Z':
-							this.compression = Compression.Compress;
+							compression = Compression.Compress;
 							break;
 
 						case 'e':
-							this.asciiTranslate = true;
+							asciiTranslate = true;
 							break;
 
 						case 'c':
@@ -378,36 +401,36 @@ public class Tar
 							break;
 
 						case 'k':
-							this.keepOldFiles = true;
+							keepOldFiles = true;
 							break;
 
 						case 'b':
-							this.blockingFactor = Int32.Parse(args[++idx]);
+							blockingFactor = Int32.Parse(args[++idx]);
 							break;
 
 						case 'u':
-							this.userName = args[++idx];
+							userName = args[++idx];
 							break;
 
 						case 'U':
-							this.userId = Int32.Parse(args[ ++idx ]);
+							userId = Int32.Parse(args[ ++idx ]);
 							break;
 
 						case 'g':
-							this.groupName = args[++idx];
+							groupName = args[++idx];
 							break;
 
 						case 'G':
-							this.groupId = Int32.Parse(args[ ++idx ]);
+							groupId = Int32.Parse(args[ ++idx ]);
 							break;
 
 						case 'v':
-							this.verbose = true;
+							verbose = true;
 							break;
 
 						default:
 							Console.Error.WriteLine("unknown option: " + arg[cIdx]);
-							this.ShowHelp();
+							ShowHelp();
 							Environment.Exit(1);
 							break;
 					}
@@ -427,7 +450,16 @@ public class Tar
 		return idx;
 	}
 
-	string decodeType(int type, bool slashTerminated)
+	static string[] GetFilesForSpec(string spec)
+	{
+		string dir = Path.GetDirectoryName(spec);
+		if (dir == null || dir.Length == 0)
+			dir = Directory.GetCurrentDirectory();
+
+		return System.IO.Directory.GetFiles(dir, Path.GetFileName(spec));
+	}
+
+	static string DecodeType(int type, bool slashTerminated)
 	{
 		string result = "?";
 		switch (type)
@@ -477,7 +509,7 @@ public class Tar
 		return result;
 	}
 
-	string decodeMode(int mode)
+	static string DecodeMode(int mode)
 	{	
 
 		const int S_ISUID = 0x0800;
@@ -517,31 +549,7 @@ public class Tar
 		return result.ToString();
 	}
 
-	/// <summary>
-	/// Display progress information on console
-	/// </summary>
-	public void ShowTarProgressMessage(TarArchive archive, TarEntry entry, string message)
-	{
-		if (entry.TarHeader.TypeFlag != TarHeader.LF_NORMAL && entry.TarHeader.TypeFlag != TarHeader.LF_OLDNORM) {
-			Console.WriteLine("Entry type " + (char)entry.TarHeader.TypeFlag + " found!");
-		}
-
-		if (message != null)
-			Console.Write(entry.Name + " " + message);
-		else {
-			if (this.verbose) {
-				string modeString = decodeType(entry.TarHeader.TypeFlag, entry.Name.EndsWith("/")) + decodeMode(entry.TarHeader.Mode);
-				string userString = (entry.UserName == null || entry.UserName.Length == 0) ? entry.UserId.ToString() : entry.UserName;
-				string groupString = (entry.GroupName == null || entry.GroupName.Length == 0) ? entry.GroupId.ToString() : entry.GroupName;
-				
-				Console.WriteLine(string.Format("{0} {1}/{2} {3,8} {4:yyyy-MM-dd HH:mm:ss} {5}", modeString, userString, groupString, entry.Size, entry.ModTime.ToLocalTime(), entry.Name));
-			} else {
-				Console.WriteLine(entry.Name);
-			}
-		}
-	}
-	
-	string SharpZipVersion()
+	static string SharpZipVersion()
 	{
 		System.Reflection.Assembly zipAssembly = System.Reflection.Assembly.GetAssembly(new TarHeader().GetType());
 		Version v = zipAssembly.GetName().Version;
@@ -551,7 +559,7 @@ public class Tar
 	/// <summary>
 	/// Print version information.
 	/// </summary>
-	void Version()
+	static void Version()
 	{
 		Console.Error.WriteLine( "tar 2.0.6.2" );
 		Console.Error.WriteLine( "" );
@@ -569,7 +577,7 @@ public class Tar
 	/// <summary>
 	/// Print help information.
 	/// </summary>
-	private void ShowHelp()
+	static private void ShowHelp()
 	{
 		Console.Error.WriteLine( "Usage: tar [option]...   [file]..." );
 		Console.Error.WriteLine( "" );

@@ -3,7 +3,7 @@
     <Execute entry="SharpZipLibTests" type="None" />
   </StartMode>
   <Entries>
-    <Entry filename=".\.\SharpZipLibTests.prjx" />
+    <Entry filename=".\SharpZipLibTests.prjx" />
   </Entries>
   <Configurations active="Debug">
     <Configuration name="Release">

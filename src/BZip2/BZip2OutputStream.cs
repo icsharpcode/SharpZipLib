@@ -137,10 +137,13 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			set { isStreamOwner = value; }
 		}
 		
+
+		#region Stream overrides
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports reading
 		/// </summary>
-		public override bool CanRead {
+		public override bool CanRead 
+		{
 			get {
 				return false;
 			}
@@ -281,154 +284,15 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			GC.SuppressFinalize(this);
 		}
 
-		static void Panic() 
-		{
-			throw new BZip2Exception("BZip2 output stream panic");
-		}
-		
+		#endregion
 		void MakeMaps() 
 		{
-			int i;
 			nInUse = 0;
-			for (i = 0; i < 256; i++) {
+			for (int i = 0; i < 256; i++) {
 				if (inUse[i]) {
 					seqToUnseq[nInUse] = (char)i;
 					unseqToSeq[i] = (char)nInUse;
 					nInUse++;
-				}
-			}
-		}
-		
-		static void HbMakeCodeLengths(char[] len, int[] freq, int alphaSize, int maxLen) 
-		{
-			/*--
-			Nodes and heap entries run from 1.  Entry 0
-			for both the heap and nodes is a sentinel.
-			--*/
-			int nNodes, nHeap, n1, n2, j, k;
-			bool  tooLong;
-			
-			int[] heap   = new int[BZip2Constants.MAX_ALPHA_SIZE + 2];
-			int[] weight = new int[BZip2Constants.MAX_ALPHA_SIZE * 2];
-			int[] parent = new int[BZip2Constants.MAX_ALPHA_SIZE * 2];
-			
-			for (int i = 0; i < alphaSize; ++i) {
-				weight[i+1] = (freq[i] == 0 ? 1 : freq[i]) << 8;
-			}
-			
-			while (true) {
-				nNodes = alphaSize;
-				nHeap = 0;
-				
-				heap[0] = 0;
-				weight[0] = 0;
-				parent[0] = -2;
-				
-				for (int i = 1; i <= alphaSize; ++i) {
-					parent[i] = -1;
-					nHeap++;
-					heap[nHeap] = i;
-					int zz = nHeap;
-					int tmp = heap[zz];
-					while (weight[tmp] < weight[heap[zz >> 1]]) {
-						heap[zz] = heap[zz >> 1];
-						zz >>= 1;
-					}
-					heap[zz] = tmp;
-				}
-				if (!(nHeap < (BZip2Constants.MAX_ALPHA_SIZE+2))) {
-					Panic();
-				}
-				
-				while (nHeap > 1) {
-					n1 = heap[1];
-					heap[1] = heap[nHeap];
-					nHeap--;
-					int zz = 1;
-					int yy = 0;
-					int tmp = heap[zz];
-					while (true) {
-						yy = zz << 1;
-						if (yy > nHeap) {
-							break;
-						}
-						if (yy < nHeap &&  weight[heap[yy+1]] < weight[heap[yy]]) {
-							yy++;
-						}
-						if (weight[tmp] < weight[heap[yy]]) {
-							break;
-						}
-						
-						heap[zz] = heap[yy];
-						zz = yy;
-					}
-					heap[zz] = tmp;
-					n2 = heap[1];
-					heap[1] = heap[nHeap];
-					nHeap--;
-					
-					zz = 1;
-					yy = 0;
-					tmp = heap[zz];
-					while (true) {
-						yy = zz << 1;
-						if (yy > nHeap) {
-							break;
-						}
-						if (yy < nHeap && weight[heap[yy+1]] < weight[heap[yy]]) {
-							yy++;
-						}
-						if (weight[tmp] < weight[heap[yy]]) {
-							break;
-						}
-						heap[zz] = heap[yy];
-						zz = yy;
-					}
-					heap[zz] = tmp;
-					nNodes++;
-					parent[n1] = parent[n2] = nNodes;
-					
-					weight[nNodes] = (int)((weight[n1] & 0xffffff00) + (weight[n2] & 0xffffff00)) | 
-					                 (int)(1 + (((weight[n1] & 0x000000ff) > (weight[n2] & 0x000000ff)) ? (weight[n1] & 0x000000ff) : (weight[n2] & 0x000000ff)));
-					
-					parent[nNodes] = -1;
-					nHeap++;
-					heap[nHeap] = nNodes;
-					
-					zz  = nHeap;
-					tmp = heap[zz];
-					while (weight[tmp] < weight[heap[zz >> 1]]) {
-						heap[zz] = heap[zz >> 1];
-						zz >>= 1;
-					}
-					heap[zz] = tmp;
-				}
-				if (!(nNodes < (BZip2Constants.MAX_ALPHA_SIZE * 2))) {
-					Panic();
-				}
-				
-				tooLong = false;
-				for (int i = 1; i <= alphaSize; ++i) {
-					j = 0;
-					k = i;
-					while (parent[k] >= 0) {
-						k = parent[k];
-						j++;
-					}
-					len[i - 1] = (char)j;
-					if (j > maxLen) {
-						tooLong = true;
-					}
-				}
-				
-				if (!tooLong) {
-					break;
-				}
-				
-				for (int i = 1; i < alphaSize; ++i) {
-					j = weight[i] >> 8;
-					j = 1 + (j / 2);
-					weight[i] = j << 8;
 				}
 			}
 		}
@@ -631,20 +495,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			BsPutint((int)combinedCRC);
 			
 			BsFinishedWithStream();
-		}
-		
-		static void HbAssignCodes (int[] code, char[] length, int minLen, int maxLen, int alphaSize) 
-		{
-			int vec = 0;
-			for (int n = minLen; n <= maxLen; ++n) {
-				for (int i = 0; i < alphaSize; ++i) {
-					if (length[i] == n) {
-						code[i] = vec;
-						++vec;
-					}
-				}
-				vec <<= 1;
-			}
 		}
 		
 		void BsSetStream(Stream stream) 
@@ -1728,6 +1578,183 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			nMTF = wr;
 		}
 
+		static void Panic() 
+		{
+			throw new BZip2Exception("BZip2 output stream panic");
+		}
+		
+		static void HbMakeCodeLengths(char[] len, int[] freq, int alphaSize, int maxLen) 
+		{
+			/*--
+			Nodes and heap entries run from 1.  Entry 0
+			for both the heap and nodes is a sentinel.
+			--*/
+			int nNodes, nHeap, n1, n2, j, k;
+			bool  tooLong;
+			
+			int[] heap   = new int[BZip2Constants.MAX_ALPHA_SIZE + 2];
+			int[] weight = new int[BZip2Constants.MAX_ALPHA_SIZE * 2];
+			int[] parent = new int[BZip2Constants.MAX_ALPHA_SIZE * 2];
+			
+			for (int i = 0; i < alphaSize; ++i) 
+			{
+				weight[i+1] = (freq[i] == 0 ? 1 : freq[i]) << 8;
+			}
+			
+			while (true) 
+			{
+				nNodes = alphaSize;
+				nHeap = 0;
+				
+				heap[0] = 0;
+				weight[0] = 0;
+				parent[0] = -2;
+				
+				for (int i = 1; i <= alphaSize; ++i) 
+				{
+					parent[i] = -1;
+					nHeap++;
+					heap[nHeap] = i;
+					int zz = nHeap;
+					int tmp = heap[zz];
+					while (weight[tmp] < weight[heap[zz >> 1]]) 
+					{
+						heap[zz] = heap[zz >> 1];
+						zz >>= 1;
+					}
+					heap[zz] = tmp;
+				}
+				if (!(nHeap < (BZip2Constants.MAX_ALPHA_SIZE+2))) 
+				{
+					Panic();
+				}
+				
+				while (nHeap > 1) 
+				{
+					n1 = heap[1];
+					heap[1] = heap[nHeap];
+					nHeap--;
+					int zz = 1;
+					int yy = 0;
+					int tmp = heap[zz];
+					while (true) 
+					{
+						yy = zz << 1;
+						if (yy > nHeap) 
+						{
+							break;
+						}
+						if (yy < nHeap &&  weight[heap[yy+1]] < weight[heap[yy]]) 
+						{
+							yy++;
+						}
+						if (weight[tmp] < weight[heap[yy]]) 
+						{
+							break;
+						}
+						
+						heap[zz] = heap[yy];
+						zz = yy;
+					}
+					heap[zz] = tmp;
+					n2 = heap[1];
+					heap[1] = heap[nHeap];
+					nHeap--;
+					
+					zz = 1;
+					yy = 0;
+					tmp = heap[zz];
+					while (true) 
+					{
+						yy = zz << 1;
+						if (yy > nHeap) 
+						{
+							break;
+						}
+						if (yy < nHeap && weight[heap[yy+1]] < weight[heap[yy]]) 
+						{
+							yy++;
+						}
+						if (weight[tmp] < weight[heap[yy]]) 
+						{
+							break;
+						}
+						heap[zz] = heap[yy];
+						zz = yy;
+					}
+					heap[zz] = tmp;
+					nNodes++;
+					parent[n1] = parent[n2] = nNodes;
+					
+					weight[nNodes] = (int)((weight[n1] & 0xffffff00) + (weight[n2] & 0xffffff00)) | 
+						(int)(1 + (((weight[n1] & 0x000000ff) > (weight[n2] & 0x000000ff)) ? (weight[n1] & 0x000000ff) : (weight[n2] & 0x000000ff)));
+					
+					parent[nNodes] = -1;
+					nHeap++;
+					heap[nHeap] = nNodes;
+					
+					zz  = nHeap;
+					tmp = heap[zz];
+					while (weight[tmp] < weight[heap[zz >> 1]]) 
+					{
+						heap[zz] = heap[zz >> 1];
+						zz >>= 1;
+					}
+					heap[zz] = tmp;
+				}
+				if (!(nNodes < (BZip2Constants.MAX_ALPHA_SIZE * 2))) 
+				{
+					Panic();
+				}
+				
+				tooLong = false;
+				for (int i = 1; i <= alphaSize; ++i) 
+				{
+					j = 0;
+					k = i;
+					while (parent[k] >= 0) 
+					{
+						k = parent[k];
+						j++;
+					}
+					len[i - 1] = (char)j;
+					if (j > maxLen) 
+					{
+						tooLong = true;
+					}
+				}
+				
+				if (!tooLong) 
+				{
+					break;
+				}
+				
+				for (int i = 1; i < alphaSize; ++i) 
+				{
+					j = weight[i] >> 8;
+					j = 1 + (j / 2);
+					weight[i] = j << 8;
+				}
+			}
+		}
+		
+		static void HbAssignCodes (int[] code, char[] length, int minLen, int maxLen, int alphaSize) 
+		{
+			int vec = 0;
+			for (int n = minLen; n <= maxLen; ++n) 
+			{
+				for (int i = 0; i < alphaSize; ++i) 
+				{
+					if (length[i] == n) 
+					{
+						code[i] = vec;
+						++vec;
+					}
+				}
+				vec <<= 1;
+			}
+		}
+		
 		static byte Med3(byte a, byte b, byte c ) 
 		{
 			byte t;
@@ -1823,7 +1850,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 	}
 }
 
-/* This file was derived from a file containing under this license:
+/* This file was derived from a file containing this license:
  * 
  * This file is a part of bzip2 and/or libbzip2, a program and
  * library for lossless, block-sorting data compression.

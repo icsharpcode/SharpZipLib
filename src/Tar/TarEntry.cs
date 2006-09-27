@@ -96,7 +96,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="header">Header details for entry</param>
 		public TarEntry(TarHeader header)
 		{
-			this.header = header;
+			this.header = (TarHeader)header.Clone();
 		}
 		#endregion
 
@@ -113,7 +113,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 			entry.Name = Name;
 			return entry;
 		}
-		
 		#endregion
 
 		/// <summary>
@@ -370,7 +369,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			if ( file == null ) {
 				throw new ArgumentNullException("file");
 			}
-			
+
 			this.file = file;
 
 			// bugfix from torhovl from #D forum:

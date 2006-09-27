@@ -48,49 +48,35 @@ namespace ICSharpCode.SharpZipLib.Tar
 	/// </summary>
 	public class TarInputStream : Stream
 	{
-		#region Instance Fields
+		#region Constructors
 		/// <summary>
-		/// Flag set when last block has been read
+		/// Construct a TarInputStream with default block factor
 		/// </summary>
-		protected bool hasHitEOF;
-		
-		/// <summary>
-		/// Size of this entry as recorded in header
-		/// </summary>
-		protected long entrySize;
-		
-		/// <summary>
-		/// Number of bytes read for this entry so far
-		/// </summary>
-		protected long entryOffset;
+		/// <param name="inputStream">stream to source data from</param>
+		public TarInputStream(Stream inputStream)
+			: this(inputStream, TarBuffer.DefaultBlockFactor)
+		{
+		}
 
 		/// <summary>
-		/// Buffer used with calls to <code>Read()</code>
-		/// </summary>		
-		protected byte[] readBuf;
-		
-		/// <summary>
-		/// Working buffer
+		/// Construct a TarInputStream with user specified block factor
 		/// </summary>
-		protected TarBuffer buffer;
-		
-		/// <summary>
-		/// Current entry being read
-		/// </summary>
-		protected TarEntry  currEntry;
-		
-		/// <summary>
-		/// Factory used to create TarEntry or descendant class instance
-		/// </summary>
-		protected IEntryFactory eFactory;
-		
-		Stream inputStream;
+		/// <param name="inputStream">stream to source data from</param>
+		/// <param name="blockFactor">block factor to apply to archive</param>
+		public TarInputStream(Stream inputStream, int blockFactor)
+		{
+			this.inputStream = inputStream;
+			this.buffer      = TarBuffer.CreateInputTarBuffer(inputStream, blockFactor);
+		}
+
 		#endregion
 
+		#region Stream Overrides
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports reading
 		/// </summary>
-		public override bool CanRead {
+		public override bool CanRead 
+		{
 			get {
 				return inputStream.CanRead;
 			}
@@ -161,7 +147,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// This operation is not supported and will throw a NotSupportedException
 		/// </summary>
 		/// <exception cref="NotSupportedException">Any access</exception>
-		public override void SetLength(long val)
+		public override void SetLength(long value)
 		{
 			throw new NotSupportedException("TarInputStream SetLength not supported");
 		}
@@ -171,7 +157,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// This operation is not supported and will throw a NotSupportedException
 		/// </summary>
 		/// <exception cref="NotSupportedException">Any access</exception>
-		public override void Write(byte[] array, int offset, int count)
+		public override void Write(byte[] buffer, int offset, int count)
 		{
 			throw new NotSupportedException("TarInputStream Write not supported");
 		}
@@ -181,40 +167,119 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// This operation is not supported and will throw a NotSupportedException
 		/// </summary>
 		/// <exception cref="NotSupportedException">Any access</exception>
-		public override void WriteByte(byte val)
+		public override void WriteByte(byte value)
 		{
 			throw new NotSupportedException("TarInputStream WriteByte not supported");
 		}
-			
-		#region Constructors
 		/// <summary>
-		/// Construct a TarInputStream with default block factor
+		/// Reads a byte from the current tar archive entry.
+		/// This method simply calls Read(byte[], int, int).
 		/// </summary>
-		/// <param name="inputStream">stream to source data from</param>
-		public TarInputStream(Stream inputStream)
-			: this(inputStream, TarBuffer.DefaultBlockFactor)
+		public override int ReadByte()
 		{
+			byte[] oneByteBuffer = new byte[1];
+			int num = this.Read(oneByteBuffer, 0, 1);
+			if (num <= 0) 
+			{ // return -1 to indicate that no byte was read.
+				return -1;
+			}
+			return (int)oneByteBuffer[0];
 		}
-
-		/// <summary>
-		/// Construct a TarInputStream with user specified block factor
-		/// </summary>
-		/// <param name="inputStream">stream to source data from</param>
-		/// <param name="blockFactor">block factor to apply to archive</param>
-		public TarInputStream(Stream inputStream, int blockFactor)
-		{
-			this.inputStream = inputStream;
-			this.buffer      = TarBuffer.CreateInputTarBuffer(inputStream, blockFactor);
-		}
-		#endregion
 		
 		/// <summary>
-		/// Set the entry factory for this instance.
+		/// Reads bytes from the current tar archive entry.
+		/// 
+		/// This method is aware of the boundaries of the current
+		/// entry in the archive and will deal with them appropriately
 		/// </summary>
-		/// <param name="factory">The factory for creating new entries</param>
-		public void SetEntryFactory(IEntryFactory factory)
+		/// <param name="buffer">
+		/// The buffer into which to place bytes read.
+		/// </param>
+		/// <param name="offset">
+		/// The offset at which to place bytes read.
+		/// </param>
+		/// <param name="count">
+		/// The number of bytes to read.
+		/// </param>
+		/// <returns>
+		/// The number of bytes read, or 0 at end of stream/EOF.
+		/// </returns>
+		public override int Read(byte[] buffer, int offset, int count)
 		{
-			this.eFactory = factory;
+			if ( buffer == null ) 
+			{
+				throw new ArgumentNullException("buffer");
+			}
+
+			int totalRead = 0;
+			
+			if (this.entryOffset >= this.entrySize) 
+			{
+				return 0;
+			}
+			
+			long numToRead = count;
+			
+			if ((numToRead + this.entryOffset) > this.entrySize) 
+			{
+				numToRead = this.entrySize - this.entryOffset;
+			}
+			
+			if (this.readBuffer != null) 
+			{
+				int sz = (numToRead > this.readBuffer.Length) ? this.readBuffer.Length : (int)numToRead;
+				
+				Array.Copy(this.readBuffer, 0, buffer, offset, sz);
+				
+				if (sz >= this.readBuffer.Length) 
+				{
+					this.readBuffer = null;
+				} 
+				else 
+				{
+					int newLen = this.readBuffer.Length - sz;
+					byte[] newBuf = new byte[newLen];
+					Array.Copy(this.readBuffer, sz, newBuf, 0, newLen);
+					this.readBuffer = newBuf;
+				}
+				
+				totalRead += sz;
+				numToRead -= sz;
+				offset += sz;
+			}
+			
+			while (numToRead > 0) 
+			{
+				byte[] rec = this.buffer.ReadBlock();
+				if (rec == null) 
+				{
+					// Unexpected EOF!
+					throw new TarException("unexpected EOF with " + numToRead + " bytes unread");
+				}
+				
+				int sz     = (int)numToRead;
+				int recLen = rec.Length;
+				
+				if (recLen > sz) 
+				{
+					Array.Copy(rec, 0, buffer, offset, sz);
+					this.readBuffer = new byte[recLen - sz];
+					Array.Copy(rec, sz, this.readBuffer, 0, recLen - sz);
+				} 
+				else 
+				{
+					sz = recLen;
+					Array.Copy(rec, 0, buffer, offset, recLen);
+				}
+				
+				totalRead += sz;
+				numToRead -= sz;
+				offset += sz;
+			}
+			
+			this.entryOffset += totalRead;
+			
+			return totalRead;
 		}
 		
 		/// <summary>
@@ -225,15 +290,26 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			this.buffer.Close();
 		}
+		
+		#endregion
 
 		/// <summary>
-		/// Get the record size for this instance.
+		/// Set the entry factory for this instance.
+		/// </summary>
+		/// <param name="factory">The factory for creating new entries</param>
+		public void SetEntryFactory(IEntryFactory factory)
+		{
+			this.entryFactory = factory;
+		}
+		
+		/// <summary>
+		/// Get the record size being used by this stream's TarBuffer.
 		/// </summary>
 		public int RecordSize
 		{
 			get { return buffer.RecordSize; }
 		}
-		
+
 		/// <summary>
 		/// Get the record size being used by this stream's TarBuffer.
 		/// </summary>
@@ -268,18 +344,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// stop at the end of the current entry's data if the number
 		/// to skip extends beyond that point.
 		/// </summary>
-		/// <param name="numToSkip">
+		/// <param name="skipCount">
 		/// The number of bytes to skip.
 		/// </param>
-		public void Skip(long numToSkip)
+		public void Skip(long skipCount)
 		{
-			// TODO: Review TarInputStream.Skip
+			// TODO: REVIEW
 			// This is horribly inefficient, but it ensures that we
 			// properly skip over bytes via the TarBuffer...
 			//
 			byte[] skipBuf = new byte[8 * 1024];
 			
-			for (long num = numToSkip; num > 0;) {
+			for (long num = skipCount; num > 0;) {
 				int toRead = num > skipBuf.Length ? skipBuf.Length : (int)num;
 				int numRead = this.Read(skipBuf, 0, toRead);
 				
@@ -317,17 +393,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 		}
 		
-		void SkipToNextEntry()
-		{
-			long numToSkip = this.entrySize - this.entryOffset;
-			
-			if (numToSkip > 0) {
-				this.Skip(numToSkip);
-			}
-			
-			this.readBuf = null;
-		}
-		
 		/// <summary>
 		/// Get the next entry in this tar archive. This will skip
 		/// over any remaining data in the current entry, if there
@@ -347,7 +412,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				return null;
 			}
 			
-			if (this.currEntry != null) {
+			if (this.currentEntry != null) {
 				SkipToNextEntry();
 			}
 			
@@ -360,7 +425,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 			
 			if (this.hasHitEOF) {
-				this.currEntry = null;
+				this.currentEntry = null;
 			} else {
 				try {
 					TarHeader header = new TarHeader();
@@ -377,7 +442,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 					if (header.TypeFlag == TarHeader.LF_GNU_LONGNAME) {
 						
 						byte[] nameBuffer = new byte[TarBuffer.BlockSize];
-						
 						long numToRead = this.entrySize;
 						
 						longName = new StringBuilder();
@@ -415,13 +479,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 						headerBuf = this.buffer.ReadBlock();
 					}
 					
-					if (this.eFactory == null) {
-						this.currEntry = new TarEntry(headerBuf);
+					if (this.entryFactory == null) {
+						this.currentEntry = new TarEntry(headerBuf);
 						if (longName != null) {
-							currEntry.Name = longName.ToString();
+							currentEntry.Name = longName.ToString();
 						}
 					} else {
-						this.currEntry = this.eFactory.CreateEntry(headerBuf);
+						this.currentEntry = this.entryFactory.CreateEntry(headerBuf);
 					}
 					
 					// Magic was checked here for 'ustar' but there are multiple valid possibilities
@@ -430,109 +494,17 @@ namespace ICSharpCode.SharpZipLib.Tar
 					this.entryOffset = 0;
 					
 					// TODO: Review How do we resolve this discrepancy?!
-					this.entrySize = this.currEntry.Size;
+					this.entrySize = this.currentEntry.Size;
 				} catch (InvalidHeaderException ex) {
 					this.entrySize = 0;
 					this.entryOffset = 0;
-					this.currEntry = null;
-					throw new InvalidHeaderException("bad header in record " + this.buffer.CurrentRecord + " block " + this.buffer.CurrentBlock + ", " + ex.Message);
+					this.currentEntry = null;
+					string errorText = string.Format("Bad header in record {0} block {1} {2}",
+						buffer.CurrentRecord, buffer.CurrentBlock, ex.Message);
+					throw new InvalidHeaderException(errorText);
 				}
 			}
-			return this.currEntry;
-		}
-		
-		/// <summary>
-		/// Reads a byte from the current tar archive entry.
-		/// This method simply calls read(byte[], int, int).
-		/// </summary>
-		public override int ReadByte()
-		{
-			byte[] oneByteBuffer = new byte[1];
-			int num = this.Read(oneByteBuffer, 0, 1);
-			if (num <= 0) { // return -1 to indicate that no byte was read.
-				return -1;
-			}
-			return (int)oneByteBuffer[0];
-		}
-		
-		/// <summary>
-		/// Reads bytes from the current tar archive entry.
-		/// 
-		/// This method is aware of the boundaries of the current
-		/// entry in the archive and will deal with them appropriately
-		/// </summary>
-		/// <param name="outputBuffer">
-		/// The buffer into which to place bytes read.
-		/// </param>
-		/// <param name="offset">
-		/// The offset at which to place bytes read.
-		/// </param>
-		/// <param name="count">
-		/// The number of bytes to read.
-		/// </param>
-		/// <returns>
-		/// The number of bytes read, or 0 at end of stream/EOF.
-		/// </returns>
-		public override int Read(byte[] outputBuffer, int offset, int count)
-		{
-			int totalRead = 0;
-			
-			if (this.entryOffset >= this.entrySize) {
-				return 0;
-			}
-			
-			long numToRead = count;
-			
-			if ((numToRead + this.entryOffset) > this.entrySize) {
-				numToRead = this.entrySize - this.entryOffset;
-			}
-			
-			if (this.readBuf != null) {
-				int sz = (numToRead > this.readBuf.Length) ? this.readBuf.Length : (int)numToRead;
-				
-				Array.Copy(this.readBuf, 0, outputBuffer, offset, sz);
-				
-				if (sz >= this.readBuf.Length) {
-					this.readBuf = null;
-				} else {
-					int newLen = this.readBuf.Length - sz;
-					byte[] newBuf = new byte[newLen];
-					Array.Copy(this.readBuf, sz, newBuf, 0, newLen);
-					this.readBuf = newBuf;
-				}
-				
-				totalRead += sz;
-				numToRead -= sz;
-				offset += sz;
-			}
-			
-			while (numToRead > 0) {
-				byte[] rec = this.buffer.ReadBlock();
-				if (rec == null) {
-					// Unexpected EOF!
-					throw new TarException("unexpected EOF with " + numToRead + " bytes unread");
-				}
-				
-				int sz     = (int)numToRead;
-				int recLen = rec.Length;
-				
-				if (recLen > sz) {
-					Array.Copy(rec, 0, outputBuffer, offset, sz);
-					this.readBuf = new byte[recLen - sz];
-					Array.Copy(rec, sz, this.readBuf, 0, recLen - sz);
-				} else {
-					sz = recLen;
-					Array.Copy(rec, 0, outputBuffer, offset, recLen);
-				}
-				
-				totalRead += sz;
-				numToRead -= sz;
-				offset += sz;
-			}
-			
-			this.entryOffset += totalRead;
-			
-			return totalRead;
+			return this.currentEntry;
 		}
 		
 		/// <summary>
@@ -544,21 +516,33 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </param>
 		public void CopyEntryContents(Stream outputStream)
 		{
-			byte[] buf = new byte[32 * 1024];
+			byte[] tempBuffer = new byte[32 * 1024];
 			
 			while (true) {
-				int numRead = this.Read(buf, 0, buf.Length);
+				int numRead = this.Read(tempBuffer, 0, tempBuffer.Length);
 				if (numRead <= 0) {
 					break;
 				}
-				outputStream.Write(buf, 0, numRead);
+				outputStream.Write(tempBuffer, 0, numRead);
 			}
+		}
+
+		void SkipToNextEntry()
+		{
+			long numToSkip = this.entrySize - this.entryOffset;
+			
+			if (numToSkip > 0) 
+			{
+				this.Skip(numToSkip);
+			}
+			
+			this.readBuffer = null;
 		}
 		
 		/// <summary>
-		/// This interface is provided, along with the method setEntryFactory(), to allow
-		/// the programmer to have their own TarEntry subclass instantiated for the
-		/// entries return from getNextEntry().
+		/// This interface is provided, along with the method <see cref="SetEntryFactory"/>, to allow
+		/// the programmer to have their own <see cref="TarEntry"/> subclass instantiated for the
+		/// entries return from <see cref="GetNextEntry"/>.
 		/// </summary>
 		public interface IEntryFactory
 		{
@@ -623,9 +607,50 @@ namespace ICSharpCode.SharpZipLib.Tar
 				return new TarEntry(headerBuf);
 			}
 		}
+
+
+		#region Instance Fields
+		/// <summary>
+		/// Flag set when last block has been read
+		/// </summary>
+		protected bool hasHitEOF;
+		
+		/// <summary>
+		/// Size of this entry as recorded in header
+		/// </summary>
+		protected long entrySize;
+		
+		/// <summary>
+		/// Number of bytes read for this entry so far
+		/// </summary>
+		protected long entryOffset;
+
+		/// <summary>
+		/// Buffer used with calls to <code>Read()</code>
+		/// </summary>		
+		protected byte[] readBuffer;
+		
+		/// <summary>
+		/// Working buffer
+		/// </summary>
+		protected TarBuffer buffer;
+		
+		/// <summary>
+		/// Current entry being read
+		/// </summary>
+		TarEntry  currentEntry;
+		
+		/// <summary>
+		/// Factory used to create TarEntry or descendant class instance
+		/// </summary>
+		protected IEntryFactory entryFactory;
+		
+		/// <summary>
+		/// Stream used as the source of input data.
+		/// </summary>
+		Stream inputStream;
+		#endregion
 	}
-	
-	
 }
 
 /* The original Java file had this header:

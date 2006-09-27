@@ -433,7 +433,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			}
 			
 			if (state < BUSY_STATE) {
-				/* output header */
+				// output header
 				int header = (DEFLATED +
 					((DeflaterConstants.MAX_WBITS - 8) << 4)) << 8;
 				int level_flags = (level - 1) >> 1;
@@ -442,7 +442,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				}
 				header |= level_flags << 6;
 				if ((state & IS_SETDICT) != 0) {
-					/* Dictionary was set */
+					// Dictionary was set
 					header |= DeflaterConstants.PRESET_DICT;
 				}
 				header += 31 - (header % 31);
@@ -471,7 +471,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				
 				if (!engine.Deflate((state & IS_FLUSHING) != 0, (state & IS_FINISHING) != 0)) {
 					if (state == BUSY_STATE) {
-						/* We need more input now */
+						// We need more input now
 						return origLength - length;
 					} else if (state == FLUSHING_STATE) {
 						if (level != NO_COMPRESSION) {

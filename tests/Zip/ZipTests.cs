@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 
@@ -124,12 +125,19 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			if (size > 0) {
 				byte nextValue = 0;
-				byte [] data = new byte[size];
+				int bufferSize = Math.Min(size, 65536);
+				
+				byte [] data = new byte[bufferSize];
+				int currentIndex = 0;
 				for (int i = 0; i < size; ++i) {
-					data[i] = nextValue;
-					nextValue = ScatterValue(nextValue);			
+					data[currentIndex] = nextValue;
+					nextValue = ScatterValue(nextValue);
+					currentIndex += 1;
+					if ( (currentIndex >= bufferSize) || (i + 1 == size) ) {
+						zipStream.Write(data, 0, data.Length);
+						currentIndex = 0;
+					}
 				}
-				zipStream.Write(data, 0, data.Length);
 			}
 		}
 
@@ -182,7 +190,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 			
 			ZipOutputStream outStream = new ZipOutputStream(ms);
-         outStream.Password = password;
+			outStream.Password = password;
 			
 			if (method != CompressionMethod.Stored)
 				outStream.SetLevel(compressionLevel); // 0 - store only to 9 - means best compression
@@ -276,6 +284,38 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 			inStream.Close();
 			Assert.AreEqual(extractCount, 0, "No data should be read from empty entries");
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void UnsupportCompressionMethods()
+		{
+			ZipEntry ze = new ZipEntry("HumblePie");
+			System.Type type = typeof(CompressionMethod);
+			System.Reflection.FieldInfo[] info = type.GetFields();
+
+			int unsupportedMethods = 0;
+			int methods = 0;
+
+			for ( int i = 0; i < info.Length; i++ ) {
+				System.Reflection.FieldAttributes attributes = info[i].Attributes;
+				if ( (FieldAttributes.Static & attributes) != 0 ) {
+					methods += 1;
+
+					object obj = info[i].GetValue(null);
+					CompressionMethod cm = ( CompressionMethod )obj;
+
+					try {
+						ze.CompressionMethod = cm;
+					}
+					catch ( NotSupportedException ) {
+						++unsupportedMethods;
+					}
+				}
+			}
+
+			Assert.AreEqual(methods, 5);
+			Assert.AreEqual(unsupportedMethods, 3);
 		}
 
 		/// <summary>
@@ -400,20 +440,20 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		
 		[Test]
 		[Category("Zip")]
-		[ExpectedException(typeof(ZipException))]
-		public void EntrySizeTooLarge()
+		public void EntrySizeIsLarge()
 		{
 			ZipEntry e = new ZipEntry("Bill");
 			e.Size = 0x100000000L;
+			Assert.AreEqual(0x100000000L, e.Size);
 		}
 
 		[Test]
 		[Category("Zip")]
-		[ExpectedException(typeof(ZipException))]
-		public void EntryOffsetTooLarge()
+		public void EntryOffsetIsLarge()
 		{
 			ZipEntry e = new ZipEntry("Bill");
 			e.Offset = 0x100000000L;
+			Assert.AreEqual(0x100000000L, e.Offset);
 		}
 		
 		/// <summary>
@@ -573,7 +613,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		[Test]
 		[Category("Zip")]
-		public void ArchiveTesting()
+		public void ZipFile_ArchiveTesting()
 		{
 			byte[] originalData = null;
 			byte[] compressedData = MakeMemZip(ref originalData, CompressionMethod.Deflated,
@@ -664,14 +704,100 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsTrue(b.ExtraData[0] != a.ExtraData[0], "Extra data not unique" + b.ExtraData[0] + " " + a.ExtraData[0]);
 		}
 		
+		[Test]
+		public void ExtraDataHandling()
+		{
+			ZipExtraData zed = new ZipExtraData(null);
+			Assert.AreEqual(0, zed.Length);
+
+			zed = new ZipExtraData(new byte[] { 1, 0, 0, 0 });
+			Assert.AreEqual(4, zed.Length, "A length should be 4");
+
+			bool findResult =  zed.Find(2);
+			Assert.IsFalse(findResult, "A - Shouldnt find tag 2");
+
+			findResult = zed.Find(1);
+			Assert.IsTrue(findResult, "A - Should find tag 1");
+			Assert.AreEqual(0, zed.ValueLength, "A- Length of entry should be 0");
+			Assert.AreEqual(-1, zed.ReadByte());
+			Assert.AreEqual(0, zed.GetStreamForTag(1).Length, "A - Length of stream should be 0");
+
+			zed = new ZipExtraData(new byte[] { 1, 0, 3, 0, 1, 2, 3 });
+			Assert.AreEqual(7, zed.Length, "Expected a length of 7");
+
+			findResult = zed.Find(1);
+			Assert.IsTrue(findResult, "B - Should find tag 1");
+			Assert.AreEqual(3, zed.ValueLength, "B - Length of entry should be 3");
+			for ( int i = 1; i <= 3; ++i )
+			{
+				Assert.AreEqual(i, zed.ReadByte());
+			}
+			Assert.AreEqual(-1, zed.ReadByte());
+
+			Stream s = zed.GetStreamForTag(1);
+			Assert.AreEqual(3, s.Length, "B.1 Stream length should be 3");
+			for ( int i = 1; i <= 3; ++i )
+			{
+				Assert.AreEqual(i, s.ReadByte());
+			}
+			Assert.AreEqual(-1, s.ReadByte());
+
+			zed = new ZipExtraData(new byte[] { 1, 0, 3, 0, 1, 2, 3, 2, 0, 1, 0, 56 });
+			Assert.AreEqual(12, zed.Length, "Expected a length of 12");
+
+			findResult = zed.Find(1);
+			Assert.IsTrue(findResult, "C.1 - Should find tag 1");
+			Assert.AreEqual(3, zed.ValueLength, "C.1 - Length of entry should be 3");
+			for ( int i = 1; i <= 3; ++i )
+			{
+				Assert.AreEqual(i, zed.ReadByte());
+			}
+			Assert.AreEqual(-1, zed.ReadByte());
+
+			findResult = zed.Find(2);
+			Assert.IsTrue(findResult, "C.2 - Should find tag 2");
+			Assert.AreEqual(1, zed.ValueLength, "C.2 - Length of entry should be 1");
+			Assert.AreEqual(56, zed.ReadByte());
+			Assert.AreEqual(-1, zed.ReadByte());
+
+			s = zed.GetStreamForTag(2);
+			Assert.AreEqual(1, s.Length);
+			Assert.AreEqual(56, s.ReadByte());
+			Assert.AreEqual(-1, s.ReadByte());
+
+			zed = new ZipExtraData();
+			zed.AddEntry(7, new byte[] { 33, 44, 55 });
+			findResult = zed.Find(7);
+			Assert.IsTrue(findResult, "Add.1 should find new tag");
+			Assert.AreEqual(3, zed.ValueLength, "Add.1 length should be 3");
+			Assert.AreEqual(33, zed.ReadByte());
+			Assert.AreEqual(44, zed.ReadByte());
+			Assert.AreEqual(55, zed.ReadByte());
+			Assert.AreEqual(-1, zed.ReadByte());
+
+			zed.AddEntry(7, null);
+			findResult = zed.Find(7);
+			Assert.IsTrue(findResult, "Add.2 should find new tag");
+			Assert.AreEqual(0, zed.ValueLength, "Add.2 length should be 0");
+
+			zed.StartNewEntry();
+			zed.AddData(0xae);
+			zed.AddNewEntry(55);
+
+			findResult = zed.Find(55);
+			Assert.IsTrue(findResult, "Add.3 should find new tag");
+			Assert.AreEqual(1, zed.ValueLength, "Add.3 length should be 1");
+			Assert.AreEqual(0xae, zed.ReadByte());
+			Assert.AreEqual(-1, zed.ReadByte());
+		}
+		
 		/// <summary>
 		/// Check that adding too many entries is detected and handled
 		/// </summary>
 		[Test]
 		[Category("Zip")]
 		[Category("LongRunning")]
-		[ExpectedException(typeof(ZipException))]
-		public void TooManyEntries()
+		public void Stream_64KPlusOneEntries()
 		{
 			const int target = 65537;
 			MemoryStream ms = new MemoryStream();
@@ -682,7 +808,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			s.Finish();
 			ms.Seek(0, SeekOrigin.Begin);
 			ZipFile zipFile = new ZipFile(ms);
-			Assert.AreEqual(target, zipFile.Size, "Incorrect number of entries stored");
+			Assert.AreEqual(target, zipFile.Count, "Incorrect number of entries stored");
 		}
 
 		void MakeZipFile(string name, string[] names, int size, string comment)
@@ -742,7 +868,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			try {
 				 tempFile = Path.GetTempPath();
 			}
-         catch (SecurityException) {
+			catch (SecurityException) {
 			}
 			
 			Assert.IsNotNull(tempFile, "No permission to execute this test?");
@@ -878,7 +1004,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				MakeZipFile(tempFile, new String[] {"Farriera", "Champagne", "Urban myth" }, 10, "Aha");
 				
 				ZipFile zipFile = new ZipFile(tempFile);
-				Assert.AreEqual(3, zipFile.Size, "Expected 1 entry");
+				Assert.AreEqual(3, zipFile.Count, "Expected 1 entry");
 				
 				int testIndex = zipFile.FindEntry("Farriera", false);
 				Assert.AreEqual(0, testIndex, "Case sensitive find failure");
@@ -922,51 +1048,66 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsTrue(string.Compare(ZipEntry.CleanName(@"c:\a\b\c\deus.dat", false), "/a/b/c/deus.dat") == 0);
 		}
 
-      /// <summary>
-      /// Test for handling of zero lengths in compression using a formatter which
-      /// will request reads of zero length...
-      /// </summary>
-      [Test]
-      public void ZeroLength()
-      {
-         object data = new byte[0];
-         byte[] zipped = ZipZeroLength(data);
-         Console.WriteLine("Zipped size {0}", zipped.Length);
-         object o = UnZipZeroLength(zipped);
-      }
+		/// <summary>
+		/// Test for handling of zero lengths in compression using a formatter which
+		/// will request reads of zero length...
+		/// </summary>
+		[Test]
+		public void ZeroLength()
+		{
+			object data = new byte[0];
+			byte[] zipped = ZipZeroLength(data);
+			Console.WriteLine("Zipped size {0}", zipped.Length);
+			object o = UnZipZeroLength(zipped);
+		}
 	
-      byte[] ZipZeroLength(object data)
-      {
-         BinaryFormatter formatter = new BinaryFormatter();
-         MemoryStream memStream = new MemoryStream();
+		byte[] ZipZeroLength(object data)
+		{
+			BinaryFormatter formatter = new BinaryFormatter();
+			MemoryStream memStream = new MemoryStream();
 
-         ZipOutputStream zipStream = new ZipOutputStream(memStream);
-         zipStream.PutNextEntry(new ZipEntry("data"));
-         formatter.Serialize(zipStream, data);
-         zipStream.CloseEntry();
-         zipStream.Close();
-         byte[] resp = memStream.ToArray();
-         memStream.Close();
-		
-         return resp;
-      }
-	
-      object UnZipZeroLength(byte[] zipped)
-      {
-         if (zipped == null)
-            return null;
+			ZipOutputStream zipStream = new ZipOutputStream(memStream);
+			zipStream.PutNextEntry(new ZipEntry("data"));
+			formatter.Serialize(zipStream, data);
+			zipStream.CloseEntry();
+			zipStream.Close();
+			byte[] resp = memStream.ToArray();
+			memStream.Close();
 			
-         object ret = null;
-         BinaryFormatter formatter = new BinaryFormatter();
-         MemoryStream memStream = new MemoryStream(zipped);
-         ZipInputStream zipStream = new ZipInputStream(memStream);
-         ZipEntry zipEntry = zipStream.GetNextEntry();
-         if (zipEntry != null)
-            ret = formatter.Deserialize(zipStream);
-         zipStream.Close();
-         memStream.Close();
+			return resp;
+	 	}
+	
+		object UnZipZeroLength(byte[] zipped)
+		{
+			if (zipped == null)
+				return null;
+				
+			object ret = null;
+			BinaryFormatter formatter = new BinaryFormatter();
+			MemoryStream memStream = new MemoryStream(zipped);
+			ZipInputStream zipStream = new ZipInputStream(memStream);
+			ZipEntry zipEntry = zipStream.GetNextEntry();
+			if (zipEntry != null)
+				ret = formatter.Deserialize(zipStream);
+			zipStream.Close();
+			memStream.Close();
+			
+			return ret;
+		}
 		
-         return ret;
-      }
+		void CheckNameConversion(string toCheck)
+		{
+			byte[] intermediate = ZipConstants.ConvertToArray(toCheck);
+			string final = ZipConstants.ConvertToString(intermediate);
+		
+			Assert.AreEqual(toCheck, final, "Expected identical result");
+		}
+		
+		[Test]
+		public void NameConversion()
+		{
+			CheckNameConversion("Hello");
+			CheckNameConversion("a/b/c/d/e/f/g/h/SomethingLikeAnArchiveName.txt");
+		}
 	}
 }

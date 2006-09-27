@@ -13,31 +13,49 @@
 // Define this to get deeper detail on option handling
 // #define OPTIONTEST
 
-namespace SharpZip {
+using System;
+using System.IO;
+using System.Collections;
+using System.Text;
+using System.Globalization;
+using System.Diagnostics;
+using System.Reflection;
 
-	using System;
-	using System.IO;
-	using System.Collections;
-	using System.Text;
-	using System.Globalization;
-	using System.Diagnostics;
-	using System.Reflection;
+using ICSharpCode.SharpZipLib.Zip;	
+using ICSharpCode.SharpZipLib.Zip.Compression;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
-	using ICSharpCode.SharpZipLib.Zip;	
-	using ICSharpCode.SharpZipLib.Zip.Compression;
-	using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+namespace SharpZip 
+{
 	
 	/// <summary>
 	/// A command line archiver using the SharpZipLib compression library
 	/// </summary>
 	public class SharpZipArchiver {
 		
+		/// <summary>
+		/// Options for handling overwriting of files.
+		/// </summary>
 		enum Overwrite {
 			Prompt,
 			Never,
 			Always
 		}
-		
+
+		/// <summary>
+		/// Kinds of thing we know how to do
+		/// </summary>
+		enum Operation 
+		{
+			Create,     // add files to new archive
+			Extract,    // extract files from existing archive
+			List,       // show contents of existing archive
+			Delete,		// Delete from archive
+			Add,		// Add to archive.
+			Test,		// Test the archive for validity.
+		}
+
+		#region Constructors
 		/// <summary>
 		/// Base constructor - initializes all fields to default values
 		/// </summary>
@@ -45,105 +63,123 @@ namespace SharpZip {
 		{
 		}
 
+		#endregion
 		/// <summary>
-		/// Has user already seen help output?
+		/// Interpret attributes in conjunction with operatingSystem
 		/// </summary>
-		bool seenHelp;
-		
-		/// <summary>
-		/// File specification possibly with wildcards from command line
-		/// </summary>
-		ArrayList fileSpecs = new ArrayList();
-		
-		/// <summary>
-		/// Deflate compression level
-		/// </summary>
-		int    compressionLevel = Deflater.DEFAULT_COMPRESSION;
-		
-		/// <summary>
-		/// Create entries for directories with no files
-		/// </summary>
-		bool   addEmptyDirectoryEntries;
-		
-		/// <summary>
-		/// Apply operations recursively
-		/// </summary>
-		bool   recursive;
+		/// <param name="operatingSystem">The operating system.</param>
+		/// <param name="attributes">The external attributes.</param>
+		/// <returns>A string representation of the attributres passed.</returns>
+		static string InterpretExternalAttributes(int operatingSystem, int attributes)
+		{
+			string result = string.Empty;
+			if ((operatingSystem == 0) || (operatingSystem == 10))
+			{
+				if ((attributes & 0x10) != 0)
+					result = result + "D";
+				else
+					result = result + "-";
 
-		/// <summary>
-		/// Use ZipFile class for listing entries
-		/// </summary>
-		bool useZipFileWhenListing;
-		
-		/// <summary>
-		/// Use relative path information
-		/// </summary>
-		bool   relativePathInfo;
-		
-		/// <summary>
-		/// Operate silently
-		/// </summary>
-		bool   silent;
-		
-		/// <summary>
-		/// Use store rather than deflate when adding files, not likely to be used much
-		/// but it does exercise the option as the library supports it
-		/// </summary>
-		bool   useZipStored;
+				if ((attributes & 0x08) != 0)
+					result = result + "V";
+				else
+					result = result + "-";
 
-		/// <summary>
-		/// Restore file date and time to that stored in zip file on extraction
-		/// </summary>
-		bool restoreDateTime;
-		
-		/// <summary>
-		/// Overwrite files handling
-		/// </summary>
-		Overwrite   overwriteFiles = Overwrite.Prompt;
+				if ((attributes & 0x01) != 0)
+					result = result + "r";
+				else
+					result = result + "-";
 
-		/// <summary>
-		/// Optional password for archive
-		/// </summary>
-		string password;
-		
-		/// <summary>
-		/// prefix to remove when creating relative path names
-		/// </summary>
-		string removablePathPrefix;
-		
-		/// <summary>
-		/// Where things will go
-		/// </summary>
-		string targetOutputDirectory;
+				if ((attributes & 0x20) != 0)
+					result = result + "a";
+				else
+					result = result + "-";
 
-		// TODO full CRUD really required for Zip files.
+				if ((attributes & 0x04) != 0)
+					result = result + "s";
+				else
+					result = result + "-";
 
-		/// <summary>
-		/// Kinds of thing we know how to do, full CRUD would be great!!
-		/// </summary>
-		enum Operation {
-			Create,     // add files to new archive
-			Extract,    // extract files from existing archive
-			List        // show contents of existing archive
+				if ((attributes & 0x02) != 0)
+					result = result + "h";
+				else
+					result = result + "-";
+
+				// OS is NTFS
+				if ( operatingSystem == 10 )
+				{
+					// Encrypted
+					if ( (attributes & 0x4000) != 0 ) {
+						result += "E";
+					}
+					else {
+						result += "-";
+					}
+
+					// Not content indexed
+					if ( (attributes & 0x2000) != 0 ) {
+						result += "n";
+					}
+					else {
+						result += "-";
+					}
+
+					// Offline
+					if ( (attributes & 0x1000) != 0 ) {
+						result += "O";
+					}
+					else {
+						result += "-";
+					}
+
+					// Compressed
+					if ( (attributes & 0x0800) != 0 ) {
+						result += "C";
+					}
+					else {
+						result += "-";
+					}
+
+					// Reparse point
+					if ( (attributes & 0x0400) != 0 ) {
+						result += "R";
+					}
+					else {
+						result += "-";
+					}
+
+					// Sparse
+					if ( (attributes & 0x0200) != 0 ) {
+						result += "S";
+					}
+					else {
+						result += "-";
+					}
+
+					// Sparse
+					if ( (attributes & 0x0200) != 0 ) {
+						result += "T";
+					}
+					else {
+						result += "-";
+					}
+				}
+			}
+			return result;
 		}
-		
-		/// <summary>
-		/// What to do based on parsed command line arguments
-		/// </summary>
-		Operation operation = Operation.List;
 
 		/// <summary>
 		/// Determine if string is numeric [0-9]+
 		/// </summary>
 		/// <param name="rhs">string to test</param>
 		/// <returns>true iff rhs is numeric</returns>
-		bool IsNumeric(string rhs)
+		static bool IsNumeric(string rhs)
 		{
 			bool result;
 			if (rhs != null && rhs.Length > 0) {
 				result = true;
 				for (int i = 0; i < rhs.Length; ++i) {
-					if (char.IsDigit(rhs[i]) == false) {
+					if (!char.IsDigit(rhs[i])) {
 						result = false;
 						break;
 					}
@@ -205,6 +241,10 @@ namespace SharpZip {
 									optionIndex = option.Length;
 									
 									switch (option) {
+										case "-add":
+											operation = Operation.Add;
+											break;
+
 										case "-create":
 											operation = Operation.Create;
 											break;
@@ -220,7 +260,15 @@ namespace SharpZip {
 												targetOutputDirectory = optArg;
 											}
 											break;
-	
+
+										case "-delete":
+											operation = Operation.Delete;
+											break;
+
+										case "-test":
+											operation = Operation.Test;
+											break;
+
 										case "-info":
 											ShowEnvironment();
 											break;
@@ -229,6 +277,10 @@ namespace SharpZip {
 											addEmptyDirectoryEntries = true;
 											break;
 	
+										case "-data":
+											testData = true;
+											break;
+
 										case "-extractdir":
 											if (optArg.Length > 0) {
 												targetOutputDirectory = optArg;
@@ -291,7 +343,7 @@ namespace SharpZip {
 										case "-restore-dates":
 											restoreDateTime = true;
 											break;
-										
+
 										default:
 											System.Console.Error.WriteLine("Invalid long argument " + args[argIndex]);
 											result = false;
@@ -406,7 +458,7 @@ namespace SharpZip {
 					result = false;					
 				}
 			}
-			return result && fileSpecs.Count > 0;
+			return result && (fileSpecs.Count > 0);
 		}
 
 		/// <summary>
@@ -474,6 +526,10 @@ namespace SharpZip {
 			Console.Out.WriteLine("--emptydirs                Create entries for empty directories");
 			Console.Out.WriteLine("--encoding=codepage|name   Set code page for encoding by name or number");
 			Console.Out.WriteLine("--restore-dates            Restore dates on extraction");
+			Console.Out.WriteLine("--delete                   Delete files from archive");
+			Console.Out.WriteLine("--test                     Test archive for validity");
+			Console.Out.WriteLine("--data                     Test archive data");
+			Console.Out.WriteLine("--add                      Add files to archive");
 			Console.Out.WriteLine("-o+                        Overwrite files without prompting");
 			Console.Out.WriteLine("-o-                        Never overwrite files");
 			Console.Out.WriteLine("-p                         Store relative path info");
@@ -578,44 +634,6 @@ namespace SharpZip {
 			}
 		}
 		
-		string InterpretExternalAttributes(int os, int attributes)
-		{
-			string result = "";
-			if (os == 0)
-			{
-				if ((attributes & 0x10) != 0)
-					result = result + "D";
-				else
-					result = result + "-";
-
-				if ((attributes & 0x08) != 0)
-					result = result + "V";
-				else
-					result = result + "-";
-
-				if ((attributes & 0x01) != 0)
-					result = result + "r";
-				else
-					result = result + "-";
-
-				if ((attributes & 0x20) != 0)
-					result = result + "a";
-				else
-					result = result + "-";
-
-				if ((attributes & 0x04) != 0)
-					result = result + "s";
-				else
-					result = result + "-";
-
-				if ((attributes & 0x02) != 0)
-					result = result + "h";
-				else
-					result = result + "-";
-			}
-			return result;
-		}
-
 		/// <summary>
 		/// List zip file contents using ZipFile class
 		/// </summary>
@@ -775,8 +793,6 @@ namespace SharpZip {
 			return CookZipEntryName(name, removablePathPrefix, relativePathInfo);
 		}
 
-		ZipOutputStream outputStream;
-
 		/// <summary>
 		/// Add a file assuming the output is seekable
 		/// </summary>		
@@ -904,8 +920,9 @@ namespace SharpZip {
 		void Create(ArrayList fileSpecs)
 		{
 			string zipFileName = fileSpecs[0] as string;
-			if (Path.GetExtension(zipFileName).Length == 0)
+			if (Path.GetExtension(zipFileName).Length == 0) {
 				zipFileName = Path.ChangeExtension(zipFileName, ".zip");
+			}
 			
 			fileSpecs.RemoveAt(0);
 
@@ -917,8 +934,7 @@ namespace SharpZip {
 			int totalEntries = 0;
 			
 			using (FileStream stream = File.Create(zipFileName)) {
-				outputStream = new ZipOutputStream(stream);
-				try {
+				using (outputStream = new ZipOutputStream(stream)) {
 					if (password != null && password.Length > 0) {
 						outputStream.Password = password;
 					}
@@ -930,11 +946,12 @@ namespace SharpZip {
 						
 						if (pathName == null || pathName.Length == 0) {
 							pathName = Path.GetFullPath(".");
-							if (relativePathInfo == true)
+							if (relativePathInfo == true) {
 								removablePathPrefix = pathName;
+							}
 						} else {
 							pathName = Path.GetFullPath(pathName);
-							// TODO for paths like ./txt/*.txt the prefix should be fullpath for .
+							// TODO: for paths like ./txt/*.txt the prefix should be fullpath for .
 							// for z:txt/*.txt should be fullpath for z:.
 							if (relativePathInfo == true) {
 								removablePathPrefix = pathName;
@@ -959,11 +976,118 @@ namespace SharpZip {
 					if (totalEntries == 0) {
 						Console.Out.WriteLine("File created has no entries!");
 					}
-				} finally {
 					outputStream.Close();
 					outputStream = null;
 				}
 			}
+		}
+
+		bool ExtractFile(ZipInputStream inputStream, ZipEntry theEntry, string targetDir)
+		{
+			// try and sort out the correct place to save this entry
+			string entryFileName;
+						
+			if (Path.IsPathRooted(theEntry.Name)) 
+			{
+				string workName = Path.GetPathRoot(theEntry.Name);
+				workName = theEntry.Name.Substring(workName.Length);
+				entryFileName = Path.Combine(Path.GetDirectoryName(workName), Path.GetFileName(theEntry.Name));
+			} 
+			else 
+			{
+				entryFileName = theEntry.Name;
+			}
+
+			string targetName = Path.Combine(targetDir, entryFileName);
+						
+			string fullPath = Path.GetDirectoryName(Path.GetFullPath(targetName));
+#if TEST
+						Console.WriteLine("Decompress targetfile name " + entryFileName);
+						Console.WriteLine("Decompress targetpath " + fullPath);
+#endif						
+						
+			// Could be an option or parameter to allow failure or try creation
+			if (Directory.Exists(fullPath) == false)
+			{
+				try 
+				{
+					Directory.CreateDirectory(fullPath);
+				}
+				catch 
+				{
+					return false;
+				}
+			} 
+			else if (overwriteFiles == Overwrite.Prompt) 
+			{
+				if (File.Exists(targetName) == true) 
+				{
+					Console.Write("File " + targetName + " already exists.  Overwrite? ");
+								
+					// TODO sort out the complexities of Read so single key presses can be used
+					string readValue;
+					try 
+					{
+						readValue = Console.ReadLine();
+					}
+					catch 
+					{
+						readValue = null;
+					}
+								
+					if (readValue == null || readValue.ToLower() != "y") 
+					{
+#if TEST
+						Console.WriteLine("Skipped!");
+#endif						
+						return true;
+					}
+				}
+			}
+		
+					
+			if (entryFileName.Length > 0) 
+			{
+#if TEST
+				Console.WriteLine("Extracting...");
+#endif						
+				FileStream streamWriter = File.Create(targetName);
+						
+				try 
+				{
+					byte[] data = new byte[4096];
+					int size;
+					
+					do 
+					{
+						size = inputStream.Read(data, 0, data.Length);
+						streamWriter.Write(data, 0, size);
+					} while (size > 0);
+				}
+				finally 
+				{
+					streamWriter.Close();
+				}
+							
+				if (restoreDateTime) 
+				{
+					File.SetLastWriteTime(targetName, theEntry.DateTime);
+				}
+			}
+			return true;
+		}
+
+		void ExtractDirectory(ZipInputStream inputStream, ZipEntry theEntry, string targetDir)
+		{
+			/*
+			byte[] data = new byte[4096];
+			int size;
+					
+			do 
+			{
+				size = inputStream.Read(data, 0, data.Length);
+			} while (size > 0);
+			*/
 		}
 
 		/// <summary>
@@ -979,85 +1103,20 @@ namespace SharpZip {
 	
 			try {
 				using (ZipInputStream inputStream = new ZipInputStream(File.OpenRead(fileName))) {
-					if (password != null)
+					if (password != null) {
 						inputStream.Password = password;
+					}
 		
 					ZipEntry theEntry;
 		
 					while ((theEntry = inputStream.GetNextEntry()) != null) {
-						
-						// try and sort out the correct place to save this entry
-						string entryFileName;
-						
-						if (Path.IsPathRooted(theEntry.Name)) {
-							string workName = Path.GetPathRoot(theEntry.Name);
-							workName = theEntry.Name.Substring(workName.Length);
-							entryFileName = Path.Combine(Path.GetDirectoryName(workName), Path.GetFileName(theEntry.Name));
-						} else {
-							entryFileName = theEntry.Name;
-						}
-						string targetName = Path.Combine(targetDir, entryFileName);
-						
-						string fullPath = Path.GetDirectoryName(Path.GetFullPath(targetName));
-#if TEST
-						Console.WriteLine("Decompress targetfile name " + entryFileName);
-						Console.WriteLine("Decompress targetpath " + fullPath);
-#endif						
-						
-						// Could be an option or parameter to allow failure or try creation
-						if (Directory.Exists(fullPath) == false)
+						if ( theEntry.IsFile )
 						{
-							try {
-								Directory.CreateDirectory(fullPath);
-							}
-							catch {
-								return false;
-							}
-						} else if (overwriteFiles == Overwrite.Prompt) {
-							if (File.Exists(targetName) == true) {
-								Console.Write("File " + targetName + " already exists.  Overwrite? ");
-								
-								// TODO sort out the complexities of Read so single key presses can be used
-								string readValue;
-								try {
-									readValue = Console.ReadLine();
-								}
-								catch {
-									readValue = null;
-								}
-								
-								if (readValue == null || readValue.ToLower() != "y") {
-#if TEST
-									Console.WriteLine("Skipped!");
-#endif						
-									continue;
-								}
-							}
+							ExtractFile(inputStream, theEntry, targetDir);
 						}
-		
-					
-						if (entryFileName.Length > 0) {
-#if TEST
-							Console.WriteLine("Extracting...");
-#endif						
-							FileStream streamWriter = File.Create(targetName);
-						
-							try {
-								byte[] data = new byte[4096];
-								int size;
-					
-								do {
-									size = inputStream.Read(data, 0, data.Length);
-									streamWriter.Write(data, 0, size);
-								} while (size > 0);
-							}
-							finally {
-								streamWriter.Close();
-							}
-							
-							if (restoreDateTime) {
-								File.SetLastWriteTime(targetName, theEntry.DateTime);
-							}
+						else if ( theEntry.IsDirectory )
+						{
+							ExtractDirectory(inputStream, theEntry, targetDir);
 						}
 					}
 					inputStream.Close();
@@ -1105,6 +1164,69 @@ namespace SharpZip {
 			}
 		}
 
+		void Test(ArrayList fileSpecs)
+		{
+			string zipFileName = fileSpecs[0] as string;
+			if (Path.GetExtension(zipFileName).Length == 0) 
+			{
+				zipFileName = Path.ChangeExtension(zipFileName, ".zip");
+			}
+
+			using (ZipFile zipFile = new ZipFile(zipFileName))
+			{
+				if ( zipFile.TestArchive(testData) )
+				{
+					Console.Out.WriteLine("Archive test passed");
+				}
+				else
+				{
+					Console.Out.WriteLine("Archive test failure");
+				}
+			}
+		}
+
+		/// <summary>
+		/// Delete entries from an archive
+		/// </summary>
+		/// <param name="fileSpecs">The file specs to operate on.</param>
+		void Delete(ArrayList fileSpecs)
+		{
+			string zipFileName = fileSpecs[0] as string;
+			if (Path.GetExtension(zipFileName).Length == 0) 
+			{
+				zipFileName = Path.ChangeExtension(zipFileName, ".zip");
+			}
+
+			using (ZipFile zipFile = new ZipFile(zipFileName))
+			{
+				zipFile.BeginUpdate();
+				for ( int i = 1; i < fileSpecs.Count; ++i )
+				{
+					zipFile.Delete((string)fileSpecs[i]);
+				}
+				zipFile.CommitUpdate();
+			}
+		}
+
+		void Add(ArrayList fileSpecs)
+		{
+			string zipFileName = fileSpecs[0] as string;
+			if (Path.GetExtension(zipFileName).Length == 0) 
+			{
+				zipFileName = Path.ChangeExtension(zipFileName, ".zip");
+			}
+
+			using (ZipFile zipFile = new ZipFile(zipFileName))
+			{
+				zipFile.BeginUpdate();
+				for ( int i = 1; i < fileSpecs.Count; ++i )
+				{
+					zipFile.Add((string)fileSpecs[i]);
+				}
+				zipFile.CommitUpdate();
+			}
+		}
+
 		/// <summary>
 		/// Parse command line arguments and 'execute' them.
 		/// </summary>		
@@ -1128,6 +1250,18 @@ namespace SharpZip {
 						case Operation.Extract:
 							Extract(fileSpecs);
 							break;
+
+						case Operation.Delete:
+							Delete(fileSpecs);
+							break;
+
+						case Operation.Add:
+							Add(fileSpecs);
+							break;
+
+						case Operation.Test:
+							Test(fileSpecs);
+							break;
 					}
 				}
 			} else {
@@ -1148,6 +1282,89 @@ namespace SharpZip {
 			SharpZipArchiver sza = new SharpZipArchiver();
 			sza.Execute(args);
 		}
+
+		#region Instance Fields
+		/// <summary>
+		/// Has user already seen help output?
+		/// </summary>
+		bool seenHelp;
+		
+		/// <summary>
+		/// File specification possibly with wildcards from command line
+		/// </summary>
+		ArrayList fileSpecs = new ArrayList();
+		
+		/// <summary>
+		/// Deflate compression level
+		/// </summary>
+		int    compressionLevel = Deflater.DEFAULT_COMPRESSION;
+		
+		/// <summary>
+		/// Create entries for directories with no files
+		/// </summary>
+		bool   addEmptyDirectoryEntries;
+		
+		/// <summary>
+		/// Apply operations recursively
+		/// </summary>
+		bool   recursive;
+
+		/// <summary>
+		/// Use ZipFile class for listing entries
+		/// </summary>
+		bool useZipFileWhenListing;
+		
+		/// <summary>
+		/// Use relative path information
+		/// </summary>
+		bool   relativePathInfo;
+		
+		/// <summary>
+		/// Operate silently
+		/// </summary>
+		bool   silent;
+		
+		/// <summary>
+		/// Use store rather than deflate when adding files, not likely to be used much
+		/// but it does exercise the option as the library supports it
+		/// </summary>
+		bool   useZipStored;
+
+		/// <summary>
+		/// Restore file date and time to that stored in zip file on extraction
+		/// </summary>
+		bool restoreDateTime;
+		
+		/// <summary>
+		/// Overwrite files handling
+		/// </summary>
+		Overwrite   overwriteFiles = Overwrite.Prompt;
+
+		/// <summary>
+		/// Optional password for archive
+		/// </summary>
+		string password;
+		
+		/// <summary>
+		/// prefix to remove when creating relative path names
+		/// </summary>
+		string removablePathPrefix;
+		
+		/// <summary>
+		/// Where things will go
+		/// </summary>
+		string targetOutputDirectory;
+
+		/// <summary>
+		/// What to do based on parsed command line arguments
+		/// </summary>
+		Operation operation = Operation.List;
+
+		bool testData;
+
+		ZipOutputStream outputStream;
+
+		#endregion
 	}
 }
 

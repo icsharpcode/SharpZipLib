@@ -19,31 +19,33 @@ namespace Samples.FastZipDemo
 
 		void ListZipFile(string fileName, string fileFilter, string directoryFilter)
 		{
-			ZipFile zipFile = new ZipFile(fileName);
-			NameFilter localFileFilter = new NameFilter(fileFilter);
-			NameFilter localDirFilter = new NameFilter(directoryFilter);
-			if ( zipFile.Size == 0 ) {
-				Console.WriteLine("No entries to list");
-			}
-			else {
-				for ( int i = 0 ; i < zipFile.Size; ++i)
-				{
-					ZipEntry e = zipFile[i];
-					if ( e.IsFile ) {
-						string path = Path.GetDirectoryName(e.Name);
-						if ( localDirFilter.IsMatch(path) ) {
-							if ( localFileFilter.IsMatch(Path.GetFileName(e.Name)) ) {
+			using (ZipFile zipFile = new ZipFile(fileName)) {
+				PathFilter localFileFilter = new PathFilter(fileFilter);
+				PathFilter localDirFilter = new PathFilter(directoryFilter);
+				
+				if ( zipFile.Count == 0 ) {
+					Console.WriteLine("No entries to list");
+				}
+				else {
+					for ( int i = 0 ; i < zipFile.Count; ++i)
+					{
+						ZipEntry e = zipFile[i];
+						if ( e.IsFile ) {
+							string path = Path.GetDirectoryName(e.Name);
+							if ( localDirFilter.IsMatch(path) ) {
+								if ( localFileFilter.IsMatch(Path.GetFileName(e.Name)) ) {
+									Console.WriteLine(e.Name);
+								}
+							}
+						}
+						else if ( e.IsDirectory ) {
+							if ( localDirFilter.IsMatch(e.Name) ) {
 								Console.WriteLine(e.Name);
 							}
 						}
-					}
-					else if ( e.IsDirectory ) {
-						if ( localDirFilter.IsMatch(e.Name) ) {
+						else {
 							Console.WriteLine(e.Name);
 						}
-					}
-					else {
-						Console.WriteLine(e.Name);
 					}
 				}
 			}
