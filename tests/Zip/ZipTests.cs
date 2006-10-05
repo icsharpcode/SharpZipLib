@@ -518,7 +518,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Test]
 		[Category("Zip")]
 		[ExpectedException(typeof(NotSupportedException))]
-		public void UnsupportCompressionMethod()
+		public void UnsupportedCompressionMethod()
 		{
 			ZipEntry ze = new ZipEntry("HumblePie");
 			System.Type type = typeof(CompressionMethod);
@@ -1174,7 +1174,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	}
 
 	[TestFixture]
-	public class ZipExtraDatHandling : ZipBase
+	public class ZipExtraDataHandling : ZipBase
 	{
 		/// <summary>
 		/// Extra data for separate entries should be unique to that entry
@@ -1607,7 +1607,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 					zf.Close();
 				}
-
 			}
 			finally
 			{
@@ -1733,7 +1732,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					f.BeginUpdate();
 					f.Add(addFile);
 					f.CommitUpdate();
-					//               Assert.AreEqual(1, f.Size);
+					Assert.AreEqual(1, f.Count);
 				}
 
 				using ( ZipFile f = new ZipFile(tempFile) )
