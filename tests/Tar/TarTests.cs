@@ -555,7 +555,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 
 			headerD.LinkName = "Something different";
 
-			Assert.AreNotEqual(headerD.LinkName, entryf.TarHeader.LinkName, "Entry headers should be unique");
+			Assert.IsTrue(headerD.LinkName != entryf.TarHeader.LinkName, "Entry headers should be unique");
 		}
 	}
 }
