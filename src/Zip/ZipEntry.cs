@@ -535,7 +535,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					return versionToExtract;
 				} else {
 					int result = 10;
-					if ( forceZip64_ || LocalHeaderRequiresZip64 ) {
+					if ( LocalHeaderRequiresZip64 ) {
 						result = ZipConstants.VersionZip64;	
 					}
 					else if (CompressionMethod.Deflated == method) {
@@ -576,7 +576,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Gets a value indicating if the entry requires Zip64 extensions to be stored
+		/// Get a value indicating wether Zip64 extensions were forced.
+		/// </summary>
+		/// <returns></returns>
+		public bool IsZip64Forced()
+		{
+			return forceZip64_;
+		}
+
+		/// <summary>
+		/// Gets a value indicating if the entry requires Zip64 extensions 
+		/// to store the full entry values.
 		/// </summary>
 		public bool LocalHeaderRequiresZip64 {
 			get {
@@ -591,9 +601,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 						trueCompressedSize += ZipConstants.CryptoHeaderSize;
 					}
 
-					result = (this.size >= uint.MaxValue) ||
-						(trueCompressedSize >= uint.MaxValue) ||
-						(versionToExtract >= ZipConstants.VersionZip64); // TODO: This part of the test is wrong?
+					result = ((this.size >= uint.MaxValue) || (trueCompressedSize >= uint.MaxValue)) &&
+						((versionToExtract == 0) || (versionToExtract >= ZipConstants.VersionZip64));
 				}
 
 				return result;
@@ -688,7 +697,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Gets/Sets the size of the compressed data.
 		/// </summary>
 		/// <returns>
-		/// The size or -1 if unknown.
+		/// The compressed entry size or -1 if unknown.
 		/// </returns>
 		public long CompressedSize {
 			get {
@@ -762,82 +771,126 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			set {
-				if (value == null) {
+				if (value == null) 
+				{
 					this.extra = null;
-					return;
 				}
-				
-				if (value.Length > 0xffff) {
-					throw new System.ArgumentOutOfRangeException("value");
-				}
-				
-				this.extra = new byte[value.Length];
-				Array.Copy(value, 0, this.extra, 0, value.Length);
-				
-				ZipExtraData extraData = new ZipExtraData(extra);
-				
-				if ( extraData.Find(0x0001) ) {
-					if ( extraData.ValueLength != 16 ) {
-						throw new ZipException("Extra data extended Zip64 information length is invalid");
-					}
-					
-					Size = extraData.ReadLong();
-					CompressedSize = extraData.ReadLong();
-				}
-				
-				// TODO: Tests for reading NTFS extra data attributes
-				if ( extraData.Find(10) ) {
-					if ( extraData.ValueLength < 8 ) // No room for any tags.
+				else
+				{
+					if (value.Length > 0xffff) 
 					{
-						throw new ZipException("NTFS Extra data invalid");
+						throw new System.ArgumentOutOfRangeException("value");
 					}
-
-					extraData.ReadInt(); // Reserved
-
-					while ( extraData.UnreadCount > 0 ) 
-					{
-						int ntfsTag = extraData.ReadShort();
-						int ntfsLength = extraData.ReadShort();
-
-						if ( ntfsTag == 1 )
-						{
-							if ( ntfsLength < 24 )
-							{
-								long lastModification = extraData.ReadLong();
-								long lastAccess = extraData.ReadLong();
-								long createTime = extraData.ReadLong();
-
-								DateTime = System.DateTime.FromFileTime(lastModification);
-							}
-							break;
-						}
-						else
-						{
-							// An unknown NTFS tag so simply skip it.
-							extraData.Skip(ntfsLength);
-						}
-					}
+				
+					this.extra = new byte[value.Length];
+					Array.Copy(value, 0, this.extra, 0, value.Length);
 				}
-				else if ( extraData.Find(0x5455) ) {
-					int length = extraData.ValueLength;	
-					int flags = extraData.ReadByte();
-					
-					// Can include other times but these are ignored.  Length of data should
-					// actually be 1 + 4 * no of bits in flags.
-					if ( ((flags & 1) != 0) && (length >= 5) ) {
-						int iTime = (extraData.ReadByte()) |
-							(extraData.ReadByte() << 8) |
-							(extraData.ReadByte() << 16) |
-							(extraData.ReadByte() << 24);
+			}				
+		}
+		
+		/// <summary>
+		/// Process extra data fields updating the entry based on the contents.
+		/// </summary>
+		/// <param name="localHeader">True if the extra data fields should be handled
+		/// for a local header, rather than for a central header.
+		/// </param>
+		public void ProcessExtraData(bool localHeader)
+		{
+			ZipExtraData extraData = new ZipExtraData(this.extra);
 
-						DateTime = (new System.DateTime ( 1970, 1, 1, 0, 0, 0 ) +
-						            new TimeSpan ( 0, 0, 0, iTime, 0 )).ToLocalTime ();
-						known |= Known.Time;
+			if ( extraData.Find(0x0001) ) 
+			{
+				if ( (versionToExtract & 0xff) < ZipConstants.VersionZip64 )
+				{
+					throw new ZipException("Zip64 Extended information found but version is not valid");
+				}
+
+				// The recorded size will change but remember that this is zip64.
+				forceZip64_ = true;
+
+
+				if ( extraData.ValueLength < 4 ) 
+				{
+					throw new ZipException("Extra data extended Zip64 information length is invalid");
+				}
+
+				if ( localHeader || (size == uint.MaxValue) )
+				{
+					size = (ulong)extraData.ReadLong();
+				}
+
+				if ( localHeader || (compressedSize == uint.MaxValue) )
+				{
+					compressedSize = (ulong)extraData.ReadLong();
+				}
+			}
+			else
+			{
+				if ( 
+					((versionToExtract & 0xff) >= ZipConstants.VersionZip64) &&
+					( (size == uint.MaxValue) ||
+					(compressedSize == uint.MaxValue) ))
+				{
+					throw new ZipException("Zip64 Extended information required but is missing.");
+				}
+			}
+
+/* TODO: Testing for handling of windows extra data
+			if ( extraData.Find(10) ) 
+			{
+				// No room for any tags.
+				if ( extraData.ValueLength < 8 ) 
+				{
+					throw new ZipException("NTFS Extra data invalid");
+				}
+
+				extraData.ReadInt(); // Reserved
+
+				while ( extraData.UnreadCount >= 4 ) 
+				{
+					int ntfsTag = extraData.ReadShort();
+					int ntfsLength = extraData.ReadShort();
+					if ( ntfsTag == 1 )
+					{
+						if ( ntfsLength >= 24 )
+						{
+							long lastModification = extraData.ReadLong();
+							long lastAccess = extraData.ReadLong();
+							long createTime = extraData.ReadLong();
+
+							DateTime = System.DateTime.FromFileTime(lastModification);
+						}
+						break;
+					}
+					else
+					{
+						// An unknown NTFS tag so simply skip it.
+						extraData.Skip(ntfsLength);
 					}
 				}
 			}
+			else 
+*/			
+			if ( extraData.Find(0x5455) ) 
+			{
+				int length = extraData.ValueLength;	
+				int flags = extraData.ReadByte();
+					
+				// Can include other times but these are ignored.  Length of data should
+				// actually be 1 + 4 * no of bits in flags.
+				if ( ((flags & 1) != 0) && (length >= 5) ) 
+				{
+					int iTime = (extraData.ReadByte()) |
+						(extraData.ReadByte() << 8) |
+						(extraData.ReadByte() << 16) |
+						(extraData.ReadByte() << 24);
+
+					DateTime = (new System.DateTime ( 1970, 1, 1, 0, 0, 0 ) +
+						new TimeSpan ( 0, 0, 0, iTime, 0 )).ToLocalTime ();
+				}
+			}
 		}
-		
+
 		/// <summary>
 		/// Gets/Sets the entry comment.
 		/// </summary>
@@ -856,14 +909,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return comment;
 			}
 			set {
-				// TODO: this test is strictly incorrect as the length is in characters
-				// While the test is correct in that a comment of this length or greater 
-				// is definitely invalid, shorter comments may also have an invalid length.
+				// This test is strictly incorrect as the length is in characters
+				// while the storage limit is in bytes.
+				// While the test is partially correct in that a comment of this length or greater 
+				// is definitely invalid, shorter comments may also have an invalid length
+				// where there are multi-byte characters
+				// The full test is not possible here however as the code page to apply conversions with
+				// isnt available.
 				if ( (value != null) && (value.Length > 0xffff) ) {
-					throw new ArgumentOutOfRangeException("value");
+					throw new ArgumentOutOfRangeException("value", "cannot exceed 65535");
 				}
 				
-				this.comment = value;
+				comment = value;
 			}
 		}
 		
@@ -944,7 +1001,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// supports extracting data compressed with that method
 		/// </summary>
 		/// <param name="method">The compression method to test.</param>
-		/// <returns>Returns true if supported; false otherwise</returns>
+		/// <returns>Returns true if the compression method is supported; false otherwise</returns>
 		public static bool IsCompressionMethodSupported(CompressionMethod method)
 		{
 			return
