@@ -79,6 +79,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		#endregion
+
 		/// <summary>
 		/// Transform a directory name according to the Zip file naming conventions.
 		/// </summary>
@@ -106,7 +107,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public string TransformFile(string name)
 		{
 			if (name != null) {
-				if ( trimPrefix != null && name.IndexOf(trimPrefix) == 0 ) {
+				if ( (trimPrefix != null) && (name.IndexOf(trimPrefix) == 0) ) {
 					name = name.Substring(trimPrefix.Length);
 				}
 				
@@ -141,7 +142,60 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get { return trimPrefix; }
 			set { trimPrefix = value; }
 		}
-		
+
+		/// <summary>
+		/// Test a name to see if it is a valid name for a zip entry.
+		/// </summary>
+		/// <param name="name">The name to test.</param>
+		/// <param name="relaxed">If true checking is relaxed about windows file names and absolute paths.</param>
+		/// <returns>Returns true if the name is a valid zip name; false otherwise.</returns>
+		/// <remarks>Zip path names are actually in unix format,
+		/// and should only contain relative paths if a path is present.
+		/// This means that the path stored should not contain a drive or
+		/// device letter, or a leading slash.  All slashes should forward slashes '/'.
+		/// An empty name is valid where the input comes from standard input.
+		/// A null name is not considered valid.
+		/// </remarks>
+		public static bool IsValidName(string name, bool relaxed)
+		{
+			bool result = 
+				(name != null) &&
+				(name.IndexOfAny(Path.InvalidPathChars) < 0);
+			
+			if ( !relaxed )
+			{
+				result = result &&
+					(name.IndexOf('\\') < 0) &&
+					(name.IndexOf(':') < 0) &&
+					(name.IndexOf('/') != 0)
+					;
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// Test a name to see if it is a valid name for a zip entry.
+		/// </summary>
+		/// <param name="name">The name to test.</param>
+		/// <returns>Returns true if the name is a valid zip name; false otherwise.</returns>
+		/// <remarks>Zip path names are actually in unix format,
+		/// and should only contain relative paths if a path is present.
+		/// This means that the path stored should not contain a drive or
+		/// device letter, or a leading slash.  All slashes should forward slashes '/'.
+		/// An empty name is valid where the input comes from standard input.
+		/// A null name is not considered valid.
+		/// </remarks>
+		public static bool IsValidName(string name)
+		{
+			bool result = 
+				(name != null) &&
+				(name.IndexOfAny(Path.InvalidPathChars) < 0) &&
+				(name.IndexOf('\\') < 0) &&
+				(name.IndexOf(':') < 0) &&
+				(name.IndexOf('/') != 0)
+				;
+			return result;
+		}
 
 		#region Instance Fields
 		string trimPrefix;
