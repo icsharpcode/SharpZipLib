@@ -6,6 +6,8 @@ Changes since v0.84
 + Add ability to modify an existing archive to ZipFile class.
 + Limited FxCop cleanups
 + TarArchive and others made IDisposable.
++ TarOutputStream end-of-file garbage data fixed.
++ A bundle of minor bug fixes particularly in the Zip area.
 
 Changes since v0.83b
 + When skipping to an entry in a zip archive no data is read.  This allows password setting after examining the entry to
