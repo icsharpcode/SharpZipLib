@@ -39,6 +39,7 @@ using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Core
 {
+	#region EventArgs
 	/// <summary>
 	/// Event arguments for scanning.
 	/// </summary>
@@ -133,7 +134,6 @@ namespace ICSharpCode.SharpZipLib.Core
 			get { return name_; }
 		}
 		
-		
 		/// <summary>
 		/// The applicable exception.
 		/// </summary>
@@ -141,7 +141,6 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			get { return exception_; }
 		}
-
 		
 		/// <summary>
 		/// Get / set a value indicating wether scanning should continue.
@@ -159,6 +158,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		#endregion
 	}
 	
+	#endregion
+	#region Delegates
 	/// <summary>
 	/// Delegate invoked when a directory is processed.
 	/// </summary>
@@ -178,12 +179,14 @@ namespace ICSharpCode.SharpZipLib.Core
 	/// Delegate invoked when a file failure is detected.
 	/// </summary>
 	public delegate void FileFailureDelegate(object sender, ScanFailureEventArgs e);
+	#endregion
 
 	/// <summary>
 	/// FileSystemScanner provides facilities scanning of files and directories.
 	/// </summary>
 	public class FileSystemScanner
 	{
+		#region Constructors
 		/// <summary>
 		/// Initialise a new instance of <see cref="FileSystemScanner"></see>
 		/// </summary>
@@ -223,7 +226,8 @@ namespace ICSharpCode.SharpZipLib.Core
 			fileFilter_ = fileFilter;
 			directoryFilter_ = directoryFilter;
 		}
-		
+		#endregion
+		#region Delegates
 		/// <summary>
 		/// Delegate to invoke when a directory is processed.
 		/// </summary>
@@ -243,7 +247,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Delegate to invoke when a file failure is detected.
 		/// </summary>
 		public FileFailureDelegate FileFailure;
-		
+		#endregion
+
 		/// <summary>
 		/// Raise the DirectoryFailure event.
 		/// </summary>
@@ -307,7 +312,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Scan a directory.
 		/// </summary>
 		/// <param name="directory">The base directory to scan.</param>
-		/// <param name="recurse">True to recurse subdirectories, false to do a single directory.</param>
+		/// <param name="recurse">True to recurse subdirectories, false to scan a single directory.</param>
 		public void Scan(string directory, bool recurse)
 		{
 			alive_ = true;

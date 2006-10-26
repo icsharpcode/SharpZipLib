@@ -46,6 +46,7 @@ namespace ICSharpCode.SharpZipLib.Core
 	/// </summary>
 	public class PathFilter : IScanFilter
 	{
+		#region Constructors
 		/// <summary>
 		/// Initialise a new instance of <see cref="PathFilter"></see>.
 		/// </summary>
@@ -54,6 +55,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			nameFilter_ = new NameFilter(filter);
 		}
+		#endregion
 
 		/// <summary>
 		/// Test a name to see if it matches the filter.
@@ -71,8 +73,172 @@ namespace ICSharpCode.SharpZipLib.Core
 	}
 
 	/// <summary>
+	/// ExtendedPathFilter filters based on name, file size, and the write time of the file.
+	/// </summary>
+	public class ExtendedPathFilter : PathFilter
+	{
+		#region Constructors
+		/// <summary>
+		/// Initialise a new instance of ExtendedPathFilter.
+		/// </summary>
+		/// <param name="filter">The filter to apply.</param>
+		/// <param name="minSize">The minimum file size to include.</param>
+		/// <param name="maxSize">The maximum file size to include.</param>
+		public ExtendedPathFilter(string filter,
+			long minSize, long maxSize)
+			: base(filter)
+		{
+			MinSize = minSize;
+			MaxSize = maxSize;
+		}
+
+		/// <summary>
+		/// Initialise a new instance of ExtendedPathFilter.
+		/// </summary>
+		/// <param name="filter">The filter to apply.</param>
+		/// <param name="minDate">The minimum <see cref="DateTime"/> to include.</param>
+		/// <param name="maxDate">The maximum <see cref="DateTime"/> to include.</param>
+		public ExtendedPathFilter(string filter,
+			DateTime minDate, DateTime maxDate)
+			: base(filter)
+		{
+			MinDate = minDate;
+			MaxDate = maxDate;
+		}
+
+		/// <summary>
+		/// Initialise a new instance of ExtendedPathFilter.
+		/// </summary>
+		/// <param name="filter">The filter to apply.</param>
+		/// <param name="minSize">The minimum file size to include.</param>
+		/// <param name="maxSize">The maximum file size to include.</param>
+		/// <param name="minDate">The minimum <see cref="DateTime"/> to include.</param>
+		/// <param name="maxDate">The maximum <see cref="DateTime"/> to include.</param>
+		public ExtendedPathFilter(string filter,
+			long minSize, long maxSize,
+			DateTime minDate, DateTime maxDate)
+			: base(filter)
+		{
+			MinSize = minSize;
+			MaxSize = maxSize;
+			MinDate = minDate;
+			MaxDate = maxDate;
+		}
+		#endregion
+
+		/// <summary>
+		/// Test a filename to see if it matches the filter.
+		/// </summary>
+		/// <param name="name">The filename to test.</param>
+		/// <returns>True if the filter matches, false otherwise.</returns>
+		public override bool IsMatch(string name)
+		{
+			bool result = base.IsMatch(name);
+
+			if ( result )
+			{
+				FileInfo fileInfo = new FileInfo(name);
+				result = 
+					(MinSize <= fileInfo.Length) &&
+					(MaxSize >= fileInfo.Length) &&
+					(MinDate <= fileInfo.LastWriteTime) &&
+					(MaxDate >= fileInfo.LastWriteTime)
+					;
+			}
+			return result;
+		}
+		
+		/// <summary>
+		/// Get/set the minimum size for a file that will match this filter.
+		/// </summary>
+		public long MinSize
+		{
+			get { return minSize_; }
+			set
+			{
+				if ( (value < 0) || (maxSize_ < value) )
+				{
+					throw new ArgumentOutOfRangeException("value");
+				}
+
+				minSize_ = value;
+			}
+		}
+		
+		/// <summary>
+		/// Get/set the maximum size for a file that will match this filter.
+		/// </summary>
+		public long MaxSize
+		{
+			get { return maxSize_; }
+			set
+			{
+				if ( (value < 0) || (minSize_ > value) )
+				{
+					throw new ArgumentOutOfRangeException("value");
+				}
+
+				maxSize_ = value;
+			}
+		}
+
+		/// <summary>
+		/// Get/set the minimum <see cref="DateTime"/> value that will match for this filter.
+		/// </summary>
+		/// <remarks>Files with a LastWrite time less than this value are excluded by the filter.</remarks>
+		public DateTime MinDate
+		{
+			get
+			{
+				return minDate_;
+			}
+
+			set
+			{
+				if ( value > maxDate_ )
+				{
+					throw new ArgumentException("Exceeds MaxDate", "value");
+				}
+
+				minDate_ = value;
+			}
+		}
+
+		/// <summary>
+		/// Get/set the maximum <see cref="DateTime"/> value that will match for this filter.
+		/// </summary>
+		/// <remarks>Files with a LastWrite time greater than this value are excluded by the filter.</remarks>
+		public DateTime MaxDate
+		{
+			get
+			{
+				return maxDate_;
+			}
+
+			set
+			{
+				if ( minDate_ > value )
+				{
+					throw new ArgumentException("Exceeds MinDate", "value");
+				}
+
+				maxDate_ = value;
+			}
+		}
+
+		#region Instance Fields
+		long minSize_;
+		long maxSize_ = long.MaxValue;
+		DateTime minDate_ = DateTime.MinValue;
+		DateTime maxDate_ = DateTime.MaxValue;
+		#endregion
+	}
+
+	/// <summary>
 	/// NameAndSizeFilter filters based on name and file size.
 	/// </summary>
+	/// <remarks>A sample showing how filters might be extended.</remarks>
+	[Obsolete("Use ExtendedPathFilter instead")]
 	public class NameAndSizeFilter : PathFilter
 	{
 

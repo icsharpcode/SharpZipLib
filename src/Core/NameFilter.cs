@@ -93,6 +93,11 @@ namespace ICSharpCode.SharpZipLib.Core
         /// <returns>True if the expression is valid, false otherwise.</returns>
         public static bool IsValidFilterExpression(string toTest)
         {
+			if ( toTest == null )
+			{
+				throw new ArgumentNullException("toTest");
+			}
+
             bool result = true;
 
             try
@@ -141,9 +146,9 @@ namespace ICSharpCode.SharpZipLib.Core
         /// <summary>
         /// Test a value to see if it is included by the filter.
         /// </summary>
-        /// <param name="testValue">The value to test.</param>
+        /// <param name="name">The value to test.</param>
         /// <returns>True if the value is included, false otherwise.</returns>
-        public bool IsIncluded(string testValue)
+        public bool IsIncluded(string name)
         {
             bool result = false;
             if ( inclusions_.Count == 0 )
@@ -154,7 +159,7 @@ namespace ICSharpCode.SharpZipLib.Core
             {
                 foreach ( Regex r in inclusions_ )
                 {
-                    if ( r.IsMatch(testValue) )
+                    if ( r.IsMatch(name) )
                     {
                         result = true;
                         break;
@@ -167,14 +172,14 @@ namespace ICSharpCode.SharpZipLib.Core
         /// <summary>
         /// Test a value to see if it is excluded by the filter.
         /// </summary>
-        /// <param name="testValue">The value to test.</param>
+        /// <param name="name">The value to test.</param>
         /// <returns>True if the value is excluded, false otherwise.</returns>
-        public bool IsExcluded(string testValue)
+        public bool IsExcluded(string name)
         {
             bool result = false;
             foreach ( Regex r in exclusions_ )
             {
-                if ( r.IsMatch(testValue) )
+                if ( r.IsMatch(name) )
                 {
                     result = true;
                     break;
@@ -186,11 +191,11 @@ namespace ICSharpCode.SharpZipLib.Core
         /// <summary>
         /// Test a value to see if it matches the filter.
         /// </summary>
-        /// <param name="testValue">The value to test.</param>
+        /// <param name="name">The value to test.</param>
         /// <returns>True if the value matches, false otherwise.</returns>
-        public bool IsMatch(string testValue)
+        public bool IsMatch(string name)
         {
-            return (IsIncluded(testValue) == true) && (IsExcluded(testValue) == false);
+            return (IsIncluded(name) == true) && (IsExcluded(name) == false);
         }
 
         /// <summary>
