@@ -221,10 +221,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			entry = new ZipEntry(name, versionRequiredToExtract);
 			entry.Flags = flags;
 			
-			if (method == (int)CompressionMethod.Stored && (!isCrypted && csize != size || (isCrypted && csize - ZipConstants.CryptoHeaderSize != size))) {
-				throw new ZipException("Stored, but compressed != uncompressed");
-			}
-			
 			entry.CompressionMethod = (CompressionMethod)method;
 			
 			if ((flags & 8) == 0) {
@@ -254,16 +250,36 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			
 			entry.DosTime = dostime;
-			
-			// Handle extra data if present.  This can alter some fields of the entry.
+
+			// If local header requires Zip64 is true then the extended header should contain
+			// both values.
+
+			// Handle extra data if present.  This can set/alter some fields of the entry.
 			if (extraLen > 0) {
 				byte[] extra = new byte[extraLen];
 				inputBuffer.ReadRawBuffer(extra);
 				entry.ExtraData = extra;
 			}
+
+			entry.ProcessExtraData(true);
+			if ( entry.CompressedSize >= 0 )
+			{
+				csize = entry.CompressedSize;
+			}
+
+			if ( entry.Size >= 0 )
+			{
+				size = entry.Size;
+			}
 			
+			if (method == (int)CompressionMethod.Stored && (!isCrypted && csize != size || (isCrypted && csize - ZipConstants.CryptoHeaderSize != size))) 
+			{
+				throw new ZipException("Stored, but compressed != uncompressed");
+			}
+
 			// Determine how to handle reading of data if this is attempted.
-			if (entry.IsCompressionMethodSupported()) {
+			if (entry.IsCompressionMethodSupported()) 
+			{
 				internalReader = new ReaderDelegate(InitialRead);
 			}
 			else {

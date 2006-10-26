@@ -43,7 +43,8 @@ using System.Threading;
 
 namespace ICSharpCode.SharpZipLib.Zip 
 {
-	
+
+	#region Enumerations
 	/// <summary>
 	/// The kind of compression used for an entry in an archive
 	/// </summary>
@@ -77,7 +78,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 	}
 	
-
 	/// <summary>
 	/// Identifies the encryption algorithm used for an entry
 	/// </summary>
@@ -177,6 +177,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		HeaderMasked      = 0x2000
 	}
 	
+	#endregion
+
 	/// <summary>
 	/// This class contains constants used for Zip format files
 	/// </summary>
@@ -395,7 +397,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public const int ENDSIG = 'P' | ('K' << 8) | (5 << 16) | (6 << 24);
 		#endregion
 		
-
 #if !COMPACT_FRAMEWORK
 
         static int defaultCodePage = Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage;

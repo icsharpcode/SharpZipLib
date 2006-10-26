@@ -158,7 +158,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		#region Instance Fields
 		Known known;
-		int    externalFileAttributes = -1;     // contains external attributes (os dependant)
+		int    externalFileAttributes = -1;     // contains external attributes (O/S dependant)
 		
 		ushort versionMadeBy;					// Contains host system and version information
 												// only relevant for central header entries
@@ -189,9 +189,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="name">
 		/// The name for this entry. Can include directory components.
-		/// The convention for names is 'unix'  style paths with no device names and 
-		/// path elements separated by '/' characters.  This is not enforced see <see cref="CleanName">CleanName</see>
-		/// on how to ensure names are valid if this is desired.
+		/// The convention for names is 'unix' style paths with relative names only.
+		/// There are with no device names and path elements are separated by '/' characters.
 		/// </param>
 		/// <exception cref="ArgumentNullException">
 		/// The name passed is null
@@ -242,15 +241,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 		internal ZipEntry(string name, int versionRequiredToExtract, int madeByInfo,
 			CompressionMethod method)
 		{
-			if (name == null)  {
+			if (name == null)  
+			{
 				throw new System.ArgumentNullException("ZipEntry name");
 			}
 
-			if ( name.Length > 0xffff )	{
+			if ( name.Length > 0xffff )	
+			{
 				throw new ArgumentException("Name is too long", "name");
 			}
 
-			if ( (versionRequiredToExtract != 0) && (versionRequiredToExtract < 10) ) {
+			if ( (versionRequiredToExtract != 0) && (versionRequiredToExtract < 10) ) 
+			{
 				throw new ArgumentOutOfRangeException("versionRequiredToExtract");
 			}
 			
@@ -267,9 +269,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="entry">
 		/// The entry to copy.
 		/// </param>
+		[Obsolete("Use Clone instead")]
 		public ZipEntry(ZipEntry entry)
 		{
-			if ( entry == null ) {
+			if ( entry == null ) 
+			{
 				throw new ArgumentNullException("entry");
 			}
 
@@ -303,8 +307,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get a value indicating wether the entry has a CRC value available.
 		/// </summary>
-		public bool HasCrc {
-			get {
+		public bool HasCrc 
+		{
+			get 
+			{
 				return (known & Known.Crc) != 0;
 			}
 		}
@@ -313,14 +319,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get/Set flag indicating if entry is encrypted.
 		/// A simple helper routine to aid interpretation of <see cref="Flags">flags</see>
 		/// </summary>
-		public bool IsCrypted {
-			get {
+		public bool IsCrypted 
+		{
+			get 
+			{
 				return (flags & 1) != 0; 
 			}
-			set {
-				if (value) {
+			set 
+			{
+				if (value) 
+				{
 					flags |= 1;
-				} else {
+				} 
+				else 
+				{
 					flags &= ~1;
 				}
 			}
@@ -368,11 +380,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Bit 6: If set indicates strong encryption was used.<br/>
 		/// Bit 7-15: Unused or reserved<br/>
 		/// </remarks>
-		public int Flags {
-			get { 
+		public int Flags 
+		{
+			get 
+			{ 
 				return flags; 
 			}
-			set {
+			set 
+			{
 				flags = value; 
 			}
 		}
@@ -380,11 +395,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get/Set index of this entry in Zip file
 		/// </summary>
-		public long ZipFileIndex {
-			get {
+		public long ZipFileIndex 
+		{
+			get 
+			{
 				return zipFileIndex;
 			}
-			set {
+			set 
+			{
 				zipFileIndex = value;
 			}
 		}
@@ -392,11 +410,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get/set offset for use in central header
 		/// </summary>
-		public long Offset {
-			get {
+		public long Offset 
+		{
+			get 
+			{
 				return offset;
 			}
-			set {
+			set 
+			{
 				offset = value;
 			}
 		}
@@ -406,16 +427,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The values of this are operating system dependant see
 		/// <see cref="HostSystem">HostSystem</see> for details
 		/// </summary>
-		public int ExternalFileAttributes {
-			get {
-				if ((known & Known.ExternalAttributes) == 0) {
+		public int ExternalFileAttributes 
+		{
+			get 
+			{
+				if ((known & Known.ExternalAttributes) == 0) 
+				{
 					return -1;
-				} else {
+				} 
+				else 
+				{
 					return externalFileAttributes;
 				}
 			}
 			
-			set {
+			set 
+			{
 				externalFileAttributes = value;
 				known |= Known.ExternalAttributes;
 			}
@@ -426,8 +453,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The value / 10 indicates the major version number, and 
 		/// the value mod 10 is the minor version number
 		/// </summary>
-		public int VersionMadeBy {
-			get { 
+		public int VersionMadeBy 
+		{
+			get 
+			{ 
 				return (versionMadeBy & 0xff);
 			}
 		}
@@ -438,7 +467,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// and match the values
 		/// </summary>
 		/// <param name="attributes">The attributes to test.</param>
-		/// <returns>Returns true if the external attributes are known to be DOS 
+		/// <returns>Returns true if the external attributes are known to be DOS/Windows 
 		/// based and have the same attributes set as the value passed.</returns>
 		bool HasDosAttributes(int attributes)
 		{
@@ -492,12 +521,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <item>remainder - unused</item>
 		/// </list>
 		/// </remarks>
-		public int HostSystem {
-			get { 
+		public int HostSystem 
+		{
+			get 
+			{ 
 				return (versionMadeBy >> 8) & 0xff; 
 			}
 
-			set {
+			set 
+			{
 				versionMadeBy &= 0xff;
 				versionMadeBy |= (ushort)((value & 0xff) << 8);
 			}
@@ -528,23 +560,36 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// 6.1 - File is encrypted using non-OAEP key wrapping<br/>
 		/// 6.2 - Central directory encryption (not confirmed yet)<br/>
 		/// </remarks>
-		public int Version {
-			get {
+		public int Version 
+		{
+			get 
+			{
 				// Return recorded version if known.
-				if (versionToExtract != 0) {
+				if (versionToExtract != 0) 
+				{
 					return versionToExtract;
-				} else {
+				} 
+				else 
+				{
 					int result = 10;
-					if ( LocalHeaderRequiresZip64 ) {
+					if ( LocalHeaderRequiresZip64 ) 
+					{
 						result = ZipConstants.VersionZip64;	
 					}
-					else if (CompressionMethod.Deflated == method) {
+					else if (CompressionMethod.Deflated == method) 
+					{
 						result = 20;
-					} else if (IsDirectory == true) {
+					} 
+					else if (IsDirectory == true) 
+					{
 						result = 20;
-					} else if (IsCrypted == true) {
+					} 
+					else if (IsCrypted == true) 
+					{
 						result = 20;
-					} else if (HasDosAttributes(0x08) ) {
+					} 
+					else if (HasDosAttributes(0x08) ) 
+					{
 						result = 11;
 					}
 					return result;
@@ -588,8 +633,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Gets a value indicating if the entry requires Zip64 extensions 
 		/// to store the full entry values.
 		/// </summary>
-		public bool LocalHeaderRequiresZip64 {
-			get {
+		public bool LocalHeaderRequiresZip64 
+		{
+			get 
+			{
 				bool result = forceZip64_;
 
 				if ( !result )
@@ -614,7 +661,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public bool CentralHeaderRequiresZip64
 		{
-			get {
+			get 
+			{
 				return LocalHeaderRequiresZip64 || (offset >= 0xffffffff);
 			}
 		}
@@ -622,15 +670,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get/Set DosTime
 		/// </summary>		
-		public long DosTime {
-			get {
-				if ((known & Known.Time) == 0) {
+		public long DosTime 
+		{
+			get 
+			{
+				if ((known & Known.Time) == 0) 
+				{
 					return 0;
-				} else {
+				} 
+				else 
+				{
 					return dosTime;
 				}
 			}
-			set {
+			set 
+			{
 				this.dosTime = (uint)value;
 				known |= Known.Time;
 			}
@@ -639,14 +693,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Gets/Sets the time of last modification of the entry.
 		/// </summary>
-		public DateTime DateTime {
-			get {
+		public DateTime DateTime 
+		{
+			get 
+			{
 				// Although technically not valid some archives have dates set to zero.
 				// This mimics some archivers handling and is a good a cludge as any probably.
-				if ( dosTime == 0 ) {
+				if ( dosTime == 0 ) 
+				{
 					return DateTime.Now;
 				}
-				else {
+				else 
+				{
 					uint sec  = 2 * (dosTime & 0x1f);
 					uint min  = (dosTime >> 5) & 0x3f;
 					uint hrs  = (dosTime >> 11) & 0x1f;
@@ -656,13 +714,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 					return new System.DateTime((int)year, (int)mon, (int)day, (int)hrs, (int)min, (int)sec);
 				}
 			}
-			set {
+			set 
+			{
 				DosTime = ((uint)value.Year - 1980 & 0x7f) << 25 | 
-				          ((uint)value.Month) << 21 |
-				          ((uint)value.Day) << 16 |
-				          ((uint)value.Hour) << 11 |
-				          ((uint)value.Minute) << 5 |
-				          ((uint)value.Second) >> 1;
+					((uint)value.Month) << 21 |
+					((uint)value.Day) << 16 |
+					((uint)value.Hour) << 11 |
+					((uint)value.Minute) << 5 |
+					((uint)value.Second) >> 1;
 			}
 		}
 		
@@ -671,8 +730,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// always separated by slashes ('/').  Dos device names like C: should also
 		/// be removed.  See the <see cref="ZipNameTransform"/> class, or <see cref="CleanName"/>
 		/// </summary>
-		public string Name {
-			get {
+		public string Name 
+		{
+			get 
+			{
 				return name;
 			}
 		}
@@ -683,11 +744,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// The size or -1 if unknown.
 		/// </returns>
-		public long Size {
-			get {
+		public long Size 
+		{
+			get 
+			{
 				return (known & Known.Size) != 0 ? (long)size : -1L;
 			}
-			set {
+			set 
+			{
 				this.size  = (ulong)value;
 				this.known |= Known.Size;
 			}
@@ -699,16 +763,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// The compressed entry size or -1 if unknown.
 		/// </returns>
-		public long CompressedSize {
-			get {
+		public long CompressedSize 
+		{
+			get 
+			{
 				return (known & Known.CompressedSize) != 0 ? (long)compressedSize : -1L;
 			}
-			set {
+			set 
+			{
 				this.compressedSize = (ulong)value;
 				this.known |= Known.CompressedSize;
 			}
 		}
-		
+
 		/// <summary>
 		/// Gets/Sets the crc of the uncompressed data.
 		/// </summary>
@@ -718,7 +785,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// The crc value or -1 if unknown.
 		/// </returns>
-		public long Crc {
+		public long Crc 
+		{
 			get {
 				return (known & Known.Crc) != 0 ? crc & 0xffffffffL : -1L;
 			}
@@ -794,7 +862,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="localHeader">True if the extra data fields should be handled
 		/// for a local header, rather than for a central header.
 		/// </param>
-		public void ProcessExtraData(bool localHeader)
+		internal void ProcessExtraData(bool localHeader)
 		{
 			ZipExtraData extraData = new ZipExtraData(this.extra);
 
@@ -807,7 +875,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				// The recorded size will change but remember that this is zip64.
 				forceZip64_ = true;
-
 
 				if ( extraData.ValueLength < 4 ) 
 				{
@@ -880,13 +947,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// actually be 1 + 4 * no of bits in flags.
 				if ( ((flags & 1) != 0) && (length >= 5) ) 
 				{
-					int iTime = (extraData.ReadByte()) |
-						(extraData.ReadByte() << 8) |
-						(extraData.ReadByte() << 16) |
-						(extraData.ReadByte() << 24);
+					int iTime = extraData.ReadInt();
 
-					DateTime = (new System.DateTime ( 1970, 1, 1, 0, 0, 0 ) +
-						new TimeSpan ( 0, 0, 0, iTime, 0 )).ToLocalTime ();
+					DateTime = (new System.DateTime ( 1970, 1, 1, 0, 0, 0 ).ToUniversalTime() +
+						new TimeSpan ( 0, 0, 0, iTime, 0 )).ToLocalTime();
 				}
 			}
 		}
@@ -938,11 +1002,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			get {
 				int nameLength = name.Length;
-				bool result = (nameLength > 0) && ((name[nameLength - 1] == '/') || (name[nameLength - 1] == '\\'));
-				
-				if ( !result && HasDosAttributes(16) ) {
-					result = true;
-				}
+				bool result = 
+					((nameLength > 0) && 
+					((name[nameLength - 1] == '/') || (name[nameLength - 1] == '\\'))) ||
+					HasDosAttributes(16)
+					;
 				return result;
 			}
 		}
@@ -957,14 +1021,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public bool IsFile
 		{
 			get {
-				bool result = !IsDirectory;
-
-				// Exclude volume labels
-				if ( result && HasDosAttributes(8) ) 
-				{
-					result = false;
-				}
-				return result;
+				return !IsDirectory && !HasDosAttributes(8);
 			}
 		}
 		
@@ -983,7 +1040,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public object Clone()
 		{
-			return new ZipEntry(this);
+			ZipEntry result = (ZipEntry)this.MemberwiseClone();
+
+			if ( extra != null )
+			{
+				result.extra = new byte[extra.Length];
+				Array.Copy(result.extra, 0, extra, 0, extra.Length);
+			}
+
+			return result;
 		}
 		
 		#endregion

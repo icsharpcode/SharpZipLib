@@ -318,6 +318,37 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 		
+		static int MakeExternalAttributes(FileInfo info)
+		{
+			return (int)info.Attributes;
+		}
+
+		void UpdateEntry(ZipEntry entry, FileInfo info)
+		{
+//TODO: Setting attributes and HostSystem like this may be incorrect and its not tested.
+			entry.DateTime = info.LastWriteTime;
+			entry.ExternalFileAttributes = MakeExternalAttributes(info);
+
+			if ( (Environment.OSVersion.Platform == System.PlatformID.Win32S) ||
+				(Environment.OSVersion.Platform == System.PlatformID.Win32Windows)  ||
+				(Environment.OSVersion.Platform == System.PlatformID.WinCE)
+				)
+			{
+				entry.HostSystem = (int)HostSystemID.Msdos;
+			}
+			else if (
+				Environment.OSVersion.Platform == System.PlatformID.Win32NT
+				)
+			{
+				entry.HostSystem = (int)HostSystemID.WindowsNT;
+				// TODO: Add extra data to include NTFS information.
+			}
+			else {
+				// TODO: Mono support for HostSystem/External file attributes
+				// entry.HostSystem = (int)ZipEntry.HostSystemID.Unix;
+			}
+		}
+
 		void ProcessFile(object sender, ScanEventArgs e)
 		{
 			if ( (events_ != null) && (events_.ProcessFile != null) ) {
@@ -327,6 +358,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if ( e.ContinueRunning ) {
 				string cleanedName = nameTransform_.TransformFile(e.Name);
 				ZipEntry entry = new ZipEntry(cleanedName);
+
+				FileInfo info = new FileInfo(e.Name);
+				UpdateEntry(entry, info);
+
 				outputStream_.PutNextEntry(entry);
 				AddFileContents(e.Name);
 			}

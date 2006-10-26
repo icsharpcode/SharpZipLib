@@ -42,18 +42,29 @@ using ICSharpCode.SharpZipLib.Core;
 namespace ICSharpCode.SharpZipLib.Zip
 {
 	/// <summary>
-	/// ZipNameTransform transforms name as per the Zip file convention.
+	/// ZipNameTransform transforms names as per the Zip file naming convention.
 	/// </summary>
+	/// <remarks>The use of absolute names is supported although its use is not valid 
+	/// according to Zip naming conventions, and should not be used if maximum compatability is desired.</remarks>
 	public class ZipNameTransform : INameTransform
 	{
 		#region Constructors
 		/// <summary>
 		/// Initialize a new instance of <see cref="ZipNameTransform"></see>
 		/// </summary>
-		/// <remarks>Relative paths default to true with this constructor.</remarks>
 		public ZipNameTransform()
 		{
-			relativePath = true;
+			relativePath_ = true;
+		}
+
+		/// <summary>
+		/// Initialize a new instance of <see cref="ZipNameTransform"></see>
+		/// </summary>
+		/// <param name="trimPrefix">The string to trim from front of paths if found.</param>
+		public ZipNameTransform(string trimPrefix)
+		{
+			relativePath_ = true;
+			trimPrefix_ = trimPrefix;
 		}
 
 		/// <summary>
@@ -61,9 +72,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="useRelativePaths">If true relative paths are created, 
 		/// if false absolute paths are created. </param>
+		/// <remarks>
+		/// Absolute paths are not compatible with the Zip specification although
+		/// archivers can create them.  If maximum compatability is important
+		/// always user relative paths.
+		/// </remarks>
 		public ZipNameTransform(bool useRelativePaths)
 		{
-			relativePath = useRelativePaths;
+			relativePath_ = useRelativePaths;
 		}
 
 		/// <summary>
@@ -72,13 +88,38 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="useRelativePaths">If true relative paths are created, 
 		/// if false absolute paths are created. </param>
 		/// <param name="trimPrefix">The string to trim from front of paths if found.</param>
+		/// <remarks>
+		/// Absolute paths are not compatible with the Zip specification. If maximum compatability is important
+		/// always use relative paths.
+		/// </remarks>
 		public ZipNameTransform(bool useRelativePaths, string trimPrefix)
 		{
-			this.trimPrefix = trimPrefix;
-			relativePath = useRelativePaths;
+			trimPrefix_ = trimPrefix;
+			relativePath_ = useRelativePaths;
 		}
 		
 		#endregion
+		/// <summary>
+		/// Static constructor.
+		/// </summary>
+		static ZipNameTransform()
+		{
+			int howMany = Path.InvalidPathChars.Length + 2;
+
+			InvalidEntryCharsRelaxed = new char[howMany];
+			Array.Copy(Path.InvalidPathChars, 0, InvalidEntryCharsRelaxed, 0, Path.InvalidPathChars.Length);
+			InvalidEntryCharsRelaxed[howMany - 1] = '*';
+			InvalidEntryCharsRelaxed[howMany - 2] = '?';
+
+			howMany = Path.InvalidPathChars.Length + 4; 
+			InvalidEntryChars = new char[howMany];
+			Array.Copy(Path.InvalidPathChars, 0, InvalidEntryChars, 0, Path.InvalidPathChars.Length);
+			InvalidEntryChars[howMany - 1] = ':';
+			InvalidEntryChars[howMany - 2] = '\\';
+			InvalidEntryChars[howMany - 3] = '*';
+			InvalidEntryChars[howMany - 4] = '?';
+
+		}
 
 		/// <summary>
 		/// Transform a directory name according to the Zip file naming conventions.
@@ -88,13 +129,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public string TransformDirectory(string name)
 		{
 			name = TransformFile(name);
-			if (name.Length > 0) {
-				if ( !name.EndsWith("/") ) {
+			if (name.Length > 0) 
+			{
+				if ( !name.EndsWith("/") ) 
+				{
 					name += "/";
 				}
 			}
-			else {
+			else if ( !relativePath_ )
+			{
 				name = "/";
+			}
+			else
+			{
+				throw new ZipException("Cannot have empty directory name");
 			}
 			return name;
 		}
@@ -107,8 +155,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public string TransformFile(string name)
 		{
 			if (name != null) {
-				if ( (trimPrefix != null) && (name.IndexOf(trimPrefix) == 0) ) {
-					name = name.Substring(trimPrefix.Length);
+				if ( (trimPrefix_ != null) && (name.IndexOf(trimPrefix_) == 0) ) {
+					name = name.Substring(trimPrefix_.Length);
 				}
 				
 				if (Path.IsPathRooted(name) == true) {
@@ -117,16 +165,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 					name = name.Substring(Path.GetPathRoot(name).Length);
 				}
 				
-				if (relativePath == true) {
-					if (name.Length > 0 && (name[0] == Path.AltDirectorySeparatorChar || name[0] == Path.DirectorySeparatorChar)) {
+				name = name.Replace(@"\", "/");
+
+				if ( relativePath_ ) 
+				{
+					while ( (name.Length > 0) && (name[0] == '/')) {
 						name = name.Remove(0, 1);
 					}
 				} else {
-					if (name.Length > 0 && name[0] != Path.AltDirectorySeparatorChar && name[0] != Path.DirectorySeparatorChar) {
+					if ( (name.Length > 0) && (name[0] != '/')) {
 						name = name.Insert(0, "/");
 					}
 				}
-				name = name.Replace(@"\", "/");
 			}
 			else {
 				name = string.Empty;
@@ -139,8 +189,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public string TrimPrefix
 		{
-			get { return trimPrefix; }
-			set { trimPrefix = value; }
+			get { return trimPrefix_; }
+			set { trimPrefix_ = value; }
 		}
 
 		/// <summary>
@@ -150,26 +200,30 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="relaxed">If true checking is relaxed about windows file names and absolute paths.</param>
 		/// <returns>Returns true if the name is a valid zip name; false otherwise.</returns>
 		/// <remarks>Zip path names are actually in unix format,
-		/// and should only contain relative paths if a path is present.
-		/// This means that the path stored should not contain a drive or
+		/// and should only contain relative paths.
+		/// This means that any path stored should not contain a drive or
 		/// device letter, or a leading slash.  All slashes should forward slashes '/'.
-		/// An empty name is valid where the input comes from standard input.
+		/// An empty name is valid for a file where the input comes from standard input.
 		/// A null name is not considered valid.
 		/// </remarks>
 		public static bool IsValidName(string name, bool relaxed)
 		{
-			bool result = 
-				(name != null) &&
-				(name.IndexOfAny(Path.InvalidPathChars) < 0);
-			
-			if ( !relaxed )
+			bool result = (name != null);
+
+			if ( result )
 			{
-				result = result &&
-					(name.IndexOf('\\') < 0) &&
-					(name.IndexOf(':') < 0) &&
-					(name.IndexOf('/') != 0)
-					;
+				if ( relaxed )
+				{
+					result = name.IndexOfAny(InvalidEntryCharsRelaxed) < 0;
+				}
+				else
+				{
+					result = 
+						(name.IndexOfAny(InvalidEntryChars) < 0) &&
+						(name.IndexOf('/') != 0);
+					}
 			}
+
 			return result;
 		}
 
@@ -189,17 +243,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			bool result = 
 				(name != null) &&
-				(name.IndexOfAny(Path.InvalidPathChars) < 0) &&
-				(name.IndexOf('\\') < 0) &&
-				(name.IndexOf(':') < 0) &&
+				(name.IndexOfAny(InvalidEntryChars) < 0) &&
 				(name.IndexOf('/') != 0)
 				;
 			return result;
 		}
 
 		#region Instance Fields
-		string trimPrefix;
-		bool relativePath;
+		string trimPrefix_;
+		bool relativePath_;
+		#endregion
+		#region Class Fields
+		static readonly char[] InvalidEntryChars;
+		static readonly char[] InvalidEntryCharsRelaxed;
 		#endregion
 	}
 }
