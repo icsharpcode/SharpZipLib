@@ -435,28 +435,33 @@ namespace ICSharpCode.SharpZipLib.Tar
 			Array.Clear(blockBuffer, 0, blockBuffer.Length);
 			buffer.WriteBlock(blockBuffer);
 		}
-		
-		#region Instance Fields
-		/// <summary>
-		/// Size for the current entry
-		/// </summary>
-		protected long currSize;
 
+		#region Instance Fields
 		/// <summary>
 		/// bytes written for this entry so far
 		/// </summary>
 		long currBytes;
 		
 		/// <summary>
+		/// current 'Assembly' buffer length
+		/// </summary>		
+		int assemblyBufferLength;
+
+		/// <summary>
+		/// Flag indicating wether this instance has been closed or not.
+		/// </summary>
+		bool isClosed;
+
+		/// <summary>
+		/// Size for the current entry
+		/// </summary>
+		protected long currSize;
+
+		/// <summary>
 		/// single block working buffer 
 		/// </summary>
 		protected byte[] blockBuffer;
 
-		/// <summary>
-		/// current 'Assembly' buffer length
-		/// </summary>		
-		int assemblyBufferLength;
-		
 		/// <summary>
 		/// 'Assembly' buffer used to assemble data before writing
 		/// </summary>
@@ -471,8 +476,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// the destination stream for the archive contents
 		/// </summary>
 		protected Stream outputStream;
-
-		bool isClosed;
 		#endregion
 	}
 }

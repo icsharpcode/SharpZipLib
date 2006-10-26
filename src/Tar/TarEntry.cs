@@ -96,6 +96,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="header">Header details for entry</param>
 		public TarEntry(TarHeader header)
 		{
+			if ( header == null )
+			{
+				throw new ArgumentNullException("header");
+			}
+
 			this.header = (TarHeader)header.Clone();
 		}
 		#endregion

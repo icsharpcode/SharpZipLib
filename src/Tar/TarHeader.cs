@@ -1086,7 +1086,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 			return result;
 		}
 
-
 		#region Instance Fields
 		string name;
 		int mode;
