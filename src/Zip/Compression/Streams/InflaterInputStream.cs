@@ -52,16 +52,17 @@ using ICSharpCode.SharpZipLib.Checksums;
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams 
 {
 
-   /// <summary>
-   /// An input buffer customised for use by <see cref="InflaterInputStream"/>
-   /// </summary>
-   /// <remarks>
-   /// The buffer supports decryption of incoming data.
-   /// </remarks>
+	/// <summary>
+	/// An input buffer customised for use by <see cref="InflaterInputStream"/>
+	/// </summary>
+	/// <remarks>
+	/// The buffer supports decryption of incoming data.
+	/// </remarks>
 	public class InflaterInputBuffer
 	{
+		#region Constructors
 		/// <summary>
-		/// Initialise a new instace of <see cref="InflaterInputBuffer"/> with a default buffer size
+		/// Initialise a new instance of <see cref="InflaterInputBuffer"/> with a default buffer size
 		/// </summary>
 		/// <param name="stream">The stream to buffer.</param>
 		public InflaterInputBuffer(Stream stream) : this(stream , 4096)
@@ -83,7 +84,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			rawData = new byte[bufferSize];
 			clearText = rawData;
 		}
-		
+		#endregion
+
 		/// <summary>
 		/// Get the length of bytes bytes in the <see cref="RawData"/>
 		/// </summary>
@@ -345,29 +347,69 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 	/// </summary>
 	public class InflaterInputStream : Stream
 	{
+		#region Constructors
 		/// <summary>
-		/// Decompressor for this stream
+		/// Create an InflaterInputStream with the default decompressor
+		/// and a default buffer size of 4KB.
 		/// </summary>
-		protected Inflater inf;
-
-		/// <summary>
-		/// <see cref="InflaterInputBuffer">Input buffer</see> for this stream.
-		/// </summary>
-		protected InflaterInputBuffer inputBuffer;
-
-		/// <summary>
-		/// Base stream the inflater reads from.
-		/// </summary>
-		protected Stream baseInputStream;
+		/// <param name = "baseInputStream">
+		/// The InputStream to read bytes from
+		/// </param>
+		public InflaterInputStream(Stream baseInputStream)
+			: this(baseInputStream, new Inflater(), 4096)
+		{
+		}
 		
 		/// <summary>
-		/// The compressed size
+		/// Create an InflaterInputStream with the specified decompressor
+		/// and a default buffer size of 4KB.
 		/// </summary>
-		protected long csize;
-
-		bool isClosed = false;
-		bool isStreamOwner = true;
+		/// <param name = "baseInputStream">
+		/// The source of input data
+		/// </param>
+		/// <param name = "inf">
+		/// The decompressor used to decompress data read from baseInputStream
+		/// </param>
+		public InflaterInputStream(Stream baseInputStream, Inflater inf)
+			: this(baseInputStream, inf, 4096)
+		{
+		}
 		
+		/// <summary>
+		/// Create an InflaterInputStream with the specified decompressor
+		/// and the specified buffer size.
+		/// </summary>
+		/// <param name = "baseInputStream">
+		/// The InputStream to read bytes from
+		/// </param>
+		/// <param name = "inflater">
+		/// The decompressor to use
+		/// </param>
+		/// <param name = "bufferSize">
+		/// Size of the buffer to use
+		/// </param>
+		public InflaterInputStream(Stream baseInputStream, Inflater inflater, int bufferSize)
+		{
+			if (baseInputStream == null) {
+				throw new ArgumentNullException("baseInputStream");
+			}
+			
+			if (inflater == null) {
+				throw new ArgumentNullException("inflater");
+			}
+			
+			if (bufferSize <= 0) {
+				throw new ArgumentOutOfRangeException("bufferSize");
+			}
+			
+			this.baseInputStream = baseInputStream;
+			this.inf = inflater;
+			
+			inputBuffer = new InflaterInputBuffer(baseInputStream, bufferSize);
+		}
+		
+		#endregion
+
 		/// <summary>
 		/// Get/set flag indicating ownership of underlying stream.
 		/// When the flag is true <see cref="Close"/> will close the underlying stream also.
@@ -382,9 +424,81 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
+		/// Skip specified number of bytes of uncompressed data
+		/// </summary>
+		/// <param name ="count">
+		/// Number of bytes to skip
+		/// </param>
+		/// <returns>
+		/// The number of bytes skipped, zero if the end of 
+		/// stream has been reached
+		/// </returns>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Number of bytes to skip is less than zero
+		/// </exception>
+		public long Skip(long count)
+		{
+			if (count < 0) 
+			{
+				throw new ArgumentOutOfRangeException("count");
+			}
+			
+			// v0.80 Skip by seeking if underlying stream supports it...
+			if (baseInputStream.CanSeek) 
+			{
+				baseInputStream.Seek(count, SeekOrigin.Current);
+				return count;
+			} 
+			else 
+			{
+				int len = 2048;
+				if (count < len) 
+				{
+					len = (int) count;
+				}
+				byte[] tmp = new byte[len];
+				return (long)baseInputStream.Read(tmp, 0, tmp.Length);
+			}
+		}
+		
+		/// <summary>
+		/// Clear any cryptographic state.
+		/// </summary>		
+		protected void StopDecrypting()
+		{
+			inputBuffer.CryptoTransform = null;
+		}
+
+		/// <summary>
+		/// Returns 0 once the end of the stream (EOF) has been reached.
+		/// Otherwise returns 1.
+		/// </summary>
+		public virtual int Available 
+		{
+			get 
+			{
+				return inf.IsFinished ? 0 : 1;
+			}
+		}
+		
+		/// <summary>
+		/// Fills the buffer with more data to decompress.
+		/// </summary>
+		/// <exception cref="SharpZipBaseException">
+		/// Stream ends early
+		/// </exception>
+		protected void Fill()
+		{
+			inputBuffer.Fill();
+			inputBuffer.SetInflaterInput(inf);
+		}
+
+		#region Stream Overrides
+		/// <summary>
 		/// Gets a value indicating whether the current stream supports reading
 		/// </summary>
-		public override bool CanRead {
+		public override bool CanRead 
+		{
 			get {
 				return baseInputStream.CanRead;
 			}
@@ -454,7 +568,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Always throws a NotSupportedException
 		/// </summary>
 		/// <exception cref="NotSupportedException">Any access</exception>
-		public override void SetLength(long val)
+		public override void SetLength(long value)
 		{
 			throw new NotSupportedException("InflaterInputStream SetLength not supported");
 		}
@@ -464,7 +578,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// This method always throws a NotSupportedException
 		/// </summary>
 		/// <exception cref="NotSupportedException">Any access</exception>
-		public override void Write(byte[] array, int offset, int count)
+		public override void Write(byte[] buffer, int offset, int count)
 		{
 			throw new NotSupportedException("InflaterInputStream Write not supported");
 		}
@@ -474,7 +588,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Always throws a NotSupportedException
 		/// </summary>
 		/// <exception cref="NotSupportedException">Any access</exception>
-		public override void WriteByte(byte val)
+		public override void WriteByte(byte value)
 		{
 			throw new NotSupportedException("InflaterInputStream WriteByte not supported");
 		}
@@ -495,75 +609,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// Create an InflaterInputStream with the default decompressor
-		/// and a default buffer size of 4KB.
-		/// </summary>
-		/// <param name = "baseInputStream">
-		/// The InputStream to read bytes from
-		/// </param>
-		public InflaterInputStream(Stream baseInputStream)
-			: this(baseInputStream, new Inflater(), 4096)
-		{
-		}
-		
-		/// <summary>
-		/// Create an InflaterInputStream with the specified decompressor
-		/// and a default buffer size of 4KB.
-		/// </summary>
-		/// <param name = "baseInputStream">
-		/// The source of input data
-		/// </param>
-		/// <param name = "inf">
-		/// The decompressor used to decompress data read from baseInputStream
-		/// </param>
-		public InflaterInputStream(Stream baseInputStream, Inflater inf) : this(baseInputStream, inf, 4096)
-		{
-		}
-		
-		/// <summary>
-		/// Create an InflaterInputStream with the specified decompressor
-		/// and the specified buffer size.
-		/// </summary>
-		/// <param name = "baseInputStream">
-		/// The InputStream to read bytes from
-		/// </param>
-		/// <param name = "inflater">
-		/// The decompressor to use
-		/// </param>
-		/// <param name = "bufferSize">
-		/// Size of the buffer to use
-		/// </param>
-		public InflaterInputStream(Stream baseInputStream, Inflater inflater, int bufferSize)
-		{
-			if (baseInputStream == null) {
-				throw new ArgumentNullException("InflaterInputStream baseInputStream is null");
-			}
-			
-			if (inflater == null) {
-				throw new ArgumentNullException("InflaterInputStream Inflater is null");
-			}
-			
-			if (bufferSize <= 0) {
-				throw new ArgumentOutOfRangeException("bufferSize");
-			}
-			
-			this.baseInputStream = baseInputStream;
-			this.inf = inflater;
-			
-			inputBuffer = new InflaterInputBuffer(baseInputStream, bufferSize);
-		}
-		
-		/// <summary>
-		/// Returns 0 once the end of the stream (EOF) has been reached.
-		/// Otherwise returns 1.
-		/// </summary>
-		public virtual int Available {
-			get {
-				return inf.IsFinished ? 0 : 1;
-			}
-		}
-		
-		/// <summary>
 		/// Closes the input stream.  When <see cref="IsStreamOwner"></see>
 		/// is true the underlying stream is also closed.
 		/// </summary>
@@ -578,98 +623,83 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 
 		/// <summary>
-		/// Fills the buffer with more data to decompress.
+		/// Reads decompressed data into the provided buffer byte array
 		/// </summary>
-		/// <exception cref="SharpZipBaseException">
-		/// Stream ends early
-		/// </exception>
-		protected void Fill()
-		{
-			inputBuffer.Fill();
-			inputBuffer.SetInflaterInput(inf);
-		}
-
-		/// <summary>
-		/// Decompresses data into the byte array
-		/// </summary>
-		/// <param name ="b">
+		/// <param name ="buffer">
 		/// The array to read and decompress data into
 		/// </param>
-		/// <param name ="off">
+		/// <param name ="offset">
 		/// The offset indicating where the data should be placed
 		/// </param>
-		/// <param name ="len">
+		/// <param name ="count">
 		/// The number of bytes to decompress
 		/// </param>
 		/// <returns>The number of bytes read.  Zero signals the end of stream</returns>
 		/// <exception cref="SharpZipBaseException">
 		/// Inflater needs a dictionary
 		/// </exception>
-		public override int Read(byte[] b, int off, int len)
+		public override int Read(byte[] buffer, int offset, int count) 
 		{
-			for (;;) {
-				int count;
-				try {
-					count = inf.Inflate(b, off, len);
-				} catch (Exception e) {
-					throw new SharpZipBaseException(e.ToString());
+			if (inf.IsNeedingDictionary)
+			{
+				throw new SharpZipBaseException("Need a dictionary");
+			}
+
+			int remainingBytes = count;
+			while (true)
+			{
+				int bytesRead = inf.Inflate(buffer, offset, remainingBytes); 
+				offset += bytesRead;
+				remainingBytes -= bytesRead;
+
+				if (remainingBytes == 0 || inf.IsFinished)
+				{
+					break; 
 				}
-				
-				if (count > 0) {
-					return count;
-				}
-				
-				if (inf.IsNeedingDictionary) {
-					throw new SharpZipBaseException("Need a dictionary");
-				} else if (inf.IsFinished) {
-					return 0;
-				} else if (inf.IsNeedingInput) {
+
+				if ( inf.IsNeedingInput )
+				{
 					Fill();
-				} else {
-					throw new InvalidOperationException("Don't know what to do");
+				}
+				else if ( bytesRead == 0 )
+				{
+					throw new ZipException("Dont know what to do");
 				}
 			}
+			return count - remainingBytes;
 		}
-		
+		#endregion
+		#region Instance Fields
 		/// <summary>
-		/// Skip specified number of bytes of uncompressed data
+		/// Decompressor for this stream
 		/// </summary>
-		/// <param name ="n">
-		/// Number of bytes to skip
-		/// </param>
-		/// <returns>
-		/// The number of bytes skipped, zero if the end of 
-		/// stream has been reached
-		/// </returns>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Number of bytes to skip is zero or less
-		/// </exception>
-		public long Skip(long n)
-		{
-			if (n < 0) {
-				throw new ArgumentOutOfRangeException("n");
-			}
-			
-			// v0.80 Skip by seeking if underlying stream supports it...
-			if (baseInputStream.CanSeek) {
-				baseInputStream.Seek(n, SeekOrigin.Current);
-				return n;
-			} else {
-				int len = 2048;
-				if (n < len) {
-					len = (int) n;
-				}
-				byte[] tmp = new byte[len];
-				return (long)baseInputStream.Read(tmp, 0, tmp.Length);
-			}
-		}
+		protected Inflater inf;
+
+		/// <summary>
+		/// <see cref="InflaterInputBuffer">Input buffer</see> for this stream.
+		/// </summary>
+		protected InflaterInputBuffer inputBuffer;
+
+		/// <summary>
+		/// Base stream the inflater reads from.
+		/// </summary>
+		protected Stream baseInputStream;
 		
 		/// <summary>
-		/// Clear any cryptographic state.
-		/// </summary>		
-		protected void StopDecrypting()
-		{
-			inputBuffer.CryptoTransform = null;
-		}
+		/// The compressed size
+		/// </summary>
+		protected long csize;
+
+		/// <summary>
+		/// Flag indicating wether this instance has been closed or not.
+		/// </summary>
+		bool isClosed;
+
+		/// <summary>
+		/// Flag indicating wether this instance is designated the stream owner.
+		/// When closing if this flag is true the underlying stream is closed.
+		/// </summary>
+		bool isStreamOwner = true;
+		#endregion
 	}
 }

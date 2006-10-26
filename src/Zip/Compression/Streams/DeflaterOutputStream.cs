@@ -43,7 +43,6 @@ using ICSharpCode.SharpZipLib.Zip.Compression;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams 
 {
-
 	/// <summary>
 	/// A special stream deflating or compressing the bytes that are
 	/// written to it.  It uses a Deflater to perform actual deflating.<br/>
@@ -51,188 +50,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 	/// </summary>
 	public class DeflaterOutputStream : Stream
 	{
-		#region Instance Fields
-		/// <summary>
-		/// This buffer is used temporarily to retrieve the bytes from the
-		/// deflater and write them to the underlying output stream.
-		/// </summary>
-		protected byte[] buf;
-		
-		/// <summary>
-		/// The deflater which is used to deflate the stream.
-		/// </summary>
-		protected Deflater def;
-		
-		/// <summary>
-		/// Base stream the deflater depends on.
-		/// </summary>
-		protected Stream baseOutputStream;
-
-		bool isClosed = false;
-		bool isStreamOwner = true;
-		#endregion
-		
-		/// <summary>
-		/// Get/set flag indicating ownership of the underlying stream.
-		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
-		/// </summary>
-		public bool IsStreamOwner
-		{
-			get { return isStreamOwner; }
-			set { isStreamOwner = value; }
-		}
-		
-		///	<summary>
-		/// Allows client to determine if an entry can be patched after its added
-		/// </summary>
-		public bool CanPatchEntries {
-			get { 
-				return baseOutputStream.CanSeek; 
-			}
-		}
-		
-		/// <summary>
-		/// Gets value indicating stream can be read from
-		/// </summary>
-		public override bool CanRead {
-			get {
-				return false;
-			}
-		}
-		
-		/// <summary>
-		/// Gets a value indicating if seeking is supported for this stream
-		/// This property always returns false
-		/// </summary>
-		public override bool CanSeek {
-			get {
-				return false;
-			}
-		}
-		
-		/// <summary>
-		/// Get value indicating if this stream supports writing
-		/// </summary>
-		public override bool CanWrite {
-			get {
-				return baseOutputStream.CanWrite;
-			}
-		}
-		
-		/// <summary>
-		/// Get current length of stream
-		/// </summary>
-		public override long Length {
-			get {
-				return baseOutputStream.Length;
-			}
-		}
-		
-		/// <summary>
-		/// Gets the current position within the stream.
-		/// </summary>
-		/// <exception cref="NotSupportedException">Any attempt to set position</exception>
-		public override long Position {
-			get {
-				return baseOutputStream.Position;
-			}
-			set {
-				throw new NotSupportedException("DefalterOutputStream Position not supported");
-			}
-		}
-		
-		/// <summary>
-		/// Sets the current position of this stream to the given value. Not supported by this class!
-		/// </summary>
-		/// <exception cref="NotSupportedException">Any access</exception>
-		public override long Seek(long offset, SeekOrigin origin)
-		{
-			throw new NotSupportedException("DeflaterOutputStream Seek not supported");
-		}
-		
-		/// <summary>
-		/// Sets the length of this stream to the given value. Not supported by this class!
-		/// </summary>
-		/// <exception cref="NotSupportedException">Any access</exception>
-		public override void SetLength(long val)
-		{
-			throw new NotSupportedException("DeflaterOutputStream SetLength not supported");
-		}
-		
-		/// <summary>
-		/// Read a byte from stream advancing position by one
-		/// </summary>
-		/// <exception cref="NotSupportedException">Any access</exception>
-		public override int ReadByte()
-		{
-			throw new NotSupportedException("DeflaterOutputStream ReadByte not supported");
-		}
-		
-		/// <summary>
-		/// Read a block of bytes from stream
-		/// </summary>
-		/// <exception cref="NotSupportedException">Any access</exception>
-		public override int Read(byte[] b, int off, int len)
-		{
-			throw new NotSupportedException("DeflaterOutputStream Read not supported");
-		}
-		
-		/// <summary>
-		/// Asynchronous reads are not supported a NotSupportedException is always thrown
-		/// </summary>
-		/// <param name="buffer"></param>
-		/// <param name="offset"></param>
-		/// <param name="count"></param>
-		/// <param name="callback"></param>
-		/// <param name="state"></param>
-		/// <returns></returns>
-		/// <exception cref="NotSupportedException">Any access</exception>
-		public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
-		{
-			throw new NotSupportedException("DeflaterOutputStream BeginRead not currently supported");
-		}
-		
-		/// <summary>
-		/// Asynchronous writes arent supported, a NotSupportedException is always thrown
-		/// </summary>
-		/// <param name="buffer"></param>
-		/// <param name="offset"></param>
-		/// <param name="count"></param>
-		/// <param name="callback"></param>
-		/// <param name="state"></param>
-		/// <returns></returns>
-		/// <exception cref="NotSupportedException">Any access</exception>
-		public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
-		{
-			throw new NotSupportedException("DeflaterOutputStream BeginWrite not currently supported");
-		}
-		
-		/// <summary>
-		/// Deflates everything in the input buffers.  This will call
-		/// <code>def.deflate()</code> until all bytes from the input buffers
-		/// are processed.
-		/// </summary>
-		protected void Deflate()
-		{
-			while (!def.IsNeedingInput) {
-				int len = def.Deflate(buf, 0, buf.Length);
-				
-				if (len <= 0) {
-					break;
-				}
-				
-				if (this.keys != null) {
-					this.EncryptBlock(buf, 0, len);
-				}
-				
-				baseOutputStream.Write(buf, 0, len);
-			}
-			
-			if (!def.IsNeedingInput) {
-				throw new SharpZipBaseException("DeflaterOutputStream can't deflate all input?");
-			}
-		}
-		
 		#region Constructors
 		/// <summary>
 		/// Creates a new DeflaterOutputStream with a default Deflater and default buffer size.
@@ -252,11 +69,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <param name="baseOutputStream">
 		/// the output stream where deflated output should be written.
 		/// </param>
-		/// <param name="defl">
+		/// <param name="deflater">
 		/// the underlying deflater.
 		/// </param>
-		public DeflaterOutputStream(Stream baseOutputStream, Deflater defl)
-			: this(baseOutputStream, defl, 512)
+		public DeflaterOutputStream(Stream baseOutputStream, Deflater deflater)
+			: this(baseOutputStream, deflater, 512)
 		{
 		}
 		
@@ -270,7 +87,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <param name="deflater">
 		/// The underlying deflater to use
 		/// </param>
-		/// <param name="bufsize">
+		/// <param name="bufferSize">
 		/// The buffer size to use when deflating
 		/// </param>
 		/// <exception cref="ArgumentOutOfRangeException">
@@ -282,127 +99,49 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <exception cref="ArgumentNullException">
 		/// deflater instance is null
 		/// </exception>
-		public DeflaterOutputStream(Stream baseOutputStream, Deflater deflater, int bufsize)
+		public DeflaterOutputStream(Stream baseOutputStream, Deflater deflater, int bufferSize)
 		{
-			if (baseOutputStream.CanWrite == false) {
-				throw new ArgumentException("baseOutputStream", "must support writing");
+			if ( baseOutputStream == null )
+			{
+				throw new ArgumentNullException("baseOutputStream");
 			}
 
-			if (deflater == null) {
+			if (baseOutputStream.CanWrite == false) 
+			{
+				throw new ArgumentException("Must support writing", "baseOutputStream");
+			}
+
+			if (deflater == null) 
+			{
 				throw new ArgumentNullException("deflater");
 			}
 			
-			if (bufsize <= 0) {
-				throw new ArgumentOutOfRangeException("bufsize");
+			if (bufferSize <= 0) 
+			{
+				throw new ArgumentOutOfRangeException("bufferSize");
 			}
 			
 			this.baseOutputStream = baseOutputStream;
-			buf = new byte[bufsize];
+			buffer_ = new byte[bufferSize];
 			def = deflater;
 		}
 		#endregion
-		
-		/// <summary>
-		/// Flushes the stream by calling flush() on the deflater and then
-		/// on the underlying stream.  This ensures that all bytes are
-		/// flushed.
-		/// </summary>
-		public override void Flush()
-		{
-			def.Flush();
-			Deflate();
-			baseOutputStream.Flush();
-		}
-		
-		/// <summary>
-		/// Finishes the stream by calling finish() on the deflater. 
-		/// </summary>
-		/// <exception cref="SharpZipBaseException">
-		/// Not all input is deflated
-		/// </exception>
-		public virtual void Finish()
-		{
-			def.Finish();
-			while (!def.IsFinished)  {
-				int len = def.Deflate(buf, 0, buf.Length);
-				if (len <= 0) {
-					break;
-				}
-				
-				if (this.keys != null) {
-					this.EncryptBlock(buf, 0, len);
-				}
-				
-				baseOutputStream.Write(buf, 0, len);
-			}
-			if (!def.IsFinished) {
-				throw new SharpZipBaseException("Can't deflate all input?");
-			}
-			baseOutputStream.Flush();
-			keys = null;
-		}
-		
-		/// <summary>
-		/// Calls finish() and closes the underlying
-		/// stream when <see cref="IsStreamOwner"></see> is true.
-		/// </summary>
-		public override void Close()
-		{
-			if ( !isClosed ) {
-				isClosed = true;
-				Finish();
-				if ( isStreamOwner ) {
-					baseOutputStream.Close();
-				}
-			}
-		}
-		
-		/// <summary>
-		/// Writes a single byte to the compressed output stream.
-		/// </summary>
-		/// <param name="bval">
-		/// The byte value.
-		/// </param>
-		public override void WriteByte(byte bval)
-		{
-			byte[] b = new byte[1];
-			b[0] = bval;
-			Write(b, 0, 1);
-		}
-		
-		/// <summary>
-		/// Writes bytes from an array to the compressed stream.
-		/// </summary>
-		/// <param name="buf">
-		/// The byte array
-		/// </param>
-		/// <param name="off">
-		/// The offset into the byte array where to start.
-		/// </param>
-		/// <param name="len">
-		/// The number of bytes to write.
-		/// </param>
-		public override void Write(byte[] buf, int off, int len)
-		{
-			def.SetInput(buf, off, len);
-			Deflate();
-		}
-		
 		#region Encryption
 		
 		// TODO:  Refactor this code.  The presence of Zip specific code in this low level class is wrong
-		string password = null;
-		uint[] keys     = null;
+		string password;
+		uint[] keys;
 		
 		/// <summary>
-		/// Get/set the password used for encryption.  When null no encryption is performed
+		/// Get/set the password used for encryption.
 		/// </summary>
+		/// <remarks>When set to null or if the password is empty no encryption is performed</remarks>
 		public string Password {
 			get { 
 				return password; 
 			}
 			set {
-				if ( value != null && value.Length == 0 ) {
+				if ( (value != null) && (value.Length == 0) ) {
 					password = null;
 				} else {
 					password = value; 
@@ -471,6 +210,283 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			keys[1] = keys[1] * 134775813 + 1;
 			keys[2] = Crc32.ComputeCrc32(keys[2], (byte)(keys[1] >> 24));
 		}
+		#endregion
+		#region Deflation Support
+		/// <summary>
+		/// Deflates everything in the input buffers.  This will call
+		/// <code>def.deflate()</code> until all bytes from the input buffers
+		/// are processed.
+		/// </summary>
+		protected void Deflate()
+		{
+			while (!def.IsNeedingInput) 
+			{
+				int deflateCount = def.Deflate(buffer_, 0, buffer_.Length);
+				
+				if (deflateCount <= 0) 
+				{
+					break;
+				}
+				
+				if (this.keys != null) 
+				{
+					this.EncryptBlock(buffer_, 0, deflateCount);
+				}
+				
+				baseOutputStream.Write(buffer_, 0, deflateCount);
+			}
+			
+			if (!def.IsNeedingInput) 
+			{
+				throw new SharpZipBaseException("DeflaterOutputStream can't deflate all input?");
+			}
+		}
+		
+		/// <summary>
+		/// Get/set flag indicating ownership of the underlying stream.
+		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
+		/// </summary>
+		public bool IsStreamOwner
+		{
+			get { return isStreamOwner; }
+			set { isStreamOwner = value; }
+		}
+		
+		///	<summary>
+		/// Allows client to determine if an entry can be patched after its added
+		/// </summary>
+		public bool CanPatchEntries {
+			get { 
+				return baseOutputStream.CanSeek; 
+			}
+		}
+		
+		#endregion
+		#region Stream Overrides
+		/// <summary>
+		/// Gets value indicating stream can be read from
+		/// </summary>
+		public override bool CanRead 
+		{
+			get {
+				return false;
+			}
+		}
+		
+		/// <summary>
+		/// Gets a value indicating if seeking is supported for this stream
+		/// This property always returns false
+		/// </summary>
+		public override bool CanSeek {
+			get {
+				return false;
+			}
+		}
+		
+		/// <summary>
+		/// Get value indicating if this stream supports writing
+		/// </summary>
+		public override bool CanWrite {
+			get {
+				return baseOutputStream.CanWrite;
+			}
+		}
+		
+		/// <summary>
+		/// Get current length of stream
+		/// </summary>
+		public override long Length {
+			get {
+				return baseOutputStream.Length;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the current position within the stream.
+		/// </summary>
+		/// <exception cref="NotSupportedException">Any attempt to set position</exception>
+		public override long Position {
+			get {
+				return baseOutputStream.Position;
+			}
+			set {
+				throw new NotSupportedException("Position property not supported");
+			}
+		}
+		
+		/// <summary>
+		/// Sets the current position of this stream to the given value. Not supported by this class!
+		/// </summary>
+		/// <exception cref="NotSupportedException">Any access</exception>
+		public override long Seek(long offset, SeekOrigin origin)
+		{
+			throw new NotSupportedException("DeflaterOutputStream Seek not supported");
+		}
+		
+		/// <summary>
+		/// Sets the length of this stream to the given value. Not supported by this class!
+		/// </summary>
+		/// <exception cref="NotSupportedException">Any access</exception>
+		public override void SetLength(long value)
+		{
+			throw new NotSupportedException("DeflaterOutputStream SetLength not supported");
+		}
+		
+		/// <summary>
+		/// Read a byte from stream advancing position by one
+		/// </summary>
+		/// <exception cref="NotSupportedException">Any access</exception>
+		public override int ReadByte()
+		{
+			throw new NotSupportedException("DeflaterOutputStream ReadByte not supported");
+		}
+		
+		/// <summary>
+		/// Read a block of bytes from stream
+		/// </summary>
+		/// <exception cref="NotSupportedException">Any access</exception>
+		public override int Read(byte[] buffer, int offset, int count)
+		{
+			throw new NotSupportedException("DeflaterOutputStream Read not supported");
+		}
+		
+		/// <summary>
+		/// Asynchronous reads are not supported a NotSupportedException is always thrown
+		/// </summary>
+		/// <param name="buffer">The buffer to read into.</param>
+		/// <param name="offset">The offset to start storing data at.</param>
+		/// <param name="count">The number of bytes to read</param>
+		/// <param name="callback">The async callback to use.</param>
+		/// <param name="state">The state to use.</param>
+		/// <returns>Returns an <see cref="IAsyncResult"/></returns>
+		/// <exception cref="NotSupportedException">Any access</exception>
+		public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
+		{
+			throw new NotSupportedException("DeflaterOutputStream BeginRead not currently supported");
+		}
+		
+		/// <summary>
+		/// Asynchronous writes arent supported, a NotSupportedException is always thrown
+		/// </summary>
+		/// <param name="buffer">The buffer to write.</param>
+		/// <param name="offset">The offset to begin writing at.</param>
+		/// <param name="count">The number of bytes to write.</param>
+		/// <param name="callback">The <see cref="AsyncCallback"/> to use.</param>
+		/// <param name="state">The state object.</param>
+		/// <returns>Returns an IAsyncResult.</returns>
+		/// <exception cref="NotSupportedException">Any access</exception>
+		public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
+		{
+			throw new NotSupportedException("BeginWrite is not supported");
+		}
+		
+		/// <summary>
+		/// Flushes the stream by calling flush() on the deflater and then
+		/// on the underlying stream.  This ensures that all bytes are
+		/// flushed.
+		/// </summary>
+		public override void Flush()
+		{
+			def.Flush();
+			Deflate();
+			baseOutputStream.Flush();
+		}
+		
+		/// <summary>
+		/// Finishes the stream by calling finish() on the deflater. 
+		/// </summary>
+		/// <exception cref="SharpZipBaseException">
+		/// Not all input is deflated
+		/// </exception>
+		public virtual void Finish()
+		{
+			def.Finish();
+			while (!def.IsFinished)  {
+				int len = def.Deflate(buffer_, 0, buffer_.Length);
+				if (len <= 0) {
+					break;
+				}
+				
+				if (this.keys != null) {
+					this.EncryptBlock(buffer_, 0, len);
+				}
+				
+				baseOutputStream.Write(buffer_, 0, len);
+			}
+
+			if (!def.IsFinished) {
+				throw new SharpZipBaseException("Can't deflate all input?");
+			}
+
+			baseOutputStream.Flush();
+			keys = null;
+		}
+		
+		/// <summary>
+		/// Calls <see cref="Finish"/> and closes the underlying
+		/// stream when <see cref="IsStreamOwner"></see> is true.
+		/// </summary>
+		public override void Close()
+		{
+			if ( !isClosed ) {
+				isClosed = true;
+				Finish();
+				if ( isStreamOwner ) {
+					baseOutputStream.Close();
+				}
+			}
+		}
+		
+		/// <summary>
+		/// Writes a single byte to the compressed output stream.
+		/// </summary>
+		/// <param name="value">
+		/// The byte value.
+		/// </param>
+		public override void WriteByte(byte value)
+		{
+			byte[] b = new byte[1];
+			b[0] = value;
+			Write(b, 0, 1);
+		}
+		
+		/// <summary>
+		/// Writes bytes from an array to the compressed stream.
+		/// </summary>
+		/// <param name="buffer">
+		/// The byte array
+		/// </param>
+		/// <param name="offset">
+		/// The offset into the byte array where to start.
+		/// </param>
+		/// <param name="count">
+		/// The number of bytes to write.
+		/// </param>
+		public override void Write(byte[] buffer, int offset, int count)
+		{
+			def.SetInput(buffer, offset, count);
+			Deflate();
+		}		
+		#endregion
+		#region Instance Fields
+		/// <summary>
+		/// This buffer is used temporarily to retrieve the bytes from the
+		/// deflater and write them to the underlying output stream.
+		/// </summary>
+		byte[] buffer_;
+		
+		/// <summary>
+		/// The deflater which is used to deflate the stream.
+		/// </summary>
+		protected Deflater def;
+		
+		/// <summary>
+		/// Base stream the deflater depends on.
+		/// </summary>
+		protected Stream baseOutputStream;
+
+		bool isClosed;
+		bool isStreamOwner = true;
 		#endregion
 	}
 }
