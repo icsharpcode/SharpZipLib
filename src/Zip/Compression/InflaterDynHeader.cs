@@ -44,6 +44,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 	
 	class InflaterDynHeader
 	{
+		#region Constants
 		const int LNUM   = 0;
 		const int DNUM   = 1;
 		const int BLNUM  = 2;
@@ -53,7 +54,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		
 		static readonly int[] repMin  = { 3, 3, 11 };
 		static readonly int[] repBits = { 2, 3,  7 };
+
+		static readonly int[] BL_ORDER = 
+		{ 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 };
 		
+		#endregion
+		#region Instance Fields
 		byte[] blLens;
 		byte[] litdistLens;
 		
@@ -64,13 +70,13 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		int repSymbol;
 		byte lastLen;
 		int ptr;
-		
-		static readonly int[] BL_ORDER = 
-		{ 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 };
-		
+		#endregion
+
+		#region Constructors
 		public InflaterDynHeader()
 		{
 		}
+		#endregion
 		
 		public bool Decode(StreamManipulator input)
 		{
