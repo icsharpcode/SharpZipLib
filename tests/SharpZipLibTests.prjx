@@ -14,7 +14,7 @@
   </Contents>
   <References>
     <Reference type="Assembly" refto="..\bin\ICSharpCode.SharpZipLib.dll" localcopy="True" />
-    <Reference type="Assembly" refto="..\..\..\..\SharpDevelop\SharpDevelop\bin\nunit.framework.dll" localcopy="True" />
+    <Reference type="Assembly" refto="..\Nunit\nunit.framework.dll" localcopy="True" />
   </References>
   <DeploymentInformation target="" script="" strategy="File" />
   <Configuration runwithwarnings="True" name="Debug">

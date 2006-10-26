@@ -3,12 +3,14 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
+using System.Text;
 
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Checksums;
+using ICSharpCode.SharpZipLib.Core;
 
 using NUnit.Framework;
 
@@ -123,6 +125,35 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		#endregion
 	}
 	#endregion
+
+	class MemoryDataSource : IStaticDataSource
+	{
+		public MemoryDataSource(byte[] data)
+		{
+			data_ = data;
+		}
+
+		#region IDataSource Members
+
+		public Stream GetSource()
+		{
+			return new MemoryStream(data_);
+		}
+
+		#endregion
+
+		#region Instance Fields
+		byte[] data_;
+		#endregion
+	}
+
+	class StringMemoryDataSource : MemoryDataSource
+	{
+		public StringMemoryDataSource(string data)
+			: base(Encoding.ASCII.GetBytes(data))
+		{
+		}
+	}
 
 	#region ZipBase
 	public class ZipBase
@@ -275,6 +306,23 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+
+		#region MakeZipFile Names
+		protected void MakeZipFile(Stream storage, bool isOwner, string[] names, int size, string comment)
+		{
+			using ( ZipOutputStream zOut = new ZipOutputStream(storage) )
+			{
+				zOut.IsStreamOwner = isOwner;
+				zOut.SetComment(comment);
+				for (int i = 0; i < names.Length; ++i) 
+				{
+					zOut.PutNextEntry(new ZipEntry(names[i]));
+					AddKnownDataToEntry(zOut, size);	
+				}
+				zOut.Close();
+			}
+		}
+
 		protected void MakeZipFile(string name, string[] names, int size, string comment)
 		{
 			using (FileStream fs = File.Create(name)) 
@@ -292,22 +340,39 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				fs.Close();
 			}
 		}
-		
+		#endregion
+		#region MakeZipFile Entries
 		protected void MakeZipFile(string name, string entryNamePrefix, int entries, int size, string comment)
 		{
 			using (FileStream fs = File.Create(name)) 
+			using (ZipOutputStream zOut = new ZipOutputStream(fs))
 			{
-				ZipOutputStream zOut = new ZipOutputStream(fs);
 				zOut.SetComment(comment);
 				for (int i = 0; i < entries; ++i) 
 				{
 					zOut.PutNextEntry(new ZipEntry(entryNamePrefix + (i + 1).ToString()));
 					AddKnownDataToEntry(zOut, size);	
 				}
-				zOut.Close();
-				fs.Close();
 			}
 		}
+
+		protected void MakeZipFile(Stream storage, bool isOwner,
+			string entryNamePrefix, int entries, int size, string comment)
+		{
+			using ( ZipOutputStream zOut = new ZipOutputStream(storage) )
+			{
+				zOut.IsStreamOwner = isOwner;
+				zOut.SetComment(comment);
+				for (int i = 0; i < entries; ++i) 
+				{
+					zOut.PutNextEntry(new ZipEntry(entryNamePrefix + (i + 1).ToString()));
+					AddKnownDataToEntry(zOut, size);	
+				}
+			}
+		}
+
+
+		#endregion
 
 		protected static void CheckKnownEntry(Stream inStream, int expectedCount) 
 		{
@@ -1171,6 +1236,53 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			CheckNameConversion("Hello");
 			CheckNameConversion("a/b/c/d/e/f/g/h/SomethingLikeAnArchiveName.txt");
 		}   
+
+		/// <summary>
+		/// Regression test for problem where the password check would fail for an archive whose
+		/// date was updated from the extra data.
+		/// This applies to archives where the crc wasnt know at the time of encryption.
+		/// The date of the entry is used in its place.
+		/// </summary>
+		[ Test ]
+		public void PasswordCheckingWithDateInExtraData()
+		{
+			MemoryStream ms = new MemoryStream();
+			DateTime checkTime = new DateTime(2010, 10, 16, 0, 3, 28);
+
+			using ( ZipOutputStream zos = new ZipOutputStream(ms))
+			{
+				zos.IsStreamOwner = false;
+				zos.Password = "secret";
+				ZipEntry ze = new ZipEntry("uno");
+				ze.DateTime = new DateTime(1998, 6, 5, 4, 3, 2);
+
+				ZipExtraData zed = new ZipExtraData();
+
+				zed.StartNewEntry();
+
+				zed.AddData(1);
+
+				TimeSpan delta = checkTime.ToUniversalTime() - new System.DateTime ( 1970, 1, 1, 0, 0, 0 ).ToUniversalTime();
+				int seconds = (int)delta.TotalSeconds;
+				zed.AddLeInt(seconds);
+				zed.AddNewEntry(0x5455);
+
+				ze.ExtraData = zed.GetEntryData();
+				zos.PutNextEntry(ze);
+				zos.WriteByte(54);
+			}
+
+			ms.Position = 0;
+			using (ZipInputStream zis = new ZipInputStream(ms) )
+			{
+				zis.Password = "secret";
+				ZipEntry uno = zis.GetNextEntry();
+				byte theByte = (byte)zis.ReadByte();
+				Assert.AreEqual(54, theByte);
+				Assert.AreEqual(-1, zis.ReadByte());
+				Assert.AreEqual(checkTime, uno.DateTime);
+			}
+		}
 	}
 
 	[TestFixture]
@@ -1188,7 +1300,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			extra[0] = 27;
 			a.ExtraData = extra;
 			
-			ZipEntry b = new ZipEntry(a);
+			ZipEntry b = (ZipEntry)a.Clone();
 			b.ExtraData[0] = 89;
 			Assert.IsTrue(b.ExtraData[0] != a.ExtraData[0], "Extra data not unique " + b.ExtraData[0] + " " + a.ExtraData[0]);
 
@@ -1640,9 +1752,136 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					zipFile.Add(ze);
 				}
 				zipFile.CommitUpdate();
-				zipFile.TestArchive(true);
+
+				Assert.IsTrue(zipFile.TestArchive(true));
 				Assert.AreEqual(target, zipFile.Count, "Incorrect number of entries stored");
 			}
+		}
+
+		void Compare(byte[] a, byte[] b)
+		{
+			Assert.AreEqual(a.Length, b.Length);
+			for ( int i = 0; i < a.Length; ++i )
+			{
+				Assert.AreEqual(a[i], b[i]);
+			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void EmbeddedArchive()
+		{
+			MemoryStream memStream = new MemoryStream();
+			using (ZipFile f = new ZipFile(memStream))
+			{
+				f.IsStreamOwner = false;
+
+				StringMemoryDataSource m = new StringMemoryDataSource("0000000");
+				f.BeginUpdate(new MemoryArchiveStorage());
+				f.Add(m, "a.dat");
+				f.Add(m, "b.dat");
+				f.CommitUpdate();
+				Assert.IsTrue(f.TestArchive(true));
+			}
+
+			byte[] rawArchive = memStream.ToArray();
+			byte[] pseudoSfx = new byte[1049 + rawArchive.Length];
+			Array.Copy(rawArchive, 0, pseudoSfx, 1049, rawArchive.Length);
+
+			memStream = new MemoryStream(pseudoSfx);
+			using (ZipFile f = new ZipFile(memStream))
+			{
+				for ( int index = 0; index < f.Count; ++index)
+				{
+					Stream entryStream = f.GetInputStream(index);
+					MemoryStream data = new MemoryStream();
+					StreamUtils.Copy(entryStream, data, new byte[128]);
+					string contents = Encoding.ASCII.GetString(data.ToArray());
+					Assert.AreEqual("0000000", contents);
+				}
+			}
+		}
+
+		void TryDeleting(byte[] master, int totalEntries, int additions, params int[] toDelete)
+		{
+			MemoryStream ms = new MemoryStream();
+			ms.Write(master, 0, master.Length);
+
+			using ( ZipFile f = new ZipFile(ms) )
+			{
+				f.IsStreamOwner = false;
+				Assert.AreEqual(totalEntries, f.Count);
+				Assert.IsTrue(f.TestArchive(true));
+				f.BeginUpdate(new MemoryArchiveStorage());
+
+				for ( int i = 0; i < additions; ++i )
+				{
+					f.Add(new StringMemoryDataSource("Another great file"),
+						string.Format("Add{0}.dat", i + 1));
+				}
+
+				foreach ( int i in toDelete )
+				{
+					f.Delete(f[i]);
+				}
+				f.CommitUpdate();
+
+/* write stream to file to assist debugging.
+				byte[] data = ms.ToArray();
+				using ( FileStream fs = File.Open(@"c:\aha.zip", FileMode.Create, FileAccess.ReadWrite, FileShare.Read) )
+				{
+					fs.Write(data, 0, data.Length);
+				}
+*/
+				int newTotal = totalEntries + additions - toDelete.Length;
+				Assert.AreEqual(newTotal, f.Count,
+					string.Format("Expected {0} entries after update found {1}", newTotal, f.Count));
+				Assert.IsTrue(f.TestArchive(true), "Archive test should pass");
+			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void AddAndDeleteEntriesMemory()
+		{
+			MemoryStream memStream = new MemoryStream();
+
+			using (ZipFile f = new ZipFile(memStream))
+			{
+				f.IsStreamOwner = false;
+
+				f.BeginUpdate(new MemoryArchiveStorage());
+				f.Add(new StringMemoryDataSource("Hello world"), "a.dat");
+				f.Add(new StringMemoryDataSource("Another"), "b.dat");
+				f.Add(new StringMemoryDataSource("Mr C"), "c.dat");
+				f.Add(new StringMemoryDataSource("Mrs D was a star"), "d.dat");
+				f.CommitUpdate();
+				Assert.IsTrue(f.TestArchive(true));
+			}
+
+			byte[] master = memStream.ToArray();
+
+			TryDeleting(master, 4, 0, 0);
+			TryDeleting(master, 4, 0, 1);
+			TryDeleting(master, 4, 0, 2);
+			TryDeleting(master, 4, 0, 3);
+			TryDeleting(master, 4, 0, 0, 1);
+			TryDeleting(master, 4, 0, 0, 2);
+			TryDeleting(master, 4, 0, 0, 3);
+			TryDeleting(master, 4, 0, 1, 2);
+			TryDeleting(master, 4, 0, 1, 3);
+			TryDeleting(master, 4, 0, 2);
+
+			TryDeleting(master, 4, 1, 0);
+			TryDeleting(master, 4, 1, 1);
+			TryDeleting(master, 4, 3, 2);
+			TryDeleting(master, 4, 4, 3);
+			TryDeleting(master, 4, 10, 0, 1);
+			TryDeleting(master, 4, 10, 0, 2);
+			TryDeleting(master, 4, 10, 0, 3);
+			TryDeleting(master, 4, 20, 1, 2);
+			TryDeleting(master, 4, 30, 1, 3);
+			TryDeleting(master, 4, 40, 2);
 		}
 
 		[Test]
@@ -1667,6 +1906,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				f.Add(addFile);
 				f.Add(addFile2);
 				f.CommitUpdate();
+				Assert.IsTrue(f.TestArchive(true));
 			}
 
 			using ( ZipFile f = new ZipFile(tempFile) )
@@ -1677,16 +1917,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				f.Delete(f[0]);
 				f.CommitUpdate();
 				Assert.AreEqual(1, f.Count);
+				Assert.IsTrue(f.TestArchive(true));
 			}
 
 			File.Delete(addFile);
 			File.Delete(addFile2);
 			File.Delete(tempFile);
 		}
+
 		/// <summary>
 		/// Simple round trip test for ZipFile class
 		/// </summary>
-
 		[Test]
 		[Category("Zip")]
 		[Category("CreatesTempFile")]
@@ -1707,13 +1948,34 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 						Stream instream = zipFile.GetInputStream(e);
 						CheckKnownEntry(instream, 1024);
 					}
-				
 					zipFile.Close();
 				}
 
 				File.Delete(tempFile);
 			}
 		}
+		/// <summary>
+		/// Simple round trip test for ZipFile class
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void RoundTripInMemory()
+		{
+			MemoryStream storage = new MemoryStream();
+			MakeZipFile(storage, false, "", 10, 1024, "");
+			
+			using ( ZipFile zipFile = new ZipFile(storage))
+			{
+				foreach (ZipEntry e in zipFile) 
+				{
+					Stream instream = zipFile.GetInputStream(e);
+					CheckKnownEntry(instream, 1024);
+				}
+				zipFile.Close();
+			}
+		}
+
 		[Test]
 		[Category("Zip")]
 		public void AddToEmptyArchive()
@@ -1733,6 +1995,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					f.Add(addFile);
 					f.CommitUpdate();
 					Assert.AreEqual(1, f.Count);
+					Assert.IsTrue(f.TestArchive(true));
 				}
 
 				using ( ZipFile f = new ZipFile(tempFile) )
@@ -1742,6 +2005,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					f.Delete(f[0]);
 					f.CommitUpdate();
 					Assert.AreEqual(0, f.Count);
+					Assert.IsTrue(f.TestArchive(true));
 					f.Close();
 				}
 
@@ -1765,6 +2029,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				{
 					f.BeginUpdate();
 					f.CommitUpdate();
+					Assert.IsTrue(f.TestArchive(true));
 					f.Close();
 				}
 
