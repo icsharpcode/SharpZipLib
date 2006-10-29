@@ -118,7 +118,8 @@ namespace ICSharpCode.SharpZipLib.Core
 				throw new ArgumentNullException("buffer");
 			}
 
-			if ( buffer.Length < 32 )
+			// Ensure a reasonable size of buffer is used without being prohibitive.
+			if ( buffer.Length < 128 )
 			{
 				throw new ArgumentException("Buffer is too small", "buffer");
 			}

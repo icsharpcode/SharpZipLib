@@ -75,6 +75,7 @@ namespace ICSharpCode.SharpZipLib.Core
 	/// <summary>
 	/// ExtendedPathFilter filters based on name, file size, and the write time of the file.
 	/// </summary>
+	/// <remarks>Provides an example of how to customise filtering.</remarks>
 	public class ExtendedPathFilter : PathFilter
 	{
 		#region Constructors

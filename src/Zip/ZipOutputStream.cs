@@ -264,7 +264,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			bool headerInfoAvailable = true;
 			
 			if (method == CompressionMethod.Stored) {
-				if (entry.CompressedSize >= 0) {
+				// Cant store values in a data descriptor as you cant extract stored files
+				// if the length isnt known.
+				entry.Flags &= ~8;
+				if (entry.CompressedSize >= 0) 
+				{
 					if (entry.Size < 0) {
 						entry.Size = entry.CompressedSize;
 					} else if (entry.Size != entry.CompressedSize) {
@@ -328,6 +332,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLeInt(ZipConstants.LocalHeaderSignature);
 
 			// This is safe/conservative but can enlarge archives slightly when not needed.
+			// Perhaps implement something to allow a choice here?
 #if !FORCE_ZIP64
 			if ( entry.Size < 0 )
 #endif
