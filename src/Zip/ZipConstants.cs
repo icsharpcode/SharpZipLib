@@ -128,7 +128,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		RC4            = 0x6801,
 		/// <summary>
-		/// An unknown algorithm has bene used for encryption.
+		/// An unknown algorithm has been used for encryption.
 		/// </summary>
 		Unknown        = 0xffff
 	}

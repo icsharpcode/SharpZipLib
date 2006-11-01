@@ -241,18 +241,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		internal ZipEntry(string name, int versionRequiredToExtract, int madeByInfo,
 			CompressionMethod method)
 		{
-			if (name == null)  
-			{
+			if (name == null) {
 				throw new System.ArgumentNullException("ZipEntry name");
 			}
 
-			if ( name.Length > 0xffff )	
-			{
+			if ( name.Length > 0xffff )	{
 				throw new ArgumentException("Name is too long", "name");
 			}
 
-			if ( (versionRequiredToExtract != 0) && (versionRequiredToExtract < 10) ) 
-			{
+			if ( (versionRequiredToExtract != 0) && (versionRequiredToExtract < 10) ) {
 				throw new ArgumentOutOfRangeException("versionRequiredToExtract");
 			}
 			
@@ -272,8 +269,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		[Obsolete("Use Clone instead")]
 		public ZipEntry(ZipEntry entry)
 		{
-			if ( entry == null ) 
-			{
+			if ( entry == null ) {
 				throw new ArgumentNullException("entry");
 			}
 
@@ -295,8 +291,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			forceZip64_			   = entry.forceZip64_;
 
-			if ( entry.extra != null )
-			{
+			if ( entry.extra != null ) {
 				extra = new byte[entry.extra.Length];
 				Array.Copy(entry.extra, 0, extra, 0, entry.extra.Length);
 			}
@@ -309,8 +304,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public bool HasCrc 
 		{
-			get 
-			{
+			get {
 				return (known & Known.Crc) != 0;
 			}
 		}
@@ -321,18 +315,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public bool IsCrypted 
 		{
-			get 
-			{
+			get {
 				return (flags & 1) != 0; 
 			}
-			set 
-			{
-				if (value) 
-				{
+			set {
+				if (value) {
 					flags |= 1;
 				} 
-				else 
-				{
+				else {
 					flags &= ~1;
 				}
 			}
@@ -343,13 +333,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		internal byte CryptoCheckValue
 		{
-			get 
-			{
+			get {
 				return cryptoCheckValue_;
 			}
 
-			set
-			{
+			set	{
 				cryptoCheckValue_ = value;
 			}
 		}
@@ -382,12 +370,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </remarks>
 		public int Flags 
 		{
-			get 
-			{ 
+			get { 
 				return flags; 
 			}
-			set 
-			{
+			set {
 				flags = value; 
 			}
 		}
@@ -397,12 +383,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public long ZipFileIndex 
 		{
-			get 
-			{
+			get {
 				return zipFileIndex;
 			}
-			set 
-			{
+			set {
 				zipFileIndex = value;
 			}
 		}
@@ -412,12 +396,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public long Offset 
 		{
-			get 
-			{
+			get {
 				return offset;
 			}
-			set 
-			{
+			set {
 				offset = value;
 			}
 		}
@@ -429,20 +411,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public int ExternalFileAttributes 
 		{
-			get 
-			{
-				if ((known & Known.ExternalAttributes) == 0) 
-				{
+			get {
+				if ((known & Known.ExternalAttributes) == 0) {
 					return -1;
 				} 
-				else 
-				{
+				else {
 					return externalFileAttributes;
 				}
 			}
 			
-			set 
-			{
+			set {
 				externalFileAttributes = value;
 				known |= Known.ExternalAttributes;
 			}
@@ -455,8 +433,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public int VersionMadeBy 
 		{
-			get 
-			{ 
+			get { 
 				return (versionMadeBy & 0xff);
 			}
 		}
@@ -472,12 +449,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		bool HasDosAttributes(int attributes)
 		{
 			bool result = false;
-			if ( (known & Known.ExternalAttributes) != 0 ) 
-			{
+			if ( (known & Known.ExternalAttributes) != 0 ) {
 				if ( ((HostSystem == (int)HostSystemID.Msdos) || 
 					(HostSystem == (int)HostSystemID.WindowsNT)) && 
-					(ExternalFileAttributes & attributes) == attributes) 
-				{
+					(ExternalFileAttributes & attributes) == attributes) {
 					result = true;
 				}
 			}
@@ -523,13 +498,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </remarks>
 		public int HostSystem 
 		{
-			get 
-			{ 
+			get {
 				return (versionMadeBy >> 8) & 0xff; 
 			}
 
-			set 
-			{
+			set {
 				versionMadeBy &= 0xff;
 				versionMadeBy |= (ushort)((value & 0xff) << 8);
 			}
@@ -562,34 +535,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </remarks>
 		public int Version 
 		{
-			get 
-			{
+			get {
 				// Return recorded version if known.
-				if (versionToExtract != 0) 
-				{
+				if (versionToExtract != 0) {
 					return versionToExtract;
 				} 
-				else 
-				{
+				else {
 					int result = 10;
-					if ( LocalHeaderRequiresZip64 ) 
-					{
+					if ( LocalHeaderRequiresZip64 ) {
 						result = ZipConstants.VersionZip64;	
 					}
-					else if (CompressionMethod.Deflated == method) 
-					{
+					else if (CompressionMethod.Deflated == method) {
 						result = 20;
 					} 
-					else if (IsDirectory == true) 
-					{
+					else if (IsDirectory == true) {
 						result = 20;
 					} 
-					else if (IsCrypted == true) 
-					{
+					else if (IsCrypted == true) {
 						result = 20;
 					} 
-					else if (HasDosAttributes(0x08) ) 
-					{
+					else if (HasDosAttributes(0x08) ) {
 						result = 11;
 					}
 					return result;
@@ -602,8 +567,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public bool CanDecompress
 		{
-			get 
-			{
+			get {
 				return (Version <= ZipConstants.VersionMadeBy) &&
 					(Version != 21) &&
 					(Version != 25) &&
@@ -635,16 +599,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public bool LocalHeaderRequiresZip64 
 		{
-			get 
-			{
+			get {
 				bool result = forceZip64_;
 
-				if ( !result )
-				{
+				if ( !result ) {
 					ulong trueCompressedSize = compressedSize;
 
-					if ( (versionToExtract == 0) && IsCrypted ) 
-					{
+					if ( (versionToExtract == 0) && IsCrypted ) {
 						trueCompressedSize += ZipConstants.CryptoHeaderSize;
 					}
 
@@ -661,8 +622,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public bool CentralHeaderRequiresZip64
 		{
-			get 
-			{
+			get {
 				return LocalHeaderRequiresZip64 || (offset >= 0xffffffff);
 			}
 		}
@@ -672,19 +632,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>		
 		public long DosTime 
 		{
-			get 
-			{
-				if ((known & Known.Time) == 0) 
-				{
+			get {
+				if ((known & Known.Time) == 0) {
 					return 0;
 				} 
-				else 
-				{
+				else {
 					return dosTime;
 				}
 			}
-			set 
-			{
+			set {
 				this.dosTime = (uint)value;
 				known |= Known.Time;
 			}
@@ -695,16 +651,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public DateTime DateTime 
 		{
-			get 
-			{
+			get {
 				// Although technically not valid some archives have dates set to zero.
 				// This mimics some archivers handling and is a good a cludge as any probably.
-				if ( dosTime == 0 ) 
-				{
+				if ( dosTime == 0 ) {
 					return DateTime.Now;
 				}
-				else 
-				{
+				else {
 					uint sec  = 2 * (dosTime & 0x1f);
 					uint min  = (dosTime >> 5) & 0x3f;
 					uint hrs  = (dosTime >> 11) & 0x1f;
@@ -714,8 +667,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					return new System.DateTime((int)year, (int)mon, (int)day, (int)hrs, (int)min, (int)sec);
 				}
 			}
-			set 
-			{
+			set {
 				DosTime = ((uint)value.Year - 1980 & 0x7f) << 25 | 
 					((uint)value.Month) << 21 |
 					((uint)value.Day) << 16 |
@@ -732,8 +684,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public string Name 
 		{
-			get 
-			{
+			get {
 				return name;
 			}
 		}
@@ -746,12 +697,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </returns>
 		public long Size 
 		{
-			get 
-			{
+			get {
 				return (known & Known.Size) != 0 ? (long)size : -1L;
 			}
-			set 
-			{
+			set {
 				this.size  = (ulong)value;
 				this.known |= Known.Size;
 			}
@@ -765,12 +714,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </returns>
 		public long CompressedSize 
 		{
-			get 
-			{
+			get {
 				return (known & Known.CompressedSize) != 0 ? (long)compressedSize : -1L;
 			}
-			set 
-			{
+			set {
 				this.compressedSize = (ulong)value;
 				this.known |= Known.CompressedSize;
 			}
@@ -813,8 +760,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			set {
-				if ( !IsCompressionMethodSupported(value) )
-				{
+				if ( !IsCompressionMethodSupported(value) ) {
 					throw new NotSupportedException("Compression method not supported");
 				}
 				this.method = value;
@@ -839,21 +785,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			set {
-				if (value == null) 
-				{
+				if (value == null) {
 					this.extra = null;
 				}
-				else
-				{
-					if (value.Length > 0xffff) 
-					{
+				else {
+					if (value.Length > 0xffff) {
 						throw new System.ArgumentOutOfRangeException("value");
 					}
 				
 					this.extra = new byte[value.Length];
 					Array.Copy(value, 0, this.extra, 0, value.Length);
 				}
-			}				
+			}
 		}
 		
 		/// <summary>
@@ -866,61 +809,49 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			ZipExtraData extraData = new ZipExtraData(this.extra);
 
-			if ( extraData.Find(0x0001) ) 
-			{
-				if ( (versionToExtract & 0xff) < ZipConstants.VersionZip64 )
-				{
+			if ( extraData.Find(0x0001) ) {
+				if ( (versionToExtract & 0xff) < ZipConstants.VersionZip64 ) {
 					throw new ZipException("Zip64 Extended information found but version is not valid");
 				}
 
 				// The recorded size will change but remember that this is zip64.
 				forceZip64_ = true;
 
-				if ( extraData.ValueLength < 4 ) 
-				{
+				if ( extraData.ValueLength < 4 ) {
 					throw new ZipException("Extra data extended Zip64 information length is invalid");
 				}
 
-				if ( localHeader || (size == uint.MaxValue) )
-				{
+				if ( localHeader || (size == uint.MaxValue) ) {
 					size = (ulong)extraData.ReadLong();
 				}
 
-				if ( localHeader || (compressedSize == uint.MaxValue) )
-				{
+				if ( localHeader || (compressedSize == uint.MaxValue) ) {
 					compressedSize = (ulong)extraData.ReadLong();
 				}
 			}
-			else
-			{
+			else {
 				if ( 
 					((versionToExtract & 0xff) >= ZipConstants.VersionZip64) &&
 					( (size == uint.MaxValue) ||
-					(compressedSize == uint.MaxValue) ))
-				{
+					(compressedSize == uint.MaxValue) )) {
 					throw new ZipException("Zip64 Extended information required but is missing.");
 				}
 			}
 
 /* TODO: Testing for handling of windows extra data
-			if ( extraData.Find(10) ) 
-			{
+			if ( extraData.Find(10) ) {
 				// No room for any tags.
-				if ( extraData.ValueLength < 8 ) 
-				{
+				if ( extraData.ValueLength < 8 ) {
 					throw new ZipException("NTFS Extra data invalid");
 				}
 
 				extraData.ReadInt(); // Reserved
 
-				while ( extraData.UnreadCount >= 4 ) 
-				{
+				while ( extraData.UnreadCount >= 4 ) {
 					int ntfsTag = extraData.ReadShort();
 					int ntfsLength = extraData.ReadShort();
-					if ( ntfsTag == 1 )
-					{
-						if ( ntfsLength >= 24 )
-						{
+					if ( ntfsTag == 1 ) {
+						if ( ntfsLength >= 24 ) {
 							long lastModification = extraData.ReadLong();
 							long lastAccess = extraData.ReadLong();
 							long createTime = extraData.ReadLong();
@@ -929,8 +860,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						}
 						break;
 					}
-					else
-					{
+					else {
 						// An unknown NTFS tag so simply skip it.
 						extraData.Skip(ntfsLength);
 					}
@@ -938,15 +868,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			else 
 */			
-			if ( extraData.Find(0x5455) ) 
-			{
+			if ( extraData.Find(0x5455) ) {
 				int length = extraData.ValueLength;	
 				int flags = extraData.ReadByte();
 					
 				// Can include other times but these are ignored.  Length of data should
 				// actually be 1 + 4 * no of bits in flags.
-				if ( ((flags & 1) != 0) && (length >= 5) ) 
-				{
+				if ( ((flags & 1) != 0) && (length >= 5) ) {
 					int iTime = extraData.ReadInt();
 
 					DateTime = (new System.DateTime ( 1970, 1, 1, 0, 0, 0 ).ToUniversalTime() +
@@ -1042,8 +970,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			ZipEntry result = (ZipEntry)this.MemberwiseClone();
 
-			if ( extra != null )
-			{
+			if ( extra != null ) {
 				result.extra = new byte[extra.Length];
 				Array.Copy(result.extra, 0, extra, 0, extra.Length);
 			}
@@ -1083,13 +1010,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="relativePath">Make names relative if true or absolute if false</param>
 		static public string CleanName(string name, bool relativePath)
 		{
-			if (name == null) 
-			{
+			if (name == null) {
 				return string.Empty;
 			}
 			
-			if (Path.IsPathRooted(name) == true) 
-			{
+			if (Path.IsPathRooted(name) == true) {
 				// NOTE:
 				// for UNC names...  \\machine\share\zoom\beet.txt gives \zoom\beet.txt
 				name = name.Substring(Path.GetPathRoot(name).Length);
@@ -1097,17 +1022,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			name = name.Replace(@"\", "/");
 			
-			if (relativePath == true) 
-			{
-				if ( (name.Length > 0) && ((name[0] == Path.AltDirectorySeparatorChar) || (name[0] == Path.DirectorySeparatorChar))) 
-				{
+			if (relativePath == true) {
+				if ( (name.Length > 0) && ((name[0] == Path.AltDirectorySeparatorChar) || (name[0] == Path.DirectorySeparatorChar))) {
 					name = name.Remove(0, 1);
 				}
 			} 
-			else 
-			{
-				if (name.Length > 0 && name[0] != Path.AltDirectorySeparatorChar && name[0] != Path.DirectorySeparatorChar) 
-				{
+			else {
+				if ( (name.Length > 0) &&
+				    (name[0] != Path.AltDirectorySeparatorChar) &&
+				    (name[0] != Path.DirectorySeparatorChar) ) {
 					name = name.Insert(0, "/");
 				}
 			}

@@ -262,27 +262,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			entry.ProcessExtraData(true);
-			if ( entry.CompressedSize >= 0 )
-			{
+			if ( entry.CompressedSize >= 0 ) {
 				csize = entry.CompressedSize;
 			}
 
-			if ( entry.Size >= 0 )
-			{
+			if ( entry.Size >= 0 ) {
 				size = entry.Size;
 			}
 			
-			if (method == (int)CompressionMethod.Stored && (!isCrypted && csize != size || (isCrypted && csize - ZipConstants.CryptoHeaderSize != size))) 
-			{
+			if (method == (int)CompressionMethod.Stored && (!isCrypted && csize != size || (isCrypted && csize - ZipConstants.CryptoHeaderSize != size))) {
 				throw new ZipException("Stored, but compressed != uncompressed");
 			}
 
 			// Determine how to handle reading of data if this is attempted.
-			if (entry.IsCompressionMethodSupported()) 
-			{
+			if (entry.IsCompressionMethodSupported()) {
 				internalReader = new ReaderDelegate(InitialRead);
-			}
-			else {
+			} else {
 				internalReader = new ReaderDelegate(ReadingNotSupported);
 			}
 			
@@ -319,23 +314,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			StopDecrypting();
 				
-			if ((flags & 8) != 0) 
-			{
+			if ((flags & 8) != 0) {
 				ReadDataDescriptor();
 			}
 				
 			size = 0;
 
 			if ( testCrc &&
-				((crc.Value & 0xFFFFFFFFL) != entry.Crc) && (entry.Crc != -1)) 
-			{
+				((crc.Value & 0xFFFFFFFFL) != entry.Crc) && (entry.Crc != -1)) {
 				throw new ZipException("CRC mismatch");
 			}
 
 			crc.Reset();
 
-			if (method == (int)CompressionMethod.Deflated) 
-			{
+			if (method == (int)CompressionMethod.Deflated) {
 				inf.Reset();
 			}
 			entry = null;
@@ -360,16 +352,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return;
 			}
 			
-			if (method == (int)CompressionMethod.Deflated) 
-			{
-				if ((flags & 8) != 0) 
-				{
+			if (method == (int)CompressionMethod.Deflated) {
+				if ((flags & 8) != 0) {
 					// We don't know how much we must skip, read until end.
 					byte[] tmp = new byte[2048];
 
 					// Read will close this entry
-					while (Read(tmp, 0, tmp.Length) > 0) 
-					{
+					while (Read(tmp, 0, tmp.Length) > 0) {
 					}
 					return;
 				}
@@ -378,20 +367,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 				inputBuffer.Available += inf.RemainingInput;
 			}
 		
-			if ( (inputBuffer.Available > csize) && (csize >= 0) ) 
-			{
+			if ( (inputBuffer.Available > csize) && (csize >= 0) ) {
 				inputBuffer.Available = (int)((long)inputBuffer.Available - csize);
-			} 
-			else 
-			{
+			} else {
 				csize -= inputBuffer.Available;
 				inputBuffer.Available = 0;
-				while (csize != 0) 
-				{
+				while (csize != 0) {
 					int skipped = (int)base.Skip(csize & 0xFFFFFFFFL);
 				
-					if (skipped <= 0) 
-					{
+					if (skipped <= 0) {
 						throw new ZipException("Zip archive ends early.");
 					}
 				
@@ -423,8 +407,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if ( entry != null ) {
 					if ( entry.Size >= 0 ) {
 						return entry.Size;
-					}
-					else {
+					} else {
 						throw new ZipException("Length not available for the current entry");
 					}
 				}
@@ -506,8 +489,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				byte[] cryptbuffer = new byte[ZipConstants.CryptoHeaderSize];
 				inputBuffer.ReadClearTextBuffer(cryptbuffer, 0, ZipConstants.CryptoHeaderSize);
 
-				if (cryptbuffer[ZipConstants.CryptoHeaderSize - 1] != entry.CryptoCheckValue) 
-				{
+				if (cryptbuffer[ZipConstants.CryptoHeaderSize - 1] != entry.CryptoCheckValue) {
 					throw new ZipException("Invalid password");
 				}
 
@@ -536,23 +518,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>Zero bytes read means end of stream.</remarks>
 		public override int Read(byte[] buffer, int offset, int count)
 		{
-			if ( buffer == null )
-			{
+			if ( buffer == null ) {
 				throw new ArgumentNullException("buffer");
 			}
 
-			if ( offset < 0 )
-			{
+			if ( offset < 0 ) {
 				throw new ArgumentOutOfRangeException("offset", "Cannot be negative");
 			}
 
-			if ( count < 0 )
-			{
+			if ( count < 0 ) {
 				throw new ArgumentOutOfRangeException("count", "Cannot be negative");
 			}
 
-			if ( (buffer.Length - offset) < count )
-			{
+			if ( (buffer.Length - offset) < count ) {
 				throw new ArgumentException("Invalid offset/count combination");
 			}
 

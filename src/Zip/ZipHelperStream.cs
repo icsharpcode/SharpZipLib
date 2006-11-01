@@ -86,15 +86,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			get { return stream_.CanSeek; }
 		}
-        
+
 #if DOTNET_20
-        public override bool CanTimeout
-        {
-            get
-            {
-                return stream_.CanTimeout;
-            }
-        }
+		public override bool CanTimeout
+		{
+			get { return stream_.CanTimeout; }
+		}
 #endif
 
 		public override long Length
@@ -104,14 +101,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		public override long Position
 		{
-			get
-			{
-				return stream_.Position;
-			}
-			set
-			{
-				stream_.Position = value;
-			}
+			get { return stream_.Position; }
+			set { stream_.Position = value;	}
 		}
 
 		public override bool CanWrite
@@ -149,18 +140,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public long LocateBlockWithSignature(int signature, long endLocation, int minimumBlockSize, int maximumVariableData)
 		{
 			long pos = endLocation - minimumBlockSize;
-			if ( pos < 0 )
-			{
+			if ( pos < 0 ) {
 				return -1;
 			}
 
 			long giveUpMarker = Math.Max(pos - maximumVariableData, 0);
 
 			// TODO: This loop could be optimised for speed.
-			do
-			{
-				if ( pos < giveUpMarker )
-				{
+			do {
+				if ( pos < giveUpMarker ) {
 					return -1;
 				}
 				Seek(pos--, SeekOrigin.Begin);
@@ -216,8 +204,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if ( (noOfEntries >= 0xffff) ||
 				(startOfCentralDirectory >= 0xffffffff) ||
-				(sizeEntries >= 0xffffffff) )
-			{
+				(sizeEntries >= 0xffffffff) ) {
 				WriteZip64EndOfCentralDirectory(noOfEntries, sizeEntries, startOfCentralDirectory);
 			}
 
@@ -228,48 +215,40 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLEShort(0);                    // no of disk with start of central dir
 
 			// Zip64
-			if ( noOfEntries >= 0xffff )
-			{
+			if ( noOfEntries >= 0xffff ) {
 				WriteLEUshort(0xffff);
 				WriteLEUshort(0xffff);
 			}
-			else
-			{
+			else {
 				WriteLEShort(( short )noOfEntries);          // entries in central dir for this disk
 				WriteLEShort(( short )noOfEntries);          // total entries in central directory
 			}
 
 			// Zip64
-			if ( sizeEntries >= 0xffffffff )
-			{
+			if ( sizeEntries >= 0xffffffff ) {
 				WriteLEUint(0xffffffff);
 			}
-			else
-			{
+			else {
 				WriteLEInt(( int )sizeEntries);            // size of the central directory
 			}
 
 			// Zip64
-			if ( startOfCentralDirectory >= 0xffffffff )
-			{
+			if ( startOfCentralDirectory >= 0xffffffff ) {
 				WriteLEUint(0xffffffff);          // offset of start of central dir
 			}
-			else
-			{
+			else {
 				WriteLEInt(( int )startOfCentralDirectory);          // offset of start of central dir
 			}
 
 			int commentLength = (comment != null) ? comment.Length : 0;
 
-			if ( commentLength > 0xffff )
-			{
+			if ( commentLength > 0xffff ) {
 				throw new ZipException(string.Format("Comment length({0}) is too long", commentLength));
 			}
 
 			WriteLEShort(commentLength);
 
-			if ( commentLength > 0 )
-			{
+			if ( commentLength > 0 ) {
 				Write(comment, 0, comment.Length);
 			}
 		}

@@ -129,19 +129,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public string TransformDirectory(string name)
 		{
 			name = TransformFile(name);
-			if (name.Length > 0) 
-			{
-				if ( !name.EndsWith("/") ) 
-				{
+			if (name.Length > 0) {
+				if ( !name.EndsWith("/") ) {
 					name += "/";
 				}
 			}
-			else if ( !relativePath_ )
-			{
+			else if ( !relativePath_ ) {
 				name = "/";
 			}
-			else
-			{
+			else {
 				throw new ZipException("Cannot have empty directory name");
 			}
 			return name;
@@ -167,8 +163,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				
 				name = name.Replace(@"\", "/");
 
-				if ( relativePath_ ) 
-				{
+				if ( relativePath_ ) {
 					while ( (name.Length > 0) && (name[0] == '/')) {
 						name = name.Remove(0, 1);
 					}
@@ -210,18 +205,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			bool result = (name != null);
 
-			if ( result )
-			{
-				if ( relaxed )
-				{
+			if ( result ) {
+				if ( relaxed ) {
 					result = name.IndexOfAny(InvalidEntryCharsRelaxed) < 0;
 				}
-				else
-				{
+				else {
 					result = 
 						(name.IndexOfAny(InvalidEntryChars) < 0) &&
 						(name.IndexOf('/') != 0);
-					}
+				}
 			}
 
 			return result;

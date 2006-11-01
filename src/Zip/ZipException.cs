@@ -61,7 +61,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
 		protected ZipException(SerializationInfo info, StreamingContext context )
 			: base( info, context )
-
 		{
 		}
 #endif

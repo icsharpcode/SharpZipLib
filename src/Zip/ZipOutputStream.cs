@@ -267,8 +267,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// Cant store values in a data descriptor as you cant extract stored files
 				// if the length isnt known.
 				entry.Flags &= ~8;
-				if (entry.CompressedSize >= 0) 
-				{
+				if (entry.CompressedSize >= 0) {
 					if (entry.Size < 0) {
 						entry.Size = entry.CompressedSize;
 					} else if (entry.Size != entry.CompressedSize) {
@@ -391,8 +390,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				ed.AddLeLong(-1);
 				ed.AddNewEntry(1);
 
-				if ( !ed.Find(1) ) 
-				{
+				if ( !ed.Find(1) ) {
 					throw new ZipException("Internal error cant find extra data");
 				}
 				
@@ -558,22 +556,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new InvalidOperationException("No open entry.");
 			}
 			
-			if ( buffer == null ) 
-			{
+			if ( buffer == null ) {
 				throw new ArgumentNullException("buffer");
 			}
-			if ( offset < 0 )
-			{
+			
+			if ( offset < 0 ) {
 				throw new ArgumentOutOfRangeException("offset", "Cannot be negative");
 			}
 
-			if ( count < 0 )
-			{
+			if ( count < 0 ) {
 				throw new ArgumentOutOfRangeException("count", "Cannot be negative");
 			}
 
-			if ( (buffer.Length - offset) < count )
-			{
+			if ( (buffer.Length - offset) < count ) {
 				throw new ArgumentException("Invalid offset/count combination");
 			}
 			
@@ -736,8 +731,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				sizeEntries += ZipConstants.CentralHeaderBaseSize + name.Length + extra.Length + entryComment.Length;
 			}
 			
-			using ( ZipHelperStream zhs = new ZipHelperStream(baseOutputStream) )
-			{
+			using ( ZipHelperStream zhs = new ZipHelperStream(baseOutputStream) ) {
 				zhs.WriteEndOfCentralDirectory(numEntries, sizeEntries, offset, zipComment);
 			}
 
