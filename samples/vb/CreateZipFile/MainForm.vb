@@ -2,14 +2,16 @@
 ' Created by SharpDevelop.
 ' User: JohnR
 ' Date: 1/11/2006
-' Time: 5:58 a.m.
+' Time: 9:20 p.m.
 ' 
 ' To change this template use Tools | Options | Coding | Edit Standard Headers.
 '
 Imports System
+Imports System.IO
 Imports System.Drawing
 Imports System.Windows.Forms
-Imports System.IO
+
+Imports ICSharpCode.SharpZipLib.Core
 Imports ICSharpCode.SharpZipLib.Zip
 
 Namespace CreateZipFile
@@ -56,68 +58,74 @@ Namespace CreateZipFile
 			'
 			'txtZipFileName
 			'
-			Me.txtZipFileName.Location = New System.Drawing.Point(24, 24)
+			Me.txtZipFileName.Location = New System.Drawing.Point(16, 40)
 			Me.txtZipFileName.Name = "txtZipFileName"
 			Me.txtZipFileName.TabIndex = 2
-			Me.txtZipFileName.Text = "Demo.zip"
+			Me.txtZipFileName.Text = "Demo.Zip"
 			'
 			'btnBrowseForFolder
 			'
-			Me.btnBrowseForFolder.Location = New System.Drawing.Point(416, 24)
+			Me.btnBrowseForFolder.Location = New System.Drawing.Point(408, 40)
 			Me.btnBrowseForFolder.Name = "btnBrowseForFolder"
 			Me.btnBrowseForFolder.Size = New System.Drawing.Size(32, 23)
-			Me.btnBrowseForFolder.TabIndex = 5
+			Me.btnBrowseForFolder.TabIndex = 4
 			Me.btnBrowseForFolder.Text = "..."
 			AddHandler Me.btnBrowseForFolder.Click, AddressOf Me.BtnBrowseForFolderClick
 			'
 			'txtSourceDir
 			'
-			Me.txtSourceDir.Location = New System.Drawing.Point(152, 24)
+			Me.txtSourceDir.Location = New System.Drawing.Point(144, 40)
 			Me.txtSourceDir.Name = "txtSourceDir"
-			Me.txtSourceDir.Size = New System.Drawing.Size(256, 20)
-			Me.txtSourceDir.TabIndex = 0
+			Me.txtSourceDir.Size = New System.Drawing.Size(256, 21)
+			Me.txtSourceDir.TabIndex = 3
 			Me.txtSourceDir.Text = ""
 			'
 			'label1
 			'
-			Me.label1.Location = New System.Drawing.Point(152, 0)
+			Me.label1.Location = New System.Drawing.Point(144, 8)
 			Me.label1.Name = "label1"
-			Me.label1.Size = New System.Drawing.Size(152, 23)
-			Me.label1.TabIndex = 3
-			Me.label1.Text = "Directory to compress:"
+			Me.label1.Size = New System.Drawing.Size(224, 23)
+			Me.label1.TabIndex = 1
+			Me.label1.Text = "Source directory:"
 			Me.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft
 			'
 			'label2
 			'
-			Me.label2.Location = New System.Drawing.Point(24, 0)
+			Me.label2.Location = New System.Drawing.Point(16, 8)
 			Me.label2.Name = "label2"
-			Me.label2.TabIndex = 4
-			Me.label2.Text = "Zip File name:"
+			Me.label2.TabIndex = 0
+			Me.label2.Text = "Zip File Name:"
 			Me.label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft
 			'
 			'btnZipIt
 			'
-			Me.btnZipIt.Location = New System.Drawing.Point(464, 24)
+			Me.btnZipIt.Location = New System.Drawing.Point(448, 40)
 			Me.btnZipIt.Name = "btnZipIt"
-			Me.btnZipIt.TabIndex = 1
+			Me.btnZipIt.TabIndex = 5
 			Me.btnZipIt.Text = "ZipIt"
 			AddHandler Me.btnZipIt.Click, AddressOf Me.BtnZipItClick
 			'
 			'MainForm
 			'
-			Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
-			Me.ClientSize = New System.Drawing.Size(560, 70)
-			Me.Controls.Add(Me.btnBrowseForFolder)
+			Me.AutoScaleBaseSize = New System.Drawing.Size(5, 14)
+			Me.ClientSize = New System.Drawing.Size(552, 86)
 			Me.Controls.Add(Me.label2)
 			Me.Controls.Add(Me.label1)
-			Me.Controls.Add(Me.txtZipFileName)
-			Me.Controls.Add(Me.btnZipIt)
 			Me.Controls.Add(Me.txtSourceDir)
+			Me.Controls.Add(Me.txtZipFileName)
+			Me.Controls.Add(Me.btnBrowseForFolder)
+			Me.Controls.Add(Me.btnZipIt)
 			Me.Name = "MainForm"
-			Me.Text = "Create Zip File"
+			Me.Text = "MainForm"
 			Me.ResumeLayout(false)
 		End Sub
 		#End Region
+		
+		Private Sub BtnBrowseForFolderClick(sender As System.Object, e As System.EventArgs)
+			If folderBrowserDialog.ShowDialog() = Windows.Forms.DialogResult.OK Then
+				txtSourceDir.Text = folderBrowserDialog.SelectedPath
+			End If
+		End Sub
 		
 		Private Sub BtnZipItClick(sender As System.Object, e As System.EventArgs)
 			Dim sourceDir As String = txtSourceDir.Text.Trim()
@@ -170,12 +178,6 @@ Namespace CreateZipFile
 			strmZipOutputStream.Close()
 		
 			MessageBox.Show("Operation complete")
-		End Sub
-		
-		Private Sub BtnBrowseForFolderClick(sender As System.Object, e As System.EventArgs)
-			If folderBrowserDialog.ShowDialog() = DialogResult.OK
-				txtSourceDir.Text = folderBrowserDialog.SelectedPath
-			End If
 		End Sub
 		
 	End Class

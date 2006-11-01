@@ -1,30 +1,32 @@
 Imports System.Reflection
-Imports System.Runtime.InteropServices
+Imports System.Runtime.CompilerServices
 
-' General Information about an assembly is controlled through the following 
-' set of attributes. Change these attribute values to modify the information
-' associated with an assembly.
-
-' Review the values of the assembly attributes
-
-<Assembly: AssemblyTitle("")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("")> 
-<Assembly: AssemblyCopyright("")> 
-<Assembly: AssemblyTrademark("")> 
-
-'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("9050E469-D9BC-443A-99A5-B353548B8B00")> 
-
-' Version information for an assembly consists of the following four values:
+' Information about this assembly is defined by the following
+' attributes.
 '
-'      Major Version
-'      Minor Version 
-'      Build Number
-'      Revision
-'
-' You can specify all the values or you can default the Build and Revision Numbers 
-' by using the '*' as shown below:
+' change them to the information which is associated with the assembly
+' you compile.
 
-<Assembly: AssemblyVersion("1.0.*")> 
+<assembly: AssemblyTitle("CreateZipFile")>
+<assembly: AssemblyDescription("SharpZipLibrary Sample")>
+<assembly: AssemblyConfiguration("")>
+<assembly: AssemblyCompany("ICSharpCode.NET")>
+<assembly: AssemblyProduct("")>
+<assembly: AssemblyCopyright("")>
+<assembly: AssemblyTrademark("")>
+<assembly: AssemblyCulture("")>
+
+' The assembly version has following format :
+'
+' Major.Minor.Build.Revision
+'
+' You can specify all values by your own or you can build default build and revision
+' numbers with the '*' character (the default):
+
+<assembly: AssemblyVersion("1.0.*")>
+
+' The following attributes specify the key for the sign of your assembly. See the
+' .NET Framework documentation for more information about signing.
+' This is not required, if you don't want signing let these attributes like they're.
+<assembly: AssemblyDelaySign(false)>
+<assembly: AssemblyKeyFile("")>
