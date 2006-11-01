@@ -7,17 +7,17 @@ Imports ICSharpCode.SharpZipLib.Zip
 
 Public Class MainForm
 	Inherits System.Windows.Forms.Form
-	Friend btnTest As System.Windows.Forms.Button
-	Friend btnBrowse As System.Windows.Forms.Button
+	Friend txtFileName As System.Windows.Forms.TextBox
 	Friend Label1 As System.Windows.Forms.Label
+	Friend btnBrowse As System.Windows.Forms.Button
 	Friend chdrSize As System.Windows.Forms.ColumnHeader
 	Friend chdrName As System.Windows.Forms.ColumnHeader
 	Friend hdrTime As System.Windows.Forms.ColumnHeader
 	Friend chdrRawSize As System.Windows.Forms.ColumnHeader
+	Friend btnTest As System.Windows.Forms.Button
 	Friend lvZipContents As System.Windows.Forms.ListView
 	Friend lblListName As System.Windows.Forms.Label
 	Friend hdrDate As System.Windows.Forms.ColumnHeader
-	Friend txtFileName As System.Windows.Forms.TextBox
 	
 	'NOTE: The following procedure is required by the Windows Form Designer
 	'It can be modified using the Windows Form Designer.  
@@ -38,26 +38,18 @@ Public Class MainForm
 	End Sub
 
 	Private Sub InitializeComponent()
-			Me.txtFileName = New System.Windows.Forms.TextBox
 			Me.hdrDate = New System.Windows.Forms.ColumnHeader
 			Me.lblListName = New System.Windows.Forms.Label
 			Me.lvZipContents = New System.Windows.Forms.ListView
+			Me.btnTest = New System.Windows.Forms.Button
 			Me.chdrRawSize = New System.Windows.Forms.ColumnHeader
 			Me.hdrTime = New System.Windows.Forms.ColumnHeader
 			Me.chdrName = New System.Windows.Forms.ColumnHeader
 			Me.chdrSize = New System.Windows.Forms.ColumnHeader
-			Me.Label1 = New System.Windows.Forms.Label
 			Me.btnBrowse = New System.Windows.Forms.Button
-			Me.btnTest = New System.Windows.Forms.Button
+			Me.Label1 = New System.Windows.Forms.Label
+			Me.txtFileName = New System.Windows.Forms.TextBox
 			Me.SuspendLayout
-			'
-			'txtFileName
-			'
-			Me.txtFileName.Location = New System.Drawing.Point(117, 23)
-			Me.txtFileName.Name = "txtFileName"
-			Me.txtFileName.Size = New System.Drawing.Size(197, 22)
-			Me.txtFileName.TabIndex = 0
-			Me.txtFileName.Text = ""
 			'
 			'hdrDate
 			'
@@ -80,12 +72,21 @@ Public Class MainForm
 			Me.lvZipContents.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.chdrName, Me.chdrRawSize, Me.chdrSize, Me.hdrDate, Me.hdrTime})
 			Me.lvZipContents.FullRowSelect = true
 			Me.lvZipContents.GridLines = true
-			Me.lvZipContents.Location = New System.Drawing.Point(16, 80)
+			Me.lvZipContents.Location = New System.Drawing.Point(8, 80)
 			Me.lvZipContents.Name = "lvZipContents"
-			Me.lvZipContents.Size = New System.Drawing.Size(400, 200)
+			Me.lvZipContents.Size = New System.Drawing.Size(440, 232)
 			Me.lvZipContents.Sorting = System.Windows.Forms.SortOrder.Ascending
 			Me.lvZipContents.TabIndex = 6
 			Me.lvZipContents.View = System.Windows.Forms.View.Details
+			'
+			'btnTest
+			'
+			Me.btnTest.Location = New System.Drawing.Point(344, 23)
+			Me.btnTest.Name = "btnTest"
+			Me.btnTest.Size = New System.Drawing.Size(68, 21)
+			Me.btnTest.TabIndex = 1
+			Me.btnTest.Text = "View"
+			AddHandler Me.btnTest.Click, AddressOf Me.btnTestClick
 			'
 			'chdrRawSize
 			'
@@ -107,14 +108,6 @@ Public Class MainForm
 			Me.chdrSize.Text = "Size"
 			Me.chdrSize.Width = 52
 			'
-			'Label1
-			'
-			Me.Label1.Location = New System.Drawing.Point(16, 23)
-			Me.Label1.Name = "Label1"
-			Me.Label1.Size = New System.Drawing.Size(91, 21)
-			Me.Label1.TabIndex = 3
-			Me.Label1.Text = "Zip File Name:"
-			'
 			'btnBrowse
 			'
 			Me.btnBrowse.Location = New System.Drawing.Point(320, 23)
@@ -124,19 +117,26 @@ Public Class MainForm
 			Me.btnBrowse.Text = "..."
 			AddHandler Me.btnBrowse.Click, AddressOf Me.btnBrowseClick
 			'
-			'btnTest
+			'Label1
 			'
-			Me.btnTest.Location = New System.Drawing.Point(344, 23)
-			Me.btnTest.Name = "btnTest"
-			Me.btnTest.Size = New System.Drawing.Size(68, 21)
-			Me.btnTest.TabIndex = 1
-			Me.btnTest.Text = "View"
-			AddHandler Me.btnTest.Click, AddressOf Me.btnTestClick
+			Me.Label1.Location = New System.Drawing.Point(16, 23)
+			Me.Label1.Name = "Label1"
+			Me.Label1.Size = New System.Drawing.Size(91, 21)
+			Me.Label1.TabIndex = 3
+			Me.Label1.Text = "Zip File Name:"
+			'
+			'txtFileName
+			'
+			Me.txtFileName.Location = New System.Drawing.Point(117, 23)
+			Me.txtFileName.Name = "txtFileName"
+			Me.txtFileName.Size = New System.Drawing.Size(197, 21)
+			Me.txtFileName.TabIndex = 0
+			Me.txtFileName.Text = ""
 			'
 			'MainForm
 			'
-			Me.AutoScaleBaseSize = New System.Drawing.Size(6, 15)
-			Me.ClientSize = New System.Drawing.Size(420, 283)
+			Me.AutoScaleBaseSize = New System.Drawing.Size(5, 14)
+			Me.ClientSize = New System.Drawing.Size(456, 318)
 			Me.Controls.Add(Me.btnBrowse)
 			Me.Controls.Add(Me.lvZipContents)
 			Me.Controls.Add(Me.lblListName)
