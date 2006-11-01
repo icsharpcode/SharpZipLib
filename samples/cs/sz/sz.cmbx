@@ -3,7 +3,7 @@
     <Execute entry="sz" type="None" />
   </StartMode>
   <Entries>
-    <Entry filename=".\.\sz.prjx" />
+    <Entry filename=".\sz.prjx" />
   </Entries>
   <Configurations active="Debug">
     <Configuration name="Release">
