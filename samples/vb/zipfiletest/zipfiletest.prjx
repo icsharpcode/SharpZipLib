@@ -9,23 +9,23 @@
   </References>
   <DeploymentInformation target="" script="" strategy="File" />
   <Configuration runwithwarnings="False" name="Debug">
-    <CodeGeneration includedebuginformation="True" optimize="True" generateoverflowchecks="True" rootnamespace="" mainclass="" target="Exe" definesymbols="" generatexmldocumentation="False" win32Icon="" imports="" />
-    <VBDOC outputfile="" enablevbdoc="False" filestoparse="" commentprefix="" />
+    <CodeGeneration compilerversion="" includedebuginformation="True" optimize="True" generateoverflowchecks="True" rootnamespace="" mainclass="" target="WinExe" definesymbols="" optionexplicit="True" optionstrict="False" win32Icon="" imports="" />
+    <VBDOC outputfile="" filestoparse="" commentprefix="" />
     <Execution consolepause="True" commandlineparameters="" />
-    <Output directory=".\bin" assembly="createzipfile" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
+    <Output directory=".\bin" assembly="zipfiletest" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
   </Configuration>
   <Configurations active="Debug">
     <Configuration runwithwarnings="False" name="Debug">
-      <CodeGeneration includedebuginformation="True" optimize="True" generateoverflowchecks="True" rootnamespace="" mainclass="" target="Exe" definesymbols="" generatexmldocumentation="False" win32Icon="" imports="" />
-      <VBDOC outputfile="" enablevbdoc="False" filestoparse="" commentprefix="" />
+      <CodeGeneration compilerversion="" includedebuginformation="True" optimize="True" generateoverflowchecks="True" rootnamespace="" mainclass="" target="WinExe" definesymbols="" optionexplicit="True" optionstrict="False" win32Icon="" imports="" />
+      <VBDOC outputfile="" filestoparse="" commentprefix="" />
       <Execution consolepause="True" commandlineparameters="" />
-      <Output directory=".\bin" assembly="createzipfile" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
+      <Output directory=".\bin" assembly="zipfiletest" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
     </Configuration>
     <Configuration runwithwarnings="False" name="Release">
-      <CodeGeneration includedebuginformation="True" optimize="True" generateoverflowchecks="True" rootnamespace="" mainclass="" target="Exe" definesymbols="" generatexmldocumentation="False" win32Icon="" imports="" />
-      <VBDOC outputfile="" enablevbdoc="False" filestoparse="" commentprefix="" />
+      <CodeGeneration compilerversion="Standard" includedebuginformation="True" optimize="True" generateoverflowchecks="True" rootnamespace="" mainclass="" target="WinExe" definesymbols="" optionexplicit="True" optionstrict="False" win32Icon="" imports="" />
+      <VBDOC outputfile="" filestoparse="" commentprefix="" />
       <Execution consolepause="True" commandlineparameters="" />
-      <Output directory=".\" assembly="sdffds" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
+      <Output directory=".\" assembly="zipfiletest" executeScript="" executeBeforeBuild="" executeAfterBuild="" executeBeforeBuildArguments="" executeAfterBuildArguments="" />
     </Configuration>
   </Configurations>
 </Project>
