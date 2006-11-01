@@ -7,8 +7,8 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("")> 
-<Assembly: AssemblyDescription("")> 
+<Assembly: AssemblyTitle("MiniBZip2")> 
+<Assembly: AssemblyDescription("SharpZipLib MiniBZip2 Sample")> 
 <Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("")> 
 <Assembly: AssemblyCopyright("")> 

@@ -4,7 +4,7 @@ Imports System.IO
 
 Imports ICSharpCode.SharpZipLib.BZip2
 
-Public Class Form1
+Public Class MainForm
 	Inherits System.Windows.Forms.Form
 	Friend txtFileName As System.Windows.Forms.TextBox
 	Friend btnBrowseForBZ As System.Windows.Forms.Button
@@ -18,7 +18,7 @@ Public Class Form1
 #Region " Windows Form Designer generated code "
 
 	Public Shared Sub Main()
-		Dim fMainForm As New Form1
+		Dim fMainForm As New MainForm
 		fMainForm.ShowDialog
 	End Sub
 
@@ -100,20 +100,20 @@ Public Class Form1
 			'
 			Me.txtFileName.Location = New System.Drawing.Point(96, 16)
 			Me.txtFileName.Name = "txtFileName"
-			Me.txtFileName.Size = New System.Drawing.Size(200, 23)
+			Me.txtFileName.Size = New System.Drawing.Size(200, 20)
 			Me.txtFileName.TabIndex = 0
 			Me.txtFileName.Text = ""
 			'
-			'Form1
+			'MainForm
 			'
-			Me.AutoScaleBaseSize = New System.Drawing.Size(7, 16)
+			Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
 			Me.ClientSize = New System.Drawing.Size(344, 152)
 			Me.Controls.Add(Me.btnBrowseForBZ)
 			Me.Controls.Add(Me.Label1)
 			Me.Controls.Add(Me.GroupBox1)
 			Me.Controls.Add(Me.btnExecute)
 			Me.Controls.Add(Me.txtFileName)
-			Me.Name = "Form1"
+			Me.Name = "MainForm"
 			Me.Text = "Mini BZ2 Application"
 			Me.GroupBox1.ResumeLayout(false)
 			Me.ResumeLayout(false)
@@ -122,6 +122,18 @@ Public Class Form1
 #End Region
 
 	Private Sub btnExecuteClick(ByVal sender As System.Object, ByVal e As System.EventArgs)
+		' Simple input sanity checks
+		If (0 = txtFileName.Text.Length)
+			MessageBox.Show("Please enter a file name", "File name is missing")
+			Return
+		End If
+		
+		If Not File.Exists(txtFileName.Text)
+			MessageBox.Show(txtFileName.Text, "Cannot open file")
+			Return
+		End If
+		
+		
 		If (False = rdCompress.Checked) Then
 			' Decompression of single-file archive
 			Dim fsBZ2Archive As FileStream, fsOutput As FileStream
