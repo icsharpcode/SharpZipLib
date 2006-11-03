@@ -2053,7 +2053,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			long sourcePosition = 0;
 
 			const int NameLengthOffset = 26;
-			// TODO Add base for SFX friendly handling
+			// TODO: Add base for SFX friendly handling
 			long entryDataOffset = update.Entry.Offset + NameLengthOffset;
 
 			baseStream_.Seek(entryDataOffset, SeekOrigin.Begin);
@@ -2302,7 +2302,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 				}
 			}
-			catch(Exception ex) {
+			catch(Exception) {
 				allOk = false;
 			}
 			finally {
@@ -3486,7 +3486,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				result = File.OpenRead(fileName_);
 			}
-			catch(Exception ex) {
+			catch(Exception) {
 				result  = null;
 
 				// Try to roll back changes...
