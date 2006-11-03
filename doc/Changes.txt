@@ -12,7 +12,7 @@ Changes since v0.84
 
 Known issues fixed.
 + ZIP-975 BZip Compress and Decompress stream handling inconsistent.
-+ ZIP-517 Stored entry handling were descriptors is specified in flags.
++ ZIP-517 Stored entry handling were descriptors are specified in flags.
 + ZIP-514 FastZip not firing File/Directory Failure.
 + ZIP-513 HttpResponse exception when writing 0 bytes.
 + ZIP-506 Decryption fails for entry with extended time.
