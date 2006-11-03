@@ -117,7 +117,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			InitBlock();
 		}
 		#endregion
-
+		#region Destructor
 		/// <summary>
 		/// Ensures that resources are freed and other cleanup operations 
 		/// are performed when the garbage collector reclaims the BZip2OutputStream.
@@ -126,7 +126,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		{
 			Dispose(false);
 		}
-
+		#endregion
 		/// <summary>
 		/// Get/set flag indicating ownership of underlying stream.
 		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
@@ -406,11 +406,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			bytesOut = 0;
 			nBlocksRandomised = 0;
 			
-			/*--- Write `magic' bytes h indicating file-format == huffmanised,
+			/*--- Write header `magic' bytes indicating file-format == huffmanised,
 			followed by a digit indicating blockSize100k.
 			---*/
 			
-			// TODO  adding header here should be optional?
 			BsPutUChar('B');
 			BsPutUChar('Z');
 			
@@ -422,10 +421,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		
 		void InitBlock() 
 		{
-			//		blockNo++;
 			mCrc.Reset();
 			last = -1;
-			//		ch = 0;
 			
 			for (int i = 0; i < 256; i++) {
 				inUse[i] = false;
@@ -445,7 +442,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			combinedCRC = (combinedCRC << 1) | (combinedCRC >> 31);
 			combinedCRC ^= blockCRC;
 			
-			/*-- sort the block and establish posn of original string --*/
+			/*-- sort the block and establish position of original string --*/
 			DoReversibleTransformation();
 			
 			/*--
@@ -732,6 +729,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			if (!(nGroups < 8)) {
 				Panic();
 			}
+			
 			if (!(nSelectors < 32768 && nSelectors <= (2 + (900000 / BZip2Constants.G_SIZE)))) {
 				Panic();
 			}
@@ -739,9 +737,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			/*--- Compute MTF values for the selectors. ---*/
 			char[] pos = new char[BZip2Constants.N_GROUPS];
 			char ll_i, tmp2, tmp;
+			
 			for (int i = 0; i < nGroups; i++) {
 				pos[i] = (char)i;
 			}
+			
 			for (int i = 0; i < nSelectors; i++) {
 				ll_i = selector[i];
 				int j = 0;
@@ -1790,6 +1790,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			public int hh;
 			public int dd;
 		}
+		
 		#region Instance Fields
 		bool isStreamOwner = true;
 		
