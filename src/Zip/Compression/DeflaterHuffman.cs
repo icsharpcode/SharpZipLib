@@ -62,13 +62,17 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		// repeat previous bit length 3-6 times (2 bits of repeat count)
 		const  int REP_3_6    = 16;
+		// repeat a zero length 3-10 times  (3 bits of repeat count)
 		const  int REP_3_10   = 17;
+		// repeat a zero length 11-138 times  (7 bits of repeat count)
 		const  int REP_11_138 = 18;
 		const  int EOF_SYMBOL = 256;
 
-		static int[] BL_ORDER = { 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 };
+		// The lengths of the bit length codes are sent in order of decreasing
+ 		// probability, to avoid transmitting the lengths for unused bit length codes.
+		static readonly int[] BL_ORDER = { 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 };
 		
-		static byte[] bit4Reverse = {
+		static readonly byte[] bit4Reverse = {
 			0,
 			8,
 			4,
@@ -586,6 +590,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		Tree distTree;
 		Tree blTree;
 		
+		// Buffer for distances
 		short[] d_buf;
 		byte[]  l_buf;
 		int last_lit;
