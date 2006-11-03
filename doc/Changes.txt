@@ -1,13 +1,23 @@
 Changes since v0.84
 + Mod time written in gzip header corrected.
-+ Fix for password checking for InfoZip style archives.
-+ Fix for ZipInputStream where closing an open entry wasnt handling all cases.
++ Fix for ZipInputStream where closing an open entry wasnt handling all cases correctly.
 + Add support for Zip64 handling to both streams and ZipFile classes.
 + Add ability to modify an existing archive to ZipFile class.
 + Limited FxCop cleanups
 + TarArchive and others made IDisposable.
-+ TarOutputStream end-of-file garbage data fixed.
++ TarOutputStream end-of-file garbage data problem fixed.
++ Zip archive no longer performs zero writes which cause can problems.
 + A bundle of minor bug fixes particularly in the Zip area.
++ Enhanced testing facilities to allow feedback.
+
+Known issues fixed.
++ ZIP-975 BZip Compress and Decompress stream handling inconsistent.
++ ZIP-517 Stored entry handling were descriptors is specified in flags.
++ ZIP-514 FastZip not firing File/Directory Failure.
++ ZIP-513 HttpResponse exception when writing 0 bytes.
++ ZIP-506 Decryption fails for entry with extended time.
++ ZIP-174 Exception on zero length entries.
+
 
 Changes since v0.83b
 + When skipping to an entry in a zip archive no data is read.  This allows password setting after examining the entry to
