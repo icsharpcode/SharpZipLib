@@ -1,10 +1,10 @@
 File:    APPNOTE.TXT - .ZIP File Format Specification
-Version: 6.2.2 
-Revised: January 6, 2006
+Version: 6.3.0 
+Revised: September 29, 2006
 Copyright (c) 1989 - 2006 PKWARE Inc., All Rights Reserved.
 
 The use of certain technological aspects disclosed in the current
-APPNOTE is available pursuant to the below Section XVI entitled
+APPNOTE is available pursuant to the below section entitled
 "Incorporating PKWARE Proprietary Technology into Your Product".
 
 I. Purpose
@@ -69,7 +69,7 @@ Version       Change Description                        Date
                Encryption for encrypting metadata
               -Added OS/X to Version Made By values
 
-6.2.1         -Added ExtraField placeholder for        04/01/2005
+6.2.1         -Added Extra Field placeholder for       04/01/2005
                POSZIP using ID 0x4690
 
               -Clarified size field on 
@@ -81,12 +81,33 @@ Version       Change Description                        Date
               -Clarifications and typographical 
                corrections
 
+6.3.0         -Added tape positioning storage          09/29/2006
+               parameters
+
+              -Expanded list of supported hash algorithms
+
+              -Expanded list of supported compression
+               algorithms
+
+              -Expanded list of supported encryption
+               algorithms
+
+              -Added option for Unicode filename 
+               storage
+
+              -Clarifications for consistent use
+               of Data Descriptor records
+
+              -Added additional "Extra Field" 
+               definitions
+
 
 V. General Format of a .ZIP file
 --------------------------------
 
   Files stored in arbitrary order.  Large .ZIP files can span multiple
-  diskette media or be split into user-defined segment sizes.  
+  volumes or be split into user-defined segment sizes. All values
+  are stored in little-endian byte order unless otherwise specified. 
 
   Overall .ZIP file format:
 
@@ -142,8 +163,39 @@ V. General Format of a .ZIP file
       and immediately follows the last byte of compressed data.
       This descriptor is used only when it was not possible to
       seek in the output .ZIP file, e.g., when the output .ZIP file
-      was standard output or a non-seekable device.  For Zip64 format
+      was standard output or a non-seekable device.  For ZIP64(tm) format
       archives, the compressed and uncompressed sizes are 8 bytes each.
+
+      When compressing files, compressed and uncompressed sizes 
+      should be stored in ZIP64 format (as 8 byte values) when a 
+      files size exceeds 0xFFFFFFFF.   However ZIP64 format may be 
+      used regardless of the size of a file.  When extracting, if 
+      the zip64 extended information extra field is present for 
+      the file the compressed and uncompressed sizes will be 8
+      byte values.  
+
+      Although not originally assigned a signature, the value 
+      0x08074b50 has commonly been adopted as a signature value 
+      for the data descriptor record.  Implementers should be 
+      aware that ZIP files may be encountered with or without this 
+      signature marking data descriptors and should account for
+      either case when reading ZIP files to ensure compatibility.
+      When writing ZIP files, it is recommended to include the
+      signature value marking the data descriptor record.  When
+      the signature is used, the fields currently defined for
+      the data descriptor record will immediately follow the
+      signature.
+
+      An extensible data descriptor will be released in a future
+      version of this APPNOTE.  This new record is intended to
+      resolve conflicts with the use of this record going forward,
+      and to provide better support for streamed file processing.
+
+      When the Central Directory Encryption method is used, the data
+      descriptor record is not required, but may be used.  If present,
+      and bit 3 of the general purpose bit field is set to indicate
+      its presence, the values in fields of the data descriptor
+      record should be set to binary zeros.
 
   D.  Archive decryption header:  
 
@@ -260,9 +312,9 @@ V. General Format of a .ZIP file
         Size = SizeOfFixedFields + SizeOfVariableData - 12.
 
         The above record structure defines Version 1 of the 
-        Zip64 end of central directory record. Version 1 was 
+        zip64 end of central directory record. Version 1 was 
         implemented in versions of this specification preceding 
-        6.2 in support of the ZIP64(tm) large file feature. The 
+        6.2 in support of the ZIP64 large file feature. The 
         introduction of the Central Directory Encryption feature 
         implemented in version 6.2 as part of the Strong Encryption 
         Specification defines Version 2 of this record structure. 
@@ -270,6 +322,25 @@ V. General Format of a .ZIP file
         Specification for details on the version 2 format for 
         this record.
 
+        Special purpose data may reside in the zip64 extensible data
+        sector field following either a V1 or V2 version of this
+        record.  To ensure identification of this special purpose data
+        it must include an identifying header block consisting of the
+        following:
+
+           Header ID  -  2 bytes
+           Data Size  -  4 bytes
+
+        The Header ID field indicates the type of data that is in the 
+        data block that follows.
+
+        Data Size identifies the number of bytes that follow for this
+        data block type.
+
+        Multiple special purpose data blocks may be present, but each
+        must be preceded by a Header ID and Data Size field.  Current
+        mappings of Header ID values supported in this field are as
+        defined in APPENDIX C.
 
   H.  Zip64 end of central directory locator
 
@@ -364,6 +435,10 @@ V. General Format of a .ZIP file
           5.2 - File is encrypted using corrected RC2-64 encryption**
           6.1 - File is encrypted using non-OAEP key wrapping***
           6.2 - Central directory encryption
+          6.3 - File is compressed using LZMA
+          6.3 - File is compressed using PPMd+
+          6.3 - File is encrypted using Blowfish
+          6.3 - File is encrypted using Twofish
 
 
           * Early 7.x (pre-7.2) versions of PKZIP incorrectly set the
@@ -379,8 +454,13 @@ V. General Format of a .ZIP file
           backward compatibility when sending ZIP files to be opened by
           versions of PKZIP older than 6.1 (5.0 or 6.0).
 
+          + Files compressed using PPMd should set the version
+          needed to extract field to 6.3, however, not all ZIP 
+          programs enforce this and may be unable to decompress 
+          data files compressed using PPMd if this value is set.
+
           When using ZIP64 extensions, the corresponding value in the
-          Zip64 end of central directory record should also be set.  
+          zip64 end of central directory record should also be set.  
           This field should be set appropriately to indicate whether 
           Version 1 or Version 2 format is in use. 
 
@@ -405,6 +485,15 @@ V. General Format of a .ZIP file
             0      1    Maximum (-exx/-ex) compression option was used.
             1      0    Fast (-ef) compression option was used.
             1      1    Super Fast (-es) compression option was used.
+
+          (For Method 14 - LZMA)
+          Bit 1: If the compression method used was type 14,
+                 LZMA, then this bit, if set, indicates
+                 an end-of-stream (EOS) marker is used to
+                 mark the end of the compressed data stream.
+                 If clear, then an EOS marker is not present
+                 and the compressed data size must be known
+                 to extract.
 
           Note:  Bits 1 and 2 are undefined if the compression
                  method is any other.
@@ -439,7 +528,9 @@ V. General Format of a .ZIP file
 
           Bit 10: Currently unused.
 
-          Bit 11: Currently unused.
+          Bit 11: Language encoding flag (EFS).  If this bit is set,
+                  the filename and comment fields for this file
+                  must be encoded using UTF-8. (see APPENDIX D)
 
           Bit 12: Reserved by PKWARE for enhanced compression.
 
@@ -471,11 +562,13 @@ V. General Format of a .ZIP file
          11 - Reserved by PKWARE
          12 - File is compressed using BZIP2 algorithm
          13 - Reserved by PKWARE
-         14 - Reserved by PKWARE
+         14 - LZMA (EFS)
          15 - Reserved by PKWARE
          16 - Reserved by PKWARE
          17 - Reserved by PKWARE
          18 - File is compressed using IBM TERSE (new)
+         19 - IBM LZ77 z Architecture (PFS)
+         98 - PPMd version I, Rev 1
 
       date and time fields: (2 bytes each)
 
@@ -500,9 +593,10 @@ V. General Format of a .ZIP file
           If bit 3 of the general purpose flag is set, this
           field is set to zero in the local header and the correct
           value is put in the data descriptor and in the central
-          directory. If encrypting the central directory and general 
-          purpose bit flag 13 is set indicating masking, the value 
-          stored in the Local Header will be zero. 
+          directory. When encrypting the central directory, if the
+          local header is not in ZIP64 format and general purpose 
+          bit flag 13 is set indicating masking, the value stored 
+          in the Local Header will be zero. 
 
       compressed size: (4 bytes)
       uncompressed size: (4 bytes)
@@ -514,12 +608,13 @@ V. General Format of a .ZIP file
           header.  If bit 3 of the general purpose bit flag is set, 
           these fields are set to zero in the local header and the 
           correct values are put in the data descriptor and
-          in the central directory.  If an archive is in zip64 format
+          in the central directory.  If an archive is in ZIP64 format
           and the value in this field is 0xFFFFFFFF, the size will be
-          in the corresponding 8 byte zip64 extended information 
-          extra field.  If encrypting the central directory and general 
-          purpose bit flag 13 is set indicating masking, the value stored 
-          for the uncompressed size in the Local Header will be zero. 
+          in the corresponding 8 byte ZIP64 extended information 
+          extra field.  When encrypting the central directory, if the
+          local header is not in ZIP64 format and general purpose bit 
+          flag 13 is set indicating masking, the value stored for the 
+          uncompressed size in the Local Header will be zero. 
 
       file name length: (2 bytes)
       extra field length: (2 bytes)
@@ -534,7 +629,7 @@ V. General Format of a .ZIP file
       disk number start: (2 bytes)
 
           The number of the disk on which this file begins.  If an 
-          archive is in zip64 format and the value in this field is 
+          archive is in ZIP64 format and the value in this field is 
           0xFFFF, the size will be in the corresponding 4 byte zip64 
           extended information extra field.
 
@@ -549,11 +644,12 @@ V. General Format of a .ZIP file
 
           The 0x0002 bit of this field indicates, if set, that a 
           4 byte variable record length control field precedes each 
-          logical record indicating the length of the record. This 
-          flag is independent of text control characters, and if used 
-          in conjunction with text data, includes any control 
-          characters in the total length of the record. This value is 
-          provided for mainframe data transfer support.
+          logical record indicating the length of the record. The 
+          record length control field is stored in little-endian byte
+          order.  This flag is independent of text control characters, 
+          and if used in conjunction with text data, includes any 
+          control characters in the total length of the record. This 
+          value is provided for mainframe data transfer support.
 
       external file attributes: (4 bytes)
 
@@ -567,7 +663,7 @@ V. General Format of a .ZIP file
 
           This is the offset from the start of the first disk on
           which this file appears, to where the local header should
-          be found.  If an archive is in zip64 format and the value
+          be found.  If an archive is in ZIP64 format and the value
           in this field is 0xFFFFFFFF, the size will be in the 
           corresponding 8 byte zip64 extended information extra field.
 
@@ -620,9 +716,10 @@ V. General Format of a .ZIP file
 
           The current Header ID mappings defined by PKWARE are:
 
-          0x0001        ZIP64 extended information extra field
+          0x0001        Zip64 extended information extra field
           0x0007        AV Info
-          0x0008        Reserved for future Unicode file name data (PFS)
+          0x0008        Reserved for extended language encoding data (PFS)
+                        (see APPENDIX D)
           0x0009        OS/2
           0x000a        NTFS 
           0x000c        OpenVMS
@@ -665,6 +762,7 @@ V. General Format of a .ZIP file
           0x6542        BeOS/BeBox
           0x756e        ASi UNIX
           0x7855        Info-ZIP UNIX (new)
+          0xa220        Microsoft Open Packaging Growth Hint
           0xfd4a        SMS/QDOS
 
           Detailed descriptions of Extra Fields defined by third 
@@ -691,14 +789,14 @@ V. General Format of a .ZIP file
           value being correct, before assuming that it is a block of
           known type.
 
-         -ZIP64 Extended Information Extra Field (0x0001):
+         -Zip64 Extended Information Extra Field (0x0001):
 
-          The following is the layout of the ZIP64 extended 
+          The following is the layout of the zip64 extended 
           information "extra" block. If one of the size or
           offset fields in the Local or Central directory
           record is too small to hold the required data,
-          a ZIP64 extended information record is created.
-          The order of the fields in the ZIP64 extended 
+          a Zip64 extended information record is created.
+          The order of the fields in the zip64 extended 
           information record is fixed, but the fields will
           only appear if the corresponding Local or Central
           directory record field is set to 0xFFFF or 0xFFFFFFFF.
@@ -720,7 +818,11 @@ V. General Format of a .ZIP file
                                 this file starts 
 
           This entry in the Local header must include BOTH original
-          and compressed file sizes.
+          and compressed file size fields. If encrypting the 
+          central directory and bit 13 of the general purpose bit
+          flag is set indicating masking, the value stored in the
+          Local Header for the original file size will be zero.
+
 
          -OS/2 Extra Field (0x0009):
 
@@ -795,7 +897,7 @@ V. General Format of a .ZIP file
           .
           .
           .
-          TagN       2 bytes    OpenVMS attribute tage value #N
+          TagN       2 bytes    OpenVMS attribute tag value #N
           SizeN      2 bytes    Size of attribute #N, in bytes
           (var.)     SizeN      Attribute #N data
 
@@ -899,8 +1001,9 @@ V. General Format of a .ZIP file
           covered under U.S. Patents and Patents Pending. The use or 
           implementation in a product of certain technological aspects set
           forth in the current APPNOTE, including those with regard to 
-          strong encryption or patching, requires a license from PKWARE.  
-          Please contact PKWARE with regard to acquiring a license. 
+          strong encryption, patching, or extended tape operations requires
+          a license from PKWARE.  Please contact PKWARE with regard to 
+          acquiring a license. 
 
          -PKCS#7 Store for X.509 Certificates (0x0014):
 
@@ -1023,7 +1126,7 @@ V. General Format of a .ZIP file
           TSize       2 bytes       Size for the following data block
           ID          4 bytes       EBCDIC "Z390" 0xE9F3F9F0 or
                                     "T4MV" for TargetFour
-          (var)       TSize-4       Attribute data
+          (var)       TSize-4       Attribute data (see APPENDIX B)
 
 
          -OS/400 Extra Field (0x0065):
@@ -1038,7 +1141,7 @@ V. General Format of a .ZIP file
           TSize       2 bytes       Size for the following data block
           ID          4 bytes       EBCDIC "I400" 0xC9F4F0F0 or
                                     "T4MV" for TargetFour
-          (var)       TSize-4       Attribute data
+          (var)       TSize-4       Attribute data (see APPENDIX A)
 
 
           Third-party Mappings:
@@ -1141,6 +1244,17 @@ V. General Format of a .ZIP file
               public domain for review and possible adoption as a
               standard."
 
+         -Microsoft Open Packaging Growth Hint (0xa220):
+
+          Value         Size        Description
+          -----         ----        -----------
+          0xa220        Short       tag for this extra block type
+          TSize         Short       size of Sig + PadVal + Padding
+          Sig           Short       verification signature (A028)
+          PadVal        Short       Initial padding value
+          Padding       variable    filled with NULL characters
+
+
       file comment: (Variable)
 
           The comment for this file.
@@ -1148,7 +1262,7 @@ V. General Format of a .ZIP file
       number of this disk: (2 bytes)
 
           The number of this disk, which contains central
-          directory end record. If an archive is in zip64 format
+          directory end record. If an archive is in ZIP64 format
           and the value in this field is 0xFFFF, the size will 
           be in the corresponding 4 byte zip64 end of central 
           directory field.
@@ -1158,7 +1272,7 @@ V. General Format of a .ZIP file
       directory: (2 bytes)
 
           The number of the disk on which the central
-          directory starts. If an archive is in zip64 format
+          directory starts. If an archive is in ZIP64 format
           and the value in this field is 0xFFFF, the size will 
           be in the corresponding 4 byte zip64 end of central 
           directory field.
@@ -1167,7 +1281,7 @@ V. General Format of a .ZIP file
       this disk: (2 bytes)
 
           The number of central directory entries on this disk.
-          If an archive is in zip64 format and the value in 
+          If an archive is in ZIP64 format and the value in 
           this field is 0xFFFF, the size will be in the 
           corresponding 8 byte zip64 end of central 
           directory field.
@@ -1175,14 +1289,14 @@ V. General Format of a .ZIP file
       total number of entries in the central dir: (2 bytes)
 
           The total number of files in the .ZIP file. If an 
-          archive is in zip64 format and the value in this field
+          archive is in ZIP64 format and the value in this field
           is 0xFFFF, the size will be in the corresponding 8 byte 
           zip64 end of central directory field.
 
       size of the central directory: (4 bytes)
 
           The size (in bytes) of the entire central directory.
-          If an archive is in zip64 format and the value in 
+          If an archive is in ZIP64 format and the value in 
           this field is 0xFFFFFFFF, the size will be in the 
           corresponding 8 byte zip64 end of central 
           directory field.
@@ -1192,7 +1306,7 @@ V. General Format of a .ZIP file
 
           Offset of the start of the central directory on the
           disk on which the central directory starts. If an 
-          archive is in zip64 format and the value in this 
+          archive is in ZIP64 format and the value in this 
           field is 0xFFFFFFFF, the size will be in the 
           corresponding 8 byte zip64 end of central 
           directory field.
@@ -1228,7 +1342,7 @@ V. General Format of a .ZIP file
 
           A key difference between spanned and split ZIP files is
           that all pieces of a spanned ZIP file have the same name.  
-          Since each piece is written to a separate diskette, no name 
+          Since each piece is written to a separate volume, no name 
           collisions occur and each segment can reuse the original 
           .ZIP file name given to the archive.
 
@@ -1287,12 +1401,17 @@ V. General Format of a .ZIP file
           A special spanning marker may also appear in spanned/split 
           archives if the spanning or splitting process starts but 
           only requires one segment.  In this case the 0x08074b50 
-          signature will be replaced with the temporary spanning marker
-          signature of 0x30304b50.  Spanned/split archives
-          created with this special signature are compatible with
-          all versions of PKZIP from PKWARE.  Split archives can
+          signature will be replaced with the temporary spanning 
+          marker signature of 0x30304b50.  Split archives can
           only be uncompressed by other versions of PKZIP that
           know how to create a split archive.
+
+          The signature value 0x08074b50 is also used by some
+          ZIP implementations as a marker for the Data Descriptor 
+          record.  Conflict in this alternate assignment can be
+          avoided by ensuring the position of the signature
+          within the ZIP file to determine the use for which it
+          is intended.  
 
   L.  General notes:
 
@@ -1308,7 +1427,7 @@ V. General Format of a .ZIP file
       4)  If one of the fields in the end of central directory
           record is too small to hold required data, the field
           should be set to -1 (0xFFFF or 0xFFFFFFFF) and the
-          Zip64 format record should be created.
+          ZIP64 format record should be created.
 
       5)  The end of central directory record and the
           Zip64 end of central directory locator record must
@@ -1770,8 +1889,145 @@ BZIP2 is an open-source data compression algorithm developed by
 Julian Seward.  Information and source code for this algorithm
 can be found on the internet.
 
-XIII. Traditional PKWARE Encryption
------------------------------------
+XIII. LZMA - Method 14 (EFS)
+----------------------------
+
+LZMA is a block-oriented, general purpose data compression algorithm  
+developed and maintained by Igor Pavlov.  It is a derivative of LZ77
+that utilizes Markov chains and a range coder.  Information and 
+source code for this algorithm can be found on the internet.  Consult 
+with the author of this algorithm for information on terms or 
+restrictions on use.
+
+Support for LZMA within the ZIP format is defined as follows:   
+
+The Compression method field within the ZIP Local and Central 
+Header records will be set to the value 14 to indicate data was
+compressed using LZMA. 
+
+The Version needed to extract field within the ZIP Local and 
+Central Header records will be set to 6.3 to indicate the 
+minimum ZIP format version supporting this feature.
+
+File data compressed using the LZMA algorithm must be placed 
+immediately following the Local Header for the file.  If a 
+standard ZIP encryption header is required, it will follow 
+the Local Header and will precede the LZMA compressed file 
+data segment.  The location of LZMA compressed data segment 
+within the ZIP format will be as shown:
+
+    [local header file 1]
+    [encryption header file 1]
+    [LZMA compressed data segment for file 1]
+    [data descriptor 1]
+    [local header file 2]
+
+The encryption header and data descriptor records may
+be conditionally present.  The LZMA Compressed Data Segment 
+will consist of an LZMA Properties Header followed by the 
+LZMA Compressed Data as shown:
+
+    [LZMA properties header for file 1]
+    [LZMA compressed data for file 1]
+
+The LZMA Compressed Data will be stored as provided by the 
+LZMA compression library.  Compressed size, uncompressed 
+size and other file characteristics about the file being 
+compressed must be stored in standard ZIP storage format.
+
+The LZMA Properties Header will store specific data required to 
+decompress the LZMA compressed Data.  This data is set by the 
+LZMA compression engine using the function WriteCoderProperties() 
+as documented within the LZMA SDK. 
+ 
+Storage fields for the property information within the LZMA 
+Properties Header are as follows:
+
+     LZMA Version Information 2 bytes
+     LZMA Properties Size 2 bytes
+     LZMA Properties Data variable, defined by "LZMA Properties Size"
+
+LZMA Version Information - this field identifies which version of 
+     the LZMA SDK was used to compress a file.  The first byte will 
+     store the major version number of the LZMA SDK and the second 
+     byte will store the minor number.  
+
+LZMA Properties Size - this field defines the size of the remaining 
+     property data.  Typically this size should be determined by the 
+     version of the SDK.  This size field is included as a convenience
+     and to help avoid any ambiguity should it arise in the future due
+     to changes in this compression algorithm. 
+
+LZMA Property Data - this variable sized field records the required 
+     values for the decompressor as defined by the LZMA SDK.  The 
+     data stored in this field should be obtained using the 
+     WriteCoderProperties() in the version of the SDK defined by 
+     the "LZMA Version Information" field.  
+
+The layout of the "LZMA Properties Data" field is a function of the
+LZMA compression algorithm.  It is possible that this layout may be
+changed by the author over time.  The data layout in version 4.32 
+of the LZMA SDK defines a 5 byte array that uses 4 bytes to store 
+the dictionary size in little-endian order. This is preceded by a 
+single packed byte as the first element of the array that contains
+the following fields:
+
+     PosStateBits
+     LiteralPosStateBits
+     LiteralContextBits
+
+Refer to the LZMA documentation for a more detailed explanation of 
+these fields.  
+
+Data compressed with method 14, LZMA, may include an end-of-stream
+(EOS) marker ending the compressed data stream.  This marker is not
+required, but its use is highly recommended to facilitate processing
+and implementers should include the EOS marker whenever possible.
+When the EOS marker is used, general purpose bit 1 must be set.  If
+general purpose bit 1 is not set, the EOS marker is not present.
+
+XIV. PPMd - Method 98
+---------------------
+
+PPMd is a data compression algorithm developed by Dmitry Shkarin
+which includes a carryless rangecoder developed by Dmitry Subbotin.
+This algorithm is based on predictive phrase matching on multiple
+order contexts.  Information and source code for this algorithm
+can be found on the internet. Consult with the author of this
+algorithm for information on terms or restrictions on use.
+
+Support for PPMd within the ZIP format currently is provided only 
+for version I, revision 1 of the algorithm.  Storage requirements
+for using this algorithm are as follows:
+
+Parameters needed to control the algorithm are stored in the two
+bytes immediately preceding the compressed data.  These bytes are
+used to store the following fields:
+
+Model order - sets the maximum model order, default is 8, possible
+              values are from 2 to 16 inclusive
+
+Sub-allocator size - sets the size of sub-allocator in MB, default is 50,
+            possible values are from 1MB to 256MB inclusive
+
+Model restoration method - sets the method used to restart context
+            model at memory insufficiency, values are:
+
+            0 - restarts model from scratch - default
+            1 - cut off model - decreases performance by as much as 2x
+            2 - freeze context tree - not recommended
+
+An example for packing these fields into the 2 byte storage field is
+illustrated below.  These values are stored in Intel low-byte/high-byte
+order.
+
+wPPMd = (Model order - 1) + 
+        ((Sub-allocator size - 1) << 4) + 
+        (Model restoration method << 12)
+
+
+XV. Traditional PKWARE Encryption
+---------------------------------
 
 The following information discusses the decryption steps
 required to support traditional PKWARE encryption.  This
@@ -1784,7 +2040,7 @@ Decryption
 ----------
 
 PKWARE is grateful to Mr. Roger Schlafly for his expert contribution 
-towards the development of PKWARE’s traditional encryption.
+towards the development of PKWARE's traditional encryption.
 
 PKZIP encrypts the compressed data stream.  Encrypted files must
 be decrypted before they can be extracted.
@@ -1874,17 +2130,18 @@ loop until done
 end loop
 
 
-XIV. Strong Encryption Specification
+XVI. Strong Encryption Specification
 ------------------------------------
 
 The Strong Encryption technology defined in this specification is 
 covered under a pending patent application. The use or implementation
 in a product of certain technological aspects set forth in the current
-APPNOTE, including those with regard to strong encryption or patching, 
-requires a license from PKWARE. Portions of this Strong Encryption 
-technology are available for use at no charge.  Contact PKWARE for 
-licensing terms and conditions. Refer to section II of this APPNOTE
-(Contacting PKWARE) for information on how to contact PKWARE. 
+APPNOTE, including those with regard to strong encryption, patching, 
+or extended tape operations requires a license from PKWARE. Portions
+of this Strong Encryption technology are available for use at no charge.
+Contact PKWARE for licensing terms and conditions. Refer to section II
+of this APPNOTE (Contacting PKWARE) for information on how to 
+contact PKWARE. 
 
 Version 5.x of this specification introduced support for strong 
 encryption algorithms.  These algorithms can be used with either 
@@ -1944,6 +2201,17 @@ characteristics stored within the records and fields defined by this
 specification.  This includes data such as a files name, its original 
 size, timestamp and CRC32 value. 
 
+Version 6.3 introduces support for encrypting data using the Blowfish
+and Twofish algorithms.  These are symmetric block ciphers developed 
+by Bruce Schneier.  Blowfish supports using a variable length key from 
+32 to 448 bits.  Block size is 64 bits.  Implementations should use 16
+rounds and the only mode supported within ZIP files is CBC. Twofish 
+supports key sizes 128, 192 and 256 bits.  Block size is 128 bits.  
+Implementations should use 16 rounds and the only mode supported within
+ZIP files is CBC.  Information and source code for both Blowfish and 
+Twofish algorithms can be found on the internet.  Consult with the author
+of these algorithms for information on terms or restrictions on use.
+
 Central Directory Encryption provides greater protection against 
 information leakage by encrypting the Central Directory structure and 
 by masking key values that are replicated in the unencrypted Local 
@@ -1955,8 +2223,8 @@ Extra Field records that may contain information about a file that should
 not be exposed should not be stored in the Local Header and should only 
 be written to the Central Directory where they can be encrypted.  This 
 design currently does not support streaming.  Information in the End of 
-Central Directory record, the ZIP64 End of Central Directory Locator, 
-and the ZIP64 End of Central Directory records are not encrypted.  Access 
+Central Directory record, the Zip64 End of Central Directory Locator, 
+and the Zip64 End of Central Directory records are not encrypted.  Access 
 to view data on files within a ZIP file with an encrypted Central Directory
 requires the appropriate password or private key for decryption prior to 
 viewing any files, or any information about the files, in the archive.  
@@ -2015,19 +2283,14 @@ are masked to hide their actual value.
          0x660F - AES 192 
          0x6610 - AES 256 
          0x6702 - RC2 (version needed to extract >= 5.2)
+         0x6720 - Blowfish
+         0x6721 - Twofish
          0x6801 - RC4
          0xFFFF - Unknown algorithm
 
      Bitlen - Explicit bit length of key
 
-          40
-          56
-          64
-         112
-         128
-         168
-         192
-         256
+         32 - 448 bits
    
      Flags - Processing flags needed for decryption
 
@@ -2080,19 +2343,14 @@ are masked to hide their actual value.
          0x660F - AES 192 
          0x6610 - AES 256 
          0x6702 - RC2 (version needed to extract >= 5.2)
+         0x6720 - Blowfish
+         0x6721 - Twofish
          0x6801 - RC4
          0xFFFF - Unknown algorithm
 
      Bitlen - Explicit bit length of key
 
-          40
-          56
-          64
-         112
-         128
-         168
-         192
-         256
+         32 - 448 bits
    
      Flags - Processing flags needed for decryption
 
@@ -2109,7 +2367,8 @@ are masked to hide their actual value.
                session key generated from the user-supplied password.
                If the Flags field in the decryption header contains 
                the value 0x4000, then the ErdData field must be 
-               decrypted using 3DES.
+               decrypted using 3DES. If the value 0x4000 is not set,
+               then the ErdData field must be decrypted using AlgId.
 
 
      Reserved1 - Reserved for certificate processing, if value is
@@ -2141,7 +2400,9 @@ mode.  The block size used for AES encryption is 16.  All other block
 algorithms use a block size of 8.  Two ID's are defined for RC2 to 
 account for a discrepancy found in the implementation of the RC2
 algorithm in the cryptographic library on Windows XP SP1 and all 
-earlier versions of Windows.
+earlier versions of Windows.  It is recommended that zero length files
+not be encrypted, however programs should be prepared to extract them
+if they are found within a ZIP file.
 
 A pseudo-code representation of the encryption process is as follows:
 
@@ -2196,7 +2457,7 @@ encrypted are:
         compressed size                 0
         uncompressed size               0
         file name (variable size)       Base 16 value from the
-                                        range 1 - FFFFFFFFFFFFFFFF
+                                        range 1 - 0xFFFFFFFFFFFFFFFF
                                         represented as a string whose
                                         size will be set into the
                                         file name length field
@@ -2207,12 +2468,14 @@ Modifications to a ZIP file may cause different values to be stored for
 each file.  For compatibility, the file name field in the Local Header 
 should never be left blank.  As of Version 6.2 of this specification, 
 the Compression Method and Compressed Size fields are not yet masked.
+Fields having a value of 0xFFFF or 0xFFFFFFFF for the ZIP64 format
+should not be masked.  
 
 Encrypting the Central Directory:
 
 Encryption of the Central Directory does not include encryption of the 
-Central Directory Signature data, the ZIP64 End of Central Directory
-record, the ZIP64 End of Central Directory Locator, or the End
+Central Directory Signature data, the Zip64 End of Central Directory
+record, the Zip64 End of Central Directory Locator, or the End
 of Central Directory record.  The ZIP file comment data is never
 encrypted.
 
@@ -2230,18 +2493,18 @@ decryption header.  The decryption header is known as the Archive
 Decryption Header.  The fields of this record are identical to
 the decryption header preceding each encrypted file.  The location
 of the Archive Decryption Header is determined by the value in the
-Start of the Central Directory field in the ZIP64 End of Central
+Start of the Central Directory field in the Zip64 End of Central
 Directory record.  When the Central Directory is encrypted, the
-ZIP64 End of Central Directory record will always be present.
+Zip64 End of Central Directory record will always be present.
 
-The layout of the ZIP64 End of Central Directory record for all
+The layout of the Zip64 End of Central Directory record for all
 versions starting with 6.2 of this specification will follow the
 Version 2 format.  The Version 2 format is as follows:
 
-The first 48 bytes will remain identical to that of Version 1.
-The record signature for both Version 1 and Version 2 will be
-0x06064b50.  Immediately following the 48th byte, which identifies 
-the end of the field known as the Offset of Start of Central 
+The leading fixed size fields within the Version 1 format for this
+record remain unchanged.  The record signature for both Version 1 
+and Version 2 will be 0x06064b50.  Immediately following the last
+byte of the field known as the Offset of Start of Central 
 Directory With Respect to the Starting Disk Number will begin the 
 new fields defining Version 2 of this record.  
 
@@ -2283,6 +2546,10 @@ values for HashID are:
      0x0001          CRC32
      0x8003          MD5
      0x8004          SHA1
+     0x8007          RIPEMD160
+     0x8012          SHA256
+     0x8013          SHA384
+     0x8015          SHA512
 
 When the Central Directory data is signed, the same hash algorithm
 used to hash the Central Directory for signing should be used.
@@ -2304,7 +2571,7 @@ End of Central Directory record will store the value 0xFFFFFFFF
 as the value for the Total Number of Entries in the Central
 Directory.  The value stored in the Total Number of Entries in
 the Central Directory on this Disk field will be 0.  The actual
-values will be stored in the equivalent fields of the ZIP64
+values will be stored in the equivalent fields of the Zip64
 End of Central Directory record.
 
 Decrypting and decompressing the Central Directory is accomplished
@@ -2506,8 +2773,8 @@ with certificates only, or on files encrypted with both password
 encryption and certificate encryption.  Files encrypted with both
 methods can safely be decrypted using the password methods documented.
 
-XV. Change Process
-------------------
+XVII. Change Process
+--------------------
 
 In order for the .ZIP file format to remain a viable definition, this
 specification should be considered as open for periodic review and
@@ -2524,26 +2791,27 @@ to this specification will be published to ensure interoperability.
 We encourage comments and feedback that may help improve clarity 
 or content.
 
-XVI. Incorporating PKWARE Proprietary Technology into Your Product
-------------------------------------------------------------------
+XVIII. Incorporating PKWARE Proprietary Technology into Your Product
+--------------------------------------------------------------------
 
 PKWARE is committed to the interoperability and advancement of the
 .ZIP format.  PKWARE offers a free license for certain technological
 aspects described above under certain restrictions and conditions.
 However, the use or implementation in a product of certain technological
 aspects set forth in the current APPNOTE, including those with regard to
-strong encryption or patching, requires a license from PKWARE.  Please 
-contact PKWARE with regard to acquiring a license.
+strong encryption, patching, or extended tape operations requires a 
+license from PKWARE.  Please contact PKWARE with regard to acquiring
+a license.
 
-XVII. Acknowledgements
+XIX. Acknowledgements
 ----------------------
 
 In addition to the above mentioned contributors to PKZIP and PKUNZIP,
 I would like to extend special thanks to Robert Mahoney for suggesting
 the extension .ZIP for this software.
 
-XVIII. References
------------------
+XX. References
+--------------
 
     Fiala, Edward R., and Greene, Daniel H., "Data compression with
        finite windows",  Communications of the ACM, Volume 32, Number 4,
@@ -2574,3 +2842,225 @@ XVIII. References
     Ziv, J. and Lempel, A., "Compression of individual sequences via
        variable-rate coding", IEEE Transactions on Information Theory,
        Volume 24, Number 5, September 1978, pages 530-536.
+
+
+APPENDIX A - AS/400 Extra Field (0x0065) Attribute Definitions
+--------------------------------------------------------------
+
+Field Definition Structure:
+
+   a. field length including length             2 bytes
+   b. field code                                2 bytes
+   c. data                                      x bytes
+
+Field Code  Description
+   4001     Source type i.e. CLP etc
+   4002     The text description of the library 
+   4003     The text description of the file
+   4004     The text description of the member
+   4005     x'F0' or 0 is PF-DTA,  x'F1' or 1 is PF_SRC
+   4007     Database Type Code                  1 byte
+   4008     Database file and fields definition
+   4009     GZIP file type                      2 bytes
+   400B     IFS code page                       2 bytes
+   400C     IFS Creation Time                   4 bytes
+   400D     IFS Access Time                     4 bytes
+   400E     IFS Modification time               4 bytes
+   005C     Length of the records in the file   2 bytes
+   0068     GZIP two words                      8 bytes
+
+APPENDIX B - z/OS Extra Field (0x0065) Attribute Definitions
+------------------------------------------------------------
+
+Field Definition Structure:
+
+   a. field length including length             2 bytes
+   b. field code                                2 bytes
+   c. data                                      x bytes
+
+Field Code  Description
+   0001     File Type                           2 bytes 
+   0002     NonVSAM Record Format               1 byte
+   0003     Reserved		
+   0004     NonVSAM Block Size                  2 bytes Big Endian
+   0005     Primary Space Allocation            3 bytes Big Endian
+   0006     Secondary Space Allocation          3 bytes Big Endian
+   0007     Space Allocation Type1 byte flag		
+   0008     Modification Date                   Retired with PKZIP 5.0 +
+   0009     Expiration Date                     Retired with PKZIP 5.0 +
+   000A     PDS Directory Block Allocation      3 bytes Big Endian binary value
+   000B     NonVSAM Volume List                 variable		
+   000C     UNIT Reference                      Retired with PKZIP 5.0 +
+   000D     DF/SMS Management Class             8 bytes EBCDIC Text Value
+   000E     DF/SMS Storage Class                8 bytes EBCDIC Text Value
+   000F     DF/SMS Data Class                   8 bytes EBCDIC Text Value
+   0010     PDS/PDSE Member Info.               30 bytes	
+   0011     VSAM sub-filetype                   2 bytes		
+   0012     VSAM LRECL                          13 bytes EBCDIC "(num_avg num_max)"
+   0013     VSAM Cluster Name                   Retired with PKZIP 5.0 +
+   0014     VSAM KSDS Key Information           13 bytes EBCDIC "(num_length num_position)"
+   0015     VSAM Average LRECL                  5 bytes EBCDIC num_value padded with blanks
+   0016     VSAM Maximum LRECL                  5 bytes EBCDIC num_value padded with blanks
+   0017     VSAM KSDS Key Length                5 bytes EBCDIC num_value padded with blanks
+   0018     VSAM KSDS Key Position              5 bytes EBCDIC num_value padded with blanks
+   0019     VSAM Data Name                      1-44 bytes EBCDIC text string
+   001A     VSAM KSDS Index Name                1-44 bytes EBCDIC text string
+   001B     VSAM Catalog Name                   1-44 bytes EBCDIC text string
+   001C     VSAM Data Space Type                9 bytes EBCDIC text string
+   001D     VSAM Data Space Primary             9 bytes EBCDIC num_value left-justified
+   001E     VSAM Data Space Secondary           9 bytes EBCDIC num_value left-justified
+   001F     VSAM Data Volume List               variable EBCDIC text list of 6-character Volume IDs
+   0020     VSAM Data Buffer Space              8 bytes EBCDIC num_value left-justified
+   0021     VSAM Data CISIZE                    5 bytes EBCDIC num_value left-justified
+   0022     VSAM Erase Flag                     1 byte flag		
+   0023     VSAM Free CI %                      3 bytes EBCDIC num_value left-justified
+   0024     VSAM Free CA %                      3 bytes EBCDIC num_value left-justified
+   0025     VSAM Index Volume List              variable EBCDIC text list of 6-character Volume IDs
+   0026     VSAM Ordered Flag                   1 byte flag		
+   0027     VSAM REUSE Flag                     1 byte flag		
+   0028     VSAM SPANNED Flag                   1 byte flag		
+   0029     VSAM Recovery Flag                  1 byte flag		
+   002A     VSAM  WRITECHK  Flag                1 byte flag		
+   002B     VSAM Cluster/Data SHROPTS           3 bytes EBCDIC "n,y"	
+   002C     VSAM Index SHROPTS                  3 bytes EBCDIC "n,y"	
+   002D     VSAM Index Space Type               9 bytes EBCDIC text string
+   002E     VSAM Index Space Primary            9 bytes EBCDIC num_value left-justified
+   002F     VSAM Index Space Secondary          9 bytes EBCDIC num_value left-justified
+   0030     VSAM Index CISIZE                   5 bytes EBCDIC num_value left-justified
+   0031     VSAM Index IMBED                    1 byte flag		
+   0032     VSAM Index Ordered Flag             1 byte flag		
+   0033     VSAM REPLICATE Flag                 1 byte flag		
+   0034     VSAM Index REUSE Flag               1 byte flag		
+   0035     VSAM Index WRITECHK Flag            1 byte flag Retired with PKZIP 5.0 +
+   0036     VSAM Owner                          8 bytes EBCDIC text string
+   0037     VSAM Index Owner                    8 bytes EBCDIC text string
+   0038     Reserved
+   0039     Reserved
+   003A     Reserved
+   003B     Reserved
+   003C     Reserved
+   003D     Reserved
+   003E     Reserved
+   003F     Reserved
+   0040     Reserved
+   0041     Reserved
+   0042     Reserved
+   0043     Reserved
+   0044     Reserved
+   0045     Reserved
+   0046     Reserved
+   0047     Reserved
+   0048     Reserved
+   0049     Reserved
+   004A     Reserved
+   004B     Reserved
+   004C     Reserved
+   004D     Reserved
+   004E     Reserved
+   004F     Reserved
+   0050     Reserved
+   0051     Reserved
+   0052     Reserved
+   0053     Reserved
+   0054     Reserved
+   0055     Reserved
+   0056     Reserved
+   0057     Reserved
+   0058     PDS/PDSE Member TTR Info.           6 bytes  Big Endian
+   0059     PDS 1st LMOD Text TTR               3 bytes  Big Endian
+   005A     PDS LMOD EP Rec #                   4 bytes  Big Endian
+   005B     Reserved
+   005C     Max Length of records               2 bytes  Big Endian
+   005D     PDSE Flag                           1 byte flag
+   005E     Reserved
+   005F     Reserved
+   0060     Reserved
+   0061     Reserved
+   0062     Reserved
+   0063     Reserved
+   0064     Reserved
+   0065     Last Date Referenced                4 bytes  Packed Hex "yyyymmdd"
+   0066     Date Created                        4 bytes  Packed Hex "yyyymmdd"
+   0068     GZIP two words                      8 bytes
+   0071     Extended NOTE Location              12 bytes Big Endian
+   0072     Archive device UNIT                 6 bytes  EBCDIC
+   0073     Archive 1st Volume                  6 bytes  EBCDIC
+   0074     Archive 1st VOL File Seq#           2 bytes  Binary
+
+APPENDIX C - Zip64 Extensible Data Sector Mappings (EFS)
+--------------------------------------------------------
+
+          -Z390   Extra Field:
+
+          The following is the general layout of the attributes for the 
+          ZIP 64 "extra" block for extended tape operations. Portions of 
+          this extended tape processing technology is covered under a 
+          pending patent application. The use or implementation in a 
+          product of certain technological aspects set forth in the 
+          current APPNOTE, including those with regard to strong encryption,
+          patching or extended tape operations, requires a license from
+          PKWARE.  Please contact PKWARE with regard to acquiring a license. 
+ 
+
+          Note: some fields stored in Big Endian format.  All text is 
+	  in EBCDIC format unless otherwise specified.
+
+          Value       Size          Description
+          -----       ----          -----------
+  (Z390)  0x0065      2 bytes       Tag for this "extra" block type
+          Size        4 bytes       Size for the following data block
+          Tag         4 bytes       EBCDIC "Z390"
+          Length71    2 bytes       Big Endian
+          Subcode71   2 bytes       Enote type code
+          FMEPos      1 byte
+          Length72    2 bytes       Big Endian
+          Subcode72   2 bytes       Unit type code
+          Unit        1 byte        Unit
+          Length73    2 bytes       Big Endian
+          Subcode73   2 bytes       Volume1 type code
+          FirstVol    1 byte        Volume
+          Length74    2 bytes       Big Endian
+          Subcode74   2 bytes       FirstVol file sequence
+          FileSeq     2 bytes       Sequence 
+
+APPENDIX D - Language Encoding (EFS)
+------------------------------------
+
+The ZIP format has historically supported only the original IBM PC character 
+encoding set, commonly referred to as IBM Code Page 437.  This limits storing 
+file name characters to only those within the original MS-DOS range of values 
+and does not properly support file names in other character encodings, or 
+languages. To address this limitation, this specification will support the 
+following change. 
+
+If general purpose bit 11 is unset, the file name and comment should conform 
+to the original ZIP character encoding.  If general purpose bit 11 is set, the 
+filename and comment must support The Unicode Standard, Version 4.1.0 or 
+greater using the character encoding form defined by the UTF-8 storage 
+specification.  The Unicode Standard is published by the The Unicode
+Consortium (www.unicode.org).  UTF-8 encoded data stored within ZIP files 
+is expected to not include a byte order mark (BOM). 
+
+Applications may choose to supplement this file name storage through the use 
+of the 0x0008 Extra Field.  Storage for this optional field is currently 
+undefined, however it will be used to allow storing extended information 
+on source or target encoding that may further assist applications with file 
+name, or file content encoding tasks.  Please contact PKWARE with any
+requirements on how this field should be used.
+
+The 0x0008 Extra Field storage may be used with either setting for general 
+purpose bit 11.  Examples of the intended usage for this field is to store 
+whether "modified-UTF-8" (JAVA) is used, or UTF-8-MAC.  Similarly, other 
+commonly used character encoding (code page) designations can be indicated 
+through this field.  Formalized values for use of the 0x0008 record remain 
+undefined at this time.  The definition for the layout of the 0x0008 field
+will be published when available.  Use of the 0x0008 Extra Field provides
+for storing data within a ZIP file in an encoding other than IBM Code
+Page 437 or UTF-8.
+
+General purpose bit 11 will not imply any encoding of file content or
+password.  Values defining character encoding for file content or 
+password must be stored within the 0x0008 Extended Language Encoding 
+Extra Field.
+
+
