@@ -349,7 +349,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </param>
 		public void Skip(long skipCount)
 		{
-			// TODO: REVIEW
+			// TODO: REVIEW efficiency of TarInputStream.Skip
 			// This is horribly inefficient, but it ensures that we
 			// properly skip over bytes via the TarBuffer...
 			//
