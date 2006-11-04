@@ -104,16 +104,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		static ZipNameTransform()
 		{
-			int howMany = Path.InvalidPathChars.Length + 2;
+			char[] invalidPathChars;
+#if NET_VER_1
+			invalidPathChars = Path.InvalidPathChars;
+#else
+			invalidPathChars = Path.GetInvalidPathChars();
+#endif
+			int howMany = invalidPathChars.Length + 2;
 
 			InvalidEntryCharsRelaxed = new char[howMany];
-			Array.Copy(Path.InvalidPathChars, 0, InvalidEntryCharsRelaxed, 0, Path.InvalidPathChars.Length);
+			Array.Copy(invalidPathChars, 0, InvalidEntryCharsRelaxed, 0, invalidPathChars.Length);
 			InvalidEntryCharsRelaxed[howMany - 1] = '*';
 			InvalidEntryCharsRelaxed[howMany - 2] = '?';
 
-			howMany = Path.InvalidPathChars.Length + 4; 
+			howMany = invalidPathChars.Length + 4; 
 			InvalidEntryChars = new char[howMany];
-			Array.Copy(Path.InvalidPathChars, 0, InvalidEntryChars, 0, Path.InvalidPathChars.Length);
+			Array.Copy(invalidPathChars, 0, InvalidEntryChars, 0, invalidPathChars.Length);
 			InvalidEntryChars[howMany - 1] = ':';
 			InvalidEntryChars[howMany - 2] = '\\';
 			InvalidEntryChars[howMany - 3] = '*';
