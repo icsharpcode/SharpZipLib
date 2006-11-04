@@ -48,7 +48,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// Decompress <paramref name="inStream">input</paramref> writing 
 		/// decompressed data to the <paramref name="outStream">output stream</paramref>
 		/// </summary>
-		/// <param name="inStream">The stream to decompress.</param>
+		/// <param name="inStream">The stream containing data to decompress.</param>
 		/// <param name="outStream">The stream to write decompressed data to.</param>
 		public static void Decompress(Stream inStream, Stream outStream) 
 		{
