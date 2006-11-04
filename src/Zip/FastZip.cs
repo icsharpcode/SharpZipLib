@@ -456,14 +456,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			return (int)info.Attributes;
 		}
-
+		
+#if NET_VER_1
 		static bool NameIsValid(string name)
 		{
 			return (name != null) &&
 				(name.Length > 0) &&
 				(name.IndexOfAny(Path.InvalidPathChars) < 0);
 		}
-		
+#else
+		static bool NameIsValid(string name)
+		{
+			return (name != null) &&
+				(name.Length > 0) &&
+				(name.IndexOfAny(Path.GetInvalidPathChars()) < 0);
+		}
+#endif
 		#endregion
 		
 		/// <summary>
