@@ -1165,7 +1165,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get a value indicating an update is in progress.
+		/// Get a value indicating an update has <see cref="BeginUpdate">been started</see>.
 		/// </summary>
 		public bool IsUpdating
 		{
@@ -1186,10 +1186,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion
 		#region Deferred Updating
 		/// <summary>
-		/// Begin updating this <see cref="ZipFile"/> instance.
+		/// Begin updating this <see cref="ZipFile"/> archive.
 		/// </summary>
-		/// <param name="archiveStorage">The archive storage for use during the update.</param>
-		/// <param name="dataSource">The data source to utilise during updating.</param>
+		/// <param name="archiveStorage">The <see cref="IArchiveStorage">archive storage</see> for use during the update.</param>
+		/// <param name="dataSource">The <see cref="IDynamicDataSource">data source</see> to utilise during updating.</param>
 		public void BeginUpdate(IArchiveStorage archiveStorage, IDynamicDataSource dataSource)
 		{
 			if ( IsEmbeddedArchive ) {
@@ -1225,16 +1225,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Begin an update to thsi archive.
+		/// Begin updating to this <see cref="ZipFile"/> archive.
 		/// </summary>
 		/// <param name="archiveStorage">The storage to use during the update.</param>
 		public void BeginUpdate(IArchiveStorage archiveStorage)
 		{
 			BeginUpdate(archiveStorage, new DynamicDiskDataSource());
 		}
+		
 		/// <summary>
-		/// Begin updating this <see cref="ZipFile"/> instance.
+		/// Begin updating this <see cref="ZipFile"/> archive.
 		/// </summary>
+		/// <seealso cref="CommitUpdate"></seealso>
+		/// <seealso cref="AbortUpdate"></seealso>
 		public void BeginUpdate()
 		{
 			if ( Name == null ) {
@@ -1248,6 +1251,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Commit current updates, updating this archive.
 		/// </summary>
+		/// <seealso cref="BeginUpdate"></seealso>
+		/// <seealso cref="AbortUpdate"></seealso>
 		public void CommitUpdate()
 		{
 			CheckUpdating();
@@ -1272,8 +1277,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Abort an update.
+		/// Abort updating leaving the archive unchanged.
 		/// </summary>
+		/// <seealso cref="BeginUpdate"></seealso>
+		/// <seealso cref="CommitUpdate"></seealso>
 		public void AbortUpdate()
 		{
 			updates_ = null;
@@ -1398,7 +1405,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#region Modifying Entries
 /* Modify not yet ready for public consumption.
    Direct modification of an entry should not overwrite original data before its read.
-   Sufe mode is trivial in this sense.
+   Safe mode is trivial in this sense.
 		public void Modify(ZipEntry original, ZipEntry updated)
 		{
 			if ( original == null ) {
@@ -1533,7 +1540,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			WriteLEShort(( byte )entry.CompressionMethod);
-
 			WriteLEInt(( int )entry.DosTime);
 
 			if ( !entry.HasCrc ) {
@@ -1677,7 +1683,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				ed.AddNewEntry(1);
 			}
 			else {
-				// Should already be done when local header was added.
+				// Should have already be done when local header was added.
 				ed.Delete(1);
 			}
 
