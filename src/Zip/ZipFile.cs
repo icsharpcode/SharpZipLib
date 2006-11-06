@@ -126,6 +126,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// <summary>
 	/// The operation in progress reported by a <see cref="ZipTestResultHandler"/> during testing.
 	/// </summary>
+	/// <seealso cref="ZipFile.TestArchive(bool)">TestArchive</seealso>
 	public enum TestOperation
 	{
 		/// <summary>
@@ -157,6 +158,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// <summary>
 	/// Status returned returned by <see cref="ZipTestResultHandler"/> during testing.
 	/// </summary>
+	/// <seealso cref="ZipFile.TestArchive(bool)">TestArchive</seealso>
 	public class TestStatus
 	{
 		#region Constructors
@@ -254,7 +256,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	}
 
 	/// <summary>
-	/// Delegate invoked during testing if supplied indicating current progress and status.
+	/// Delegate invoked during <see cref="ZipFile.TestArchive(bool, TestStrategy, ZipTestResultHandler)">testing</see> if supplied indicating current progress and status.
 	/// </summary>
 	/// <remarks>If the message is non-null an error has occured.  If the message is null
 	/// the operation as found in <see cref="TestStatus">status</see> has started.</remarks>
@@ -262,7 +264,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	#endregion
 	#region Update Definitions
 	/// <summary>
-	/// The possible ways of applying updates to an archive.
+	/// The possible ways of <see cref="ZipFile.CommitUpdate()">applying updates</see> to an archive.
 	/// </summary>
 	public enum FileUpdateMode
 	{
@@ -923,17 +925,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		[Flags]
 		enum HeaderTest
 		{
-			Extract = 0x01,     // Check that this header represents an entry that can be extracted
-			Header  = 0x02,     // Check that this header is valid
+			Extract = 0x01,     // Check that this header represents an entry whose data can be extracted
+			Header  = 0x02,     // Check that this header contents are valid
 		}
 	
 		/// <summary>
-		/// Test the local header against that provided from the central directory
+		/// Test a local header against that provided from the central directory
 		/// </summary>
 		/// <param name="entry">
 		/// The entry to test against
 		/// </param>
-		/// <param name="tests">The type of test to carry out.</param>
+		/// <param name="tests">The type of <see cref="HeaderTest">tests</see> to carry out.</param>
 		/// <returns>The offset of the entries data in the file</returns>
 		long TestLocalHeader(ZipEntry entry, HeaderTest tests)
 		{
@@ -1165,7 +1167,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get a value indicating an update has <see cref="BeginUpdate">been started</see>.
+		/// Get a value indicating an update has <see cref="BeginUpdate()">been started</see>.
 		/// </summary>
 		public bool IsUpdating
 		{
@@ -1251,7 +1253,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Commit current updates, updating this archive.
 		/// </summary>
-		/// <seealso cref="BeginUpdate"></seealso>
+		/// <seealso cref="BeginUpdate()"></seealso>
 		/// <seealso cref="AbortUpdate"></seealso>
 		public void CommitUpdate()
 		{
@@ -1279,7 +1281,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Abort updating leaving the archive unchanged.
 		/// </summary>
-		/// <seealso cref="BeginUpdate"></seealso>
+		/// <seealso cref="BeginUpdate()"></seealso>
 		/// <seealso cref="CommitUpdate"></seealso>
 		public void AbortUpdate()
 		{
@@ -3332,9 +3334,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		FileUpdateMode UpdateMode { get; }
 
 		/// <summary>
-		/// Get an empty <see cref="Stream"/> that can be used as for temporary output
+		/// Get an empty <see cref="Stream"/> that can be used for temporary output
 		/// </summary>
 		/// <returns>Returns a temporary output <see cref="Stream"/></returns>
+		/// <seealso cref="ConvertTemporaryToFinal"></seealso>
 		Stream GetTemporaryOutput();
 
 		/// <summary>

@@ -137,7 +137,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 
 		/// <summary>
-		/// Call <see cref="Inflater.SetInput"/> passing the current clear text buffer contents.
+		/// Call <see cref="Inflater.SetInput(byte[], int, int)"/> passing the current clear text buffer contents.
 		/// </summary>
 		/// <param name="inflater">The inflater to set input for.</param>
 		public void SetInflaterInput(Inflater inflater)

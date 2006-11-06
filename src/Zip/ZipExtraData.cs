@@ -241,7 +241,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Start adding a new entry.
 		/// </summary>
-		/// <remarks>Add data using <see cref="AddData"/>, <see cref="AddLeShort"/>, <see cref="AddLeInt"/>, or <see cref="AddLeLong"/>.
+		/// <remarks>Add data using <see cref="AddData(byte[])"/>, <see cref="AddLeShort"/>, <see cref="AddLeInt"/>, or <see cref="AddLeLong"/>.
 		/// The new entry is completed and actually added by calling <see cref="AddNewEntry"/></remarks>
 		/// <seealso cref="AddEntry"/>
 		public void StartNewEntry()

@@ -206,7 +206,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="name">
 		/// The name for this entry. Can include directory components.
 		/// The convention for names is 'unix'  style paths with no device names and 
-		/// path elements separated by '/' characters.  This is not enforced see <see cref="CleanName">CleanName</see>
+		/// path elements separated by '/' characters.  This is not enforced see <see cref="CleanName(string)">CleanName</see>
 		/// on how to ensure names are valid if this is desired.
 		/// </param>
 		/// <param name="versionRequiredToExtract">
@@ -680,7 +680,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Returns the entry name.  The path components in the entry should
 		/// always separated by slashes ('/').  Dos device names like C: should also
-		/// be removed.  See the <see cref="ZipNameTransform"/> class, or <see cref="CleanName"/>
+		/// be removed.  See the <see cref="ZipNameTransform"/> class, or <see cref="CleanName(string)"/>
 		/// </summary>
 		public string Name 
 		{

@@ -63,9 +63,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public FileFailureDelegate FileFailure;
 		
 		/// <summary>
-		/// Raise the directory failure event.
+		/// Raise the <see cref="DirectoryFailure">directory failure</see> event.
 		/// </summary>
-		/// <param name="directory">The directory.</param>
+		/// <param name="directory">The directory causing the failure.</param>
 		/// <param name="e">The exception for this event.</param>
 		/// <returns>A boolean indicating if execution should continue or not.</returns>
 		public bool OnDirectoryFailure(string directory, Exception e)
@@ -80,10 +80,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Raises the file failure event.
+		/// Raises the <see cref="FileFailure">file failure delegate</see>.
 		/// </summary>
-		/// <param name="file">The file for this event.</param>
-		/// <param name="e">The exception for this event.</param>
+		/// <param name="file">The file causing the failure.</param>
+		/// <param name="e">The exception for this failure.</param>
 		/// <returns>A boolean indicating if execution should continue or not.</returns>
 		public bool OnFileFailure(string file, Exception e)
 		{
@@ -97,9 +97,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Raises the ProcessFileEvent.
+		/// Raises the <see cref="ProcessFile">Process File delegate</see>.
 		/// </summary>
-		/// <param name="file">The file for this event.</param>
+		/// <param name="file">The file being processed.</param>
 		/// <returns>A boolean indicating if execution should continue or not.</returns>
 		public bool OnProcessFile(string file)
 		{
@@ -113,9 +113,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Raises the ProcessDirectoryEvent.
+		/// Fires the <see cref="ProcessDirectory">process directory</see> delegate.
 		/// </summary>
-		/// <param name="directory">The directory for this event.</param>
+		/// <param name="directory">The directory being processed.</param>
 		/// <param name="hasMatchingFiles">Flag indicating if directory has matching files as determined by the current filter.</param>
 		public void OnProcessDirectory(string directory, bool hasMatchingFiles)
 		{
@@ -132,23 +132,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	public class FastZip
 	{
-		#region Constructors
-		/// <summary>
-		/// Initialise a default instance of <see cref="FastZip"/>.
-		/// </summary>
-		public FastZip()
-		{
-		}
-
-		/// <summary>
-		/// Initialise a new instance of <see cref="FastZip"/>
-		/// </summary>
-		/// <param name="events">The <see cref="FastZipEvents">events</see> to use during operations.</param>
-		public FastZip(FastZipEvents events)
-		{
-			events_ = events;
-		}
-		#endregion
 		#region Enumerations
 		/// <summary>
 		/// Defines the desired handling when overwriting files.
@@ -169,6 +152,24 @@ namespace ICSharpCode.SharpZipLib.Zip
 			Always
 		}
 		#endregion
+		#region Constructors
+		/// <summary>
+		/// Initialise a default instance of <see cref="FastZip"/>.
+		/// </summary>
+		public FastZip()
+		{
+		}
+
+		/// <summary>
+		/// Initialise a new instance of <see cref="FastZip"/>
+		/// </summary>
+		/// <param name="events">The <see cref="FastZipEvents">events</see> to use during operations.</param>
+		public FastZip(FastZipEvents events)
+		{
+			events_ = events;
+		}
+		#endregion
+		#region Properties
 		/// <summary>
 		/// Get/set a value indicating wether empty directories should be created.
 		/// </summary>
@@ -186,12 +187,44 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get { return password_; }
 			set { password_ = value; }
 		}
+		
+		/// <summary>
+		/// Get or set the <see cref="ZipNameTransform"> active when creating Zip files.</see>
+		/// </summary>
+		public ZipNameTransform NameTransform
+		{
+			get { return nameTransform_; }
+			set {
+				if ( value == null ) {
+					nameTransform_ = new ZipNameTransform();
+				}
+				else {
+					nameTransform_ = value;
+				}
+			}
+		}
 
+		/// <summary>
+		/// Get/set a value indicating wether file dates and times should 
+		/// be restored when extracting files from an archive.
+		/// </summary>
+		/// <remarks>The default value is false.</remarks>
+		public bool RestoreDateTimeOnExtract
+		{
+			get {
+				return restoreDateTimeOnExtract_;
+			}
+			set {
+				restoreDateTimeOnExtract_ = value;
+			}
+		}
+		#endregion
+		#region Delegates
 		/// <summary>
 		/// Delegate called when confirming overwriting of files.
 		/// </summary>
 		public delegate bool ConfirmOverwriteDelegate(string fileName);
-	
+		#endregion
 		#region CreateZip
 		/// <summary>
 		/// Create a zip file.
@@ -254,7 +287,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
-		
 		#region ExtractZip
 		/// <summary>
 		/// Extract the contents of a zip file.
@@ -307,8 +339,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 		#endregion
-		
-		#region Processing
+		#region Internal Processing
 		void ProcessDirectory(object sender, DirectoryEventArgs e)
 		{
 			if ( !e.HasMatchingFiles && CreateEmptyDirectories ) {
@@ -451,7 +482,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
-
 		static int MakeExternalAttributes(FileInfo info)
 		{
 			return (int)info.Attributes;
@@ -473,38 +503,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 #endif
 		#endregion
-		
-		/// <summary>
-		/// Get or set the <see cref="ZipNameTransform"> active when creating Zip files.</see>
-		/// </summary>
-		public ZipNameTransform NameTransform
-		{
-			get { return nameTransform_; }
-			set {
-				if ( value == null ) {
-					nameTransform_ = new ZipNameTransform();
-				}
-				else {
-					nameTransform_ = value;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Get/set a value indicating wether file dates and times should 
-		/// be restored when extracting files from an archive.
-		/// </summary>
-		/// <remarks>The default value is false.</remarks>
-		public bool RestoreDateTimeOnExtract
-		{
-			get {
-				return restoreDateTimeOnExtract_;
-			}
-			set {
-				restoreDateTimeOnExtract_ = value;
-			}
-		}
-		
 		#region Instance Fields
 		bool continueRunning_;
 		byte[] buffer_;
