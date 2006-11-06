@@ -199,8 +199,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Initialise a new instance of <see cref="FileSystemScanner"></see>
 		/// </summary>
-		/// <param name="fileFilter">The <see cref="NameFilter">file filter</see> to apply.</param>
-		/// <param name="directoryFilter">The <see cref="NameFilter">directory filter</see> to apply.</param>
+		/// <param name="fileFilter">The <see cref="PathFilter">file filter</see> to apply.</param>
+		/// <param name="directoryFilter">The <see cref="PathFilter">directory filter</see> to apply.</param>
 		public FileSystemScanner(string fileFilter, string directoryFilter)
 		{
 			fileFilter_ = new PathFilter(fileFilter);
@@ -252,7 +252,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Raise the DirectoryFailure event.
 		/// </summary>
-		/// <param name="directory">Rhe directory name.</param>
+		/// <param name="directory">The directory name.</param>
 		/// <param name="e">The exception detected.</param>
 		public void OnDirectoryFailure(string directory, Exception e)
 		{
