@@ -662,8 +662,7 @@ namespace SharpZip
 				entryFileName = theEntry.Name;
 			}
 
-			string targetName = Path.Combine(targetDir, entryFileName);
-						
+			string targetName = Path.Combine(targetDir, entryFileName);			
 			string fullPath = Path.GetDirectoryName(Path.GetFullPath(targetName));
 #if TEST
 			Console.WriteLine("Decompress targetfile name " + entryFileName);
@@ -699,22 +698,15 @@ namespace SharpZip
 						readValue = null;
 					}
 								
-					if (readValue == null || readValue.ToLower() != "y") 
+					if ( (readValue == null) || (readValue.ToLower() != "y") )
 					{
-#if TEST
-						Console.WriteLine("Skipped!");
-#endif						
 						return true;
 					}
 				}
 			}
-		
 					
 			if (entryFileName.Length > 0) 
 			{
-#if TEST
-				Console.WriteLine("Extracting...");
-#endif						
 				using (FileStream outputStream = File.Create(targetName))
 				{
 					StreamUtils.Copy(inputStream, outputStream, GetBuffer());
@@ -1289,7 +1281,7 @@ namespace SharpZip
 		bool seenHelp_;
 		
 		/// <summary>
-		/// File specification possibly with wildcards from command line
+		/// File specifications possibly with wildcards from command line
 		/// </summary>
 		ArrayList fileSpecs_ = new ArrayList();
 		
@@ -1329,7 +1321,7 @@ namespace SharpZip
 		string password_;
 		
 		/// <summary>
-		/// Where things will go
+		/// Where things will go when decompressed.
 		/// </summary>
 		string targetOutputDirectory_;
 
@@ -1349,8 +1341,14 @@ namespace SharpZip
 		/// <remarks>Used for callbacks/delegates</remarks>
 		ZipFile activeZipFile_;
 
+		/// <summary>
+		/// Buffer used during some operations
+		/// </summary>
 		byte[] buffer_;
 
+		/// <summary>
+		/// The size of buffer to provide. <see cref="GetBuffer"></see>
+		/// </summary>
 		int bufferSize_ = 4096;
 		#endregion
 	}
