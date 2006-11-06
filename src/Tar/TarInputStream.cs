@@ -368,8 +368,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 		
 		/// <summary>
-		/// Since we do not support marking just yet, we return false.
+		/// Return a value of true if marking is supported; false otherwise.
 		/// </summary>
+		/// <remarks>Currently marking is not supported, the return value is always false.</remarks>
 		public bool IsMarkSupported {
 			get {
 				return false;
