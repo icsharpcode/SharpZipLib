@@ -8,7 +8,9 @@
 //------------------------------------------------------------------------------
 // Version History
 // 0.1 Initial version ported from sz sample.  Some stuff is not used or commented still
-// 0.2 Display files during extract.
+// 0.2 Display files during extract. --env Now shows >NET version information.
+
+
 using System;
 using System.IO;
 using System.Collections;
