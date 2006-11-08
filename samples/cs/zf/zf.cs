@@ -6,7 +6,9 @@
 // Copyright 2006 John Reilly
 //
 //------------------------------------------------------------------------------
-
+// Version History
+// 0.1 Initial version ported from sz sample.  Some stuff is not used or commented still
+// 0.2 Display files during extract.
 using System;
 using System.IO;
 using System.Collections;
@@ -346,7 +348,11 @@ namespace SharpZip
 			{
 				string checkPath = (string)fileSpecs_[0];
 				int deviceCheck = checkPath.IndexOf(':');
+#if NET_VER_1				
 				if (checkPath.IndexOfAny(Path.InvalidPathChars) >= 0
+#else
+				if (checkPath.IndexOfAny(Path.GetInvalidPathChars()) >= 0
+#endif
 					|| checkPath.IndexOf('*') >= 0 || checkPath.IndexOf('?') >= 0
 					|| ((deviceCheck >= 0) && (deviceCheck != 1))) 
 				{
@@ -365,6 +371,7 @@ namespace SharpZip
 		void ShowEnvironment()
 		{
 			seenHelp_ = true;
+			Console.Out.WriteLine("");
 			System.Console.Out.WriteLine(
 				"Current encoding is {0}, code page {1}, windows code page {2}",
 				System.Console.Out.Encoding.EncodingName,
@@ -378,6 +385,7 @@ namespace SharpZip
 			Console.WriteLine( "Current thread OEM codepage {0}", System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage);
 			Console.WriteLine( "Current thread Mac codepage {0}", System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.MacCodePage);
 			Console.WriteLine( "Current thread Ansi codepage {0}", System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ANSICodePage);
+			Console.WriteLine(".NET version {0}", Environment.Version);
 		}
 		
 		/// <summary>
@@ -386,7 +394,7 @@ namespace SharpZip
 		void ShowVersion() 
 		{
 			seenHelp_ = true;
-			Console.Out.WriteLine("ZipFile Archiver v0.1   Copyright 2006 John Reilly");
+			Console.Out.WriteLine("ZipFile Archiver v0.2   Copyright 2006 John Reilly");
 			
 			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
@@ -707,6 +715,10 @@ namespace SharpZip
 					
 			if (entryFileName.Length > 0) 
 			{
+				if ( !silent_ )
+				{
+					Console.Write("{0}", targetName);
+				}
 				using (FileStream outputStream = File.Create(targetName))
 				{
 					StreamUtils.Copy(inputStream, outputStream, GetBuffer());
@@ -715,6 +727,11 @@ namespace SharpZip
 				if (restoreDateTime_) 
 				{
 					File.SetLastWriteTime(targetName, theEntry.DateTime);
+				}
+				
+				if ( !silent_ )
+				{
+					Console.WriteLine(" OK");
 				}
 			}
 			return true;
@@ -741,12 +758,24 @@ namespace SharpZip
 						{
 							ExtractFile(zf.GetInputStream(entry), entry, targetDir);
 						}
+						else
+						{
+							if ( !silent_ )
+							{
+								Console.WriteLine("Skipping {0}", entry.Name);
+							}
+						}
+					}
+					
+					if ( !silent_ )
+					{
+						Console.WriteLine("Done");
 					}
 				}
 			}
 			catch(Exception ex)
 			{
-				Console.WriteLine("Exception decompressing file - '{0}'", ex.Message);
+				Console.WriteLine("Exception decompressing - '{0}'", ex);
 				result = false;
 			}
 			return result;
