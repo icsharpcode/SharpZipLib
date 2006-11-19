@@ -122,7 +122,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		}
 		
 		/// <summary>
-		/// Updates the checksum with the byte b.
+		/// Updates the checksum with a byte value.
 		/// </summary>
 		/// <param name="value">
 		/// The data value to add. The high byte of the int is ignored.
