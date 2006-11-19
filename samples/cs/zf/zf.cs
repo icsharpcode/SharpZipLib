@@ -627,10 +627,11 @@ namespace SharpZip
 
 					foreach (string spec in fileSpecs)
 					{
+						// This can fail with wildcards in spec...
 						string path = Path.GetDirectoryName(Path.GetFullPath(spec));
 						string fileSpec = Path.GetFileName(spec);
 
-						zf.NameTransform = new ZipNameTransform(true, path);
+						zf.NameTransform = new ZipNameTransform(path);
 
 						FileSystemScanner scanner = new FileSystemScanner(WildcardToRegex(fileSpec));
 						scanner.ProcessFile = new ProcessFileDelegate(ProcessFile);
@@ -1017,7 +1018,7 @@ namespace SharpZip
 						string path = Path.GetDirectoryName(Path.GetFullPath(spec));
 						string fileSpec = Path.GetFileName(spec);
 
-						zipFile.NameTransform = new ZipNameTransform(true, path);
+						zipFile.NameTransform = new ZipNameTransform(path);
 
 						FileSystemScanner scanner = new FileSystemScanner(WildcardToRegex(fileSpec));
 						scanner.ProcessFile = new ProcessFileDelegate(ProcessFile);
@@ -1282,6 +1283,8 @@ namespace SharpZip
 			string converted = wildcard.Replace(".", @"\.");
 			converted = converted.Replace("?", ".");
 			converted = converted.Replace("*", ".*");
+			converted = converted.Replace("(", @"\(");
+			converted = converted.Replace(")", @"\)");
 			if ( dotted )
 			{
 				converted += "$";
