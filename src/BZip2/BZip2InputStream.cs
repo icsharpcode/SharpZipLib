@@ -392,8 +392,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		
 		int BsGetint() 
 		{
-			int u = 0;
-			u = (u << 8) | BsR(8);
+			int u =        BsR(8);
 			u = (u << 8) | BsR(8);
 			u = (u << 8) | BsR(8);
 			u = (u << 8) | BsR(8);
