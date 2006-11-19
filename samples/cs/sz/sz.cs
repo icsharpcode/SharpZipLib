@@ -21,7 +21,8 @@ using System.Globalization;
 using System.Diagnostics;
 using System.Reflection;
 
-using ICSharpCode.SharpZipLib.Zip;	
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
@@ -62,12 +63,12 @@ namespace SharpZip
 		public SharpZipArchiver()
 		{
 		}
-
 		#endregion
+		
 		/// <summary>
-		/// Interpret attributes in conjunction with operatingSystem
+		/// Interpret attributes based on the operating system they are from.
 		/// </summary>
-		/// <param name="operatingSystem">The operating system.</param>
+		/// <param name="operatingSystem">The operating system to base interpretation of attributes on.</param>
 		/// <param name="attributes">The external attributes.</param>
 		/// <returns>A string representation of the attributres passed.</returns>
 		static string InterpretExternalAttributes(int operatingSystem, int attributes)
@@ -455,7 +456,11 @@ namespace SharpZip
 			if (fileSpecs.Count > 0 && operation == Operation.Create) {
 				string checkPath = (string)fileSpecs[0];
 				int deviceCheck = checkPath.IndexOf(':');
+#if NET_VER_1				
 				if (checkPath.IndexOfAny(Path.InvalidPathChars) >= 0
+#else
+				if (checkPath.IndexOfAny(Path.GetInvalidPathChars()) >= 0
+#endif
 				    || checkPath.IndexOf('*') >= 0 || checkPath.IndexOf('?') >= 0
 				    || (deviceCheck >= 0 && deviceCheck != 1)) {
 					Console.WriteLine("There are invalid characters in the specified zip file name");
@@ -565,8 +570,7 @@ namespace SharpZip
 		void ListZip(string fileName) {
 			try
 			{
-				// TODO for asian/non-latin/non-proportional fonts string lengths dont work so output wont line up
-				
+				// TODO for asian/non-latin/non-proportional fonts string lengths dont work so output may not line up
 				const string headerTitles    = "Name                 Length Ratio Size         Date & time       CRC-32";
 				const string headerUnderline = "---------------  ---------- ----- ---------- ------------------- --------";
 				
@@ -809,13 +813,13 @@ namespace SharpZip
 
 		// TODO: Add equivalent for non-seekable output
 		/// <summary>
-		/// Add a file assuming the output is seekable
+		/// Add a file were the output is seekable
 		/// </summary>		
-		void AddFileSeekableOutput(string file, string entryPath, int maximumBufferSize)
+		void AddFileSeekableOutput(string file, string entryPath)
 		{
 			ZipEntry entry = new ZipEntry(entryPath);
 			FileInfo fileInfo = new FileInfo(file);
-			entry.DateTime = fileInfo.LastWriteTime; // File.GetLastWriteTime(file); // or DateTime.Now or whatever, for now use the file
+			entry.DateTime = fileInfo.LastWriteTime; // or DateTime.Now or whatever, for now use the file
 			entry.ExternalFileAttributes = (int)fileInfo.Attributes;
 			entry.Size = fileInfo.Length;
 
@@ -827,30 +831,26 @@ namespace SharpZip
 
 			using (System.IO.FileStream fileStream = System.IO.File.OpenRead(file))
 			{
-
-				byte[] transferBuffer;
-				if (fileStream.Length > maximumBufferSize)
-					transferBuffer = new byte[maximumBufferSize];
-				else
-					transferBuffer = new byte[fileStream.Length];
-
 				outputStream.PutNextEntry(entry);
-
-				int bytesRead;
-				do {
-					bytesRead = fileStream.Read(transferBuffer, 0, transferBuffer.Length);
-					outputStream.Write(transferBuffer, 0, bytesRead);
-				}
-				while (bytesRead > 0);
+				StreamUtils.Copy(fileStream, outputStream, GetBuffer());
 			}
+		}
+		
+		byte[] GetBuffer()
+		{
+			if ( buffer == null )
+			{
+				buffer = new byte[bufferSize_];
+			}
+			return buffer;
+			
 		}
 		
 		/// <summary>
 		/// Add file to archive
 		/// </summary>
 		/// <param name="fileName">file to add</param>
-		/// <param name="bufferSize">size of buffer to use with file</param>
-		void AddFile(string fileName, int bufferSize) {
+		void AddFile(string fileName) {
 #if TEST
 			Console.WriteLine("AddFile {0}", fileName);
 #endif			
@@ -862,7 +862,7 @@ namespace SharpZip
 					Console.Write(" " + entryName);
 				}
 			
-				AddFileSeekableOutput(fileName, entryName, bufferSize);
+				AddFileSeekableOutput(fileName, entryName);
 				
 				if (silent == false) {
 					Console.WriteLine("");
@@ -907,7 +907,7 @@ namespace SharpZip
 			string [] names = Directory.GetFiles(basePath, searchPattern);
 			
 			foreach (string fileName in names) {
-				AddFile(fileName, 8192);
+				AddFile(fileName);
 				++result;
 			}
 		
@@ -977,7 +977,7 @@ namespace SharpZip
 							// as part of different file specs.
 							totalEntries += CompressFolder(pathName, recursive, fileName);
 						} else {
-							AddFile(pathName + @"\" + fileName, 8192);
+							AddFile(pathName + @"\" + fileName);
 							++totalEntries;
 						}
 					}
@@ -1282,6 +1282,16 @@ namespace SharpZip
 		bool seenHelp;
 		
 		/// <summary>
+		/// The size of the buffer to use when copying.
+		/// </summary>
+		int bufferSize_ = 8192;
+
+		/// <summary>
+		/// Buffer for use when copying between streams.
+		/// </summary>
+		byte[] buffer;
+		
+		/// <summary>
 		/// File specification possibly with wildcards from command line
 		/// </summary>
 		ArrayList fileSpecs = new ArrayList();
@@ -1289,17 +1299,17 @@ namespace SharpZip
 		/// <summary>
 		/// Deflate compression level
 		/// </summary>
-		int    compressionLevel = Deflater.DEFAULT_COMPRESSION;
+		int compressionLevel = Deflater.DEFAULT_COMPRESSION;
 		
 		/// <summary>
 		/// Create entries for directories with no files
 		/// </summary>
-		bool   addEmptyDirectoryEntries;
+		bool addEmptyDirectoryEntries;
 		
 		/// <summary>
 		/// Apply operations recursively
 		/// </summary>
-		bool   recursive;
+		bool recursive;
 
 		/// <summary>
 		/// Use ZipFile class for listing entries
@@ -1309,18 +1319,18 @@ namespace SharpZip
 		/// <summary>
 		/// Use relative path information
 		/// </summary>
-		bool   relativePathInfo = true;
+		bool relativePathInfo = true;
 		
 		/// <summary>
 		/// Operate silently
 		/// </summary>
-		bool   silent;
+		bool silent;
 		
 		/// <summary>
 		/// Use store rather than deflate when adding files, not likely to be used much
 		/// but it does exercise the option as the library supports it
 		/// </summary>
-		bool   useZipStored;
+		bool useZipStored;
 
 		/// <summary>
 		/// Restore file date and time to that stored in zip file on extraction
@@ -1330,7 +1340,7 @@ namespace SharpZip
 		/// <summary>
 		/// Overwrite files handling
 		/// </summary>
-		Overwrite   overwriteFiles = Overwrite.Prompt;
+		Overwrite overwriteFiles = Overwrite.Prompt;
 
 		/// <summary>
 		/// Optional password for archive
@@ -1352,8 +1362,14 @@ namespace SharpZip
 		/// </summary>
 		Operation operation = Operation.List;
 
+		/// <summary>
+		/// Flag indicating wether entry data should be included when testing.
+		/// </summary>
 		bool testData;
 
+		/// <summary>
+		/// stream used when creating archives.
+		/// </summary>
 		ZipOutputStream outputStream;
 
 		#endregion
