@@ -111,7 +111,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		
 		/// <summary>
 		/// Gets the next n bits and increases input pointer.  This is equivalent
-		/// to PeekBits followed by dropBits, except for correct error handling.
+        /// to <see cref="PeekBits"/> followed by <see cref="DropBits"/>, except for correct error handling.
 		/// </summary>
 		/// <param name="bitCount">The number of bits to retrieve.</param>
 		/// <returns>
@@ -198,8 +198,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			if (length < 0) {
 				throw new ArgumentOutOfRangeException("length");
 			}
+
 			if ((bitsInBuffer_ & 7) != 0) {
-				/* bits_in_buffer may only be 0 or a multiple of 8 */
+				// bits_in_buffer may only be 0 or a multiple of 8
 				throw new InvalidOperationException("Bit buffer is not byte aligned!");
 			}
 			
@@ -224,7 +225,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			windowStart_ += length;
 			
 			if (((windowStart_ - windowEnd_) & 1) != 0) {
-				/* We always want an even number of bytes in input, see peekBits */
+				// We always want an even number of bytes in input, see peekBits
 				buffer_ = (uint)(window_[windowStart_++] & 0xff);
 				bitsInBuffer_ = 8;
 			}
