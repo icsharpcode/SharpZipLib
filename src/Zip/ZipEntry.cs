@@ -532,6 +532,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// 5.1 - File is encrypted using corrected RC2-64 encryption<br/>
 		/// 6.1 - File is encrypted using non-OAEP key wrapping<br/>
 		/// 6.2 - Central directory encryption (not confirmed yet)<br/>
+		/// 6.3 - Unicode file names and comments<br/>
 		/// </remarks>
 		public int Version 
 		{
@@ -1005,10 +1006,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Cleans a name making it conform to Zip file conventions.
 		/// Devices names ('c:\') and UNC share names ('\\server\share') are removed
 		/// and forward slashes ('\') are converted to back slashes ('/').
+		/// Names are made relative by trimming leading slashes which is compatible
+		/// with the ZIP naming convention.
 		/// </summary>
 		/// <param name="name">Name to clean</param>
-		/// <param name="relativePath">Make names relative if true or absolute if false</param>
-		static public string CleanName(string name, bool relativePath)
+		public static string CleanName(string name)
 		{
 			if (name == null) {
 				return string.Empty;
@@ -1022,32 +1024,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			name = name.Replace(@"\", "/");
 			
-			if (relativePath == true) {
-				if ( (name.Length > 0) && ((name[0] == Path.AltDirectorySeparatorChar) || (name[0] == Path.DirectorySeparatorChar))) {
-					name = name.Remove(0, 1);
-				}
-			} 
-			else {
-				if ( (name.Length > 0) &&
-				    (name[0] != Path.AltDirectorySeparatorChar) &&
-				    (name[0] != Path.DirectorySeparatorChar) ) {
-					name = name.Insert(0, "/");
-				}
+			while ( (name.Length > 0) && (name[0] == '/')) {
+				name = name.Remove(0, 1);
 			}
 			return name;
-		}
-		
-		/// <summary>
-		/// Cleans a name making it conform to Zip file conventions.
-		/// Devices names ('c:\') and UNC share names ('\\server\share') are removed
-		/// and forward slashes ('\') are converted to back slashes ('/').
-		/// Names are made relative by trimming leading slashes which is compatible
-		/// with Windows-XPs built in Zip file handling.
-		/// </summary>
-		/// <param name="name">Name to clean</param>
-		static public string CleanName(string name)
-		{
-			return CleanName(name, true);
 		}
 	}
 }

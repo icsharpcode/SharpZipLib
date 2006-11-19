@@ -64,6 +64,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// using System;
 	/// using System.IO;
 	/// 
+	/// using ICSharpCode.SharpZipLib.Core;
 	/// using ICSharpCode.SharpZipLib.Zip;
 	/// 
 	/// class MainClass
@@ -82,16 +83,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// 				s.PutNextEntry(entry);
 	///
 	/// 				using (FileStream fs = File.OpenRead(file)) {
-	/// 			
-	/// 					int bytesRead;
-	/// 					do {
-	/// 						bytesRead = fs.Read(buffer, 0, buffer.Length);
-	/// 						s.Write(buffer, 0, bytesRead);
-	/// 					} ( while bytesRead > 0 );
+	///                     StreamUtils.Copy(fs, s, buffer);
 	/// 				}
 	/// 			}
-	/// 			s.Finish();
-	/// 			s.Close();
 	/// 		}
 	/// 	}
 	/// }	

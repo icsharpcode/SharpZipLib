@@ -262,7 +262,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="directoryFilter">The <see cref="PathFilter">directory filter</see> to apply.</param>
 		public void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, string fileFilter, string directoryFilter)
 		{
-			NameTransform = new ZipNameTransform(true, sourceDirectory);
+			NameTransform = new ZipNameTransform(sourceDirectory);
 			sourceDirectory_ = sourceDirectory;
 
 			using ( outputStream_ = new ZipOutputStream(outputStream) ) {
