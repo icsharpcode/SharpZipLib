@@ -419,6 +419,59 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	#endregion
 
 	/// <summary>
+	/// This contains newer tests for stream handling. Much of this is still in GeneralHandling
+	/// </summary>
+	[TestFixture]
+	public class StreamHandling : ZipBase
+	{
+		void MustFailRead(Stream s, byte[] buffer, int offset, int count)
+		{
+			bool exception = false;
+			try {
+				s.Read(buffer, offset, count);
+			}
+			catch
+			{
+				exception = true;
+			}
+			Assert.IsTrue(exception, "Read should fail");
+		}
+		
+		[Test]
+		public void ParameterHandling()
+		{
+			byte[] buffer = new byte[10];
+			byte[] emptyBuffer = new byte[0];
+			
+			MemoryStream ms = new MemoryStream();
+			ZipOutputStream outStream = new ZipOutputStream(ms);
+			outStream.IsStreamOwner = false;
+			outStream.PutNextEntry(new ZipEntry("Floyd"));
+			outStream.Write(buffer, 0, 10);
+			outStream.Finish();
+			
+			ms.Seek(0, SeekOrigin.Begin);
+			
+			ZipInputStream inStream = new ZipInputStream(ms);
+			ZipEntry e = inStream.GetNextEntry();
+		
+			MustFailRead(inStream, null, 0, 0);
+			MustFailRead(inStream, buffer, -1, 1);
+			MustFailRead(inStream, buffer, 0, 11);
+			MustFailRead(inStream, buffer, 7, 5);
+			MustFailRead(inStream, buffer, 0, -1);
+			
+			MustFailRead(inStream, emptyBuffer, 0, 1);
+			
+			int bytesRead = inStream.Read(buffer, 10, 0);
+			Assert.AreEqual(0, bytesRead, "Should be able to read zero bytes");
+
+			bytesRead = inStream.Read(emptyBuffer, 0, 0);
+			Assert.AreEqual(0, bytesRead, "Should be able to read zero bytes");
+		}
+	}
+	
+	/// <summary>
 	/// This class contains test cases for Zip compression and decompression
 	/// </summary>
 	[TestFixture]
@@ -628,7 +681,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			ZipEntry entry;
 			while ((entry = inStream.GetNextEntry()) != null) 
 			{
-				Assert.IsNull(entry, "No entries should be found in empty zip");
+				Assert.Fail("No entries should be found in empty zip");
 			}
 		}
 
@@ -1206,6 +1259,16 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			return result;
 		}
 
+		[Test]
+		[Category("Zip")]
+		public void NameTransforms()
+		{
+			INameTransform t = new ZipNameTransform(@"C:\Slippery");
+			Assert.AreEqual("Pongo/Directory/", t.TransformDirectory(@"C:\Slippery\Pongo\Directory"), "Value should be trimmed and converted");
+			Assert.AreEqual("PoNgo/Directory/", t.TransformDirectory(@"c:\slipperY\PoNgo\Directory"), "Trimming should be case insensitive");
+			Assert.AreEqual("slippery/Pongo/Directory/", t.TransformDirectory(@"d:\slippery\Pongo\Directory"), "Trimming should be case insensitive");
+		}
+		
 		/// <summary>
 		/// Test ZipEntry static file name cleaning methods
 		/// </summary>
@@ -1217,8 +1280,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsTrue(string.Compare(ZipEntry.CleanName(@"z:\eccles"), "eccles") == 0);
 			Assert.IsTrue(string.Compare(ZipEntry.CleanName(@"\\server\share\eccles"), "eccles") == 0);
 			Assert.IsTrue(string.Compare(ZipEntry.CleanName(@"\\server\share\dir\eccles"), "dir/eccles") == 0);
-			Assert.IsTrue(string.Compare(ZipEntry.CleanName(@"\\server\share\eccles", false), "/eccles") == 0);
-			Assert.IsTrue(string.Compare(ZipEntry.CleanName(@"c:\a\b\c\deus.dat", false), "/a/b/c/deus.dat") == 0);
 		}
 
 		void CheckNameConversion(string toCheck)
