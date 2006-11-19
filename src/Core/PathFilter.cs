@@ -33,7 +33,6 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-
 using System;
 using System.IO;
 
@@ -57,6 +56,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 		#endregion
 
+		#region IScanFilter Members
 		/// <summary>
 		/// Test a name to see if it matches the filter.
 		/// </summary>
@@ -66,14 +66,15 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			return nameFilter_.IsMatch(Path.GetFullPath(name));
 		}
-		
+		#endregion
+
 		#region Instance Fields
 		NameFilter nameFilter_;
 		#endregion
 	}
 
 	/// <summary>
-	/// ExtendedPathFilter filters based on name, file size, and the write time of the file.
+	/// ExtendedPathFilter filters based on name, file size, and the last write time of the file.
 	/// </summary>
 	/// <remarks>Provides an example of how to customise filtering.</remarks>
 	public class ExtendedPathFilter : PathFilter
@@ -127,6 +128,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 		#endregion
 
+		#region IScanFilter Members
 		/// <summary>
 		/// Test a filename to see if it matches the filter.
 		/// </summary>
@@ -148,7 +150,9 @@ namespace ICSharpCode.SharpZipLib.Core
 			}
 			return result;
 		}
-		
+		#endregion
+
+		#region Properties
 		/// <summary>
 		/// Get/set the minimum size for a file that will match this filter.
 		/// </summary>
@@ -226,6 +230,7 @@ namespace ICSharpCode.SharpZipLib.Core
 				maxDate_ = value;
 			}
 		}
+		#endregion
 
 		#region Instance Fields
 		long minSize_;
