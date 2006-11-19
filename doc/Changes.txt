@@ -1,3 +1,7 @@
+Changes since v0.85
+
+BREAKING CHANGE:  Zip name transform implementations and other classes no longer support non-relative paths.
+
 Changes since v0.84
 + Mod time written in gzip header corrected.
 + Fix for ZipInputStream where closing an open entry wasnt handling all cases correctly.
