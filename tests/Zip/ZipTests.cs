@@ -1863,6 +1863,44 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+		void TryDeleting(byte[] master, int totalEntries, int additions, params string[] toDelete)
+		{
+			MemoryStream ms = new MemoryStream();
+			ms.Write(master, 0, master.Length);
+
+			using (ZipFile f = new ZipFile(ms))
+			{
+				f.IsStreamOwner = false;
+				Assert.AreEqual(totalEntries, f.Count);
+				Assert.IsTrue(f.TestArchive(true));
+				f.BeginUpdate(new MemoryArchiveStorage());
+
+				for (int i = 0; i < additions; ++i)
+				{
+					f.Add(new StringMemoryDataSource("Another great file"),
+						string.Format("Add{0}.dat", i + 1));
+				}
+
+				foreach (string name in toDelete)
+				{
+					f.Delete(name);
+				}
+				f.CommitUpdate();
+
+				/* write stream to file to assist debugging.
+								byte[] data = ms.ToArray();
+								using ( FileStream fs = File.Open(@"c:\aha.zip", FileMode.Create, FileAccess.ReadWrite, FileShare.Read) )
+								{
+									fs.Write(data, 0, data.Length);
+								}
+				*/
+				int newTotal = totalEntries + additions - toDelete.Length;
+				Assert.AreEqual(newTotal, f.Count,
+					string.Format("Expected {0} entries after update found {1}", newTotal, f.Count));
+				Assert.IsTrue(f.TestArchive(true), "Archive test should pass");
+			}
+		}
+
 		void TryDeleting(byte[] master, int totalEntries, int additions, params int[] toDelete)
 		{
 			MemoryStream ms = new MemoryStream();
@@ -1912,15 +1950,19 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				f.IsStreamOwner = false;
 
 				f.BeginUpdate(new MemoryArchiveStorage());
-				f.Add(new StringMemoryDataSource("Hello world"), "a.dat");
-				f.Add(new StringMemoryDataSource("Another"), "b.dat");
-				f.Add(new StringMemoryDataSource("Mr C"), "c.dat");
-				f.Add(new StringMemoryDataSource("Mrs D was a star"), "d.dat");
+				f.Add(new StringMemoryDataSource("Hello world"), @"z:\a\a.dat");
+				f.Add(new StringMemoryDataSource("Another"), @"\b\b.dat");
+				f.Add(new StringMemoryDataSource("Mr C"), @"c\c.dat");
+				f.Add(new StringMemoryDataSource("Mrs D was a star"), @"d\d.dat");
 				f.CommitUpdate();
 				Assert.IsTrue(f.TestArchive(true));
 			}
 
 			byte[] master = memStream.ToArray();
+
+			TryDeleting(master, 4, 1, @"z:\a\a.dat");
+			TryDeleting(master, 4, 1, @"\a\a.dat");
+			TryDeleting(master, 4, 1, @"a/a.dat");
 
 			TryDeleting(master, 4, 0, 0);
 			TryDeleting(master, 4, 0, 1);
@@ -2047,7 +2089,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			{
 				string addFile = Path.Combine(tempFile, "a.dat");
 				MakeTempFile(addFile, 1);
-            
+			
 				tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
 			
 				using ( ZipFile f = ZipFile.Create(tempFile) )
