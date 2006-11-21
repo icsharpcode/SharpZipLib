@@ -66,6 +66,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		const  int REP_3_10   = 17;
 		// repeat a zero length 11-138 times  (7 bits of repeat count)
 		const  int REP_11_138 = 18;
+
 		const  int EOF_SYMBOL = 256;
 
 		// The lengths of the bit length codes are sent in order of decreasing
@@ -96,30 +97,15 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		static short[] staticDCodes;
 		static byte[]  staticDLength;
 		
-		/// <summary>
-		/// Not documented
-		/// </summary>
 		class Tree 
 		{
 			#region Instance Fields
-			/// <summary>
-			/// Not documented
-			/// </summary>
 			public short[] freqs;
 			
-			/// <summary>
-			/// Not documented
-			/// </summary>
 			public byte[]  length;
 			
-			/// <summary>
-			/// Not documented
-			/// </summary>
 			public int     minNumCodes;
 			
-			/// <summary>
-			/// Not documented
-			/// </summary>
 			public int     numCodes;
 			
 			short[] codes;
@@ -129,9 +115,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			#endregion
 
 			#region Constructors
-			/// <summary>
-			/// Not documented
-			/// </summary>
 			public Tree(DeflaterHuffman dh, int elems, int minCodes, int maxLength) 
 			{
 				this.dh =  dh;
@@ -155,9 +138,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				length = null;
 			}
 			
-			/// <summary>
-			/// Not documented
-			/// </summary>
 			public void WriteSymbol(int code)
 			{
 				//				if (DeflaterConstants.DEBUGGING) {
@@ -225,7 +205,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				}
 
 #if DebugDeflation
-				if (DeflaterConstants.DEBUGGING && code != 65536) 
+				if ( DeflaterConstants.DEBUGGING && (code != 65536) ) 
 				{
 					throw new SharpZipBaseException("Inconsistent bl_counts!");
 				}
@@ -245,9 +225,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				}
 			}
 			
-			/// <summary>
-			/// Not documented
-			/// </summary>
 			public void BuildTree()
 			{
 				int numSymbols = freqs.Length;

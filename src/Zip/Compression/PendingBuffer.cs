@@ -76,12 +76,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// construct instance using specified buffer size
 		/// </summary>
-		/// <param name="bufsize">
+		/// <param name="bufferSize">
 		/// size to use for internal buffer
 		/// </param>
-		public PendingBuffer(int bufsize)
+		public PendingBuffer(int bufferSize)
 		{
-			buffer_ = new byte[bufsize];
+			buffer_ = new byte[bufferSize];
 		}
 
 		#endregion
@@ -189,7 +189,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			{
 				buffer_[end++] = unchecked((byte) bits);
 				if (bitCount > 8) {
-					buffer_[end++] = (byte) (bits >> 8);
+					buffer_[end++] = unchecked((byte) (bits >> 8));
 				}
 			}
 			bits = 0;
