@@ -1367,7 +1367,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			CheckUpdating();
 			contentsEdited_ = true;
-			updates_.Add(new ZipUpdate(dataSource, entryName, CompressionMethod.Deflated));
+			updates_.Add(new ZipUpdate(dataSource, GetTransformedFileName(entryName),
+			                           CompressionMethod.Deflated));
 		}
 
 		/// <summary>
