@@ -38,7 +38,7 @@
 
 using System;
 
-#if !COMPACT_FRAMEWORK 
+#if !COMPACT_FRAMEWORK_V10 && !COMPACT_FRAMEWORK_V20
 using System.Runtime.Serialization;
 #endif
 
@@ -48,12 +48,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// <summary>
 	/// Represents errors specific to Zip file handling
 	/// </summary>
-#if !COMPACT_FRAMEWORK 
+#if !COMPACT_FRAMEWORK_V10 && !COMPACT_FRAMEWORK_V20
 	[Serializable]
 #endif
 	public class ZipException : SharpZipBaseException
 	{
-#if !COMPACT_FRAMEWORK 
+#if !COMPACT_FRAMEWORK_V10 && !COMPACT_FRAMEWORK_V20
 		/// <summary>
 		/// Deserialization constructor 
 		/// </summary>

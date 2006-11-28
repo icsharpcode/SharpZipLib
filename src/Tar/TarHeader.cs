@@ -482,7 +482,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					userName = value.Substring(0, Math.Min(UNAMELEN, value.Length));
 				}
 				else {
-#if COMPACT_FRAMEWORK
+#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
 					string currentUser = "PocketPC";
 #else
 					string currentUser = Environment.UserName;

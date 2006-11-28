@@ -43,7 +43,7 @@ using System.IO;
 using System.Text;
 using System.Globalization;
 
-#if !COMPACT_FRAMEWORK
+#if !COMPACT_FRAMEWORK_V10
 using System.Security.Cryptography;
 #endif
 

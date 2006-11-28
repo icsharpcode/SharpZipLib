@@ -40,10 +40,8 @@
 using System;
 using System.IO;
 
-#if !COMPACT_FRAMEWORK
+#if !COMPACT_FRAMEWORK_V10
 using System.Security.Cryptography;
-#else
-using ICSharpCode.SharpZipLib.Encryption;
 #endif
 
 using ICSharpCode.SharpZipLib.Zip.Compression;
@@ -293,7 +291,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			return ReadLeInt() | (ReadLeInt() << 32);
 		}
-
+		
 		/// <summary>
 		/// Get/set the <see cref="ICryptoTransform"/> to apply to any data.
 		/// </summary>

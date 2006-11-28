@@ -422,10 +422,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 						
 							StreamUtils.Copy(inputStream_, outputStream, buffer_);
 						}
-		
+						
+#if !COMPACT_FRAMEWORK_V10 && !COMPACT_FRAMEWORK_V20
 						if ( restoreDateTimeOnExtract_ ) {
 							File.SetLastWriteTime(targetName, entry.DateTime);
 						}
+#endif						
 					}
 					catch(Exception ex) {
 						if ( events_ != null ) {

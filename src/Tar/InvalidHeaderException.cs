@@ -35,7 +35,7 @@
 
 using System;
 
-#if !COMPACT_FRAMEWORK
+#if !COMPACT_FRAMEWORK_V10 && !COMPACT_FRAMEWORK_V20
 using System.Runtime.Serialization;
 #endif
 
@@ -45,13 +45,13 @@ namespace ICSharpCode.SharpZipLib.Tar {
 	/// This exception is used to indicate that there is a problem
 	/// with a TAR archive header.
 	/// </summary>
-#if !COMPACT_FRAMEWORK
+#if !COMPACT_FRAMEWORK_V10 && !COMPACT_FRAMEWORK_V20
 	[Serializable]
 #endif
 	public class InvalidHeaderException : TarException
 	{
 
-#if !COMPACT_FRAMEWORK
+#if !COMPACT_FRAMEWORK_V10 && !COMPACT_FRAMEWORK_V20
 		/// <summary>
 		/// Deserialization constructor 
 		/// </summary>

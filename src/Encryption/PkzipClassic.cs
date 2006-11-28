@@ -37,7 +37,7 @@
 
 using System;
 
-#if !COMPACT_FRAMEWORK
+#if !COMPACT_FRAMEWORK_V10
 using System.Security.Cryptography;
 #endif
 
