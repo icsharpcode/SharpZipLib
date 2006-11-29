@@ -43,7 +43,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ICSharpCode.SharpZipLibrary")]
 [assembly: AssemblyDescription("A free C# compression library")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("ICSharpCode.net")]
 [assembly: AssemblyProduct("#ZipLibrary")]
 [assembly: AssemblyCopyright("Copyright 2001-2005 Mike Krueger")]
 [assembly: AssemblyTrademark("")]
@@ -59,5 +59,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDelaySign(false)]
 
 #if NET_VER_1
+#if VSTUDIO
+[assembly: AssemblyKeyFile("../../ICSharpCode.SharpZipLib.key")]
+#else
 [assembly: AssemblyKeyFile("../ICSharpCode.SharpZipLib.key")]
+#endif
 #endif

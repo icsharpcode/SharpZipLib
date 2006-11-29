@@ -45,6 +45,7 @@ namespace ICSharpCode.SharpZipLib.Core
 	/// </summary>
 	public class ScanEventArgs : EventArgs
 	{
+		#region Constructors
 		/// <summary>
 		/// Initialise a new instance of <see cref="ScanEventArgs"/>
 		/// </summary>
@@ -53,7 +54,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			name_ = name;
 		}
-		
+		#endregion
 		
 		/// <summary>
 		/// The name for this event.
@@ -84,6 +85,7 @@ namespace ICSharpCode.SharpZipLib.Core
 	/// </summary>
 	public class DirectoryEventArgs : ScanEventArgs
 	{
+		#region Constructors
 		/// <summary>
 		/// Initialize an instance of <see cref="DirectoryEventArgs"></see>.
 		/// </summary>
@@ -94,6 +96,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			hasMatchingFiles_ = hasMatchingFiles;
 		}
+		#endregion
 		
 		/// <summary>
 		/// Get a value indicating if the directory contains any matching files or not.
@@ -113,6 +116,7 @@ namespace ICSharpCode.SharpZipLib.Core
 	/// </summary>
 	public class ScanFailureEventArgs
 	{
+		#region Constructors
 		/// <summary>
 		/// Initialise a new instance of <see cref="ScanFailureEventArgs"></see>
 		/// </summary>
@@ -124,7 +128,7 @@ namespace ICSharpCode.SharpZipLib.Core
 			exception_ = e;
 			continueRunning_ = true;
 		}
-		
+		#endregion
 		
 		/// <summary>
 		/// The applicable name.

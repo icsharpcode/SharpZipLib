@@ -83,7 +83,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// 				s.PutNextEntry(entry);
 	///
 	/// 				using (FileStream fs = File.OpenRead(file)) {
-	///                     StreamUtils.Copy(fs, s, buffer);
+	///						StreamUtils.Copy(fs, s, buffer);
 	/// 				}
 	/// 			}
 	/// 		}

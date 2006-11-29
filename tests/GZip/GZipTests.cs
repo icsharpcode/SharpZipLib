@@ -52,5 +52,40 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 				Assert.AreEqual(buf2[i], buf[i]);
 			}
 		}
+
+		/// <summary>
+		/// Writing GZip headers is delayed so that this stream can be used with HTTP/IIS.
+		/// </summary>
+		[Test]
+		public void DelayedHeaderWriteNoData()
+		{
+			MemoryStream ms = new MemoryStream();
+			Assert.AreEqual(0, ms.Length);
+			using (GZipOutputStream outStream = new GZipOutputStream(ms))
+			{
+				Assert.AreEqual(0, ms.Length);
+			}
+			byte[] data = ms.ToArray();
+
+			Assert.IsTrue(data.Length > 0);
+		}
+
+		/// <summary>
+		/// Writing GZip headers is delayed so that this stream can be used with HTTP/IIS.
+		/// </summary>
+		[Test]
+		public void DelayedHeaderWriteWithData()
+		{
+			MemoryStream ms = new MemoryStream();
+			Assert.AreEqual(0, ms.Length);
+			using (GZipOutputStream outStream = new GZipOutputStream(ms))
+			{
+				Assert.AreEqual(0, ms.Length);
+				outStream.WriteByte(45);
+			}
+			byte[] data = ms.ToArray();
+
+			Assert.IsTrue(data.Length > 0);
+		}
 	}
 }
