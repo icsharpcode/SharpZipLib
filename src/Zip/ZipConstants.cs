@@ -37,6 +37,10 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+#if COMPACT_FRAMEWORK_V10 && COMPACT_FRAMEWORK_V20
+#error Cannot define both COMPACT_FRAMEWORK_V10 and COMPACT_FRAMEWORK_V20
+#endif
+
 using System;
 using System.Text;
 using System.Threading;
@@ -124,6 +128,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		RC2Corrected   = 0x6702,
 		/// <summary>
+		/// Blowfish has been used for encryption.
+		/// </summary>
+		Blowfish = 0x6720,
+		/// <summary>
+		/// Twofish has been used for encryption.
+		/// </summary>
+		Twofish = 0x6721,
+		/// <summary>
 		/// RCS has been used for encryption.
 		/// </summary>
 		RC4            = 0x6801,
@@ -137,44 +149,74 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// Defines the contents of the general bit flags field for an archive entry.
 	/// </summary>
 	[Flags]
-	enum GeneralBitFlags : int
+	public enum GeneralBitFlags : int
 	{
 		/// <summary>
-		/// If set indicates that the file is encrypted
+		/// Bit 0 if set indicates that the file is encrypted
 		/// </summary>
-		Encrypted         = 0x0001,
+		Encrypted = 0x0001,
 		/// <summary>
-		/// Two bits defining the compression method (only for Method 6 Imploding and 8,9 Deflating)
+		/// Bits 1 and 2 - Two bits defining the compression method (only for Method 6 Imploding and 8,9 Deflating)
 		/// </summary>
-		Method            = 0x0006,
+		Method = 0x0006,
 		/// <summary>
-		/// If set a trailing data desciptor is appended to the entry data
+		/// Bit 3 if set indicates a trailing data desciptor is appended to the entry data
 		/// </summary>
-		Descriptor        = 0x0008,
+		Descriptor = 0x0008,
 		/// <summary>
-		/// Reserved
+		/// Reserved for use with method 8 for enhanced deflation
 		/// </summary>
-		Reserved          = 0x0010,
+		ReservedPKware4 = 0x0010,
 		/// <summary>
-		/// If set indicates the file contains Pkzip compressed patched data.
+		/// Bit 5 if set indicates the file contains Pkzip compressed patched data.
+		/// Requires version 2.7 or greater.
 		/// </summary>
-		Patched           = 0x0020,
+		Patched = 0x0020,
 		/// <summary>
-		/// If set strong encryption has been used for this entry.
+		/// Bit 6 if set strong encryption has been used for this entry.
 		/// </summary>
-		StrongEncryption  = 0x0040,
+		StrongEncryption = 0x0040,
 		/// <summary>
-		/// Reserved by PKWare for enhanced compression.
+		/// Bit 7 is currently unused
 		/// </summary>
-		EnhancedCompress  = 0x1000,
+		Unused7 = 0x0080,
 		/// <summary>
-		/// If set indicates that values in the local header are masked to hide
+		/// Bit 8 is currently unused
+		/// </summary>
+		Unused8 = 0x0100,
+		/// <summary>
+		/// Bit 9 is currently unused
+		/// </summary>
+		Unused9 = 0x0200,
+		/// <summary>
+		/// Bit 10 is currently unused
+		/// </summary>
+		Unused10 = 0x0400,
+		/// <summary>
+		/// Bit 11 if set indicates the filename and 
+		/// comment fields for this file must be encoded using UTF-8.
+		/// </summary>
+		UnicodeText = 0x0800,
+		/// <summary>
+		/// Bit 12 is documented as being reserved by PKware for enhanced compression.
+		/// </summary>
+		EnhancedCompress = 0x1000,
+		/// <summary>
+		/// Bit 13 if set indicates that values in the local header are masked to hide
 		/// their actual values, and the central directory is encrypted.
 		/// </summary>
 		/// <remarks>
 		/// Used when encrypting the central directory contents.
 		/// </remarks>
-		HeaderMasked      = 0x2000
+		HeaderMasked = 0x2000,
+		/// <summary>
+		/// Bit 14 is documented as being reserved for use by PKware
+		/// </summary>
+		ReservedPkware14 = 0x4000,
+		/// <summary>
+		/// Bit 15 is documented as being reserved for use by PKware
+		/// </summary>
+		ReservedPkware15 = 0x8000
 	}
 	
 	#endregion
@@ -192,7 +234,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// This is also the Zip version for the library when comparing against the version required to extract
 		/// for an entry.  See <see cref="ZipInputStream.CanDecompressEntry"/>.
 		/// </remarks>
-		public const int VersionMadeBy = 45;
+		public const int VersionMadeBy = 63;
 		
 		/// <summary>
 		/// The version made by field for entries in the central header when created by this library
@@ -202,7 +244,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// for an entry.  See <see cref="ZipInputStream.CanDecompressEntry">ZipInputStream.CanDecompressEntry</see>.
 		/// </remarks>
 		[Obsolete("Use VersionMadeBy instead")]
-		public const int VERSION_MADE_BY = 45;
+		public const int VERSION_MADE_BY = 63;
 		
 		/// <summary>
 		/// The minimum version required to support strong encryption
@@ -220,6 +262,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public const int VersionZip64 = 45;
 		
+		/// <summary>
+		/// The version required to allow the use of UTF8 in entry names and comments.
+		/// </summary>
+		public const int VersionUnicodeText = 63;
 		#endregion
 		
 		#region Header Sizes
@@ -237,7 +283,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Size of Zip64 data descriptor
 		/// </summary>
-		public const int Zip64DataDescriptorSize = 20;
+		public const int Zip64DataDescriptorSize = 24;
 		
 		/// <summary>
 		/// Size of data descriptor
@@ -424,28 +470,28 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="data">
 		/// Data to convert to string
 		/// </param>
-		/// <param name="length">
+		/// <param name="count">
 		/// Number of bytes to convert starting from index 0
 		/// </param>
 		/// <returns>
 		/// data[0]..data[length - 1] converted to a string
 		/// </returns>
-		public static string ConvertToString(byte[] data, int length)
+		public static string ConvertToString(byte[] data, int count)
 		{
 			if ( data == null ) {
 				return string.Empty;	
 			}
 			
 #if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
-			return Encoding.ASCII.GetString(data, 0, length);
+			return Encoding.ASCII.GetString(data, 0, count);
 #else
 			// TODO: Isnt this supported by CF?
-			return Encoding.GetEncoding(DefaultCodePage).GetString(data, 0, length);
+			return Encoding.GetEncoding(DefaultCodePage).GetString(data, 0, count);
 #endif
 		}
 	
 		/// <summary>
-		/// Convert byte array to string
+		/// Convert a byte array to string
 		/// </summary>
 		/// <param name="data">
 		/// Byte array to convert
@@ -459,6 +505,55 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return string.Empty;	
 			}
 			return ConvertToString(data, data.Length);
+		}
+
+		/// <summary>
+		/// Convert a byte array to string
+		/// </summary>
+		/// <param name="flags">The applicable general purpose bits flags</param>
+		/// <param name="data">
+		/// Byte array to convert
+		/// </param>
+		/// <param name="count">The number of bytes to convert.</param>
+		/// <returns>
+		/// <paramref name="data">data</paramref>converted to a string
+		/// </returns>
+		public static string ConvertToStringExt(int flags, byte[] data, int count)
+		{
+			if ( data == null ) {
+				return string.Empty;	
+			}
+			
+			if ( (flags & (int)GeneralBitFlags.UnicodeText) != 0 ) {
+				return Encoding.UTF8.GetString(data, 0, count);
+			}
+			else {
+				return ConvertToString(data, count);
+			}
+		}
+		
+		/// <summary>
+		/// Convert a byte array to string
+		/// </summary>
+		/// <param name="data">
+		/// Byte array to convert
+		/// </param>
+		/// <param name="flags">The applicable general purpose bits flags</param>
+		/// <returns>
+		/// <paramref name="data">data</paramref>converted to a string
+		/// </returns>
+		public static string ConvertToStringExt(int flags, byte[] data)
+		{
+			if ( data == null ) {
+				return string.Empty;	
+			}
+			
+			if ( (flags & (int)GeneralBitFlags.UnicodeText) != 0 ) {
+				return Encoding.UTF8.GetString(data);
+			}
+			else {
+				return ConvertToString(data, data.Length);
+			}
 		}
 
 		/// <summary>
@@ -480,6 +575,32 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return Encoding.GetEncoding(DefaultCodePage).GetBytes(str);
 #endif
 		}
+
+		/// <summary>
+		/// Convert a string to a byte array
+		/// </summary>
+		/// <param name="flags">The applicable general purpose bits flags</param>
+		/// <param name="str">
+		/// String to convert to an array
+		/// </param>
+		/// <returns>Converted array</returns>
+		public static byte[] ConvertToArray(int flags, string str)
+		{
+			if (str == null)
+			{
+				return new byte[0];
+			}
+
+			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0)
+			{
+				return Encoding.UTF8.GetBytes(str);
+			}
+			else
+			{
+				return ConvertToArray(str);
+			}
+		}
+
 		
 		/// <summary>
 		/// Initialise default instance of <see cref="ZipConstants">ZipConstants</see>

@@ -124,7 +124,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		long crc = -1;
 		#endregion
 	}
-	#endregion
 
 	class MemoryDataSource : IStaticDataSource
 	{
@@ -154,6 +153,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 		}
 	}
+	#endregion
 
 	#region ZipBase
 	public class ZipBase
@@ -278,7 +278,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		static protected byte ScatterValue(byte rhs)
 		{
-			return (byte) (rhs * 253 + 7);
+			return (byte) ((rhs * 253 + 7) & 0xff);
 		}
 		
 
@@ -468,6 +468,27 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			bytesRead = inStream.Read(emptyBuffer, 0, 0);
 			Assert.AreEqual(0, bytesRead, "Should be able to read zero bytes");
+		}
+		
+		/// <summary>
+		/// Check that Zip64 descriptor is added to an entry OK.
+		/// </summary>
+		[Test]
+		public void Zip64Descriptor()
+		{
+			MemoryStream msw = new MemoryStreamWithoutSeek();
+			ZipOutputStream outStream = new ZipOutputStream(msw);
+
+			outStream.IsStreamOwner = false;
+			outStream.PutNextEntry(new ZipEntry("StripedMarlin"));
+			outStream.WriteByte(89);
+			outStream.Close();
+
+			MemoryStream ms = new MemoryStream(msw.ToArray());
+			using (ZipFile zf = new ZipFile(ms))
+			{
+				Assert.IsTrue(zf.TestArchive(true));
+			}
 		}
 	}
 	
@@ -1042,7 +1063,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 		
 		/// <summary>
-		/// Check that adding too many entries is detected and handled
+		/// Check that adding more than the 2.0 limit for entry numbers is detected and handled
 		/// </summary>
 		[Test]
 		[Category("Zip")]
@@ -1064,6 +1085,35 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				using ( ZipFile zipFile = new ZipFile(ms) )
 				{
 					Assert.AreEqual(target, zipFile.Count, "Incorrect number of entries stored");
+				}
+			}
+		}
+
+		/// <summary>
+		/// Check that Unicode filename support works.
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void Stream_UnicodeEntries()
+		{
+			MemoryStream ms = new MemoryStream();
+			using (ZipOutputStream s = new ZipOutputStream(ms))
+			{
+				s.IsStreamOwner = false;
+
+				string sampleName = "\u03A5\u03d5\u03a3";
+				ZipEntry sample = new ZipEntry(sampleName);
+				sample.IsUnicodeText = true;
+				s.PutNextEntry(sample);
+
+				s.Finish();
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (ZipInputStream zis = new ZipInputStream(ms))
+				{
+					ZipEntry ze = zis.GetNextEntry();
+					Assert.AreEqual(sampleName, ze.Name, "Expected name to match original");
+					Assert.IsTrue(ze.IsUnicodeText, "Expected IsUnicodeText flag to be set");
 				}
 			}
 		}
@@ -1296,7 +1346,30 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			CheckNameConversion("Hello");
 			CheckNameConversion("a/b/c/d/e/f/g/h/SomethingLikeAnArchiveName.txt");
-		}   
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void UnicodeNameConversion()
+		{
+			ZipConstants.DefaultCodePage = 850;
+			string sample = "Hello world";
+
+			byte[] rawData = Encoding.ASCII.GetBytes(sample);
+
+			string converted = ZipConstants.ConvertToStringExt(0, rawData);
+			Assert.AreEqual(sample, converted);
+
+			converted = ZipConstants.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
+			Assert.AreEqual(sample, converted);
+
+			// This time use some greek characters
+			sample = "\u03A5\u03d5\u03a3";
+			rawData = Encoding.UTF8.GetBytes(sample);
+
+			converted = ZipConstants.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
+			Assert.AreEqual(sample, converted);
+		}
 
 		/// <summary>
 		/// Regression test for problem where the password check would fail for an archive whose
@@ -2244,6 +2317,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 			
 		}
+
 		[Test]
 		[Category("Zip")]
 		public void ArchiveTesting()
@@ -2271,6 +2345,42 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			{
 				Assert.IsFalse(testFile.TestArchive(true), "Error in archive not detected");
 			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void UnicodeNames()
+		{
+			MemoryStream memStream = new MemoryStream();
+			using (ZipFile f = new ZipFile(memStream))
+			{
+				f.IsStreamOwner = false;
+
+				f.BeginUpdate(new MemoryArchiveStorage());
+
+				string[] names = new string[] 
+				{
+					"\u030A\u03B0",     // Greek
+					"\u0680\u0685",     // Arabic
+				};
+
+				foreach ( string name in names )
+				{
+					f.Add(new StringMemoryDataSource("Hello world"), name, true);
+				}
+				f.CommitUpdate();
+				Assert.IsTrue(f.TestArchive(true));
+
+				foreach ( string name in names )
+				{
+					int index = f.FindEntry(name, true);
+
+					Assert.IsTrue(index >= 0);
+					ZipEntry found = f[index];
+					Assert.AreEqual(name, found.Name);
+				}
+			}
+
 		}
 	}
 }

@@ -82,6 +82,10 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			{
 				Assert.AreEqual(0, ms.Length);
 				outStream.WriteByte(45);
+
+				// Should in fact contain header right now with
+				// 1 byte in the compression pipeline
+				Assert.AreEqual(10, ms.Length);
 			}
 			byte[] data = ms.ToArray();
 

@@ -253,7 +253,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			CompressionMethod method = entry.CompressionMethod;
 			int compressionLevel = defaultCompressionLevel;
 			
-			entry.Flags = 0;
+			// Clear flags that the library manages internally
+			entry.Flags &= (int)GeneralBitFlags.UnicodeText;
 			patchEntryHeader = false;
 			bool headerInfoAvailable = true;
 			
@@ -369,8 +370,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 					WriteLeInt(0);	// Uncompressed size
 				}
 			}
-			
-			byte[] name = ZipConstants.ConvertToArray(entry.Name);
+
+			byte[] name = ZipConstants.ConvertToArray(entry.Flags, entry.Name);
 			
 			if (name.Length > 0xFFFF) {
 				throw new ZipException("Entry name too long.");
@@ -643,8 +644,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				else {
 					WriteLeInt((int)entry.Size);
 				}
-				
-				byte[] name = ZipConstants.ConvertToArray(entry.Name);
+
+				byte[] name = ZipConstants.ConvertToArray(entry.Flags, entry.Name);
 				
 				if (name.Length > 0xffff) {
 					throw new ZipException("Name too long.");
@@ -681,7 +682,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				byte[] extra = ed.GetEntryData();
 				
-				byte[] entryComment = (entry.Comment != null) ? ZipConstants.ConvertToArray(entry.Comment) : new byte[0];
+				byte[] entryComment = 
+					(entry.Comment != null) ? 
+					ZipConstants.ConvertToArray(entry.Flags, entry.Comment) :
+					new byte[0];
+
 				if (entryComment.Length > 0xffff) {
 					throw new ZipException("Comment too long.");
 				}

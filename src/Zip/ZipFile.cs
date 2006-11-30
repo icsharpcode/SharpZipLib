@@ -978,8 +978,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				if ( testHeader ) {
-					if ((extractVersion < 63) &&	// Ignore later versions as we dont know about them..
+					if ((extractVersion <= 63) &&	// Ignore later versions as we dont know about them..
 						(extractVersion != 10) &&
+						(extractVersion != 11) &&
 						(extractVersion != 20) &&
 						(extractVersion != 21) &&
 						(extractVersion != 25) &&
@@ -988,15 +989,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 						(extractVersion != 46) &&
 						(extractVersion != 50) &&
 						(extractVersion != 51) &&
+						(extractVersion != 52) &&
 						(extractVersion != 61) &&
-						(extractVersion != 62)
+						(extractVersion != 62) &&
+						(extractVersion != 63)
 						) {
 						throw new ZipException(string.Format("Version required to extract this entry is invalid ({0})", extractVersion));
 					}
 
 					// Local entry flags dont have reserved bit set on.
-					if ( (localFlags & ( int )GeneralBitFlags.Reserved) != 0 ) {
-						throw new ZipException("Reserved bit flag cannot bet set.");
+					if ( (localFlags & ( int )(GeneralBitFlags.ReservedPKware4 | GeneralBitFlags.ReservedPkware14 | GeneralBitFlags.ReservedPkware15)) != 0 ) {
+						throw new ZipException("Reserved bit flags cannot be set.");
 					}
 
 					// Encryption requires extract version >= 20
@@ -1065,7 +1068,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					byte[] nameData = new byte[storedNameLength];
 					StreamUtils.ReadFully(baseStream_, nameData);
 
-					string localName = ZipConstants.ConvertToString(nameData);
+					string localName = ZipConstants.ConvertToStringExt(localFlags, nameData);
 
 					// Central directory and local entry name match
 					if ( localName != entry.Name ) {
@@ -1316,6 +1319,40 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="fileName">The name of the file to add.</param>
 		/// <param name="compressionMethod">The compression method to use.</param>
+		/// <param name="useUTF8Text">Ensure UTF8 is used for name and comment for this entry.</param>
+		public void Add(string fileName, CompressionMethod compressionMethod, bool useUTF8Text )
+		{
+			if (fileName == null)
+			{
+				throw new ArgumentNullException("fileName");
+			}
+
+			if (!ZipEntry.IsCompressionMethodSupported(compressionMethod))
+			{
+				throw new ZipException("Compression method not supported");
+			}
+
+			CheckUpdating();
+			contentsEdited_ = true;
+
+			string zipEntryName = GetTransformedFileName(fileName);
+			int index = FindExistingUpdate(zipEntryName);
+
+			if (index >= 0)
+			{
+				updates_.RemoveAt(index);
+			}
+
+			ZipUpdate update = new ZipUpdate(fileName, zipEntryName, compressionMethod);
+			update.Entry.IsUnicodeText = true;
+			updates_.Add(update);
+		}
+
+		/// <summary>
+		/// Add a new entry to the archive.
+		/// </summary>
+		/// <param name="fileName">The name of the file to add.</param>
+		/// <param name="compressionMethod">The compression method to use.</param>
 		public void Add(string fileName, CompressionMethod compressionMethod)
 		{
 			if ( fileName == null ) {
@@ -1372,6 +1409,27 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Add a file entry with data.
+		/// </summary>
+		/// <param name="dataSource">The source of the data for this entry.</param>
+		/// <param name="entryName">The name to give to the entry.</param>
+		/// <param name="useUTF8Text">Ensure UTF8 is used for name and comment for this entry.</param>
+		public void Add(IStaticDataSource dataSource, string entryName, bool useUTF8Text)
+		{
+			if (dataSource == null)
+			{
+				throw new ArgumentNullException("dataSource");
+			}
+
+			CheckUpdating();
+			contentsEdited_ = true;
+			ZipUpdate update = new ZipUpdate(dataSource, GetTransformedFileName(entryName),
+									   CompressionMethod.Deflated);
+			update.Entry.IsUnicodeText = true;
+			updates_.Add(update);
+		}
+
+		/// <summary>
 		/// Add a <see cref="ZipEntry"/> that contains no data.
 		/// </summary>
 		/// <param name="entry">The entry to add.</param>
@@ -1398,6 +1456,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if ( directoryName == null ) {
 				throw new ArgumentNullException("directoryName");
 			}
+			CheckUpdating();
 
 			ZipEntry dirEntry = new ZipEntry(GetTransformedDirectoryName(directoryName));
 			dirEntry.ExternalFileAttributes = 16;
@@ -1577,7 +1636,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLEInt(( int )entry.Size);
 			}
 
-			byte[] name = ZipConstants.ConvertToArray(entry.Name);
+			byte[] name = ZipConstants.ConvertToArray(entry.Flags, entry.Name);
 
 			if ( name.Length > 0xFFFF ) {
 				throw new ZipException("Entry name too long.");
@@ -1650,7 +1709,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLEInt((int)entry.Size);
 			}
 
-			byte[] name = ZipConstants.ConvertToArray(entry.Name);
+			byte[] name = ZipConstants.ConvertToArray(entry.Flags, entry.Name);
 
 			if ( name.Length > 0xFFFF ) {
 				throw new ZipException("Entry name is too long.");
@@ -2735,7 +2794,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				byte[] buffer = new byte[Math.Max(nameLen, commentLen)];
 				
 				StreamUtils.ReadFully(baseStream_, buffer, 0, nameLen);
-				string name = ZipConstants.ConvertToString(buffer, nameLen);
+				string name = ZipConstants.ConvertToStringExt(bitFlags, buffer, nameLen);
 				
 				ZipEntry entry = new ZipEntry(name, versionToExtract, versionMadeBy, (CompressionMethod)method);
 				entry.Crc = crc & 0xffffffffL;
@@ -2761,7 +2820,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				
 				if (commentLen > 0) {
 					StreamUtils.ReadFully(baseStream_, buffer, 0, commentLen);
-					entry.Comment = ZipConstants.ConvertToString(buffer, commentLen);
+					entry.Comment = ZipConstants.ConvertToStringExt(bitFlags, buffer, commentLen);
 				}
 				
 				entry.ZipFileIndex           = (long)i;

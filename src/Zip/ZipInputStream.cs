@@ -216,7 +216,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			byte[] buffer = new byte[nameLen];
 			inputBuffer.ReadRawBuffer(buffer);
 			
-			string name = ZipConstants.ConvertToString(buffer);
+			string name = ZipConstants.ConvertToStringExt(flags, buffer);
 			
 			entry = new ZipEntry(name, versionRequiredToExtract);
 			entry.Flags = flags;

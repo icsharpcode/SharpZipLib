@@ -329,6 +329,25 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Get / set a flag indicating wether entry name and comment text are
+		/// encoded in Unicode UTF8
+		/// </summary>
+		public bool IsUnicodeText
+		{
+			get {
+				return ( flags & (int)GeneralBitFlags.UnicodeText ) != 0;
+			}
+			set {
+				if ( value ) {
+					flags |= (int)GeneralBitFlags.UnicodeText;
+				}
+				else {
+					flags &= ~(int)GeneralBitFlags.UnicodeText;
+				}
+			}
+		}
+		
+		/// <summary>
 		/// Value used during password checking for PKZIP 2.0 / 'classic' encryption.
 		/// </summary>
 		internal byte CryptoCheckValue
@@ -543,7 +562,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				} 
 				else {
 					int result = 10;
-					if ( LocalHeaderRequiresZip64 ) {
+					if ( IsUnicodeText ) {
+						result = ZipConstants.VersionUnicodeText;
+					}
+					else if ( LocalHeaderRequiresZip64 ) {
 						result = ZipConstants.VersionZip64;	
 					}
 					else if (CompressionMethod.Deflated == method) {
@@ -570,9 +592,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			get {
 				return (Version <= ZipConstants.VersionMadeBy) &&
-					(Version != 21) &&
-					(Version != 25) &&
-					(Version != 27) &&
+					((Version == 10) ||
+					(Version == 11) ||
+					(Version == 20) ||
+					(Version == 45) ||
+					(Version == 63)) &&
 					IsCompressionMethodSupported();
 			}
 		}
@@ -944,7 +968,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get a value of true if the entry appears to be a file; false otherwise
 		/// </summary>
 		/// <remarks>
-		/// This only takes account of Windows attributes.  Other operating systems are ignored.
+		/// This only takes account of DOS/Windows attributes.  Other operating systems are ignored.
 		/// For linux and others the result may be incorrect.
 		/// </remarks>
 		public bool IsFile
