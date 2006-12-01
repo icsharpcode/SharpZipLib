@@ -234,7 +234,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// This is also the Zip version for the library when comparing against the version required to extract
 		/// for an entry.  See <see cref="ZipInputStream.CanDecompressEntry"/>.
 		/// </remarks>
-		public const int VersionMadeBy = 63;
+		public const int VersionMadeBy = 45;
 		
 		/// <summary>
 		/// The version made by field for entries in the central header when created by this library
@@ -244,7 +244,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// for an entry.  See <see cref="ZipInputStream.CanDecompressEntry">ZipInputStream.CanDecompressEntry</see>.
 		/// </remarks>
 		[Obsolete("Use VersionMadeBy instead")]
-		public const int VERSION_MADE_BY = 63;
+		public const int VERSION_MADE_BY = 45;
 		
 		/// <summary>
 		/// The minimum version required to support strong encryption
@@ -261,11 +261,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The version required for Zip64 extensions
 		/// </summary>
 		public const int VersionZip64 = 45;
-		
-		/// <summary>
-		/// The version required to allow the use of UTF8 in entry names and comments.
-		/// </summary>
-		public const int VersionUnicodeText = 63;
 		#endregion
 		
 		#region Header Sizes

@@ -126,6 +126,57 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			def = deflater;
 		}
 		#endregion
+		#region Public API
+		/// <summary>
+		/// Finishes the stream by calling finish() on the deflater. 
+		/// </summary>
+		/// <exception cref="SharpZipBaseException">
+		/// Not all input is deflated
+		/// </exception>
+		public virtual void Finish()
+		{
+			def.Finish();
+			while (!def.IsFinished)  {
+				int len = def.Deflate(buffer_, 0, buffer_.Length);
+				if (len <= 0) {
+					break;
+				}
+				
+				if (this.keys != null) {
+					this.EncryptBlock(buffer_, 0, len);
+				}
+				
+				baseOutputStream.Write(buffer_, 0, len);
+			}
+
+			if (!def.IsFinished) {
+				throw new SharpZipBaseException("Can't deflate all input?");
+			}
+
+			baseOutputStream.Flush();
+			keys = null;
+		}
+		
+		/// <summary>
+		/// Get/set flag indicating ownership of the underlying stream.
+		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
+		/// </summary>
+		public bool IsStreamOwner
+		{
+			get { return isStreamOwner; }
+			set { isStreamOwner = value; }
+		}
+		
+		///	<summary>
+		/// Allows client to determine if an entry can be patched after its added
+		/// </summary>
+		public bool CanPatchEntries {
+			get { 
+				return baseOutputStream.CanSeek; 
+			}
+		}
+		
+		#endregion
 		#region Encryption
 		
 		// TODO:  Refactor this code.  The presence of Zip specific code in this low level class is wrong
@@ -148,8 +199,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				}
 			}
 		}
-		
-		
+			
 		/// <summary>
 		/// Encrypt a single byte 
 		/// </summary>
@@ -161,7 +211,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			uint temp = ((keys[2] & 0xFFFF) | 2);
 			return (byte)((temp * (temp ^ 1)) >> 8);
 		}
-		
 		
 		/// <summary>
 		/// Encrypt a block of data
@@ -241,26 +290,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				throw new SharpZipBaseException("DeflaterOutputStream can't deflate all input?");
 			}
 		}
-		
-		/// <summary>
-		/// Get/set flag indicating ownership of the underlying stream.
-		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
-		/// </summary>
-		public bool IsStreamOwner
-		{
-			get { return isStreamOwner; }
-			set { isStreamOwner = value; }
-		}
-		
-		///	<summary>
-		/// Allows client to determine if an entry can be patched after its added
-		/// </summary>
-		public bool CanPatchEntries {
-			get { 
-				return baseOutputStream.CanSeek; 
-			}
-		}
-		
 		#endregion
 		#region Stream Overrides
 		/// <summary>
@@ -390,36 +419,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			def.Flush();
 			Deflate();
 			baseOutputStream.Flush();
-		}
-		
-		/// <summary>
-		/// Finishes the stream by calling finish() on the deflater. 
-		/// </summary>
-		/// <exception cref="SharpZipBaseException">
-		/// Not all input is deflated
-		/// </exception>
-		public virtual void Finish()
-		{
-			def.Finish();
-			while (!def.IsFinished)  {
-				int len = def.Deflate(buffer_, 0, buffer_.Length);
-				if (len <= 0) {
-					break;
-				}
-				
-				if (this.keys != null) {
-					this.EncryptBlock(buffer_, 0, len);
-				}
-				
-				baseOutputStream.Write(buffer_, 0, len);
-			}
-
-			if (!def.IsFinished) {
-				throw new SharpZipBaseException("Can't deflate all input?");
-			}
-
-			baseOutputStream.Flush();
-			keys = null;
 		}
 		
 		/// <summary>

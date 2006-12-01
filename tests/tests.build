@@ -1,0 +1,60 @@
+﻿<?xml version="1.0"?>
+
+<project name="Tests" default="build" basedir=".">
+	<property name="debug" value="False"/>
+	<property name="optimize" value="True"/>
+	<property name="build.dir" value="."/>
+	<property name="nant.dir" value="C:/Program Files/NUnit-Net-2.0 2.2.8"/>
+
+	<target name="build">
+		<copy todir="bin/debug">
+			<fileset basedir="../bin">
+	                	<include name="ICSharpCode.SharpZipLib.dll"/>
+	            	</fileset>
+        	</copy>
+
+		<!-- compile Tests -->
+		<echo message="Building #ZipLib Tests"/>
+		<csc 
+			target="library" 
+			output="bin/debug/tests.dll" 
+			optimize="${optimize}"
+			debug="${debug}">
+			
+			<sources basedir=".">
+				<include name="**/*.cs"/>
+			</sources>
+			<references basedir="bin/debug">
+				<include name="ICSharpCode.SharpZipLib.dll" />
+				<include name="${nant.dir}/bin/nunit.framework.dll" />
+			</references>
+		</csc>
+	</target>
+	
+	<target name="clean">
+		<echo message="Cleaning #ZipLib Tests"/>
+	        <delete verbose="true" >
+			<fileset basedir=".">
+				<include name="./bin/**/*.dll"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="rebuild" depends="clean, build" />
+
+	<target name="test" depends="build">
+		<echo message="Running #ZipLib Tests"/>
+		<nunit2>
+		 	<formatter type="Xml" usefile="true" extension=".xml" outputdir="${build.dir}/results" />
+			<test>
+				<assemblies basedir="bin/debug">
+					<include name="tests.dll" />
+				</assemblies>
+				<categories>
+					<exclude name="ExcludeFromAutoBuild" />
+				</categories>
+			</test>
+		</nunit2>
+	</target>
+
+</project>

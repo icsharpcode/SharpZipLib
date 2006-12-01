@@ -108,7 +108,97 @@ namespace ICSharpCode.SharpZipLib.GZip
 		{
 		}
 		#endregion
+	
+		#region Public API
+		/// <summary>
+		/// Sets the active compression level (1-9).  The new level will be activated
+		/// immediately.
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException">
+		/// Level specified is not supported.
+		/// </exception>
+		/// <see cref="Deflater"/>
+		public void SetLevel(int level)
+		{
+			if (level < Deflater.BEST_SPEED) {
+				throw new ArgumentOutOfRangeException("level");
+			}
+			def.SetLevel(level);
+		}
+		
+		/// <summary>
+		/// Get the current compression level.
+		/// </summary>
+		/// <returns>The current compression level.</returns>
+		public int GetLevel()
+		{
+			return def.GetLevel();
+		}
+		#endregion
+		
+		#region Stream overrides
+		/// <summary>
+		/// Write given buffer to output updating crc
+		/// </summary>
+		/// <param name="buffer">Buffer to write</param>
+		/// <param name="offset">Offset of first byte in buf to write</param>
+		/// <param name="count">Number of bytes to write</param>
+		public override void Write(byte[] buffer, int offset, int count)
+		{
+			if ( ! headerWritten_ ) {
+				WriteHeader();
+			}
 
+			crc.Update(buffer, offset, count);
+			base.Write(buffer, offset, count);
+		}
+		
+		/// <summary>
+		/// Writes remaining compressed output data to the output stream
+		/// and closes it.
+		/// </summary>
+		public override void Close()
+		{
+			Finish();
+			
+			if ( IsStreamOwner ) {
+				baseOutputStream.Close();
+			}
+		}
+		#endregion
+		
+		#region DeflaterOutputStream overrides
+		/// <summary>
+		/// Finish compression and write any footer information required to stream
+		/// </summary>
+		public override void Finish()
+		{
+			// If no data has been written a header should be added.
+			if ( !headerWritten_ ) {
+				WriteHeader();
+			}
+
+			base.Finish();
+			
+			int totalin = def.TotalIn;
+			int crcval = (int) (crc.Value & 0xffffffff);
+			
+			//    System.err.println("CRC val is " + Integer.toHexString( crcval ) 		       + " and length " + Integer.toHexString(totalin));
+			
+			byte[] gzipFooter = {
+				(byte) crcval, (byte) (crcval >> 8),
+				(byte) (crcval >> 16), (byte) (crcval >> 24),
+				
+				(byte) totalin, (byte) (totalin >> 8),
+				(byte) (totalin >> 16), (byte) (totalin >> 24)
+			};
+
+			baseOutputStream.Write(gzipFooter, 0, gzipFooter.Length);
+			//    System.err.println("wrote GZIP trailer (" + gzipFooter.length + " bytes )");
+		}
+		#endregion
+		
+		#region Support Routines
 		void WriteHeader()
 		{
 			if ( !headerWritten_ ) 
@@ -138,88 +228,6 @@ namespace ICSharpCode.SharpZipLib.GZip
 				baseOutputStream.Write(gzipHeader, 0, gzipHeader.Length);
 			}
 		}
-
-		/// <summary>
-		/// Write given buffer to output updating crc
-		/// </summary>
-		/// <param name="buffer">Buffer to write</param>
-		/// <param name="offset">Offset of first byte in buf to write</param>
-		/// <param name="count">Number of bytes to write</param>
-		public override void Write(byte[] buffer, int offset, int count)
-		{
-			if ( ! headerWritten_ ) {
-				WriteHeader();
-			}
-
-			crc.Update(buffer, offset, count);
-			base.Write(buffer, offset, count);
-		}
-		
-		/// <summary>
-		/// Writes remaining compressed output data to the output stream
-		/// and closes it.
-		/// </summary>
-		public override void Close()
-		{
-			Finish();
-			
-			if ( IsStreamOwner ) {
-				baseOutputStream.Close();
-			}
-		}
-		
-		/// <summary>
-		/// Sets the active compression level (1-9).  The new level will be activated
-		/// immediately.
-		/// </summary>
-		/// <exception cref="ArgumentOutOfRangeException">
-		/// Level specified is not supported.
-		/// </exception>
-		/// <see cref="Deflater"/>
-		public void SetLevel(int level)
-		{
-			if (level < Deflater.BEST_SPEED) {
-				throw new ArgumentOutOfRangeException("level");
-			}
-			def.SetLevel(level);
-		}
-		
-		/// <summary>
-		/// Get the current compression level.
-		/// </summary>
-		/// <returns>The current compression level.</returns>
-		public int GetLevel()
-		{
-			return def.GetLevel();
-		}
-		
-		/// <summary>
-		/// Finish compression and write any footer information required to stream
-		/// </summary>
-		public override void Finish()
-		{
-			// If no data has been written a header should be added.
-			if ( !headerWritten_ ) {
-				WriteHeader();
-			}
-
-			base.Finish();
-			
-			int totalin = def.TotalIn;
-			int crcval = (int) (crc.Value & 0xffffffff);
-			
-			//    System.err.println("CRC val is " + Integer.toHexString( crcval ) 		       + " and length " + Integer.toHexString(totalin));
-			
-			byte[] gzipFooter = {
-				(byte) crcval, (byte) (crcval >> 8),
-				(byte) (crcval >> 16), (byte) (crcval >> 24),
-				
-				(byte) totalin, (byte) (totalin >> 8),
-				(byte) (totalin >> 16), (byte) (totalin >> 24)
-			};
-
-			baseOutputStream.Write(gzipFooter, 0, gzipFooter.Length);
-			//    System.err.println("wrote GZIP trailer (" + gzipFooter.length + " bytes )");
-		}
+		#endregion
 	}
 }

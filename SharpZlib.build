@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 
 <project name="#ZLib" default="build" basedir=".">
 	<property name="debug" value="False"/>
@@ -15,20 +15,28 @@
 			debug="${debug}">
 			
 			<sources basedir="src">
-				<includes name="**/*.cs"/>
+				<include name="**/*.cs"/>
 			</sources>
 		</csc>
 		<nant buildfile = "samples/cs/samples.build" />
+		<nant buildfile = "samples/vb/samples.build" />
 	</target>
 	
 	<target name="clean">
-	        <delete verbose="true" >
+			<delete verbose="true" >
 			<fileset basedir=".">
-				<includes name="bin/ICSharpCode.SharpZipLib.dll"/>
-				<includes name="bin/ICSharpCode.SharpZipLib.pdb"/>
+				<include name="bin/ICSharpCode.SharpZipLib.dll"/>
+				<include name="bin/ICSharpCode.SharpZipLib.pdb"/>
 			</fileset>
 		</delete>
 		<nant buildfile = "samples/cs/samples.build" target="clean"/>
 		<nant buildfile = "samples/vb/samples.build" target="clean"/>
+		<nant buildfile = "tests\tests.build" target="clean"/>
+	</target>
+
+	<target name="rebuild" depends="clean, build" />
+
+	<target name="test" depends = "build">
+		<nant buildfile="tests\tests.build" target="test"/>
 	</target>
 </project>

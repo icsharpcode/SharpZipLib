@@ -1,27 +1,37 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 
-<project name="SharpZLib Examples" default="build" basedir=".">
+<project name="SharpZipLib C# Examples" default="build" basedir=".">
 
-	<target name="build">
+	<target name="setup">
+		<echo message="Setup"/>
+		<copy todir="bin">
+			<fileset basedir="../../bin">
+						<include name="ICSharpCode.SharpZipLib.dll"/>
+					</fileset>
+			</copy>
+	</target>
+
+	<target name="build" depends="setup" >
 		
 		<!-- compile CreateZipFile example -->
 		<echo message="Building CreateZipFile example"/>
 		<copy todir="bin">
-			<fileset basedir="../../bin">
-	                	<includes name="ICSharpCode.SharpZipLib.dll"/>
-	            	</fileset>
-        	</copy>
-        	
+			<fileset basedir="../../bin/ICSharpCode.SharpZipLib">
+						<include name="ICSharpCode.SharpZipLib.dll"/>
+					</fileset>
+			</copy>
+			
 		<csc 
 			target="exe" 
 			output="bin/createzipfile.exe" 
 			debug="False">
 			
 			<sources basedir="CreateZipFile">
-				<includes name="**/*.cs"/>
+				<include name="**/*.cs"/>
 			</sources>
+
 			<references basedir="bin">
-				<includes name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</csc>
 
@@ -33,10 +43,10 @@
 			debug="False">
 			
 			<sources basedir="minigzip">
-				<includes name="**/*.cs"/>
+				<include name="**/*.cs"/>
 			</sources>
 			<references basedir="bin">
-				<includes name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</csc>
 
@@ -48,10 +58,10 @@
 			debug="False">
 			
 			<sources basedir="sz">
-				<includes name="**/*.cs"/>
+				<include name="**/*.cs"/>
 			</sources>
 			<references basedir="bin">
-				<includes name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</csc>
 
@@ -63,10 +73,10 @@
 			debug="False">
 			
 			<sources basedir="viewzipfile">
-				<includes name="**/*.cs"/>
+				<include name="**/*.cs"/>
 			</sources>
 			<references basedir="bin">
-				<includes name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</csc>
 		
@@ -78,10 +88,10 @@
 			debug="False">
 			
 			<sources basedir="unzipfile">
-				<includes name="**/*.cs"/>
+				<include name="**/*.cs"/>
 			</sources>
 			<references basedir="bin">
-				<includes name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</csc>
 
@@ -93,10 +103,10 @@
 			debug="False">
 			
 			<sources basedir="minibzip2">
-				<includes name="**/*.cs"/>
+				<include name="**/*.cs"/>
 			</sources>
 			<references basedir="bin">
-				<includes name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</csc>
 		
@@ -108,10 +118,10 @@
 			debug="False">
 			
 			<sources basedir="tar">
-				<includes name="**/*.cs"/>
+				<include name="**/*.cs"/>
 			</sources>
 			<references basedir="bin">
-				<includes name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</csc>
 
@@ -123,21 +133,37 @@
 			debug="False">
 			
 			<sources basedir="zipfiletest">
-				<includes name="**/*.cs"/>
+				<include name="**/*.cs"/>
 			</sources>
 			<references basedir="bin">
-				<includes name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</csc>
 	
+		<!-- Compile zf sample -->
+		<echo message="Building zf sample"/>
+		<csc
+			target="exe" 
+			output="bin/zf.exe" 
+			debug="False">
+			<sources basedir="zf">
+				<include name="**/*.cs"/>
+			</sources>
+			<references basedir="bin">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</csc>
 	</target>
 	
 	<target name="clean">
-	        <delete verbose="true" >
+			<delete verbose="true" >
 			<fileset basedir="bin">
-				<includes name="*.exe"/>
-				<includes name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="*.exe"/>
+				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</fileset>
 		</delete>
 	</target>
+
+	<target name="rebuild" depends="clean, build" />
+
 </project>

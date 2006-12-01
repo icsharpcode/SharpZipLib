@@ -75,7 +75,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// Initialise a new instance of GZipException with its message string.
 		/// </summary>
 		/// <param name="message">A <see cref="string"/> that describes the error.</param>
-		public GZipException(string message) : base(message)
+		public GZipException(string message)
+			: base(message)
 		{
 		}
 		

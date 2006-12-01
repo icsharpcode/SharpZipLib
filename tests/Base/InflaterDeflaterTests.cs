@@ -166,6 +166,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 
 		[Test]
 		[Category("Base")]
+		[Category("ExcludeFromAutoBuild")]
 		public void FindBug()
 		{
 			using ( FileStream fs = File.OpenRead("c:\\tmp\\original.dat") )

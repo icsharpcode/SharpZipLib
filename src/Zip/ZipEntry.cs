@@ -551,7 +551,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// 5.1 - File is encrypted using corrected RC2-64 encryption<br/>
 		/// 6.1 - File is encrypted using non-OAEP key wrapping<br/>
 		/// 6.2 - Central directory encryption (not confirmed yet)<br/>
-		/// 6.3 - Unicode file names and comments<br/>
+		/// 6.3 - File is compressed using LZMA<br/>
+		/// 6.3 - File is compressed using PPMD+<br/>
+		/// 6.3 - File is encrypted using Blowfish<br/>
+		/// 6.3 - File is encrypted using Twofish<br/>
 		/// </remarks>
 		public int Version 
 		{
@@ -562,10 +565,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				} 
 				else {
 					int result = 10;
-					if ( IsUnicodeText ) {
-						result = ZipConstants.VersionUnicodeText;
-					}
-					else if ( LocalHeaderRequiresZip64 ) {
+					if ( LocalHeaderRequiresZip64 ) {
 						result = ZipConstants.VersionZip64;	
 					}
 					else if (CompressionMethod.Deflated == method) {
@@ -595,8 +595,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					((Version == 10) ||
 					(Version == 11) ||
 					(Version == 20) ||
-					(Version == 45) ||
-					(Version == 63)) &&
+					(Version == 45)) &&
 					IsCompressionMethodSupported();
 			}
 		}

@@ -1,4 +1,5 @@
-// GZIPConstants.cs
+// GZipConstants.cs
+//
 // Copyright (C) 2001 Mike Krueger
 //
 // This file was translated from java, it was part of the GNU Classpath
@@ -85,6 +86,10 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// </summary>
 		public const int FCOMMENT = 0x10;
 		
+		/// <summary>
+		/// Initialise default instance.
+		/// </summary>
+		/// <remarks>Constructor is private to prevent instances being created.</remarks>
 		GZipConstants()
 		{
 		}
