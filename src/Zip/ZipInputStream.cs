@@ -469,7 +469,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The actual number of bytes read.</returns>
 		int InitialRead(byte[] destination, int offset, int count)
 		{
-			if ( !entry.CanDecompress ) {
+			if ( !CanDecompressEntry ) {
 				throw new ZipException("Library cannot extract this entry. Version required is (" + entry.Version.ToString() + ")");
 			}
 			
