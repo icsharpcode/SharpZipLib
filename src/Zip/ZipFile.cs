@@ -1319,8 +1319,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="fileName">The name of the file to add.</param>
 		/// <param name="compressionMethod">The compression method to use.</param>
-		/// <param name="useUTF8Text">Ensure UTF8 is used for name and comment for this entry.</param>
-		public void Add(string fileName, CompressionMethod compressionMethod, bool useUTF8Text )
+		/// <param name="useUnicodeText">Ensure Unicode text is used for name and comment for this entry.</param>
+		public void Add(string fileName, CompressionMethod compressionMethod, bool useUnicodeText )
 		{
 			if (fileName == null)
 			{
@@ -1344,7 +1344,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			ZipUpdate update = new ZipUpdate(fileName, zipEntryName, compressionMethod);
-			update.Entry.IsUnicodeText = true;
+			update.Entry.IsUnicodeText = useUnicodeText;
 			updates_.Add(update);
 		}
 
@@ -1413,8 +1413,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="dataSource">The source of the data for this entry.</param>
 		/// <param name="entryName">The name to give to the entry.</param>
-		/// <param name="useUTF8Text">Ensure UTF8 is used for name and comment for this entry.</param>
-		public void Add(IStaticDataSource dataSource, string entryName, bool useUTF8Text)
+		/// <param name="useUnicodeText">Ensure Unicode text is used for name and comments for this entry.</param>
+		public void Add(IStaticDataSource dataSource, string entryName, bool useUnicodeText)
 		{
 			if (dataSource == null)
 			{
@@ -1425,7 +1425,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			contentsEdited_ = true;
 			ZipUpdate update = new ZipUpdate(dataSource, GetTransformedFileName(entryName),
 									   CompressionMethod.Deflated);
-			update.Entry.IsUnicodeText = true;
+			update.Entry.IsUnicodeText = useUnicodeText;
 			updates_.Add(update);
 		}
 
