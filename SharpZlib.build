@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0"?>
 
-<project name="#ZLib" default="build" basedir=".">
+<project name="#ZipLib" default="build" basedir=".">
 	<property name="debug" value="False"/>
 	<property name="optimize" value="True"/>
+	<property name="version" value="0.85.1"/>
 
 	<target name="build">
 		<!-- compile SharpZipLib -->
@@ -22,6 +23,145 @@
 		<nant buildfile = "samples/vb/samples.build" />
 	</target>
 	
+	<target name="releasebuild">
+		<script language="C#">
+			<code><![CDATA[
+		static StringCollection SearchDirectory(string directory, string filemask)
+		{
+			StringCollection collection = new StringCollection();
+			SearchDirectory(directory, filemask, collection);
+			return collection;
+		}
+		
+		static void SearchDirectory(string directory, string filemask, StringCollection collection)
+		{
+			try {
+				string[] file = Directory.GetFiles(directory, filemask);
+				foreach (string f in file) {
+					collection.Add(f);
+				}
+				
+				string[] dir = Directory.GetDirectories(directory);
+				foreach (string d in dir) {
+					SearchDirectory(d, filemask, collection);
+				}
+			} catch (Exception) {
+			}
+		}
+		
+		static Regex AssemblyVersion = new Regex("AssemblyVersion\\(.*\\)]");
+		static void SetVersionInfo(string fileName, string version)
+		{
+			StreamReader inFile = null;
+			string       content;
+			
+			try {
+				inFile  = new StreamReader(fileName);
+				content = inFile.ReadToEnd();
+			} catch (Exception e) {
+				Console.WriteLine(e);
+				return;
+			} finally {
+				if (inFile != null) {
+					inFile.Close();
+				}
+			}
+			
+			if (content != null) {
+				string newContent = AssemblyVersion.Replace(content, "AssemblyVersion(\"" + version + "\")]");
+				StreamWriter outFile = null;
+				try {
+					outFile = new StreamWriter(fileName);
+					outFile.Write(newContent);
+				} catch (Exception e) {
+					Console.WriteLine(e);
+					return;
+				} finally {
+					if (outFile != null) {
+						outFile.Close();
+					}
+				}
+			}
+		}
+		
+		static string revisionNumber = "0";
+		static string ReadRevisionFromFile()
+		{
+			try {
+				StreamReader reader = new StreamReader(@"REVISION");
+				using (reader) {
+					return reader.ReadLine();
+				}
+			}
+			catch (Exception e) {
+				Console.WriteLine(e.Message);
+				throw new Exception("Cannot read revision number from file: " + e.Message);
+			}
+		}
+		static void RetrieveRevisionNumber()
+		{
+			try {
+				System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("svn", "info");
+				psi.UseShellExecute = false;
+				psi.RedirectStandardOutput = true;
+				
+				try {
+					System.Diagnostics.Process process = System.Diagnostics.Process.Start(psi);
+					process.WaitForExit();
+					string output = process.StandardOutput.ReadToEnd();
+					
+					Regex r = new Regex(@"Revision:\s+(\d+)");
+					Match m = r.Match(output);
+					if (m != null && m.Success && m.Groups[1] != null) {
+						revisionNumber = m.Groups[1].Value;
+						Console.WriteLine("SVN Version '{0}'", revisionNumber);
+					}
+					if (revisionNumber == null || revisionNumber.Equals("") || revisionNumber.Equals("0")) {
+						throw new Exception("Could not find revision number in svn output");
+					}
+				} catch (Exception e) {
+					Console.WriteLine(e.Message);
+					revisionNumber = ReadRevisionFromFile();
+				}
+			} catch {
+			}
+		}
+
+		static void SetVersion(string directory, string version)
+		{
+			StringCollection col = SearchDirectory(directory, "AssemblyInfo.cs");
+			string[] dontTouchList = new string[] { 
+				"samples/HttpCompressionModule/src/AssemblyInfo.cs",
+				"samples/DIME/DimeDataSetService/AssemblyInfo.cs",
+				"samples/DIME/DimeDataSetServiceConsumer/AssemblyInfo.cs",
+				};
+			string versionNumber = version + "." + revisionNumber;
+			foreach (string fileName in col) {
+				bool doSetVersion = true;
+				foreach (string dontTouch in dontTouchList) {
+					if (fileName.EndsWith(dontTouch.Replace("/", Path.DirectorySeparatorChar.ToString()))) {
+						doSetVersion = false;
+						break;
+					}
+				}
+				if (doSetVersion) {
+					Console.WriteLine("set revision to file : " + fileName + " to " + versionNumber);
+					SetVersionInfo(fileName, versionNumber);
+				}
+			}
+		}
+		
+		public static void ScriptMain(Project project) 
+		{
+			Console.WriteLine("Hello World");
+			RetrieveRevisionNumber();
+			SetVersion(".", project.Properties["version"].ToString());
+		}
+			]]></code>
+		</script>
+		<call target="build"/>	
+	</target>
+
 	<target name="clean">
 			<delete verbose="true" >
 			<fileset basedir=".">
