@@ -1936,6 +1936,36 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+		[Test]
+		public void BasicEncryption()
+		{
+			const string TestValue = "0001000";
+			MemoryStream memStream = new MemoryStream();
+			using (ZipFile f = new ZipFile(memStream))
+			{
+				f.IsStreamOwner = false;
+				f.Password = "Hello";
+
+				StringMemoryDataSource m = new StringMemoryDataSource(TestValue);
+				f.BeginUpdate(new MemoryArchiveStorage());
+				f.Add(m, "a.dat");
+				f.CommitUpdate();
+				Assert.IsTrue(f.TestArchive(true), "Archive test should pass");
+			}
+		
+			using (ZipFile g = new ZipFile(memStream))
+			{
+				g.Password = "Hello";
+				ZipEntry ze = g[0];
+
+				Assert.IsTrue(ze.IsCrypted, "Entry should be encrypted");
+				using (StreamReader r = new StreamReader(g.GetInputStream(0))) {
+					string data = r.ReadToEnd();
+					Assert.AreEqual(TestValue, data);
+				}
+			}
+		}
+		
 		void TryDeleting(byte[] master, int totalEntries, int additions, params string[] toDelete)
 		{
 			MemoryStream ms = new MemoryStream();
@@ -2130,6 +2160,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				File.Delete(tempFile);
 			}
 		}
+		
 		/// <summary>
 		/// Simple round trip test for ZipFile class
 		/// </summary>
