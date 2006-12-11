@@ -1583,12 +1583,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// TODO: Local offset will require adjusting for multi-disk zip files?
 			entry.Offset = baseStream_.Position;
 
-			// Write the local file header
-			WriteLEInt(ZipConstants.LocalHeaderSignature);
-
-			WriteLEShort(entry.Version);
-			WriteLEShort(entry.Flags);
-
 			if (entry.CompressionMethod == CompressionMethod.Deflated) {
 				if (entry.Size == 0) {
 					// No need to compress - no data.
@@ -1598,10 +1592,23 @@ namespace ICSharpCode.SharpZipLib.Zip
 				} 
 			}
 			else if ( entry.CompressionMethod == CompressionMethod.Stored ) {
-				entry.Flags &= ~8;
+				entry.Flags &= ~(int)GeneralBitFlags.Descriptor;
 			}
 
-			WriteLEShort(( byte )entry.CompressionMethod);
+			if (HaveKeys) {
+				entry.IsCrypted = true;
+				if (entry.Crc < 0) {
+					entry.Flags |= (int)GeneralBitFlags.Descriptor;
+				}
+			}
+
+			// Write the local file header
+			WriteLEInt(ZipConstants.LocalHeaderSignature);
+
+			WriteLEShort(entry.Version);
+			WriteLEShort(entry.Flags);
+
+			WriteLEShort((byte)entry.CompressionMethod);
 			WriteLEInt(( int )entry.DosTime);
 
 			if ( !entry.HasCrc ) {
@@ -1832,15 +1839,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		void CopyDescriptorBytes(ZipUpdate update, Stream dest, Stream source)
 		{
-			int bytesToCopy = 0;
+			int bytesToCopy = GetDescriptorSize(update);
 
+/* Use the above instead.  Remove once confirmed correct.
 			if ( (update.Entry.Flags & (int)GeneralBitFlags.Descriptor) != 0) {
-				bytesToCopy = 12;
+				bytesToCopy = ZipConstants.DataDescriptorSize - 4; // 12
 				if ( update.Entry.LocalHeaderRequiresZip64 ) {
-					bytesToCopy = 20;
+					bytesToCopy = ZipConstants.Zip64DataDescriptorSize - 4; // 20
 				}
 			}
-
+*/
 			if ( bytesToCopy > 0 ) {
 				byte[] buffer = GetBuffer();
 
@@ -1902,13 +1910,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
+		/// <summary>
+		/// Get the size of the source descriptor for a <see cref="ZipUpdate"/>.
+		/// </summary>
+		/// <param name="update">The update to get the size for.</param>
+		/// <returns>The descriptor size, zero if there isnt one.</returns>
 		int GetDescriptorSize(ZipUpdate update)
 		{
 			int result = 0;
 			if ( (update.Entry.Flags & (int)GeneralBitFlags.Descriptor) != 0) {
-				result = 12;
+				result = ZipConstants.DataDescriptorSize - 4;
 				if ( update.Entry.LocalHeaderRequiresZip64 ) {
-					result = 20;
+					result = ZipConstants.Zip64DataDescriptorSize - 4;
 				}
 			}
 			return result;
@@ -2073,7 +2086,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					workFile.WriteLocalEntryHeader(update);
 					dataStart = workFile.baseStream_.Position;
 
-					using ( Stream output = workFile.GetOutputStream(update.Entry) ) {
+					using ( Stream output = workFile.GetOutputStream(update.OutEntry) ) {
 						CopyBytes(update, output, source, sourceStreamLength, true);
 					}
 				}
