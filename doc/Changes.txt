@@ -6,6 +6,7 @@ Changes since v0.85
 + Fix for Zip64 descriptor handling.
 + Add preliminary implementation for handlng of full unicode names.
 + Fixup encryption handling for ZipFile.
++ ZIP-149 SVN Revision number incorporated in builds.
 
 Changes since v0.84
 + Mod time written in gzip header corrected.
