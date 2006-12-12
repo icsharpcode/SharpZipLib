@@ -134,7 +134,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	{
 		#region Enumerations
 		/// <summary>
-		/// Defines the desired handling when overwriting files.
+		/// Defines the desired handling when overwriting files during extraction.
 		/// </summary>
 		public enum Overwrite 
 		{
@@ -386,11 +386,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			using (FileStream stream = File.OpenRead(name)) {
-				int length;
-				do {
-					length = stream.Read(buffer_, 0, buffer_.Length);
-					outputStream_.Write(buffer_, 0, length);
-				} while ( length > 0 );
+				StreamUtils.Copy(stream, outputStream_, buffer_);
 			}
 		}
 		
@@ -489,7 +485,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return (int)info.Attributes;
 		}
 		
-#if NET_VER_1
+#if NET_VER_1 || COMPACT_FRAMEWORK_V10
 		static bool NameIsValid(string name)
 		{
 			return (name != null) &&

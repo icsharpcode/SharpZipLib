@@ -1,5 +1,5 @@
-// StrangeCRC.cs - computes a crc used in the bziplib ... I don't think that
-//                 this is the 'standard' crc, please correct me, if I'm wrong
+// StrangeCRC.cs - computes a crc used in the bziplib
+//
 // Copyright (C) 2001 Mike Krueger
 //
 // This file was translated from java, it was part of the GNU Classpath
@@ -178,12 +178,20 @@ namespace ICSharpCode.SharpZipLib.Checksums
 			
 			if ( offset < 0 )
 			{
+#if COMPACT_FRAMEWORK_V10
+				throw new ArgumentOutOfRangeException("offset");
+#else
 				throw new ArgumentOutOfRangeException("offset", "cannot be less than zero");
+#endif				
 			}
 
 			if ( count < 0 )
 			{
+#if COMPACT_FRAMEWORK_V10
+				throw new ArgumentOutOfRangeException("count");
+#else
 				throw new ArgumentOutOfRangeException("count", "cannot be less than zero");
+#endif
 			}
 
 			if ( offset + count > buffer.Length )

@@ -74,7 +74,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		static ZipNameTransform()
 		{
 			char[] invalidPathChars;
-#if NET_VER_1
+#if NET_VER_1 || COMPACT_FRAMEWORK_V10
 			invalidPathChars = Path.InvalidPathChars;
 #else
 			invalidPathChars = Path.GetInvalidPathChars();

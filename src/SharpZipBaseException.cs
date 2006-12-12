@@ -45,6 +45,8 @@ namespace ICSharpCode.SharpZipLib
 	/// SharpZipBaseException is the base exception class for the SharpZipLibrary.
 	/// All library exceptions are derived from this.
 	/// </summary>
+	/// <remarks>NOTE: Not all exceptions thrown will be derived from this class.
+	/// A variety of other exceptions are possible for example <see cref="ArgumentNullException"></see></remarks>
 #if !COMPACT_FRAMEWORK_V10 && !COMPACT_FRAMEWORK_V20
 	[Serializable]
 #endif
@@ -63,14 +65,14 @@ namespace ICSharpCode.SharpZipLib
 #endif
 		
 		/// <summary>
-		/// Initializes a new instance of the SharpZipLibraryException class.
+		/// Initializes a new instance of the SharpZipBaseException class.
 		/// </summary>
 		public SharpZipBaseException()
 		{
 		}
 		
 		/// <summary>
-		/// Initializes a new instance of the SharpZipLibraryException class with a specified error message.
+		/// Initializes a new instance of the SharpZipBaseException class with a specified error message.
 		/// </summary>
 		public SharpZipBaseException(string msg)
 			: base(msg)
@@ -78,7 +80,7 @@ namespace ICSharpCode.SharpZipLib
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the SharpZipLibraryException class with a specified
+		/// Initializes a new instance of the SharpZipBaseException class with a specified
 		/// error message and a reference to the inner exception that is the cause of this exception.
 		/// </summary>
 		/// <param name="message">Error message string</param>

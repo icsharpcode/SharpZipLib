@@ -365,7 +365,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 			get { return size; }
 			set { 
 				if ( value < 0 ) {
+#if COMPACT_FRAMEWORK_V10
+					throw new ArgumentOutOfRangeException("value");
+#else
 					throw new ArgumentOutOfRangeException("value", "Cannot be less than zero");
+#endif					
 				}
 				size = value; 
 			}
@@ -385,7 +389,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 			set {
 				if ( value < dateTime1970 )
 				{
+#if COMPACT_FRAMEWORK_V10
+					throw new ArgumentOutOfRangeException("value");
+#else
 					throw new ArgumentOutOfRangeException("value", "ModTime cannot be before Jan 1st 1970");
+#endif					
 				}
 				modTime = new DateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second);
 			}
@@ -791,12 +799,20 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 
 			if ( offset < 0 ) {
+#if COMPACT_FRAMEWORK_V10
+				throw new ArgumentOutOfRangeException("offset");
+#else
 				throw new ArgumentOutOfRangeException("offset", "Cannot be less than zero");
+#endif				
 			}
 
 			if ( length < 0 )
 			{
+#if COMPACT_FRAMEWORK_V10
+				throw new ArgumentOutOfRangeException("length");
+#else
 				throw new ArgumentOutOfRangeException("length", "Cannot be less than zero");
+#endif				
 			}
 
 			if ( offset + length > header.Length )

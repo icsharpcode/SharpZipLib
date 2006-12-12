@@ -49,6 +49,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 {
 
 	#region Enumerations
+	
+	/// <summary>
+	/// Determines how entries are tested to see if they should use Zip64 extensions or not.
+	/// </summary>
+	public enum Zip64Use
+	{
+		/// <summary>
+		/// The library will determine based on known entry values.
+		/// </summary>
+		Dynamic,
+		/// <summary>
+		/// Zip64 should never be used.
+		/// </summary>
+		Off,
+		/// <summary>
+		/// Zip64 should always be used.
+		/// </summary>
+		On,
+	}
+	
 	/// <summary>
 	/// The kind of compression used for an entry in an archive
 	/// </summary>
@@ -164,7 +184,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		Descriptor = 0x0008,
 		/// <summary>
-		/// Reserved for use with method 8 for enhanced deflation
+		/// Bit 4 is reserved for use with method 8 for enhanced deflation
 		/// </summary>
 		ReservedPKware4 = 0x0010,
 		/// <summary>
@@ -544,7 +564,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			
 			if ( (flags & (int)GeneralBitFlags.UnicodeText) != 0 ) {
-				return Encoding.UTF8.GetString(data);
+				return Encoding.UTF8.GetString(data, 0, data.Length);
 			}
 			else {
 				return ConvertToString(data, data.Length);

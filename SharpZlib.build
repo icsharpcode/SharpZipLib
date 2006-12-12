@@ -4,7 +4,19 @@
 	<property name="debug" value="False"/>
 	<property name="optimize" value="True"/>
 	<property name="version" value="0.85.1"/>
+	<property name="build.cf" value="COMPACT_FRAMEWORK_V10" />
+	<property name="cf.path" value="C:/Program Files/Microsoft Visual Studio 8/SmartDevices/SDK/CompactFramework/2.0/v1.0/WindowsCE" />
 
+	<!--
+	<property name="build.cf" value="COMPACT_FRAMEWORK_V20" />
+	<property name="cf.path" value="C:/Program Files/Microsoft Visual Studio 8/SmartDevices/SDK/CompactFramework/2.0/v2.0/WindowsCE" />
+-->
+	
+<!--	
+	<property name="build.cf" value="COMPACT_FRAMEWORK_V10" />
+	<property name="cf.path" value="C:/Program Files/Microsoft Visual Studio .NET 2003/CompactFrameworkSDK/v1.0.5000/Windows CE" />
+-->	
+	
 	<target name="build">
 		<echo message="Building #ZipLib"/>
 		<csc 
@@ -19,6 +31,27 @@
 		</csc>
 		<nant buildfile = "samples/cs/samples.build" />
 		<nant buildfile = "samples/vb/samples.build" />
+	</target>
+
+	<target name="build.cf">
+		<echo message="Building #ZipLib for compact framework"/>
+		<csc 
+			target="library" 
+			output="bin/ICSharpCode.SharpZipLib.dll" 
+			optimize="${optimize}"
+			debug="${debug}"
+			nostdlib="true"
+			noconfig="true"
+			define="${build.cf}"
+		>
+			<sources basedir="src">
+				<include name="**/*.cs"/>
+			</sources>
+			<references>
+				<include name="${cf.path}/mscorlib.dll"/>
+				<include name="${cf.path}/system.dll"/>
+			</references>
+		</csc>
 	</target>
 	
 	<target name="releasebuild">

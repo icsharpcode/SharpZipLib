@@ -174,7 +174,11 @@ or which contains garbage records after a zero block.
 			
 			if ( blockFactor <= 0 )
 			{
+#if COMPACT_FRAMEWORK_V10
+				throw new ArgumentOutOfRangeException("blockFactor");
+#else
 				throw new ArgumentOutOfRangeException("blockFactor", "Factor cannot be negative");
+#endif				
 			}
 
 			TarBuffer tarBuffer = new TarBuffer();
@@ -215,7 +219,11 @@ or which contains garbage records after a zero block.
 
 			if ( blockFactor <= 0 )
 			{
+#if COMPACT_FRAMEWORK_V10
+				throw new ArgumentOutOfRangeException("blockFactor");
+#else
 				throw new ArgumentOutOfRangeException("blockFactor", "Factor cannot be negative");
+#endif				
 			}
 
 			TarBuffer tarBuffer = new TarBuffer();

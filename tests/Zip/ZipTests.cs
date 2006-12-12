@@ -1937,6 +1937,43 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
+		[Category("Zip")]
+		public void Zip64Useage()
+		{
+			MemoryStream memStream = new MemoryStream();
+			using (ZipFile f = new ZipFile(memStream))
+			{
+				f.IsStreamOwner = false;
+				f.Zip64Use = Zip64Use.On;
+				
+				StringMemoryDataSource m = new StringMemoryDataSource("0000000");
+				f.BeginUpdate(new MemoryArchiveStorage());
+				f.Add(m, "a.dat");
+				f.Add(m, "b.dat");
+				f.CommitUpdate();
+				Assert.IsTrue(f.TestArchive(true));
+			}
+
+			byte[] rawArchive = memStream.ToArray();
+			byte[] pseudoSfx = new byte[1049 + rawArchive.Length];
+			Array.Copy(rawArchive, 0, pseudoSfx, 1049, rawArchive.Length);
+
+			memStream = new MemoryStream(pseudoSfx);
+			using (ZipFile f = new ZipFile(memStream))
+			{
+				for ( int index = 0; index < f.Count; ++index)
+				{
+					Stream entryStream = f.GetInputStream(index);
+					MemoryStream data = new MemoryStream();
+					StreamUtils.Copy(entryStream, data, new byte[128]);
+					string contents = Encoding.ASCII.GetString(data.ToArray());
+					Assert.AreEqual("0000000", contents);
+				}
+			}
+		}
+
+
+		[Test]
 		public void BasicEncryption()
 		{
 			const string TestValue = "0001000";

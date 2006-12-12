@@ -633,6 +633,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 						trueCompressedSize += ZipConstants.CryptoHeaderSize;
 					}
 
+					// TODO: A better estimation of the true limit based on compression overhead should be used
+					// to determine when an entry should use Zip64.
 					result = ((this.size >= uint.MaxValue) || (trueCompressedSize >= uint.MaxValue)) &&
 						((versionToExtract == 0) || (versionToExtract >= ZipConstants.VersionZip64));
 				}
@@ -795,7 +797,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Gets/Sets the extra data.
 		/// </summary>
 		/// <exception cref="System.ArgumentOutOfRangeException">
-		/// Extra data is longer than 0xffff bytes.
+		/// Extra data is longer than 64KB (0xffff) bytes.
 		/// </exception>
 		/// <returns>
 		/// Extra data or null if not set.
@@ -933,7 +935,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// The full test is not possible here however as the code page to apply conversions with
 				// isnt available.
 				if ( (value != null) && (value.Length > 0xffff) ) {
+#if COMPACT_FRAMEWORK_V10
+					throw new ArgumentOutOfRangeException("value");
+#else
 					throw new ArgumentOutOfRangeException("value", "cannot exceed 65535");
+#endif
 				}
 				
 				comment = value;

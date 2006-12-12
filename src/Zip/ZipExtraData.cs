@@ -82,7 +82,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns the raw byte[] extra data this instance represents.</returns>
 		public byte[] GetEntryData()
 		{
-			// Delaying testing till here allows manipulation internally before things are determined to be awry
+			// Delaying length testing till here allows manipulation internally before things
+			// are determined to be awry.  This can potentially make finding problems a
+			// little more tricky however.
 			if ( Length > ushort.MaxValue ) {
 				throw new ZipException("Data exceeds maximum length");
 			}
@@ -207,7 +209,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int addLength = fieldData == null ? 0 : fieldData.Length;
 
 			if ( addLength > ushort.MaxValue ) {
+#if COMPACT_FRAMEWORK_V10
+				throw new ArgumentOutOfRangeException("fieldData");
+#else
 				throw new ArgumentOutOfRangeException("fieldData", "exceeds maximum length");
+#endif
 			}
 
 			Delete(headerID);

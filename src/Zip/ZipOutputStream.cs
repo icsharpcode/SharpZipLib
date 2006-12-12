@@ -114,6 +114,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		bool patchEntryHeader;
 		long crcPatchPos = -1;
 		long sizePatchPos = -1;
+		Zip64Use zip64Use_ = Zip64Use.Dynamic;
 		#endregion
 
 		#region Constructors
@@ -179,6 +180,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public int GetLevel()
 		{
 			return def.GetLevel();
+		}
+
+		/// <summary>
+		/// Get / set a value indicating how Zip64 Extension usage is determined when adding entries.
+		/// </summary>
+		Zip64Use Zip64Use
+		{
+			get { return zip64Use_; }
+			set { zip64Use_ = value; }
 		}
 		
 		/// <summary>
@@ -325,11 +335,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// Write the local file header
 			WriteLeInt(ZipConstants.LocalHeaderSignature);
 
-			// This is safe/conservative but can enlarge archives slightly when not needed.
-			// Perhaps implement something to allow a choice here?
-#if !FORCE_ZIP64
-			if ( entry.Size < 0 )
-#endif
+			if ( (entry.Size < 0) || (zip64Use_ == Zip64Use.On) )
 			{
 				entry.ForceZip64();
 			}
@@ -556,11 +562,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			
 			if ( offset < 0 ) {
+#if COMPACT_FRAMEWORK_V10
+				throw new ArgumentOutOfRangeException("offset");
+#else
 				throw new ArgumentOutOfRangeException("offset", "Cannot be negative");
+#endif
 			}
 
 			if ( count < 0 ) {
+#if COMPACT_FRAMEWORK_V10
+				throw new ArgumentOutOfRangeException("count");
+#else
 				throw new ArgumentOutOfRangeException("count", "Cannot be negative");
+#endif
 			}
 
 			if ( (buffer.Length - offset) < count ) {
@@ -625,9 +639,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLeInt((int)entry.DosTime);
 				WriteLeInt((int)entry.Crc);
 
-#if !FORCE_ZIP64
-				if ( entry.IsZip64Forced() || (entry.CompressedSize >= uint.MaxValue) )
-#endif
+				if ( entry.IsZip64Forced() || 
+				    (entry.CompressedSize >= uint.MaxValue) ||
+				    (zip64Use_ == Zip64Use.On))
 				{
 					WriteLeInt(-1);
 				}
@@ -635,9 +649,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 					WriteLeInt((int)entry.CompressedSize);
 				}
 
-#if !FORCE_ZIP64
-				if ( entry.IsZip64Forced() || (entry.Size >= uint.MaxValue) )
-#endif
+				if ( entry.IsZip64Forced() ||
+				    (entry.Size >= uint.MaxValue) || 
+				    (zip64Use_ == Zip64Use.On) )
 				{
 					WriteLeInt(-1);
 				}
@@ -655,16 +669,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				if ( entry.CentralHeaderRequiresZip64 ) {
 					ed.StartNewEntry();
-#if !FORCE_ZIP64
-					if ( entry.IsZip64Forced() || (entry.Size >= 0xffffffff) )
-#endif
+					if ( entry.IsZip64Forced() ||
+						(entry.Size >= 0xffffffff) ||
+						(zip64Use_ == Zip64Use.On))
 					{
 						ed.AddLeLong(entry.Size);
 					}
 
-#if !FORCE_ZIP64
-					if ( entry.IsZip64Forced() || (entry.CompressedSize >= 0xffffffff) )
-#endif
+					if ( entry.IsZip64Forced() ||
+						(entry.CompressedSize >= 0xffffffff) ||
+						(zip64Use_ == Zip64Use.On))
 					{
 						ed.AddLeLong(entry.CompressedSize);
 					}

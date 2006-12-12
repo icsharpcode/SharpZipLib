@@ -46,7 +46,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 {
 	
 	/// <summary>
-	/// Represents errors specific to Zip file handling
+	/// Represents exception conditions specific to Zip archive handling
 	/// </summary>
 #if !COMPACT_FRAMEWORK_V10 && !COMPACT_FRAMEWORK_V20
 	[Serializable]

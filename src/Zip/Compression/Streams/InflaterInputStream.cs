@@ -165,11 +165,14 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				rawLength += count;
 				toRead -= count;
 			}
-
+			
+#if !COMPACT_FRAMEWORK_V10
 			if ( cryptoTransform != null ) {
 				clearTextLength = cryptoTransform.TransformBlock(rawData, 0, rawLength, clearText, 0);
 			}
-			else {
+			else 
+#endif				
+			{
 				clearTextLength = rawLength;
 			}
 
@@ -291,7 +294,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			return ReadLeInt() | (ReadLeInt() << 32);
 		}
-		
+
+#if !COMPACT_FRAMEWORK_V10
 		/// <summary>
 		/// Get/set the <see cref="ICryptoTransform"/> to apply to any data.
 		/// </summary>
@@ -317,6 +321,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				}
 			}
 		}
+#endif
 
 		#region Instance Fields
 		int rawLength;
@@ -324,12 +329,15 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		
 		int clearTextLength;
 		byte[] clearText;
-		
+#if !COMPACT_FRAMEWORK_V10		
 		byte[] internalClearText;
+#endif
 		
 		int available;
 		
+#if !COMPACT_FRAMEWORK_V10
 		ICryptoTransform cryptoTransform;
+#endif		
 		Stream inputStream;
 		#endregion
 	}
@@ -464,7 +472,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>		
 		protected void StopDecrypting()
 		{
+#if !COMPACT_FRAMEWORK_V10			
 			inputBuffer.CryptoTransform = null;
+#endif			
 		}
 
 		/// <summary>

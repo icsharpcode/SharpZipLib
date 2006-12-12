@@ -174,22 +174,38 @@ namespace ICSharpCode.SharpZipLib.Checksums
 			}
 			
 			if (offset < 0) {
+#if COMPACT_FRAMEWORK_V10
+				throw new ArgumentOutOfRangeException("offset");
+#else
 				throw new ArgumentOutOfRangeException("offset", "cannot be negative");
+#endif				
 			}
 
 			if ( count < 0 ) 
 			{
+#if COMPACT_FRAMEWORK_V10
+				throw new ArgumentOutOfRangeException("count");
+#else
 				throw new ArgumentOutOfRangeException("count", "cannot be negative");
+#endif				
 			}
 
 			if (offset >= buffer.Length) 
 			{
+#if COMPACT_FRAMEWORK_V10
+				throw new ArgumentOutOfRangeException("offset");
+#else
 				throw new ArgumentOutOfRangeException("offset", "not a valid index into buffer");
+#endif				
 			}
 			
 			if (offset + count > buffer.Length) 
 			{
+#if COMPACT_FRAMEWORK_V10
+				throw new ArgumentOutOfRangeException("count");
+#else
 				throw new ArgumentOutOfRangeException("count", "exceeds buffer size");
+#endif				
 			}
 
 			//(By Per Bothner)

@@ -45,13 +45,13 @@ using System.Globalization;
 
 #if !COMPACT_FRAMEWORK_V10
 using System.Security.Cryptography;
+using ICSharpCode.SharpZipLib.Encryption;
 #endif
 
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using ICSharpCode.SharpZipLib.Zip.Compression;
-using ICSharpCode.SharpZipLib.Encryption;
 
 namespace ICSharpCode.SharpZipLib.Zip 
 {
@@ -278,6 +278,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		Direct,
 	}
 	#endregion
+	
 	#region ZipFile Class
 	/// <summary>
 	/// This class represents a Zip archive.  You can ask for the contained
@@ -310,10 +311,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// 			Console.WriteLine("Raw Size    Size      Date     Time     Name");
 	/// 			Console.WriteLine("--------  --------  --------  ------  ---------");
 	/// 			foreach (ZipEntry e in zFile) {
-	/// 				DateTime d = e.DateTime;
-	/// 				Console.WriteLine("{0, -10}{1, -10}{2}  {3}   {4}", e.Size, e.CompressedSize,
-	/// 			                                                    d.ToString("dd-MM-yy"), d.ToString("HH:mm"),
-	/// 			                                                    e.Name);
+	/// 				if ( e.IsFile ) {
+	/// 					DateTime d = e.DateTime;
+	/// 					Console.WriteLine("{0, -10}{1, -10}{2}  {3}   {4}", e.Size, e.CompressedSize,
+	/// 						d.ToString("dd-MM-yy"), d.ToString("HH:mm"),
+	/// 						e.Name);
+	/// 				}
 	/// 			}
 	/// 		}
 	/// 	}
@@ -360,7 +363,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { key = value; }
 		}
 		
-
+#if !COMPACT_FRAMEWORK_V10				
 		/// <summary>
 		/// Password to be used for encrypting/decrypting files.
 		/// </summary>
@@ -377,6 +380,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 		}
+#endif
 
 		/// <summary>
 		/// Get a value indicating wether encryption keys are currently available.
@@ -773,10 +777,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 			Stream result = new PartialInputStream(baseStream_, start, entries_[entryIndex].CompressedSize);
 
 			if (entries_[entryIndex].IsCrypted == true) {
+#if COMPACT_FRAMEWORK_V10
+				throw new ZipException("decryption not supported for Compact Framework 1.0");
+#else
 				result = CreateAndInitDecryptionStream(result, entries_[entryIndex]);
 				if (result == null) {
 					throw new ZipException("Unable to decrypt this entry");
 				}
+#endif				
 			}
 
 			switch (method) {
@@ -1092,7 +1100,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					// Extra data / zip64 checks
 					if ( ed.Find(1) ) {
-						// Zip64 extra data but extract version too low
+						// Zip64 extra data but 'extract version' is too low
 						if ( extractVersion < ZipConstants.VersionZip64 ) {
 							throw new ZipException(
 								string.Format("Extra data contains Zip64 information but version {0}.{1} is not high enough",
@@ -1159,7 +1167,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get { return bufferSize_; }
 			set {
 				if ( value < 1024 ) {
+#if COMPACT_FRAMEWORK_V10					
+					throw new ArgumentOutOfRangeException("value");
+#else
 					throw new ArgumentOutOfRangeException("value", "cannot be below 1024");
+#endif					
 				}
 
 				if ( bufferSize_ != value ) {
@@ -1175,6 +1187,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public bool IsUpdating
 		{
 			get { return updates_ != null; }
+		}
+
+		/// <summary>
+		/// Get / set a value indicating how Zip64 Extension usage is determined when adding entries.
+		/// </summary>
+		public Zip64Use Zip64Use
+		{
+			get { return zip64Use_; }
+			set { zip64Use_ = value; }
 		}
 
 		#endregion
@@ -1580,7 +1601,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			ZipEntry entry = update.OutEntry;
 
-			// TODO: Local offset will require adjusting for multi-disk zip files?
+			// TODO: Local offset will require adjusting for multi-disk zip files.
 			entry.Offset = baseStream_.Position;
 
 			if (entry.CompressionMethod == CompressionMethod.Deflated) {
@@ -1602,6 +1623,24 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
+            switch (zip64Use_)
+            {
+                case Zip64Use.Dynamic:
+                    if (entry.Size < 0)
+                    {
+                        entry.ForceZip64();
+                    }
+                    break;
+
+                case Zip64Use.On:
+                    entry.ForceZip64();
+                    break;
+
+                case Zip64Use.Off:
+                    // Do nothing.  The entry itself may be using Zip64 independantly.
+                    break;
+            }
+
 			// Write the local file header
 			WriteLEInt(ZipConstants.LocalHeaderSignature);
 
@@ -1619,15 +1658,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			else
 			{
 				WriteLEInt(( int )entry.Crc);
-			}
-
-			// Force Zip64 if the size of an entry isnt known.
-			// A more flexible strategy could be created here if required.
-#if !FORCE_ZIP64
-			if ( entry.Size < 0 )
-#endif
-			{
-				entry.ForceZip64();
 			}
 
 			if ( entry.LocalHeaderRequiresZip64 ) {
@@ -1730,16 +1760,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if ( entry.CentralHeaderRequiresZip64 ) {
 				ed.StartNewEntry();
 
-#if !FORCE_ZIP64
-				if ( entry.Size >= 0xffffffff )
-#endif
+				if ( (entry.Size >= 0xffffffff) || (zip64Use_ == Zip64Use.On) )
 				{
 					ed.AddLeLong(entry.Size);
 				}
 
-#if !FORCE_ZIP64
-				if ( entry.CompressedSize >= 0xffffffff )
-#endif
+				if ( (entry.CompressedSize >= 0xffffffff) || (zip64Use_ == Zip64Use.On) )
 				{
 					ed.AddLeLong(entry.CompressedSize);
 				}
@@ -2037,7 +2063,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			Stream result = baseStream_;
 
 			if ( entry.IsCrypted == true ) {
+#if COMPACT_FRAMEWORK_V10
+throw new ZipException("Encryption not supported for Compact Framework 1.0");
+#else
 				result = CreateAndInitEncryptionStream(result, entry);
+#endif
 			}
 
 			switch ( entry.CompressionMethod ) {
@@ -2436,9 +2466,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				command_ = UpdateCommand.Add;
 				entry_ = new ZipEntry(entryName);
-#if FORCE_ZIP64
-				entry_.ForceZip64();
-#endif
 				entry_.CompressionMethod = compressionMethod;
 				filename_ = fileName;
 			}
@@ -2447,9 +2474,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				command_ = UpdateCommand.Add;
 				entry_ = new ZipEntry(entryName);
-#if FORCE_ZIP64
-				entry_.ForceZip64();
-#endif
 				filename_ = fileName;
 			}
 
@@ -2458,23 +2482,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 				command_ = UpdateCommand.Add;
 				entry_ = new ZipEntry(entryName);
 				entry_.CompressionMethod = compressionMethod;
-#if FORCE_ZIP64
-				entry_.ForceZip64();
-#endif
 				dataSource_ = dataSource;
 			}
 
 			public ZipUpdate(ZipEntry original, ZipEntry updated)
 			{
 				throw new ZipException("Modify not currently supported");
-				/*
-								command_ = UpdateCommand.Modify;
-								entry_ = ( ZipEntry )original.Clone();
-								outEntry_ = ( ZipEntry )updated.Clone();
-				#if FORCE_ZIP64
-								entry_.ForceZip64();
-				#endif
-				*/
+			/*
+				command_ = UpdateCommand.Modify;
+				entry_ = ( ZipEntry )original.Clone();
+				outEntry_ = ( ZipEntry )updated.Clone();
+			*/
 			}
 
 			public ZipUpdate(UpdateCommand command, ZipEntry entry)
@@ -2862,6 +2880,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return TestLocalHeader(entry, HeaderTest.Extract);
 		}
 		
+#if !COMPACT_FRAMEWORK_V10		
 		Stream CreateAndInitDecryptionStream(Stream baseStream, ZipEntry entry)
 		{
 			CryptoStream result = null;
@@ -2911,7 +2930,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			return result;
 		}
-
+		
 		static void CheckClassicPassword(CryptoStream classicCryptoStream, ZipEntry entry)
 		{
 			byte[] cryptbuffer = new byte[ZipConstants.CryptoHeaderSize];
@@ -2920,7 +2939,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ZipException("Invalid password");
 			}
 		}
-
+#endif
+		
 		static void WriteEncryptionHeader(Stream stream, long crcValue)
 		{
 			byte[] cryptBuffer = new byte[ZipConstants.CryptoHeaderSize];
@@ -2941,6 +2961,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		ZipEntry[] entries_;
 		byte[] key;
 		bool isNewArchive_;
+		Zip64Use zip64Use_ = Zip64Use.Dynamic;
+		
 		#region Zip Update Instance Fields
 		ArrayList updates_;
 		IArchiveStorage archiveStorage_;
@@ -3220,7 +3242,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			public long SkipBytes(long count)
 			{
 				if (count < 0) {
+#if COMPACT_FRAMEWORK_V10					
+					throw new ArgumentOutOfRangeException("count");
+#else
 					throw new ArgumentOutOfRangeException("count", "is less than zero");
+#endif
 				}
 				
 				if (count > end_ - filepos_) {

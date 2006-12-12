@@ -39,7 +39,6 @@ using System;
 
 #if !COMPACT_FRAMEWORK_V10
 using System.Security.Cryptography;
-#endif
 
 using ICSharpCode.SharpZipLib.Checksums;
 
@@ -497,3 +496,4 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		#endregion
 	}
 }
+#endif
