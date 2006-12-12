@@ -45,6 +45,10 @@ using System;
 using System.Text;
 using System.Threading;
 
+#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
+using System.Globalization;
+#endif
+
 namespace ICSharpCode.SharpZipLib.Zip 
 {
 
@@ -458,9 +462,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public const int ENDSIG = 'P' | ('K' << 8) | (5 << 16) | (6 << 24);
 		#endregion
 		
-#if !COMPACT_FRAMEWORK_V10 && !COMPACT_FRAMEWORK_V20
-
+#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
+		// This isnt so great but is better than nothing?
+		static int defaultCodePage = CultureInfo.CurrentCulture.TextInfo.ANSICodePage;
+#else
 		static int defaultCodePage = Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage;
+#endif
 		
 		/// <summary>
 		/// Default encoding used for string conversion.  0 gives the default system Ansi code page.
@@ -477,7 +484,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				defaultCodePage = value; 
 			}
 		}
-#endif
 
 		/// <summary>
 		/// Convert a portion of a byte array to a string.
@@ -497,12 +503,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return string.Empty;	
 			}
 			
-#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
-			return Encoding.ASCII.GetString(data, 0, count);
-#else
-			// TODO: Isnt this supported by CF?
 			return Encoding.GetEncoding(DefaultCodePage).GetString(data, 0, count);
-#endif
 		}
 	
 		/// <summary>
