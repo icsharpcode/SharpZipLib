@@ -1192,10 +1192,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get / set a value indicating how Zip64 Extension usage is determined when adding entries.
 		/// </summary>
-		public Zip64Use Zip64Use
+		public UseZip64 UseZip64
 		{
-			get { return zip64Use_; }
-			set { zip64Use_ = value; }
+			get { return useZip64_; }
+			set { useZip64_ = value; }
 		}
 
 		#endregion
@@ -1434,8 +1434,27 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="dataSource">The source of the data for this entry.</param>
 		/// <param name="entryName">The name to give to the entry.</param>
+		/// <param name="compressionMethod">The compression method to use.</param>
+		public void Add(IStaticDataSource dataSource, string entryName, CompressionMethod compressionMethod)
+		{
+			if ( dataSource == null ) {
+				throw new ArgumentNullException("dataSource");
+			}
+
+			CheckUpdating();
+			contentsEdited_ = true;
+			updates_.Add(new ZipUpdate(dataSource, GetTransformedFileName(entryName),
+			                           compressionMethod));
+		}
+
+		/// <summary>
+		/// Add a file entry with data.
+		/// </summary>
+		/// <param name="dataSource">The source of the data for this entry.</param>
+		/// <param name="entryName">The name to give to the entry.</param>
+		/// <param name="compressionMethod">The compression method to use.</param>
 		/// <param name="useUnicodeText">Ensure Unicode text is used for name and comments for this entry.</param>
-		public void Add(IStaticDataSource dataSource, string entryName, bool useUnicodeText)
+		public void Add(IStaticDataSource dataSource, string entryName, CompressionMethod compressionMethod, bool useUnicodeText)
 		{
 			if (dataSource == null)
 			{
@@ -1445,7 +1464,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			CheckUpdating();
 			contentsEdited_ = true;
 			ZipUpdate update = new ZipUpdate(dataSource, GetTransformedFileName(entryName),
-									   CompressionMethod.Deflated);
+									   compressionMethod);
 			update.Entry.IsUnicodeText = useUnicodeText;
 			updates_.Add(update);
 		}
@@ -1454,6 +1473,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Add a <see cref="ZipEntry"/> that contains no data.
 		/// </summary>
 		/// <param name="entry">The entry to add.</param>
+		/// <remarks>This can be used to add directories, volume labels, or empty file entries.</remarks>
 		public void Add(ZipEntry entry)
 		{
 			if ( entry == null ) {
@@ -1604,42 +1624,42 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// TODO: Local offset will require adjusting for multi-disk zip files.
 			entry.Offset = baseStream_.Position;
 
-			if (entry.CompressionMethod == CompressionMethod.Deflated) {
-				if (entry.Size == 0) {
-					// No need to compress - no data.
-					entry.CompressedSize = entry.Size;
-					entry.Crc = 0;
-					entry.CompressionMethod = CompressionMethod.Stored;
-				} 
-			}
-			else if ( entry.CompressionMethod == CompressionMethod.Stored ) {
-				entry.Flags &= ~(int)GeneralBitFlags.Descriptor;
-			}
+			if (update.Command != UpdateCommand.Copy) {
+				if (entry.CompressionMethod == CompressionMethod.Deflated) {
+					if (entry.Size == 0) {
+						// No need to compress - no data.
+						entry.CompressedSize = entry.Size;
+						entry.Crc = 0;
+						entry.CompressionMethod = CompressionMethod.Stored;
+					}
+				}
+				else if (entry.CompressionMethod == CompressionMethod.Stored) {
+					entry.Flags &= ~(int)GeneralBitFlags.Descriptor;
+				}
 
-			if (HaveKeys) {
-				entry.IsCrypted = true;
-				if (entry.Crc < 0) {
-					entry.Flags |= (int)GeneralBitFlags.Descriptor;
+				if (HaveKeys) {
+					entry.IsCrypted = true;
+					if (entry.Crc < 0) {
+						entry.Flags |= (int)GeneralBitFlags.Descriptor;
+					}
+				}
+
+				switch (useZip64_) {
+					case UseZip64.Dynamic:
+						if (entry.Size < 0) {
+							entry.ForceZip64();
+						}
+						break;
+
+					case UseZip64.On:
+						entry.ForceZip64();
+						break;
+
+					case UseZip64.Off:
+						// Do nothing.  The entry itself may be using Zip64 independantly.
+						break;
 				}
 			}
-
-            switch (zip64Use_)
-            {
-                case Zip64Use.Dynamic:
-                    if (entry.Size < 0)
-                    {
-                        entry.ForceZip64();
-                    }
-                    break;
-
-                case Zip64Use.On:
-                    entry.ForceZip64();
-                    break;
-
-                case Zip64Use.Off:
-                    // Do nothing.  The entry itself may be using Zip64 independantly.
-                    break;
-            }
 
 			// Write the local file header
 			WriteLEInt(ZipConstants.LocalHeaderSignature);
@@ -1760,12 +1780,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if ( entry.CentralHeaderRequiresZip64 ) {
 				ed.StartNewEntry();
 
-				if ( (entry.Size >= 0xffffffff) || (zip64Use_ == Zip64Use.On) )
+				if ( (entry.Size >= 0xffffffff) || (useZip64_ == UseZip64.On) )
 				{
 					ed.AddLeLong(entry.Size);
 				}
 
-				if ( (entry.CompressedSize >= 0xffffffff) || (zip64Use_ == Zip64Use.On) )
+				if ( (entry.CompressedSize >= 0xffffffff) || (useZip64_ == UseZip64.On) )
 				{
 					ed.AddLeLong(entry.CompressedSize);
 				}
@@ -2064,7 +2084,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if ( entry.IsCrypted == true ) {
 #if COMPACT_FRAMEWORK_V10
-throw new ZipException("Encryption not supported for Compact Framework 1.0");
+				throw new ZipException("Encryption not supported for Compact Framework 1.0");
 #else
 				result = CreateAndInitEncryptionStream(result, entry);
 #endif
@@ -2341,6 +2361,9 @@ throw new ZipException("Encryption not supported for Compact Framework 1.0");
 			else
 			{
 				workFile = ZipFile.Create(archiveStorage_.GetTemporaryOutput());
+				if (key != null) {
+					workFile.key = (byte[])key.Clone();
+				}
 			}
 
 			try {
@@ -2961,7 +2984,7 @@ throw new ZipException("Encryption not supported for Compact Framework 1.0");
 		ZipEntry[] entries_;
 		byte[] key;
 		bool isNewArchive_;
-		Zip64Use zip64Use_ = Zip64Use.Dynamic;
+		UseZip64 useZip64_ = UseZip64.Dynamic;
 		
 		#region Zip Update Instance Fields
 		ArrayList updates_;
@@ -3692,6 +3715,15 @@ throw new ZipException("Encryption not supported for Compact Framework 1.0");
 		/// </summary>
 		public MemoryArchiveStorage() 
 			: base(FileUpdateMode.Direct)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MemoryArchiveStorage"/> class.
+		/// </summary>
+		/// <param name="updateMode">The <see cref="FileUpdateMode"/> to use</param>
+		public MemoryArchiveStorage(FileUpdateMode updateMode)
+			: base(updateMode)
 		{
 		}
 		#endregion

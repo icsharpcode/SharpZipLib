@@ -357,7 +357,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 		void UpdateEntry(ZipEntry entry, FileInfo info)
 		{
+			// TODO: May want other dates for entries added  in FastZip...
 			entry.DateTime = info.LastWriteTime;
+			entry.Size = info.Length;
 			entry.ExternalFileAttributes = MakeExternalAttributes(info);
 		}
 

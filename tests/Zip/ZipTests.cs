@@ -418,6 +418,16 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 	#endregion
 
+	class TestHelper
+	{
+		static public void SaveMemoryStream(MemoryStream ms, string fileName)
+		{
+			byte[] data = ms.ToArray();
+			using ( FileStream fs = File.Open(fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.Read) ) {
+				fs.Write(data, 0, data.Length);
+			}
+		}
+	}
 	/// <summary>
 	/// This contains newer tests for stream handling. Much of this is still in GeneralHandling
 	/// </summary>
@@ -1944,7 +1954,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			using (ZipFile f = new ZipFile(memStream))
 			{
 				f.IsStreamOwner = false;
-				f.Zip64Use = Zip64Use.On;
+				f.UseZip64 = UseZip64.On;
 				
 				StringMemoryDataSource m = new StringMemoryDataSource("0000000");
 				f.BeginUpdate(new MemoryArchiveStorage());
@@ -2416,6 +2426,82 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
+		public void Crypto_AddEncryptedEntryToExistingArchiveSafe()
+		{
+			MemoryStream ms = new MemoryStream();
+			
+			byte[] rawData;
+			
+			using ( ZipFile testFile = new ZipFile(ms) )
+			{
+				testFile.IsStreamOwner = false;
+				testFile.BeginUpdate();
+				testFile.Add(new StringMemoryDataSource("Aha"), "No1", CompressionMethod.Stored);
+				testFile.Add(new StringMemoryDataSource("And so it goes"), "No2", CompressionMethod.Stored);
+				testFile.Add(new StringMemoryDataSource("No3"), "No3", CompressionMethod.Stored);
+				testFile.CommitUpdate();
+				
+				Assert.IsTrue(testFile.TestArchive(true));
+				rawData = ms.ToArray();
+			}
+			
+			ms = new MemoryStream(rawData);
+			
+			using (ZipFile testFile = new ZipFile(ms) ) {
+				Assert.IsTrue(testFile.TestArchive(true));
+
+				testFile.BeginUpdate(new MemoryArchiveStorage(FileUpdateMode.Safe));
+				testFile.Password = "pwd";
+				testFile.Add(new StringMemoryDataSource("Zapata!"), "encrypttest.xml");
+				testFile.CommitUpdate();
+
+				Assert.IsTrue(testFile.TestArchive(true));
+				
+				int entryIndex = testFile.FindEntry("encrypttest.xml", true);
+				Assert.IsNotNull(entryIndex >= 0);
+				Assert.IsTrue(testFile[entryIndex].IsCrypted);
+			}
+		}
+
+		[Test]
+		public void Crypto_AddEncryptedEntryToExistingArchiveDirect()
+		{
+			MemoryStream ms = new MemoryStream();
+
+			byte[] rawData;
+
+			using (ZipFile testFile = new ZipFile(ms))
+			{
+				testFile.IsStreamOwner = false;
+				testFile.BeginUpdate();
+				testFile.Add(new StringMemoryDataSource("Aha"), "No1", CompressionMethod.Stored);
+				testFile.Add(new StringMemoryDataSource("And so it goes"), "No2", CompressionMethod.Stored);
+				testFile.Add(new StringMemoryDataSource("No3"), "No3", CompressionMethod.Stored);
+				testFile.CommitUpdate();
+
+				Assert.IsTrue(testFile.TestArchive(true));
+				rawData = ms.ToArray();
+			}
+
+			using (ZipFile testFile = new ZipFile(ms))
+			{
+				Assert.IsTrue(testFile.TestArchive(true));
+				testFile.IsStreamOwner = false;
+
+				testFile.BeginUpdate();
+				testFile.Password = "pwd";
+				testFile.Add(new StringMemoryDataSource("Zapata!"), "encrypttest.xml");
+				testFile.CommitUpdate();
+
+				Assert.IsTrue(testFile.TestArchive(true));
+
+				int entryIndex = testFile.FindEntry("encrypttest.xml", true);
+				Assert.IsNotNull(entryIndex >= 0);
+				Assert.IsTrue(testFile[entryIndex].IsCrypted);
+			}
+		}
+		
+		[Test]
 		[Category("Zip")]
 		public void UnicodeNames()
 		{
@@ -2434,7 +2520,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				foreach ( string name in names )
 				{
-					f.Add(new StringMemoryDataSource("Hello world"), name, true);
+					f.Add(new StringMemoryDataSource("Hello world"), name,
+						  CompressionMethod.Deflated, true);
 				}
 				f.CommitUpdate();
 				Assert.IsTrue(f.TestArchive(true));

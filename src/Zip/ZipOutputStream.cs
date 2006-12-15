@@ -114,7 +114,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		bool patchEntryHeader;
 		long crcPatchPos = -1;
 		long sizePatchPos = -1;
-		Zip64Use zip64Use_ = Zip64Use.Dynamic;
+		UseZip64 useZip64_ = UseZip64.Dynamic;
 		#endregion
 
 		#region Constructors
@@ -185,10 +185,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get / set a value indicating how Zip64 Extension usage is determined when adding entries.
 		/// </summary>
-		Zip64Use Zip64Use
+		UseZip64 UseZip64
 		{
-			get { return zip64Use_; }
-			set { zip64Use_ = value; }
+			get { return useZip64_; }
+			set { useZip64_ = value; }
 		}
 		
 		/// <summary>
@@ -335,7 +335,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// Write the local file header
 			WriteLeInt(ZipConstants.LocalHeaderSignature);
 
-			if ( (entry.Size < 0) || (zip64Use_ == Zip64Use.On) )
+			if ( (entry.Size < 0) || (useZip64_ == UseZip64.On) )
 			{
 				entry.ForceZip64();
 			}
@@ -640,8 +640,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLeInt((int)entry.Crc);
 
 				if ( entry.IsZip64Forced() || 
-				    (entry.CompressedSize >= uint.MaxValue) ||
-				    (zip64Use_ == Zip64Use.On))
+				    (entry.CompressedSize >= uint.MaxValue) )
 				{
 					WriteLeInt(-1);
 				}
@@ -650,8 +649,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				if ( entry.IsZip64Forced() ||
-				    (entry.Size >= uint.MaxValue) || 
-				    (zip64Use_ == Zip64Use.On) )
+				    (entry.Size >= uint.MaxValue) )
 				{
 					WriteLeInt(-1);
 				}
@@ -670,15 +668,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if ( entry.CentralHeaderRequiresZip64 ) {
 					ed.StartNewEntry();
 					if ( entry.IsZip64Forced() ||
-						(entry.Size >= 0xffffffff) ||
-						(zip64Use_ == Zip64Use.On))
+						(entry.Size >= 0xffffffff) )
 					{
 						ed.AddLeLong(entry.Size);
 					}
 
 					if ( entry.IsZip64Forced() ||
-						(entry.CompressedSize >= 0xffffffff) ||
-						(zip64Use_ == Zip64Use.On))
+						(entry.CompressedSize >= 0xffffffff) )
 					{
 						ed.AddLeLong(entry.CompressedSize);
 					}

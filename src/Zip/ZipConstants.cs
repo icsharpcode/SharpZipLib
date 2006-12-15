@@ -57,15 +57,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// <summary>
 	/// Determines how entries are tested to see if they should use Zip64 extensions or not.
 	/// </summary>
-	public enum Zip64Use
+	public enum UseZip64
 	{
 		/// <summary>
-		/// The library will determine based on known entry values.
+		/// #ZipLib will determine based on entry values when added to archive.
 		/// </summary>
 		Dynamic,
 		/// <summary>
-		/// Zip64 should never be used.
+		/// Zip64 will not be forced on entries during processing.
 		/// </summary>
+		/// <remarks>An entry can have this overridden if required <see cref="ZipEntry.ForceZip64"></see></remarks>
 		Off,
 		/// <summary>
 		/// Zip64 should always be used.
