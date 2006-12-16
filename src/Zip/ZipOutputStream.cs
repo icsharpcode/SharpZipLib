@@ -332,13 +332,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			
 			curMethod = method;
 			
-			// Write the local file header
-			WriteLeInt(ZipConstants.LocalHeaderSignature);
-
-			if ( (entry.Size < 0) || (useZip64_ == UseZip64.On) )
-			{
+			if ( (useZip64_ == UseZip64.On) || ((entry.Size < 0) && (useZip64_ == UseZip64.Dynamic)) ) {
 				entry.ForceZip64();
 			}
+
+            // Write the local file header
+            WriteLeInt(ZipConstants.LocalHeaderSignature);
 			
 			WriteLeShort(entry.Version);
 			WriteLeShort(entry.Flags);

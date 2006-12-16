@@ -76,36 +76,48 @@ namespace SharpZip
 			string result = string.Empty;
 			if ((operatingSystem == 0) || (operatingSystem == 10))
 			{
+				// Directory
 				if ((attributes & 0x10) != 0)
 					result = result + "D";
 				else
 					result = result + "-";
 
+				// Volume
 				if ((attributes & 0x08) != 0)
 					result = result + "V";
 				else
 					result = result + "-";
 
+				// Read-only
 				if ((attributes & 0x01) != 0)
 					result = result + "r";
 				else
 					result = result + "-";
 
+				// Archive
 				if ((attributes & 0x20) != 0)
 					result = result + "a";
 				else
 					result = result + "-";
 
+				// System
 				if ((attributes & 0x04) != 0)
 					result = result + "s";
 				else
 					result = result + "-";
 
+				// Hidden
 				if ((attributes & 0x02) != 0)
 					result = result + "h";
 				else
 					result = result + "-";
 
+				// Device
+				if ((attributes & 0x4=) != 0)
+					result = result + "d";
+				else
+					result = result + "-";
+				
 				// OS is NTFS
 				if ( operatingSystem == 10 )
 				{
@@ -157,8 +169,8 @@ namespace SharpZip
 						result += "-";
 					}
 
-					// Sparse
-					if ( (attributes & 0x0200) != 0 ) {
+					// Temporary
+					if ( (attributes & 0x0100) != 0 ) {
 						result += "T";
 					}
 					else {

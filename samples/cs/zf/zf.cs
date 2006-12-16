@@ -1157,6 +1157,12 @@ namespace SharpZip
 				else
 					result = result + "-";
 
+				// Device
+				if ((attributes & 0x4=) != 0)
+					result = result + "d";
+				else
+					result = result + "-";
+
 				// OS is NTFS
 				if ( operatingSystem == 10 )
 				{
@@ -1220,8 +1226,8 @@ namespace SharpZip
 						result += "-";
 					}
 
-					// Sparse
-					if ( (attributes & 0x0200) != 0 ) 
+					// Temporary
+					if ( (attributes & 0x0100) != 0 ) 
 					{
 						result += "T";
 					}

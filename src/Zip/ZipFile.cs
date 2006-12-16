@@ -403,7 +403,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public ZipFile(string name)
 		{
 			name_ = name;
+
+			isStreamOwner = false; // Not owner until stream opens
 			baseStream_ = File.OpenRead(name);
+			isStreamOwner = true;
 			
 			try {
 				ReadEntries();
@@ -1624,6 +1627,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// TODO: Local offset will require adjusting for multi-disk zip files.
 			entry.Offset = baseStream_.Position;
 
+			// TODO: Need to clear any entry flags that dont make sense or throw an exception here.
 			if (update.Command != UpdateCommand.Copy) {
 				if (entry.CompressionMethod == CompressionMethod.Deflated) {
 					if (entry.Size == 0) {
@@ -1642,6 +1646,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 					if (entry.Crc < 0) {
 						entry.Flags |= (int)GeneralBitFlags.Descriptor;
 					}
+				}
+				else {
+					entry.IsCrypted = false;
 				}
 
 				switch (useZip64_) {
@@ -2243,6 +2250,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		void Reopen()
 		{
+
+			if (Name == null) {
+				throw new InvalidOperationException("Name is no known cannot ReOpen");
+			}
+
 			Reopen(File.OpenRead(Name));
 		}
 
@@ -2261,12 +2273,23 @@ namespace ICSharpCode.SharpZipLib.Zip
 				baseStream_ = null;
 			}
 			else {
-				baseStream_.Close();
-				baseStream_ = null;
+                if (archiveStorage_.UpdateMode == FileUpdateMode.Direct) {
+                    // TODO: archiveStorage wasnt intended for this and doesnt really fit.
+                    // Need to revisit this to tidy up handling as archive storage currently doesnt 
+                    // handle the original stream well.
+                    // The problem is when using an existing zip archive with an in memory archive storage.
+                    // The open stream wont support writing but the memory storage should open the same file not an in memory one.
 
-				updateFile = new ZipHelperStream(Name);
+                    // Need to tidy up the archive storage interface and contract basically.
+                    baseStream_ = archiveStorage_.OpenForDirectUpdate(baseStream_);
+                    updateFile = new ZipHelperStream(baseStream_);
+                }
+                else {
+                    baseStream_.Close();
+                    baseStream_ = null;
+                    updateFile = new ZipHelperStream(Name);
+                }
 			}
-
 			using ( updateFile ) {
 				long locatedCentralDirOffset = 
 					updateFile.LocateBlockWithSignature(ZipConstants.EndOfCentralDirectorySignature, 
@@ -2289,7 +2312,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				Reopen(archiveStorage_.ConvertTemporaryToFinal());
 			}
 			else {
-				Reopen();
+				ReadEntries();
 			}
 		}
 
@@ -2522,9 +2545,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				command_ = command;
 				entry_ = ( ZipEntry )entry.Clone();
-#if FORCE_ZIP64
-				entry_.ForceZip64();
-#endif
 			}
 
 
@@ -3475,6 +3495,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns a temporary output <see cref="Stream"/> that is a copy of the input.</returns>
 		Stream MakeTemporaryCopy(Stream stream);
 
+        /// <summary>
+        /// Return a stream suitable for performing direct updates on the original source.
+        /// </summary>
+        /// <param name="stream">The current stream.</param>
+        /// <returns>Returns a stream suitable for direct updating.</returns>
+        /// <remarks>This may be the current stream passed.</remarks>
+        Stream OpenForDirectUpdate(Stream stream);
+
 		/// <summary>
 		/// Dispose of this instance.
 		/// </summary>
@@ -3517,6 +3545,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="stream">The <see cref="Stream"/> to make a copy of.</param>
 		/// <returns>Returns a temporary output <see cref="Stream"/> that is a copy of the input.</returns>
 		public abstract Stream MakeTemporaryCopy(Stream stream);
+
+        /// <summary>
+        /// Return a stream suitable for performing direct updates on the original source.
+        /// </summary>
+        /// <returns>Returns a stream suitable for direct updating.</returns>
+        public abstract Stream OpenForDirectUpdate(Stream stream);
 
 		/// <summary>
 		/// Disposes this instance.
@@ -3617,7 +3651,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				result = File.OpenRead(fileName_);
 			}
-			catch(Exception) {
+			catch(Exception ex) {
 				result  = null;
 
 				// Try to roll back changes...
@@ -3641,14 +3675,40 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			stream.Close();
 
-			string tempName = GetTempFileName(fileName_, true);
-			File.Copy(fileName_, tempName, true);
-
-			temporaryStream_ = new FileStream(tempName, 
+			temporaryName_ = GetTempFileName(fileName_, true);
+			File.Copy(fileName_, temporaryName_, true);
+			
+			temporaryStream_ = new FileStream(temporaryName_, 
 				FileMode.Open, 
 				FileAccess.ReadWrite);
 			return temporaryStream_;
 		}
+
+        /// <summary>
+        /// Return a stream suitable for performing direct updates on the original source.
+        /// </summary>
+        /// <returns>Returns a stream suitable for direct updating.</returns>
+        public override Stream OpenForDirectUpdate(Stream current)
+        {
+            Stream result;
+            if ((current == null) || !current.CanWrite)
+            {
+                if (current != null)
+                {
+                    current.Close();
+                }
+
+                result = new FileStream(fileName_,
+                        FileMode.Open,
+                        FileAccess.ReadWrite);
+            }
+            else
+            {
+                result = current;
+            }
+
+            return result;
+        }
 
 		/// <summary>
 		/// Disposes this instance.
@@ -3765,6 +3825,30 @@ namespace ICSharpCode.SharpZipLib.Zip
 			StreamUtils.Copy(stream, temporaryStream_, new byte[4096]);
 			return temporaryStream_;
 		}
+
+        /// <summary>
+        /// Return a stream suitable for performing direct updates on the original source.
+        /// </summary>
+        /// <returns>Returns a stream suitable for direct updating.</returns>
+        public override Stream OpenForDirectUpdate(Stream stream)
+        {
+            Stream result;
+            if ((stream == null) || !stream.CanWrite)
+            {
+                if (stream != null)
+                {
+                    stream.Close();
+                }
+
+                result = new MemoryStream();
+            }
+            else
+            {
+                result = stream;
+            }
+
+            return result;
+        }
 
 		/// <summary>
 		/// Disposes this instance.

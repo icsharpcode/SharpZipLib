@@ -7,17 +7,18 @@
 	<property name="build.cf" value="COMPACT_FRAMEWORK_V10" />
 	<property name="cf.path" value="C:/Program Files/Microsoft Visual Studio 8/SmartDevices/SDK/CompactFramework/2.0/v1.0/WindowsCE" />
 
-	<!--
+<!--    Use this to compile for compact framework V2.0, once you have set up the correct path
 	<property name="build.cf" value="COMPACT_FRAMEWORK_V20" />
 	<property name="cf.path" value="C:/Program Files/Microsoft Visual Studio 8/SmartDevices/SDK/CompactFramework/2.0/v2.0/WindowsCE" />
 -->
 	
-<!--	
+<!--	Use this to compile for compact framework V1.0, once you have set up the correct path
 	<property name="build.cf" value="COMPACT_FRAMEWORK_V10" />
 	<property name="cf.path" value="C:/Program Files/Microsoft Visual Studio .NET 2003/CompactFrameworkSDK/v1.0.5000/Windows CE" />
 -->	
 	
-	<target name="build">
+	<target name="build"
+		description="Build the current source generating appropriate build artifacts">
 		<echo message="Building #ZipLib"/>
 		<csc 
 			target="library" 
@@ -33,7 +34,8 @@
 		<nant buildfile = "samples/vb/samples.build" />
 	</target>
 
-	<target name="build.cf">
+	<target name="build.cf"
+		description="Build for compact framework using version defined in build.cf property">
 		<echo message="Building #ZipLib for compact framework"/>
 		<csc 
 			target="library" 
@@ -53,8 +55,9 @@
 			</references>
 		</csc>
 	</target>
-	
-	<target name="releasebuild">
+
+	<target name="preparerelease"
+		description="Prepeare for a relase by setting up versions etc.">
 		<script language="C#">
 			<code><![CDATA[
 		static StringCollection SearchDirectory(string directory, string filemask)
@@ -190,10 +193,16 @@
 		}
 			]]></code>
 		</script>
-		<call target="build"/>	
+	</target>
+	
+	<target name="releasebuild"
+		description="Prepare and buils a release version">
+		<call target="preparerelease" />
+		<call target="build" />	
 	</target>
 
-	<target name="clean">
+	<target name="clean"
+		description="Remove build artifacts">
 			<delete verbose="true" >
 			<fileset basedir=".">
 				<include name="bin/ICSharpCode.SharpZipLib.dll"/>
@@ -205,9 +214,13 @@
 		<nant buildfile = "tests/tests.build" target="clean"/>
 	</target>
 
-	<target name="rebuild" depends="clean, build" />
+	<target name="rebuild"
+		description="Clean and rebuild"
+		depends="clean, build" />
 
-	<target name="test" depends = "build">
+	<target name="test"
+		description="Run unit tests"
+		depends = "build">
 		<nant buildfile="tests/tests.build" target="test"/>
 	</target>
 </project>

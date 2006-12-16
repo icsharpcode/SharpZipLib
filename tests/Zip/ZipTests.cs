@@ -2537,5 +2537,110 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 
 		}
+
+		[Test]
+		public void UpdateCommentOnlyInMemory()
+		{
+			MemoryStream ms = new MemoryStream();
+
+			using (ZipFile testFile = new ZipFile(ms))
+			{
+				testFile.IsStreamOwner = false;
+				testFile.BeginUpdate();
+				testFile.Add(new StringMemoryDataSource("Aha"), "No1", CompressionMethod.Stored);
+				testFile.Add(new StringMemoryDataSource("And so it goes"), "No2", CompressionMethod.Stored);
+				testFile.Add(new StringMemoryDataSource("No3"), "No3", CompressionMethod.Stored);
+				testFile.CommitUpdate();
+
+				Assert.IsTrue(testFile.TestArchive(true));
+			}
+
+			using (ZipFile testFile = new ZipFile(ms))
+			{
+				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.AreEqual("", testFile.ZipFileComment);
+				testFile.IsStreamOwner = false;
+
+				testFile.BeginUpdate();
+				testFile.SetComment("Here is my comment");
+				testFile.CommitUpdate();
+
+				Assert.IsTrue(testFile.TestArchive(true));
+			}
+
+			using (ZipFile testFile = new ZipFile(ms))
+			{
+				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.AreEqual("Here is my comment", testFile.ZipFileComment);
+			}
+		}
+
+		[Test]
+		[Category("CreatesTempFile")]
+		public void UpdateCommentOnlyOnDisk()
+		{
+			string tempFile = GetTempFilePath();
+			Assert.IsNotNull(tempFile, "No permission to execute this test?");
+
+			tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
+			if ( File.Exists(tempFile) ) {
+				File.Delete(tempFile);
+			}
+
+			using (ZipFile testFile = ZipFile.Create(tempFile)) {
+				testFile.BeginUpdate();
+				testFile.Add(new StringMemoryDataSource("Aha"), "No1", CompressionMethod.Stored);
+				testFile.Add(new StringMemoryDataSource("And so it goes"), "No2", CompressionMethod.Stored);
+				testFile.Add(new StringMemoryDataSource("No3"), "No3", CompressionMethod.Stored);
+				testFile.CommitUpdate();
+
+				Assert.IsTrue(testFile.TestArchive(true));
+			}
+
+			using (ZipFile testFile = new ZipFile(tempFile)) {
+				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.AreEqual("", testFile.ZipFileComment);
+
+				testFile.BeginUpdate(new DiskArchiveStorage(testFile, FileUpdateMode.Direct));
+				testFile.SetComment("Here is my comment");
+				testFile.CommitUpdate();
+
+				Assert.IsTrue(testFile.TestArchive(true));
+			}
+
+			using (ZipFile testFile = new ZipFile(tempFile)) {
+				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.AreEqual("Here is my comment", testFile.ZipFileComment);
+			}
+			File.Delete(tempFile);
+
+			// Variant using indirect updating.
+			using (ZipFile testFile = ZipFile.Create(tempFile)) {
+				testFile.BeginUpdate();
+				testFile.Add(new StringMemoryDataSource("Aha"), "No1", CompressionMethod.Stored);
+				testFile.Add(new StringMemoryDataSource("And so it goes"), "No2", CompressionMethod.Stored);
+				testFile.Add(new StringMemoryDataSource("No3"), "No3", CompressionMethod.Stored);
+				testFile.CommitUpdate();
+
+				Assert.IsTrue(testFile.TestArchive(true));
+			}
+
+			using (ZipFile testFile = new ZipFile(tempFile)) {
+				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.AreEqual("", testFile.ZipFileComment);
+
+				testFile.BeginUpdate();
+				testFile.SetComment("Here is my comment");
+				testFile.CommitUpdate();
+
+				Assert.IsTrue(testFile.TestArchive(true));
+			}
+
+			using (ZipFile testFile = new ZipFile(tempFile)) {
+				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.AreEqual("Here is my comment", testFile.ZipFileComment);
+			}
+			File.Delete(tempFile);
+		}
 	}
 }
