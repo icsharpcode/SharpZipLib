@@ -1429,7 +1429,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			CheckUpdating();
 			contentsEdited_ = true;
 			updates_.Add(new ZipUpdate(dataSource, GetTransformedFileName(entryName),
-			                           CompressionMethod.Deflated));
+									   CompressionMethod.Deflated));
 		}
 
 		/// <summary>
@@ -1447,7 +1447,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			CheckUpdating();
 			contentsEdited_ = true;
 			updates_.Add(new ZipUpdate(dataSource, GetTransformedFileName(entryName),
-			                           compressionMethod));
+									   compressionMethod));
 		}
 
 		/// <summary>
@@ -2250,9 +2250,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		void Reopen()
 		{
-
 			if (Name == null) {
-				throw new InvalidOperationException("Name is no known cannot ReOpen");
+				throw new InvalidOperationException("Name is not known cannot Reopen");
 			}
 
 			Reopen(File.OpenRead(Name));
@@ -2273,22 +2272,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 				baseStream_ = null;
 			}
 			else {
-                if (archiveStorage_.UpdateMode == FileUpdateMode.Direct) {
-                    // TODO: archiveStorage wasnt intended for this and doesnt really fit.
-                    // Need to revisit this to tidy up handling as archive storage currently doesnt 
-                    // handle the original stream well.
-                    // The problem is when using an existing zip archive with an in memory archive storage.
-                    // The open stream wont support writing but the memory storage should open the same file not an in memory one.
+				if (archiveStorage_.UpdateMode == FileUpdateMode.Direct) {
+					// TODO: archiveStorage wasnt intended for this use.
+					// Need to revisit this to tidy up handling as archive storage currently doesnt 
+					// handle the original stream well.
+					// The problem is when using an existing zip archive with an in memory archive storage.
+					// The open stream wont support writing but the memory storage should open the same file not an in memory one.
 
-                    // Need to tidy up the archive storage interface and contract basically.
-                    baseStream_ = archiveStorage_.OpenForDirectUpdate(baseStream_);
-                    updateFile = new ZipHelperStream(baseStream_);
-                }
-                else {
-                    baseStream_.Close();
-                    baseStream_ = null;
-                    updateFile = new ZipHelperStream(Name);
-                }
+					// Need to tidy up the archive storage interface and contract basically.
+					baseStream_ = archiveStorage_.OpenForDirectUpdate(baseStream_);
+					updateFile = new ZipHelperStream(baseStream_);
+				}
+				else {
+					baseStream_.Close();
+					baseStream_ = null;
+					updateFile = new ZipHelperStream(Name);
+				}
 			}
 			using ( updateFile ) {
 				long locatedCentralDirOffset = 
@@ -2377,7 +2376,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				workFile.baseStream_.Position = 0;
 				directUpdate = true;
 
-				// Sort the updates with order offset within copies/modifies, then adds.
+				// Sort the updates by offset within copies/modifies, then adds.
 				// This ensures that copies will not overwrite any required data.
 				updates_.Sort(new UpdateComparer());
 			}
@@ -2436,7 +2435,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				endOfStream = workFile.baseStream_.Position;
- 
+
 				// And now patch entries...
 				foreach ( ZipUpdate update in updates_ ) {
 					// If the size of the entry is zero leave the crc as 0 as well.
@@ -2776,8 +2775,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				StreamUtils.ReadFully(baseStream_, comment);
 				comment_ = ZipConstants.ConvertToString(comment); 
 			}
-			else
-			{
+			else {
 				comment_ = string.Empty;
 			}
 			
@@ -3466,7 +3464,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	#endregion
 	#region Archive Storage
 	/// <summary>
-	/// Describes facilities for generic storage when updating Zip Archives.
+	/// Defines facilities for data storage when updating Zip Archives.
 	/// </summary>
 	public interface IArchiveStorage
 	{
@@ -3476,16 +3474,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		FileUpdateMode UpdateMode { get; }
 
 		/// <summary>
-		/// Get an empty <see cref="Stream"/> that can be used for temporary output
+		/// Get an empty <see cref="Stream"/> that can be used for temporary output.
 		/// </summary>
 		/// <returns>Returns a temporary output <see cref="Stream"/></returns>
 		/// <seealso cref="ConvertTemporaryToFinal"></seealso>
 		Stream GetTemporaryOutput();
 
 		/// <summary>
-		/// Convert a temporary stream to a final stream.
+		/// Convert a temporary output stream to a final stream.
 		/// </summary>
 		/// <returns>The resulting final <see cref="Stream"/></returns>
+		/// <seealso cref="GetTemporaryOutput"/>
 		Stream ConvertTemporaryToFinal();
 
 		/// <summary>
@@ -3495,13 +3494,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns a temporary output <see cref="Stream"/> that is a copy of the input.</returns>
 		Stream MakeTemporaryCopy(Stream stream);
 
-        /// <summary>
-        /// Return a stream suitable for performing direct updates on the original source.
-        /// </summary>
-        /// <param name="stream">The current stream.</param>
-        /// <returns>Returns a stream suitable for direct updating.</returns>
-        /// <remarks>This may be the current stream passed.</remarks>
-        Stream OpenForDirectUpdate(Stream stream);
+		/// <summary>
+		/// Return a stream suitable for performing direct updates on the original source.
+		/// </summary>
+		/// <param name="stream">The current stream.</param>
+		/// <returns>Returns a stream suitable for direct updating.</returns>
+		/// <remarks>This may be the current stream passed.</remarks>
+		Stream OpenForDirectUpdate(Stream stream);
 
 		/// <summary>
 		/// Dispose of this instance.
@@ -3527,9 +3526,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#region IArchiveStorage Members
 
 		/// <summary>
-		/// Gets the temporary output <see cref="Stream"/>
+		/// Gets a temporary output <see cref="Stream"/>
 		/// </summary>
 		/// <returns>Returns the temporary output stream.</returns>
+		/// <seealso cref="ConvertTemporaryToFinal"></seealso>
 		public abstract Stream GetTemporaryOutput();
 
 		/// <summary>
@@ -3537,20 +3537,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <returns>Returns a <see cref="Stream"/> that can be used to read
 		/// the final storage for the archive.</returns>
+		/// <seealso cref="GetTemporaryOutput"/>
 		public abstract Stream ConvertTemporaryToFinal();
 
 		/// <summary>
-		/// Make a temporary copy of the a <see cref="Stream"/>.
+		/// Make a temporary copy of a <see cref="Stream"/>.
 		/// </summary>
 		/// <param name="stream">The <see cref="Stream"/> to make a copy of.</param>
 		/// <returns>Returns a temporary output <see cref="Stream"/> that is a copy of the input.</returns>
 		public abstract Stream MakeTemporaryCopy(Stream stream);
 
-        /// <summary>
-        /// Return a stream suitable for performing direct updates on the original source.
-        /// </summary>
-        /// <returns>Returns a stream suitable for direct updating.</returns>
-        public abstract Stream OpenForDirectUpdate(Stream stream);
+		/// <summary>
+		/// Return a stream suitable for performing direct updates on the original source.
+		/// </summary>
+		/// <returns>Returns a stream suitable for direct updating.</returns>
+		public abstract Stream OpenForDirectUpdate(Stream stream);
 
 		/// <summary>
 		/// Disposes this instance.
@@ -3558,7 +3559,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public abstract void Dispose();
 
 		/// <summary>
-		/// Gets the update mode.
+		/// Gets the update mode applicable.
 		/// </summary>
 		/// <value>The update mode.</value>
 		public FileUpdateMode UpdateMode
@@ -3607,7 +3608,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#region IArchiveStorage Members
 
 		/// <summary>
-		/// Gets the temporary output <see cref="Stream"/>
+		/// Gets a temporary output <see cref="Stream"/> for performing updates on.
 		/// </summary>
 		/// <returns>Returns the temporary output stream.</returns>
 		public override Stream GetTemporaryOutput()
@@ -3627,7 +3628,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Converts the temporary <see cref="Stream"/> to its final form.
+		/// Converts a temporary <see cref="Stream"/> to its final form.
 		/// </summary>
 		/// <returns>Returns a <see cref="Stream"/> that can be used to read
 		/// the final storage for the archive.</returns>
@@ -3651,7 +3652,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				result = File.OpenRead(fileName_);
 			}
-			catch(Exception ex) {
+			catch(Exception) {
 				result  = null;
 
 				// Try to roll back changes...
@@ -3667,7 +3668,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Make a temporary copy of the a stream.
+		/// Make a temporary copy of a stream.
 		/// </summary>
 		/// <param name="stream">The <see cref="Stream"/> to copy.</param>
 		/// <returns>Returns a temporary output <see cref="Stream"/> that is a copy of the input.</returns>
@@ -3684,31 +3685,31 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return temporaryStream_;
 		}
 
-        /// <summary>
-        /// Return a stream suitable for performing direct updates on the original source.
-        /// </summary>
-        /// <returns>Returns a stream suitable for direct updating.</returns>
-        public override Stream OpenForDirectUpdate(Stream current)
-        {
-            Stream result;
-            if ((current == null) || !current.CanWrite)
-            {
-                if (current != null)
-                {
-                    current.Close();
-                }
+		/// <summary>
+		/// Return a stream suitable for performing direct updates on the original source.
+		/// </summary>
+		/// <returns>Returns a stream suitable for direct updating.</returns>
+		public override Stream OpenForDirectUpdate(Stream current)
+		{
+			Stream result;
+			if ((current == null) || !current.CanWrite)
+			{
+				if (current != null)
+				{
+					current.Close();
+				}
 
-                result = new FileStream(fileName_,
-                        FileMode.Open,
-                        FileAccess.ReadWrite);
-            }
-            else
-            {
-                result = current;
-            }
+				result = new FileStream(fileName_,
+						FileMode.Open,
+						FileAccess.ReadWrite);
+			}
+			else
+			{
+				result = current;
+			}
 
-            return result;
-        }
+			return result;
+		}
 
 		/// <summary>
 		/// Disposes this instance.
@@ -3782,10 +3783,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Initializes a new instance of the <see cref="MemoryArchiveStorage"/> class.
 		/// </summary>
 		/// <param name="updateMode">The <see cref="FileUpdateMode"/> to use</param>
+		/// <remarks>This constructor is for testing as memory streams dont really require safe mode.</remarks>
 		public MemoryArchiveStorage(FileUpdateMode updateMode)
 			: base(updateMode)
 		{
 		}
+
+		#endregion
+		#region Properties
+		/// <summary>
+		/// Get the stream returned by <see cref="ConvertTemporaryToFinal"/> if this was in fact called.
+		/// </summary>
+		public MemoryStream FinalStream
+		{
+			get { return finalStream_; }
+		}
+
 		#endregion
 		#region IArchiveStorage Members
 
@@ -3810,7 +3823,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ZipException("No temporary stream has been created");
 			}
 
-			return new MemoryStream(temporaryStream_.ToArray());
+			finalStream_ = new MemoryStream(temporaryStream_.ToArray());
+			return finalStream_;
 		}
 
 		/// <summary>
@@ -3826,29 +3840,30 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return temporaryStream_;
 		}
 
-        /// <summary>
-        /// Return a stream suitable for performing direct updates on the original source.
-        /// </summary>
-        /// <returns>Returns a stream suitable for direct updating.</returns>
-        public override Stream OpenForDirectUpdate(Stream stream)
-        {
-            Stream result;
-            if ((stream == null) || !stream.CanWrite)
-            {
-                if (stream != null)
-                {
-                    stream.Close();
-                }
+		/// <summary>
+		/// Return a stream suitable for performing direct updates on the original source.
+		/// </summary>
+		/// <returns>Returns a stream suitable for direct updating.</returns>
+		public override Stream OpenForDirectUpdate(Stream stream)
+		{
+			Stream result;
+			if ((stream == null) || !stream.CanWrite) {
 
-                result = new MemoryStream();
-            }
-            else
-            {
-                result = stream;
-            }
+				result = new MemoryStream();
 
-            return result;
-        }
+				if (stream != null) {
+					stream.Position = 0;
+					StreamUtils.Copy(stream, result, new byte[4096]);
+
+					stream.Close();
+				}
+			}
+			else {
+				result = stream;
+			}
+
+			return result;
+		}
 
 		/// <summary>
 		/// Disposes this instance.
@@ -3863,6 +3878,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion
 		#region Instance Fields
 		MemoryStream temporaryStream_;
+		MemoryStream finalStream_;
 		#endregion
 	}
 

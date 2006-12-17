@@ -189,21 +189,31 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Get or set the <see cref="ZipNameTransform"> active when creating Zip files.</see>
+		/// Get or set the <see cref="INameTransform"></see> active when creating Zip files.
 		/// </summary>
-		public ZipNameTransform NameTransform
+		public INameTransform NameTransform
 		{
-			get { return nameTransform_; }
+			get { return entryFactory_.NameTransform; }
 			set {
-				if ( value == null ) {
-					nameTransform_ = new ZipNameTransform();
-				}
-				else {
-					nameTransform_ = value;
-				}
+				entryFactory_.NameTransform = value;
 			}
 		}
 
+		/// <summary>
+		/// Get or set the <see cref="IEntryFactory"></see> active when creating Zip files.
+		/// </summary>
+		public IEntryFactory EntryFactory
+		{
+			get { return entryFactory_; }
+			set {
+				if ( value == null ) {
+					entryFactory_ = new ZipEntryFactory();
+				}
+				else {
+					entryFactory_ = value;
+				}
+			}
+		}
 		/// <summary>
 		/// Get/set a value indicating wether file dates and times should 
 		/// be restored when extracting files from an archive.
@@ -348,21 +358,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				
 				if (e.Name != sourceDirectory_) {
-					string cleanedName = nameTransform_.TransformDirectory(e.Name);
-					ZipEntry entry = new ZipEntry(cleanedName);
+					ZipEntry entry = entryFactory_.MakeDirectoryEntry(e.Name);
 					outputStream_.PutNextEntry(entry);
 				}
 			}
 		}
 		
-		void UpdateEntry(ZipEntry entry, FileInfo info)
-		{
-			// TODO: May want other dates for entries added  in FastZip...
-			entry.DateTime = info.LastWriteTime;
-			entry.Size = info.Length;
-			entry.ExternalFileAttributes = MakeExternalAttributes(info);
-		}
-
 		void ProcessFile(object sender, ScanEventArgs e)
 		{
 			if ( (events_ != null) && (events_.ProcessFile != null) ) {
@@ -370,12 +371,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			
 			if ( e.ContinueRunning ) {
-				string cleanedName = nameTransform_.TransformFile(e.Name);
-				ZipEntry entry = new ZipEntry(cleanedName);
-
-				FileInfo info = new FileInfo(e.Name);
-				UpdateEntry(entry, info);
-
+				ZipEntry entry = entryFactory_.MakeFileEntry(e.Name);
 				outputStream_.PutNextEntry(entry);
 				AddFileContents(e.Name);
 			}
@@ -518,7 +514,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		bool restoreDateTimeOnExtract_;
 		bool createEmptyDirectories_;
 		FastZipEvents events_;
-		ZipNameTransform nameTransform_;
+		IEntryFactory entryFactory_ = new ZipEntryFactory();
 		#endregion
 	}
 }

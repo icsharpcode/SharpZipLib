@@ -1,6 +1,8 @@
-// AssemblyInfo.cs
+// IEntryFactory.cs
 //
-// Copyright (C) 2001 Mike Krueger
+// Copyright 2006 John Reilly
+//
+// Copyright (C) 2001 Free Software Foundation, Inc.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,34 +36,33 @@
 // exception statement from your version.
 
 using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
-[assembly: CLSCompliant(true)]
+using ICSharpCode.SharpZipLib.Core;
 
-[assembly: AssemblyTitle("ICSharpCode.SharpZipLibrary")]
-[assembly: AssemblyDescription("A free C# compression library")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ICSharpCode.net")]
-[assembly: AssemblyProduct("#ZipLibrary")]
-[assembly: AssemblyCopyright("Copyright 2001-2005 Mike Krueger")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+namespace ICSharpCode.SharpZipLib.Zip
+{
+	/// <summary>
+	/// Defines factory mewthods for creating new <see cref="ZipEntry"></see> values.
+	/// </summary>
+	public interface IEntryFactory
+	{
+		/// <summary>
+		/// Create a <see cref="ZipEntry"/> for a file given its name
+		/// </summary>
+		/// <param name="fileName">The name of the file to create an entry for.</param>
+		/// <returns></returns>
+		ZipEntry MakeFileEntry(string fileName);
 
-[assembly: AssemblyVersion("0.85.1.267")]
-
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]
-
-[assembly: AssemblyDelaySign(false)]
-
-#if NET_VER_1
-#if VSTUDIO
-[assembly: AssemblyKeyFile("../../ICSharpCode.SharpZipLib.key")]
-#else
-[assembly: AssemblyKeyFile("../ICSharpCode.SharpZipLib.key")]
-#endif
-#endif
+		/// <summary>
+		/// Create a <see cref="ZipEntry"/> for a directory given its name
+		/// </summary>
+		/// <param name="directoryName">The name of the directory to create an entry for.</param>
+		/// <returns></returns>
+		ZipEntry MakeDirectoryEntry(string directoryName);
+		
+		/// <summary>
+		/// Get/set the <see cref="INameTransform"></see> applicable.
+		/// </summary>
+		INameTransform NameTransform { get; set;  }
+	}
+}
