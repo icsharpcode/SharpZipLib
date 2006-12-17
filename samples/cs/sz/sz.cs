@@ -113,7 +113,7 @@ namespace SharpZip
 					result = result + "-";
 
 				// Device
-				if ((attributes & 0x4=) != 0)
+				if ((attributes & 0x4) != 0)
 					result = result + "d";
 				else
 					result = result + "-";
