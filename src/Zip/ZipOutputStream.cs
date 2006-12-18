@@ -114,7 +114,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		bool patchEntryHeader;
 		long crcPatchPos = -1;
 		long sizePatchPos = -1;
-		UseZip64 useZip64_ = UseZip64.Dynamic;
+
+		// Default of off is backwards compatible and doesnt dump on
+		// XP's built in compression which cnat handle it
+		UseZip64 useZip64_ = UseZip64.Off;
 		#endregion
 
 		#region Constructors

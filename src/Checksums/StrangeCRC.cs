@@ -149,7 +149,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 			if (temp < 0) {
 				temp = 256 + temp;
 			}
-			globalCrc = (int)((globalCrc << 8) ^ crc32Table[temp]);
+			globalCrc = unchecked((int)((globalCrc << 8) ^ crc32Table[temp]));
 		}
 
 		/// <summary>

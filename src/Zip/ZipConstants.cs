@@ -60,10 +60,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 	public enum UseZip64
 	{
 		/// <summary>
-		/// #ZipLib will determine based on entry values when added to archive.
-		/// </summary>
-		Dynamic,
-		/// <summary>
 		/// Zip64 will not be forced on entries during processing.
 		/// </summary>
 		/// <remarks>An entry can have this overridden if required <see cref="ZipEntry.ForceZip64"></see></remarks>
@@ -72,6 +68,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Zip64 should always be used.
 		/// </summary>
 		On,
+		/// <summary>
+		/// #ZipLib will determine use based on entry values when added to archive.
+		/// </summary>
+		Dynamic,
 	}
 	
 	/// <summary>

@@ -17,8 +17,8 @@
 		<echo message="Building CreateZipFile example"/>
 		<copy todir="bin">
 			<fileset basedir="../../bin/ICSharpCode.SharpZipLib">
-						<include name="ICSharpCode.SharpZipLib.dll"/>
-					</fileset>
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+			</fileset>
 			</copy>
 			
 		<csc 
@@ -147,6 +147,20 @@
 			output="bin/zf.exe" 
 			debug="False">
 			<sources basedir="zf">
+				<include name="**/*.cs"/>
+			</sources>
+			<references basedir="bin">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</csc>
+
+		<!-- Compile FastZip sample -->
+		<echo message="Building FastZip sample"/>
+		<csc
+			target="exe" 
+			output="bin/fastzip.exe" 
+			debug="False">
+			<sources basedir="fastzip">
 				<include name="**/*.cs"/>
 			</sources>
 			<references basedir="bin">

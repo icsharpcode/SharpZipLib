@@ -438,7 +438,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				return;
 			}
 			
-			blockCRC = (uint)mCrc.Value;
+			blockCRC = unchecked((uint)mCrc.Value);
 			combinedCRC = (combinedCRC << 1) | (combinedCRC >> 31);
 			combinedCRC ^= blockCRC;
 			
@@ -466,7 +466,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			BsPutUChar(0x59);
 			
 			/*-- Now the block's CRC, so it is in a known place. --*/
-			BsPutint((int)blockCRC);
+			unchecked {
+				BsPutint((int)blockCRC);
+			}
 			
 			/*-- Now a single bit indicating randomisation. --*/
 			if (blockRandomised) {
@@ -496,7 +498,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			BsPutUChar(0x50);
 			BsPutUChar(0x90);
 			
-			BsPutint((int)combinedCRC);
+			unchecked {
+				BsPutint((int)combinedCRC);
+			}
 			
 			BsFinishedWithStream();
 		}
@@ -525,7 +529,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		{
 			while (bsLive >= 8) {
 				int ch = (bsBuff >> 24);
-				baseStream.WriteByte((byte)ch); // write 8-bit
+				unchecked{baseStream.WriteByte((byte)ch);} // write 8-bit
 				bsBuff <<= 8;
 				bsLive -= 8;
 				++bytesOut;

@@ -7,8 +7,9 @@
 //
 //------------------------------------------------------------------------------
 // Version History
-// 0.1 Initial version ported from sz sample.  Some stuff is not used or commented still
-// 0.2 Display files during extract. --env Now shows .NET version information.
+// 1 Initial version ported from sz sample.  Some stuff is not used or commented still
+// 2 Display files during extract. --env Now shows .NET version information.
+// 3 Add usezip64 option as a testing aid.
 
 
 using System;
@@ -102,7 +103,7 @@ namespace SharpZip
 
 #if OPTIONTEST
 					Console.WriteLine("args index [{0}] option [{1}] argument [{2}]", argIndex, option, optArg);
-#endif				
+#endif
 					if (option.Length == 0) 
 					{
 						System.Console.Error.WriteLine("Invalid argument (0}", args[argIndex]);
@@ -115,7 +116,7 @@ namespace SharpZip
 						{
 #if OPTIONTEST
 							Console.WriteLine("optionIndex {0}", optionIndex);
-#endif				
+#endif
 							switch(option[optionIndex]) 
 							{
 								case '-': // long option
@@ -163,6 +164,26 @@ namespace SharpZip
 										testData_ = true;
 										break;
 
+									case "-zip64":
+										if ( optArg.Length > 0 )
+										{
+											switch ( optArg )
+											{
+												case "on":
+													useZip64_ = UseZip64.On;
+													break;
+													
+												case "off":
+													useZip64_ = UseZip64.Off;
+													break;
+													
+												case "auto":
+													useZip64_ = UseZip64.Dynamic;
+													break;
+											}
+										}
+										break;
+										
 									case "-encoding":
 										if (optArg.Length > 0) 
 										{
@@ -175,7 +196,7 @@ namespace SharpZip
 													{
 #if OPTIONTEST
 														Console.WriteLine("Encoding set to {0}", enc);
-#endif				
+#endif
 														ZipConstants.DefaultCodePage = enc;
 													} 
 													else 
@@ -340,7 +361,7 @@ namespace SharpZip
 				{
 #if OPTIONTEST
 					Console.WriteLine("file spec {0} = '{1}'", argIndex, args[argIndex]);
-#endif				
+#endif
 					fileSpecs_.Add(args[argIndex]);
 				}
 				++argIndex;
@@ -350,7 +371,7 @@ namespace SharpZip
 			{
 				string checkPath = (string)fileSpecs_[0];
 				int deviceCheck = checkPath.IndexOf(':');
-#if NET_VER_1				
+#if NET_VER_1
 				if (checkPath.IndexOfAny(Path.InvalidPathChars) >= 0
 #else
 				if (checkPath.IndexOfAny(Path.GetInvalidPathChars()) >= 0
@@ -396,7 +417,7 @@ namespace SharpZip
 		void ShowVersion() 
 		{
 			seenHelp_ = true;
-			Console.Out.WriteLine("ZipFile Archiver v0.2   Copyright 2006 John Reilly");
+			Console.Out.WriteLine("ZipFile Archiver v0.3   Copyright 2006 John Reilly");
 			
 			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
@@ -440,6 +461,7 @@ namespace SharpZip
 			Console.Out.WriteLine("--version                  Show version information");
 			Console.Out.WriteLine("-r                         Recurse sub-folders");
 			Console.Out.WriteLine("-s=password                Set archive password");
+			Console.Out.WriteLine("--zip64=[on|off|auto]      Zip64 extension handling to use");
 
 
 			/*
@@ -621,6 +643,8 @@ namespace SharpZip
 				using (ZipFile zf = ZipFile.Create(zipFileName) )
 				{
 					zf.Password = password_;
+					zf.UseZip64 = useZip64_;
+					
 					zf.BeginUpdate();
 
 					activeZipFile_ = zf;
@@ -678,7 +702,7 @@ namespace SharpZip
 #if TEST
 			Console.WriteLine("Decompress targetfile name " + entryFileName);
 			Console.WriteLine("Decompress targetpath " + fullPath);
-#endif						
+#endif
 						
 			// Could be an option or parameter to allow failure or try creation
 			if (Directory.Exists(fullPath) == false)
@@ -1009,6 +1033,8 @@ namespace SharpZip
 				using (zipFile)
 				{
 					zipFile.Password = password_;
+					zipFile.UseZip64 = useZip64_;
+					
 					zipFile.BeginUpdate();
 
 					activeZipFile_ = zipFile;
@@ -1390,6 +1416,11 @@ namespace SharpZip
 		/// The size of buffer to provide. <see cref="GetBuffer"></see>
 		/// </summary>
 		int bufferSize_ = 4096;
+		
+		/// <summary>
+		/// The Zip64 extension use to apply.
+		/// </summary>
+		UseZip64 useZip64_ = UseZip64.Off;
 		#endregion
 	}
 }

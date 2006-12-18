@@ -276,7 +276,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// </summary>		
 		public int Adler {
 			get {
-				return (int)adler.Value;
+				return unchecked((int)adler.Value);
 			}
 		}
 
@@ -432,7 +432,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			}
 #endif
 			prev[strstart & WMASK] = match = head[hash];
-			head[hash] = (short)strstart;
+			head[hash] = unchecked((short)strstart);
 			ins_h = hash;
 			return match & 0xffff;
 		}

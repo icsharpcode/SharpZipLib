@@ -93,8 +93,6 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		/// </summary>
 		const uint BASE = 65521;
 		
-		uint checksum;
-		
 		/// <summary>
 		/// Returns the Adler32 data checksum computed so far.
 		/// </summary>
@@ -231,5 +229,9 @@ namespace ICSharpCode.SharpZipLib.Checksums
 			
 			checksum = (s2 << 16) | s1;
 		}
+		
+		#region Instance Fields
+		uint checksum;
+		#endregion
 	}
 }
