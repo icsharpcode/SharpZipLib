@@ -1,14 +1,16 @@
 Changes since v0.85
 
-+ BREAKING CHANGE:  Zip name transform implementations and other classes no longer support non-relative paths.
-+ Update to Compact Framework handling to cater for CF 2.0 as well as 1.0
-+ GZipOutputStream header writing delayed allowing the class to be used with HTTP and IIS (via HttpResponse.Filter).  This was supposed to be fixed in 0.6 but was ommited.
++ BREAKING CHANGE:  Zip name transform implementations and other classes no longer directly support non-relative paths.
++ Update to Compact Framework handling to cater for CF 2.0 as well as 1.0 (minus encryption for 1.0)
 + Fix for Zip64 descriptor handling.
++ Zip64 handling altered to default to "Zip32" for compatability.
 + Add preliminary implementation for handlng of full unicode names.
 + Fix up encryption handling for ZipFile during updates.
-+ ZIP-149 SVN Revision number incorporated in builds.
 + Fix for updating bug were comment is the only thing updated.
-+ Add IEntryFactory interface and default implementation.
++ Add IEntryFactory interface and default implementation.  Used in FastZip class currently.
++ ZIP-1216 GZipOutputStream header writing delayed allowing the class to be used with HTTP and IIS (via HttpResponse.Filter).  This was supposed to be fixed in 0.6 but was ommited.
++ ZIP-149 SVN Revision number incorporated in builds.
++ ZIP-1245 CF Build support added
 
 Changes since v0.84
 + Mod time written in gzip header corrected.

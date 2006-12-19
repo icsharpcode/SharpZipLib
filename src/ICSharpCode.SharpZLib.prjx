@@ -63,6 +63,8 @@
     <File name=".\Zip\ZipHelperStream.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\Zip\ZipExtraData.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name=".\Core\StreamUtils.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Zip\ZipEntryFactory.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name=".\Zip\IEntryFactory.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References />
   <DeploymentInformation target="" script="" strategy="File" />

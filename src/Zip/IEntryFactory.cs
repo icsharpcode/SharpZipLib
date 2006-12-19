@@ -42,7 +42,7 @@ using ICSharpCode.SharpZipLib.Core;
 namespace ICSharpCode.SharpZipLib.Zip
 {
 	/// <summary>
-	/// Defines factory mewthods for creating new <see cref="ZipEntry"></see> values.
+	/// Defines factory methods for creating new <see cref="ZipEntry"></see> values.
 	/// </summary>
 	public interface IEntryFactory
 	{

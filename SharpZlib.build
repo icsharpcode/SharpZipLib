@@ -18,7 +18,7 @@
 -->	
 	
 	<target name="build"
-		description="Build the current source generating appropriate build artifacts">
+		description="Build the current source.">
 		<echo message="Building #ZipLib"/>
 		<csc 
 			target="library" 
@@ -35,7 +35,7 @@
 	</target>
 
 	<target name="build.cf"
-		description="Build for compact framework using version defined in build.cf property">
+		description="Build for compact framework. Version defined in build.cf property">
 		<echo message="Building #ZipLib for compact framework"/>
 		<csc 
 			target="library" 
@@ -57,7 +57,7 @@
 	</target>
 
 	<target name="preparerelease"
-		description="Prepeare for a relase by setting up versions etc.">
+		description="Prepare for a release.">
 		<script language="C#">
 			<code><![CDATA[
 		static StringCollection SearchDirectory(string directory, string filemask)
@@ -196,13 +196,13 @@
 	</target>
 	
 	<target name="releasebuild"
-		description="Prepare and buils a release version">
+		description="Prepare and builds a release version">
 		<call target="preparerelease" />
 		<call target="build" />	
 	</target>
 
 	<target name="clean"
-		description="Remove build artifacts">
+		description="Remove build artefacts">
 			<delete verbose="true" >
 			<fileset basedir=".">
 				<include name="bin/ICSharpCode.SharpZipLib.dll"/>
