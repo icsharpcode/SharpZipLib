@@ -1,30 +1,121 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8" ?>
 
-<project name="#ZipLib" default="build" basedir=".">
-	<property name="debug" value="False"/>
-	<property name="optimize" value="True"/>
-	<property name="version" value="0.85.1"/>
-	<property name="build.cf" value="COMPACT_FRAMEWORK_V10" />
-	<property name="cf.path" value="C:/Program Files/Microsoft Visual Studio 8/SmartDevices/SDK/CompactFramework/2.0/v1.0/WindowsCE" />
+<!-- Nant style build file for #ZipLib -->
 
-<!--    Use this to compile for compact framework V2.0, once you have set up the correct path
-	<property name="build.cf" value="COMPACT_FRAMEWORK_V20" />
-	<property name="cf.path" value="C:/Program Files/Microsoft Visual Studio 8/SmartDevices/SDK/CompactFramework/2.0/v2.0/WindowsCE" />
+<project name="#ZipLib"	default="build" basedir="." >
+
+	<!-- Setup Properties -->
+	<property name="debug" value="false"/>
+	<property name="optimize" value="true"/>
+	<property name="checked" value="false" />
+	<property name="version" value="0.85.2"/>
+	<property name="build.output.dir" value="bin" />
+	<property name="sharpziplib.name" value="ICSharpCode.SharpZipLib.dll" />
+	<property name="build.sharpziplib.path" value="${build.output.dir}/${sharpziplib.name}" />
+
+	<!-- Definitions to pass to compiler for compact framework -->
+	<property name="build.cf.defines.v1" value="COMPACT_FRAMEWORK_V10" />
+	<property name="build.cf.defines.v2" value="COMPACT_FRAMEWORK_V20" />
+
+	<!-- System dependant properties.  These may need adjusting for your machine -->
+	<property name="cf.path.v1.2005" value="${environment::get-variable('ProgramFiles')}/Microsoft Visual Studio 8/SmartDevices/SDK/CompactFramework/2.0/v1.0/WindowsCE" />
+	<property name="cf.path.v2.2005" value="${environment::get-variable('ProgramFiles')}/Microsoft Visual Studio 8/SmartDevices/SDK/CompactFramework/2.0/v2.0/WindowsCE" />
+	<property name="cf.path.v1.2003" value="${environment::get-variable('ProgramFiles')}/Microsoft Visual Studio .NET 2003/CompactFrameworkSDK/v1.0.5000/Windows CE" />
+	
+	<!-- Choose properties for actual build here -->
+	<property name="build.cf.defines" value="${build.cf.defines.v1}" />
+	<property name="cf.path" value="${cf.path.v1.2003}" />
+	<property name="release.output.dir" value="bin/release" />
+
+	<target
+		name="build"
+		depends="build.run"
+		description="Build the current source."
+	/>
+
+	<target
+		name="build_cf"
+		depends="build_cf.run"
+		description="Build for compact framework. Version defined in build.cf.defines property"
+	/>
+
+	<target name="rebuild"
+		description="Clean and rebuild"
+		depends="clean, build"
+	/>
+
+	<target 
+		name="clean"
+		depends="clean.run"
+		description="Remove build artefacts"
+	/>
+
+	<target
+		name="test"
+		depends="test.run"
+		description="Run unit tests"
+	/>
+
+	<target
+		name="preparerelease"
+		depends="preparerelease.run"
+		description="Prepare for a release." 
+	/>
+
+	<!-- Low level internal subtargets -->
+	<target
+		name="build.run"
+		depends="build.run.desktop"
+	/>
+
+	<target
+		name="release.run" >
+<!-- Speculative notes more than real working build.  A lot to sort out.
+		<call target="preparerelease" />
+		<delete dir="${release.output.dir}" if="${directory::exists('${release.output.dir}')}" />
+		<mkdir dir="${release.output.dir}" />
+		<call target="clean" />
+		<call target="build.run.desktop" />
+		<zip zipfile="${release.output.dir}/ICSharpCode.SharpZipLib_11.zip" >
+			<fileset basedir="${build.output.dir}">
+				<include name="${build.target.name}" />
+			</fileset>
+		</zip>
+		<call target="clean" />
 -->
-	
-<!--	Use this to compile for compact framework V1.0, once you have set up the correct path
-	<property name="build.cf" value="COMPACT_FRAMEWORK_V10" />
-	<property name="cf.path" value="C:/Program Files/Microsoft Visual Studio .NET 2003/CompactFrameworkSDK/v1.0.5000/Windows CE" />
--->	
-	
-	<target name="build"
-		description="Build the current source.">
+
+		<echo message="release building is not working" />
+	</target>
+
+	<target name="clean.run">
+		<delete verbose="true" >
+			<fileset basedir=".">
+				<include name="${build.output.dir}/ICSharpCode.SharpZipLib.dll"/>
+				<include name="${build.output.dir}/ICSharpCode.SharpZipLib.pdb"/>
+			</fileset>
+		</delete>
+		<nant buildfile = "samples/cs/samples.build" target="clean"/>
+		<nant buildfile = "samples/vb/samples.build" target="clean"/>
+		<nant buildfile = "tests/tests.build" target="clean"/>
+	</target>
+
+	<target
+		name="test.run"
+		depends="build" >
+		<nant buildfile="tests/tests.build" target="test"/>
+	</target>
+
+	<target name="build.run.desktop" >
 		<echo message="Building #ZipLib"/>
 		<csc 
 			target="library" 
-			output="bin/ICSharpCode.SharpZipLib.dll" 
+			output="${build.sharpziplib.path}" 
 			optimize="${optimize}"
-			debug="${debug}">
+			debug="${debug}"
+			checked="${checked}"
+			platform="anycpu"
+			keyfile="ICSharpCode.SharpZipLib.key"
+		>
 			
 			<sources basedir="src">
 				<include name="**/*.cs"/>
@@ -34,17 +125,18 @@
 		<nant buildfile = "samples/vb/samples.build" />
 	</target>
 
-	<target name="build.cf"
-		description="Build for compact framework. Version defined in build.cf property">
+	<target name="build_cf.run">
 		<echo message="Building #ZipLib for compact framework"/>
 		<csc 
 			target="library" 
-			output="bin/ICSharpCode.SharpZipLib.dll" 
+			output="${build.sharpziplib.path}" 
 			optimize="${optimize}"
 			debug="${debug}"
 			nostdlib="true"
 			noconfig="true"
-			define="${build.cf}"
+			checked="${checked}"
+			define="${build.cf.defines}"
+			keyfile="ICSharpCode.SharpZipLib.key"
 		>
 			<sources basedir="src">
 				<include name="**/*.cs"/>
@@ -56,8 +148,8 @@
 		</csc>
 	</target>
 
-	<target name="preparerelease"
-		description="Prepare for a release.">
+	<target name="preparerelease.run" >
+
 		<script language="C#">
 			<code><![CDATA[
 		static StringCollection SearchDirectory(string directory, string filemask)
@@ -187,7 +279,6 @@
 		
 		public static void ScriptMain(Project project) 
 		{
-			Console.WriteLine("Hello World");
 			RetrieveRevisionNumber();
 			SetVersion(".", project.Properties["version"].ToString());
 		}
@@ -195,32 +286,4 @@
 		</script>
 	</target>
 	
-	<target name="releasebuild"
-		description="Prepare and builds a release version">
-		<call target="preparerelease" />
-		<call target="build" />	
-	</target>
-
-	<target name="clean"
-		description="Remove build artefacts">
-			<delete verbose="true" >
-			<fileset basedir=".">
-				<include name="bin/ICSharpCode.SharpZipLib.dll"/>
-				<include name="bin/ICSharpCode.SharpZipLib.pdb"/>
-			</fileset>
-		</delete>
-		<nant buildfile = "samples/cs/samples.build" target="clean"/>
-		<nant buildfile = "samples/vb/samples.build" target="clean"/>
-		<nant buildfile = "tests/tests.build" target="clean"/>
-	</target>
-
-	<target name="rebuild"
-		description="Clean and rebuild"
-		depends="clean, build" />
-
-	<target name="test"
-		description="Run unit tests"
-		depends = "build">
-		<nant buildfile="tests/tests.build" target="test"/>
-	</target>
 </project>

@@ -1,29 +1,26 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 
 <project name="SharpZipLib C# Examples" default="build" basedir=".">
 
+	<property name="build.dir" value="bin" />
+
 	<target name="setup">
 		<echo message="Setup"/>
-		<copy todir="bin">
+		<copy todir="${build.dir}">
 			<fileset basedir="../../bin">
-						<include name="ICSharpCode.SharpZipLib.dll"/>
-					</fileset>
-			</copy>
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+			</fileset>
+		</copy>
 	</target>
 
-	<target name="build" depends="setup" >
+	<target name="build" depends="setup" description="Build samples" >
 		
 		<!-- compile CreateZipFile example -->
 		<echo message="Building CreateZipFile example"/>
-		<copy todir="bin">
-			<fileset basedir="../../bin/ICSharpCode.SharpZipLib">
-				<include name="ICSharpCode.SharpZipLib.dll"/>
-			</fileset>
-			</copy>
 			
 		<csc 
 			target="exe" 
-			output="bin/createzipfile.exe" 
+			output="${build.dir}/createzipfile.exe" 
 			debug="False">
 			
 			<sources basedir="CreateZipFile">
@@ -39,7 +36,7 @@
 		<echo message="Building minigzip example"/>
 		<csc 
 			target="exe" 
-			output="bin/minigzip.exe" 
+			output="${build.dir}/minigzip.exe" 
 			debug="False">
 			
 			<sources basedir="minigzip">
@@ -50,11 +47,11 @@
 			</references>
 		</csc>
 
-		<!-- compile sz archvier example -->
+		<!-- compile sz archiver example -->
 		<echo message="Building sz example"/>
 		<csc 
 			target="exe" 
-			output="bin/sz.exe" 
+			output="${build.dir}/sz.exe" 
 			debug="False">
 			
 			<sources basedir="sz">
@@ -69,7 +66,7 @@
 		<echo message="Building viewzipfile example"/>
 		<csc 
 			target="exe" 
-			output="bin/viewzipfile.exe" 
+			output="${build.dir}/viewzipfile.exe" 
 			debug="False">
 			
 			<sources basedir="viewzipfile">
@@ -84,7 +81,7 @@
 		<echo message="Building unzipfile example"/>
 		<csc 
 			target="exe" 
-			output="bin/unzipfile.exe" 
+			output="${build.dir}/unzipfile.exe" 
 			debug="False">
 			
 			<sources basedir="unzipfile">
@@ -99,7 +96,7 @@
 		<echo message="Building minibzip2 example"/>
 		<csc 
 			target="exe" 
-			output="bin/minibzip2.exe" 
+			output="${build.dir}/minibzip2.exe" 
 			debug="False">
 			
 			<sources basedir="minibzip2">
@@ -114,7 +111,7 @@
 		<echo message="Building tar example"/>
 		<csc 
 			target="exe" 
-			output="bin/tar.exe" 
+			output="${build.dir}/tar.exe" 
 			debug="False">
 			
 			<sources basedir="tar">
@@ -129,7 +126,7 @@
 		<echo message="Building zipfiletest example"/>
 		<csc 
 			target="exe" 
-			output="bin/zipfiletest.exe" 
+			output="${build.dir}/zipfiletest.exe" 
 			debug="False">
 			
 			<sources basedir="zipfiletest">
@@ -144,7 +141,7 @@
 		<echo message="Building zf sample"/>
 		<csc
 			target="exe" 
-			output="bin/zf.exe" 
+			output="${build.dir}/zf.exe" 
 			debug="False">
 			<sources basedir="zf">
 				<include name="**/*.cs"/>
@@ -158,7 +155,7 @@
 		<echo message="Building FastZip sample"/>
 		<csc
 			target="exe" 
-			output="bin/fastzip.exe" 
+			output="${build.dir}/fastzip.exe" 
 			debug="False">
 			<sources basedir="fastzip">
 				<include name="**/*.cs"/>
@@ -169,15 +166,15 @@
 		</csc>
 	</target>
 	
-	<target name="clean">
-			<delete verbose="true" >
-			<fileset basedir="bin">
+	<target name="clean" description="Remove build artefacts">
+		<delete verbose="true" >
+			<fileset basedir="${build.dir}">
 				<include name="*.exe"/>
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</fileset>
 		</delete>
 	</target>
 
-	<target name="rebuild" depends="clean, build" />
+	<target name="rebuild" depends="clean, build" description="Rebuild samples" />
 
 </project>

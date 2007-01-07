@@ -1,12 +1,12 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 
 <project name="Tests" default="build" basedir=".">
 	<property name="debug" value="False"/>
 	<property name="optimize" value="True"/>
 	<property name="build.dir" value="."/>
-	<property name="nant.dir" value="C:/Program Files/NUnit-Net-2.0 2.2.8"/>
+	<property name="nunit.dir" value="${environment::get-variable('ProgramFiles')}/NUnit-Net-2.0 2.2.9"/>
 
-	<target name="build">
+	<target name="build" description="Build unit tests">
 		<copy todir="bin/debug">
 			<fileset basedir="../bin">
 	                	<include name="ICSharpCode.SharpZipLib.dll"/>
@@ -26,12 +26,12 @@
 			</sources>
 			<references basedir="bin/debug">
 				<include name="ICSharpCode.SharpZipLib.dll" />
-				<include name="${nant.dir}/bin/nunit.framework.dll" />
+				<include name="${nunit.dir}/bin/nunit.framework.dll" />
 			</references>
 		</csc>
 	</target>
 	
-	<target name="clean">
+	<target name="clean" description="Remove build artefacts">
 		<echo message="Cleaning #ZipLib Tests"/>
 	        <delete verbose="true" >
 			<fileset basedir=".">
@@ -40,9 +40,9 @@
 		</delete>
 	</target>
 
-	<target name="rebuild" depends="clean, build" />
+	<target name="rebuild" depends="clean, build" description="Rebuild unit tests" />
 
-	<target name="test" depends="build">
+	<target name="test" depends="build" description="Run unit tests" >
 		<echo message="Running #ZipLib Tests"/>
 		<nunit2>
 		 	<formatter type="Xml" usefile="true" extension=".xml" outputdir="${build.dir}/results" />

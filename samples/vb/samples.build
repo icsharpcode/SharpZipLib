@@ -1,13 +1,13 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 
 <project name="SharpZipLib VB.NET Examples" default="build" basedir=".">
 	<target name="setup">
 		<echo message="Setup"/>
 		<copy todir="bin">
 			<fileset basedir="../../bin">
-						<include name="ICSharpCode.SharpZipLib.dll"/>
-					</fileset>
-			</copy>
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="build" depends="setup">
@@ -30,8 +30,10 @@
 		</vbc>
 
 		<!-- compile minigzip example -->
+
+<!-- There is no such sample currently
+
 		<echo message="Building minigzip example"/>
-<!--    	
 		<vbc 
 			target="exe" 
 			output="bin/minigzip.exe" 
@@ -44,10 +46,11 @@
 				<include name="System.dll"/>
 				<include name="System.Drawing.dll"/>
 				<include name="System.Windows.Forms.dll"/>
-				<include name="bin/arpCode.SharpZipLib.dll"/>
+				<include name="bin/ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</vbc>
 -->
+
 		<!-- compile viewzipfile example -->
 		<echo message="Building viewzipfile example"/>
 		<vbc 
