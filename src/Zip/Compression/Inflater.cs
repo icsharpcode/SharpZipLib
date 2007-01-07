@@ -158,14 +158,14 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// The total number of inflated bytes.
 		/// </summary>
-		int totalOut;
+		long totalOut;
 		
 		/// <summary>
 		/// The total number of bytes set with setInput().  This is not the
 		/// value returned by the TotalIn property, since this also includes the
 		/// unprocessed input.
 		/// </summary>
-		int totalIn;
+		long totalIn;
 		
 		/// <summary>
 		/// This variable stores the noHeader flag that was given to the constructor.
@@ -219,7 +219,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		public void Reset()
 		{
 			mode = noHeader ? DECODE_BLOCKS : DECODE_HEADER;
-			totalIn = totalOut = 0;
+			totalIn = 0;
+			totalOut = 0;
 			input.Reset();
 			outputWindow.Reset();
 			dynHeader = null;
@@ -654,7 +655,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		public void SetInput(byte[] buffer, int index, int count)
 		{
 			input.SetInput(buffer, index, count);
-			totalIn += count;
+			totalIn += (long)count;
 		}
 		
 		/// <summary>
@@ -765,7 +766,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 						adler.Update(buffer, offset, more);
 						offset += more;
 						bytesCopied += more;
-						totalOut += more;
+						totalOut += (long)more;
 						count -= more;
 						if (count == 0) {
 							return bytesCopied;
@@ -827,7 +828,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <returns>
 		/// the total number of output bytes.
 		/// </returns>
-		public int TotalOut {
+		public long TotalOut {
 			get {
 				return totalOut;
 			}
@@ -839,9 +840,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <returns>
 		/// The total number of bytes of processed input bytes.
 		/// </returns>
-		public int TotalIn {
+		public long TotalIn {
 			get {
-				return totalIn - RemainingInput;
+				return totalIn - (long)RemainingInput;
 			}
 		}
 		
@@ -854,6 +855,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// The number of bytes of the input which have not been processed.
 		/// </returns>
 		public int RemainingInput {
+			// TODO: This should be a long?
 			get {
 				return input.AvailableBytes;
 			}
