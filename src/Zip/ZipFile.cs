@@ -278,7 +278,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		Direct,
 	}
 	#endregion
-	
 	#region ZipFile Class
 	/// <summary>
 	/// This class represents a Zip archive.  You can ask for the contained
@@ -404,7 +403,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			name_ = name;
 
-			isStreamOwner = false; // Not owner until stream opens
 			baseStream_ = File.OpenRead(name);
 			isStreamOwner = true;
 			
@@ -438,6 +436,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			baseStream_  = file;
 			name_ = file.Name;
+			isStreamOwner = true;
 			
 			try {
 				ReadEntries();
@@ -469,6 +468,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			baseStream_  = stream;
+			isStreamOwner = true;
 		
 			if ( baseStream_.Length > 0 ) {
 				try {
@@ -529,9 +529,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException("fileName");
 			}
 
+			FileStream fs = File.Create(fileName);
+			
 			ZipFile result = new ZipFile();
 			result.name_ = fileName;
-			result.baseStream_ = File.Create(fileName);
+			result.baseStream_ = fs;
+			result.isStreamOwner = true;
 			return result;
 		}
 		
@@ -2997,7 +3000,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		string     name_;
 		string     comment_;
 		Stream     baseStream_;
-		bool       isStreamOwner = true;
+		bool       isStreamOwner;
 		long       offsetOfFirstEntry;
 		ZipEntry[] entries_;
 		byte[] key;
