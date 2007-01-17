@@ -19,6 +19,7 @@
     <BaseAddress>4194304</BaseAddress>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <FileAlignment>4096</FileAlignment>
+    <StartArguments>SharpZipLibTests</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>False</DebugSymbols>
@@ -36,6 +37,10 @@
     <OutputPath>..\bin\</OutputPath>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DebugType>Full</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <StartAction>Program</StartAction>
+    <StartProgram>..\..\..\..\..\..\..\..\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit-gui.exe</StartProgram>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

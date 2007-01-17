@@ -33,6 +33,18 @@
 		description="Build the current source."
 	/>
 
+	<target name="build_cf10">
+		<property name="build.cf.defines" value="${build.cf.defines.v1}" />
+		<property name="cf.path" value="${cf.path.v1.2005}" />
+		<call target="build_cf" />
+	</target>
+
+	<target name="build_cf20">
+		<property name="build.cf.defines" value="${build.cf.defines.v2}" />
+		<property name="cf.path" value="${cf.path.v2.2005}" />
+		<call target="build_cf" />
+	</target>
+
 	<target
 		name="build_cf"
 		depends="build_cf.run"
