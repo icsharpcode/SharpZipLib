@@ -1874,6 +1874,29 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	[TestFixture]
 	public class ZipFileHandling : ZipBase
 	{
+		[Test]
+		[Category("Zip")]
+		public void NullStreamDisposesOK()
+		{
+
+			ZipFile bad = null;
+			FileStream nullStream = null;
+
+            bool nullStreamDetected = false;
+
+			try
+			{
+			    bad = new ZipFile(nullStream);
+			}
+			catch
+			{
+                nullStreamDetected = true;
+			}
+
+            Assert.IsTrue(nullStreamDetected, "Null stream should be detected in ZipFile constructor");
+            Assert.IsNull(bad, "ZipFile instance should not be created");
+		}
+		
 		/// <summary>
 		/// Check that adding too many entries is detected and handled
 		/// </summary>
