@@ -479,7 +479,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// Handle encryption if required.
 			if (entry.IsCrypted) {
 #if COMPACT_FRAMEWORK_V10
-				throw new ZipException("Encyptiong not supported for Compact Framework 1.0");
+				throw new ZipException("Encryption not supported for Compact Framework 1.0");
 #else
 				if (password == null) {
 					throw new ZipException("No password set.");

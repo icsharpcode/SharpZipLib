@@ -465,6 +465,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 #if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
 		// This isnt so great but is better than nothing?
+        // Trying to work out an appropriate OEM code page would be good.
+        // 850 is a good default for english speakers particularly in Europe.
 		static int defaultCodePage = CultureInfo.CurrentCulture.TextInfo.ANSICodePage;
 #else
 		static int defaultCodePage = Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage;
@@ -586,11 +588,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return new byte[0];
 			}
 			
-#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
-			return Encoding.ASCII.GetBytes(str);
-#else
 			return Encoding.GetEncoding(DefaultCodePage).GetBytes(str);
-#endif
 		}
 
 		/// <summary>
