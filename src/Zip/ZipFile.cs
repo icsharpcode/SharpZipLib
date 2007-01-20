@@ -2654,7 +2654,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if ( !isDisposed_ ) {
 				isDisposed_ = true;
 				entries_ = null;
-				if ( IsStreamOwner ) {
+				if ( IsStreamOwner && (baseStream_ != null) ) {
 					lock(baseStream_) {
 						baseStream_.Close();
 					}
