@@ -23,6 +23,11 @@
 	<property name="cf.path.v1.2003" value="${environment::get-variable('ProgramFiles')}/Microsoft Visual Studio .NET 2003/CompactFrameworkSDK/v1.0.5000/Windows CE" />
 	
 	<!-- Choose properties for actual build here -->
+
+	<if test="${nant.settings.currentframework == 'net-1.0' or nant.settings.currentframework == 'net-1.1'}" >
+		<property name="build.desktop.defines" value="NET_VER_1" />
+	</if>
+
 	<property name="build.cf.defines" value="${build.cf.defines.v1}" />
 	<property name="cf.path" value="${cf.path.v1.2003}" />
 	<property name="release.output.dir" value="bin/release" />
@@ -77,12 +82,14 @@
 	<!-- Low level internal subtargets -->
 	<target
 		name="build.run"
-		depends="build.run.desktop"
+		depends="build.desktop"
 	/>
 
 	<target
 		name="release.run" >
+
 <!-- Speculative notes more than real working build.  A lot to sort out.
+	Cant do both frameworks AFAIK which is a pain
 		<call target="preparerelease" />
 		<delete dir="${release.output.dir}" if="${directory::exists('${release.output.dir}')}" />
 		<mkdir dir="${release.output.dir}" />
@@ -117,8 +124,33 @@
 		<nant buildfile="tests/tests.build" target="test"/>
 	</target>
 
-	<target name="build.run.desktop" >
-		<echo message="Building #ZipLib"/>
+	<target name="build.desktop.2003" >
+		<echo message="Building #ZipLib for CLR 1.1"/>
+
+		<csc 
+			target="library" 
+			output="${build.sharpziplib.path}" 
+			optimize="${optimize}"
+			debug="${debug}"
+			checked="${checked}"
+			platform="anycpu"
+			define="${build.desktop.defines}"
+			keyfile="ICSharpCode.SharpZipLib.key"
+		>
+		
+			<sources basedir="src">
+				<include name="**/*.cs"/>
+			</sources>
+		</csc>
+
+
+		<nant buildfile = "samples/cs/samples.build" />
+		<nant buildfile = "samples/vb/samples.build" />
+	</target>
+
+	<target name="build.desktop.2005" >
+		<echo message="Building #ZipLib for CLR 2.0"/>
+
 		<csc 
 			target="library" 
 			output="${build.sharpziplib.path}" 
@@ -128,13 +160,20 @@
 			platform="anycpu"
 			keyfile="ICSharpCode.SharpZipLib.key"
 		>
-			
+		
 			<sources basedir="src">
 				<include name="**/*.cs"/>
 			</sources>
 		</csc>
+
+
 		<nant buildfile = "samples/cs/samples.build" />
 		<nant buildfile = "samples/vb/samples.build" />
+	</target>
+
+	<target name="build.desktop" >
+		<call target="build.desktop.2003" if="${nant.settings.currentframework == 'net-1.0' or nant.settings.currentframework == 'net-1.1'}" />
+		<call target="build.desktop.2005" if="${not (nant.settings.currentframework == 'net-1.0' or nant.settings.currentframework == 'net-1.1')}" />
 	</target>
 
 	<target name="build_cf.run">
