@@ -105,6 +105,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public ZipEntryFactory(TimeSetting timeSetting)
 		{
 			timeSetting_ = timeSetting;
+			nameTransform_ = new ZipNameTransform();
 		}
 
 		/// <summary>
@@ -115,6 +116,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			timeSetting_ = TimeSetting.Fixed;
 			FixedDateTime = time;
+			nameTransform_ = new ZipNameTransform();
 		}
 
 		#endregion
@@ -122,6 +124,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get / set the <see cref="INameTransform"/> to be used when creating new <see cref="ZipEntry"/> values.
 		/// </summary>
+		/// <remarks>
+		/// Setting this property to null will cause a default <see cref="ZipNameTransform"></see> to be used.
+		/// </remarks>
 		public INameTransform NameTransform
 		{
 			get { return nameTransform_; }
@@ -193,7 +198,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			FileInfo fi = new FileInfo(fileName);
 
 			ZipEntry result = new ZipEntry(nameTransform_.TransformFile(fileName));
-
 			result.Size = fi.Length;
 			
 			int externalAttributes = ((int)fi.Attributes & getAttributes_);
@@ -247,6 +251,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 
+		/// <summary>
+		/// Make a new <see cref="ZipEntry"></see> for a directory.
+		/// </summary>
+		/// <param name="directoryName">The raw untransformed name for the new directory</param>
+		/// <returns>Returns a new <see cref="ZipEntry"></see> representing a directory.</returns>
 		public ZipEntry MakeDirectoryEntry(string directoryName)
 		{
 			DirectoryInfo di = new DirectoryInfo(directoryName);
@@ -265,7 +274,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 					break;
 
 				case TimeSetting.CreateTimeUtc:
+#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
+					result.DateTime = di.CreationTime.ToUniversalTime();
+#else
 					result.DateTime = di.CreationTimeUtc;
+#endif
 					break;
 
 				case TimeSetting.LastAccessTime:
@@ -273,7 +286,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 					break;
 
 				case TimeSetting.LastAccessTimeUtc:
+#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
+					result.DateTime = di.LastAccessTime.ToUniversalTime();
+#else
 					result.DateTime = di.LastAccessTimeUtc;
+#endif
 					break;
 
 				case TimeSetting.LastWriteTime:
@@ -281,7 +298,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 					break;
 
 				case TimeSetting.LastWriteTimeUtc:
+#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
+					result.DateTime = di.LastWriteTime.ToUniversalTime();
+#else
 					result.DateTime = di.LastWriteTimeUtc;
+#endif
 					break;
 
 				case TimeSetting.Fixed:
