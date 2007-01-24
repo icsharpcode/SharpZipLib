@@ -969,10 +969,48 @@ namespace ICSharpCode.SharpZipLib.Zip
 				short fileTime = ( short )ReadLEUshort();
 				short fileDate = ( short )ReadLEUshort();
 				uint crcValue = ReadLEUint();
-				long size = ReadLEUint();
 				long compressedSize = ReadLEUint();
+				long size = ReadLEUint();
 				int storedNameLength = ReadLEUshort();
 				int extraDataLength = ReadLEUshort();
+
+				byte[] nameData = new byte[storedNameLength];
+				StreamUtils.ReadFully(baseStream_, nameData);
+
+				byte[] extraData = new byte[extraDataLength];
+				StreamUtils.ReadFully(baseStream_, extraData);
+
+				ZipExtraData ed = new ZipExtraData(extraData);
+
+				// Extra data / zip64 checks
+				if (ed.Find(1))
+				{
+					// Zip64 extra data but 'extract version' is too low
+					if (extractVersion < ZipConstants.VersionZip64)
+					{
+						throw new ZipException(
+							string.Format("Extra data contains Zip64 information but version {0}.{1} is not high enough",
+							extractVersion / 10, extractVersion % 10));
+					}
+
+					// Zip64 extra data but size fields dont indicate its required.
+					if (((uint)size != uint.MaxValue) && ((uint)compressedSize != uint.MaxValue))
+					{
+						throw new ZipException("Entry sizes not correct for Zip64");
+					}
+
+					size = ed.ReadLong();
+					compressedSize = ed.ReadLong();
+				}
+				else
+				{
+					// No zip64 extra data but entry requires it.
+					if ((extractVersion >= ZipConstants.VersionZip64) &&
+						(((uint)size == uint.MaxValue) || ((uint)compressedSize == uint.MaxValue)))
+					{
+						throw new ZipException("Required Zip64 extended information missing");
+					}
+				}
 
 				if ( testData ) {
 					if ( entry.IsFile ) {
@@ -1079,9 +1117,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						throw new ZipException("File name length mismatch");
 					}
 
-					byte[] nameData = new byte[storedNameLength];
-					StreamUtils.ReadFully(baseStream_, nameData);
-
+					// Name data has already been read convert it and compare.
 					string localName = ZipConstants.ConvertToStringExt(localFlags, nameData);
 
 					// Central directory and local entry name match
@@ -1100,36 +1136,28 @@ namespace ICSharpCode.SharpZipLib.Zip
 						throw new ZipException("Name is invalid");
 					}
 
-					byte[] data = new byte[extraDataLength];
-					StreamUtils.ReadFully(baseStream_, data);
-					ZipExtraData ed = new ZipExtraData(data);
+				}
 
-					// Extra data / zip64 checks
-					if ( ed.Find(1) ) {
-						// Zip64 extra data but 'extract version' is too low
-						if ( extractVersion < ZipConstants.VersionZip64 ) {
-							throw new ZipException(
-								string.Format("Extra data contains Zip64 information but version {0}.{1} is not high enough",
-								extractVersion / 10, extractVersion % 10));
-						}
+				// Tests that apply to both data and header.
 
-						// Zip64 extra data but size fields dont indicate its required.
-						if ( (( uint )size != uint.MaxValue) && (( uint )compressedSize != uint.MaxValue) ) {
-							throw new ZipException("Entry sizes not correct for Zip64");
-						}
+				// Size can be verified only if it is known in the local header.
+				// it will always be known in the central header.
+				if ((localFlags & (int)GeneralBitFlags.Descriptor) == 0 ||
+					(size != 0 || compressedSize != 0)) {
 
-						size = ed.ReadLong();
-						compressedSize = ed.ReadLong();
+					if (size != entry.Size) {
+						throw new ZipException(
+							string.Format("Size mismatch between central header({0}) and local header({1})",
+								entry.Size, size));
 					}
-					else {
-						// No zip64 extra data but entry requires it.
-						if ( (extractVersion >= ZipConstants.VersionZip64) &&
-							((( uint )size == uint.MaxValue) || (( uint )compressedSize == uint.MaxValue)) ) {
-							throw new ZipException("Required Zip64 extended information missing");
-						}
+
+					if (compressedSize != entry.CompressedSize) {
+						throw new ZipException(
+							string.Format("Compressed size mismatch between central header({0}) and local header({1})",
+							entry.CompressedSize, compressedSize));
 					}
 				}
-					
+
 				int extraLength = storedNameLength + extraDataLength;
 				return offsetOfFirstEntry + entry.Offset + ZipConstants.LocalHeaderBaseSize + extraLength;
 			}
@@ -2450,7 +2478,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					if ( update.SizePatchOffset > 0 ) {
 						workFile.baseStream_.Position = update.SizePatchOffset;
-						if ( update.Entry.LocalHeaderRequiresZip64 ) {
+						if ( update.OutEntry.LocalHeaderRequiresZip64 ) {
 							workFile.WriteLeLong(update.OutEntry.Size);
 							workFile.WriteLeLong(update.OutEntry.CompressedSize);
 						}
