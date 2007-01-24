@@ -339,8 +339,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				entry.ForceZip64();
 			}
 
-            // Write the local file header
-            WriteLeInt(ZipConstants.LocalHeaderSignature);
+			// Write the local file header
+			WriteLeInt(ZipConstants.LocalHeaderSignature);
 			
 			WriteLeShort(entry.Version);
 			WriteLeShort(entry.Flags);
@@ -389,8 +389,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if ( entry.LocalHeaderRequiresZip64 ) {
 				ed.StartNewEntry();
-				ed.AddLeLong(-1);
-				ed.AddLeLong(-1);
+				if (headerInfoAvailable) {
+					ed.AddLeLong(entry.Size);
+					ed.AddLeLong(entry.CompressedSize);
+				}
+				else {
+					ed.AddLeLong(-1);
+					ed.AddLeLong(-1);
+				}
 				ed.AddNewEntry(1);
 
 				if ( !ed.Find(1) ) {
@@ -642,7 +648,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLeInt((int)entry.Crc);
 
 				if ( entry.IsZip64Forced() || 
-				    (entry.CompressedSize >= uint.MaxValue) )
+					(entry.CompressedSize >= uint.MaxValue) )
 				{
 					WriteLeInt(-1);
 				}
@@ -651,7 +657,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				if ( entry.IsZip64Forced() ||
-				    (entry.Size >= uint.MaxValue) )
+					(entry.Size >= uint.MaxValue) )
 				{
 					WriteLeInt(-1);
 				}
