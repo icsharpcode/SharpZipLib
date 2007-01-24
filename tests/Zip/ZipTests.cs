@@ -306,6 +306,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+		public void WriteToFile(string fileName, byte[] data)
+		{
+			using ( FileStream fs = File.Open(fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.Read) )
+			{
+				fs.Write(data, 0, data.Length);
+			}
+		}
+
 
 		#region MakeZipFile Names
 		protected void MakeZipFile(Stream storage, bool isOwner, string[] names, int size, string comment)
@@ -448,6 +456,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 		
 		[Test]
+		[Category("Zip")]
 		public void ParameterHandling()
 		{
 			byte[] buffer = new byte[10];
@@ -484,6 +493,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// Check that Zip64 descriptor is added to an entry OK.
 		/// </summary>
 		[Test]
+		[Category("Zip")]
 		public void Zip64Descriptor()
 		{
 			MemoryStream msw = new MemoryStreamWithoutSeek();
@@ -492,6 +502,32 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			outStream.IsStreamOwner = false;
 			outStream.PutNextEntry(new ZipEntry("StripedMarlin"));
 			outStream.WriteByte(89);
+			outStream.Close();
+
+			MemoryStream ms = new MemoryStream(msw.ToArray());
+			using (ZipFile zf = new ZipFile(ms))
+			{
+				Assert.IsTrue(zf.TestArchive(true));
+			}
+		}
+
+		/// <summary>
+		/// Check that adding an entry with no data and Zip64 works OK
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void EntryWithNoDataAndZip64()
+		{
+			MemoryStream msw = new MemoryStreamWithoutSeek();
+			ZipOutputStream outStream = new ZipOutputStream(msw);
+
+			outStream.IsStreamOwner = false;
+			ZipEntry ze = new ZipEntry("Striped Marlin");
+			ze.ForceZip64();
+			ze.Size = 0;
+			outStream.PutNextEntry(ze);
+			outStream.CloseEntry();
+			outStream.Finish();
 			outStream.Close();
 
 			MemoryStream ms = new MemoryStream(msw.ToArray());
@@ -1882,19 +1918,19 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			ZipFile bad = null;
 			FileStream nullStream = null;
 
-            bool nullStreamDetected = false;
+			bool nullStreamDetected = false;
 
 			try
 			{
-			    bad = new ZipFile(nullStream);
+				bad = new ZipFile(nullStream);
 			}
 			catch
 			{
-                nullStreamDetected = true;
+				nullStreamDetected = true;
 			}
 
-            Assert.IsTrue(nullStreamDetected, "Null stream should be detected in ZipFile constructor");
-            Assert.IsNull(bad, "ZipFile instance should not be created");
+			Assert.IsTrue(nullStreamDetected, "Null stream should be detected in ZipFile constructor");
+			Assert.IsNull(bad, "ZipFile instance should not be created");
 		}
 		
 		/// <summary>
@@ -1988,6 +2024,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 
 			byte[] rawArchive = memStream.ToArray();
+
 			byte[] pseudoSfx = new byte[1049 + rawArchive.Length];
 			Array.Copy(rawArchive, 0, pseudoSfx, 1049, rawArchive.Length);
 
@@ -2060,13 +2097,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 				f.CommitUpdate();
 
-				/* write stream to file to assist debugging.
-								byte[] data = ms.ToArray();
-								using ( FileStream fs = File.Open(@"c:\aha.zip", FileMode.Create, FileAccess.ReadWrite, FileShare.Read) )
-								{
-									fs.Write(data, 0, data.Length);
-								}
-				*/
+				// write stream to file to assist debugging.
+				// WriteToFile(@"c:\aha.zip", ms.ToArray());
+
 				int newTotal = totalEntries + additions - toDelete.Length;
 				Assert.AreEqual(newTotal, f.Count,
 					string.Format("Expected {0} entries after update found {1}", newTotal, f.Count));
