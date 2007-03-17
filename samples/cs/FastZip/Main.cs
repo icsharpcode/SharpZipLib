@@ -17,7 +17,7 @@ namespace Samples.FastZipDemo
 			Error
 		};
 
-		void ListZipFile(string fileName, string fileFilter, string directoryFilter)
+		static void ListZipFile(string fileName, string fileFilter, string directoryFilter)
 		{
 			using (ZipFile zipFile = new ZipFile(fileName)) {
 				PathFilter localFileFilter = new PathFilter(fileFilter);
@@ -87,7 +87,7 @@ namespace Samples.FastZipDemo
 		{
 			Console.WriteLine("Overwrite file {0} Y/N", file);
 			string yesNo = Console.ReadLine();
-			return yesNo.Trim().ToLower() == "y";
+			return string.Compare(yesNo.Trim(), "y", true) == 0;
 		}
 		
 		void Run(string[] args)
@@ -172,11 +172,23 @@ namespace Samples.FastZipDemo
 							break;
 							
 						case "file":
-							fileFilter = optArg;
+							if ( NameFilter.IsValidFilterExpression(optArg) ) {
+								fileFilter = optArg;
+							}
+							else {
+								Console.WriteLine("File filter expression contains an invalid regular expression");
+								op = Operation.Error;
+							}
 							break;
 							
 						case "dir":
-							dirFilter = optArg;
+							if ( NameFilter.IsValidFilterExpression(optArg) ) {
+								dirFilter = optArg;
+							}
+							else {
+								Console.WriteLine("Path filter expression contains an invalid regular expression");
+								op = Operation.Error;
+							}
 							break;
 							
 						case "o":
@@ -266,7 +278,7 @@ namespace Samples.FastZipDemo
 					
 				case Operation.Unknown:
 					Console.WriteLine(
-					   "FastZip v0.2\n"
+					   "FastZip v0.3\n"
 					+  "  Usage: FastZip {options} operation args\n"
 					+  "Operation Options: (only one permitted)\n"
 					+  "  -x zipfile targetdir : Extract files from Zip\n"
@@ -289,6 +301,10 @@ namespace Samples.FastZipDemo
 			}
 		}
 		
+		/// <summary>
+		/// Main entry point for FastZip sample.
+		/// </summary>
+		/// <param name="args">The arguments provided to this process.</param>
 		public static void Main(string[] args)
 		{
 			MainClass main = new MainClass();
