@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 // change them to the information which is associated with the assembly
 // you compile.
 
-[assembly: AssemblyTitle("FasztZip sample")]
+[assembly: AssemblyTitle("FastZip sample")]
 [assembly: AssemblyDescription("A SharpZip library sample.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
