@@ -1866,6 +1866,20 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	}
 
 	[TestFixture]
+	public class ExerciseZipNameTransform : ZipBase
+	{
+		[Test]
+		[Category("Zip")]
+		public void Exercise()
+		{
+			ZipNameTransform nt = new ZipNameTransform();
+
+			string original = "abcdefghijklmnopqrstuvwxyz";
+			string transformed = nt.TransformFile(original);
+			Assert.AreEqual(original, transformed, "Should be equal");
+		}
+	}
+	[TestFixture]
 	public class FastZipHandling : ZipBase
 	{
 		[Test]
@@ -1898,6 +1912,45 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					Assert.IsTrue(zf.TestArchive(true));
 
 					zf.Close();
+				}
+			}
+			finally
+			{
+				File.Delete(tempName1);
+			}
+		}
+		
+		[Test]
+		[Category("Zip")]
+		public void Encryption()
+		{
+			const string tempName1 = "a.dat";
+
+			MemoryStream target = new MemoryStream();
+
+			string tempFilePath = GetTempFilePath();
+			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
+
+			string addFile = Path.Combine(tempFilePath, tempName1);
+			MakeTempFile(addFile, 1);
+
+			try
+			{
+				FastZip fastZip = new FastZip();
+				fastZip.Password = "Ahoy";
+				
+				fastZip.CreateZip(target, tempFilePath, false, @"a\.dat", null);
+
+				MemoryStream archive = new MemoryStream(target.ToArray());
+				using ( ZipFile zf = new ZipFile(archive) )
+				{
+                    zf.Password = "Ahoy";
+					Assert.AreEqual(1, zf.Count);
+					ZipEntry entry = zf[0];
+					Assert.AreEqual(tempName1, entry.Name);
+					Assert.AreEqual(1, entry.Size);
+					Assert.IsTrue(zf.TestArchive(true));
+					Assert.IsTrue(entry.IsCrypted);
 				}
 			}
 			finally
