@@ -199,8 +199,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		private void WriteLeShort(int value)
 		{
-			baseOutputStream.WriteByte((byte)(value & 0xff));
-			baseOutputStream.WriteByte((byte)((value >> 8) & 0xff));
+			unchecked {
+				baseOutputStream.WriteByte((byte)(value & 0xff));
+				baseOutputStream.WriteByte((byte)((value >> 8) & 0xff));
+			}
 		}
 		
 		/// <summary>
@@ -208,8 +210,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		private void WriteLeInt(int value)
 		{
-			WriteLeShort(value);
-			WriteLeShort(value >> 16);
+			unchecked {
+				WriteLeShort(value);
+				WriteLeShort(value >> 16);
+			}
 		}
 		
 		/// <summary>
@@ -217,8 +221,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		private void WriteLeLong(long value)
 		{
-			WriteLeInt((int)value);
-			WriteLeInt((int)(value >> 32));
+			unchecked {
+				WriteLeInt((int)value);
+				WriteLeInt((int)(value >> 32));
+			}
 		}
 		
 		/// <summary>
