@@ -276,6 +276,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			sourceDirectory_ = sourceDirectory;
 
 			using ( outputStream_ = new ZipOutputStream(outputStream) ) {
+				
+				if ( password_ != null ) {
+					outputStream_.Password = password_;
+				}
+				
 				FileSystemScanner scanner = new FileSystemScanner(fileFilter, directoryFilter);
 				scanner.ProcessFile += new ProcessFileDelegate(ProcessFile);
 				if ( this.CreateEmptyDirectories ) {
