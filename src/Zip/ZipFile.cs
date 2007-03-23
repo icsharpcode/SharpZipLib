@@ -1925,14 +1925,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			int bytesToCopy = GetDescriptorSize(update);
 
-/* Use the above instead.  Remove once confirmed correct.
-			if ( (update.Entry.Flags & (int)GeneralBitFlags.Descriptor) != 0) {
-				bytesToCopy = ZipConstants.DataDescriptorSize - 4; // 12
-				if ( update.Entry.LocalHeaderRequiresZip64 ) {
-					bytesToCopy = ZipConstants.Zip64DataDescriptorSize - 4; // 20
-				}
-			}
-*/
 			if ( bytesToCopy > 0 ) {
 				byte[] buffer = GetBuffer();
 
@@ -2320,6 +2312,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					updateFile = new ZipHelperStream(Name);
 				}
 			}
+
 			using ( updateFile ) {
 				long locatedCentralDirOffset = 
 					updateFile.LocateBlockWithSignature(ZipConstants.EndOfCentralDirectorySignature, 
