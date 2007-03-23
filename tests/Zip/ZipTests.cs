@@ -127,18 +127,27 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 	class MemoryDataSource : IStaticDataSource
 	{
+		#region Constructors
+		/// <summary>
+		/// Initialise a new instance.
+		/// </summary>
+		/// <param name="data">The data to provide.</param>
 		public MemoryDataSource(byte[] data)
 		{
 			data_ = data;
 		}
-
+		#endregion
+		
 		#region IDataSource Members
 
+		/// <summary>
+		/// Get a Stream for this <see cref="DataSource"/>
+		/// </summary>
+		/// <returns>Returns a <see cref="Stream"/></returns>
 		public Stream GetSource()
 		{
 			return new MemoryStream(data_);
 		}
-
 		#endregion
 
 		#region Instance Fields
@@ -790,6 +799,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// before the call is made.  ZipInputStream.CloseEntry wasnt handling this at all.
 		/// </summary>
 		[Test]
+		[Category("Zip")]
 		public void ExerciseGetNextEntry()
 		{
 			byte[] compressedData = MakeInMemoryZip(
@@ -995,6 +1005,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 		
 		[Test]
+		[Category("Zip")]
 		public void SkipEncryptedEntriesWithoutSettingPassword()
 		{
 			byte[] compressedData = MakeInMemoryZip(true, 
@@ -1304,6 +1315,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// will request reads of zero length...
 		/// </summary>
 		[Test]
+		[Category("Zip")]
 		public void ZeroLength()
 		{
 			object data = new byte[0];
@@ -1488,6 +1500,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			c.ExtraData[0] = 45;
 			Assert.IsTrue(a.ExtraData[0] != c.ExtraData[0], "Extra data not unique " + a.ExtraData[0] + " " + c.ExtraData[0]);
 		}
+		
 		[Test]
 		[Category("Zip")]
 		public void BasicOperations()
@@ -2097,6 +2110,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 
 		[Test]
+		[Category("Zip")]
 		public void BasicEncryption()
 		{
 			const string TestValue = "0001000";
@@ -2402,6 +2416,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			}
 		}
+		
 		/// <summary>
 		/// Check that ZipFile finds entries when its got a long comment
 		/// </summary>
@@ -2428,6 +2443,52 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					zipFile.Close();
 				}
 				File.Delete(tempFile);
+			}
+		}
+		
+		
+		/// <summary>
+		/// Check that ZipFile doesnt find entries when there is more than 64K of data at the end.
+		/// </summary>
+		/// <remarks>
+		/// This may well be flawed but is the current behaviour.
+		/// </remarks>
+		[Test]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void FindEntriesInArchiveExtraData()
+		{
+			string tempFile = GetTempFilePath();
+			Assert.IsNotNull(tempFile, "No permission to execute this test?");
+			
+			if (tempFile != null) 
+			{
+				tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
+				string longComment = new String('A', 65535);
+				FileStream tempStream = File.Create(tempFile);
+				MakeZipFile(tempStream, false, "", 1, 1, longComment);
+			
+				tempStream.WriteByte(85);
+				tempStream.Close();
+
+				bool fails = false;
+				try {
+					using ( ZipFile zipFile = new ZipFile(tempFile) )
+					{
+						foreach (ZipEntry e in zipFile) 
+						{
+							Stream instream = zipFile.GetInputStream(e);
+							CheckKnownEntry(instream, 1);
+						}
+						zipFile.Close();
+					}
+				}
+				catch {
+					fails = true;	
+				}
+				
+				File.Delete(tempFile);
+				Assert.IsTrue(fails, "Currently zip file wont be found");
 			}
 		}
 
@@ -2535,6 +2596,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
+		[Category("Zip")]
 		public void Crypto_AddEncryptedEntryToExistingArchiveSafe()
 		{
 			MemoryStream ms = new MemoryStream();
@@ -2573,6 +2635,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
+		[Category("Zip")]
 		public void Crypto_AddEncryptedEntryToExistingArchiveDirect()
 		{
 			MemoryStream ms = new MemoryStream();
@@ -2648,6 +2711,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
+		[Category("Zip")]
 		public void UpdateCommentOnlyInMemory()
 		{
 			MemoryStream ms = new MemoryStream();
@@ -2685,6 +2749,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
+		[Category("Zip")]
 		[Category("CreatesTempFile")]
 		public void UpdateCommentOnlyOnDisk()
 		{
