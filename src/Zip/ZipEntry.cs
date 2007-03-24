@@ -667,7 +667,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 			set {
-				this.dosTime = (uint)value;
+				dosTime = (uint)value;
 				known |= Known.Time;
 			}
 		}
@@ -679,7 +679,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			get {
 				// Although technically not valid some archives have dates set to zero.
-				// This mimics some archivers handling and is a good a cludge as any probably.
+				// This mimics that behaviour and is a good a cludge as any probably.
 				if ( dosTime == 0 ) {
 					return DateTime.Now;
 				}
@@ -704,10 +704,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Returns the entry name.  The path components in the entry should
-		/// always separated by slashes ('/').  Dos device names like C: should also
-		/// be removed.  See the <see cref="ZipNameTransform"/> class, or <see cref="CleanName(string)"/>
+		/// Returns the entry name.
 		/// </summary>
+		/// <remarks>
+		/// The unix naming convention is followed.
+		/// Path components in the entry should always separated by forward slashes ('/').
+		/// Dos device names like C: should also be removed.
+		/// See the <see cref="ZipNameTransform"/> class, or <see cref="CleanName(string)"/>
+		///</remarks>
 		public string Name 
 		{
 			get {
@@ -864,7 +868,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
-/* TODO: Testing for handling of windows extra data
+/* TODO: Testing for handling of windows extra data is not yet done
 			if ( extraData.Find(10) ) {
 				// No room for any tags.
 				if ( extraData.ValueLength < 8 ) {
