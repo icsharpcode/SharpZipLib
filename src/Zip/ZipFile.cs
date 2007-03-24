@@ -3028,7 +3028,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		bool isNewArchive_;
 		
 		// Default of off is backwards compatible and doesnt dump on
-		// XP's built in compression which cnat handle it
+		// XP's built in compression which cant handle Zip64.
 		UseZip64 useZip64_ = UseZip64.Off;
 		
 		#region Zip Update Instance Fields
@@ -3058,7 +3058,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			public ZipString(string comment)
 			{
 				comment_ = comment;
-				sourceIsString_ = true;
+				isSourceString_ = true;
 			}
 
 			/// <summary>
@@ -3071,6 +3071,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			#endregion
 
+			/// <summary>
+			/// Get a value indicating the original source of data for this instance.
+			/// True if the source was a string; false if the source was binary data.
+			/// </summary>
+			public bool IsSourceString
+			{
+				get { return isSourceString_; }
+			}
+			
 			/// <summary>
 			/// Get the length of the comment when represented as raw bytes.
 			/// </summary>
@@ -3098,7 +3107,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// </summary>
 			public void Reset()
 			{
-				if ( sourceIsString_ ) {
+				if ( isSourceString_ ) {
 					rawComment_ = null;
 				}
 				else {
@@ -3123,21 +3132,24 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <summary>
 			/// Implicit conversion of comment to a string.
 			/// </summary>
-			/// <param name="comment">The <see cref="ZipString"/> to convert to a string.</param>
-			/// <returns>The string value for the comment.</returns>
-			static public implicit operator string(ZipString comment)
+			/// <param name="zipString">The <see cref="ZipString"/> to convert to a string.</param>
+			/// <returns>The textual equivalent for the input value.</returns>
+			static public implicit operator string(ZipString zipString)
 			{
-				comment.MakeTextAvailable();
-				return comment.comment_;
+				zipString.MakeTextAvailable();
+				return zipString.comment_;
 			}
 
 			#region Instance Fields
 			string comment_;
 			byte[] rawComment_;
-			bool sourceIsString_;
+			bool isSourceString_;
 			#endregion
 		}
 		
+		/// <summary>
+		/// An <see cref="IEnumerator">enumerator</see> for <see cref="ZipEntry">Zip entries</see>
+		/// </summary>
 		class ZipEntryEnumerator : IEnumerator
 		{
 			#region Constructors
