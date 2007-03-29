@@ -98,6 +98,8 @@ namespace Samples.FastZipDemo
 			string fileFilter = null;
 			string dirFilter = null;
 			bool verbose = false;
+			bool restoreDates = false;
+			bool restoreAttributes = false;
 
 			bool createEmptyDirs = false;
 			FastZip.Overwrite overwrite = FastZip.Overwrite.Always;
@@ -217,6 +219,14 @@ namespace Samples.FastZipDemo
 							}
 							break;
 							
+						case "oa":
+							restoreAttributes = true;
+							break;
+							
+						case "od":
+							restoreDates = true;
+							break;
+							
 						default:
 							Console.WriteLine("Unknown option {0}", args[i]);
 							op = Operation.Error;
@@ -243,6 +253,8 @@ namespace Samples.FastZipDemo
 			
 			FastZip sz = new FastZip(events);
 			sz.CreateEmptyDirectories = createEmptyDirs;
+			sz.RestoreAttributesOnExtract = restoreAttributes;
+			sz.RestoreDateTimeOnExtract = restoreDates;
 			
 			switch ( op ) {
 				case Operation.Create:
@@ -278,7 +290,7 @@ namespace Samples.FastZipDemo
 					
 				case Operation.Unknown:
 					Console.WriteLine(
-					   "FastZip v0.3\n"
+					   "FastZip v0.4\n"
 					+  "  Usage: FastZip {options} operation args\n"
 					+  "Operation Options: (only one permitted)\n"
 					+  "  -x zipfile targetdir : Extract files from Zip\n"
@@ -291,6 +303,8 @@ namespace Samples.FastZipDemo
 					+  "  -e Process empty directories\n"
 					+  "  -r Recurse directories\n"
 					+  "  -v Verbose output\n"
+					+  "  -oa Restore file attributes on extract\n"
+					+  "  -ot Restore file date time on extract\n"
 					+  "  -overwrite=prompt|always|never   : Overwrite on extract handling\n"
 					);
 					break;
