@@ -458,6 +458,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Get a value indicating this entry is for a DOS/Windows system.
+		/// </summary>
+		public bool IsDOSEntry
+		{
+			get {
+				return ((HostSystem == ( int )HostSystemID.Msdos) ||
+					(HostSystem == ( int )HostSystemID.WindowsNT));
+			}
+		}
+
+		/// <summary>
 		/// Test the external attributes for this <see cref="ZipEntry"/> to
 		/// see if the external attributes are Dos based (including WINNT and variants)
 		/// and match the values
