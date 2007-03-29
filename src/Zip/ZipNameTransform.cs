@@ -161,8 +161,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="name">The name to test.</param>
 		/// <param name="relaxed">If true checking is relaxed about windows file names and absolute paths.</param>
 		/// <returns>Returns true if the name is a valid zip name; false otherwise.</returns>
-		/// <remarks>Zip path names are actually in Unix format,
-		/// and should only contain relative paths.
+		/// <remarks>Zip path names are actually in Unix format, and should only contain relative paths.
 		/// This means that any path stored should not contain a drive or
 		/// device letter, or a leading slash.  All slashes should forward slashes '/'.
 		/// An empty name is valid for a file where the input comes from standard input.
