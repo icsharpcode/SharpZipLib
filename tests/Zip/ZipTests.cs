@@ -1500,6 +1500,77 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			c.ExtraData[0] = 45;
 			Assert.IsTrue(a.ExtraData[0] != c.ExtraData[0], "Extra data not unique " + a.ExtraData[0] + " " + c.ExtraData[0]);
 		}
+
+		[Test]
+		[Category("Zip")]
+		public void ExceedSize()
+		{
+			ZipExtraData zed = new ZipExtraData();
+			byte[] buffer = new byte[65506];
+			zed.AddEntry(1, buffer);
+			Assert.AreEqual(65510, zed.Length);
+			zed.AddEntry(2, new byte[21]);
+			Assert.AreEqual(65535, zed.Length);
+
+			bool caught = false;
+			try {
+				zed.AddEntry(3, null);
+			}
+			catch {
+				caught = true;
+			}
+			Assert.IsTrue(caught, "Expected an exception when max size exceeded");
+			Assert.AreEqual(65535, zed.Length);
+
+			zed.Delete(2);
+			Assert.AreEqual(65510, zed.Length);
+
+			caught = false;
+			try {
+				zed.AddEntry(2, new byte[22]);
+			}
+			catch {
+				caught = true;
+			}
+			Assert.IsTrue(caught, "Expected an exception when max size exceeded");
+			Assert.AreEqual(65510, zed.Length);
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void Deleting()
+		{
+			ZipExtraData zed = new ZipExtraData();
+			Assert.AreEqual(0, zed.Length);
+			
+			// Tag 1 Totoal length 10
+			zed.AddEntry(1, new byte[] { 10, 11, 12, 13, 14 ,15 });
+			Assert.AreEqual(10, zed.Length, "Length should be 10");
+			Assert.AreEqual(10, zed.GetEntryData().Length, "Data length should be 10");
+			
+			// Tag 2 total length  9
+			zed.AddEntry(2, new byte[] { 20, 21, 22, 23, 24 });
+			Assert.AreEqual(19, zed.Length, "Length should be 19");
+			Assert.AreEqual(19, zed.GetEntryData().Length, "Data length should be 19");
+
+			// Tag 3 Total Length 6
+			zed.AddEntry(3, new byte[] { 30, 31 });
+			Assert.AreEqual(25, zed.Length, "Length should be 25");
+			Assert.AreEqual(25, zed.GetEntryData().Length, "Data length should be 25");
+			
+			zed.Delete(2);
+			Assert.AreEqual(16, zed.Length, "Length should be 16");
+			Assert.AreEqual(16, zed.GetEntryData().Length, "Data length should be 16");
+
+			// Tag 2 total length  9
+			zed.AddEntry(2, new byte[] { 20, 21, 22, 23, 24 });
+			Assert.AreEqual(25, zed.Length, "Length should be 25");
+			Assert.AreEqual(25, zed.GetEntryData().Length, "Data length should be 25");
+
+			zed.AddEntry(3, null);
+			Assert.AreEqual(23, zed.Length, "Length should be 23");
+			Assert.AreEqual(23, zed.GetEntryData().Length, "Data length should be 23");
+		}
 		
 		[Test]
 		[Category("Zip")]
@@ -1512,6 +1583,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.AreEqual(4, zed.Length, "A length should be 4");
 
 			ZipExtraData zed2 = new ZipExtraData();
+			Assert.AreEqual(0, zed2.Length);
+			
 			zed2.AddEntry(1, new byte[] { });
 
 			byte[] data = zed.GetEntryData();
@@ -1933,6 +2006,49 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 		
+		const string ZipTempDir = "SharpZipLibTest";
+		
+		void EnsureTestDirectoryIsEmpty(string baseDir)
+		{
+			string name = Path.Combine(baseDir, ZipTempDir);
+			
+			if ( Directory.Exists(name) )
+			{
+				Directory.Delete(name, true);
+			}
+
+			Directory.CreateDirectory(name);
+		}
+		
+		[Test]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void ExtractEmptyDirectories()
+		{
+			string tempFilePath = GetTempFilePath();
+			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
+
+			string name = Path.Combine(tempFilePath, "x.zip");
+
+			EnsureTestDirectoryIsEmpty(tempFilePath);
+			
+			string targetDir = Path.Combine(tempFilePath, ZipTempDir + @"\floyd");
+			using (FileStream fs = File.Create(name)) 
+			{
+				using ( ZipOutputStream zOut = new ZipOutputStream(fs) )
+				{
+					zOut.PutNextEntry(new ZipEntry("floyd/"));
+				}
+			}
+			
+			FastZip fastZip = new FastZip();
+			fastZip.CreateEmptyDirectories = true;
+			fastZip.ExtractZip(name, targetDir, "zz");
+
+			File.Delete(name);
+			Assert.IsTrue(Directory.Exists(targetDir), "Empty directory should be created");
+		}
+		
 		[Test]
 		[Category("Zip")]
 		public void Encryption()
@@ -1957,7 +2073,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				MemoryStream archive = new MemoryStream(target.ToArray());
 				using ( ZipFile zf = new ZipFile(archive) )
 				{
-                    zf.Password = "Ahoy";
+					zf.Password = "Ahoy";
 					Assert.AreEqual(1, zf.Count);
 					ZipEntry entry = zf[0];
 					Assert.AreEqual(tempName1, entry.Name);
@@ -1980,7 +2096,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void NullStreamDisposesOK()
 		{
-
 			ZipFile bad = null;
 			FileStream nullStream = null;
 
