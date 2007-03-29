@@ -137,7 +137,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get the index for the current read value.
 		/// </summary>
 		/// <remarks>This is only valid if <see cref="Find"/> has previously returned true.
-		/// Initially it will be the index of the first byte of actual data.  Its is updated after calls to
+		/// Initially it will be the index of the first byte of actual data.  The value is updated after calls to
 		/// <see cref="ReadInt"/>, <see cref="ReadShort"/> and <see cref="ReadLong"/>. </remarks>
 		public int CurrentReadIndex
 		{
@@ -206,7 +206,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentOutOfRangeException("headerID");
 			}
 
-			int addLength = fieldData == null ? 0 : fieldData.Length;
+			int addLength = (fieldData == null) ? 0 : fieldData.Length;
 
 			if ( addLength > ushort.MaxValue ) {
 #if COMPACT_FRAMEWORK_V10
@@ -216,15 +216,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 #endif
 			}
 
-			Delete(headerID);
-
+			// Test for new length before adjusting data.
 			int newLength = data_.Length + addLength + 4;
 
+			if ( Find(headerID) )
+			{
+				newLength -= (ValueLength + 4);
+			}
+
 			if ( newLength > ushort.MaxValue ) {
-				// TODO: Better to test length and throw exception before modifying entry
-				// This was leaves entry partly modified.
 				throw new ZipException("Data exceeds maximum length");
 			}
+			
+			Delete(headerID);
 
 			byte[] newData = new byte[newLength];
 			data_.CopyTo(newData, 0);
@@ -342,7 +346,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				result = true;
 				int trueStart = readValueStart_ - 4;
 
-				byte[] newData = new byte[data_.Length - ValueLength + 4];
+				byte[] newData = new byte[data_.Length - (ValueLength + 4)];
 				Array.Copy(data_, 0, newData, 0, trueStart);
 
 				int trueEnd = trueStart + ValueLength + 4;
