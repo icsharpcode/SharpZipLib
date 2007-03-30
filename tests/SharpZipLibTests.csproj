@@ -33,6 +33,15 @@
     <OutputPath>bin\Release\</OutputPath>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit-gui.exe</StartProgram>
+    <StartArguments>bin\Debug\SharpZipLibTests.dll</StartArguments>
+    <StartWorkingDirectory>bin\Debug\</StartWorkingDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <StartArguments>SharpZipLibTests.dll</StartArguments>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />

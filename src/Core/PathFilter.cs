@@ -64,7 +64,13 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <returns>True if the name matches, false otherwise.</returns>
 		public virtual bool IsMatch(string name)
 		{
-			return nameFilter_.IsMatch(Path.GetFullPath(name));
+			bool result = false;
+
+			if ( name != null ) {
+				string cooked = (name.Length > 0) ? Path.GetFullPath(name) : "";
+				result = nameFilter_.IsMatch(cooked);
+			}
+			return result;
 		}
 		#endregion
 

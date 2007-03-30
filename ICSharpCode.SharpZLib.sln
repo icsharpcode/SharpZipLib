@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpZipLibTests", "tests\SharpZipLibTests.csproj", "{4F9BF21E-A7FC-4005-A1C7-A17108F7010D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZLib", "src\ICSharpCode.SharpZLib.csproj", "{18D20629-913A-4474-B2D1-643290E14ED7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZLib", "src\ICSharpCode.SharpZLib.csproj", "{0AAD2BF5-F6C9-4180-9C50-9200726052DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,10 @@ Global
 		{4F9BF21E-A7FC-4005-A1C7-A17108F7010D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F9BF21E-A7FC-4005-A1C7-A17108F7010D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F9BF21E-A7FC-4005-A1C7-A17108F7010D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{18D20629-913A-4474-B2D1-643290E14ED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{18D20629-913A-4474-B2D1-643290E14ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{18D20629-913A-4474-B2D1-643290E14ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{18D20629-913A-4474-B2D1-643290E14ED7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AAD2BF5-F6C9-4180-9C50-9200726052DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AAD2BF5-F6C9-4180-9C50-9200726052DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AAD2BF5-F6C9-4180-9C50-9200726052DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AAD2BF5-F6C9-4180-9C50-9200726052DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

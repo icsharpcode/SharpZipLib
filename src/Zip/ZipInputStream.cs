@@ -231,7 +231,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				entry.Size = size & 0xFFFFFFFFL;
 				entry.CompressedSize = csize & 0xFFFFFFFFL;
 
-				entry.CryptoCheckValue = (byte)(crc2 >> 24);
+				entry.CryptoCheckValue = (byte)((crc2 >> 24) & 0xff);
 
 			} else {
 				
