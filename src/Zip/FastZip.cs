@@ -177,6 +177,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { createEmptyDirectories_ = value; }
 		}
 
+#if !COMPACT_FRAMEWORK_V10
 		/// <summary>
 		/// Get / set the password value.
 		/// </summary>
@@ -185,7 +186,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get { return password_; }
 			set { password_ = value; }
 		}
-		
+#endif
+
 		/// <summary>
 		/// Get or set the <see cref="INameTransform"></see> active when creating Zip files.
 		/// </summary>
@@ -285,11 +287,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 			sourceDirectory_ = sourceDirectory;
 
 			using ( outputStream_ = new ZipOutputStream(outputStream) ) {
-				
+
+#if !COMPACT_FRAMEWORK_V10
 				if ( password_ != null ) {
 					outputStream_.Password = password_;
 				}
-				
+#endif
+
 				FileSystemScanner scanner = new FileSystemScanner(fileFilter, directoryFilter);
 				scanner.ProcessFile += new ProcessFileDelegate(ProcessFile);
 				if ( this.CreateEmptyDirectories ) {
@@ -350,9 +354,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			restoreDateTimeOnExtract_ = restoreDateTime;
 			
 			using ( zipFile_ = new ZipFile(zipFileName) ) {
+
+#if !COMPACT_FRAMEWORK_V10
 				if (password_ != null) {
 					zipFile_.Password = password_;
 				}
+#endif
 
 				System.Collections.IEnumerator enumerator = zipFile_.GetEnumerator();
 				while ( continueRunning_ && enumerator.MoveNext()) {
@@ -559,7 +566,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		byte[] buffer_;
 		ZipOutputStream outputStream_;
 		ZipFile zipFile_;
-		string password_;
 		string targetDirectory_;
 		string sourceDirectory_;
 		NameFilter fileFilter_;
@@ -572,6 +578,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		bool createEmptyDirectories_;
 		FastZipEvents events_;
 		IEntryFactory entryFactory_ = new ZipEntryFactory();
+		
+#if !COMPACT_FRAMEWORK_V10		
+		string password_;
+#endif	
+
 		#endregion
 	}
 }
