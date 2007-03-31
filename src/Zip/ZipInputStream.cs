@@ -487,7 +487,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				
 				// Generate and set crypto transform...
 				PkzipClassicManaged managed = new PkzipClassicManaged();
-				byte[] key = PkzipClassic.GenerateKeys(Encoding.ASCII.GetBytes(password));
+				byte[] key = PkzipClassic.GenerateKeys(ZipConstants.ConvertToArray(password));
 				
 				inputBuffer.CryptoTransform = managed.CreateDecryptor(key, null);
 				

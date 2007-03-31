@@ -375,7 +375,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					key = null;
 				}
 				else {
-					key = PkzipClassic.GenerateKeys(Encoding.ASCII.GetBytes(value));
+					key = PkzipClassic.GenerateKeys(ZipConstants.ConvertToArray(value));
 				}
 			}
 		}

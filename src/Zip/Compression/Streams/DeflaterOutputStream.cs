@@ -243,9 +243,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				0x23456789,
 				0x34567890
 			};
+			byte[] rawPassword = ZipConstants.ConvertToArray(password);
 			
-			for (int i = 0; i < password.Length; ++i) {
-				UpdateKeys((byte)password[i]);
+			for (int i = 0; i < rawPassword.Length; ++i) {
+				UpdateKeys((byte)rawPassword[i]);
 			}
 		}
 
