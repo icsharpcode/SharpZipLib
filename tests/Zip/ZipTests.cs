@@ -2087,6 +2087,46 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				File.Delete(tempName1);
 			}
 		}
+
+		[Test]
+		[Category("Zip")]
+		public void NonAsciiPasswords()
+		{
+			const string tempName1 = "a.dat";
+
+			MemoryStream target = new MemoryStream();
+
+			string tempFilePath = GetTempFilePath();
+			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
+
+			string addFile = Path.Combine(tempFilePath, tempName1);
+			MakeTempFile(addFile, 1);
+
+			string password = "abc\u0066\u0393";
+			try
+			{
+				FastZip fastZip = new FastZip();
+				fastZip.Password = password;
+				
+				fastZip.CreateZip(target, tempFilePath, false, @"a\.dat", null);
+
+				MemoryStream archive = new MemoryStream(target.ToArray());
+				using ( ZipFile zf = new ZipFile(archive) )
+				{
+					zf.Password = password;
+					Assert.AreEqual(1, zf.Count);
+					ZipEntry entry = zf[0];
+					Assert.AreEqual(tempName1, entry.Name);
+					Assert.AreEqual(1, entry.Size);
+					Assert.IsTrue(zf.TestArchive(true));
+					Assert.IsTrue(entry.IsCrypted);
+				}
+			}
+			finally
+			{
+				File.Delete(tempName1);
+			}
+		}
 	}
 
 	[TestFixture]
