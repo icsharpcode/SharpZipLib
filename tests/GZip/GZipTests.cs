@@ -91,5 +91,21 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 
 			Assert.IsTrue(data.Length > 0);
 		}
+
+		[Test]
+		public void ZeroLengthInputStream()
+		{
+			GZipInputStream gzi = new GZipInputStream(new MemoryStream());
+			bool exception = false;
+			try {
+				gzi.ReadByte();
+			}
+			catch
+			{
+				exception = true;
+			}
+			
+			Assert.IsTrue(exception, "reading from an empty stream should cause an exception");
+		}
 	}
 }
