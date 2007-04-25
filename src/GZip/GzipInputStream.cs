@@ -166,22 +166,22 @@ namespace ICSharpCode.SharpZipLib.GZip
 			int magic = baseInputStream.ReadByte();
 
 			if (magic < 0) {
-				throw new GZipException("EOF in GZIP header");
+				throw new EndOfStreamException("EOS reading GZIP header");
 			}
 
 			headCRC.Update(magic);
 			if (magic != (GZipConstants.GZIP_MAGIC >> 8)) {
-				throw new GZipException("Error baseInputStream GZIP header, first byte doesn't match");
+				throw new GZipException("Error GZIP header, first magic byte doesn't match");
 			}
 				
 			magic = baseInputStream.ReadByte();
 
 			if (magic < 0) {
-				throw new GZipException("EOF in GZIP header");
+				throw new EndOfStreamException("EOS reading GZIP header");
 			}
 			
 			if (magic != (GZipConstants.GZIP_MAGIC & 0xFF)) {
-				throw new GZipException("Error baseInputStream GZIP header,  second byte doesn't match");
+				throw new GZipException("Error GZIP header,  second magic byte doesn't match");
 			}
 
 			headCRC.Update(magic);
@@ -190,18 +190,18 @@ namespace ICSharpCode.SharpZipLib.GZip
 			int compressionType = baseInputStream.ReadByte();
 
 			if ( compressionType < 0 ) {
-				throw new GZipException("EOF in GZIP header");
+				throw new EndOfStreamException("EOS reading GZIP header");
 			}
 		
 			if ( compressionType != 8 ) {
-				throw new GZipException("Error baseInputStream GZIP header, data not baseInputStream deflate format");
+				throw new GZipException("Error GZIP header, data not deflate format");
 			}
 			headCRC.Update(compressionType);
 			
 			// 3. Check the flags
 			int flags = baseInputStream.ReadByte();
 			if (flags < 0) {
-				throw new GZipException("EOF in GZIP header");
+				throw new EndOfStreamException("EOS reading GZIP header");
 			}
 			headCRC.Update(flags);
 			
@@ -227,7 +227,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			for (int i=0; i< 6; i++) {
 				int readByte = baseInputStream.ReadByte();
 				if (readByte < 0) {
-					throw new GZipException("EOF in GZIP header");
+					throw new EndOfStreamException("EOS reading GZIP header");
 				}
 				headCRC.Update(readByte);
 			}
@@ -238,19 +238,20 @@ namespace ICSharpCode.SharpZipLib.GZip
 				for (int i=0; i< 2; i++) {
 					int readByte = baseInputStream.ReadByte();
 					if (readByte < 0) {
-						throw new GZipException("EOF in GZIP header");
+						throw new EndOfStreamException("EOS reading GZIP header");
 					}
 					headCRC.Update(readByte);
 				}
+
 				if (baseInputStream.ReadByte() < 0 || baseInputStream.ReadByte() < 0) {
-					throw new GZipException("EOF in GZIP header");
+					throw new EndOfStreamException("EOS reading GZIP header");
 				}
 				
 				int len1, len2;
 				len1 = baseInputStream.ReadByte();
 				len2 = baseInputStream.ReadByte();
 				if ((len1 < 0) || (len2 < 0)) {
-					throw new GZipException("EOF in GZIP header");
+					throw new EndOfStreamException("EOS reading GZIP header");
 				}
 				headCRC.Update(len1);
 				headCRC.Update(len2);
@@ -260,7 +261,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 					int readByte = baseInputStream.ReadByte();
 					if (readByte < 0) 
 					{
-						throw new GZipException("EOF in GZIP header");
+						throw new EndOfStreamException("EOS reading GZIP header");
 					}
 					headCRC.Update(readByte);
 				}
@@ -274,7 +275,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 				}
 				
 				if (readByte < 0) {
-					throw new GZipException("EOF in GZIP header");
+					throw new EndOfStreamException("EOS reading GZIP header");
 				}
 				headCRC.Update(readByte);
 			}
@@ -287,7 +288,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 				}
 				
 				if (readByte < 0) {
-					throw new GZipException("EOF in GZIP header");
+					throw new EndOfStreamException("EOS reading GZIP header");
 				}
 
 				headCRC.Update(readByte);
@@ -298,12 +299,12 @@ namespace ICSharpCode.SharpZipLib.GZip
 				int tempByte;
 				int crcval = baseInputStream.ReadByte();
 				if (crcval < 0) {
-					throw new GZipException("EOF in GZIP header");
+					throw new EndOfStreamException("EOS reading GZIP header");
 				}
 				
 				tempByte = baseInputStream.ReadByte();
 				if (tempByte < 0) {
-					throw new GZipException("EOF in GZIP header");
+					throw new EndOfStreamException("EOS reading GZIP header");
 				}
 				
 				crcval = (crcval << 8) | tempByte;
@@ -330,7 +331,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			while (needed > 0) {
 				int count = baseInputStream.Read(footer, 8 - needed, needed);
 				if (count <= 0) {
-					throw new GZipException("EOF in GZIP footer");
+					throw new EndOfStreamException("EOS reading GZIP footer");
 				}
 				needed -= count; // Jewel Jan 16
 			}

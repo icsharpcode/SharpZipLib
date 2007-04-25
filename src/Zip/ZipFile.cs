@@ -2700,24 +2700,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Read an unsigned short in little endian byte order.
 		/// </summary>
 		/// <returns>Returns the value read.</returns>
-		/// <exception cref="IOException">
-		/// An i/o error occurs.
-		/// </exception>
 		/// <exception cref="EndOfStreamException">
-		/// The file ends prematurely
+		/// The stream ends prematurely
 		/// </exception>
 		ushort ReadLEUshort()
 		{
 			int data1 = baseStream_.ReadByte();
 
 			if ( data1 < 0 ) {
-				throw new IOException("End of stream");
+				throw new EndOfStreamException("End of stream");
 			}
 
 			int data2 = baseStream_.ReadByte();
 
 			if ( data2 < 0 ) {
-				throw new IOException("End of stream");
+				throw new EndOfStreamException("End of stream");
 			}
 
 
