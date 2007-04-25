@@ -822,7 +822,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		static void CompressedStreamEOF() 
 		{
-			throw new BZip2Exception("BZip2 input stream end of compressed stream");
+			throw new EndOfStreamException("BZip2 input stream end of compressed stream");
 		}
 		
 		static void BlockOverrun() 
