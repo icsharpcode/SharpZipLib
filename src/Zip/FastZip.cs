@@ -116,12 +116,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="directory">The directory being processed.</param>
 		/// <param name="hasMatchingFiles">Flag indicating if directory has matching files as determined by the current filter.</param>
-		public void OnProcessDirectory(string directory, bool hasMatchingFiles)
+		public bool OnProcessDirectory(string directory, bool hasMatchingFiles)
 		{
+			bool result = true;
 			if ( ProcessDirectory != null ) {
 				DirectoryEventArgs args = new DirectoryEventArgs(directory, hasMatchingFiles);
 				ProcessDirectory(this, args);
+				result = args.ContinueRunning;
 			}
+			return result;
 		}
 	}
 	
@@ -390,9 +393,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 					events_.OnProcessDirectory(e.Name, e.HasMatchingFiles);
 				}
 				
-				if (e.Name != sourceDirectory_) {
-					ZipEntry entry = entryFactory_.MakeDirectoryEntry(e.Name);
-					outputStream_.PutNextEntry(entry);
+				if ( e.ContinueRunning ) {
+					if (e.Name != sourceDirectory_) {
+						ZipEntry entry = entryFactory_.MakeDirectoryEntry(e.Name);
+						outputStream_.PutNextEntry(entry);
+					}
 				}
 			}
 		}
