@@ -1054,6 +1054,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// with the ZIP naming convention.
 		/// </summary>
 		/// <param name="name">Name to clean</param>
+		/// <remarks>
+		/// The <seealso cref="ZipNameTransform">Zip name transform</seealso> class is more flexible.
+		/// </remarks>
 		public static string CleanName(string name)
 		{
 			if (name == null) {
