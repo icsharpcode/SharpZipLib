@@ -99,9 +99,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Initiailise a new instance of <see cref="ZipEntryFactory"/> using the specified <see cref="TimeSetting"/>
+		/// Initialise a new instance of <see cref="ZipEntryFactory"/> using the specified <see cref="TimeSetting"/>
 		/// </summary>
-		/// <param name="timeSetting"></param>
+		/// <param name="timeSetting">The <see cref="TimeSetting">time setting</see>  to use when creating <see cref="ZipEntry">Zip entries</see>.</param>
 		public ZipEntryFactory(TimeSetting timeSetting)
 		{
 			timeSetting_ = timeSetting;
@@ -142,7 +142,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get /set the <see cref="TimeSetting"/> in use.
+		/// Get / set the <see cref="TimeSetting"/> in use.
 		/// </summary>
 		public TimeSetting Setting
 		{
