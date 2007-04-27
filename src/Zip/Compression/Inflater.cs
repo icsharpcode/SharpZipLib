@@ -722,7 +722,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			}
 
 			if ( count < 0 ) {
-#if COMPACT_FRAMEWORK_V10
+#if NETCF_1_0
 				throw new ArgumentOutOfRangeException("count");
 #else
 				throw new ArgumentOutOfRangeException("count", "count cannot be negative");
@@ -730,7 +730,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			}
 
 			if ( offset < 0 ) {
-#if COMPACT_FRAMEWORK_V10
+#if NETCF_1_0
 				throw new ArgumentOutOfRangeException("offset");
 #else
 				throw new ArgumentOutOfRangeException("offset", "offset cannot be negative");

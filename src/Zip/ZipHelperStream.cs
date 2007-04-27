@@ -87,7 +87,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get { return stream_.CanSeek; }
 		}
 
-#if !NET_VER_1 && !COMPACT_FRAMEWORK_V10
+#if !NET_1_0 && !NET_1_1 && !NETCF_1_0
 		public override bool CanTimeout
 		{
 			get { return stream_.CanTimeout; }

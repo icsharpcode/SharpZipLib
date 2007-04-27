@@ -172,7 +172,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 			}
 			
 			if (offset < 0) {
-#if COMPACT_FRAMEWORK_V10
+#if NETCF_1_0
 				throw new ArgumentOutOfRangeException("offset");
 #else
 				throw new ArgumentOutOfRangeException("offset", "cannot be negative");
@@ -181,7 +181,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 
 			if ( count < 0 ) 
 			{
-#if COMPACT_FRAMEWORK_V10
+#if NETCF_1_0
 				throw new ArgumentOutOfRangeException("count");
 #else
 				throw new ArgumentOutOfRangeException("count", "cannot be negative");
@@ -190,7 +190,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 
 			if (offset >= buffer.Length) 
 			{
-#if COMPACT_FRAMEWORK_V10
+#if NETCF_1_0
 				throw new ArgumentOutOfRangeException("offset");
 #else
 				throw new ArgumentOutOfRangeException("offset", "not a valid index into buffer");
@@ -199,7 +199,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 			
 			if (offset + count > buffer.Length) 
 			{
-#if COMPACT_FRAMEWORK_V10
+#if NETCF_1_0
 				throw new ArgumentOutOfRangeException("count");
 #else
 				throw new ArgumentOutOfRangeException("count", "exceeds buffer size");

@@ -180,7 +180,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { createEmptyDirectories_ = value; }
 		}
 
-#if !COMPACT_FRAMEWORK_V10
+#if !NETCF_1_0
 		/// <summary>
 		/// Get / set the password value.
 		/// </summary>
@@ -291,7 +291,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			using ( outputStream_ = new ZipOutputStream(outputStream) ) {
 
-#if !COMPACT_FRAMEWORK_V10
+#if !NETCF_1_0
 				if ( password_ != null ) {
 					outputStream_.Password = password_;
 				}
@@ -358,7 +358,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			
 			using ( zipFile_ = new ZipFile(zipFileName) ) {
 
-#if !COMPACT_FRAMEWORK_V10
+#if !NETCF_1_0
 				if (password_ != null) {
 					zipFile_.Password = password_;
 				}
@@ -454,7 +454,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 							StreamUtils.Copy(zipFile_.GetInputStream(entry), outputStream, buffer_);
 						}
 
-#if !COMPACT_FRAMEWORK_V10 && !COMPACT_FRAMEWORK_V20
+#if !NETCF_1_0 && !NETCF_2_0
 						if ( restoreDateTimeOnExtract_ ) {
 							File.SetLastWriteTime(targetName, entry.DateTime);
 						}
@@ -550,7 +550,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return (int)info.Attributes;
 		}
 		
-#if NET_VER_1 || COMPACT_FRAMEWORK_V10
+#if NET_1_0 || NET_1_1 || NETCF_1_0
 		static bool NameIsValid(string name)
 		{
 			return (name != null) &&
@@ -584,7 +584,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		FastZipEvents events_;
 		IEntryFactory entryFactory_ = new ZipEntryFactory();
 		
-#if !COMPACT_FRAMEWORK_V10		
+#if !NETCF_1_0		
 		string password_;
 #endif	
 

@@ -43,7 +43,7 @@ using System.IO;
 using System.Text;
 using System.Globalization;
 
-#if !COMPACT_FRAMEWORK_V10
+#if !NETCF_1_0
 using System.Security.Cryptography;
 using ICSharpCode.SharpZipLib.Encryption;
 #endif
@@ -362,7 +362,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { key = value; }
 		}
 		
-#if !COMPACT_FRAMEWORK_V10				
+#if !NETCF_1_0				
 		/// <summary>
 		/// Password to be used for encrypting/decrypting files.
 		/// </summary>
@@ -783,7 +783,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			Stream result = new PartialInputStream(baseStream_, start, entries_[entryIndex].CompressedSize);
 
 			if (entries_[entryIndex].IsCrypted == true) {
-#if COMPACT_FRAMEWORK_V10
+#if NETCF_1_0
 				throw new ZipException("decryption not supported for Compact Framework 1.0");
 #else
 				result = CreateAndInitDecryptionStream(result, entries_[entryIndex]);
@@ -1201,7 +1201,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get { return bufferSize_; }
 			set {
 				if ( value < 1024 ) {
-#if COMPACT_FRAMEWORK_V10					
+#if NETCF_1_0					
 					throw new ArgumentOutOfRangeException("value");
 #else
 					throw new ArgumentOutOfRangeException("value", "cannot be below 1024");
@@ -1776,6 +1776,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		int WriteCentralDirectoryHeader(ZipEntry entry)
 		{
+			if ( entry.CompressedSize < 0 ) {
+				throw new ZipException("Attempt to write central directory entry with unknown csize");
+			}
+
+			if ( entry.Size < 0 ) {
+				throw new ZipException("Attempt to write central directory entry with unknown size");
+			}
+			
+			if ( entry.Crc < 0 ) {
+				throw new ZipException("Attempt to write central directory entry with unknown crc");
+			}
+			
 			// Write the central file header
 			WriteLEInt(ZipConstants.CentralHeaderSignature);
 
@@ -1786,9 +1798,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLEShort(entry.Version);
 
 			WriteLEShort(entry.Flags);
-			WriteLEShort((byte)entry.CompressionMethod);
-			WriteLEInt((int)entry.DosTime);
-			WriteLEInt((int)entry.Crc);
+			
+			unchecked {
+				WriteLEShort((byte)entry.CompressionMethod);
+				WriteLEInt((int)entry.DosTime);
+				WriteLEInt((int)entry.Crc);
+			}
 
 			if ( entry.CompressedSize >= 0xffffffff ) {
 				WriteLEInt(-1);
@@ -2113,7 +2128,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			Stream result = baseStream_;
 
 			if ( entry.IsCrypted == true ) {
-#if COMPACT_FRAMEWORK_V10
+#if NETCF_1_0
 				throw new ZipException("Encryption not supported for Compact Framework 1.0");
 #else
 				result = CreateAndInitEncryptionStream(result, entry);
@@ -2942,7 +2957,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return TestLocalHeader(entry, HeaderTest.Extract);
 		}
 		
-#if !COMPACT_FRAMEWORK_V10		
+#if !NETCF_1_0		
 		Stream CreateAndInitDecryptionStream(Stream baseStream, ZipEntry entry)
 		{
 			CryptoStream result = null;
@@ -3319,7 +3334,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			public long SkipBytes(long count)
 			{
 				if (count < 0) {
-#if COMPACT_FRAMEWORK_V10					
+#if NETCF_1_0					
 					throw new ArgumentOutOfRangeException("count");
 #else
 					throw new ArgumentOutOfRangeException("count", "is less than zero");

@@ -37,7 +37,7 @@
 
 using System;
 
-#if !COMPACT_FRAMEWORK_V10
+#if !NETCF_1_0
 using System.Security.Cryptography;
 
 using ICSharpCode.SharpZipLib.Checksums;

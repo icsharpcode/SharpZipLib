@@ -360,13 +360,13 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// Releases the unmanaged resources used by the <see cref="BZip2OutputStream"/> and optionally releases the managed resources.
 		/// </summary>
 		/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
-#if NET_VER_1 || COMPACT_FRAMEWORK_V10
+#if NET_1_0 || NET_1_1 || NETCF_1_0
 		protected virtual void Dispose(bool disposing)
 #else		
 		override protected void Dispose(bool disposing)
 #endif			
 		{
-#if !NET_VER_1 && !COMPACT_FRAMEWORK_V10
+#if !NET_1_0 && !NET_1_1 && !NETCF_1_0
 			base.Dispose(disposing);
 #endif			
 			if ( !disposed_ )

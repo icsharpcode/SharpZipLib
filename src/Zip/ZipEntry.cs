@@ -950,7 +950,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// The full test is not possible here however as the code page to apply conversions with
 				// isnt available.
 				if ( (value != null) && (value.Length > 0xffff) ) {
-#if COMPACT_FRAMEWORK_V10
+#if NETCF_1_0
 					throw new ArgumentOutOfRangeException("value");
 #else
 					throw new ArgumentOutOfRangeException("value", "cannot exceed 65535");

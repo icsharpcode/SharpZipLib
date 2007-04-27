@@ -45,7 +45,7 @@ using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
-#if !COMPACT_FRAMEWORK_V10
+#if !NETCF_1_0
 using ICSharpCode.SharpZipLib.Encryption;
 #endif
 
@@ -478,7 +478,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			
 			// Handle encryption if required.
 			if (entry.IsCrypted) {
-#if COMPACT_FRAMEWORK_V10
+#if NETCF_1_0
 				throw new ZipException("Encryption not supported for Compact Framework 1.0");
 #else
 				if (password == null) {
@@ -503,7 +503,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 #endif				
 			} else {
-#if !COMPACT_FRAMEWORK_V10
+#if !NETCF_1_0
 				inputBuffer.CryptoTransform = null;
 #endif				
 			}
@@ -531,7 +531,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			if ( offset < 0 ) {
-#if COMPACT_FRAMEWORK_V10
+#if NETCF_1_0
 				throw new ArgumentOutOfRangeException("offset");
 #else
 				throw new ArgumentOutOfRangeException("offset", "Cannot be negative");
@@ -539,7 +539,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			if ( count < 0 ) {
-#if COMPACT_FRAMEWORK_V10
+#if NETCF_1_0
 				throw new ArgumentOutOfRangeException("count");
 #else
 				throw new ArgumentOutOfRangeException("count", "Cannot be negative");

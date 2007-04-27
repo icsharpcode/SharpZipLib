@@ -174,7 +174,7 @@ or which contains garbage records after a zero block.
 			
 			if ( blockFactor <= 0 )
 			{
-#if COMPACT_FRAMEWORK_V10
+#if NETCF_1_0
 				throw new ArgumentOutOfRangeException("blockFactor");
 #else
 				throw new ArgumentOutOfRangeException("blockFactor", "Factor cannot be negative");
@@ -219,7 +219,7 @@ or which contains garbage records after a zero block.
 
 			if ( blockFactor <= 0 )
 			{
-#if COMPACT_FRAMEWORK_V10
+#if NETCF_1_0
 				throw new ArgumentOutOfRangeException("blockFactor");
 #else
 				throw new ArgumentOutOfRangeException("blockFactor", "Factor cannot be negative");

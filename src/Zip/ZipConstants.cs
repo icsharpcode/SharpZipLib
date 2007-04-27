@@ -37,15 +37,11 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-#if COMPACT_FRAMEWORK_V10 && COMPACT_FRAMEWORK_V20
-#error Cannot define both COMPACT_FRAMEWORK_V10 and COMPACT_FRAMEWORK_V20
-#endif
-
 using System;
 using System.Text;
 using System.Threading;
 
-#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
+#if NETCF_1_0 || NETCF_2_0
 using System.Globalization;
 #endif
 
@@ -463,8 +459,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public const int ENDSIG = 'P' | ('K' << 8) | (5 << 16) | (6 << 24);
 		#endregion
 		
-#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
-		// This isnt so great but is better than nothing?
+#if NETCF_1_0 || NETCF_2_0
+		// This isnt so great but is better than nothing.
         // Trying to work out an appropriate OEM code page would be good.
         // 850 is a good default for english speakers particularly in Europe.
 		static int defaultCodePage = CultureInfo.CurrentCulture.TextInfo.ANSICodePage;

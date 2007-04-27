@@ -212,7 +212,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					break;
 
 				case TimeSetting.CreateTimeUtc:
-#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
+#if NETCF_1_0 || NETCF_2_0
 					result.DateTime = fi.CreationTime.ToUniversalTime();
 #else
 					result.DateTime = fi.CreationTimeUtc;
@@ -224,7 +224,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					break;
 
 				case TimeSetting.LastAccessTimeUtc:
-#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
+#if NETCF_1_0 || NETCF_2_0
 					result.DateTime = fi.LastAccessTime.ToUniversalTime();
 #else
 					result.DateTime = fi.LastAccessTimeUtc;
@@ -236,7 +236,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					break;
 
 				case TimeSetting.LastWriteTimeUtc:
-#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
+#if NETCF_1_0 || NETCF_2_0
 					result.DateTime = fi.LastWriteTime.ToUniversalTime();
 #else
 					result.DateTime = fi.LastWriteTimeUtc;
@@ -274,7 +274,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					break;
 
 				case TimeSetting.CreateTimeUtc:
-#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
+#if NETCF_1_0 || NETCF_2_0
 					result.DateTime = di.CreationTime.ToUniversalTime();
 #else
 					result.DateTime = di.CreationTimeUtc;
@@ -286,7 +286,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					break;
 
 				case TimeSetting.LastAccessTimeUtc:
-#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
+#if NETCF_1_0 || NETCF_2_0
 					result.DateTime = di.LastAccessTime.ToUniversalTime();
 #else
 					result.DateTime = di.LastAccessTimeUtc;
@@ -298,7 +298,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					break;
 
 				case TimeSetting.LastWriteTimeUtc:
-#if COMPACT_FRAMEWORK_V10 || COMPACT_FRAMEWORK_V20
+#if NETCF_1_0 || NETCF_2_0
 					result.DateTime = di.LastWriteTime.ToUniversalTime();
 #else
 					result.DateTime = di.LastWriteTimeUtc;
