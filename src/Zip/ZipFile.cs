@@ -2753,7 +2753,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		ulong ReadLEUlong()
 		{
-			return ReadLEUint() | (ReadLEUint() << 32);
+			return ReadLEUint() | ((ulong)ReadLEUint() << 32);
 		}
 
 		#endregion
