@@ -1,8 +1,5 @@
 @echo mkDistribution v1.0"
 
-@echo issues with key files not sorted
-@echo delayed signing doesnt work in all cases.  Getting warngins re keyfiles also.
-
 if exist current (
 	rmdir /s /q current
 )
@@ -20,3 +17,5 @@ nant -t:netcf-1.0 -D:build.output.dir=current\netcf-10 -buildfile:sharpZLib.buil
 
 mkdir current\netcf-20
 nant -t:netcf-2.0 -D:build.output.dir=current\netcf-20 -buildfile:sharpZLib.build build
+
+@echo todo generate documentation and the rest of the distribution image.
