@@ -290,7 +290,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The value read.</returns>
 		public long ReadLELong()
 		{
-			return ReadLEInt() | (ReadLEInt() << 32);
+			return (uint)ReadLEInt() | ((long)ReadLEInt() << 32);
 		}
 
 		/// <summary>

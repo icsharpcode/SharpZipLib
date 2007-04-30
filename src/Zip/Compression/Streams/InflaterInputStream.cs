@@ -255,7 +255,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// Read a byte from the input stream.
+		/// Read a <see cref="byte"/> from the input stream.
 		/// </summary>
 		/// <returns>Returns the byte read.</returns>
 		public int ReadLeByte()
@@ -272,7 +272,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// Read an unsigned short in little endian byte order.
+		/// Read an <see cref="short"/> in little endian byte order.
 		/// </summary>
 		public int ReadLeShort()
 		{
@@ -280,7 +280,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// Read an int in little endian byte order.
+		/// Read an <see cref="int"/> in little endian byte order.
 		/// </summary>
 		public int ReadLeInt()
 		{
@@ -288,11 +288,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// Read an int baseInputStream little endian byte order.
+		/// Read a <see cref="long"/> in little endian byte order.
 		/// </summary>
 		public long ReadLeLong()
 		{
-			return ReadLeInt() | (ReadLeInt() << 32);
+			return (uint)ReadLeInt() | ((long)ReadLeInt() << 32);
 		}
 
 #if !NETCF_1_0
