@@ -445,6 +445,48 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 	}
+	
+	[TestFixture]
+	public class ExerciseZipEntry : ZipBase
+	{
+		[Test]
+		public void Cloning()
+		{
+			long testCrc = 3456;
+			long testSize = 99874276;
+			long testCompressedSize = 72347;
+			byte[] testExtraData = new byte[] { 0x00, 0x01, 0x00, 0x02, 0x0EF, 0xFE };
+			string testName = "Namu";
+			int testFlags = 4567;
+			long testDosTime = 23434536;
+			CompressionMethod testMethod = CompressionMethod.Deflated;
+			
+			string testComment = "A comment";
+			
+			ZipEntry source = new ZipEntry(testName);
+			source.Crc = testCrc;
+			source.Comment = testComment;
+			source.Size = testSize;
+			source.CompressedSize = testCompressedSize;
+			source.ExtraData = testExtraData;
+			source.Flags = testFlags;
+			source.DosTime = testDosTime;
+			source.CompressionMethod = testMethod;
+			
+			ZipEntry clone = (ZipEntry) source.Clone();
+			
+			Assert.AreEqual(testName, clone.Name, "Cloned name mismatch" );
+			Assert.AreEqual(testCrc, clone.Crc, "Cloned crc mismatch" );
+			Assert.AreEqual(testComment, clone.Comment, "Cloned comment mismatch" );
+			Assert.AreEqual(testExtraData, clone.ExtraData, "Cloned Extra data mismatch");
+			Assert.AreEqual(testSize, clone.Size, "Cloned size mismatch");
+			Assert.AreEqual(testCompressedSize, clone.CompressedSize, "Cloned compressed size mismatch");
+			Assert.AreEqual(testFlags, clone.Flags, "Cloned flags mismatch");
+			Assert.AreEqual(testDosTime, clone.DosTime, "Cloned DOSTime mismatch");
+			Assert.AreEqual(testMethod, clone.CompressionMethod, "Cloned Compression method mismatch");
+		}
+	}
+	
 	/// <summary>
 	/// This contains newer tests for stream handling. Much of this is still in GeneralHandling
 	/// </summary>
