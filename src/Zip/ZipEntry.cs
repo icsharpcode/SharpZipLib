@@ -1017,7 +1017,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if ( extra != null ) {
 				result.extra = new byte[extra.Length];
-				Array.Copy(result.extra, 0, extra, 0, extra.Length);
+				Array.Copy(extra, 0, result.extra, 0, extra.Length);
 			}
 
 			return result;
