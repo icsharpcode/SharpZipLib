@@ -449,6 +449,48 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	[TestFixture]
 	public class ExerciseZipEntry : ZipBase
 	{
+		void PiecewiseCompare(ZipEntry lhs, ZipEntry rhs)
+		{
+			// Introspection might be better here?
+			Assert.AreEqual(lhs.Name, rhs.Name, "Cloned name mismatch" );
+			Assert.AreEqual(lhs.Crc, rhs.Crc, "Cloned crc mismatch" );
+			Assert.AreEqual(lhs.Comment, rhs.Comment, "Cloned comment mismatch" );
+			Assert.AreEqual(lhs.ExtraData, rhs.ExtraData, "Cloned Extra data mismatch");
+			Assert.AreEqual(lhs.Size, rhs.Size, "Cloned size mismatch");
+			Assert.AreEqual(lhs.CompressedSize, rhs.CompressedSize, "Cloned compressed size mismatch");
+			Assert.AreEqual(lhs.Flags, rhs.Flags, "Cloned flags mismatch");
+			Assert.AreEqual(lhs.DosTime, rhs.DosTime, "Cloned DOSTime mismatch");
+			Assert.AreEqual(lhs.CompressionMethod, rhs.CompressionMethod, "Cloned Compression method mismatch");
+		}
+		
+		[Test]
+		public void Copying()
+		{
+			long testCrc = 3456;
+			long testSize = 99874276;
+			long testCompressedSize = 72347;
+			byte[] testExtraData = new byte[] { 0x00, 0x01, 0x00, 0x02, 0x0EF, 0xFE };
+			string testName = "Namu";
+			int testFlags = 4567;
+			long testDosTime = 23434536;
+			CompressionMethod testMethod = CompressionMethod.Deflated;
+			
+			string testComment = "A comment";
+			
+			ZipEntry source = new ZipEntry(testName);
+			source.Crc = testCrc;
+			source.Comment = testComment;
+			source.Size = testSize;
+			source.CompressedSize = testCompressedSize;
+			source.ExtraData = testExtraData;
+			source.Flags = testFlags;
+			source.DosTime = testDosTime;
+			source.CompressionMethod = testMethod;
+			
+			ZipEntry clone = new ZipEntry(source);
+			PiecewiseCompare(source, clone);
+		}
+		
 		[Test]
 		public void Cloning()
 		{
@@ -484,6 +526,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.AreEqual(testFlags, clone.Flags, "Cloned flags mismatch");
 			Assert.AreEqual(testDosTime, clone.DosTime, "Cloned DOSTime mismatch");
 			Assert.AreEqual(testMethod, clone.CompressionMethod, "Cloned Compression method mismatch");
+			PiecewiseCompare(source, clone);
 		}
 	}
 	
