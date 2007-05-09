@@ -2910,6 +2910,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				entry.CompressedSize = csize & 0xffffffffL;
 				entry.Flags = bitFlags;
 				entry.DosTime = (uint)dostime;
+				entry.ZipFileIndex = (long)i;
+				entry.Offset = offset;
+				entry.ExternalFileAttributes = (int)externalAttributes;
 
 				if ((bitFlags & 8) == 0) {
 					entry.CryptoCheckValue = (byte)(crc >> 24);
@@ -2930,10 +2933,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 					StreamUtils.ReadFully(baseStream_, buffer, 0, commentLen);
 					entry.Comment = ZipConstants.ConvertToStringExt(bitFlags, buffer, commentLen);
 				}
-				
-				entry.ZipFileIndex           = (long)i;
-				entry.Offset                 = offset;
-				entry.ExternalFileAttributes = (int)externalAttributes;
 				
 				entries_[i] = entry;
 			}

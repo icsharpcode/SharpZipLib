@@ -646,7 +646,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					// TODO: A better estimation of the true limit based on compression overhead should be used
 					// to determine when an entry should use Zip64.
-					result = ((this.size >= uint.MaxValue) || (trueCompressedSize >= uint.MaxValue)) &&
+					result =
+						((this.size >= uint.MaxValue) || (trueCompressedSize >= uint.MaxValue) || (this.offset >= uint.MaxValue)) &&
 						((versionToExtract == 0) || (versionToExtract >= ZipConstants.VersionZip64));
 				}
 
@@ -660,7 +661,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public bool CentralHeaderRequiresZip64
 		{
 			get {
-				return LocalHeaderRequiresZip64 || (offset >= 0xffffffff);
+				return LocalHeaderRequiresZip64;
 			}
 		}
 		
@@ -868,6 +869,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				if ( localHeader || (compressedSize == uint.MaxValue) ) {
 					compressedSize = (ulong)extraData.ReadLong();
+				}
+
+				if ( !localHeader && (offset == -1) ) {
+					offset = extraData.ReadLong();
 				}
 			}
 			else {
