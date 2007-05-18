@@ -576,7 +576,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				} 
 				else {
 					int result = 10;
-					if ( LocalHeaderRequiresZip64 ) {
+					if ( CentralHeaderRequiresZip64 ) {
 						result = ZipConstants.VersionZip64;	
 					}
 					else if (CompressionMethod.Deflated == method) {
@@ -647,7 +647,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					// TODO: A better estimation of the true limit based on compression overhead should be used
 					// to determine when an entry should use Zip64.
 					result =
-						((this.size >= uint.MaxValue) || (trueCompressedSize >= uint.MaxValue) || (this.offset >= uint.MaxValue)) &&
+						((this.size >= uint.MaxValue) || (trueCompressedSize >= uint.MaxValue)) &&
 						((versionToExtract == 0) || (versionToExtract >= ZipConstants.VersionZip64));
 				}
 
@@ -661,7 +661,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public bool CentralHeaderRequiresZip64
 		{
 			get {
-				return LocalHeaderRequiresZip64;
+				return LocalHeaderRequiresZip64 || (offset >= uint.MaxValue);
 			}
 		}
 		
@@ -871,7 +871,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					compressedSize = (ulong)extraData.ReadLong();
 				}
 
-				if ( !localHeader && (offset == -1) ) {
+				if ( !localHeader && (offset == uint.MaxValue) ) {
 					offset = extraData.ReadLong();
 				}
 			}
