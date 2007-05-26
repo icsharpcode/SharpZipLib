@@ -236,19 +236,13 @@ namespace SharpZip
 						option = option.Substring(0, parameterIndex);
 					}
 
-#if OPTIONTEST
-					Console.WriteLine("args index [{0}] option [{1}] argument [{2}]", argIndex, option, optArg);
-#endif				
 					if (option.Length == 0) {
-						System.Console.Error.WriteLine("Invalid argument (0}", args[argIndex]);
+						System.Console.WriteLine("Invalid argument (0}", args[argIndex]);
 						result = false;
 					}
 					else {
 						int optionIndex = 0;
 						while (optionIndex < option.Length) {
-#if OPTIONTEST
-							Console.WriteLine("optionIndex {0}", optionIndex);
-#endif				
 							switch(option[optionIndex]) {
 								case '-': // long option
 									optionIndex = option.Length;
@@ -303,7 +297,7 @@ namespace SharpZip
 												targetOutputDirectory = optArg;
 											} else {
 												result = false;
-												System.Console.Error.WriteLine("Invalid extractdir " + args[argIndex]);
+												System.Console.WriteLine("Invalid extractdir " + args[argIndex]);
 											}
 											break;
 										
@@ -319,12 +313,12 @@ namespace SharpZip
 															ZipConstants.DefaultCodePage = enc;
 														} else {
 															result = false;
-															System.Console.Error.WriteLine("Invalid encoding " + args[argIndex]);
+															System.Console.WriteLine("Invalid encoding " + args[argIndex]);
 														}
 													}
 													catch (Exception) {
 														result = false;
-														System.Console.Error.WriteLine("Invalid encoding " + args[argIndex]);
+														System.Console.WriteLine("Invalid encoding " + args[argIndex]);
 													}
 												} else {
 													try {
@@ -332,12 +326,12 @@ namespace SharpZip
 													}
 													catch (Exception) {
 														result = false;
-														System.Console.Error.WriteLine("Invalid encoding " + args[argIndex]);
+														System.Console.WriteLine("Invalid encoding " + args[argIndex]);
 													}
 												}
 											} else {
 												result = false;
-												System.Console.Error.WriteLine("Missing encoding parameter");
+												System.Console.WriteLine("Missing encoding parameter");
 											}
 											break;
 										
@@ -356,13 +350,14 @@ namespace SharpZip
 										case "-help":
 											ShowHelp();
 											break;
-			
+#if !NETCF
 										case "-restore-dates":
 											restoreDateTime = true;
 											break;
+#endif
 
 										default:
-											System.Console.Error.WriteLine("Invalid long argument " + args[argIndex]);
+											System.Console.WriteLine("Invalid long argument " + args[argIndex]);
 											result = false;
 											break;
 									}
@@ -375,14 +370,14 @@ namespace SharpZip
 								case 's':
 									if (optionIndex != 0) {
 										result = false;
-										System.Console.Error.WriteLine("-s cannot be in a group");
+										System.Console.WriteLine("-s cannot be in a group");
 									} else {
 										if (optArg.Length > 0) {
 											password = optArg;
 										} else if (option.Length > 1) {
 											password = option.Substring(1);
 										} else {
-											System.Console.Error.WriteLine("Missing argument to " + args[argIndex]);
+											System.Console.WriteLine("Missing argument to " + args[argIndex]);
 										}
 									}
 									optionIndex = option.Length;
@@ -392,10 +387,10 @@ namespace SharpZip
 									operation = Operation.Create;
 									break;
 								
-								case 'e':
+								case 'l':
 									if (optionIndex != 0) {
 										result = false;
-										System.Console.Error.WriteLine("-e cannot be in a group");
+										System.Console.WriteLine("-l cannot be in a group");
 									} else {
 										optionIndex = option.Length;
 										if (optArg.Length > 0) {
@@ -403,7 +398,7 @@ namespace SharpZip
 												compressionLevel = int.Parse(optArg);
 											}
 											catch (Exception) {
-												System.Console.Error.WriteLine("Level invalid");
+												System.Console.WriteLine("Level invalid");
 											}
 										}
 									}
@@ -412,7 +407,7 @@ namespace SharpZip
 								
 								case 'o':
 									optionIndex += 1;
-									overwriteFiles = optionIndex < option.Length ? (option[optionIndex] == '+') ? Overwrite.Always : Overwrite.Never : Overwrite.Never;
+									overwriteFiles = (optionIndex < option.Length) ? (option[optionIndex] == '+') ? Overwrite.Always : Overwrite.Never : Overwrite.Never;
 									break;
 								
 								case 'p':
@@ -437,7 +432,7 @@ namespace SharpZip
 								case 'x':
 									if (optionIndex != 0) {
 										result = false;
-										System.Console.Error.WriteLine("-x cannot be in a group");
+										System.Console.WriteLine("-x cannot be in a group");
 									} else {
 										operation = Operation.Extract;
 										if (optArg.Length > 0) {
@@ -448,7 +443,7 @@ namespace SharpZip
 									break;
 								
 								default:
-									System.Console.Error.WriteLine("Invalid argument: " + args[argIndex]);
+									System.Console.WriteLine("Invalid argument: " + args[argIndex]);
 									result = false;
 									break;
 							}
@@ -468,7 +463,7 @@ namespace SharpZip
 			if (fileSpecs.Count > 0 && operation == Operation.Create) {
 				string checkPath = (string)fileSpecs[0];
 				int deviceCheck = checkPath.IndexOf(':');
-#if NET_VER_1				
+#if NETCF_1_0
 				if (checkPath.IndexOfAny(Path.InvalidPathChars) >= 0
 #else
 				if (checkPath.IndexOfAny(Path.GetInvalidPathChars()) >= 0
@@ -488,7 +483,8 @@ namespace SharpZip
 		void ShowEnvironment()
 		{
 			seenHelp = true;
-			System.Console.Out.WriteLine(
+#if !NETCF_1_0
+			System.Console.WriteLine(
 			   "Current encoding is {0}, code page {1}, windows code page {2}",
 			   System.Console.Out.Encoding.EncodingName,
 			   System.Console.Out.Encoding.CodePage,
@@ -501,6 +497,7 @@ namespace SharpZip
 			Console.WriteLine( "Current thread OEM codepage {0}", System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage);
 			Console.WriteLine( "Current thread Mac codepage {0}", System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.MacCodePage);
 			Console.WriteLine( "Current thread Ansi codepage {0}", System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ANSICodePage);
+#endif
 		}
 		
 		/// <summary>
@@ -508,17 +505,18 @@ namespace SharpZip
 		/// </summary>		
 		void ShowVersion() {
 			seenHelp = true;
-			Console.Out.WriteLine("SharpZip Archiver v0.35   Copyright 2004 John Reilly");
-			
+			Console.WriteLine("SharpZip Archiver v0.37   Copyright 2004 John Reilly");
+#if !NETCF			
 			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
 			foreach (Assembly assembly in assemblies) {
 				if (assembly.GetName().Name == "ICSharpCode.SharpZipLib") {
-					Console.Out.WriteLine("#ZipLib v{0} {1}", assembly.GetName().Version,
+					Console.WriteLine("#ZipLib v{0} {1}", assembly.GetName().Version,
 						assembly.GlobalAssemblyCache == true ? "Running from GAC" : "Running from DLL"
 					);
 				}
 			}
+#endif
 		}
 
 		/// <summary>
@@ -532,33 +530,36 @@ namespace SharpZip
 			
 			seenHelp = true;
 			ShowVersion();
-			Console.Out.WriteLine("usage sz {options} archive files");
-			Console.Out.WriteLine("");
-			Console.Out.WriteLine("Options:");
-			Console.Out.WriteLine("-abs                       Store absolute path info");
-			Console.Out.WriteLine("-?,        --help          Show this help");
-			Console.Out.WriteLine("-c         --create        Create new archive");
-			Console.Out.WriteLine("-v                         List archive contents (default)");
-			Console.Out.WriteLine("--list                     List archive contents extended format");
-			Console.Out.WriteLine("-x{=dir},  --extract{=dir} Extract archive contents to dir(default .)");
-			Console.Out.WriteLine("--extractdir=path          Set extract directory (default .)");
-			Console.Out.WriteLine("--info                     Show current environment information" );
-			Console.Out.WriteLine("--store                    Store entries (default=deflate)");
-			Console.Out.WriteLine("--version                  Show version information");
-			Console.Out.WriteLine("--emptydirs                Create entries for empty directories");
-			Console.Out.WriteLine("--encoding=codepage|name   Set code page for encoding by name or number");
-			Console.Out.WriteLine("--restore-dates            Restore dates on extraction");
-			Console.Out.WriteLine("--delete                   Delete files from archive");
-			Console.Out.WriteLine("--test                     Test archive for validity");
-			Console.Out.WriteLine("--data                     Test archive data");
-			Console.Out.WriteLine("--add                      Add files to archive");
-			Console.Out.WriteLine("-o+                        Overwrite files without prompting");
-			Console.Out.WriteLine("-o-                        Never overwrite files");
-			Console.Out.WriteLine("-p                         Store relative path info (default)");
-			Console.Out.WriteLine("-r                         Recurse sub-folders");
-			Console.Out.WriteLine("-q                         Quiet mode");
-			Console.Out.WriteLine("-s=password                Set archive password");
-			Console.Out.WriteLine("");
+			Console.WriteLine("usage sz {options} archive files");
+			Console.WriteLine("");
+			Console.WriteLine("Options:");
+			Console.WriteLine("-abs                       Store absolute path info");
+			Console.WriteLine("-?,        --help          Show this help");
+			Console.WriteLine("-c         --create        Create new archive");
+			Console.WriteLine("-v                         List archive contents (default)");
+			Console.WriteLine("--list                     List archive contents extended format");
+			Console.WriteLine("-x{=dir},  --extract{=dir} Extract archive contents to dir(default .)");
+			Console.WriteLine("--extractdir=path          Set extract directory (default .)");
+			Console.WriteLine("--info                     Show current environment information" );
+			Console.WriteLine("--store                    Store entries (default=deflate)");
+			Console.WriteLine("--version                  Show version information");
+			Console.WriteLine("--emptydirs                Create entries for empty directories");
+			Console.WriteLine("--encoding=codepage|name   Set code page for encoding by name or number");
+#if !NETCF
+			Console.WriteLine("--restore-dates            Restore dates on extraction");
+#endif
+			Console.WriteLine("--delete                   Delete files from archive");
+			Console.WriteLine("--test                     Test archive for validity");
+			Console.WriteLine("--data                     Test archive data");
+			Console.WriteLine("--add                      Add files to archive");
+			Console.WriteLine("-o+                        Overwrite files without prompting");
+			Console.WriteLine("-o-                        Never overwrite files");
+			Console.WriteLine("-p                         Store relative path info (default)");
+			Console.WriteLine("-r                         Recurse sub-folders");
+			Console.WriteLine("-q                         Quiet mode");
+			Console.WriteLine("-s=password                Set archive password");
+			Console.WriteLine("-l=level                   Use compression level (0-9) when compressing");
+			Console.WriteLine("");
 		
 		}
 		
@@ -589,11 +590,11 @@ namespace SharpZip
 				FileInfo fileInfo = new FileInfo(fileName);
 				
 				if (fileInfo.Exists == false) {
-					Console.Error.WriteLine("No such file exists {0}", fileName);
+					Console.WriteLine("No such file exists {0}", fileName);
 					return;
 				}
 
-				Console.Out.WriteLine(fileName);
+				Console.WriteLine(fileName);
 
 				using (FileStream fileStream = File.OpenRead(fileName)) {
 					using (ZipInputStream stream = new ZipInputStream(fileStream)) {
@@ -608,18 +609,18 @@ namespace SharpZip
 						while ((theEntry = stream.GetNextEntry()) != null) {
 
 							if ( theEntry.IsDirectory ) {
-								Console.Out.WriteLine("Directory {0}", theEntry.Name);
+								Console.WriteLine("Directory {0}", theEntry.Name);
 								continue;
 							}
 							
 							if ( !theEntry.IsFile ) {
-								Console.Out.WriteLine("Non file entry {0}", theEntry.Name);
+								Console.WriteLine("Non file entry {0}", theEntry.Name);
 								continue;
 							}
 							
 							if (entryCount == 0) {
-								Console.Out.WriteLine(headerTitles);
-								Console.Out.WriteLine(headerUnderline);
+								Console.WriteLine(headerTitles);
+								Console.WriteLine(headerUnderline);
 							}
 						
 							++entryCount;
@@ -627,22 +628,22 @@ namespace SharpZip
 							totalSize += theEntry.Size;
 							
 							if (theEntry.Name.Length > 15) {
-								Console.Out.WriteLine(theEntry.Name);
-								Console.Out.WriteLine(
+								Console.WriteLine(theEntry.Name);
+								Console.WriteLine(
 								    "{0,-15}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss} {5,8:x}",
 								    "", theEntry.Size, ratio, theEntry.CompressedSize, theEntry.DateTime, theEntry.Crc);
 							} else {
-								Console.Out.WriteLine(
+								Console.WriteLine(
 								    "{0,-15}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss} {5,8:x}",
 								    theEntry.Name, theEntry.Size, ratio, theEntry.CompressedSize, theEntry.DateTime, theEntry.Crc);
 							}
 						}
 			
 						if (entryCount == 0) {
-							Console.Out.WriteLine("Archive is empty!");
+							Console.WriteLine("Archive is empty!");
 						} else {
-							Console.Out.WriteLine(headerUnderline);
-							Console.Out.WriteLine(
+							Console.WriteLine(headerUnderline);
+							Console.WriteLine(
 								"{0,-15}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss}",
 								entryCount.ToString() + " entries", totalSize, GetCompressionRatio(fileInfo.Length, totalSize), fileInfo.Length, fileInfo.LastWriteTime);
 						}
@@ -651,7 +652,7 @@ namespace SharpZip
 			}
 			catch(Exception exception)
 			{
-				Console.Error.WriteLine("Exception during list operation: {0}", exception.Message);
+				Console.WriteLine("Exception during list operation: {0}", exception.Message);
 			}
 		}
 		
@@ -668,11 +669,11 @@ namespace SharpZip
 				FileInfo fileInfo = new FileInfo(fileName);
 				
 				if (fileInfo.Exists == false) {
-					Console.Error.WriteLine("No such file exists {0}", fileName);
+					Console.WriteLine("No such file exists {0}", fileName);
 					return;
 				}
 
-				Console.Out.WriteLine(fileName);
+				Console.WriteLine(fileName);
 
 				int entryCount = 0;
 				long totalSize  = 0;
@@ -684,19 +685,19 @@ namespace SharpZip
 						
 						if ( theEntry.IsDirectory ) 
 						{
-							Console.Out.WriteLine("Directory {0}", theEntry.Name);
+							Console.WriteLine("Directory {0}", theEntry.Name);
 						}
 						else if ( !theEntry.IsFile ) 
 						{
-							Console.Out.WriteLine("Non file entry {0}", theEntry.Name);
+							Console.WriteLine("Non file entry {0}", theEntry.Name);
 							continue;
 						}
 						else
 						{
 							if (entryCount == 0) 
 							{
-								Console.Out.WriteLine(headerTitles);
-								Console.Out.WriteLine(headerUnderline);
+								Console.WriteLine(headerTitles);
+								Console.WriteLine(headerUnderline);
 							}
 						
 							++entryCount;
@@ -705,15 +706,15 @@ namespace SharpZip
 							
 							if (theEntry.Name.Length > 12) 
 							{
-								Console.Out.WriteLine(theEntry.Name);
-								Console.Out.WriteLine(
+								Console.WriteLine(theEntry.Name);
+								Console.WriteLine(
 									"{0,-12}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss} {5,8:x}   {6,4}",
 									"", theEntry.Size, ratio, theEntry.CompressedSize, theEntry.DateTime, theEntry.Crc,
 									InterpretExternalAttributes(theEntry.HostSystem, theEntry.ExternalFileAttributes));
 							} 
 							else 
 							{
-								Console.Out.WriteLine(
+								Console.WriteLine(
 									"{0,-12}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss} {5,8:x}   {6,4}",
 									theEntry.Name, theEntry.Size, ratio, theEntry.CompressedSize, theEntry.DateTime, theEntry.Crc, 
 									InterpretExternalAttributes(theEntry.HostSystem, theEntry.ExternalFileAttributes));
@@ -723,17 +724,17 @@ namespace SharpZip
 				}
 
 				if (entryCount == 0) {
-					Console.Out.WriteLine("Archive is empty!");
+					Console.WriteLine("Archive is empty!");
 				} else {
-					Console.Out.WriteLine(headerUnderline);
-					Console.Out.WriteLine(
+					Console.WriteLine(headerUnderline);
+					Console.WriteLine(
 						"{0,-12}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss}",
 						entryCount.ToString() + " entries", totalSize, GetCompressionRatio(fileInfo.Length, totalSize), fileInfo.Length, fileInfo.LastWriteTime);
 				}
 			}
 			catch(Exception exception)
 			{
-				Console.Error.WriteLine("Exception during list operation: {0}", exception.Message);
+				Console.WriteLine("Exception during list operation: {0}", exception.Message);
 			}
 		}
 		
@@ -754,7 +755,7 @@ namespace SharpZip
 				names = Directory.GetFiles(pathName, Path.GetFileName(spec));
 				
 				if (names.Length == 0) {
-					Console.Error.WriteLine("No files found matching {0}", spec);
+					Console.WriteLine("No files found matching {0}", spec);
 				}
 				else {
 					foreach (string file in names) {
@@ -763,7 +764,7 @@ namespace SharpZip
 						} else {
 							ListZip(file);
 						}
-						Console.Out.WriteLine("");
+						Console.WriteLine("");
 					}
 				}
 			}
@@ -880,7 +881,7 @@ namespace SharpZip
 					Console.WriteLine("");
 				}
 			} else {
-				Console.Error.WriteLine("No such file exists {0}", fileName);
+				Console.WriteLine("No such file exists {0}", fileName);
 			}
 		}
 	
@@ -914,7 +915,7 @@ namespace SharpZip
 		{
 			int result = 0;
 #if TEST
-			System.Console.Out.WriteLine("CompressFolder basepath {0}  pattern {1}", basePath, searchPattern);
+			System.Console.WriteLine("CompressFolder basepath {0}  pattern {1}", basePath, searchPattern);
 #endif
 			string [] names = Directory.GetFiles(basePath, searchPattern);
 			
@@ -950,7 +951,7 @@ namespace SharpZip
 			fileSpecs.RemoveAt(0);
 
 			if (overwriteFiles == Overwrite.Never && File.Exists(zipFileName)) {
-				System.Console.Error.WriteLine("File {0} already exists", zipFileName);
+				System.Console.WriteLine("File {0} already exists", zipFileName);
 				return;
 			}
 
@@ -995,7 +996,7 @@ namespace SharpZip
 					}
 					
 					if (totalEntries == 0) {
-						Console.Out.WriteLine("File created has no entries!");
+						Console.WriteLine("File created has no entries!");
 					}
 				}
 			}
@@ -1081,11 +1082,12 @@ namespace SharpZip
 						streamWriter.Write(data, 0, size);
 					} while (size > 0);
 				}
-							
+#if !NETCF
 				if (restoreDateTime) 
 				{
 					File.SetLastWriteTime(targetName, theEntry.DateTime);
 				}
+#endif
 			}
 			return true;
 		}
@@ -1128,7 +1130,7 @@ namespace SharpZip
 			}
 			catch (Exception except) {
 				result = false;
-				Console.Error.WriteLine(except.Message + " Failed to unzip file");
+				Console.WriteLine(except.Message + " Failed to unzip file");
 			}
 		
 			return result;
@@ -1160,7 +1162,7 @@ namespace SharpZip
 
 				foreach (string fileName in names) {				
 					if (File.Exists(fileName) == false) {
-						Console.Error.WriteLine("No such file exists {0}", spec);
+						Console.WriteLine("No such file exists {0}", spec);
 					} else {
 						DecompressFile(fileName, targetOutputDirectory);
 					}
@@ -1180,11 +1182,11 @@ namespace SharpZip
 			{
 				if ( zipFile.TestArchive(testData) )
 				{
-					Console.Out.WriteLine("Archive test passed");
+					Console.WriteLine("Archive test passed");
 				}
 				else
 				{
-					Console.Out.WriteLine("Archive test failure");
+					Console.WriteLine("Archive test failure");
 				}
 			}
 		}
@@ -1238,7 +1240,7 @@ namespace SharpZip
 			if (SetArgs(args)) {
 				if (fileSpecs.Count == 0) {
 					if (silent == false) {
-						Console.Out.WriteLine("Nothing to do");
+						Console.WriteLine("Nothing to do");
 					}
 				}
 				else {
@@ -1343,12 +1345,14 @@ namespace SharpZip
 		/// but it does exercise the option as the library supports it
 		/// </summary>
 		bool useZipStored;
-
+		
+#if !NETCF
 		/// <summary>
 		/// Restore file date and time to that stored in zip file on extraction
 		/// </summary>
 		bool restoreDateTime;
-		
+#endif
+
 		/// <summary>
 		/// Overwrite files handling
 		/// </summary>
@@ -1387,4 +1391,3 @@ namespace SharpZip
 		#endregion
 	}
 }
-
