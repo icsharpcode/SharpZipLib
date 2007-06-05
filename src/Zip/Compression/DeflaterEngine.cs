@@ -132,7 +132,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 #if DebugDeflation
 				if (DeflaterConstants.DEBUGGING) {
 					Console.WriteLine("window: [" + blockStart + "," + strstart + ","
-				                + lookahead + "], " + compressionFunction + "," + canFlush);
+								+ lookahead + "], " + compressionFunction + "," + canFlush);
 				}
 #endif
 				switch (compressionFunction) 
@@ -322,7 +322,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 #if DebugDeflation
 				if (DeflaterConstants.DEBUGGING) {
 				   Console.WriteLine("Change from " + compressionFunction + " to "
-									      + DeflaterConstants.COMPR_FUNC[level]);
+										  + DeflaterConstants.COMPR_FUNC[level]);
 				}
 #endif
 				switch (compressionFunction) {
@@ -422,12 +422,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			if (DeflaterConstants.DEBUGGING) 
 			{
 				if (hash != (((window[strstart] << (2*HASH_SHIFT)) ^ 
-							      (window[strstart + 1] << HASH_SHIFT) ^ 
-							      (window[strstart + 2])) & HASH_MASK)) {
+								  (window[strstart + 1] << HASH_SHIFT) ^ 
+								  (window[strstart + 2])) & HASH_MASK)) {
 						throw new SharpZipBaseException("hash inconsistent: " + hash + "/"
-									            +window[strstart] + ","
-									            +window[strstart + 1] + ","
-									            +window[strstart + 2] + "," + HASH_SHIFT);
+												+window[strstart] + ","
+												+window[strstart + 1] + ","
+												+window[strstart + 2] + "," + HASH_SHIFT);
 					}
 			}
 #endif
@@ -637,13 +637,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					}
 #endif					
 
-					// This stops problems with fast/low compression and index out of range
-					if (huffman.TallyDist(strstart - matchStart, matchLen)) {
-						bool lastBlock = finish && lookahead == 0;
-						huffman.FlushBlock(window, blockStart, strstart - blockStart, lastBlock);
-						blockStart = strstart;
-					}
-				
+					bool full = huffman.TallyDist(strstart - matchStart, matchLen);
+
 					lookahead -= matchLen;
 					if (matchLen <= max_lazy && lookahead >= MIN_MATCH) {
 						while (--matchLen > 0) {
@@ -658,7 +653,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 						}
 					}
 					matchLen = MIN_MATCH - 1;
-					continue;
+					if (!full) {
+						continue;
+					}
 				} else {
 					// No match found
 					huffman.TallyLit(window[strstart] & 0xff);
@@ -736,8 +733,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					if (DeflaterConstants.DEBUGGING) 
 					{
 					   for (int i = 0 ; i < matchLen; i++) {
-					      if (window[strstart-1+i] != window[prevMatch + i])
-					         throw new SharpZipBaseException();
+						  if (window[strstart-1+i] != window[prevMatch + i])
+							 throw new SharpZipBaseException();
 						}
 					}
 #endif
