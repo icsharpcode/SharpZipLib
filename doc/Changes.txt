@@ -1,3 +1,16 @@
+Changes since 0.85.1
+
++ Minor tweaks for CF, ZipEntryFactory and ZipFile.
++ Fix for zip testing and Zip64 local header patching.
++ FastZip revamped to handle file attributes on extract + other fixes
++ Null ref in path filter fixed.
++ Extra data handling fixes
++ Non ascii zip password handling fix
++ Revamped build and conditional compilation handling
++ Fix for zip compression problem at low levels
++ Many bug fixes for Zip64.
++ Minor improvements to C# samples.
+
 Changes since v0.85
 
 + BREAKING CHANGE:  Zip name transform implementations and other classes no longer directly support non-relative paths.
