@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 
 <!-- Nant style build file for #ZipLib -->
 
@@ -63,6 +63,11 @@
 
     <target name="build" description="Build the current source." depends="setup">
         <call target="build-${framework::get-target-framework()}" />
+	<copy todir="bin" overwrite="True" >
+		<fileset basedir="${build.output.dir}">
+			<include name="${sharpziplib.name}.dll"/>
+		</fileset>
+	</copy>
     </target>
 
     <target name="build-netcf-1.0" >
@@ -70,6 +75,7 @@
     </target>
 
     <target name="build-netcf-2.0" >
+	<!--  The compiler for Microsoft .NET Compact Framework 2.0 does not support the /keyfile option. -->
         <call target="build-net-1.1" />
     </target>
 
@@ -81,7 +87,7 @@
                 debug="${debug}"
                 checked="${checked}"
                 define="${build.defines}"
-          doc="${build.output.dir}/ICSharpCode.SharpZipLib.xml"
+		doc="${build.output.dir}/ICSharpCode.SharpZipLib.xml"
 		>
             <sources basedir="src">
                 <include name="**/*.cs"/>
@@ -91,8 +97,6 @@
                 <include name="System.dll" />
             </references>
         </csc>
-
-        <call target="build-samples" />
     </target>
 
 
@@ -116,8 +120,6 @@
                 <include name="System.dll" />
             </references>
         </csc>
-
-        <call target="build-samples" />
     </target>
 
     <target name="build-mono-1.0" >

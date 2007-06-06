@@ -73,7 +73,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright 2001-2007 Mike Krueger, John Reilly")]
 [assembly: AssemblyTrademark("Copyright 2001-2007 Mike Krueger, John Reilly")]
 
-[assembly: AssemblyVersion("0.85.2.313")]
+[assembly: AssemblyVersion("0.85.2.324")]
 [assembly: AssemblyInformationalVersionAttribute("0.85.2")]
 
 
