@@ -3421,19 +3421,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// <summary>
 	/// Provides a static way to obtain a source of data for an entry.
 	/// </summary>
-	/// <remarks>The </remarks>
 	public interface IStaticDataSource
 	{
 		/// <summary>
-		/// Get a data source.
+		/// Get a source of data by creating a new stream.
 		/// </summary>
 		/// <returns>Returns a <see cref="Stream"/> to use for compression input.</returns>
+		/// <remarks>Ideally a new stream is created and opened to achieve this, to avoid locking problems.</remarks>
 		Stream GetSource();
 	}
 
 	/// <summary>
-	/// Represents a source of data that dynamically provide multiple <see cref="Stream">data sources</see>
-	/// based on the parameters passed.
+	/// Represents a source of data that can dynamically provide
+	/// multiple <see cref="Stream">data sources</see> based on the parameters passed.
 	/// </summary>
 	public interface IDynamicDataSource
 	{
@@ -3443,11 +3443,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="entry">The <see cref="ZipEntry"/> to get a source for.</param>
 		/// <param name="name">The name for data if known.</param>
 		/// <returns>Returns a <see cref="Stream"/> to use for compression input.</returns>
+		/// <remarks>Ideally a new stream is created and opened to achieve this, to avoid locking problems.</remarks>
 		Stream GetSource(ZipEntry entry, string name);
 	}
 
 	/// <summary>
-	/// Default implementation of a <see cref="IStaticDataSource"/>
+	/// Default implementation of a <see cref="IStaticDataSource"/> for use with files stored on disk.
 	/// </summary>
 	class StaticDiskDataSource : IStaticDataSource
 	{
@@ -3479,7 +3480,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 
 	/// <summary>
-	/// Default implementation of <see cref="IDynamicDataSource"/>
+	/// Default implementation of <see cref="IDynamicDataSource"/> for files stored on disk.
 	/// </summary>
 	class DynamicDiskDataSource : IDynamicDataSource
 	{

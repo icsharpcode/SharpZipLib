@@ -5,11 +5,11 @@ Changes since 0.85.1
 + FastZip revamped to handle file attributes on extract + other fixes
 + Null ref in path filter fixed.
 + Extra data handling fixes
-+ Non ascii zip password handling fix
 + Revamped build and conditional compilation handling
-+ Fix for zip compression problem at low levels
 + Many bug fixes for Zip64.
 + Minor improvements to C# samples.
++ ZIP-1341 Non ascii zip password handling fix.
++ ZIP-355 Fix for zip compression problem at low levels
 
 Changes since v0.85
 
