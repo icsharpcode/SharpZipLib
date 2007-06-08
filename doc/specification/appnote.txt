@@ -1,7 +1,7 @@
 File:    APPNOTE.TXT - .ZIP File Format Specification
-Version: 6.3.0 
-Revised: September 29, 2006
-Copyright (c) 1989 - 2006 PKWARE Inc., All Rights Reserved.
+Version: 6.3.1 
+Revised: April 11, 2007
+Copyright (c) 1989 - 2007 PKWARE Inc., All Rights Reserved.
 
 The use of certain technological aspects disclosed in the current
 APPNOTE is available pursuant to the below section entitled
@@ -100,6 +100,9 @@ Version       Change Description                        Date
 
               -Added additional "Extra Field" 
                definitions
+
+6.3.1         -Corrected standard hash values for      04/11/2007
+               SHA-256/384/512
 
 
 V. General Format of a .ZIP file
@@ -2547,9 +2550,9 @@ values for HashID are:
      0x8003          MD5
      0x8004          SHA1
      0x8007          RIPEMD160
-     0x8012          SHA256
-     0x8013          SHA384
-     0x8015          SHA512
+     0x800C          SHA256
+     0x800D          SHA384
+     0x800E          SHA512
 
 When the Central Directory data is signed, the same hash algorithm
 used to hash the Central Directory for signing should be used.
