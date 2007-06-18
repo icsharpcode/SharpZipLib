@@ -878,8 +878,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			else {
 				if ( 
 					((versionToExtract & 0xff) >= ZipConstants.VersionZip64) &&
-					( (size == uint.MaxValue) ||
-					(compressedSize == uint.MaxValue) )) {
+					((size == uint.MaxValue) || (compressedSize == uint.MaxValue))
+				) {
 					throw new ZipException("Zip64 Extended information required but is missing.");
 				}
 			}

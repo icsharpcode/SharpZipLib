@@ -1805,14 +1805,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLEInt((int)entry.Crc);
 			}
 
-			if ( entry.CompressedSize >= 0xffffffff ) {
+			if ( (entry.IsZip64Forced()) || (entry.CompressedSize >= 0xffffffff) ) {
 				WriteLEInt(-1);
 			}
 			else {
 				WriteLEInt((int)(entry.CompressedSize & 0xffffffff));
 			}
 
-			if ( entry.Size >= 0xffffffff ) {
+			if ( (entry.IsZip64Forced()) || (entry.Size >= 0xffffffff) ) {
 				WriteLEInt(-1);
 			}
 			else {
@@ -2422,6 +2422,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			else
 			{
 				workFile = ZipFile.Create(archiveStorage_.GetTemporaryOutput());
+				workFile.UseZip64 = UseZip64;
+				
 				if (key != null) {
 					workFile.key = (byte[])key.Clone();
 				}

@@ -62,9 +62,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="trimPrefix">The string to trim from front of paths if found.</param>
 		public ZipNameTransform(string trimPrefix)
 		{
-			if ( trimPrefix != null ) {
-				trimPrefix_ = trimPrefix.ToLower();
-			}
+			TrimPrefix = trimPrefix;
 		}
 		#endregion
 		
@@ -116,7 +114,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Transform a file name according to the Zip file naming conventions.
+		/// Transform a windows file name according to the Zip file naming conventions.
 		/// </summary>
 		/// <param name="name">The file name to transform.</param>
 		/// <returns>The transformed name.</returns>
@@ -127,7 +125,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if ( (trimPrefix_ != null) && (lowerName.IndexOf(trimPrefix_) == 0) ) {
 					name = name.Substring(trimPrefix_.Length);
 				}
-				
+
+				// The following can throw exceptions when the name contains invalid characters
 				if (Path.IsPathRooted(name) == true) {
 					// NOTE:
 					// for UNC names...  \\machine\share\zoom\beet.txt gives \zoom\beet.txt
@@ -149,10 +148,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get/set the path prefix to be trimmed from paths if present.
 		/// </summary>
+		/// <remarks>The prefix is trimmed before any conversion from
+		/// a windows path is done.</remarks>
 		public string TrimPrefix
 		{
 			get { return trimPrefix_; }
-			set { trimPrefix_ = value; }
+			set {
+				trimPrefix_ = value;
+				if (trimPrefix_ != null) {
+					trimPrefix_ = trimPrefix_.ToLower();
+				}
+			}
 		}
 
 		/// <summary>

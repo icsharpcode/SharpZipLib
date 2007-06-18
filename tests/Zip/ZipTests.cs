@@ -451,7 +451,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	{
 		void PiecewiseCompare(ZipEntry lhs, ZipEntry rhs)
 		{
-			// Introspection might be better here?
+			// Introspection would be better here of course
 			Assert.AreEqual(lhs.Name, rhs.Name, "Cloned name mismatch" );
 			Assert.AreEqual(lhs.Crc, rhs.Crc, "Cloned crc mismatch" );
 			Assert.AreEqual(lhs.Comment, rhs.Comment, "Cloned comment mismatch" );
@@ -2039,15 +2039,31 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	[TestFixture]
 	public class ExerciseZipNameTransform : ZipBase
 	{
+		void TestFile(ZipNameTransform t, string original, string expected)
+		{
+			string transformed = t.TransformFile(original);
+			Assert.AreEqual(expected, transformed, "Should be equal");
+		}
+
 		[Test]
 		[Category("Zip")]
 		public void Exercise()
 		{
-			ZipNameTransform nt = new ZipNameTransform();
+			ZipNameTransform t = new ZipNameTransform();
 
-			string original = "abcdefghijklmnopqrstuvwxyz";
-			string transformed = nt.TransformFile(original);
-			Assert.AreEqual(original, transformed, "Should be equal");
+			TestFile(t, "abcdef", "abcdef");
+			TestFile(t, @"\\uncpath\d1\file1", "file1");
+			TestFile(t, @"C:\absolute\file2", "absolute/file2");
+
+			// This is ignored but could be converted to 'file3'
+			TestFile(t, @"./file3", "./file3");
+
+			// The following relative paths cant be handled and are ignored
+			TestFile(t, @"../file3", "../file3");
+			TestFile(t, @".../file3", ".../file3");
+
+			// Trick filenames.
+			TestFile(t, @".....file3", ".....file3");
 		}
 	}
 	[TestFixture]
@@ -2348,6 +2364,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+		[Test]
+		[Category("Zip")]
+		[Explicit]
+		public void Zip64Offset()
+		{
+			// TODO: Test to check that a zip64 offset value is loaded correctly.
+			// Changes in ZipEntry to CentralHeaderRequiresZip64 and LocalHeaderRequiresZip64
+			// were not quite correct...
+		}
 
 		[Test]
 		[Category("Zip")]

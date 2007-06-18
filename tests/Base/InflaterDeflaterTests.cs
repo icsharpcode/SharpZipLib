@@ -165,6 +165,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		}
 
 		[Test]
+        [Explicit]
 		[Category("Base")]
 		[Category("ExcludeFromAutoBuild")]
 		public void FindBug()
