@@ -1105,6 +1105,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 
 					// Crc valid for empty entry.
+					// This will also apply to streamed entries where size isnt known and the header cant be patched
 					if ( (size == 0) && (compressedSize == 0) ) {
 						if ( crcValue != 0 ) {
 							throw new ZipException("Invalid CRC for empty entry");

@@ -115,9 +115,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		long crcPatchPos = -1;
 		long sizePatchPos = -1;
 
-		// Default of off is backwards compatible and doesnt dump on
-		// XP's built in compression which cnat handle it
-		UseZip64 useZip64_ = UseZip64.Off;
+		// Default is dynamic which is not backwards compatible and can cause problems
+		// with XP's built in compression which cant read Zip64 archives.
+		// However it does avoid the situation were a large file is added and cannot be completed correctly.
+		UseZip64 useZip64_ = UseZip64.Dynamic;
 		#endregion
 
 		#region Constructors
@@ -188,7 +189,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get / set a value indicating how Zip64 Extension usage is determined when adding entries.
 		/// </summary>
-		UseZip64 UseZip64
+		public UseZip64 UseZip64
 		{
 			get { return useZip64_; }
 			set { useZip64_ = value; }
@@ -340,6 +341,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			entry.CompressionMethod = (CompressionMethod)method;
 			
 			curMethod = method;
+			sizePatchPos = -1;
 			
 			if ( (useZip64_ == UseZip64.On) || ((entry.Size < 0) && (useZip64_ == UseZip64.Dynamic)) ) {
 				entry.ForceZip64();
@@ -375,7 +377,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				// For local header both sizes appear in Zip64 Extended Information
-				if ( entry.LocalHeaderRequiresZip64 ) {
+				if ( entry.LocalHeaderRequiresZip64 && patchEntryHeader ) {
 					WriteLeInt(-1);
 					WriteLeInt(-1);
 				}
@@ -393,7 +395,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			ZipExtraData ed = new ZipExtraData(entry.ExtraData);
 
-			if ( entry.LocalHeaderRequiresZip64 ) {
+			if (entry.LocalHeaderRequiresZip64 && (headerInfoAvailable || patchEntryHeader)) {
 				ed.StartNewEntry();
 				if (headerInfoAvailable) {
 					ed.AddLeLong(entry.Size);
@@ -474,7 +476,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				base.Finish();
 			}
 			
-			long csize = curMethod == CompressionMethod.Deflated ? def.TotalOut : size;
+			long csize = (curMethod == CompressionMethod.Deflated) ? def.TotalOut : size;
 			
 			if (curEntry.Size < 0) {
 				curEntry.Size = size;
@@ -509,6 +511,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLeInt((int)curEntry.Crc);
 				
 				if ( curEntry.LocalHeaderRequiresZip64 ) {
+					
+					if ( sizePatchPos == -1 ) {
+						throw new ZipException("Entry requires zip64 but this has been turned off");
+					}
+					
 					baseOutputStream.Seek(sizePatchPos, SeekOrigin.Begin);
 					WriteLeLong(curEntry.Size);
 					WriteLeLong(curEntry.CompressedSize);
