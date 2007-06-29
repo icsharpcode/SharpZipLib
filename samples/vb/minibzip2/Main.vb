@@ -192,11 +192,11 @@ Public Class MainForm
 
 	Private Sub btnBrowseForBZClick(ByVal sender As System.Object, ByVal e As System.EventArgs)
 		Dim ofn As New OpenFileDialog()
-
+		
 		ofn.InitialDirectory = "c:\"
 		ofn.Filter = "BZ files (*.bz)|*.bz|All files (*.*)|*.*"
 
-		If ofn.ShowDialog() = DialogResult.OK Then
+		If (ofn.ShowDialog() = Windows.Forms.DialogResult.OK) Then
 			txtFileName.Text = ofn.FileName
 		End If
 	End Sub
