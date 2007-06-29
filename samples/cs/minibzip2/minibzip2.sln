@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+# SharpDevelop 2.2.0.2595
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "minibzip2", "minibzip2.csproj", "{7520CE0B-F1D4-4148-8427-BB03669D7672}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7520CE0B-F1D4-4148-8427-BB03669D7672}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7520CE0B-F1D4-4148-8427-BB03669D7672}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7520CE0B-F1D4-4148-8427-BB03669D7672}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7520CE0B-F1D4-4148-8427-BB03669D7672}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+EndGlobal

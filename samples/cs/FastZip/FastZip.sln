@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+# SharpDevelop 2.2.0.2595
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastZip", "FastZip.csproj", "{61BE8DBC-149A-4564-B891-9EEA4A09ED12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZipLib", "..\..\..\src\ICSharpCode.SharpZLib.csproj", "{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61BE8DBC-149A-4564-B891-9EEA4A09ED12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61BE8DBC-149A-4564-B891-9EEA4A09ED12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61BE8DBC-149A-4564-B891-9EEA4A09ED12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61BE8DBC-149A-4564-B891-9EEA4A09ED12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+EndGlobal

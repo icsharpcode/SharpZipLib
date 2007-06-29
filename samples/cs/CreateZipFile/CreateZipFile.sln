@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+# SharpDevelop 2.1.0.2498
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateZipFile", "CreateZipFile.csproj", "{DF63551E-BB6C-4A8D-9B01-DB94F721E74A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DF63551E-BB6C-4A8D-9B01-DB94F721E74A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF63551E-BB6C-4A8D-9B01-DB94F721E74A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF63551E-BB6C-4A8D-9B01-DB94F721E74A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF63551E-BB6C-4A8D-9B01-DB94F721E74A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+EndGlobal
