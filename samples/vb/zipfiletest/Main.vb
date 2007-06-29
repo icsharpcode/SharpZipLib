@@ -186,7 +186,7 @@ Public Class MainForm
 		ofn.InitialDirectory = "c:\"
 		ofn.Filter = "Zip Files (*.zip)|*.zip|All files (*.*)|*.*"
 
-		If ofn.ShowDialog() = DialogResult.OK Then
+		If (ofn.ShowDialog() = Windows.Forms.DialogResult.OK) Then
 			txtFileName.Text = ofn.FileName
 		End If
 	End Sub
