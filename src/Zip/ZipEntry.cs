@@ -666,8 +666,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Get/Set DosTime
-		/// </summary>		
+		/// Get/Set DosTime <seealso cref="ZipEntry.DateTime"/>
+		/// </summary>
+		/// <remarks>The value here may not be strictly valid when interpreted.</remarks>
 		public long DosTime 
 		{
 			get {
@@ -679,7 +680,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 			set {
-				dosTime = (uint)value;
+				unchecked {
+					dosTime = (uint)value;
+				}
+
 				known |= Known.Time;
 			}
 		}
@@ -687,31 +691,53 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Gets/Sets the time of last modification of the entry.
 		/// </summary>
+		/// <remarks>
+		/// The MS-DOS date format can represent only dates between 1/1/1980 and 12/31/2107.
+		/// This property is limited to valid values within this range.
+		/// </remarks>
 		public DateTime DateTime 
 		{
 			get {
-				// Although technically not valid some archives have dates set to zero.
-				// This mimics that behaviour and is a good a cludge as any probably.
-				if ( dosTime == 0 ) {
-					return DateTime.Now;
-				}
-				else {
-					uint sec  = 2 * (dosTime & 0x1f);
-					uint min  = (dosTime >> 5) & 0x3f;
-					uint hrs  = (dosTime >> 11) & 0x1f;
-					uint day  = (dosTime >> 16) & 0x1f;
-					uint mon  = ((dosTime >> 21) & 0xf);
-					uint year = ((dosTime >> 25) & 0x7f) + 1980;
-					return new System.DateTime((int)year, (int)mon, (int)day, (int)hrs, (int)min, (int)sec);
-				}
+				uint sec  = Math.Min(59, 2 * (dosTime & 0x1f));
+				uint min  = Math.Min(59, (dosTime >> 5) & 0x3f);
+				uint hrs  = Math.Min(23, (dosTime >> 11) & 0x1f);
+				uint mon  = Math.Max(1, Math.Min(12, ((dosTime >> 21) & 0xf)));
+				uint year = ((dosTime >> 25) & 0x7f) + 1980;
+				int day = Math.Max(1, Math.Min(DateTime.DaysInMonth((int)year, (int)mon), (int)((dosTime >> 16) & 0x1f)));
+				return new System.DateTime((int)year, (int)mon, day, (int)hrs, (int)min, (int)sec);
 			}
+
 			set {
-				DosTime = ((uint)value.Year - 1980 & 0x7f) << 25 | 
-					((uint)value.Month) << 21 |
-					((uint)value.Day) << 16 |
-					((uint)value.Hour) << 11 |
-					((uint)value.Minute) << 5 |
-					((uint)value.Second) >> 1;
+				uint year = (uint) value.Year;
+				uint month = (uint) value.Month;
+				uint day = (uint) value.Day;
+				uint hour = (uint) value.Hour;
+				uint minute = (uint) value.Minute;
+				uint second = (uint) value.Second;
+				
+				if ( year < 1980 ) {
+					year = 1980;
+					month = 1;
+					day = 1;
+					hour = 0;
+					minute = 0;
+					second = 0;
+				}
+				else if ( year > 2107 ) {
+					year = 2107;
+					month = 12;
+					day = 31;
+					hour = 23;
+					minute = 59;
+					second = 59;
+				}
+				
+				DosTime = ((year - 1980) & 0x7f) << 25 | 
+					(month << 21) |
+					(day << 16) |
+					(hour << 11) |
+					(minute << 5) |
+					(second >> 1);
 			}
 		}
 		
@@ -884,7 +910,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
-/* TODO: Testing for handling of windows extra data is not yet done
 			if ( extraData.Find(10) ) {
 				// No room for any tags.
 				if ( extraData.ValueLength < 8 ) {
@@ -912,9 +937,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 				}
 			}
-			else 
-*/			
-			if ( extraData.Find(0x5455) ) {
+			else if ( extraData.Find(0x5455) ) {
 				int length = extraData.ValueLength;	
 				int flags = extraData.ReadByte();
 					
@@ -1020,6 +1043,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			ZipEntry result = (ZipEntry)this.MemberwiseClone();
 
+			// Ensure extra data is unique if it exists.
 			if ( extra != null ) {
 				result.extra = new byte[extra.Length];
 				Array.Copy(extra, 0, result.extra, 0, extra.Length);
