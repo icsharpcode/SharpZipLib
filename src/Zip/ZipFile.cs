@@ -107,6 +107,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion
 	}
 	#endregion
+	
 	#region Test Definitions
 	/// <summary>
 	/// The strategy to apply to testing.
@@ -262,6 +263,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// the operation as found in <see cref="TestStatus">status</see> has started.</remarks>
 	public delegate void ZipTestResultHandler(TestStatus status, string message);
 	#endregion
+	
 	#region Update Definitions
 	/// <summary>
 	/// The possible ways of <see cref="ZipFile.CommitUpdate()">applying updates</see> to an archive.
@@ -278,6 +280,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		Direct,
 	}
 	#endregion
+	
 	#region ZipFile Class
 	/// <summary>
 	/// This class represents a Zip archive.  You can ask for the contained
@@ -389,6 +392,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get { return key != null; }
 		}
 		#endregion
+		
 		#region Constructors
 		/// <summary>
 		/// Opens a Zip file with the given name for reading.
@@ -494,6 +498,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		#endregion
+		
 		#region Destructors and Closing
 		/// <summary>
 		/// Finalize this instance.
@@ -517,6 +522,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		#endregion
+		
 		#region Creators
 		/// <summary>
 		/// Create a new <see cref="ZipFile"/> whose data will be stored in a file.
@@ -563,6 +569,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		#endregion
+		
 		#region Properties
 		/// <summary>
 		/// Get/set a flag indicating if the underlying stream is owned by the ZipFile instance.
@@ -657,6 +664,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		#endregion
+		
 		#region Input Handling
 		/// <summary>
 		/// Returns an enumerator for the Zip entries in this Zip file.
@@ -811,6 +819,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
+		
 		#region Archive Testing
 		/// <summary>
 		/// Test an archive for integrity/validity
@@ -901,6 +910,23 @@ namespace ICSharpCode.SharpZipLib.Zip
 								testing = false;
 							}
 						}
+
+						if (( this[entryIndex].Flags & (int)GeneralBitFlags.Descriptor) != 0 ) {
+							ZipHelperStream helper = new ZipHelperStream(baseStream_);
+							DescriptorData data = new DescriptorData();
+							helper.ReadDataDescriptor(this[entryIndex].LocalHeaderRequiresZip64, data);
+							if (this[entryIndex].Crc != data.Crc) {
+								status.AddError();
+							}
+
+							if (this[entryIndex].CompressedSize != data.CompressedSize) {
+								status.AddError();
+							}
+
+							if (this[entryIndex].Size != data.Size) {
+								status.AddError();
+							}
+						}
 					}
 
 					if ( resultHandler != null ) {
@@ -985,6 +1011,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// Extra data / zip64 checks
 				if (ed.Find(1))
 				{
+					// TODO Check for tag values being distinct..  Multiple zip64 tags means what?
+
 					// Zip64 extra data but 'extract version' is too low
 					if (extractVersion < ZipConstants.VersionZip64)
 					{
@@ -1165,6 +1193,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		#endregion
+		
 		#region Updating
 
 		const int DefaultBufferSize = 4096;
@@ -1234,6 +1263,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
+		
 		#region Immediate updating
 //		TBD: Direct form of updating
 // 
@@ -1245,6 +1275,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 //		{
 //		}
 		#endregion
+		
 		#region Deferred Updating
 		/// <summary>
 		/// Begin updating this <see cref="ZipFile"/> archive.
@@ -1369,6 +1400,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
+		
 		#region Adding Entries
 		/// <summary>
 		/// Add a new entry to the archive.
@@ -1540,6 +1572,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
+		
 		#region Modifying Entries
 /* Modify not yet ready for public consumption.
    Direct modification of an entry should not overwrite original data before its read.
@@ -1560,6 +1593,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 */
 		#endregion
+		
 		#region Deleting Entries
 		/// <summary>
 		/// Delete an entry by name
@@ -1602,6 +1636,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
+		
 		#region Update Support
 		#region Writing Values/Headers
 		void WriteLEShort(int value)
@@ -1624,7 +1659,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		void WriteLEInt(int value)
 		{
-			WriteLEShort(value);
+			WriteLEShort(value & 0xffff);
 			WriteLEShort(value >> 16);
 		}
 
@@ -1710,16 +1745,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLEInt(( int )entry.DosTime);
 
 			if ( !entry.HasCrc ) {
-				// Note patch address for updating later.
+				// Note patch address for updating CRC later.
 				update.CrcPatchOffset = baseStream_.Position;
 				WriteLEInt(( int )0);
 			}
-			else
-			{
+			else {
 				WriteLEInt(( int )entry.Crc);
 			}
 
-			if ( entry.LocalHeaderRequiresZip64 ) {
+			if (entry.LocalHeaderRequiresZip64) {
 				WriteLEInt(-1);
 				WriteLEInt(-1);
 			}
@@ -1744,7 +1778,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				ed.StartNewEntry();
 
 				// Local entry header always includes size and compressed size.
-				// NOTE the order of these fields is reversed when compared to the headers!
+				// NOTE the order of these fields is reversed when compared to the normal headers!
 				ed.AddLeLong(entry.Size);
 				ed.AddLeLong(entry.CompressedSize);
 				ed.AddNewEntry(1);
@@ -2155,7 +2189,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		void AddEntry(ZipFile workFile, ZipUpdate update)
 		{
-			long dataStart = 0;
 			Stream source = null;
 
 			if ( update.Entry.IsFile ) {
@@ -2180,20 +2213,28 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 
 					workFile.WriteLocalEntryHeader(update);
-					dataStart = workFile.baseStream_.Position;
+
+					long dataStart = workFile.baseStream_.Position;
 
 					using ( Stream output = workFile.GetOutputStream(update.OutEntry) ) {
 						CopyBytes(update, output, source, sourceStreamLength, true);
+					}
+
+					long dataEnd = workFile.baseStream_.Position;
+					update.OutEntry.CompressedSize = dataEnd - dataStart;
+
+					if ((update.OutEntry.Flags & (int)GeneralBitFlags.Descriptor) == (int)GeneralBitFlags.Descriptor)
+					{
+						ZipHelperStream helper = new ZipHelperStream(workFile.baseStream_);
+						helper.WriteDataDescriptor(update.OutEntry);
 					}
 				}
 			}
 			else {
 				workFile.WriteLocalEntryHeader(update);
-				dataStart = workFile.baseStream_.Position;
+				update.OutEntry.CompressedSize = 0;
 			}
 
-			long dataEnd = workFile.baseStream_.Position;
-			update.OutEntry.CompressedSize = dataEnd - dataStart;
 		}
 
 		void ModifyEntry(ZipFile workFile, ZipUpdate update)
@@ -2542,6 +2583,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
+		
 		#region ZipUpdate class
 		/// <summary>
 		/// Represents a pending update to a Zip file.
@@ -2680,6 +2722,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		#endregion
 		#endregion
+		
 		#region Disposing
 		#region IDisposable Members
 		void IDisposable.Dispose()
@@ -2712,6 +2755,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
+		
 		#region Internal routines
 		#region Reading
 		/// <summary>
@@ -3030,6 +3074,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
+		
 		#region Instance Fields
 		bool       isDisposed_;
 		string     name_;
@@ -3041,9 +3086,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		byte[] key;
 		bool isNewArchive_;
 		
-		// Default of off is backwards compatible and doesnt dump on
-		// XP's built in compression which cant handle Zip64.
-		UseZip64 useZip64_ = UseZip64.Off;
+		// Default is dynamic which is not backwards compatible and can cause problems
+		// with XP's built in compression which cant read Zip64 archives.
+		// However it does avoid the situation were a large file is added and cannot be completed correctly.
+		UseZip64 useZip64_ = UseZip64.Dynamic ;
 		
 		#region Zip Update Instance Fields
 		ArrayList updates_;
@@ -3058,6 +3104,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		string tempDirectory_ = string.Empty;
 		#endregion
 		#endregion
+		
 		#region Support Classes
 		/// <summary>
 		/// Represents a string from a <see cref="ZipFile"/> which is stored as an array of bytes.
@@ -3420,6 +3467,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	}
 
 	#endregion
+	
 	#region DataSources
 	/// <summary>
 	/// Provides a static way to obtain a source of data for an entry.
@@ -3516,6 +3564,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	}
 
 	#endregion
+	
 	#region Archive Storage
 	/// <summary>
 	/// Defines facilities for data storage when updating Zip Archives.

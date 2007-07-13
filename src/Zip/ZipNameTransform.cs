@@ -216,6 +216,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#region Instance Fields
 		string trimPrefix_;
 		#endregion
+		
 		#region Class Fields
 		static readonly char[] InvalidEntryChars;
 		static readonly char[] InvalidEntryCharsRelaxed;

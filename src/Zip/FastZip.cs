@@ -48,14 +48,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Delegate to invoke when processing directories.
 		/// </summary>
 		public ProcessDirectoryDelegate ProcessDirectory;
+		
 		/// <summary>
 		/// Delegate to invoke when processing files.
 		/// </summary>
 		public ProcessFileDelegate ProcessFile;
+		
 		/// <summary>
 		/// Delegate to invoke when processing directory failures.
 		/// </summary>
 		public DirectoryFailureDelegate DirectoryFailure;
+		
 		/// <summary>
 		/// Delegate to invoke when processing file failures.
 		/// </summary>
@@ -153,6 +156,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			Always
 		}
 		#endregion
+		
 		#region Constructors
 		/// <summary>
 		/// Initialise a default instance of <see cref="FastZip"/>.
@@ -170,6 +174,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			events_ = events;
 		}
 		#endregion
+		
 		#region Properties
 		/// <summary>
 		/// Get/set a value indicating wether empty directories should be created.
@@ -218,6 +223,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 		}
+		
 		/// <summary>
 		/// Get/set a value indicating wether file dates and times should 
 		/// be restored when extracting files from an archive.
@@ -243,12 +249,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { restoreAttributesOnExtract_ = value; }
 		}
 		#endregion
+		
 		#region Delegates
 		/// <summary>
 		/// Delegate called when confirming overwriting of files.
 		/// </summary>
 		public delegate bool ConfirmOverwriteDelegate(string fileName);
 		#endregion
+		
 		#region CreateZip
 		/// <summary>
 		/// Create a zip file.
@@ -318,6 +326,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
+		
 		#region ExtractZip
 		/// <summary>
 		/// Extract the contents of a zip file.
@@ -385,6 +394,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 		#endregion
+		
 		#region Internal Processing
 		void ProcessDirectory(object sender, DirectoryEventArgs e)
 		{
@@ -566,6 +576,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 #endif
 		#endregion
+		
 		#region Instance Fields
 		bool continueRunning_;
 		byte[] buffer_;

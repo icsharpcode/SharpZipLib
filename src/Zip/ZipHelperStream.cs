@@ -1,6 +1,6 @@
 // ZipHelperStream.cs
 //
-// Copyright 2006 John Reilly
+// Copyright 2006, 2007 John Reilly
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,6 +39,45 @@ using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
+
+	/// <summary>
+	/// Holds data pertinent to a data descriptor.
+	/// </summary>
+	public class DescriptorData
+	{
+		/// <summary>
+		/// Get /set the compressed size of data.
+		/// </summary>
+		public long CompressedSize
+		{
+			get { return compressedSize; }
+			set { compressedSize = value; }
+		}
+
+		/// <summary>
+		/// Get / set the uncompressed size of data
+		/// </summary>
+		public long Size
+		{
+			get { return size; }
+			set { size = value; }
+		}
+
+		/// <summary>
+		/// Get /set the crc value.
+		/// </summary>
+		public long Crc
+		{
+			get { return crc; }
+			set { crc = (value & 0xffffffff); }
+		}
+
+		#region Instance Fields
+		long size;
+		long compressedSize;
+		long crc;
+		#endregion
+	}
 
 	/// <summary>
 	/// This class assists with writing/reading from Zip files.
@@ -136,7 +175,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		#endregion
 
-		// NOTE this returns the offset of the first byte after the signature.
+		/// <summary>
+		/// Locates a block with the desired <paramref name="signature"/>.
+		/// </summary>
+		/// <param name="signature">The signature to find.</param>
+		/// <param name="endLocation">Location, marking the end of block.</param>
+		/// <param name="minimumBlockSize">Minimum size of the block.</param>
+		/// <param name="maximumVariableData">The maximum variable data.</param>
+		/// <returns>Eeturns the offset of the first byte after the signature; -1 if not found</returns>
 		public long LocateBlockWithSignature(int signature, long endLocation, int minimumBlockSize, int maximumVariableData)
 		{
 			long pos = endLocation - minimumBlockSize;
@@ -214,9 +260,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLEShort(0);                    // number of this disk
 			WriteLEShort(0);                    // no of disk with start of central dir
 
-			// Zip64
+			
+			// Number of entries
 			if ( noOfEntries >= 0xffff ) {
-				WriteLEUshort(0xffff);
+				WriteLEUshort(0xffff);  // Zip64 marker
 				WriteLEUshort(0xffff);
 			}
 			else {
@@ -224,26 +271,27 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLEShort(( short )noOfEntries);          // total entries in central directory
 			}
 
-			// Zip64
+			// Size of the central directory
 			if ( sizeEntries >= 0xffffffff ) {
-				WriteLEUint(0xffffffff);
+				WriteLEUint(0xffffffff);    // Zip64 marker
 			}
 			else {
-				WriteLEInt(( int )sizeEntries);            // size of the central directory
+				WriteLEInt(( int )sizeEntries);            
 			}
 
-			// Zip64
+
+			// offset of start of central directory
 			if ( startOfCentralDirectory >= 0xffffffff ) {
-				WriteLEUint(0xffffffff);          // offset of start of central dir
+				WriteLEUint(0xffffffff);    // Zip64 marker
 			}
 			else {
-				WriteLEInt(( int )startOfCentralDirectory);          // offset of start of central dir
+				WriteLEInt(( int )startOfCentralDirectory);
 			}
 
 			int commentLength = (comment != null) ? comment.Length : 0;
 
 			if ( commentLength > 0xffff ) {
-				throw new ZipException(string.Format("Comment length({0}) is too long", commentLength));
+				throw new ZipException(string.Format("Comment length({0}) is too long can only be 64K", commentLength));
 			}
 
 			WriteLEShort(commentLength);
@@ -266,7 +314,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </exception>
 		public int ReadLEShort()
 		{
-			return stream_.ReadByte() | (stream_.ReadByte() << 8);
+			int byteValue1 = stream_.ReadByte();
+
+			if (byteValue1 < 0) {
+				throw new EndOfStreamException();
+			}
+
+			int byteValue2 = stream_.ReadByte();
+			if (byteValue2 < 0) {
+				throw new EndOfStreamException();
+			}
+
+			return byteValue1 | (byteValue2 << 8);
 		}
 
 		/// <summary>
@@ -367,6 +426,76 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 		#endregion
+
+		/// <summary>
+		/// Write a data descriptor.
+		/// </summary>
+		/// <param name="entry">The entry to write a descriptor for.</param>
+		/// <returns>Returns the number of descriptor bytes written.</returns>
+		public int WriteDataDescriptor(ZipEntry entry)
+		{
+			if (entry == null) {
+				throw new ArgumentNullException("entry");
+			}
+
+			int result=0;
+
+			// Add data descriptor if flagged as required
+			if ((entry.Flags & (int)GeneralBitFlags.Descriptor) != 0)
+			{
+				// The signature is not PKZIP originally but is now described as optional
+				// in the PKZIP Appnote documenting trhe format.
+				WriteLEInt(ZipConstants.DataDescriptorSignature);
+				WriteLEInt(unchecked((int)(entry.Crc)));
+
+				result+=8;
+
+				if (entry.LocalHeaderRequiresZip64)
+				{
+					WriteLELong(entry.CompressedSize);
+					WriteLELong(entry.Size);
+					result+=16;
+				}
+				else
+				{
+					WriteLEInt((int)entry.CompressedSize);
+					WriteLEInt((int)entry.Size);
+					result+=8;
+				}
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Read data descriptor at the end of compressed data.
+		/// </summary>
+		/// <param name="zip64">if set to <c>true</c> [zip64].</param>
+		/// <param name="data">The data to fill in.</param>
+		/// <returns>Returns the number of bytes read in the descriptor.</returns>
+		public void ReadDataDescriptor(bool zip64, DescriptorData data)
+		{
+			int intValue = ReadLEInt();
+
+			// In theory this may not be a descriptor according to PKZIP appnote.
+			// In practise its always there.
+			if (intValue != ZipConstants.DataDescriptorSignature) {
+				throw new ZipException("Data descriptor signature not found");
+			}
+
+			data.Crc = ReadLEInt();
+			
+			if (zip64)
+			{
+				data.CompressedSize = ReadLELong();
+				data.Size = ReadLELong();
+			}
+			else
+			{
+				data.CompressedSize = ReadLEInt();
+				data.Size = ReadLEInt();
+			}
+		}
 
 		#region Instance Fields
 		bool isOwner_;
