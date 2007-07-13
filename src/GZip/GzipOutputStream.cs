@@ -123,7 +123,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			if (level < Deflater.BEST_SPEED) {
 				throw new ArgumentOutOfRangeException("level");
 			}
-			def.SetLevel(level);
+			deflater_.SetLevel(level);
 		}
 		
 		/// <summary>
@@ -132,7 +132,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <returns>The current compression level.</returns>
 		public int GetLevel()
 		{
-			return def.GetLevel();
+			return deflater_.GetLevel();
 		}
 		#endregion
 		
@@ -162,7 +162,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			Finish();
 			
 			if ( IsStreamOwner ) {
-				baseOutputStream.Close();
+				baseOutputStream_.Close();
 			}
 		}
 		#endregion
@@ -180,7 +180,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 			base.Finish();
 			
-			int totalin = def.TotalIn;
+			int totalin = deflater_.TotalIn;
 			int crcval = (int) (crc.Value & 0xffffffff);
 			
 			//    System.err.println("CRC val is " + Integer.toHexString( crcval ) 		       + " and length " + Integer.toHexString(totalin));
@@ -193,7 +193,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 				(byte) (totalin >> 16), (byte) (totalin >> 24)
 			};
 
-			baseOutputStream.Write(gzipFooter, 0, gzipFooter.Length);
+			baseOutputStream_.Write(gzipFooter, 0, gzipFooter.Length);
 			//    System.err.println("wrote GZIP trailer (" + gzipFooter.length + " bytes )");
 		}
 		#endregion
@@ -225,7 +225,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 					// The OS type (unknown)
 					(byte) 255
 				};
-				baseOutputStream.Write(gzipHeader, 0, gzipHeader.Length);
+				baseOutputStream_.Write(gzipHeader, 0, gzipHeader.Length);
 			}
 		}
 		#endregion
