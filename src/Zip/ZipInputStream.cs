@@ -501,6 +501,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if (csize >= ZipConstants.CryptoHeaderSize) {
 					csize -= ZipConstants.CryptoHeaderSize;
 				}
+				else if ( (entry.Flags & (int)GeneralBitFlags.Descriptor) == 0 ) {
+					throw new ZipException(string.Format("Entry compressed size {0} too small for encryption", csize));
+				}
 #endif				
 			} else {
 #if !NETCF_1_0
