@@ -639,7 +639,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Get/Set DosTime <seealso cref="ZipEntry.DosDateTime"/> value.
+		/// Get/Set DosTime value.
 		/// </summary>
 		/// <remarks>
 		/// The MS-DOS date format can only represent dates between 1/1/1980 and 12/31/2107.
@@ -670,7 +670,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>
 		/// The <see cref="DosTime"></see> property is updated to match this as far as possible.
 		/// </remarks>
-		/// <seealso cref="DosDateTime"></seealso>
 		public DateTime DateTime 
 		{
 			get {
