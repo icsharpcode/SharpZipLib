@@ -188,6 +188,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { setAttributes_ = value; }
 		}
 
+		/// <summary>
+		/// Get set a value indicating wether unidoce text should be set on.
+		/// </summary>
+		public bool IsUnicodeText
+		{
+			get { return isUnicodeText_; }
+			set { isUnicodeText_ = value; }
+		}
+
 		#endregion
 
 		#region IEntryFactory Members
@@ -199,61 +208,96 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns a new <see cref="ZipEntry"/> based on the <paramref name="fileName"/>.</returns>
 		public ZipEntry MakeFileEntry(string fileName)
 		{
-			FileInfo fi = new FileInfo(fileName);
+			return MakeFileEntry(fileName, true);
+		}
 
+		/// <summary>
+		/// Make a new <see cref="ZipEntry"/> for a file.
+		/// </summary>
+		/// <param name="fileName">The name of the file to create a new entry for.</param>
+		/// <param name="useFileSystem">If true entry detail is retrieved from the file system if the file exists.</param>
+		/// <returns>Returns a new <see cref="ZipEntry"/> based on the <paramref name="fileName"/>.</returns>
+		public ZipEntry MakeFileEntry(string fileName, bool useFileSystem)
+		{
 			ZipEntry result = new ZipEntry(nameTransform_.TransformFile(fileName));
-			result.Size = fi.Length;
-			
-			int externalAttributes = ((int)fi.Attributes & getAttributes_);
-			externalAttributes |= setAttributes_;
+			result.IsUnicodeText = isUnicodeText_;
 
-			result.ExternalFileAttributes = externalAttributes;
-			
-			switch (timeSetting_)
+			int externalAttributes = 0;
+			bool useAttributes = (setAttributes_ != 0);
+
+			FileInfo fi = null;
+			if (useFileSystem)
 			{
-				case TimeSetting.CreateTime:
-					result.DateTime = fi.CreationTime;
-					break;
+				fi = new FileInfo(fileName);
+			}
 
-				case TimeSetting.CreateTimeUtc:
+			if (useFileSystem && fi.Exists)
+			{
+				switch (timeSetting_)
+				{
+					case TimeSetting.CreateTime:
+						result.DateTime = fi.CreationTime;
+						break;
+
+					case TimeSetting.CreateTimeUtc:
 #if NETCF_1_0 || NETCF_2_0
 					result.DateTime = fi.CreationTime.ToUniversalTime();
 #else
-					result.DateTime = fi.CreationTimeUtc;
+						result.DateTime = fi.CreationTimeUtc;
 #endif
-					break;
+						break;
 
-				case TimeSetting.LastAccessTime:
-					result.DateTime = fi.LastAccessTime;
-					break;
+					case TimeSetting.LastAccessTime:
+						result.DateTime = fi.LastAccessTime;
+						break;
 
-				case TimeSetting.LastAccessTimeUtc:
+					case TimeSetting.LastAccessTimeUtc:
 #if NETCF_1_0 || NETCF_2_0
 					result.DateTime = fi.LastAccessTime.ToUniversalTime();
 #else
-					result.DateTime = fi.LastAccessTimeUtc;
+						result.DateTime = fi.LastAccessTimeUtc;
 #endif
-					break;
+						break;
 
-				case TimeSetting.LastWriteTime:
-					result.DateTime = fi.LastWriteTime;
-					break;
+					case TimeSetting.LastWriteTime:
+						result.DateTime = fi.LastWriteTime;
+						break;
 
-				case TimeSetting.LastWriteTimeUtc:
+					case TimeSetting.LastWriteTimeUtc:
 #if NETCF_1_0 || NETCF_2_0
 					result.DateTime = fi.LastWriteTime.ToUniversalTime();
 #else
-					result.DateTime = fi.LastWriteTimeUtc;
+						result.DateTime = fi.LastWriteTimeUtc;
 #endif
-					break;
+						break;
 
-				case TimeSetting.Fixed:
-					result.DateTime = fixedDateTime_;
-					break;
+					case TimeSetting.Fixed:
+						result.DateTime = fixedDateTime_;
+						break;
 
-				default:
-					throw new ZipException("Unhandled time setting in MakeFileEntry");
+					default:
+						throw new ZipException("Unhandled time setting in MakeFileEntry");
+				}
+
+				result.Size = fi.Length;
+
+				useAttributes = true;
+				externalAttributes = ((int)fi.Attributes & getAttributes_);
 			}
+			else
+			{
+				if (timeSetting_ == TimeSetting.Fixed)
+				{
+					result.DateTime = fixedDateTime_;
+				}
+			}
+
+			if (useAttributes)
+			{
+				externalAttributes |= setAttributes_;
+				result.ExternalFileAttributes = externalAttributes;
+			}
+			
 			return result;
 		}
 
@@ -264,61 +308,93 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns a new <see cref="ZipEntry"></see> representing a directory.</returns>
 		public ZipEntry MakeDirectoryEntry(string directoryName)
 		{
-			DirectoryInfo di = new DirectoryInfo(directoryName);
+			return MakeDirectoryEntry(directoryName, true);
+		}
+
+		/// <summary>
+		/// Make a new <see cref="ZipEntry"></see> for a directory.
+		/// </summary>
+		/// <param name="directoryName">The raw untransformed name for the new directory</param>
+		/// <param name="useFileSystem">If true entry detail is retrieved from the file system if the file exists.</param>
+		/// <returns>Returns a new <see cref="ZipEntry"></see> representing a directory.</returns>
+		public ZipEntry MakeDirectoryEntry(string directoryName, bool useFileSystem)
+		{
 			
 			ZipEntry result = new ZipEntry(nameTransform_.TransformDirectory(directoryName));
 			result.Size=0;
 			
-			int externalAttributes = ((int)di.Attributes & getAttributes_);
-			externalAttributes |= setAttributes_;
+			int externalAttributes = 0;
 
-			result.ExternalFileAttributes = externalAttributes;
+			DirectoryInfo di = null;
 
-			switch (timeSetting_)
+			if (useFileSystem)
 			{
-				case TimeSetting.CreateTime:
-					result.DateTime = di.CreationTime;
-					break;
+				di = new DirectoryInfo(directoryName);
+			}
 
-				case TimeSetting.CreateTimeUtc:
+
+			if (useFileSystem && di.Exists)
+			{
+				switch (timeSetting_)
+				{
+					case TimeSetting.CreateTime:
+						result.DateTime = di.CreationTime;
+						break;
+
+					case TimeSetting.CreateTimeUtc:
 #if NETCF_1_0 || NETCF_2_0
 					result.DateTime = di.CreationTime.ToUniversalTime();
 #else
-					result.DateTime = di.CreationTimeUtc;
+						result.DateTime = di.CreationTimeUtc;
 #endif
-					break;
+						break;
 
-				case TimeSetting.LastAccessTime:
-					result.DateTime = di.LastAccessTime;
-					break;
+					case TimeSetting.LastAccessTime:
+						result.DateTime = di.LastAccessTime;
+						break;
 
-				case TimeSetting.LastAccessTimeUtc:
+					case TimeSetting.LastAccessTimeUtc:
 #if NETCF_1_0 || NETCF_2_0
 					result.DateTime = di.LastAccessTime.ToUniversalTime();
 #else
-					result.DateTime = di.LastAccessTimeUtc;
+						result.DateTime = di.LastAccessTimeUtc;
 #endif
-					break;
+						break;
 
-				case TimeSetting.LastWriteTime:
-					result.DateTime = di.LastWriteTime;
-					break;
+					case TimeSetting.LastWriteTime:
+						result.DateTime = di.LastWriteTime;
+						break;
 
-				case TimeSetting.LastWriteTimeUtc:
+					case TimeSetting.LastWriteTimeUtc:
 #if NETCF_1_0 || NETCF_2_0
 					result.DateTime = di.LastWriteTime.ToUniversalTime();
 #else
-					result.DateTime = di.LastWriteTimeUtc;
+						result.DateTime = di.LastWriteTimeUtc;
 #endif
-					break;
+						break;
 
-				case TimeSetting.Fixed:
-					result.DateTime = fixedDateTime_;
-					break;
+					case TimeSetting.Fixed:
+						result.DateTime = fixedDateTime_;
+						break;
 
-				default:
-					throw new ZipException("Unhandled time setting in MakeDirectoryEntry");
+					default:
+						throw new ZipException("Unhandled time setting in MakeDirectoryEntry");
+				}
+
+				externalAttributes = ((int)di.Attributes & getAttributes_);
 			}
+			else
+			{
+				if (timeSetting_ == TimeSetting.Fixed)
+				{
+					result.DateTime = fixedDateTime_;
+				}
+			}
+
+			// Always set directory attribute on.
+			externalAttributes |= (setAttributes_ | 16);
+			result.ExternalFileAttributes = externalAttributes;
+
 			return result;
 		}
 		
@@ -328,6 +404,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		INameTransform nameTransform_;
 		DateTime fixedDateTime_ = DateTime.Now;
 		TimeSetting timeSetting_;
+		bool isUnicodeText_;
+
 		int getAttributes_ = -1;
 		int setAttributes_;
 		#endregion
