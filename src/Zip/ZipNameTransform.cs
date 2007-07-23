@@ -36,6 +36,7 @@
 
 using System;
 using System.IO;
+using System.Text;
 
 using ICSharpCode.SharpZipLib.Core;
 
@@ -138,6 +139,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				while ( (name.Length > 0) && (name[0] == '/')) {
 					name = name.Remove(0, 1);
 				}
+
+				name = MakeValidName(name, '_');
 			}
 			else {
 				name = string.Empty;
@@ -159,6 +162,33 @@ namespace ICSharpCode.SharpZipLib.Zip
 					trimPrefix_ = trimPrefix_.ToLower();
 				}
 			}
+		}
+
+		/// <summary>
+		/// Force a name to be valid by replacing invalid characters with a fixed value
+		/// </summary>
+		/// <param name="name">The name to force valid</param>
+		/// <param name="replacement">The replacement character to use.</param>
+		/// <returns>Returns a valid name</returns>
+		static string MakeValidName(string name, char replacement)
+		{
+			int index = name.IndexOfAny(InvalidEntryChars);
+			if (index > 0) {
+				StringBuilder builder = new StringBuilder(name);
+
+				while (index >= 0 ) {
+					builder[index] = replacement;
+
+					if (index >= name.Length) {
+						index = -1;
+					}
+					else {
+						index = name.IndexOfAny(InvalidEntryChars, index + 1);
+					}
+				}
+				name = builder.ToString();
+			}
+			return name;
 		}
 
 		/// <summary>
