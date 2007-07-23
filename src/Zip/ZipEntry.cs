@@ -155,33 +155,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			Time = 0x08,
 			ExternalAttributes = 0x10,
 		}
-
-		#region Instance Fields
-		Known known;
-		int    externalFileAttributes = -1;     // contains external attributes (O/S dependant)
-		
-		ushort versionMadeBy;					// Contains host system and version information
-												// only relevant for central header entries
-		
-		string name;
-		ulong  size;
-		ulong  compressedSize;
-		ushort versionToExtract;                // Version required to extract (library handles <= 2.0)
-		uint   crc;
-		uint   dosTime;
-		
-		CompressionMethod  method = CompressionMethod.Deflated;
-		byte[] extra;
-		string comment;
-		
-		int flags;                             // general purpose bit flags
-
-		long zipFileIndex = -1;                // used by ZipFile
-		long offset;                           // used by ZipFile and ZipOutputStream
-		
-		bool forceZip64_;
-		byte cryptoCheckValue_;
-		#endregion
 		
 		#region Constructors
 		/// <summary>
@@ -666,9 +639,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Get/Set DosTime <seealso cref="ZipEntry.DateTime"/>
+		/// Get/Set DosTime <seealso cref="ZipEntry.DosDateTime"/> value.
 		/// </summary>
-		/// <remarks>The value here may not be strictly valid when interpreted.</remarks>
+		/// <remarks>
+		/// The MS-DOS date format can only represent dates between 1/1/1980 and 12/31/2107.
+		/// </remarks>
 		public long DosTime 
 		{
 			get {
@@ -679,6 +654,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					return dosTime;
 				}
 			}
+			
 			set {
 				unchecked {
 					dosTime = (uint)value;
@@ -692,9 +668,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Gets/Sets the time of last modification of the entry.
 		/// </summary>
 		/// <remarks>
-		/// The MS-DOS date format can represent only dates between 1/1/1980 and 12/31/2107.
-		/// This property is limited to valid values within this range.
+		/// The <see cref="DosTime"></see> property is updated to match this as far as possible.
 		/// </remarks>
+		/// <seealso cref="DosDateTime"></seealso>
 		public DateTime DateTime 
 		{
 			get {
@@ -847,22 +823,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public byte[] ExtraData {
 			
 			get {
-// TODO: This is safer but less efficient.  Think about wether it should change.
+// TODO: This is slightly safer but less efficient.  Think about wether it should change.
 //				return (byte[]) extra.Clone();
 				return extra;
 			}
 
 			set {
 				if (value == null) {
-					this.extra = null;
+					extra = null;
 				}
 				else {
 					if (value.Length > 0xffff) {
 						throw new System.ArgumentOutOfRangeException("value");
 					}
 				
-					this.extra = new byte[value.Length];
-					Array.Copy(value, 0, this.extra, 0, value.Length);
+					extra = new byte[value.Length];
+					Array.Copy(value, 0, extra, 0, value.Length);
 				}
 			}
 		}
@@ -1105,5 +1081,32 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			return name;
 		}
+
+		#region Instance Fields
+		Known known;
+		int    externalFileAttributes = -1;     // contains external attributes (O/S dependant)
+		
+		ushort versionMadeBy;					// Contains host system and version information
+												// only relevant for central header entries
+		
+		string name;
+		ulong  size;
+		ulong  compressedSize;
+		ushort versionToExtract;                // Version required to extract (library handles <= 2.0)
+		uint   crc;
+		uint   dosTime;
+		
+		CompressionMethod  method = CompressionMethod.Deflated;
+		byte[] extra;
+		string comment;
+		
+		int flags;                             // general purpose bit flags
+
+		long zipFileIndex = -1;                // used by ZipFile
+		long offset;                           // used by ZipFile and ZipOutputStream
+		
+		bool forceZip64_;
+		byte cryptoCheckValue_;
+		#endregion
 	}
 }
