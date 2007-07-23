@@ -41,7 +41,7 @@ using System.IO;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 
-#if !NET_CF_1_0
+#if !NETCF_1_0
 using System.Security.Cryptography;
 using ICSharpCode.SharpZipLib.Encryption;
 #endif
@@ -106,23 +106,19 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </exception>
 		public DeflaterOutputStream(Stream baseOutputStream, Deflater deflater, int bufferSize)
 		{
-			if ( baseOutputStream == null )
-			{
+			if ( baseOutputStream == null ) {
 				throw new ArgumentNullException("baseOutputStream");
 			}
 
-			if (baseOutputStream.CanWrite == false) 
-			{
+			if (baseOutputStream.CanWrite == false) {
 				throw new ArgumentException("Must support writing", "baseOutputStream");
 			}
 
-			if (deflater == null) 
-			{
+			if (deflater == null) {
 				throw new ArgumentNullException("deflater");
 			}
 			
-			if (bufferSize <= 0) 
-			{
+			if (bufferSize <= 0) {
 				throw new ArgumentOutOfRangeException("bufferSize");
 			}
 			
@@ -148,7 +144,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					break;
 				}
 				
+#if NETCF_1_0
+				if ( keys != null ) {
+#else
 				if (cryptoTransform_ != null) {
+#endif	
 					EncryptBlock(buffer_, 0, len);
 				}
 				
@@ -161,10 +161,16 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 			baseOutputStream_.Flush();
 			
+#if NETCF_1_0
+			if ( keys != null ) {
+				keys = null;
+			}
+#else
 			if ( cryptoTransform_ != null ) {
 				cryptoTransform_.Dispose();
 				cryptoTransform_ = null;
 			}
+#endif			
 		}
 		
 		/// <summary>
@@ -192,7 +198,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		
 		string password;
 		
-#if NET_CF_1_0		
+#if NETCF_1_0
 		uint[] keys;
 #else
 		ICryptoTransform cryptoTransform_;
@@ -229,7 +235,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </param>
 		protected void EncryptBlock(byte[] buffer, int offset, int length)
 		{
-#if NET_1_0			
+#if NETCF_1_0
 			for (int i = offset; i < offset + length; ++i) {
 				byte oldbyte = buffer[i];
 				buffer[i] ^= EncryptByte();
@@ -244,7 +250,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Initializes encryption keys based on given password
 		/// </summary>
 		protected void InitializePassword(string password) {
-#if NET_CF_1_0			
+#if NETCF_1_0
 			keys = new uint[] {
 				0x12345678,
 				0x23456789,
@@ -264,7 +270,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 #endif
 		}
 
-#if NET_CF_1_0
+#if NETCF_1_0
 		
 		/// <summary>
 		/// Encrypt a single byte 
@@ -308,8 +314,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				{
 					break;
 				}
-				
+#if NETCF_1_0
+				if (keys != null) 
+#else
 				if (cryptoTransform_ != null) 
+#endif
 				{
 					EncryptBlock(buffer_, 0, deflateCount);
 				}
@@ -462,15 +471,26 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			if ( !isClosed_ ) {
 				isClosed_ = true;
-				Finish();
-				
-				if ( isStreamOwner_ ) {
-					baseOutputStream_.Close();
+
+				try
+				{
+					Finish();
+#if NETCF_1_0
+					keys=null;
+#else
+					if( cryptoTransform_!=null )
+					{
+						cryptoTransform_.Dispose();
+						cryptoTransform_=null;
+					}
+#endif
 				}
-				
-				if ( cryptoTransform_ != null ) {
-					cryptoTransform_.Dispose();
-					cryptoTransform_ = null;
+				finally
+				{
+					if( isStreamOwner_ )
+					{
+						baseOutputStream_.Close();
+					}
 				}
 			}
 		}

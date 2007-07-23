@@ -159,10 +159,13 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// </summary>
 		public override void Close()
 		{
-			Finish();
-			
-			if ( IsStreamOwner ) {
-				baseOutputStream_.Close();
+			try {
+				Finish();
+			}
+			finally {
+				if( IsStreamOwner ) {
+					baseOutputStream_.Close();
+				}
 			}
 		}
 		#endregion

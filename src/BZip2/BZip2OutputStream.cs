@@ -117,6 +117,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			InitBlock();
 		}
 		#endregion
+		
 		#region Destructor
 		/// <summary>
 		/// Ensures that resources are freed and other cleanup operations 
@@ -127,6 +128,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			Dispose(false);
 		}
 		#endregion
+		
 		/// <summary>
 		/// Get/set flag indicating ownership of underlying stream.
 		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
@@ -366,27 +368,26 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		override protected void Dispose(bool disposing)
 #endif			
 		{
+			try {
 #if !NET_1_0 && !NET_1_1 && !NETCF_1_0
-			base.Dispose(disposing);
+				base.Dispose(disposing);
 #endif			
-			if ( !disposed_ )
-			{
-				disposed_ = true;
+				if( !disposed_ ) {
+					disposed_=true;
 
-				if (runLength > 0)
-				{
-					WriteRun();
+					if( runLength>0 ) {
+						WriteRun();
+					}
+
+					currentChar=-1;
+					EndBlock();
+					EndCompression();
+					Flush();
 				}
-		
-				currentChar = -1;
-				EndBlock();
-				EndCompression();
-				Flush();
-			
-				if ( disposing )
-				{
-					if ( IsStreamOwner ) 
-					{
+			}
+			finally {
+				if ( disposing ) {
+					if ( IsStreamOwner ) {
 						baseStream.Close();
 					}
 				}
@@ -998,8 +999,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				}
 				
 				med = Med3(block[zptr[lo] + d + 1],
-				           block[zptr[hi            ] + d  + 1],
-				           block[zptr[(lo + hi) >> 1] + d + 1]);
+						   block[zptr[hi            ] + d  + 1],
+						   block[zptr[(lo + hi) >> 1] + d + 1]);
 				
 				unLo = ltLo = lo;
 				unHi = gtHi = hi;
