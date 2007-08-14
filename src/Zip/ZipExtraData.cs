@@ -1,6 +1,7 @@
+//
 // ZipExtraData.cs
 //
-// Copyright 2004 John Reilly
+// Copyright 2004-2007 John Reilly
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,10 +35,474 @@
 // exception statement from your version.
 
 using System;
+using System.Collections;
 using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
+	/// <summary>
+	/// ExtraData tagged value interface.
+	/// </summary>
+	public interface ITaggedData
+	{
+		/// <summary>
+		/// Get the ID for this tagged data value.
+		/// </summary>
+		short TagID { get; }
+
+		/// <summary>
+		/// Set the contents of this instance from the data passed.
+		/// </summary>
+		/// <param name="data">The data to extract contents from.</param>
+		/// <param name="offset">The offset to begin extracting data from.</param>
+		/// <param name="count">The number of bytes to extract.</param>
+		void SetData(byte[] data, int offset, int count);
+
+		/// <summary>
+		/// Get the data representing this instance.
+		/// </summary>
+		/// <returns>Returns the data for this instance.</returns>
+		byte[] GetData();
+	}
+
+	/// <summary>
+	/// A factory that creates <see cref="ITaggedData">tagged data</see> instances.
+	/// </summary>
+	public interface ITaggedDataFactory
+	{
+		/// <summary>
+		/// Get data for a specific tag value.
+		/// </summary>
+		/// <param name="tag">The tag ID to find.</param>
+		/// <param name="data">The data to search.</param>
+		/// <param name="offset">The offset to begin extracting data from.</param>
+		/// <param name="count">The number of bytes to extract.</param>
+		/// <returns>The located <see cref="ITaggedData">value found</see>, or null if not found.</returns>
+		ITaggedData Create(short tag, byte[] data, int offset, int count);
+	}
+	
+	/// <summary>
+	/// A raw binary tagged value
+	/// </summary>
+	public class RawTaggedData : ITaggedData
+	{
+		/// <summary>
+		/// Initialise a new instance.
+		/// </summary>
+		/// <param name="tag">The tag ID.</param>
+		public RawTaggedData(short tag)
+		{
+			tag_ = tag;
+		}
+
+		#region ITaggedData Members
+
+		/// <summary>
+		/// Get the ID for this tagged data value.
+		/// </summary>
+		public short TagID 
+		{ 
+			get { return tag_; }
+			set { tag_ = value; }
+		}
+
+		/// <summary>
+		/// Set the data from the raw values provided.
+		/// </summary>
+		/// <param name="data">The raw data to extract values from.</param>
+		/// <param name="offset">The index to start extracting values from.</param>
+		/// <param name="count">The number of bytes available.</param>
+		public void SetData(byte[] data, int offset, int count)
+		{
+			if( data==null )
+			{
+				throw new ArgumentNullException("data");
+			}
+
+			data_=new byte[count];
+			Array.Copy(data, offset, data_, 0, count);
+		}
+
+		/// <summary>
+		/// Get the binary data representing this instance.
+		/// </summary>
+		/// <returns>The raw binary data representing this instance.</returns>
+		public byte[] GetData()
+		{
+			return data_;
+		}
+
+		#endregion
+
+		/// <summary>
+		/// Get /set the binary data representing this instance.
+		/// </summary>
+		/// <returns>The raw binary data representing this instance.</returns>
+		public byte[] Data
+		{
+			get { return data_; }
+			set { data_=value; }
+		}
+
+		#region Instance Fields
+		/// <summary>
+		/// The tag ID for this instance.
+		/// </summary>
+		protected short tag_;
+
+		byte[] data_;
+		#endregion
+	}
+
+	/// <summary>
+	/// Class representing extended unix date time values.
+	/// </summary>
+	public class ExtendedUnixData : ITaggedData
+	{
+		/// <summary>
+		/// Flags indicate which values are included in this instance.
+		/// </summary>
+		[Flags]
+		public enum Flags : byte
+		{
+			/// <summary>
+			/// The modification time is included
+			/// </summary>
+			ModificationTime = 0x01,
+			
+			/// <summary>
+			/// The access time is included
+			/// </summary>
+			AccessTime = 0x02,
+			
+			/// <summary>
+			/// The create time is included.
+			/// </summary>
+			CreateTime = 0x04,
+		}
+		
+		#region ITaggedData Members
+
+		/// <summary>
+		/// Get the ID
+		/// </summary>
+		public short TagID
+		{ 
+			get { return 0x5455; }
+		}
+		
+		/// <summary>
+		/// Set the data from the raw values provided.
+		/// </summary>
+		/// <param name="data">The raw data to extract values from.</param>
+		/// <param name="index">The index to start extracting values from.</param>
+		/// <param name="count">The number of bytes available.</param>
+		public void SetData(byte[] data, int index, int count)
+		{
+			using (MemoryStream ms = new MemoryStream(data, index, count, false))
+			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
+			{
+				// bit 0           if set, modification time is present
+				// bit 1           if set, access time is present
+				// bit 2           if set, creation time is present
+				
+				flags_ = (Flags)helperStream.ReadByte();
+				if (((flags_ & Flags.ModificationTime) != 0) && (count >= 5))
+				{
+					int iTime = helperStream.ReadLEInt();
+
+					modificationTime_ = (new System.DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
+						new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
+				}
+
+				if ((flags_ & Flags.AccessTime) != 0)
+				{
+					int iTime = helperStream.ReadLEInt();
+
+					lastAccessTime_ = (new System.DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
+						new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
+				}
+				
+				if ((flags_ & Flags.CreateTime) != 0)
+				{
+					int iTime = helperStream.ReadLEInt();
+
+					createTime_ = (new System.DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
+						new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get the binary data representing this instance.
+		/// </summary>
+		/// <returns>The raw binary data representing this instance.</returns>
+		public byte[] GetData()
+		{
+			using (MemoryStream ms = new MemoryStream())
+			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
+			{
+				helperStream.IsStreamOwner = false;
+				helperStream.WriteByte((byte)flags_);     // Flags
+				if ( (flags_ & Flags.ModificationTime) != 0) {
+					TimeSpan span = modificationTime_.ToUniversalTime() - new System.DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
+					int seconds = (int)span.TotalSeconds;
+					helperStream.WriteLEInt(seconds);
+				}
+				if ( (flags_ & Flags.AccessTime) != 0) {
+					TimeSpan span = lastAccessTime_.ToUniversalTime() - new System.DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
+					int seconds = (int)span.TotalSeconds;
+					helperStream.WriteLEInt(seconds);
+				}
+				if ( (flags_ & Flags.CreateTime) != 0) {
+					TimeSpan span = createTime_.ToUniversalTime() - new System.DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
+					int seconds = (int)span.TotalSeconds;
+					helperStream.WriteLEInt(seconds);
+				}
+				return ms.ToArray();
+			}
+		}
+
+		#endregion
+
+		/// <summary>
+		/// Test a <see cref="DateTime"> value to see if is valid and can be represented here.</see>
+		/// </summary>
+		/// <param name="value">The <see cref="DateTime">value</see> to test.</param>
+		/// <returns>Returns true if the value is valid and can be represented; false if not.</returns>
+		/// <remarks>The standard Unix time is a signed integer data type, directly encoding the Unix time number,
+		/// which is the number of seconds since 1970-01-01.
+		/// Being 32 bits means the values here cover a range of about 136 years.
+		/// The minimum representable time is 1901-12-13 20:45:52,
+		/// and the maximum representable time is 2038-01-19 03:14:07.
+		/// </remarks>
+		public static bool IsValidValue(DateTime value)
+		{
+			return (( value >= new DateTime(1901, 12, 13, 20, 45, 52)) || 
+					( value <= new DateTime(2038, 1, 19, 03, 14, 07) ));
+		}
+
+		/// <summary>
+		/// Get /set the Modification Time
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException"></exception>
+		/// <seealso cref="IsValidValue"></seealso>
+		public DateTime ModificationTime
+		{
+			get { return modificationTime_; }
+			set
+			{
+				if ( !IsValidValue(value) ) {
+					throw new ArgumentOutOfRangeException("value");
+				}
+				
+				flags_ |= Flags.ModificationTime;
+				modificationTime_=value;
+			}
+		}
+
+		/// <summary>
+		/// Get / set the Access Time
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException"></exception>
+		/// <seealso cref="IsValidValue"></seealso>
+		public DateTime AccessTime
+		{
+			get { return lastAccessTime_; }
+			set { 
+				if ( !IsValidValue(value) ) {
+					throw new ArgumentOutOfRangeException("value");
+				}
+			
+				flags_ |= Flags.AccessTime;
+				lastAccessTime_=value; 
+			}
+		}
+
+		/// <summary>
+		/// Get / Set the Create Time
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException"></exception>
+		/// <seealso cref="IsValidValue"></seealso>
+		public DateTime CreateTime
+		{
+			get { return createTime_; }
+			set {
+				if ( !IsValidValue(value) ) {
+					throw new ArgumentOutOfRangeException("value");
+				}
+			
+				flags_ |= Flags.CreateTime;
+				createTime_=value;
+			}
+		}
+
+		/// <summary>
+		/// Get/set the <see cref="Flags">values</see> to include.
+		/// </summary>
+		Flags Include
+		{
+			get { return flags_; }
+			set { flags_ = value; }
+		}
+
+		#region Instance Fields
+		Flags flags_;
+		DateTime modificationTime_ = new DateTime(1970,1,1);
+		DateTime lastAccessTime_ = new DateTime(1970, 1, 1);
+		DateTime createTime_ = new DateTime(1970, 1, 1);
+		#endregion
+	}
+
+	/// <summary>
+	/// Class handling NT date time values.
+	/// </summary>
+	public class NTTaggedData : ITaggedData
+	{
+		/// <summary>
+		/// Get the ID for this tagged data value.
+		/// </summary>
+		public short TagID
+		{ 
+			get { return 10; }
+		}
+
+		/// <summary>
+		/// Set the data from the raw values provided.
+		/// </summary>
+		/// <param name="data">The raw data to extract values from.</param>
+		/// <param name="index">The index to start extracting values from.</param>
+		/// <param name="count">The number of bytes available.</param>
+		public void SetData(byte[] data, int index, int count)
+		{
+			using (MemoryStream ms = new MemoryStream(data, index, count, false)) 
+			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
+			{
+				helperStream.ReadLEInt(); // Reserved
+				while (helperStream.Position < helperStream.Length)
+				{
+					int ntfsTag = helperStream.ReadLEShort();
+					int ntfsLength = helperStream.ReadLEShort();
+					if (ntfsTag == 1)
+					{
+						if (ntfsLength >= 24)
+						{
+							long lastModificationTicks = helperStream.ReadLELong();
+							lastModificationTime_ = DateTime.FromFileTime(lastModificationTicks);
+
+							long lastAccessTicks = helperStream.ReadLELong();
+							lastAccessTime_ = DateTime.FromFileTime(lastAccessTicks);
+
+							long createTimeTicks = helperStream.ReadLELong();
+							createTime_ = DateTime.FromFileTime(createTimeTicks);
+						}
+						break;
+					}
+					else
+					{
+						// An unknown NTFS tag so simply skip it.
+						helperStream.Seek(ntfsLength, SeekOrigin.Current);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get the binary data representing this instance.
+		/// </summary>
+		/// <returns>The raw binary data representing this instance.</returns>
+		public byte[] GetData()
+		{
+			using (MemoryStream ms = new MemoryStream())
+			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
+			{
+				helperStream.IsStreamOwner = false;
+				helperStream.WriteLEInt(0);       // Reserved
+				helperStream.WriteLEShort(1);     // Tag
+				helperStream.WriteLEShort(24);    // Length = 3 x 8.
+				helperStream.WriteLELong(lastModificationTime_.ToFileTime());
+				helperStream.WriteLELong(lastAccessTime_.ToFileTime());
+				helperStream.WriteLELong(createTime_.ToFileTime());
+				return ms.ToArray();
+			}
+		}
+
+		/// <summary>
+		/// Test a <see cref="DateTime"> valuie to see if is valid and can be represented here.</see>
+		/// </summary>
+		/// <param name="value">The <see cref="DateTime">value</see> to test.</param>
+		/// <returns>Returns true if the value is valid and can be represented; false if not.</returns>
+		/// <remarks>
+		/// NTFS filetimes are 64-bit unsigned integers, stored in Intel
+		/// (least significant byte first) byte order. They determine the
+		/// number of 1.0E-07 seconds (1/10th microseconds!) past WinNT "epoch",
+		/// which is "01-Jan-1601 00:00:00 UTC". 28 May 60056 is the upper limit
+		/// </remarks>
+		public static bool IsValidValue(DateTime value)
+		{
+			bool result = true;
+			try
+			{
+				value.ToFileTimeUtc();
+			}
+			catch
+			{
+				result = false;
+			}
+			return result;
+		}
+		
+		/// <summary>
+		/// Get/set the <see cref="DateTime">last modification time</see>.
+		/// </summary>
+		public DateTime LastModificationTime
+		{
+			get { return lastModificationTime_; }
+			set {
+				if (! IsValidValue(value))
+				{
+					throw new ArgumentOutOfRangeException("value");
+				}
+				lastModificationTime_ = value;
+			}
+		}
+
+		/// <summary>
+		/// Get /set the <see cref="DateTime">create time</see>
+		/// </summary>
+		public DateTime CreateTime
+		{
+			get { return createTime_; }
+			set {
+				if ( !IsValidValue(value)) {
+					throw new ArgumentOutOfRangeException("value");
+				}
+				createTime_ = value;
+			}
+		}
+
+		/// <summary>
+		/// Get /set the <see cref="DateTime">last access time</see>.
+		/// </summary>
+		public DateTime LastAccessTime
+		{
+			get { return lastAccessTime_; }
+			set {
+				if (!IsValidValue(value)) {
+					throw new ArgumentOutOfRangeException("value");
+				}
+				lastAccessTime_ = value; 
+			}
+		}
+
+		#region Instance Fields
+		DateTime lastAccessTime_ = DateTime.FromFileTime(0);
+		DateTime lastModificationTime_ = DateTime.FromFileTime(0);
+		DateTime createTime_ = DateTime.FromFileTime(0);
+		#endregion
+	}
+
+	/// 
 	/// <summary>
 	/// A class to handle the extra data field for Zip entries
 	/// </summary>
@@ -48,7 +513,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// means that for extra data created by passing in data can have the values modified by the caller
 	/// in some circumstances.
 	/// </remarks>
-	sealed public class ZipExtraData : IDisposable
+	sealed public class ZipExtraData : IDisposable, ITaggedDataFactory
 	{
 		#region Constructors
 		/// <summary>
@@ -57,6 +522,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public ZipExtraData()
 		{
 			Clear();
+			factory_ = this;
 		}
 
 		/// <summary>
@@ -82,9 +548,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns the raw byte[] extra data this instance represents.</returns>
 		public byte[] GetEntryData()
 		{
-			// Delaying length testing till here allows manipulation internally before things
-			// are determined to be awry.  This can potentially make finding problems a
-			// little more tricky however.
 			if ( Length > ushort.MaxValue ) {
 				throw new ZipException("Data exceeds maximum length");
 			}
@@ -124,6 +587,40 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 
+		/// <summary>
+		/// Find a tag and update the <see cref="ITaggedData">tagged data</see>.
+		/// </summary>
+		/// <param name="tag">The tag to search for.</param>
+		/// <returns>Returns true if the <paramref name="taggedData"> was updated.</paramref></returns>
+		public ITaggedData GetData(short tag)
+		{
+			ITaggedData result = null;
+			if (Find(tag))
+			{
+				result = factory_.Create(tag, data_, readValueStart_, readValueLength_);
+			}
+			return result;
+		}
+
+		ITaggedData ITaggedDataFactory.Create(short tag, byte[] data, int offset, int count)
+		{
+			ITaggedData result = null;
+			switch ( tag )
+			{
+				case 0x000A:
+					result = new NTTaggedData();
+					break;
+				case 0x5455:
+					result = new ExtendedUnixData();
+					break;
+				default:
+					result = new RawTaggedData(tag);
+					break;
+			}
+			result.SetData(data_, readValueStart_, readValueLength_);
+			return result;
+		}
+		
 		/// <summary>
 		/// Get the length of the last value found by <see cref="Find"/>
 		/// </summary>
@@ -184,7 +681,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
-			bool result = (localTag == headerID) && (index_ + localLength <= data_.Length);
+			bool result = (localTag == headerID) && ((index_ + localLength) <= data_.Length);
 
 			if ( result ) {
 				readValueStart_ = index_;
@@ -192,6 +689,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			return result;
+		}
+
+		/// <summary>
+		/// Add a new entry to extra data.
+		/// </summary>
+		/// <param name="taggedData">The <see cref="ITaggedData"/> value to add.</param>
+		public void AddEntry(ITaggedData taggedData)
+		{
+			if (taggedData == null)
+			{
+				throw new ArgumentNullException("taggedData");
+			}
+			AddEntry(taggedData.TagID, taggedData.GetData());
 		}
 
 		/// <summary>
@@ -241,19 +751,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
-		void SetShort(ref int index, int source)
-		{
-			data_[index] = ( byte )source;
-			data_[index + 1] = ( byte )(source >> 8);
-			index += 2;
-		}
-
 		/// <summary>
 		/// Start adding a new entry.
 		/// </summary>
 		/// <remarks>Add data using <see cref="AddData(byte[])"/>, <see cref="AddLeShort"/>, <see cref="AddLeInt"/>, or <see cref="AddLeLong"/>.
 		/// The new entry is completed and actually added by calling <see cref="AddNewEntry"/></remarks>
-		/// <seealso cref="AddEntry"/>
+		/// <seealso cref="AddEntry(ITaggedData)"/>
 		public void StartNewEntry()
 		{
 			newEntry_ = new MemoryStream();
@@ -356,8 +859,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 
-
-		#region Reading
+		#region Reading Support
 		/// <summary>
 		/// Read a long in little endian form from the last <see cref="Find">found</see> data value
 		/// </summary>
@@ -445,6 +947,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 
+		void SetShort(ref int index, int source)
+		{
+			data_[index] = (byte)source;
+			data_[index + 1] = (byte)(source >> 8);
+			index += 2;
+		}
 
 		#endregion
 
@@ -469,6 +977,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		MemoryStream newEntry_;
 		byte[] data_;
+		ITaggedDataFactory factory_;
 		#endregion
 	}
 }

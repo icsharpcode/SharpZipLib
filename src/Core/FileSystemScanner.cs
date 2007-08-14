@@ -64,7 +64,6 @@ namespace ICSharpCode.SharpZipLib.Core
 			get { return name_; }
 		}
 		
-		
 		/// <summary>
 		/// Get set a value indicating if scanning should continue or not.
 		/// </summary>
@@ -163,26 +162,32 @@ namespace ICSharpCode.SharpZipLib.Core
 	}
 	
 	#endregion
+	
 	#region Delegates
 	/// <summary>
-	/// Delegate invoked when a directory is processed.
+	/// Delegate invoked before starting to process a directory.
 	/// </summary>
-	public delegate void ProcessDirectoryDelegate(object sender, DirectoryEventArgs e);
+	public delegate void ProcessDirectoryHandler(object sender, DirectoryEventArgs e);
 	
 	/// <summary>
-	/// Delegate invoked when a file is processed.
+	/// Delegate invoked before starting to process a file.
 	/// </summary>
-	public delegate void ProcessFileDelegate(object sender, ScanEventArgs e);
+	public delegate void ProcessFileHandler(object sender, ScanEventArgs e);
+
+	/// <summary>
+	/// Delegate invoked when a file has been completely processed.
+	/// </summary>
+	public delegate void CompletedFileHandler(object sender, ScanEventArgs e);
 	
 	/// <summary>
 	/// Delegate invoked when a directory failure is detected.
 	/// </summary>
-	public delegate void DirectoryFailureDelegate(object sender, ScanFailureEventArgs e);
+	public delegate void DirectoryFailureHandler(object sender, ScanFailureEventArgs e);
 	
 	/// <summary>
 	/// Delegate invoked when a file failure is detected.
 	/// </summary>
-	public delegate void FileFailureDelegate(object sender, ScanFailureEventArgs e);
+	public delegate void FileFailureHandler(object sender, ScanFailureEventArgs e);
 	#endregion
 
 	/// <summary>
@@ -231,26 +236,32 @@ namespace ICSharpCode.SharpZipLib.Core
 			directoryFilter_ = directoryFilter;
 		}
 		#endregion
+
 		#region Delegates
 		/// <summary>
 		/// Delegate to invoke when a directory is processed.
 		/// </summary>
-		public ProcessDirectoryDelegate ProcessDirectory;
+		public ProcessDirectoryHandler ProcessDirectory;
 		
 		/// <summary>
 		/// Delegate to invoke when a file is processed.
 		/// </summary>
-		public ProcessFileDelegate ProcessFile;
+		public ProcessFileHandler ProcessFile;
+
+		/// <summary>
+		/// Delegate to invoke when processing for a file has finished.
+		/// </summary>
+		public CompletedFileHandler CompletedFile;
 
 		/// <summary>
 		/// Delegate to invoke when a directory failure is detected.
 		/// </summary>
-		public DirectoryFailureDelegate DirectoryFailure;
+		public DirectoryFailureHandler DirectoryFailure;
 		
 		/// <summary>
 		/// Delegate to invoke when a file failure is detected.
 		/// </summary>
-		public FileFailureDelegate FileFailure;
+		public FileFailureHandler FileFailure;
 		#endregion
 
 		/// <summary>
@@ -289,7 +300,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Raise the ProcessFile event.
 		/// </summary>
 		/// <param name="file">The file name.</param>
-		public void OnProcessFile(string file)
+		void OnProcessFile(string file)
 		{
 			if ( ProcessFile != null ) {
 				ScanEventArgs args = new ScanEventArgs(file);
@@ -297,13 +308,23 @@ namespace ICSharpCode.SharpZipLib.Core
 				alive_ = args.ContinueRunning;
 			}
 		}
-		
+
+		void OnCompleteFile(string file)
+		{
+			if (CompletedFile != null)
+			{
+				ScanEventArgs args = new ScanEventArgs(file);
+				CompletedFile(this, args);
+				alive_ = args.ContinueRunning;
+			}
+		}
+
 		/// <summary>
 		/// Raise the ProcessDirectory event.
 		/// </summary>
 		/// <param name="directory">The directory name.</param>
 		/// <param name="hasMatchingFiles">Flag indicating if the directory has matching files.</param>
-		public void OnProcessDirectory(string directory, bool hasMatchingFiles)
+		void OnProcessDirectory(string directory, bool hasMatchingFiles)
 		{
 			if ( ProcessDirectory != null ) {
 				DirectoryEventArgs args = new DirectoryEventArgs(directory, hasMatchingFiles);

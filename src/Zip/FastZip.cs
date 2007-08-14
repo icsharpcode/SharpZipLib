@@ -47,22 +47,27 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Delegate to invoke when processing directories.
 		/// </summary>
-		public ProcessDirectoryDelegate ProcessDirectory;
+		public ProcessDirectoryHandler ProcessDirectory;
 		
 		/// <summary>
 		/// Delegate to invoke when processing files.
 		/// </summary>
-		public ProcessFileDelegate ProcessFile;
+		public ProcessFileHandler ProcessFile;
+		
+		/// <summary>
+		/// Delegate to invoke when processing for a file has been completed.
+		/// </summary>
+		public CompletedFileHandler CompletedFile;
 		
 		/// <summary>
 		/// Delegate to invoke when processing directory failures.
 		/// </summary>
-		public DirectoryFailureDelegate DirectoryFailure;
+		public DirectoryFailureHandler DirectoryFailure;
 		
 		/// <summary>
 		/// Delegate to invoke when processing file failures.
 		/// </summary>
-		public FileFailureDelegate FileFailure;
+		public FileFailureHandler FileFailure;
 		
 		/// <summary>
 		/// Raise the <see cref="DirectoryFailure">directory failure</see> event.
@@ -99,7 +104,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Raises the <see cref="ProcessFile">Process File delegate</see>.
+		/// Fires the <see cref="ProcessFile">Process File delegate</see>.
 		/// </summary>
 		/// <param name="file">The file being processed.</param>
 		/// <returns>A boolean indicating if execution should continue or not.</returns>
@@ -109,6 +114,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if ( ProcessFile != null ) {
 				ScanEventArgs args = new ScanEventArgs(file);
 				ProcessFile(this, args);
+				result = args.ContinueRunning;
+			}
+			return result;
+		}
+		
+		/// <summary>
+		/// Fires the CompletedFile delegate
+		/// </summary>
+		/// <param name="file">The file whose processing has been completed.</param>
+		/// <returns>A boolean indicating if execution should continue or not.</returns>
+		public bool OnCompletedFile(string file)
+		{
+			bool result = true;
+			if ( CompletedFile != null ) {
+				ScanEventArgs args = new ScanEventArgs(file);
+				CompletedFile(this, args);
 				result = args.ContinueRunning;
 			}
 			return result;
@@ -306,9 +327,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 #endif
 
 				FileSystemScanner scanner = new FileSystemScanner(fileFilter, directoryFilter);
-				scanner.ProcessFile += new ProcessFileDelegate(ProcessFile);
+				scanner.ProcessFile += new ProcessFileHandler(ProcessFile);
 				if ( this.CreateEmptyDirectories ) {
-					scanner.ProcessDirectory += new ProcessDirectoryDelegate(ProcessDirectory);
+					scanner.ProcessDirectory += new ProcessDirectoryHandler(ProcessDirectory);
 				}
 				
 				if (events_ != null) {
@@ -461,7 +482,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 							if ( buffer_ == null ) {
 								buffer_ = new byte[4096];
 							}
+							
 							StreamUtils.Copy(zipFile_.GetInputStream(entry), outputStream, buffer_);
+							
+							if (events_ != null) {
+								continueRunning_ = events_.OnCompletedFile(entry.Name);
+							}
 						}
 
 #if !NETCF_1_0 && !NETCF_2_0

@@ -540,6 +540,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// 6.3 - File is encrypted using Blowfish<br/>
 		/// 6.3 - File is encrypted using Twofish<br/>
 		/// </remarks>
+		/// <seealso cref="CanDecompress"></seealso>
 		public int Version 
 		{
 			get {
@@ -572,6 +573,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get a value indicating wether this entry can be decompressed by the library.
 		/// </summary>
+		/// <remarks>This is based on the <see cref="Version"></see> and 
+		/// wether the <see cref="IsCompressionMethodSupported()">compression method</see> is supported.</remarks>
 		public bool CanDecompress
 		{
 			get {

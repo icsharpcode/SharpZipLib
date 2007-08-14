@@ -212,7 +212,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Make a new <see cref="ZipEntry"/> for a file.
+		/// Make a new <see cref="ZipEntry"/> from a name.
 		/// </summary>
 		/// <param name="fileName">The name of the file to create a new entry for.</param>
 		/// <param name="useFileSystem">If true entry detail is retrieved from the file system if the file exists.</param>
@@ -231,7 +231,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				fi = new FileInfo(fileName);
 			}
 
-			if (useFileSystem && fi.Exists)
+			if ((fi != null) && fi.Exists)
 			{
 				switch (timeSetting_)
 				{
@@ -333,7 +333,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 
-			if (useFileSystem && di.Exists)
+			if ((di != null) && di.Exists)
 			{
 				switch (timeSetting_)
 				{

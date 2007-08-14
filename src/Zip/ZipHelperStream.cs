@@ -79,6 +79,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion
 	}
 
+	class EntryPatchData
+	{
+		public long SizePatchOffset
+		{
+			get { return sizePatchOffset_; }
+			set { sizePatchOffset_ = value; }
+		}
+
+		public long CrcPatchOffset
+		{
+			get { return crcPatchOffset_; }
+			set { crcPatchOffset_ = value; }
+		}
+		
+		#region Instance Fields
+		long sizePatchOffset_;
+		long crcPatchOffset_;
+		#endregion
+	}
+	
 	/// <summary>
 	/// This class assists with writing/reading from Zip files.
 	/// </summary>
@@ -173,8 +193,121 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			stream_.Write(buffer, offset, count);
 		}
-		#endregion
 
+		/// <summary>
+		/// Close the stream.
+		/// </summary>
+		/// <remarks>
+		/// The underlying stream is closed only if <see cref="IsStreamOwner"/> is true.
+		/// </remarks>
+		override public void Close()
+		{
+			Stream toClose = stream_;
+			stream_ = null;
+			if (isOwner_ && (toClose != null))
+			{
+				isOwner_ = false;
+				toClose.Close();
+			}
+		}
+		#endregion
+		
+		// Write the local file header
+		// TODO: ZipHelperStream.WriteLocalHeader is not yet used and needs checking for ZipFile and ZipOuptutStream usage
+		void WriteLocalHeader(ZipEntry entry, EntryPatchData patchData) 
+		{
+			CompressionMethod method = entry.CompressionMethod;
+			bool headerInfoAvailable = true; // How to get this?
+			bool patchEntryHeader = false;
+
+			WriteLEInt(ZipConstants.LocalHeaderSignature);
+			
+			WriteLEShort(entry.Version);
+			WriteLEShort(entry.Flags);
+			WriteLEShort((byte)method);
+			WriteLEInt((int)entry.DosTime);
+
+			if (headerInfoAvailable == true) {
+				WriteLEInt((int)entry.Crc);
+				if ( entry.LocalHeaderRequiresZip64 ) {
+					WriteLEInt(-1);
+					WriteLEInt(-1);
+				}
+				else {
+					WriteLEInt(entry.IsCrypted ? (int)entry.CompressedSize + ZipConstants.CryptoHeaderSize : (int)entry.CompressedSize);
+					WriteLEInt((int)entry.Size);
+				}
+			} else {
+				if (patchData != null) {
+					patchData.CrcPatchOffset = stream_.Position;
+				}
+				WriteLEInt(0);	// Crc
+				
+				if ( patchData != null ) {
+					patchData.SizePatchOffset = stream_.Position;
+				}
+
+				// For local header both sizes appear in Zip64 Extended Information
+				if ( entry.LocalHeaderRequiresZip64 && patchEntryHeader ) {
+					WriteLEInt(-1);
+					WriteLEInt(-1);
+				}
+				else {
+					WriteLEInt(0);	// Compressed size
+					WriteLEInt(0);	// Uncompressed size
+				}
+			}
+
+			byte[] name = ZipConstants.ConvertToArray(entry.Flags, entry.Name);
+			
+			if (name.Length > 0xFFFF) {
+				throw new ZipException("Entry name too long.");
+			}
+
+			ZipExtraData ed = new ZipExtraData(entry.ExtraData);
+
+			if (entry.LocalHeaderRequiresZip64 && (headerInfoAvailable || patchEntryHeader)) {
+				ed.StartNewEntry();
+				if (headerInfoAvailable) {
+					ed.AddLeLong(entry.Size);
+					ed.AddLeLong(entry.CompressedSize);
+				}
+				else {
+					ed.AddLeLong(-1);
+					ed.AddLeLong(-1);
+				}
+				ed.AddNewEntry(1);
+
+				if ( !ed.Find(1) ) {
+					throw new ZipException("Internal error cant find extra data");
+				}
+				
+				if ( patchData != null ) {
+					patchData.SizePatchOffset = ed.CurrentReadIndex;
+				}
+			}
+			else {
+				ed.Delete(1);
+			}
+			
+			byte[] extra = ed.GetEntryData();
+
+			WriteLEShort(name.Length);
+			WriteLEShort(extra.Length);
+
+			if ( name.Length > 0 ) {
+				stream_.Write(name, 0, name.Length);
+			}
+			
+			if ( entry.LocalHeaderRequiresZip64 && patchEntryHeader ) {
+				patchData.SizePatchOffset += stream_.Position;
+			}
+
+			if ( extra.Length > 0 ) {
+				stream_.Write(extra, 0, extra.Length);
+			}
+		}
+	
 		/// <summary>
 		/// Locates a block with the desired <paramref name="signature"/>.
 		/// </summary>
@@ -412,19 +545,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLEUint(( uint )(value >> 32));
 		}
 
-		/// <summary>
-		/// Close the stream.
-		/// </summary>
-		override public void Close()
-		{
-			Stream toClose = stream_;
-			stream_ = null;
-			if ( isOwner_ && (toClose != null) )
-			{
-				isOwner_ = false;
-				toClose.Close();
-			}
-		}
 		#endregion
 
 		/// <summary>
@@ -485,13 +605,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			data.Crc = ReadLEInt();
 			
-			if (zip64)
-			{
+			if (zip64) {
 				data.CompressedSize = ReadLELong();
 				data.Size = ReadLELong();
 			}
-			else
-			{
+			else {
 				data.CompressedSize = ReadLEInt();
 				data.Size = ReadLEInt();
 			}

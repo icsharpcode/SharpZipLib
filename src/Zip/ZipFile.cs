@@ -134,22 +134,27 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Setting up testing.
 		/// </summary>
 		Initialising,
+		
 		/// <summary>
 		/// Testing an individual entries header
 		/// </summary>
 		EntryHeader,
+		
 		/// <summary>
 		/// Testing an individual entries data
 		/// </summary>
 		EntryData,
+		
 		/// <summary>
 		/// Testing an individual entry has completed.
 		/// </summary>
 		EntryComplete,
+		
 		/// <summary>
 		/// Running miscellaneous tests
 		/// </summary>
 		MiscellaneousTests,
+		
 		/// <summary>
 		/// Testing is complete
 		/// </summary>
@@ -172,6 +177,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			file_ = file;
 		}
 		#endregion
+		
 		#region Properties
 
 		/// <summary>
@@ -222,6 +228,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get { return entryValid_; }
 		}
 		#endregion
+		
 		#region Internal API
 		internal void AddError()
 		{
@@ -246,6 +253,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			bytesTested_ = value;
 		}
 		#endregion
+		
 		#region Instance Fields
 		ZipFile file_;
 		ZipEntry entry_;
@@ -1795,7 +1803,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLEInt(( int )0);
 			}
 			else {
-				WriteLEInt(( int )entry.Crc);
+				WriteLEInt(unchecked(( int )entry.Crc));
 			}
 
 			if (entry.LocalHeaderRequiresZip64) {
@@ -2420,7 +2428,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			else {
 				if (archiveStorage_.UpdateMode == FileUpdateMode.Direct) {
-					// TODO: archiveStorage wasnt intended for this use.
+					// TODO: archiveStorage wasnt originally intended for this use.
 					// Need to revisit this to tidy up handling as archive storage currently doesnt 
 					// handle the original stream well.
 					// The problem is when using an existing zip archive with an in memory archive storage.
@@ -2564,7 +2572,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 								break;
 
 							case UpdateCommand.Modify:
-								// TODO: Direct modifying of an entry.
+								// TODO: Direct modifying of an entry will take some legwork.
 								ModifyEntry(workFile, update);
 								break;
 
@@ -2597,7 +2605,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				byte[] theComment = (newComment_ != null) ? newComment_.RawComment : ZipConstants.ConvertToArray(comment_);
 				using ( ZipHelperStream zhs = new ZipHelperStream(workFile.baseStream_) ) {
-					//zhs.WriteEndOfCentralDirectory(updates_.Count, sizeEntries, centralDirOffset, theComment);
 					zhs.WriteEndOfCentralDirectory(updateCount_, sizeEntries, centralDirOffset, theComment);
 				}
 

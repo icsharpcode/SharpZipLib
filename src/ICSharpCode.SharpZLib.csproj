@@ -3,7 +3,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0AAD2BF5-F6C9-4180-9C50-9200726052DD}</ProjectGuid>
+    <ProjectGuid>{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}</ProjectGuid>
     <RootNamespace>ICSharpCode.SharpZipLib</RootNamespace>
     <AssemblyName>ICSharpCode.SharpZipLib</AssemblyName>
     <OutputType>Library</OutputType>
@@ -12,18 +12,19 @@
     <StartupObject />
     <NoStdLib>False</NoStdLib>
     <NoConfig>False</NoConfig>
-    <RunPostBuildEvent>OnSuccessfulBuild</RunPostBuildEvent>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <PreBuildEvent />
     <PostBuildEvent />
+    <DocumentationFile>..\bin\ICSharpCode.SharpZipLib.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>False</DebugSymbols>
+    <DebugSymbols>false</DebugSymbols>
     <Optimize>True</Optimize>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
-    <DefineConstants>NET_VER_1</DefineConstants>
     <OutputPath>..\bin\</OutputPath>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugType>None</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,7 +32,7 @@
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     <OutputPath>..\bin\</OutputPath>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DebugType>Full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
@@ -40,9 +41,6 @@
     <BaseAddress>4194304</BaseAddress>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <FileAlignment>4096</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <StartAction>Project</StartAction>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -62,8 +60,8 @@
     <Compile Include="Zip\ZipOutputStream.cs" />
     <Compile Include="Zip\ZipConstants.cs" />
     <Compile Include="Zip\ZipFile.cs" />
-    <Compile Include="GZip\GZipOutputStream.cs" />
-    <Compile Include="GZip\GZipInputStream.cs" />
+    <Compile Include="GZip\GzipOutputStream.cs" />
+    <Compile Include="GZip\GzipInputStream.cs" />
     <Compile Include="GZip\GZipConstants.cs" />
     <Compile Include="Zip\ZipException.cs" />
     <Compile Include="BZip2\BZip2InputStream.cs" />
@@ -108,13 +106,6 @@
     <Compile Include="Core\StreamUtils.cs" />
     <Compile Include="Zip\ZipEntryFactory.cs" />
     <Compile Include="Zip\IEntryFactory.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tar\" />
-    <Folder Include="Zip\Compression\" />
-    <Folder Include="Zip\Compression\Streams\" />
-    <Folder Include="Core\" />
-    <Folder Include="Encryption\" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
