@@ -253,7 +253,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <remarks>
 		/// This is also the Zip version for the library when comparing against the version required to extract
-		/// for an entry.  See <see cref="ZipInputStream.CanDecompressEntry"/>.
+		/// for an entry.  See <see cref="ZipEntry.CanDecompress"/>.
 		/// </remarks>
 		public const int VersionMadeBy = 45;
 		
@@ -469,7 +469,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 #endif
 		
 		/// <summary>
-		/// Default encoding used for string conversion.  0 gives the default system Ansi code page.
+		/// Default encoding used for string conversion.  0 gives the default system OEM code page.
 		/// Dont use unicode encodings if you want to be Zip compatible!
 		/// Using the default code page isnt the full solution neccessarily
 		/// there are many variable factors, codepage 850 is often a good choice for
@@ -597,17 +597,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Converted array</returns>
 		public static byte[] ConvertToArray(int flags, string str)
 		{
-			if (str == null)
-			{
+			if (str == null) {
 				return new byte[0];
 			}
 
-			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0)
-			{
+			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0) {
 				return Encoding.UTF8.GetBytes(str);
 			}
-			else
-			{
+			else {
 				return ConvertToArray(str);
 			}
 		}
