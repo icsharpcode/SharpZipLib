@@ -89,6 +89,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		// Have we read the GZIP header yet?
 		bool readGZIPHeader;
 		#endregion
+
 		#region Constructors
 		/// <summary>
 		/// Creates a GZipInputStream with the default buffer size
@@ -115,6 +116,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		{
 		}
 		#endregion	
+
 		#region Stream overrides
 		/// <summary>
 		/// Reads uncompressed data into an array of bytes
@@ -158,6 +160,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			return bytesRead;
 		}
 		#endregion	
+
 		#region Support routines
 		void ReadHeader() 
 		{
@@ -194,7 +197,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			}
 		
 			if ( compressionType != 8 ) {
-				throw new GZipException("Error GZIP header, data not deflate format");
+				throw new GZipException("Error GZIP header, data not in deflate format");
 			}
 			headCRC.Update(compressionType);
 			
@@ -341,8 +344,14 @@ namespace ICSharpCode.SharpZipLib.GZip
 				throw new GZipException("GZIP crc sum mismatch, theirs \"" + crcval + "\" and ours \"" + (int) crc.Value);
 			}
 			
-			int total = (footer[4] & 0xff) | ((footer[5] & 0xff) << 8) | ((footer[6] & 0xff) << 16) | (footer[7] << 24);
-			if (total != inf.TotalOut) {
+			// NOTE The total here is the original total modulo 2 ^ 32.
+			uint total = 
+				(uint)((uint)footer[4] & 0xff) |
+				(uint)(((uint)footer[5] & 0xff) << 8) |
+				(uint)(((uint)footer[6] & 0xff) << 16) |
+				(uint)((uint)footer[7] << 24);
+
+			if ((inf.TotalOut & 0xffffffff) != total) {
 				throw new GZipException("Number of bytes mismatch in footer");
 			}
 			

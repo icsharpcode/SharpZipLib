@@ -186,8 +186,6 @@ namespace ICSharpCode.SharpZipLib.GZip
 			int totalin = deflater_.TotalIn;
 			int crcval = (int) (crc.Value & 0xffffffff);
 			
-			//    System.err.println("CRC val is " + Integer.toHexString( crcval ) 		       + " and length " + Integer.toHexString(totalin));
-			
 			byte[] gzipFooter = {
 				(byte) crcval, (byte) (crcval >> 8),
 				(byte) (crcval >> 16), (byte) (crcval >> 24),
@@ -197,7 +195,6 @@ namespace ICSharpCode.SharpZipLib.GZip
 			};
 
 			baseOutputStream_.Write(gzipFooter, 0, gzipFooter.Length);
-			//    System.err.println("wrote GZIP trailer (" + gzipFooter.length + " bytes )");
 		}
 		#endregion
 		
