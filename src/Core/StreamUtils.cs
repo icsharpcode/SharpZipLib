@@ -62,32 +62,26 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="count">The number of bytes of data to store.</param>
 		static public void ReadFully(Stream stream, byte[] buffer, int offset, int count)
 		{
-			if ( stream == null )
-			{
+			if ( stream == null ) {
 				throw new ArgumentNullException("stream");
 			}
 
-			if ( buffer == null )
-			{
+			if ( buffer == null ) {
 				throw new ArgumentNullException("buffer");
 			}
 
 			// Offset can equal length when buffer and count are 0.
-			if ( (offset < 0) || (offset > buffer.Length) )
-			{
+			if ( (offset < 0) || (offset > buffer.Length) ) {
 				throw new ArgumentOutOfRangeException("offset");
 			}
 
-			if ( (count < 0) || (offset + count > buffer.Length) )
-			{
+			if ( (count < 0) || (offset + count > buffer.Length) ) {
 				throw new ArgumentOutOfRangeException("count");
 			}
 
-			while ( count > 0 )
-			{
+			while ( count > 0 ) {
 				int readCount = stream.Read(buffer, offset, count);
-				if ( readCount <= 0 )
-				{
+				if ( readCount <= 0 ) {
 					throw new EndOfStreamException();
 				}
 				offset += readCount;
@@ -103,38 +97,31 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="buffer">The buffer to use during copying.</param>
 		static public void Copy(Stream source, Stream destination, byte[] buffer)
 		{
-			if ( source == null )
-			{
+			if ( source == null ) {
 				throw new ArgumentNullException("source");
 			}
 
-			if ( destination == null )
-			{
+			if ( destination == null ) {
 				throw new ArgumentNullException("destination");
 			}
 
-			if ( buffer == null )
-			{
+			if ( buffer == null ) {
 				throw new ArgumentNullException("buffer");
 			}
 
 			// Ensure a reasonable size of buffer is used without being prohibitive.
-			if ( buffer.Length < 128 )
-			{
+			if ( buffer.Length < 128 ) {
 				throw new ArgumentException("Buffer is too small", "buffer");
 			}
 
 			bool copying = true;
 
-			while ( copying )
-			{
+			while ( copying ) {
 				int bytesRead = source.Read(buffer, 0, buffer.Length);
-				if ( bytesRead > 0 )
-				{
+				if ( bytesRead > 0 ) {
 					destination.Write(buffer, 0, bytesRead);
 				}
-				else
-				{
+				else {
 					destination.Flush();
 					copying = false;
 				}
