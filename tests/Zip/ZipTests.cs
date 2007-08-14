@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Text;
+using System.Threading;
 
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
@@ -13,60 +14,11 @@ using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Core;
 
 using NUnit.Framework;
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
-	#region Support Classes
-	class MemoryStreamEx : MemoryStream
-	{
-		public MemoryStreamEx()
-			: base()
-		{
-		}
-
-		public MemoryStreamEx(byte[] buffer)
-			: base(buffer)
-		{
-		}
-
-		protected override void Dispose(bool disposing)
-		{
-			isDisposed_=true;
-			base.Dispose(disposing);
-		}
-
-		public override void Close()
-		{
-			isClosed_=true;
-			base.Close();
-		}
-
-		public bool IsClosed
-		{
-			get { return isClosed_; }
-		}
-
-		public bool IsDisposed
-		{
-			get { return isDisposed_; }
-			set { isDisposed_=value; }
-		}
-
-		bool isDisposed_;
-
-		bool isClosed_;
-	}
-
-	class MemoryStreamWithoutSeek : MemoryStream
-	{
-		public override bool CanSeek
-		{
-			get {
-				return false;
-			}
-		}
-	}
-
+	#region Local Support Classes
 	class RuntimeInfo
 	{
 		public RuntimeInfo(CompressionMethod method, int compressionLevel, int size, string password, bool getCrc)
@@ -926,6 +878,129 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsTrue(blewUp, "Should have failed to write to stream");
 			Assert.IsTrue(ms.IsClosed, "Underlying stream should be closed");
 		}
+
+		[Test]
+		[Category("Zip")]
+		public void WriteThroughput()
+		{
+			outStream_ = new ZipOutputStream(new NullStream());
+
+			DateTime startTime = DateTime.Now;
+
+			long target = 0x10000000;
+
+			writeTarget_ = target;
+			outStream_.PutNextEntry(new ZipEntry("0"));
+			WriteTargetBytes();
+
+			outStream_.Close();
+
+			DateTime endTime = DateTime.Now;
+			TimeSpan span = endTime - startTime;
+			Console.WriteLine("Time {0} throughput {1} KB/Sec", span, (target / 1024) / span.TotalSeconds);
+		}
+
+		[Test]
+		[Category("Zip")]
+		[Category("Long Running")]
+		public void SingleLargeEntry()
+		{
+			window_ = new WindowedStream(0x10000);
+			outStream_ = new ZipOutputStream(window_);
+			inStream_ = new ZipInputStream(window_);
+
+			long target = 0x10000000;
+			readTarget_ = writeTarget_ = target;
+
+			Thread reader = new Thread(Reader);
+			reader.Name = "Reader";
+
+			Thread writer = new Thread(Writer);
+			writer.Name = "Writer";
+
+			DateTime startTime = DateTime.Now;
+			reader.Start();
+			writer.Start();
+
+			writer.Join();
+			reader.Join();
+
+			DateTime endTime = DateTime.Now;
+			TimeSpan span = endTime - startTime;
+			Console.WriteLine("Time {0} throughput {1} KB/Sec", span, (target / 1024) / span.TotalSeconds);
+		}
+
+		void Reader()
+		{
+			const int Size = 8192;
+			int readBytes = 1;
+			byte[] buffer = new byte[Size];
+
+			long passifierLevel = readTarget_ - 0x10000000;
+			ZipEntry single = inStream_.GetNextEntry();
+
+			Assert.AreEqual(single.Name, "CantSeek");
+			Assert.IsTrue((single.Flags & (int)GeneralBitFlags.Descriptor) != 0);
+
+			while ((readTarget_ > 0) && (readBytes > 0))
+			{
+				int count = Size;
+				if (count > readTarget_)
+				{
+					count = (int)readTarget_;
+				}
+
+				readBytes = inStream_.Read(buffer, 0, count);
+				readTarget_ -= readBytes;
+
+				if (readTarget_ <= passifierLevel)
+				{
+					Console.WriteLine("Reader {0} bytes remaining", readTarget_);
+					passifierLevel = readTarget_ - 0x10000000;
+				}
+			}
+
+			Assert.IsTrue(window_.IsClosed, "Window should be closed");
+
+			// This shouldnt read any data but should read the footer
+			readBytes = inStream_.Read(buffer, 0, 1);
+			Assert.AreEqual(0, readBytes, "Stream should be empty");
+			Assert.AreEqual(0, window_.Length, "Window should be closed");
+			inStream_.Close();
+		}
+
+		void WriteTargetBytes()
+		{
+			const int Size = 8192;
+
+			byte[] buffer = new byte[Size];
+
+			while (writeTarget_ > 0)
+			{
+				int thisTime = Size;
+				if (thisTime > writeTarget_)
+				{
+					thisTime = (int)writeTarget_;
+				}
+
+				outStream_.Write(buffer, 0, thisTime);
+				writeTarget_ -= thisTime;
+			}
+		}
+
+		void Writer()
+		{
+			outStream_.PutNextEntry(new ZipEntry("CantSeek"));
+			WriteTargetBytes();
+			outStream_.Close();
+		}
+
+		WindowedStream window_;
+		ZipOutputStream outStream_;
+		ZipInputStream inStream_;
+		long readTarget_;
+		long writeTarget_;
+
 	}
 
 	[TestFixture]
@@ -1491,7 +1566,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// </summary>
 		[Test]
 		[Category("Zip")]
-		[Category("LongRunning")]
+		[Category("Long Running")]
 		public void Stream_64KPlusOneEntries()
 		{
 			const int target = 65537;
@@ -2319,6 +2394,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
+		[Category("Zip")]
 		public void TaggedDataHandling()
 		{
 			NTTaggedData tagData = new NTTaggedData();
@@ -3515,6 +3591,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		// DirectoryEntry creation and retrieval of information.
 
 		[Test]
+		[Category("Zip")]
 		public void Defaults()
 		{
 			DateTime testStart=DateTime.Now;
@@ -3545,6 +3622,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
+		[Category("Zip")]
 		public void CreateInMemoryValues()
 		{
 			string tempFile = "bingo:";
@@ -3584,6 +3662,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
+		[Category("Zip")]
 		[Category("CreatesTempFile")]
 		public void CreatedValues()
 		{

@@ -9,6 +9,8 @@ using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using ICSharpCode.SharpZipLib.GZip;
 
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
+
 namespace ICSharpCode.SharpZipLib.Tests.Base
 {
 	/// <summary>
@@ -165,7 +167,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		}
 
 		[Test]
-        [Explicit]
+		[Explicit]
 		[Category("Base")]
 		[Category("ExcludeFromAutoBuild")]
 		public void FindBug()
@@ -230,6 +232,64 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			}
 		}
 
+		[Test]
+		[Category("Base")]
+		public void DeflatorStreamOwnership()
+		{
+			MemoryStreamEx memStream = new MemoryStreamEx();
+			DeflaterOutputStream s = new DeflaterOutputStream(memStream);
+			
+			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
+			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
+			
+			s.Close();
+			
+			Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
+			Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
+			
+			memStream = new MemoryStreamEx();
+			s = new DeflaterOutputStream(memStream);
+			
+			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
+			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
+			
+			s.IsStreamOwner = false;
+			s.Close();
+			
+			Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
+			Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
+			
+		}
+
+		[Test]
+		[Category("Base")]
+		public void InflatorStreamOwnership()
+		{
+			MemoryStreamEx memStream = new MemoryStreamEx();
+			InflaterInputStream s = new InflaterInputStream(memStream);
+
+			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
+			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
+
+			s.Close();
+
+			Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
+			Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
+
+			memStream = new MemoryStreamEx();
+			s = new InflaterInputStream(memStream);
+
+			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
+			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
+
+			s.IsStreamOwner = false;
+			s.Close();
+
+			Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
+			Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
+
+		}
+		
 		[Test]
 		[Category("Base")]
 		public void CloseInflatorWithNestedUsing()
