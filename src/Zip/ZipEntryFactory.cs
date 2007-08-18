@@ -241,7 +241,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					case TimeSetting.CreateTimeUtc:
 #if NETCF_1_0 || NETCF_2_0
-					result.DateTime = fi.CreationTime.ToUniversalTime();
+						result.DateTime = fi.CreationTime.ToUniversalTime();
 #else
 						result.DateTime = fi.CreationTimeUtc;
 #endif
@@ -253,7 +253,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					case TimeSetting.LastAccessTimeUtc:
 #if NETCF_1_0 || NETCF_2_0
-					result.DateTime = fi.LastAccessTime.ToUniversalTime();
+						result.DateTime = fi.LastAccessTime.ToUniversalTime();
 #else
 						result.DateTime = fi.LastAccessTimeUtc;
 #endif
@@ -265,7 +265,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					case TimeSetting.LastWriteTimeUtc:
 #if NETCF_1_0 || NETCF_2_0
-					result.DateTime = fi.LastWriteTime.ToUniversalTime();
+						result.DateTime = fi.LastWriteTime.ToUniversalTime();
 #else
 						result.DateTime = fi.LastWriteTimeUtc;
 #endif
@@ -343,7 +343,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					case TimeSetting.CreateTimeUtc:
 #if NETCF_1_0 || NETCF_2_0
-					result.DateTime = di.CreationTime.ToUniversalTime();
+						result.DateTime = di.CreationTime.ToUniversalTime();
 #else
 						result.DateTime = di.CreationTimeUtc;
 #endif
@@ -355,7 +355,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					case TimeSetting.LastAccessTimeUtc:
 #if NETCF_1_0 || NETCF_2_0
-					result.DateTime = di.LastAccessTime.ToUniversalTime();
+						result.DateTime = di.LastAccessTime.ToUniversalTime();
 #else
 						result.DateTime = di.LastAccessTimeUtc;
 #endif
@@ -367,7 +367,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					case TimeSetting.LastWriteTimeUtc:
 #if NETCF_1_0 || NETCF_2_0
-					result.DateTime = di.LastWriteTime.ToUniversalTime();
+						result.DateTime = di.LastWriteTime.ToUniversalTime();
 #else
 						result.DateTime = di.LastWriteTimeUtc;
 #endif
