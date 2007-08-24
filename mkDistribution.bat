@@ -1,4 +1,4 @@
-@echo "mkDistribution v1.1"
+@echo "mkDistribution v1.2"
 
 if exist current (
 	rmdir /s /q current
@@ -19,17 +19,17 @@ mkdir current\net-20
 nant -t:net-2.0 -D:build.output.dir=current\net-20 -buildfile:sharpZLib.build build
 
 @echo todo generate documentation and the rest of the distribution image.
+
+mkdir current\doc
+copy doc\readme.rtf current\doc
+copy doc\Changes.txt current\doc
+copy doc\Copying.txt current\doc
+copy SharpZipLib.chm current\doc
+copy installGAC.bat current
+copy uninstallGAC.bat current
+
 samples\cs\bin\sz -rc current\SharpZipLib.zip current\*.dll
 
-mkdir current\source
-copy doc\readme.rtf current\source
-copy doc\Changes.txt current\source
-copy doc\Copying.txt current\source
-rem copy doc\SharpZipLib.chm current\source
-copy *.bat current\source
-copy *.build current\source
-
-
-REM Compress source to SharpZipLib_SourceSamples.zip
-REM Build CHM file
-REM Build Bin Zip files
+@echo TODO Compress source to SharpZipLib_SourceSamples.zip
+@echo TODO Build CHM file
+@echo TODO Build Bin Zip files

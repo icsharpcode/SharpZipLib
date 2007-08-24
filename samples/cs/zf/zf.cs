@@ -658,8 +658,8 @@ namespace SharpZip
 						zf.NameTransform = new ZipNameTransform(path);
 
 						FileSystemScanner scanner = new FileSystemScanner(WildcardToRegex(fileSpec));
-						scanner.ProcessFile = new ProcessFileDelegate(ProcessFile);
-						scanner.ProcessDirectory = new ProcessDirectoryDelegate(ProcessDirectory);
+						scanner.ProcessFile = new ProcessFileHandler(ProcessFile);
+						scanner.ProcessDirectory = new ProcessDirectoryHandler(ProcessDirectory);
 						scanner.Scan(path, recursive_);
 					}
 
@@ -1047,8 +1047,8 @@ namespace SharpZip
 						zipFile.NameTransform = new ZipNameTransform(path);
 
 						FileSystemScanner scanner = new FileSystemScanner(WildcardToRegex(fileSpec));
-						scanner.ProcessFile = new ProcessFileDelegate(ProcessFile);
-						scanner.ProcessDirectory = new ProcessDirectoryDelegate(ProcessDirectory);
+						scanner.ProcessFile = new ProcessFileHandler(ProcessFile);
+						scanner.ProcessDirectory = new ProcessDirectoryHandler(ProcessDirectory);
 						scanner.Scan(path, recursive_);
 					}
 					zipFile.CommitUpdate();

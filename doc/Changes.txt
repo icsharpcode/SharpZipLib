@@ -1,3 +1,21 @@
+Changes since 0.85.2
+
++ Extended unit tests in many areas.
++ Fixed GZip reading of streams larger then 2^32.
++ Windows date time now handled in ExtraData.
++ Extensions to extra data handling.
++ Encrypting stored entries no longer consumes arbitrary amounts of memory.
++ DeflatorOutputStream now uses CryptoTransform
++ ZipInputStream detection of invalid sizes improved.
++ ZipHelperStream reading end of stream values now correctly handled
++ ZipHelperStream now supports reading/writing data descriptors.
++ ZipFile testing data now handles data descriptors.
++ ZipFile adding entries now correctly handles data descriptors.
++ ZipFile now defaults to dynamic use of Zip64.
++ ZipEntryFactory class made public and bugs fixed.
++ ZipEntry DateTime handling cleaned up - Zero is treated as fixed low value and high values checked and handled.
++ Added progress event handling to FastZip.
+
 Changes since 0.85.1
 
 + Minor tweaks for CF, ZipEntryFactory and ZipFile.

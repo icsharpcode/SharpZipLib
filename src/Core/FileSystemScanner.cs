@@ -80,6 +80,70 @@ namespace ICSharpCode.SharpZipLib.Core
 	}
 
 	/// <summary>
+	/// Event arguments during processing of a single file or directory.
+	/// </summary>
+	public class ProgressEventArgs : EventArgs
+	{
+		#region Constructors
+		/// <summary>
+		/// Initialise a new instance of <see cref="ScanEventArgs"/>
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="processed">The number of bytes processed so far</param>
+		/// <param name="target">The total number of bytes to process, 0 if not known</param>
+		public ProgressEventArgs(string name, long processed, long target)
+		{
+			name_ = name;
+			processed_ = processed;
+			target_ = target;
+		}
+		#endregion
+		
+		/// <summary>
+		/// The name for this event if known.
+		/// </summary>
+		public string Name
+		{
+			get { return name_; }
+		}
+		
+		/// <summary>
+		/// Get set a value indicating wether scanning should continue or not.
+		/// </summary>
+		public bool ContinueRunning
+		{
+			get { return continueRunning_; }
+			set { continueRunning_ = value; }
+		}
+
+		/// <summary>
+		/// Get a percentage representing the how complete the operation is.
+		/// </summary>
+		/// <value>0 to 100 percent; 0 if target is not known.</value>
+		public float PercentComplete
+		{
+			get
+			{
+				if (target_ <= 0)
+				{
+					return 0;
+				}
+				else
+				{
+					return ((float)processed_ / (float)target_) * 100.0f;
+				}
+			}
+		}
+
+		#region Instance Fields
+		string name_;
+		long processed_;
+		long target_;
+		bool continueRunning_ = true;
+		#endregion
+	}
+
+	/// <summary>
 	/// Event arguments for directories.
 	/// </summary>
 	public class DirectoryEventArgs : ScanEventArgs
@@ -172,21 +236,36 @@ namespace ICSharpCode.SharpZipLib.Core
 	/// <summary>
 	/// Delegate invoked before starting to process a file.
 	/// </summary>
+	/// <param name="sender">The source of the event</param>
+	/// <param name="e">The event arguments.</param>
 	public delegate void ProcessFileHandler(object sender, ScanEventArgs e);
+
+	/// <summary>
+	/// Delegate invoked during processing of a file or directory
+	/// </summary>
+	/// <param name="sender">The source of the event</param>
+	/// <param name="e">The event arguments.</param>
+	public delegate void ProgressHandler(object sender, ProgressEventArgs e);
 
 	/// <summary>
 	/// Delegate invoked when a file has been completely processed.
 	/// </summary>
+	/// <param name="sender">The source of the event</param>
+	/// <param name="e">The event arguments.</param>
 	public delegate void CompletedFileHandler(object sender, ScanEventArgs e);
 	
 	/// <summary>
 	/// Delegate invoked when a directory failure is detected.
 	/// </summary>
+	/// <param name="sender">The source of the event</param>
+	/// <param name="e">The event arguments.</param>
 	public delegate void DirectoryFailureHandler(object sender, ScanFailureEventArgs e);
 	
 	/// <summary>
 	/// Delegate invoked when a file failure is detected.
 	/// </summary>
+	/// <param name="sender">The source of the event</param>
+	/// <param name="e">The event arguments.</param>
 	public delegate void FileFailureHandler(object sender, ScanFailureEventArgs e);
 	#endregion
 
@@ -269,7 +348,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <param name="directory">The directory name.</param>
 		/// <param name="e">The exception detected.</param>
-		public void OnDirectoryFailure(string directory, Exception e)
+		void OnDirectoryFailure(string directory, Exception e)
 		{
 			if ( DirectoryFailure == null ) {
 				alive_ = false;
@@ -285,7 +364,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <param name="file">The file name.</param>
 		/// <param name="e">The exception detected.</param>
-		public void OnFileFailure(string file, Exception e)
+		void OnFileFailure(string file, Exception e)
 		{
 			if ( FileFailure == null ) {
 				alive_ = false;
@@ -309,6 +388,10 @@ namespace ICSharpCode.SharpZipLib.Core
 			}
 		}
 
+		/// <summary>
+		/// Raise the complete file event
+		/// </summary>
+		/// <param name="file">The file name</param>
 		void OnCompleteFile(string file)
 		{
 			if (CompletedFile != null)
@@ -370,8 +453,7 @@ namespace ICSharpCode.SharpZipLib.Core
 								}
 							}
 						}
-						catch (Exception e)
-						{
+						catch (Exception e) {
 							OnFileFailure(fileName, e);
 						}
 					}

@@ -93,11 +93,17 @@ namespace Samples.FastZipDemo
 		void ListFileSystem(string directory, bool recurse, string fileFilter, string directoryFilter)
 		{
 			FileSystemScanner scanner = new FileSystemScanner(fileFilter, directoryFilter);
-			scanner.ProcessDirectory += new ProcessDirectoryDelegate(ListDir);
-			scanner.ProcessFile += new ProcessFileDelegate(ListFile);
+			scanner.ProcessDirectory += new ProcessDirectoryHandler(ListDir);
+			scanner.ProcessFile += new ProcessFileHandler(ListFile);
 			scanner.Scan(directory, recurse);
 		}
-		
+
+		void ShowProgress(object sender, ProgressEventArgs e)
+		{
+			// Very ugly but this is a sample!
+			Console.WriteLine("{0}%", e.PercentComplete);
+		}
+
 		void ProcessFile(object sender, ScanEventArgs e)
 		{
 			Console.WriteLine(e.Name);
@@ -127,6 +133,8 @@ namespace Samples.FastZipDemo
 			bool verbose = false;
 			bool restoreDates = false;
 			bool restoreAttributes = false;
+			bool progress = false;
+			TimeSpan interval = TimeSpan.FromSeconds(1);
 
 			bool createEmptyDirs = false;
 			FastZip.Overwrite overwrite = FastZip.Overwrite.Always;
@@ -190,6 +198,12 @@ namespace Samples.FastZipDemo
 							break;
 
 							
+						case "p":
+						case "progress":
+							progress = true;
+							verbose = true;
+							break;
+
 						case "r":
 						case "recurse":
 							recurse = true;
@@ -199,7 +213,13 @@ namespace Samples.FastZipDemo
 						case "verbose":
 							verbose = true;
 							break;
-							
+
+						case "i":
+							if (optArg.Length > 0) {
+								interval = TimeSpan.FromSeconds(int.Parse(optArg));
+							}
+							break;
+
 						case "file":
 							if ( NameFilter.IsValidFilterExpression(optArg) ) {
 								fileFilter = optArg;
@@ -274,21 +294,27 @@ namespace Samples.FastZipDemo
 			
 			if ( verbose ) {
 				events = new FastZipEvents();
-				events.ProcessDirectory = new ProcessDirectoryDelegate(ProcessDirectory);
-				events.ProcessFile = new ProcessFileDelegate(ProcessFile);
+				events.ProcessDirectory = new ProcessDirectoryHandler(ProcessDirectory);
+				events.ProcessFile = new ProcessFileHandler(ProcessFile);
+
+				if (progress)
+				{
+					events.Progress = new ProgressHandler(ShowProgress);
+					events.ProgressInterval = interval;
+				}
 			}
 			
-			FastZip sz = new FastZip(events);
-			sz.CreateEmptyDirectories = createEmptyDirs;
-			sz.RestoreAttributesOnExtract = restoreAttributes;
-			sz.RestoreDateTimeOnExtract = restoreDates;
+			FastZip fastZip = new FastZip(events);
+			fastZip.CreateEmptyDirectories = createEmptyDirs;
+			fastZip.RestoreAttributesOnExtract = restoreAttributes;
+			fastZip.RestoreDateTimeOnExtract = restoreDates;
 			
 			switch ( op ) {
 				case Operation.Create:
 					if ( argCount == 2 ) {
 						Console.WriteLine("Creating Zip");
 
-						sz.CreateZip(arg1, arg2, recurse, fileFilter, dirFilter);
+						fastZip.CreateZip(arg1, arg2, recurse, fileFilter, dirFilter);
 					}
 					else
 						Console.WriteLine("Invalid arguments");
@@ -297,7 +323,7 @@ namespace Samples.FastZipDemo
 				case Operation.Extract:
 					if ( argCount == 2 ) {
 						Console.WriteLine("Extracting Zip");
-						sz.ExtractZip(arg1, arg2, overwrite, confirmOverwrite, fileFilter, dirFilter, recurse);
+						fastZip.ExtractZip(arg1, arg2, overwrite, confirmOverwrite, fileFilter, dirFilter, recurse);
 					}
 					else
 						Console.WriteLine("zipfile and target directory not specified");
@@ -317,7 +343,7 @@ namespace Samples.FastZipDemo
 					
 				case Operation.Unknown:
 					Console.WriteLine(
-					   "FastZip v0.4\n"
+					   "FastZip v0.5\n"
 					+  "  Usage: FastZip {options} operation args\n"
 					+  "Operation Options: (only one permitted)\n"
 					+  "  -x zipfile targetdir : Extract files from Zip\n"
@@ -325,9 +351,11 @@ namespace Samples.FastZipDemo
 					+  "  -l zipfile|dir       : List elements\n"
 					+  "\n"
 					+  "Behavioural options:\n"
-					+  "  -file={fileFilter}\n"
 					+  "  -dir={dirFilter}\n"
+					+  "  -file={fileFilter}\n"
 					+  "  -e Process empty directories\n"
+					+  "  -i Progress interval in seconds\n"
+					+  "  -p Show file progress\n"
 					+  "  -r Recurse directories\n"
 					+  "  -v Verbose output\n"
 					+  "  -oa Restore file attributes on extract\n"

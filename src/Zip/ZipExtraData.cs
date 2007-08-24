@@ -67,22 +67,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns the data for this instance.</returns>
 		byte[] GetData();
 	}
-
-	/// <summary>
-	/// A factory that creates <see cref="ITaggedData">tagged data</see> instances.
-	/// </summary>
-	public interface ITaggedDataFactory
-	{
-		/// <summary>
-		/// Get data for a specific tag value.
-		/// </summary>
-		/// <param name="tag">The tag ID to find.</param>
-		/// <param name="data">The data to search.</param>
-		/// <param name="offset">The offset to begin extracting data from.</param>
-		/// <param name="count">The number of bytes to extract.</param>
-		/// <returns>The located <see cref="ITaggedData">value found</see>, or null if not found.</returns>
-		ITaggedData Create(short tag, byte[] data, int offset, int count);
-	}
 	
 	/// <summary>
 	/// A raw binary tagged value
@@ -505,6 +489,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion
 	}
 
+	/// <summary>
+	/// A factory that creates <see cref="ITaggedData">tagged data</see> instances.
+	/// </summary>
+	interface ITaggedDataFactory
+	{
+		/// <summary>
+		/// Get data for a specific tag value.
+		/// </summary>
+		/// <param name="tag">The tag ID to find.</param>
+		/// <param name="data">The data to search.</param>
+		/// <param name="offset">The offset to begin extracting data from.</param>
+		/// <param name="count">The number of bytes to extract.</param>
+		/// <returns>The located <see cref="ITaggedData">value found</see>, or null if not found.</returns>
+		ITaggedData Create(short tag, byte[] data, int offset, int count);
+	}
+
 	/// 
 	/// <summary>
 	/// A class to handle the extra data field for Zip entries
@@ -516,7 +516,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// means that for extra data created by passing in data can have the values modified by the caller
 	/// in some circumstances.
 	/// </remarks>
-	sealed public class ZipExtraData : IDisposable, ITaggedDataFactory
+	sealed public class ZipExtraData : IDisposable
 	{
 		#region Constructors
 		/// <summary>
@@ -525,7 +525,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public ZipExtraData()
 		{
 			Clear();
-			factory_ = this;
 		}
 
 		/// <summary>
@@ -591,21 +590,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Find a tag and update the <see cref="ITaggedData">tagged data</see>.
+		/// Get the <see cref="ITaggedData">tagged data</see> for a tag.
 		/// </summary>
 		/// <param name="tag">The tag to search for.</param>
-		/// <returns>Returns true if the <paramref name="taggedData"> was updated.</paramref></returns>
-		public ITaggedData GetData(short tag)
+		/// <returns>Returns a <see cref="ITaggedData">tagged value</see> or null if none found.</returns>
+		private ITaggedData GetData(short tag)
 		{
 			ITaggedData result = null;
 			if (Find(tag))
 			{
-				result = factory_.Create(tag, data_, readValueStart_, readValueLength_);
+				result = Create(tag, data_, readValueStart_, readValueLength_);
 			}
 			return result;
 		}
 
-		ITaggedData ITaggedDataFactory.Create(short tag, byte[] data, int offset, int count)
+		ITaggedData Create(short tag, byte[] data, int offset, int count)
 		{
 			ITaggedData result = null;
 			switch ( tag )
@@ -980,7 +979,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		MemoryStream newEntry_;
 		byte[] data_;
-		ITaggedDataFactory factory_;
 		#endregion
 	}
 }

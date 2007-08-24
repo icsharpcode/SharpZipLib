@@ -53,7 +53,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Delegate to invoke when processing files.
 		/// </summary>
 		public ProcessFileHandler ProcessFile;
-		
+
+		/// <summary>
+		/// Delegate to invoke during processing of files.
+		/// </summary>
+		public ProgressHandler Progress;
+
 		/// <summary>
 		/// Delegate to invoke when processing for a file has been completed.
 		/// </summary>
@@ -118,7 +123,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			return result;
 		}
-		
+
 		/// <summary>
 		/// Fires the CompletedFile delegate
 		/// </summary>
@@ -150,6 +155,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			return result;
 		}
+
+		/// <summary>
+		/// The minimum timespan between <see cref="Progress"/> events.
+		/// </summary>
+		/// <seealso cref="Progress"/>
+		public TimeSpan ProgressInterval
+		{
+			get { return progressInterval_; }
+			set { progressInterval_ = value; }
+		}
+
+		#region Instance Fields
+		TimeSpan progressInterval_ = TimeSpan.FromSeconds(3);
+		#endregion
 	}
 	
 	/// <summary>
@@ -453,7 +472,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			using (FileStream stream = File.OpenRead(name)) {
-				StreamUtils.Copy(stream, outputStream_, buffer_);
+				if ((events_ != null) && (events_.Progress != null)) {
+					StreamUtils.Copy(stream, outputStream_, buffer_,
+						events_.Progress, events_.ProgressInterval, this, name);
+				}
+				else {
+					StreamUtils.Copy(stream, outputStream_, buffer_);
+				}
+			}
+
+			if (events_ != null) {
+				continueRunning_ = events_.OnCompletedFile(name);
 			}
 		}
 		
@@ -482,8 +511,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 							if ( buffer_ == null ) {
 								buffer_ = new byte[4096];
 							}
-							
-							StreamUtils.Copy(zipFile_.GetInputStream(entry), outputStream, buffer_);
+							if ((events_ != null) && (events_.Progress != null))
+							{
+								StreamUtils.Copy(zipFile_.GetInputStream(entry), outputStream, buffer_,
+									events_.Progress, events_.ProgressInterval, this, entry.Name);
+							}
+							else
+							{
+								StreamUtils.Copy(zipFile_.GetInputStream(entry), outputStream, buffer_);
+							}
 							
 							if (events_ != null) {
 								continueRunning_ = events_.OnCompletedFile(entry.Name);
@@ -528,7 +564,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				doExtraction = NameIsValid(nameText);
 			}
 			
-			// TODO: Fire delegate were compression method not supported, or name is invalid.
+			// TODO: Fire delegate were compression method not supported, or name is invalid?
 
 			string dirName = null;
 			string targetName = null;

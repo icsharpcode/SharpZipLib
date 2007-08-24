@@ -95,6 +95,83 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="source">The stream to source data from.</param>
 		/// <param name="destination">The stream to write data to.</param>
 		/// <param name="buffer">The buffer to use during copying.</param>
+		/// <param name="progressHandler"></param>
+		/// <param name="updateInterval"></param>
+		/// <param name="sender"></param>
+		/// <param name="name"></param>
+		static public void Copy(Stream source, Stream destination,
+			byte[] buffer, ProgressHandler progressHandler, TimeSpan updateInterval, object sender, string name)
+		{
+			if (source == null) {
+				throw new ArgumentNullException("source");
+			}
+
+			if (destination == null) {
+				throw new ArgumentNullException("destination");
+			}
+
+			if (buffer == null) {
+				throw new ArgumentNullException("buffer");
+			}
+
+			// Ensure a reasonable size of buffer is used without being prohibitive.
+			if (buffer.Length < 128) {
+				throw new ArgumentException("Buffer is too small", "buffer");
+			}
+
+			if (progressHandler == null) {
+				throw new ArgumentNullException("progressHandler");
+			}
+
+			bool copying = true;
+
+			DateTime marker = DateTime.Now;
+			long processed = 0;
+			long target = 0;
+
+			if (source.CanSeek) {
+				target = source.Length - source.Position;
+			}
+
+			// Always fire 0% progress..
+			ProgressEventArgs args = new ProgressEventArgs(name, processed, target);
+			progressHandler(sender, args);
+
+			bool completeFired = false;
+
+			while (copying) {
+				int bytesRead = source.Read(buffer, 0, buffer.Length);
+				if (bytesRead > 0) {
+					processed += bytesRead;
+					destination.Write(buffer, 0, bytesRead);
+				}
+				else {
+					destination.Flush();
+					copying = false;
+				}
+
+				if (DateTime.Now - marker > updateInterval) {
+					completeFired = (processed == target);
+					marker = DateTime.Now;
+					args = new ProgressEventArgs(name, processed, target);
+					progressHandler(sender, args);
+
+					copying = args.ContinueRunning;
+				}
+			}
+
+			if (!completeFired) {
+				args = new ProgressEventArgs(name, processed, target);
+				progressHandler(sender, args);
+			}
+		}
+
+		/// <summary>
+		/// Copy the contents of one <see cref="Stream"/> to another.
+		/// </summary>
+		/// <param name="source">The stream to source data from.</param>
+		/// <param name="destination">The stream to write data to.</param>
+		/// <param name="buffer">The buffer to use during copying.</param>
 		static public void Copy(Stream source, Stream destination, byte[] buffer)
 		{
 			if ( source == null ) {
