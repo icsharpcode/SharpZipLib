@@ -3,67 +3,62 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{54057AFD-35E2-48C3-8419-45D57C351C1F}</ProjectGuid>
-    <RootNamespace>NewProject</RootNamespace>
-    <AssemblyName>zipfiletest</AssemblyName>
+    <ProjectGuid>{1B2FD768-E530-45B7-B14F-AE5D07B24485}</ProjectGuid>
+    <RootNamespace>CreateZipFile</RootNamespace>
+    <AssemblyName>CreateZipFile</AssemblyName>
     <OutputType>WinExe</OutputType>
     <ApplicationIcon />
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel />
+    <NoWarn />
     <StartupObject />
     <NoStdLib />
     <NoConfig />
     <RunPostBuildEvent>OnSuccessfulBuild</RunPostBuildEvent>
     <PreBuildEvent />
     <PostBuildEvent />
-    <RemoveIntegerChecks>False</RemoveIntegerChecks>
-    <OptionExplicit>On</OptionExplicit>
-    <OptionStrict>Off</OptionStrict>
-    <OptionCompare>Binary</OptionCompare>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <Optimize>True</Optimize>
-    <AllowUnsafeBlocks />
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <OutputPath>bin\</OutputPath>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DebugType>Full</DebugType>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
     <Optimize>True</Optimize>
     <AllowUnsafeBlocks />
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <DefineConstants />
-    <OutputPath>\</OutputPath>
-    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <OutputPath>bin\Debug\</OutputPath>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <RegisterForComInterop>False</RegisterForComInterop>
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
-    <BaseAddress>4194304</BaseAddress>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>False</DebugSymbols>
+    <Optimize>True</Optimize>
+    <AllowUnsafeBlocks />
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants />
+    <OutputPath>bin\Release\</OutputPath>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\..\..\bin\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.vb" />
-    <Compile Include="Main.vb">
+    <Compile Include="MainForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <EmbeddedResource Include="Main.resx">
-      <DependentUpon>Main.vb</DependentUpon>
+    <Compile Include="AssemblyInfo.vb" />
+    <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>
+      <DependentUpon>MainForm.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.Targets" />
 </Project>
