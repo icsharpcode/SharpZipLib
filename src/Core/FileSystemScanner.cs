@@ -88,7 +88,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Initialise a new instance of <see cref="ScanEventArgs"/>
 		/// </summary>
-		/// <param name="name"></param>
+		/// <param name="name">The file or directory name if known.</param>
 		/// <param name="processed">The number of bytes processed so far</param>
 		/// <param name="target">The total number of bytes to process, 0 if not known</param>
 		public ProgressEventArgs(string name, long processed, long target)
@@ -117,9 +117,9 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 
 		/// <summary>
-		/// Get a percentage representing the how complete the operation is.
+		/// Get a percentage representing how much of the <see cref="Target"></see> has been processed
 		/// </summary>
-		/// <value>0 to 100 percent; 0 if target is not known.</value>
+		/// <value>0.0 to 100.0 percent; 0 if target is not known.</value>
 		public float PercentComplete
 		{
 			get
@@ -134,7 +134,24 @@ namespace ICSharpCode.SharpZipLib.Core
 				}
 			}
 		}
+		
+		/// <summary>
+		/// The number of bytes processed so far
+		/// </summary>
+		public long Processed
+		{
+			get { return processed_; }
+		}
 
+		/// <summary>
+		/// The number of bytes to process.
+		/// </summary>
+		/// <remarks>Target may be 0 or negative if the value isnt known.</remarks>
+		public long Target
+		{
+			get { return target_; }
+		}
+		
 		#region Instance Fields
 		string name_;
 		long processed_;
