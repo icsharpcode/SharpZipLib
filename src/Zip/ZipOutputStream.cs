@@ -121,13 +121,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Set the zip file comment.
 		/// </summary>
 		/// <param name="comment">
-		/// The comment string
+		/// The comment text for the entire archive.
 		/// </param>
 		/// <exception name ="ArgumentOutOfRangeException">
-		/// Encoding of comment is longer than 0xffff bytes.
+		/// The <see cref="ZipConstants.DefaultCodePage">encoded</see> comment is longer than 0xffff bytes.
 		/// </exception>
 		public void SetComment(string comment)
 		{
+			// TODO: Its not yet clear how to handle unicode comments here.
 			byte[] commentBytes = ZipConstants.ConvertToArray(comment);
 			if (commentBytes.Length > 0xffff) {
 				throw new ArgumentOutOfRangeException("comment");
@@ -161,6 +162,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get / set a value indicating how Zip64 Extension usage is determined when adding entries.
 		/// </summary>
+		/// <remarks>Older archivers may not understand Zip64 extensions.
+		/// If backwards compatability is an issue be careful when adding <see cref="ZipEntry.Size">entries</see> to an archive.
+		/// Setting this property to off is workable but less desirable as in those circumstances adding a file
+		/// larger then 4GB will fail.</remarks>
 		public UseZip64 UseZip64
 		{
 			get { return useZip64_; }
@@ -804,6 +809,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		// Default is dynamic which is not backwards compatible and can cause problems
 		// with XP's built in compression which cant read Zip64 archives.
 		// However it does avoid the situation were a large file is added and cannot be completed correctly.
+		// NOTE: Setting the size for entries before they are added is the best solution!
 		UseZip64 useZip64_ = UseZip64.Dynamic;
 		#endregion
 	}

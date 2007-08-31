@@ -286,6 +286,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get/Set flag indicating if entry is encrypted.
 		/// A simple helper routine to aid interpretation of <see cref="Flags">flags</see>
 		/// </summary>
+		/// <remarks>This is an assistant that interprets the <see cref="Flags">flags</see> property.</remarks>
 		public bool IsCrypted 
 		{
 			get {
@@ -303,8 +304,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		/// <summary>
 		/// Get / set a flag indicating wether entry name and comment text are
-		/// encoded in Unicode UTF8
+		/// encoded in <a href="http://www.unicode.org">unicode UTF8</a>.
 		/// </summary>
+		/// <remarks>This is an assistant that interprets the <see cref="Flags">flags</see> property.</remarks>
 		public bool IsUnicodeText
 		{
 			get {
@@ -339,6 +341,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <remarks>
 		/// General purpose bit flag<br/>
+		/// <br/>
 		/// Bit 0: If set, indicates the file is encrypted<br/>
 		/// Bit 1-2 Only used for compression type 6 Imploding, and 8, 9 deflating<br/>
 		/// Imploding:<br/>
@@ -358,8 +361,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Bit 4: Reserved for use by PKZIP for enhanced deflating<br/>
 		/// Bit 5: If set indicates the file contains compressed patch data<br/>
 		/// Bit 6: If set indicates strong encryption was used.<br/>
-		/// Bit 7-15: Unused or reserved<br/>
+		/// Bit 7-10: Unused or reserved<br/>
+		/// Bit 11: If set the name and comments for this entry are in <a href="http://www.unicode.org">unicode</a>.<br/>
+		/// Bit 12-15: Unused or reserved<br/>
 		/// </remarks>
+		/// <seealso cref="IsUnicodeText"></seealso>
+		/// <seealso cref="IsCrypted"></seealso>
 		public int Flags 
 		{
 			get { 
@@ -373,6 +380,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get/Set index of this entry in Zip file
 		/// </summary>
+		/// <remarks>This is only valid when the entry is part of a <see cref="ZipFile"></see></remarks>
 		public long ZipFileIndex 
 		{
 			get {
@@ -741,6 +749,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// The size or -1 if unknown.
 		/// </returns>
+		/// <remarks>Setting the size before adding an entry to an archive can help
+		/// avoid compatability problems with some archivers which dont understand Zip64 extensions.</remarks>
 		public long Size 
 		{
 			get {
