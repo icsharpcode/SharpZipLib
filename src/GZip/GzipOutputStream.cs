@@ -114,6 +114,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// Sets the active compression level (1-9).  The new level will be activated
 		/// immediately.
 		/// </summary>
+		/// <param name="level">The compression level to set.</param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Level specified is not supported.
 		/// </exception>

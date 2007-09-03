@@ -585,8 +585,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public class EntryFactoryAdapter : IEntryFactory
 		{
 			/// <summary>
-			/// Create a TarEntry based on named
+			/// Create a <see cref="TarEntry"/> based on named
 			/// </summary>
+			/// <param name="name">The name to use for the entry</param>
 			public TarEntry CreateEntry(string name)
 			{
 				return TarEntry.CreateTarEntry(name);
@@ -595,17 +596,19 @@ namespace ICSharpCode.SharpZipLib.Tar
 			/// <summary>
 			/// Create a tar entry with details obtained from <paramref name="fileName">file</paramref>
 			/// </summary>
+			/// <param name="fileName">The name of the file to retrieve details from.</param>
 			public TarEntry CreateEntryFromFile(string fileName)
 			{
 				return TarEntry.CreateEntryFromFile(fileName);
 			}
 
 			/// <summary>
-			/// Create and entry based on details in <paramref name="headerBuf">header</paramref>
+			/// Create an entry based on details in <paramref name="headerBuf">header</paramref>
 			/// </summary>			
-			public TarEntry CreateEntry(byte[] headerBuf)
+			/// <param name="headerBuffer">The buffer containing entry details.</param>
+			public TarEntry CreateEntry(byte[] headerBuffer)
 			{
-				return new TarEntry(headerBuf);
+				return new TarEntry(headerBuffer);
 			}
 		}
 

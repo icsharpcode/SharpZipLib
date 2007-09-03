@@ -130,6 +130,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <param name="count">
 		/// The number of uncompressed bytes to be read
 		/// </param>
+		/// <returns>Returns the number of bytes actually read.</returns>
 		public override int Read(byte[] buffer, int offset, int count) 
 		{
 			// We first have to read the GZIP header, then we feed all the

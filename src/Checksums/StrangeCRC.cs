@@ -154,7 +154,8 @@ namespace ICSharpCode.SharpZipLib.Checksums
 
 		/// <summary>
 		/// Update Crc based on a block of data
-		/// </summary>		
+		/// </summary>
+		/// <param name="buffer">The buffer containing data to update the crc with.</param>
 		public void Update(byte[] buffer)
 		{
 			if (buffer == null) {

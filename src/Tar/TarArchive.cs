@@ -75,7 +75,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Raises the ProgressMessage event
 		/// </summary>
-		/// <param name="entry">TarEntry for this event</param>
+		/// <param name="entry">The <see cref="TarEntry">TarEntry</see> for this event</param>
 		/// <param name="message">message for this event.  Null is no message</param>
 		protected virtual void OnProgressMessageEvent(TarEntry entry, string message)
 		{
@@ -126,6 +126,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// these constructors when you wish to extract files from or list
 		/// the contents of an existing tar archive.
 		/// </summary>
+		/// <param name="inputStream">The stream to retrieve archive data from.</param>
+		/// <returns>Returns a new <see cref="TarArchive"/> suitable for reading from.</returns>
 		public static TarArchive CreateInputTarArchive(Stream inputStream)
 		{
 			if ( inputStream == null ) {
@@ -140,9 +142,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <param name="inputStream">Stream for tar archive contents</param>
 		/// <param name="blockFactor">The blocking factor to apply</param>
-		/// <returns>
-		/// TarArchive
-		/// </returns>
+		/// <returns>Returns a <see cref="TarArchive"/> suitable for reading.</returns>
 		public static TarArchive CreateInputTarArchive(Stream inputStream, int blockFactor)
 		{
 			if ( inputStream == null ) {
@@ -155,7 +155,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Create a TarArchive for writing to, using the default blocking factor
 		/// </summary>
-		/// <param name="outputStream">Stream to write to</param>
+		/// <param name="outputStream">The <see cref="Stream"/> to write to</param>
+		/// <returns>Returns a <see cref="TarArchive"/> suitable for writing.</returns>
 		public static TarArchive CreateOutputTarArchive(Stream outputStream)
 		{
 			if ( outputStream == null ) {
@@ -170,6 +171,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <param name="outputStream">The stream to write to</param>
 		/// <param name="blockFactor">The blocking factor to use for buffering.</param>
+		/// <returns>Returns a <see cref="TarArchive"/> suitable for writing.</returns>
 		public static TarArchive CreateOutputTarArchive(Stream outputStream, int blockFactor)
 		{
 			if ( outputStream == null ) {

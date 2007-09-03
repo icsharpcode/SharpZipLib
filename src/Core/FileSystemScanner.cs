@@ -49,7 +49,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Initialise a new instance of <see cref="ScanEventArgs"/>
 		/// </summary>
-		/// <param name="name"></param>
+		/// <param name="name">The file or directory name.</param>
 		public ScanEventArgs(string name)
 		{
 			name_ = name;
@@ -57,7 +57,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		#endregion
 		
 		/// <summary>
-		/// The name for this event.
+		/// The fie or directory name for this event.
 		/// </summary>
 		public string Name
 		{
@@ -305,7 +305,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Initialise a new instance of <see cref="FileSystemScanner"></see>
 		/// </summary>
 		/// <param name="fileFilter">The <see cref="PathFilter">file filter</see> to apply.</param>
-		/// <param name="directoryFilter">The <see cref="PathFilter">directory filter</see> to apply.</param>
+		/// <param name="directoryFilter">The <see cref="PathFilter"> directory filter</see> to apply.</param>
 		public FileSystemScanner(string fileFilter, string directoryFilter)
 		{
 			fileFilter_ = new PathFilter(fileFilter);
@@ -315,7 +315,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Initialise a new instance of <see cref="FileSystemScanner"></see>
 		/// </summary>
-		/// <param name="fileFilter">The file <see cref="IScanFilter"></see>filter to apply.</param>
+		/// <param name="fileFilter">The file <see cref="IScanFilter">filter</see> to apply.</param>
 		public FileSystemScanner(IScanFilter fileFilter)
 		{
 			fileFilter_ = fileFilter;
@@ -324,8 +324,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Initialise a new instance of <see cref="FileSystemScanner"></see>
 		/// </summary>
-		/// <param name="fileFilter">The file <see cref="IScanFilter"></see>filter to apply.</param>
-		/// <param name="directoryFilter">The directory <see cref="IScanFilter"></see>filter to apply.</param>
+		/// <param name="fileFilter">The file <see cref="IScanFilter">filter</see>  to apply.</param>
+		/// <param name="directoryFilter">The directory <see cref="IScanFilter">filter</see>  to apply.</param>
 		public FileSystemScanner(IScanFilter fileFilter, IScanFilter directoryFilter)
 		{
 			fileFilter_ = fileFilter;

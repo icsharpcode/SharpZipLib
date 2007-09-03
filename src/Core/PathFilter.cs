@@ -49,7 +49,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Initialise a new instance of <see cref="PathFilter"></see>.
 		/// </summary>
-		/// <param name="filter">The <see cref="NameFilter"></see>filter expression to apply.</param>
+		/// <param name="filter">The <see cref="NameFilter">filter</see> expression to apply.</param>
 		public PathFilter(string filter)
 		{
 			nameFilter_ = new NameFilter(filter);

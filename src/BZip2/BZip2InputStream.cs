@@ -155,6 +155,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Set the streams position.  This operation is not supported and will throw a NotSupportedException
 		/// </summary>
+		/// <param name="offset">A byte offset relative to the <paramref name="origin"/> parameter.</param>
+		/// <param name="origin">A value of type <see cref="SeekOrigin"/> indicating the reference point used to obtain the new position.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override long Seek(long offset, SeekOrigin origin)
 		{
@@ -165,6 +167,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// Sets the length of this stream to the given value.
 		/// This operation is not supported and will throw a NotSupportedExceptionortedException
 		/// </summary>
+		/// <param name="value">The new length for the stream.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override void SetLength(long value)
 		{
@@ -175,6 +178,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// Writes a block of bytes to this stream using data from a buffer.
 		/// This operation is not supported and will throw a NotSupportedException
 		/// </summary>
+		/// <param name="buffer">The buffer to source data from.</param>
+		/// <param name="offset">The offset to start obtaining data from.</param>
+		/// <param name="count">The number of bytes of data to write.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override void Write(byte[] buffer, int offset, int count)
 		{

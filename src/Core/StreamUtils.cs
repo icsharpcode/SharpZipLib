@@ -95,10 +95,10 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="source">The stream to source data from.</param>
 		/// <param name="destination">The stream to write data to.</param>
 		/// <param name="buffer">The buffer to use during copying.</param>
-		/// <param name="progressHandler"></param>
-		/// <param name="updateInterval"></param>
-		/// <param name="sender"></param>
-		/// <param name="name"></param>
+		/// <param name="progressHandler">The <see cref="ProgressHandler">progress handler delegate</see> to use.</param>
+		/// <param name="updateInterval">The minimum <see cref="TimeSpan"/> between progress updates.</param>
+		/// <param name="sender">The source for this event.</param>
+		/// <param name="name">The name to use with the event.</param>
 		static public void Copy(Stream source, Stream destination,
 			byte[] buffer, ProgressHandler progressHandler, TimeSpan updateInterval, object sender, string name)
 		{

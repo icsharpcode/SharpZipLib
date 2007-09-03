@@ -558,6 +558,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			string nameText = entry.Name;
 			
 			if ( entry.IsFile ) {
+				// TODO: Translate invalid names allowing extraction still.
 				doExtraction = NameIsValid(nameText) && entry.IsCompressionMethodSupported();
 			}
 			else if ( entry.IsDirectory ) {
