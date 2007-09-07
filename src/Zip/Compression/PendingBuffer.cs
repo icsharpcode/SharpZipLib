@@ -252,15 +252,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// Flushes the pending buffer into the given output array.  If the
 		/// output array is to small, only a partial flush is done.
 		/// </summary>
-		/// <param name="output">
-		/// The output array.
-		/// </param>
-		/// <param name="offset">
-		/// The offset into output array.
-		/// </param>
-		/// <param name="length">
-		/// The maximum number of bytes to store.
-		/// </param>
+		/// <param name="output">The output array.</param>
+		/// <param name="offset">The offset into output array.</param>
+		/// <param name="length">The maximum number of bytes to store.</param>
+		/// <returns>The number of bytes flushed.</returns>
 		public int Flush(byte[] output, int offset, int length) 
 		{
 			if (bitCount >= 8) {

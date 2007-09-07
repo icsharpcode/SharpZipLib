@@ -36,7 +36,7 @@
 
 /* The tar format and its POSIX successor PAX have a long history which makes for compatability
    issues when creating and reading files.
-   
+
    This is further complicated by a large number of programs with variations on formats
    One common issue is the handling of names longer than 100 characters.
    GNU style long names are currently supported.
@@ -547,8 +547,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 		#region ICloneable Members
 		/// <summary>
-		/// Clone a TAR header.
+		/// Create a new <see cref="TarHeader"/> that is a copy of the current instance.
 		/// </summary>
+		/// <returns>A new <see cref="Object"/> that is a copy of the current instance.</returns>
 		public object Clone()
 		{
 			return this.MemberwiseClone();
@@ -963,10 +964,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 
 			for (int i = 0 ; i < length && nameOffset + i < toAdd.Length; ++i) 
-		 	{
+			{
 				buffer[bufferOffset + i] = (byte)toAdd[nameOffset + i];
-		 	}
-		 	return bufferOffset + length;
+			}
+			return bufferOffset + length;
 		}
 
 		/// <summary>

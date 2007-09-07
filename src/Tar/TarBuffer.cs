@@ -103,6 +103,8 @@ or which contains garbage records after a zero block.
 		/// <summary>
 		/// Get the record size for this buffer
 		/// </summary>
+		/// <value>The record size in bytes.
+		/// This is equal to the <see cref="BlockFactor"/> multiplied by the <see cref="BlockSize"/></value>
 		public int RecordSize 
 		{
 			get { 
@@ -113,6 +115,8 @@ or which contains garbage records after a zero block.
 		/// <summary>
 		/// Get the TAR Buffer's record size.
 		/// </summary>
+		/// <returns>The record size in bytes.
+		/// This is equal to the <see cref="BlockFactor"/> multiplied by the <see cref="BlockSize"/></returns>
 		[Obsolete("Use RecordSize property instead")]
 		public int GetRecordSize()
 		{
@@ -122,6 +126,7 @@ or which contains garbage records after a zero block.
 		/// <summary>
 		/// Get the Blocking factor for the buffer
 		/// </summary>
+		/// <value>This is the number of block in each record.</value>
 		public int BlockFactor {
 			get { 
 				return blockFactor; 
@@ -131,6 +136,7 @@ or which contains garbage records after a zero block.
 		/// <summary>
 		/// Get the TAR Buffer's block factor
 		/// </summary>
+		/// <returns>The block factor; the number of blocks per record.</returns>
 		[Obsolete("Use BlockFactor property instead")]
 		public int GetBlockFactor()
 		{
@@ -148,7 +154,7 @@ or which contains garbage records after a zero block.
 		/// Create TarBuffer for reading with default BlockFactor
 		/// </summary>
 		/// <param name="inputStream">Stream to buffer</param>
-		/// <returns>TarBuffer</returns>
+		/// <returns>A new <see cref="TarBuffer"/> suitable for input.</returns>
 		public static TarBuffer CreateInputTarBuffer(Stream inputStream)
 		{
 			if ( inputStream == null )
@@ -164,7 +170,7 @@ or which contains garbage records after a zero block.
 		/// </summary>
 		/// <param name="inputStream">Stream to buffer</param>
 		/// <param name="blockFactor">Blocking factor to apply</param>
-		/// <returns>TarBuffer</returns>
+		/// <returns>A new <see cref="TarBuffer"/> suitable for input.</returns>
 		public static TarBuffer CreateInputTarBuffer(Stream inputStream, int blockFactor)
 		{
 			if ( inputStream == null )
@@ -193,7 +199,7 @@ or which contains garbage records after a zero block.
 		/// Construct TarBuffer for writing with default BlockFactor
 		/// </summary>
 		/// <param name="outputStream">output stream for buffer</param>
-		/// <returns>TarBuffer</returns>
+		/// <returns>A new <see cref="TarBuffer"/> suitable for output.</returns>
 		public static TarBuffer CreateOutputTarBuffer(Stream outputStream)
 		{
 			if ( outputStream == null )
@@ -209,7 +215,7 @@ or which contains garbage records after a zero block.
 		/// </summary>
 		/// <param name="outputStream">Output stream to write to.</param>
 		/// <param name="blockFactor">Blocking factor to apply</param>
-		/// <returns>TarBuffer</returns>
+		/// <returns>A new <see cref="TarBuffer"/> suitable for output.</returns>
 		public static TarBuffer CreateOutputTarBuffer(Stream outputStream, int blockFactor)
 		{
 			if ( outputStream == null )
@@ -263,6 +269,7 @@ or which contains garbage records after a zero block.
 		/// and also partial records
 		/// </summary>
 		/// <param name = "block">The data block to check.</param>
+		/// <returns>Returns true if the block is an EOF block; false otherwise.</returns>
 		public bool IsEOFBlock(byte[] block)
 		{
 			if ( block == null ) {

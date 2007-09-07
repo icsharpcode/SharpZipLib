@@ -107,9 +107,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion
 		
 		/// <summary>
-		/// Gets boolean indicating central header has been added for this archive...
-		/// No further entries can be added once this has been done.
+		/// Gets a flag value of true if the central header has been added for this archive; false if it has not been added.
 		/// </summary>
+		/// <remarks>No further entries can be added once this has been done.</remarks>
 		public bool IsFinished 
 		{
 			get {
@@ -137,9 +137,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Sets default compression level.  The new level will be activated
+		/// Sets the compression level.  The new level will be activated
 		/// immediately.
 		/// </summary>
+		/// <param name="level">The new compression level (1 to 9).</param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Level specified is not supported.
 		/// </exception>
@@ -543,12 +544,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Writes the given buffer to the current entry.
 		/// </summary>
-		/// <exception cref="ZipException">
-		/// Archive size is invalid
-		/// </exception>
-		/// <exception cref="System.InvalidOperationException">
-		/// No entry is active.
-		/// </exception>
+		/// <param name="buffer">The buffer containing data to write.</param>
+		/// <param name="offset">The offset of the first byte to write.</param>
+		/// <param name="count">The number of bytes to write.</param>
+		/// <exception cref="ZipException">Archive size is invalid</exception>
+		/// <exception cref="System.InvalidOperationException">No entry is active.</exception>
 		public override void Write(byte[] buffer, int offset, int count)
 		{
 			if (curEntry == null) {

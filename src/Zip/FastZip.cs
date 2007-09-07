@@ -144,7 +144,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Fires the <see cref="ProcessDirectory">process directory</see> delegate.
 		/// </summary>
 		/// <param name="directory">The directory being processed.</param>
-		/// <param name="hasMatchingFiles">Flag indicating if directory has matching files as determined by the current filter.</param>
+		/// <param name="hasMatchingFiles">Flag indicating if the directory has matching files as determined by the current filter.</param>
+		/// <returns>A <see cref="bool"/> of true if the operation should continue; false otherwise.</returns>
 		public bool OnProcessDirectory(string directory, bool hasMatchingFiles)
 		{
 			bool result = true;
@@ -159,6 +160,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// The minimum timespan between <see cref="Progress"/> events.
 		/// </summary>
+		/// <value>The minimum period of time between <see cref="Progress"/> events.</value>
 		/// <seealso cref="Progress"/>
 		public TimeSpan ProgressInterval
 		{

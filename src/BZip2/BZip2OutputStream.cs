@@ -193,6 +193,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Sets the current position of this stream to the given value.
 		/// </summary>
+		/// <param name="offset">The point relative to the offset from which to being seeking.</param>
+		/// <param name="origin">The reference point from which to begin seeking.</param>
+		/// <returns>The new position in the stream.</returns>
 		public override long Seek(long offset, SeekOrigin origin)
 		{
 			throw new NotSupportedException("BZip2OutputStream Seek not supported");
@@ -201,6 +204,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Sets the length of this stream to the given value.
 		/// </summary>
+		/// <param name="value">The new stream length.</param>
 		public override void SetLength(long value)
 		{
 			throw new NotSupportedException("BZip2OutputStream SetLength not supported");
@@ -209,6 +213,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Read a byte from the stream advancing the position.
 		/// </summary>
+		/// <returns>The byte read cast to an int; -1 if end of stream.</returns>
 		public override int ReadByte()
 		{
 			throw new NotSupportedException("BZip2OutputStream ReadByte not supported");
@@ -217,6 +222,12 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Read a block of bytes
 		/// </summary>
+		/// <param name="buffer">The buffer to read into.</param>
+		/// <param name="offset">The offset in the buffer to start storing data at.</param>
+		/// <param name="count">The maximum number of bytes to read.</param>
+		/// <returns>The total number of bytes read. This might be less than the number of bytes
+		/// requested if that number of bytes are not currently available, or zero 
+		/// if the end of the stream is reached.</returns>
 		public override int Read(byte[] buffer, int offset, int count)
 		{
 			throw new NotSupportedException("BZip2OutputStream Read not supported");
@@ -225,6 +236,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Write a block of bytes to the stream
 		/// </summary>
+		/// <param name="buffer">The buffer containing data to write.</param>
+		/// <param name="offset">The offset of the first byte to write.</param>
+		/// <param name="count">The number of bytes to write.</param>
 		public override void Write(byte[] buffer, int offset, int count)
 		{
 			if ( buffer == null ) {
@@ -254,6 +268,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Write a byte to the stream.
 		/// </summary>
+		/// <param name="value">The byte to write to the stream.</param>
 		public override void WriteByte(byte value)
 		{
 			int b = (256 + value) % 256;

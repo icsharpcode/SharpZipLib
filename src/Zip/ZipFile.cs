@@ -430,6 +430,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Opens a Zip file reading the given <see cref="FileStream"/>.
 		/// </summary>
+		/// <param name="file">The <see cref="FileStream"/> to read archive data from.</param>
 		/// <exception cref="IOException">
 		/// An i/o error occurs.
 		/// </exception>
@@ -462,6 +463,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Opens a Zip file reading the given <see cref="Stream"/>.
 		/// </summary>
+		/// <param name="stream">The <see cref="Stream"/> to read archive data from.</param>
 		/// <exception cref="IOException">
 		/// An i/o error occurs
 		/// </exception>
@@ -675,8 +677,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 		#region Input Handling
 		/// <summary>
-		/// Returns an enumerator for the Zip entries in this Zip file.
+		/// Gets an enumerator for the Zip entries in this Zip file.
 		/// </summary>
+		/// <returns>Returns an <see cref="IEnumerator"/> for this archive.</returns>
 		/// <exception cref="InvalidOperationException">
 		/// The Zip file has been closed.
 		/// </exception>
@@ -737,13 +740,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Creates an input stream reading the given zip entry as
-		/// uncompressed data.  Normally zip entry should be an entry
-		/// returned by GetEntry().
+		/// Gets an input stream for reading the given zip entry data in an uncompressed form.
+		/// Normally the <see cref="ZipEntry"/> should be an entry returned by GetEntry().
 		/// </summary>
-		/// <returns>
-		/// the input stream.
-		/// </returns>
+		/// <param name="entry">The <see cref="ZipEntry"/> to obtain a data <see cref="Stream"/> for</param>
+		/// <returns>An input <see cref="Stream"/> containing data for this <see cref="ZipEntry"/></returns>
 		/// <exception cref="InvalidOperationException">
 		/// The ZipFile has already been closed
 		/// </exception>
@@ -778,7 +779,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="entryIndex">The index of the entry to obtain an input stream for.</param>
 		/// <returns>
-		/// An input stream.
+		/// An input <see cref="Stream"/> containing data for this <paramref name="entryIndex"/>
 		/// </returns>
 		/// <exception cref="InvalidOperationException">
 		/// The ZipFile has already been closed
@@ -3768,6 +3769,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Return a stream suitable for performing direct updates on the original source.
 		/// </summary>
+		/// <param name="stream">The <see cref="Stream"/> to open for direct update.</param>
 		/// <returns>Returns a stream suitable for direct updating.</returns>
 		public abstract Stream OpenForDirectUpdate(Stream stream);
 
@@ -3788,6 +3790,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
+
 		#region Instance Fields
 		FileUpdateMode updateMode_;
 		#endregion
@@ -3823,6 +3826,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 		}
 		#endregion
+
 		#region IArchiveStorage Members
 
 		/// <summary>
@@ -3906,7 +3910,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Return a stream suitable for performing direct updates on the original source.
 		/// </summary>
+		/// <param name="current">The current stream.</param>
 		/// <returns>Returns a stream suitable for direct updating.</returns>
+		/// <remarks>If the <paramref name="current"/> stream is not null this is used as is.</remarks>
 		public override Stream OpenForDirectUpdate(Stream current)
 		{
 			Stream result;
@@ -3939,6 +3945,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
+
 		#region Internal routines
 		string GetTempFileName(string original, bool makeTempFile)
 		{
@@ -3975,6 +3982,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 		#endregion
+
 		#region Instance Fields
 		Stream temporaryStream_;
 		string fileName_;
@@ -4007,6 +4015,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
+
 		#region Properties
 		/// <summary>
 		/// Get the stream returned by <see cref="ConvertTemporaryToFinal"/> if this was in fact called.
@@ -4017,6 +4026,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
+
 		#region IArchiveStorage Members
 
 		/// <summary>
@@ -4060,7 +4070,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Return a stream suitable for performing direct updates on the original source.
 		/// </summary>
+		/// <param name="stream">The original source stream</param>
 		/// <returns>Returns a stream suitable for direct updating.</returns>
+		/// <remarks>If the <paramref name="stream"/> passed is not null this is used;
+		/// otherwise a new <see cref="MemoryStream"/> is returned.</remarks>
 		public override Stream OpenForDirectUpdate(Stream stream)
 		{
 			Stream result;
@@ -4093,6 +4106,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion
+
 		#region Instance Fields
 		MemoryStream temporaryStream_;
 		MemoryStream finalStream_;

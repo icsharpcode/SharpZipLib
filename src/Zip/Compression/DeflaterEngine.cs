@@ -120,6 +120,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Deflate drives actual compression of data
 		/// </summary>
+		/// <param name="flush">True to flush input buffers</param>
+		/// <param name="finish">Finish deflation with the current input.</param>
 		/// <returns>Returns true if progress has been made.</returns>
 		public bool Deflate(bool flush, bool finish)
 		{
@@ -198,8 +200,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		}
 
 		/// <summary>
-		/// Return true if input is needed via <see cref="SetInput"> SetInput</see>
+		/// Determines if more <see cref="SetInput">input</see> is needed.
 		/// </summary>		
+		/// <returns>Return true if input is needed via <see cref="SetInput">SetInput</see></returns>
 		public bool NeedsInput()
 		{
 			return (inputEnd == inputOff);
@@ -208,6 +211,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Set compression dictionary
 		/// </summary>
+		/// <param name="buffer">The buffer containing the dictionary data</param>
+		/// <param name="offset">The offset in the buffer for the first byte of data</param>
+		/// <param name="length">The length of the dictionary data.</param>
 		public void SetDictionary(byte[] buffer, int offset, int length) 
 		{
 #if DebugDeflation

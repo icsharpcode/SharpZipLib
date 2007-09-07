@@ -606,7 +606,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get a value indicating wether Zip64 extensions were forced.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>A <see cref="bool"/> value of true if Zip64 extensions have been forced on; false if not.</returns>
 		public bool IsZip64Forced()
 		{
 			return forceZip64_;
@@ -616,6 +616,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Gets a value indicating if the entry requires Zip64 extensions 
 		/// to store the full entry values.
 		/// </summary>
+		/// <value>A <see cref="bool"/> value of true if a local header requires Zip64 extensions; false if not.</value>
 		public bool LocalHeaderRequiresZip64 
 		{
 			get {
@@ -1027,6 +1028,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Creates a copy of this zip entry.
 		/// </summary>
+		/// <returns>An <see cref="Object"/> that is a copy of the current instance.</returns>
 		public object Clone()
 		{
 			ZipEntry result = (ZipEntry)this.MemberwiseClone();
@@ -1043,8 +1045,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion
 
 		/// <summary>
-		/// Gets the string representation of this ZipEntry.
+		/// Gets a string representation of this ZipEntry.
 		/// </summary>
+		/// <returns>A readable textual representation of this <see cref="ZipEntry"/></returns>
 		public override string ToString()
 		{
 			return name;
@@ -1070,7 +1073,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Names are made relative by trimming leading slashes which is compatible
 		/// with the ZIP naming convention.
 		/// </summary>
-		/// <param name="name">Name to clean</param>
+		/// <param name="name">The name to clean</param>
+		/// <returns>The 'cleaned' name.</returns>
 		/// <remarks>
 		/// The <seealso cref="ZipNameTransform">Zip name transform</seealso> class is more flexible.
 		/// </remarks>

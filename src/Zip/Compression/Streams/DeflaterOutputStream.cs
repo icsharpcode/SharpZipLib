@@ -249,6 +249,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Initializes encryption keys based on given password
 		/// </summary>
+		/// <param name="password">The password.</param>
 		protected void InitializePassword(string password) {
 #if NETCF_1_0
 			keys = new uint[] {
@@ -388,6 +389,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Sets the current position of this stream to the given value. Not supported by this class!
 		/// </summary>
+		/// <param name="offset">The offset relative to the <paramref name="origin"/> to seek.</param>
+		/// <param name="origin">The <see cref="SeekOrigin"/> to seek from.</param>
+		/// <returns>The new position in the stream.</returns>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override long Seek(long offset, SeekOrigin origin)
 		{
@@ -397,6 +401,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Sets the length of this stream to the given value. Not supported by this class!
 		/// </summary>
+		/// <param name="value">The new stream length.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override void SetLength(long value)
 		{
@@ -406,6 +411,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Read a byte from stream advancing position by one
 		/// </summary>
+		/// <returns>The byte read cast to an int.  THe value is -1 if at the end of the stream.</returns>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override int ReadByte()
 		{
@@ -415,6 +421,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Read a block of bytes from stream
 		/// </summary>
+		/// <param name="buffer">The buffer to store read data in.</param>
+		/// <param name="offset">The offset to start storing at.</param>
+		/// <param name="count">The maximum number of bytes to read.</param>
+		/// <returns>The actual number of bytes read.  Zero if end of stream is detected.</returns>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override int Read(byte[] buffer, int offset, int count)
 		{
@@ -452,9 +462,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// Flushes the stream by calling flush() on the deflater and then
-		/// on the underlying stream.  This ensures that all bytes are
-		/// flushed.
+		/// Flushes the stream by calling <see cref="DeflatorOutputStream.Flush">Flush</see> on the deflater and then
+		/// on the underlying stream.  This ensures that all bytes are flushed.
 		/// </summary>
 		public override void Flush()
 		{

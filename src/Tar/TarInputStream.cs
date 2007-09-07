@@ -136,6 +136,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Set the streams position.  This operation is not supported and will throw a NotSupportedException
 		/// </summary>
+		/// <param name="offset">The offset relative to the origin to seek to.</param>
+		/// <param name="origin">The <see cref="SeekOrigin"/> to start seeking from.</param>
+		/// <returns>The new position in the stream.</returns>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override long Seek(long offset, SeekOrigin origin)
 		{
@@ -146,6 +149,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Sets the length of the stream
 		/// This operation is not supported and will throw a NotSupportedException
 		/// </summary>
+		/// <param name="value">The new stream length.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override void SetLength(long value)
 		{
@@ -156,6 +160,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Writes a block of bytes to this stream using data from a buffer.
 		/// This operation is not supported and will throw a NotSupportedException
 		/// </summary>
+		/// <param name="buffer">The buffer containing bytes to write.</param>
+		/// <param name="offset">The offset in the buffer of the frist byte to write.</param>
+		/// <param name="count">The number of bytes to write.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override void Write(byte[] buffer, int offset, int count)
 		{
@@ -166,6 +173,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Writes a byte to the current position in the file stream.
 		/// This operation is not supported and will throw a NotSupportedException
 		/// </summary>
+		/// <param name="value">The byte value to write.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override void WriteByte(byte value)
 		{
@@ -173,8 +181,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 		/// <summary>
 		/// Reads a byte from the current tar archive entry.
-		/// This method simply calls Read(byte[], int, int).
 		/// </summary>
+		/// <returns>A byte cast to an int; -1 if the at the end of the stream.</returns>
 		public override int ReadByte()
 		{
 			byte[] oneByteBuffer = new byte[1];
@@ -473,8 +481,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 						SkipToNextEntry();
 						headerBuf = this.buffer.ReadBlock();
 					} else if (header.TypeFlag != TarHeader.LF_NORMAL && 
-					           header.TypeFlag != TarHeader.LF_OLDNORM &&
-					           header.TypeFlag != TarHeader.LF_DIR) {
+							   header.TypeFlag != TarHeader.LF_OLDNORM &&
+							   header.TypeFlag != TarHeader.LF_DIR) {
 						// Ignore things we dont understand completely for now
 						SkipToNextEntry();
 						headerBuf = this.buffer.ReadBlock();
@@ -588,6 +596,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			/// Create a <see cref="TarEntry"/> based on named
 			/// </summary>
 			/// <param name="name">The name to use for the entry</param>
+			/// <returns>A new <see cref="TarEntry"/></returns>
 			public TarEntry CreateEntry(string name)
 			{
 				return TarEntry.CreateTarEntry(name);
@@ -597,6 +606,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			/// Create a tar entry with details obtained from <paramref name="fileName">file</paramref>
 			/// </summary>
 			/// <param name="fileName">The name of the file to retrieve details from.</param>
+			/// <returns>A new <see cref="TarEntry"/></returns>
 			public TarEntry CreateEntryFromFile(string fileName)
 			{
 				return TarEntry.CreateEntryFromFile(fileName);
@@ -606,12 +616,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 			/// Create an entry based on details in <paramref name="headerBuf">header</paramref>
 			/// </summary>			
 			/// <param name="headerBuffer">The buffer containing entry details.</param>
+			/// <returns>A new <see cref="TarEntry"/></returns>
 			public TarEntry CreateEntry(byte[] headerBuffer)
 			{
 				return new TarEntry(headerBuffer);
 			}
 		}
-
 
 		#region Instance Fields
 		/// <summary>

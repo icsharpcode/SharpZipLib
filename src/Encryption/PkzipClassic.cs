@@ -55,6 +55,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// Generates new encryption keys based on given seed
 		/// </summary>
 		/// <param name="seed">The seed value to initialise keys with.</param>
+		/// <returns>A new key value.</returns>
 		static public byte[] GenerateKeys(byte[] seed)
 		{
 			if ( seed == null ) 
@@ -68,10 +69,10 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			}
 
 			uint[] newKeys = new uint[] {
-			                            0x12345678,
-			                            0x23456789,
-			                            0x34567890
-			                         };
+				0x12345678,
+				0x23456789,
+				0x34567890
+			 };
 			
 			for (int i = 0; i < seed.Length; ++i) 
 			{
