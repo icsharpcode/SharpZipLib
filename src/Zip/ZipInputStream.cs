@@ -429,12 +429,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// The byte or -1 if end of stream is reached.
 		/// </returns>
-		/// <exception name="System.IO.IOException">
-		/// An i/o error occured.
-		/// </exception>
-		/// <exception name="ICSharpCode.SharpZipLib.ZipException">
-		/// The deflated stream is corrupted.
-		/// </exception>
 		public override int ReadByte()
 		{
 			byte[] b = new byte[1];

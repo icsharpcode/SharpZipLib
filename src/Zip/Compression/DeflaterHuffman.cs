@@ -641,7 +641,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		
 		/// <summary>
 		/// Write all trees to pending buffer
-		/// </summary>		
+		/// </summary>
+		/// <param name="blTreeCodes">The number/rank of treecodes to send.</param>
 		public void SendAllTrees(int blTreeCodes)
 		{
 			blTree.BuildCodes();

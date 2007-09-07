@@ -166,7 +166,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				keys = null;
 			}
 #else
-			if ( cryptoTransform_ != null ) {
+			if (cryptoTransform_ != null) {
 				cryptoTransform_.Dispose();
 				cryptoTransform_ = null;
 			}
@@ -220,7 +220,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				}
 			}
 		}
-			
+
 		/// <summary>
 		/// Encrypt a block of data
 		/// </summary>
@@ -242,15 +242,16 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				UpdateKeys(oldbyte);
 			}
 #else
-			cryptoTransform_.TransformBlock(buffer, 0, buffer.Length, buffer, 0);
+			cryptoTransform_.TransformBlock(buffer, 0, length, buffer, 0);
 #endif
 		}
-		
+
 		/// <summary>
 		/// Initializes encryption keys based on given password
 		/// </summary>
 		/// <param name="password">The password.</param>
-		protected void InitializePassword(string password) {
+		protected void InitializePassword(string password)
+		{
 #if NETCF_1_0
 			keys = new uint[] {
 				0x12345678,
@@ -462,7 +463,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 		
 		/// <summary>
-		/// Flushes the stream by calling <see cref="DeflatorOutputStream.Flush">Flush</see> on the deflater and then
+		/// Flushes the stream by calling <see cref="DeflaterOutputStream.Flush">Flush</see> on the deflater and then
 		/// on the underlying stream.  This ensures that all bytes are flushed.
 		/// </summary>
 		public override void Flush()
@@ -487,10 +488,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 #if NETCF_1_0
 					keys=null;
 #else
-					if( cryptoTransform_!=null )
-					{
+					if ( cryptoTransform_ != null ) {
 						cryptoTransform_.Dispose();
-						cryptoTransform_=null;
+						cryptoTransform_ = null;
 					}
 #endif
 				}

@@ -124,7 +124,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The comment text for the entire archive.
 		/// </param>
 		/// <exception name ="ArgumentOutOfRangeException">
-		/// The <see cref="ZipConstants.DefaultCodePage">encoded</see> comment is longer than 0xffff bytes.
+		/// The converted comment is longer than 0xffff bytes.
 		/// </exception>
 		public void SetComment(string comment)
 		{
@@ -144,15 +144,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Level specified is not supported.
 		/// </exception>
-		/// <see cref="Deflater"/>
+		/// <see cref="ICSharpCode.SharpZipLib.Zip.Compression.Deflater"/>
 		public void SetLevel(int level)
 		{
-			defaultCompressionLevel = level;
 			deflater_.SetLevel(level);
+			defaultCompressionLevel = level;
 		}
 		
 		/// <summary>
-		/// Get the current deflate compression level
+		/// Get the current deflater compression level
 		/// </summary>
 		/// <returns>The current compression level</returns>
 		public int GetLevel()

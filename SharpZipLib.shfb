@@ -1,0 +1,50 @@
+﻿<project schemaVersion="1.4.0.2">
+    <assemblies>
+        <assembly assemblyPath=".\current\net-11\ICSharpCode.SharpZipLib.dll" xmlCommentsPath=".\current\net-11\ICSharpCode.SharpZipLib.xml" commentsOnly="False" />
+    </assemblies>
+    <namespaceSummaries>
+        <namespaceSummaryItem name="" isDocumented="False" />
+        <namespaceSummaryItem name="ICSharpCode.SharpZipLib" isDocumented="True">The root namespace for this library.</namespaceSummaryItem>
+        <namespaceSummaryItem name="ICSharpCode.SharpZipLib.BZip2" isDocumented="True">BZip2 compression handling</namespaceSummaryItem>
+        <namespaceSummaryItem name="ICSharpCode.SharpZipLib.Checksums" isDocumented="True">Checksum Handling</namespaceSummaryItem>
+        <namespaceSummaryItem name="ICSharpCode.SharpZipLib.Core" isDocumented="True">Core Utilities</namespaceSummaryItem>
+        <namespaceSummaryItem name="ICSharpCode.SharpZipLib.Encryption" isDocumented="True">Encryption handling</namespaceSummaryItem>
+        <namespaceSummaryItem name="ICSharpCode.SharpZipLib.GZip" isDocumented="True">GZip compression handling</namespaceSummaryItem>
+        <namespaceSummaryItem name="ICSharpCode.SharpZipLib.Tar" isDocumented="True">Tape Archive handling</namespaceSummaryItem>
+        <namespaceSummaryItem name="ICSharpCode.SharpZipLib.Zip" isDocumented="True">ZIP archive handling</namespaceSummaryItem>
+        <namespaceSummaryItem name="ICSharpCode.SharpZipLib.Zip.Compression" isDocumented="True">Zip Compression handling</namespaceSummaryItem>
+        <namespaceSummaryItem name="ICSharpCode.SharpZipLib.Zip.Compression.Streams" isDocumented="True">Zip compression streams.</namespaceSummaryItem>
+    </namespaceSummaries>
+    <ProjectSummary>Welcom to the #Zip compression library!</ProjectSummary>
+    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace</MissingTags>
+    <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
+    <HtmlHelp1xCompilerPath path="" />
+    <HtmlHelp2xCompilerPath path="" />
+    <OutputPath>C:\Common\User\John\Development\SharpZip\SharpZipLib\trunk\SharpZipLib\current\doc\</OutputPath>
+    <SandcastlePath path="" />
+    <WorkingPath path="" />
+    <CleanIntermediates>True</CleanIntermediates>
+    <HelpFileFormat>HtmlHelp1x</HelpFileFormat>
+    <PurgeDuplicateTopics>True</PurgeDuplicateTopics>
+    <CppCommentsFixup>False</CppCommentsFixup>
+    <FrameworkVersion>2.0.50727</FrameworkVersion>
+    <BinaryTOC>True</BinaryTOC>
+    <IncludeFavorites>False</IncludeFavorites>
+    <Preliminary>False</Preliminary>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <RootNamespaceTitle />
+    <HelpTitle>ICSharpCode.SharpZipLib Compression Library</HelpTitle>
+    <HtmlHelpName>SharpZipLib</HtmlHelpName>
+    <Language>en-US</Language>
+    <CopyrightHref />
+    <CopyrightText />
+    <FeedbackEMailAddress />
+    <HeaderText />
+    <FooterText />
+    <ProjectLinkType>Local</ProjectLinkType>
+    <SdkLinkType>Msdn</SdkLinkType>
+    <PresentationStyle>Prototype</PresentationStyle>
+    <NamingMethod>Guid</NamingMethod>
+    <SyntaxFilters>Standard</SyntaxFilters>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+</project>

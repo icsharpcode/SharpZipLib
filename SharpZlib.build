@@ -30,7 +30,7 @@
     <property name="debug" value="False"/>
     <property name="optimize" value="True"/>
     <property name="checked" value="False" />
-    <property name="version" value="0.85.3"/>
+    <property name="version" value="0.85.4"/>
 
     <property name="build.output.dir" value="bin" overwrite="False" />
     <property name="sharpziplib.name" value="ICSharpCode.SharpZipLib" />

@@ -315,6 +315,26 @@ namespace SharpZip
 												System.Console.WriteLine("Invalid extractdir " + args[argIndex]);
 											}
 											break;
+											
+										case "-zip64":
+											if ( optArg.Length > 0 )
+											{
+												switch ( optArg )
+												{
+													case "on":
+														useZip64_ = UseZip64.On;
+														break;
+														
+													case "off":
+														useZip64_ = UseZip64.Off;
+														break;
+														
+													case "auto":
+														useZip64_ = UseZip64.Dynamic;
+														break;
+												}
+											}
+											break;
 										
 										case "-encoding":
 											if (optArg.Length > 0) {
@@ -971,7 +991,8 @@ namespace SharpZip
 					if (password != null && password.Length > 0) {
 						outputStream.Password = password;
 					}
-					
+
+					outputStream.UseZip64 = useZip64_;
 					outputStream.SetLevel(compressionLevel);
 					foreach(string spec in fileSpecs) {
 						string fileName = Path.GetFileName(spec);
@@ -1299,6 +1320,11 @@ namespace SharpZip
 		}
 
 		#region Instance Fields
+		/// <summary>
+		/// The Zip64 extension use to apply.
+		/// </summary>
+		UseZip64 useZip64_ = UseZip64.Off;
+		
 		/// <summary>
 		/// Has user already seen help output?
 		/// </summary>

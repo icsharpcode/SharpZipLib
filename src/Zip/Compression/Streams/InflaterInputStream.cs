@@ -274,6 +274,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Read an <see cref="short"/> in little endian byte order.
 		/// </summary>
+		/// <returns>The short value read case to an int.</returns>
 		public int ReadLeShort()
 		{
 			return ReadLeByte() | (ReadLeByte() << 8);
@@ -282,6 +283,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Read an <see cref="int"/> in little endian byte order.
 		/// </summary>
+		/// <returns>The int value read.</returns>
 		public int ReadLeInt()
 		{
 			return ReadLeShort() | (ReadLeShort() << 16);
@@ -290,6 +292,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Read a <see cref="long"/> in little endian byte order.
 		/// </summary>
+		/// <returns>The long value read.</returns>
 		public long ReadLeLong()
 		{
 			return (uint)ReadLeInt() | ((long)ReadLeInt() << 32);
@@ -565,6 +568,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Sets the position within the current stream
 		/// Always throws a NotSupportedException
 		/// </summary>
+		/// <param name="offset">The relative offset to seek to.</param>
+		/// <param name="origin">The <see cref="SeekOrigin"/> defining where to seek from.</param>
+		/// <returns>The new position in the stream.</returns>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override long Seek(long offset, SeekOrigin origin)
 		{
@@ -575,6 +581,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Set the length of the current stream
 		/// Always throws a NotSupportedException
 		/// </summary>
+		/// <param name="value">The new length value for the stream.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override void SetLength(long value)
 		{
@@ -585,6 +592,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Writes a sequence of bytes to stream and advances the current position
 		/// This method always throws a NotSupportedException
 		/// </summary>
+		/// <param name="buffer">Thew buffer containing data to write.</param>
+		/// <param name="offset">The offset of the first byte to write.</param>
+		/// <param name="count">The number of bytes to write.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override void Write(byte[] buffer, int offset, int count)
 		{
@@ -595,6 +605,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Writes one byte to the current stream and advances the current position
 		/// Always throws a NotSupportedException
 		/// </summary>
+		/// <param name="value">The byte to write.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
 		public override void WriteByte(byte value)
 		{

@@ -122,132 +122,132 @@ namespace SharpZip
 								case '-': // long option
 									optionIndex = option.Length;
 									
-								switch (option) 
-								{
-									case "-add":
-										operation_ = Operation.Add;
-										break;
-
-									case "-create":
-										operation_ = Operation.Create;
-										break;
-										
-									case "-list":
-										operation_ = Operation.List;
-										break;
+									switch (option) 
+									{
+										case "-add":
+											operation_ = Operation.Add;
+											break;
 	
-									case "-extract":
-										operation_ = Operation.Extract;
-										if (optArg.Length > 0) 
-										{
-											targetOutputDirectory_ = optArg;
-										}
-										break;
-
-									case "-delete":
-										operation_ = Operation.Delete;
-										break;
-
-									case "-test":
-										operation_ = Operation.Test;
-										break;
-
-									case "-env":
-										ShowEnvironment();
-										break;
-										
-									case "-emptydirs":
-										addEmptyDirectoryEntries_ = true;
-										break;
-	
-									case "-data":
-										testData_ = true;
-										break;
-
-									case "-zip64":
-										if ( optArg.Length > 0 )
-										{
-											switch ( optArg )
+										case "-create":
+											operation_ = Operation.Create;
+											break;
+											
+										case "-list":
+											operation_ = Operation.List;
+											break;
+		
+										case "-extract":
+											operation_ = Operation.Extract;
+											if (optArg.Length > 0) 
 											{
-												case "on":
-													useZip64_ = UseZip64.On;
-													break;
-													
-												case "off":
-													useZip64_ = UseZip64.Off;
-													break;
-													
-												case "auto":
-													useZip64_ = UseZip64.Dynamic;
-													break;
+												targetOutputDirectory_ = optArg;
 											}
-										}
-										break;
-										
-									case "-encoding":
-										if (optArg.Length > 0) 
-										{
-											if (IsNumeric(optArg)) 
+											break;
+	
+										case "-delete":
+											operation_ = Operation.Delete;
+											break;
+	
+										case "-test":
+											operation_ = Operation.Test;
+											break;
+	
+										case "-env":
+											ShowEnvironment();
+											break;
+											
+										case "-emptydirs":
+											addEmptyDirectoryEntries_ = true;
+											break;
+		
+										case "-data":
+											testData_ = true;
+											break;
+	
+										case "-zip64":
+											if ( optArg.Length > 0 )
 											{
-												try 
+												switch ( optArg )
 												{
-													int enc = int.Parse(optArg);
-													if (Encoding.GetEncoding(enc) != null) 
+													case "on":
+														useZip64_ = UseZip64.On;
+														break;
+														
+													case "off":
+														useZip64_ = UseZip64.Off;
+														break;
+														
+													case "auto":
+														useZip64_ = UseZip64.Dynamic;
+														break;
+												}
+											}
+											break;
+											
+										case "-encoding":
+											if (optArg.Length > 0) 
+											{
+												if (IsNumeric(optArg)) 
+												{
+													try 
 													{
-#if OPTIONTEST
-														Console.WriteLine("Encoding set to {0}", enc);
-#endif
-														ZipConstants.DefaultCodePage = enc;
-													} 
-													else 
+														int enc = int.Parse(optArg);
+														if (Encoding.GetEncoding(enc) != null) 
+														{
+	#if OPTIONTEST
+															Console.WriteLine("Encoding set to {0}", enc);
+	#endif
+															ZipConstants.DefaultCodePage = enc;
+														} 
+														else 
+														{
+															result = false;
+															System.Console.Error.WriteLine("Invalid encoding " + args[argIndex]);
+														}
+													}
+													catch (Exception) 
+													{
+														result = false;
+														System.Console.Error.WriteLine("Invalid encoding " + args[argIndex]);
+													}
+												} 
+												else 
+												{
+													try 
+													{
+														ZipConstants.DefaultCodePage = Encoding.GetEncoding(optArg).CodePage;
+													}
+													catch (Exception) 
 													{
 														result = false;
 														System.Console.Error.WriteLine("Invalid encoding " + args[argIndex]);
 													}
 												}
-												catch (Exception) 
-												{
-													result = false;
-													System.Console.Error.WriteLine("Invalid encoding " + args[argIndex]);
-												}
 											} 
 											else 
 											{
-												try 
-												{
-													ZipConstants.DefaultCodePage = Encoding.GetEncoding(optArg).CodePage;
-												}
-												catch (Exception) 
-												{
-													result = false;
-													System.Console.Error.WriteLine("Invalid encoding " + args[argIndex]);
-												}
+												result = false;
+												System.Console.Error.WriteLine("Missing encoding parameter");
 											}
-										} 
-										else 
-										{
+											break;
+											
+										case "-version":
+											ShowVersion();
+											break;
+											
+										case "-help":
+											ShowHelp();
+											break;
+				
+										case "-restore-dates":
+											restoreDateTime_ = true;
+											break;
+	
+										default:
+											System.Console.Error.WriteLine("Invalid long argument " + args[argIndex]);
 											result = false;
-											System.Console.Error.WriteLine("Missing encoding parameter");
-										}
-										break;
-										
-									case "-version":
-										ShowVersion();
-										break;
-										
-									case "-help":
-										ShowHelp();
-										break;
-			
-									case "-restore-dates":
-										restoreDateTime_ = true;
-										break;
-
-									default:
-										System.Console.Error.WriteLine("Invalid long argument " + args[argIndex]);
-										result = false;
-										break;
-								}
+											break;
+									}
 									break;
 								
 								case '?':

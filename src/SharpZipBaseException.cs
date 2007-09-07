@@ -56,7 +56,7 @@ namespace ICSharpCode.SharpZipLib
 		/// <summary>
 		/// Deserialization constructor 
 		/// </summary>
-		/// <param name="info"><see cref="SerializationInfo"/> for this constructor</param>
+		/// <param name="info"><see cref="System.Runtime.Serialization.SerializationInfo"/> for this constructor</param>
 		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
 		protected SharpZipBaseException(SerializationInfo info, StreamingContext context )
 			: base( info, context )

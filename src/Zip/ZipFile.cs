@@ -405,6 +405,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Opens a Zip file with the given name for reading.
 		/// </summary>
+		/// <param name="name">The name of the file to open.</param>
 		/// <exception cref="IOException">
 		/// An i/o error occurs
 		/// </exception>

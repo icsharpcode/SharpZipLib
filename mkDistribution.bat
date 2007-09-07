@@ -1,4 +1,4 @@
-@echo "mkDistribution v1.2"
+@echo "mkDistribution v1.3"
 
 if exist current (
 	rmdir /s /q current
@@ -18,7 +18,6 @@ nant -t:net-1.1 -D:build.output.dir=current\net-11 -buildfile:sharpZLib.build bu
 mkdir current\net-20
 nant -t:net-2.0 -D:build.output.dir=current\net-20 -buildfile:sharpZLib.build build
 
-@echo todo generate documentation and the rest of the distribution image.
 
 mkdir current\doc
 copy doc\readme.rtf current\doc
@@ -28,8 +27,9 @@ copy SharpZipLib.chm current\doc
 copy installGAC.bat current
 copy uninstallGAC.bat current
 
+"c:\Program Files\EWSoftware\Sandcastle Help File Builder\SandcastleBuilderConsole.exe" .\SharpZipLib.shfb
+
 samples\cs\bin\sz -rc current\SharpZipLib.zip current\*.dll
 
 @echo TODO Compress source to SharpZipLib_SourceSamples.zip
-@echo TODO Build CHM file
 @echo TODO Build Bin Zip files
