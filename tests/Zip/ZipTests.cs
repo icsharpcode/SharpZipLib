@@ -242,13 +242,21 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				outStream.PutNextEntry(entry);
 
-				if (size > 0)
-				{
+				if (size > 0) {
 					System.Random rnd = new Random();
 					original = new byte[size];
 					rnd.NextBytes(original);
 
-					outStream.Write(original, 0, original.Length);
+					// Although this could be written in one chunk doing it in lumps
+					// throws up buffering problems including with encryption the original
+					// source for this change.
+					int index = 0;
+					while (size > 0) {
+						int count = (size > 0x200) ? 0x200 : size;
+						outStream.Write(original, index, count);
+						size -= 0x200;
+						index += count;
+					}
 				}
 			}
 			return ms.ToArray();
@@ -256,11 +264,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		protected static void MakeTempFile(string name, int size)
 		{
-			using (FileStream fs = File.Create(name))
-			{
+			using (FileStream fs = File.Create(name)) {
 				byte[] buffer = new byte[4096];
-				while (size > 0)
-				{
+				while (size > 0) {
 					fs.Write(buffer, 0, Math.Min(size, buffer.Length));
 					size -= buffer.Length;
 				}
@@ -275,21 +281,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		static void AddKnownDataToEntry(ZipOutputStream zipStream, int size)
 		{
-			if (size > 0)
-			{
+			if (size > 0) {
 				byte nextValue = 0;
 				int bufferSize = Math.Min(size, 65536);
 				byte[] data = new byte[bufferSize];
 				int currentIndex = 0;
-				for (int i = 0; i < size; ++i)
-				{
-
+				for (int i = 0; i < size; ++i) {
 					data[currentIndex] = nextValue;
 					nextValue = ScatterValue(nextValue);
 
 					currentIndex += 1;
-					if ((currentIndex >= data.Length) || (i + 1 == size))
-					{
+					if ((currentIndex >= data.Length) || (i + 1 == size)) {
 						zipStream.Write(data, 0, currentIndex);
 						currentIndex = 0;
 					}
@@ -1420,7 +1422,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		/// <summary>
 		/// Basic compress/decompress test, with encryption, size is important here as its big enough
-		/// to force multiple write to output which was a problem...
+		/// to force multiple writes to output which was a problem...
 		/// </summary>
 		[Test]
 		[Category("Zip")]
@@ -1428,7 +1430,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			for (int i = 0; i <= 9; ++i)
 			{
-				ExerciseZip(CompressionMethod.Deflated, i, 50000, "Rosebud", true);
+				ExerciseZip(CompressionMethod.Deflated, i, 50157, "Rosebud", true);
 			}
 		}
 
