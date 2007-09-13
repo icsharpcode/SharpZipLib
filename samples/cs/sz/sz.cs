@@ -89,8 +89,7 @@ namespace SharpZip
 		static string InterpretExternalAttributes(int operatingSystem, int attributes)
 		{
 			string result = string.Empty;
-			if ((operatingSystem == 0) || (operatingSystem == 10))
-			{
+			if ((operatingSystem == 0) || (operatingSystem == 10)) {
 				// Directory
 				if ((attributes & 0x10) != 0)
 					result = result + "D";
@@ -243,8 +242,7 @@ namespace SharpZip
 	
 					int parameterIndex = option.IndexOf('=');
 	
-					if (parameterIndex >= 0)
-					{
+					if (parameterIndex >= 0) {
 						if (parameterIndex < option.Length - 1) {
 							optArg = option.Substring(parameterIndex + 1);
 						}
@@ -317,10 +315,8 @@ namespace SharpZip
 											break;
 											
 										case "-zip64":
-											if ( optArg.Length > 0 )
-											{
-												switch ( optArg )
-												{
+											if ( optArg.Length > 0 ) {
+												switch ( optArg ) {
 													case "on":
 														useZip64_ = UseZip64.On;
 														break;
@@ -497,8 +493,8 @@ namespace SharpZip
 #else
 				if (checkPath.IndexOfAny(Path.GetInvalidPathChars()) >= 0
 #endif
-				    || checkPath.IndexOf('*') >= 0 || checkPath.IndexOf('?') >= 0
-				    || (deviceCheck >= 0 && deviceCheck != 1)) {
+					|| checkPath.IndexOf('*') >= 0 || checkPath.IndexOf('?') >= 0
+					|| (deviceCheck >= 0 && deviceCheck != 1)) {
 					Console.WriteLine("There are invalid characters in the specified zip file name");
 					result = false;					
 				}
@@ -574,6 +570,7 @@ namespace SharpZip
 			Console.WriteLine("--version                  Show version information");
 			Console.WriteLine("--emptydirs                Create entries for empty directories");
 			Console.WriteLine("--encoding=codepage|name   Set code page for encoding by name or number");
+			Console.WriteLine("--zip64=on|off|auto        Set use zip64 flag (default is auto)");
 #if !NETCF
 			Console.WriteLine("--restore-dates            Restore dates on extraction");
 #endif
@@ -610,8 +607,7 @@ namespace SharpZip
 		/// </summary>
 		/// <param name="fileName">File to list contents of</param>
 		void ListZip(string fileName) {
-			try
-			{
+			try {
 				// TODO for asian/non-latin/non-proportional fonts string lengths dont work so output may not line up
 				const string headerTitles    = "Name                 Length Ratio Size         Date & time       CRC-32";
 				const string headerUnderline = "---------------  ---------- ----- ---------- ------------------- --------";
@@ -659,12 +655,12 @@ namespace SharpZip
 							if (theEntry.Name.Length > 15) {
 								Console.WriteLine(theEntry.Name);
 								Console.WriteLine(
-								    "{0,-15}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss} {5,8:x}",
-								    "", theEntry.Size, ratio, theEntry.CompressedSize, theEntry.DateTime, theEntry.Crc);
+									"{0,-15}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss} {5,8:x}",
+									"", theEntry.Size, ratio, theEntry.CompressedSize, theEntry.DateTime, theEntry.Crc);
 							} else {
 								Console.WriteLine(
-								    "{0,-15}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss} {5,8:x}",
-								    theEntry.Name, theEntry.Size, ratio, theEntry.CompressedSize, theEntry.DateTime, theEntry.Crc);
+									"{0,-15}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss} {5,8:x}",
+									theEntry.Name, theEntry.Size, ratio, theEntry.CompressedSize, theEntry.DateTime, theEntry.Crc);
 							}
 						}
 			
@@ -690,8 +686,7 @@ namespace SharpZip
 		/// </summary>
 		/// <param name="fileName">File to list contents of</param>
 		void ListZipViaZipFile(string fileName) {
-			try
-			{
+			try {
 				const string headerTitles    = "Name              Length Ratio Size         Date & time       CRC-32     Attr";
 				const string headerUnderline = "------------  ---------- ----- ---------- ------------------- --------   ------";
 				
@@ -707,24 +702,18 @@ namespace SharpZip
 				int entryCount = 0;
 				long totalSize  = 0;
 				
-				using (ZipFile zipFile = new ZipFile(fileName))
-				{
-					foreach (ZipEntry theEntry in zipFile) 
-					{
+				using (ZipFile zipFile = new ZipFile(fileName)) {
+					foreach (ZipEntry theEntry in zipFile) {
 						
-						if ( theEntry.IsDirectory ) 
-						{
+						if ( theEntry.IsDirectory ) {
 							Console.WriteLine("Directory {0}", theEntry.Name);
 						}
-						else if ( !theEntry.IsFile ) 
-						{
+						else if ( !theEntry.IsFile ) {
 							Console.WriteLine("Non file entry {0}", theEntry.Name);
 							continue;
 						}
-						else
-						{
-							if (entryCount == 0) 
-							{
+						else {
+							if (entryCount == 0) {
 								Console.WriteLine(headerTitles);
 								Console.WriteLine(headerUnderline);
 							}
@@ -733,16 +722,14 @@ namespace SharpZip
 							int ratio = GetCompressionRatio(theEntry.CompressedSize, theEntry.Size);
 							totalSize += theEntry.Size;
 							
-							if (theEntry.Name.Length > 12) 
-							{
+							if (theEntry.Name.Length > 12) {
 								Console.WriteLine(theEntry.Name);
 								Console.WriteLine(
 									"{0,-12}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss} {5,8:x}   {6,4}",
 									"", theEntry.Size, ratio, theEntry.CompressedSize, theEntry.DateTime, theEntry.Crc,
 									InterpretExternalAttributes(theEntry.HostSystem, theEntry.ExternalFileAttributes));
 							} 
-							else 
-							{
+							else {
 								Console.WriteLine(
 									"{0,-12}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss} {5,8:x}   {6,4}",
 									theEntry.Name, theEntry.Size, ratio, theEntry.CompressedSize, theEntry.DateTime, theEntry.Crc, 
@@ -761,8 +748,7 @@ namespace SharpZip
 						entryCount.ToString() + " entries", totalSize, GetCompressionRatio(fileInfo.Length, totalSize), fileInfo.Length, fileInfo.LastWriteTime);
 				}
 			}
-			catch(Exception exception)
-			{
+			catch(Exception exception) {
 				Console.WriteLine("Exception during list operation: {0}", exception.Message);
 			}
 		}
@@ -871,8 +857,7 @@ namespace SharpZip
 				entry.CompressionMethod = CompressionMethod.Deflated;
 			}
 
-			using (System.IO.FileStream fileStream = System.IO.File.OpenRead(file))
-			{
+			using (System.IO.FileStream fileStream = System.IO.File.OpenRead(file)) {
 				outputStream.PutNextEntry(entry);
 				StreamUtils.Copy(fileStream, outputStream, GetBuffer());
 			}
@@ -880,8 +865,7 @@ namespace SharpZip
 		
 		byte[] GetBuffer()
 		{
-			if ( buffer == null )
-			{
+			if ( buffer == null ) {
 				buffer = new byte[bufferSize_];
 			}
 			return buffer;
@@ -924,8 +908,7 @@ namespace SharpZip
 			Console.WriteLine("AddFolder {0}", folderName);
 #endif			
 			folderName = CookZipEntryName(folderName);
-			if (folderName.Length == 0 || folderName[folderName.Length - 1] != '/')
-			{
+			if (folderName.Length == 0 || folderName[folderName.Length - 1] != '/') {
 				folderName = folderName + '/';
 			}
 	
@@ -1037,14 +1020,12 @@ namespace SharpZip
 			// try and sort out the correct place to save this entry
 			string entryFileName;
 						
-			if (Path.IsPathRooted(theEntry.Name)) 
-			{
+			if (Path.IsPathRooted(theEntry.Name)) {
 				string workName = Path.GetPathRoot(theEntry.Name);
 				workName = theEntry.Name.Substring(workName.Length);
 				entryFileName = Path.Combine(Path.GetDirectoryName(workName), Path.GetFileName(theEntry.Name));
 			} 
-			else 
-			{
+			else {
 				entryFileName = theEntry.Name;
 			}
 
@@ -1057,36 +1038,28 @@ namespace SharpZip
 #endif						
 						
 			// Could be an option or parameter to allow failure or try creation
-			if (Directory.Exists(fullPath) == false)
-			{
-				try 
-				{
+			if (Directory.Exists(fullPath) == false) {
+				try {
 					Directory.CreateDirectory(fullPath);
 				}
-				catch 
-				{
+				catch {
 					return false;
 				}
 			} 
-			else if (overwriteFiles == Overwrite.Prompt) 
-			{
-				if (File.Exists(targetName) == true) 
-				{
+			else if (overwriteFiles == Overwrite.Prompt) {
+				if (File.Exists(targetName) == true) {
 					Console.Write("File " + targetName + " already exists.  Overwrite? ");
 								
 					// TODO sort out the complexities of Read so single key presses can be used
 					string readValue;
-					try 
-					{
+					try {
 						readValue = Console.ReadLine();
 					}
-					catch 
-					{
+					catch {
 						readValue = null;
 					}
 								
-					if (readValue == null || readValue.ToLower() != "y") 
-					{
+					if (readValue == null || readValue.ToLower() != "y") {
 #if TEST
 						Console.WriteLine("Skipped!");
 #endif						
@@ -1096,25 +1069,21 @@ namespace SharpZip
 			}
 		
 					
-			if (entryFileName.Length > 0) 
-			{
+			if (entryFileName.Length > 0) {
 #if TEST
 				Console.WriteLine("Extracting...");
 #endif						
-				using (FileStream streamWriter = File.Create(targetName))
-				{
+				using (FileStream streamWriter = File.Create(targetName)) {
 					byte[] data = new byte[4096];
 					int size;
 					
-					do 
-					{
+					do {
 						size = inputStream.Read(data, 0, data.Length);
 						streamWriter.Write(data, 0, size);
 					} while (size > 0);
 				}
 #if !NETCF
-				if (restoreDateTime) 
-				{
+				if (restoreDateTime) {
 					File.SetLastWriteTime(targetName, theEntry.DateTime);
 				}
 #endif
@@ -1147,8 +1116,7 @@ namespace SharpZip
 					ZipEntry theEntry;
 		
 					while ((theEntry = inputStream.GetNextEntry()) != null) {
-						if ( theEntry.IsFile )
-						{
+						if ( theEntry.IsFile ) {
 							ExtractFile(inputStream, theEntry, targetDir);
 						}
 						else if ( theEntry.IsDirectory )
@@ -1203,19 +1171,14 @@ namespace SharpZip
 		void Test(ArrayList fileSpecs)
 		{
 			string zipFileName = fileSpecs[0] as string;
-			if (Path.GetExtension(zipFileName).Length == 0) 
-			{
+			if (Path.GetExtension(zipFileName).Length == 0) {
 				zipFileName = Path.ChangeExtension(zipFileName, ".zip");
 			}
 
-			using (ZipFile zipFile = new ZipFile(zipFileName))
-			{
-				if ( zipFile.TestArchive(testData) )
-				{
+			using (ZipFile zipFile = new ZipFile(zipFileName)) {
+				if ( zipFile.TestArchive(testData) ) {
 					Console.WriteLine("Archive test passed");
-				}
-				else
-				{
+				} else {
 					Console.WriteLine("Archive test failure");
 				}
 			}
@@ -1228,16 +1191,13 @@ namespace SharpZip
 		void Delete(ArrayList fileSpecs)
 		{
 			string zipFileName = fileSpecs[0] as string;
-			if (Path.GetExtension(zipFileName).Length == 0) 
-			{
+			if (Path.GetExtension(zipFileName).Length == 0) {
 				zipFileName = Path.ChangeExtension(zipFileName, ".zip");
 			}
 
-			using (ZipFile zipFile = new ZipFile(zipFileName))
-			{
+			using (ZipFile zipFile = new ZipFile(zipFileName)) {
 				zipFile.BeginUpdate();
-				for ( int i = 1; i < fileSpecs.Count; ++i )
-				{
+				for ( int i = 1; i < fileSpecs.Count; ++i ) {
 					zipFile.Delete((string)fileSpecs[i]);
 				}
 				zipFile.CommitUpdate();
@@ -1247,16 +1207,13 @@ namespace SharpZip
 		void Add(ArrayList fileSpecs)
 		{
 			string zipFileName = fileSpecs[0] as string;
-			if (Path.GetExtension(zipFileName).Length == 0) 
-			{
+			if (Path.GetExtension(zipFileName).Length == 0) {
 				zipFileName = Path.ChangeExtension(zipFileName, ".zip");
 			}
 
-			using (ZipFile zipFile = new ZipFile(zipFileName))
-			{
+			using (ZipFile zipFile = new ZipFile(zipFileName)) {
 				zipFile.BeginUpdate();
-				for ( int i = 1; i < fileSpecs.Count; ++i )
-				{
+				for ( int i = 1; i < fileSpecs.Count; ++i ) {
 					zipFile.Add((string)fileSpecs[i]);
 				}
 				zipFile.CommitUpdate();
