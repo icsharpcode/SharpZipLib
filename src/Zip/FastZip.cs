@@ -516,7 +516,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 							if ((events_ != null) && (events_.Progress != null))
 							{
 								StreamUtils.Copy(zipFile_.GetInputStream(entry), outputStream, buffer_,
-									events_.Progress, events_.ProgressInterval, this, entry.Name);
+									events_.Progress, events_.ProgressInterval, this, entry.Name, entry.Size);
 							}
 							else
 							{

@@ -247,7 +247,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 
 		/// <summary>
-		/// Initializes encryption keys based on given password
+		/// Initializes encryption keys based on given <paramref name="password"/>.
 		/// </summary>
 		/// <param name="password">The password.</param>
 		protected void InitializePassword(string password)
@@ -312,8 +312,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			{
 				int deflateCount = deflater_.Deflate(buffer_, 0, buffer_.Length);
 				
-				if (deflateCount <= 0) 
-				{
+				if (deflateCount <= 0) {
 					break;
 				}
 #if NETCF_1_0
@@ -328,8 +327,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				baseOutputStream_.Write(buffer_, 0, deflateCount);
 			}
 			
-			if (!deflater_.IsNeedingInput) 
-			{
+			if (!deflater_.IsNeedingInput) {
 				throw new SharpZipBaseException("DeflaterOutputStream can't deflate all input?");
 			}
 		}
@@ -482,8 +480,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			if ( !isClosed_ ) {
 				isClosed_ = true;
 
-				try
-				{
+				try {
 					Finish();
 #if NETCF_1_0
 					keys=null;
@@ -494,10 +491,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					}
 #endif
 				}
-				finally
-				{
-					if( isStreamOwner_ )
-					{
+				finally {
+					if( isStreamOwner_ ) {
 						baseOutputStream_.Close();
 					}
 				}

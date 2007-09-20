@@ -102,6 +102,25 @@ namespace ICSharpCode.SharpZipLib.Core
 		static public void Copy(Stream source, Stream destination,
 			byte[] buffer, ProgressHandler progressHandler, TimeSpan updateInterval, object sender, string name)
 		{
+			Copy(source, destination, buffer, progressHandler, updateInterval, sender, name, 0);
+		}
+
+		/// <summary>
+		/// Copy the contents of one <see cref="Stream"/> to another.
+		/// </summary>
+		/// <param name="source">The stream to source data from.</param>
+		/// <param name="destination">The stream to write data to.</param>
+		/// <param name="buffer">The buffer to use during copying.</param>
+		/// <param name="progressHandler">The <see cref="ProgressHandler">progress handler delegate</see> to use.</param>
+		/// <param name="updateInterval">The minimum <see cref="TimeSpan"/> between progress updates.</param>
+		/// <param name="sender">The source for this event.</param>
+		/// <param name="name">The name to use with the event.</param>
+		/// <param name="fixedTarget">A predetermined fixed target value to use for updates.</param>
+		static public void Copy(Stream source, Stream destination,
+			byte[] buffer, 
+			ProgressHandler progressHandler, TimeSpan updateInterval, 
+			object sender, string name, long fixedTarget)
+		{
 			if (source == null) {
 				throw new ArgumentNullException("source");
 			}
@@ -129,6 +148,11 @@ namespace ICSharpCode.SharpZipLib.Core
 			long processed = 0;
 			long target = 0;
 
+			if (fixedTarget >= 0) {
+				target = fixedTarget;
+			}
+
+			// Always use stream source if this is available.
 			if (source.CanSeek) {
 				target = source.Length - source.Position;
 			}
