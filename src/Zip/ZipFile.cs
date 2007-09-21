@@ -1017,10 +1017,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				byte[] extraData = new byte[extraDataLength];
 				StreamUtils.ReadFully(baseStream_, extraData);
 
-				ZipExtraData ed = new ZipExtraData(extraData);
+				ZipExtraData localExtraData = new ZipExtraData(extraData);
 
 				// Extra data / zip64 checks
-				if (ed.Find(1))
+				if (localExtraData.Find(1))
 				{
 					// TODO Check for tag values being distinct..  Multiple zip64 tags means what?
 
@@ -1038,8 +1038,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 						throw new ZipException("Entry sizes not correct for Zip64");
 					}
 
-					size = ed.ReadLong();
-					compressedSize = ed.ReadLong();
+					size = localExtraData.ReadLong();
+					compressedSize = localExtraData.ReadLong();
 				}
 				else
 				{
@@ -1122,6 +1122,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 					// Central header compression method matches local entry
 					if ( entry.CompressionMethod != ( CompressionMethod )compressionMethod ) {
 						throw new ZipException("Central header/local header compression method mismatch");
+					}
+
+					if (entry.Version != extractVersion) {
+						throw new ZipException("Extract version mismatch");
 					}
 
 					// Strong encryption and extract version match
