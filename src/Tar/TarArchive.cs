@@ -140,7 +140,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Create TarArchive for reading setting block factor
 		/// </summary>
-		/// <param name="inputStream">Stream for tar archive contents</param>
+		/// <param name="inputStream">A stream containing the tar archive contents</param>
 		/// <param name="blockFactor">The blocking factor to apply</param>
 		/// <returns>Returns a <see cref="TarArchive"/> suitable for reading.</returns>
 		public static TarArchive CreateInputTarArchive(Stream inputStream, int blockFactor)
@@ -148,8 +148,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 			if ( inputStream == null ) {
 				throw new ArgumentNullException("inputStream");
 			}
-			
-			return new TarArchive(new TarInputStream(inputStream, blockFactor));
+
+			if ( inputStream is TarInputStream ) {
+				return new TarArchive((TarInputStream)inputStream);
+			}
+			else {			
+				return new TarArchive(new TarInputStream(inputStream, blockFactor));
+			}
 		}
 		
 		/// <summary>
@@ -177,8 +182,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 			if ( outputStream == null ) {
 				throw new ArgumentNullException("outputStream");
 			}
-			
-			return new TarArchive(new TarOutputStream(outputStream, blockFactor));
+
+			if ( outputStream is TarOutputStream ) {
+				return new TarArchive((TarOutputStream)outputStream);
+			}
+			else {
+				return new TarArchive(new TarOutputStream(outputStream, blockFactor));
+			}
 		}
 		#endregion
 		
