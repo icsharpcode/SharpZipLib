@@ -92,12 +92,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		Deflate64  = 9,
 		
 		/// <summary>
-		/// Not supported by #Zip currently
+		/// BZip2 compression. Not supported by #Zip.
 		/// </summary>
 		BZip2      = 11,
 		
 		/// <summary>
-		/// WinZip special for AES encryption, Not supported by #Zip
+		/// WinZip special for AES encryption, Not supported by #Zip.
 		/// </summary>
 		WinZipAES  = 99,
 		
@@ -157,7 +157,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		Twofish = 0x6721,
 		/// <summary>
-		/// RCS has been used for encryption.
+		/// RC4 has been used for encryption.
 		/// </summary>
 		RC4            = 0x6801,
 		/// <summary>
