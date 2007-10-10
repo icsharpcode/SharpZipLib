@@ -267,6 +267,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
+		/// Gets or sets the setting for <see cref="UseZip64">Zip64 handling.</see>
+		/// </summary>
+		public UseZip64 UseZip64
+		{
+			get { return useZip64_; }
+			set { useZip64_ = value; }
+		}
+		
+		/// <summary>
 		/// Get/set a value indicating wether file dates and times should 
 		/// be restored when extracting files from an archive.
 		/// </summary>
@@ -347,6 +356,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 #endif
 
+				outputStream_.UseZip64 = UseZip64;
 				FileSystemScanner scanner = new FileSystemScanner(fileFilter, directoryFilter);
 				scanner.ProcessFile += new ProcessFileHandler(ProcessFile);
 				if ( this.CreateEmptyDirectories ) {
@@ -659,6 +669,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		bool createEmptyDirectories_;
 		FastZipEvents events_;
 		IEntryFactory entryFactory_ = new ZipEntryFactory();
+
+		// Default is dynamic which is not backwards compatible and can cause problems
+		// with XP's built in compression which cant read Zip64 archives.
+		// However it does avoid the situation were a large file is added and cannot be completed correctly.
+		// NOTE: Setting the size for entries before they are added is the best solution!
+		// By default the EntryFactory used by FastZip will set fhe file size.
+		UseZip64 useZip64_=UseZip64.Dynamic;
 		
 #if !NETCF_1_0		
 		string password_;
