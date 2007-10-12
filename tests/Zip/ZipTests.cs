@@ -278,7 +278,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			return (byte)((rhs * 253 + 7) & 0xff);
 		}
 
-
 		static void AddKnownDataToEntry(ZipOutputStream zipStream, int size)
 		{
 			if (size > 0) {
@@ -3309,6 +3308,50 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			{
 				Assert.IsFalse(testFile.TestArchive(true), "Error in archive not detected");
 			}
+		}
+
+		void TestDirectoryEntry(MemoryStream s)
+		{
+			ZipOutputStream outStream = new ZipOutputStream(s);
+			outStream.IsStreamOwner = false;
+			outStream.PutNextEntry(new ZipEntry("YeOldeDirectory/"));
+			outStream.Close();
+
+			MemoryStream ms2 = new MemoryStream(s.ToArray());
+			using (ZipFile zf = new ZipFile(ms2)) {
+				Assert.IsTrue(zf.TestArchive(true));
+			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void TestDirectoryEntry()
+		{
+			TestDirectoryEntry(new MemoryStream());
+			TestDirectoryEntry(new MemoryStreamWithoutSeek());
+		}
+
+		void TestEncryptedDirectoryEntry(MemoryStream s)
+		{
+			ZipOutputStream outStream = new ZipOutputStream(s);
+			outStream.Password = "Tonto hand me a beer";
+
+			outStream.IsStreamOwner = false;
+			outStream.PutNextEntry(new ZipEntry("YeUnreadableDirectory/"));
+			outStream.Close();
+
+			MemoryStream ms2 = new MemoryStream(s.ToArray());
+			using (ZipFile zf = new ZipFile(ms2)) {
+				Assert.IsTrue(zf.TestArchive(true));
+			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void TestEncryptedDirectoryEntry()
+		{
+			TestEncryptedDirectoryEntry(new MemoryStream());
+			TestEncryptedDirectoryEntry(new MemoryStreamWithoutSeek());
 		}
 
 		[Test]
