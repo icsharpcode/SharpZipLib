@@ -1169,10 +1169,24 @@ namespace ICSharpCode.SharpZipLib.Zip
 						throw new ZipException("Central header and local header file name mismatch");
 					}
 
-					// Directories have zero size.
+					// Directories have zero actual size but can have compressed size
 					if ( entry.IsDirectory ) {
-						if ( (compressedSize != 0) || (size != 0) ) {
+						if (size != 0) {
 							throw new ZipException("Directory cannot have size");
+						}
+
+						// There may be other cases where the compressed size can be greater than this?
+						// If so until details are known we will be strict.
+						if (entry.IsCrypted) {
+							if (compressedSize > ZipConstants.CryptoHeaderSize + 2) {
+								throw new ZipException("Directory compressed size invalid");
+							}
+						}
+						else if (compressedSize > 2) {
+							// When not compressed the directory size can validly be 2 bytes
+							// if the true size wasnt known when data was originally being written.
+							// NOTE: Versions of the library 0.85.4 and earlier always added 2 bytes
+							throw new ZipException("Directory compressed size invalid");
 						}
 					}
 
