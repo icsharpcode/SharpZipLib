@@ -13,13 +13,13 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
 	/// <summary>
 	/// A fixed size buffer of bytes.  Both reading and writing are supported.
-    /// Reading from an empty buffer will wait until data is written.  Writing to a full buffer
-    /// will wait until data is read.
+	/// Reading from an empty buffer will wait until data is written.  Writing to a full buffer
+	/// will wait until data is read.
 	/// </summary>
 	public class ReadWriteRingBuffer
-    {
-        #region Constructors
-        /// <summary>
+	{
+		#region Constructors
+		/// <summary>
 		/// Create a new RingBuffer with a specified size.
 		/// </summary>
 		/// <param name="size">The size of the ring buffer to create.</param>
@@ -30,18 +30,18 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			}
 
 			array_ = new byte[size];
-            lockObject_ = new object();
+			lockObject_ = new object();
 
 #if SimpleSynch
-            waitSpan_ = TimeSpan.FromMilliseconds(1);
+			waitSpan_ = TimeSpan.FromMilliseconds(1);
 #else
-            notEmptyEvent_ = new ManualResetEvent(false);
-            notFullEvent_ = new ManualResetEvent(true);
+			notEmptyEvent_ = new ManualResetEvent(false);
+			notFullEvent_ = new ManualResetEvent(true);
 #endif
-        }
-        #endregion
+		}
+		#endregion
 
-        /// <summary>
+		/// <summary>
 		/// Clear the buffer contents.
 		/// </summary>
 		public void Clear()
@@ -53,22 +53,22 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			Array.Clear( array_, 0, array_.Length );
 
 #if !SimpleSynch
-            notFullEvent_.Set();
-            notEmptyEvent_.Reset();
+			notFullEvent_.Set();
+			notEmptyEvent_.Reset();
 #endif
 		}
 
-        /// <summary>
-        /// Close the buffer for writing.
-        /// </summary>
-        /// <remarks>A Read when the buffer is closed and there is no data will return -1.</remarks>
-        public void Close()
-        {
-            isClosed_ = true;
+		/// <summary>
+		/// Close the buffer for writing.
+		/// </summary>
+		/// <remarks>A Read when the buffer is closed and there is no data will return -1.</remarks>
+		public void Close()
+		{
+			isClosed_ = true;
 #if !SimpleSynch
-            notEmptyEvent_.Set();
+			notEmptyEvent_.Set();
 #endif
-        }
+		}
 
 		/// <summary>
 		/// Write adds a byte to the head of the RingBuffer.
@@ -76,210 +76,210 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// <param name="value">The value to add.</param>
 		public void WriteByte( byte value )
 		{
-            if (isClosed_) {
-                throw new ApplicationException("Buffer is closed");
-            }
+			if (isClosed_) {
+				throw new ApplicationException("Buffer is closed");
+			}
 
 #if SimpleSynch
-            while (IsFull) {
-              Thread.Sleep(waitSpan_);
-            }
-#else            
-            notFullEvent_.WaitOne();
+			while (IsFull) {
+				Thread.Sleep(waitSpan_);
+			}
+#else
+			notFullEvent_.WaitOne();
 #endif
 
-            lock (lockObject_) {
-                array_[head_] = value;
-                head_ = (head_ + 1) % array_.Length;
+			lock (lockObject_) {
+				array_[head_] = value;
+				head_ = (head_ + 1) % array_.Length;
 
 #if !SimpleSynch
-                bool setEmpty = (count_ == 0);
+				bool setEmpty = (count_ == 0);
 #endif
 
-                count_ += 1;
+				count_ += 1;
 
 #if !SimpleSynch
-                if (IsFull)
-                {
-                    notFullEvent_.Reset();
-                }
+				if (IsFull)
+				{
+					notFullEvent_.Reset();
+				}
 
-                if (setEmpty)
-                {
-                    notEmptyEvent_.Set();
-                }
+				if (setEmpty)
+				{
+					notEmptyEvent_.Set();
+				}
 #endif
-            }
+			}
 
-            bytesWritten_++;
+			bytesWritten_++;
 		}
 
-        public void Write(byte[] buffer, int index, int count)
-        {
-            if (isClosed_)
-            {
-                throw new ApplicationException("Buffer is closed");
-            }
+		public void Write(byte[] buffer, int index, int count)
+		{
+			if (isClosed_)
+			{
+				throw new ApplicationException("Buffer is closed");
+			}
 
-            while ( count >  0 )
-            {
+			while ( count >  0 )
+			{
 #if SimpleSynch
-                while (IsFull) {
-                    Thread.Sleep(waitSpan_);
-                }
-#else            
-                notFullEvent_.WaitOne();
-#endif
-
-                // Gauranteed to not be full at this point, however readers may sill read
-                // from the buffer first.
-                lock (lockObject_)
-                {
-                    int bytesToWrite = Length - Count;
-
-                    if (count < bytesToWrite)
-                    {
-                        bytesToWrite = count;
-                    }
-#if !SimpleSynch
-                    bool setEmpty = (count_ == 0);
-#endif
-
-                    while (bytesToWrite > 0)
-                    {
-                        array_[head_] = buffer[index];
-                        index++;
-
-                        head_ = (head_ + 1) % array_.Length;
-
-                        bytesToWrite--;
-                        bytesWritten_++;
-                        count--;
-                        count_++;
-                    }
-
-#if !SimpleSynch
-                    if (IsFull)
-                    {
-                        notFullEvent_.Reset();
-                    }
-
-                    if (setEmpty)
-                    {
-                        notEmptyEvent_.Set();
-                    }
-#endif
-                }
-            }
-        }
-
-        /// <summary>
-        /// Read a byte from the buffer.
-        /// </summary>
-        /// <returns></returns>
-        public int ReadByte()
-        {
-            int result = -1;
-
-#if SimpleSynch
-            while (!isClosed_ && IsEmpty) {
-                Thread.Sleep(waitSpan_);
-            }
+				while (IsFull) {
+					Thread.Sleep(waitSpan_);
+				}
 #else
-            notEmptyEvent_.WaitOne();
+				notFullEvent_.WaitOne();
 #endif
 
-            if ( !IsEmpty ) {
-                lock (lockObject_) {
-                    result = array_[tail_];
-                    tail_ = (tail_ + 1) % array_.Length;
+				// Gauranteed to not be full at this point, however readers may sill read
+				// from the buffer first.
+				lock (lockObject_)
+				{
+					int bytesToWrite = Length - Count;
+
+					if (count < bytesToWrite)
+					{
+						bytesToWrite = count;
+					}
 #if !SimpleSynch
-                    bool setFull = IsFull;
+					bool setEmpty = (count_ == 0);
 #endif
-                    count_ -= 1;
+
+					while (bytesToWrite > 0)
+					{
+						array_[head_] = buffer[index];
+						index++;
+
+						head_ = (head_ + 1) % array_.Length;
+
+						bytesToWrite--;
+						bytesWritten_++;
+						count--;
+						count_++;
+					}
+
 #if !SimpleSynch
-                    if (!isClosed_ && (count_ == 0))
-                    {
-                        notEmptyEvent_.Reset();
-                    }
+					if (IsFull)
+					{
+						notFullEvent_.Reset();
+					}
 
-                    if (setFull)
-                    {
-                        notFullEvent_.Set();
-                    }
+					if (setEmpty)
+					{
+						notEmptyEvent_.Set();
+					}
 #endif
-                }
-            }
+				}
+			}
+		}
 
-            bytesRead_++;
+		/// <summary>
+		/// Read a byte from the buffer.
+		/// </summary>
+		/// <returns></returns>
+		public int ReadByte()
+		{
+			int result = -1;
 
-            return result;
-        }
-
-        public int Read(byte[] buffer, int index, int count)
-        {
-            int result = 0;
-
-            while (count > 0)
-            {
 #if SimpleSynch
-                while (!isClosed_ && IsEmpty)
-                {
-                    Thread.Sleep(waitSpan_);
-                }
+			while (!isClosed_ && IsEmpty) {
+				Thread.Sleep(waitSpan_);
+			}
 #else
-                notEmptyEvent_.WaitOne();
+			notEmptyEvent_.WaitOne();
 #endif
 
-                if (IsEmpty)
-                {
-                    count = 0;
-                }
-                else
-                {
-                    lock (lockObject_)
-                    {
-                        int toRead = Count;
+			if ( !IsEmpty ) {
+				lock (lockObject_) {
+					result = array_[tail_];
+					tail_ = (tail_ + 1) % array_.Length;
+#if !SimpleSynch
+					bool setFull = IsFull;
+#endif
+					count_ -= 1;
+#if !SimpleSynch
+					if (!isClosed_ && (count_ == 0))
+					{
+						notEmptyEvent_.Reset();
+					}
 
-                        if (toRead > count)
-                        {
-                            toRead = count;
-                        }
+					if (setFull)
+					{
+						notFullEvent_.Set();
+					}
+#endif
+				}
+			}
 
-                        result += toRead;
+			bytesRead_++;
+
+			return result;
+		}
+
+		public int Read(byte[] buffer, int index, int count)
+		{
+			int result = 0;
+
+			while (count > 0)
+			{
+#if SimpleSynch
+				while (!isClosed_ && IsEmpty)
+				{
+					Thread.Sleep(waitSpan_);
+				}
+#else
+				notEmptyEvent_.WaitOne();
+#endif
+
+				if (IsEmpty)
+				{
+					count = 0;
+				}
+				else
+				{
+					lock (lockObject_)
+					{
+						int toRead = Count;
+
+						if (toRead > count)
+						{
+							toRead = count;
+						}
+
+						result += toRead;
 
 #if !SimpleSynch
-                        bool setFull = IsFull;
+						bool setFull = IsFull;
 #endif
 
-                        while (toRead > 0)
-                        {
-                            buffer[index] = array_[tail_];
-                            index++;
+						while (toRead > 0)
+						{
+							buffer[index] = array_[tail_];
+							index++;
 
-                            tail_ = (tail_ + 1) % array_.Length;
-                            count--;
-                            count_--;
-                            toRead--;
-                            bytesRead_++;
-                        }
+							tail_ = (tail_ + 1) % array_.Length;
+							count--;
+							count_--;
+							toRead--;
+							bytesRead_++;
+						}
 #if !SimpleSynch
-                        if (!isClosed_ && (count_ == 0))
-                        {
-                            notEmptyEvent_.Reset();
-                        }
+						if (!isClosed_ && (count_ == 0))
+						{
+							notEmptyEvent_.Reset();
+						}
 
-                        if (setFull)
-                        {
-                            notFullEvent_.Set();
-                        }
+						if (setFull)
+						{
+							notFullEvent_.Set();
+						}
 #endif
-                    }
-                }
-            }
+					}
+				}
+			}
 
-            return result;
-        }
+			return result;
+		}
 
 		#region Properties
 
@@ -291,17 +291,17 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			get { return count_ == 0; }
 		}
 
-        public bool IsFull
-        {
-            get {
-                return (count_ == array_.Length);
-            }
-        }
+		public bool IsFull
+		{
+			get {
+				return (count_ == array_.Length);
+			}
+		}
 
-        public bool IsClosed
-        {
-            get { return isClosed_; }
-        }
+		public bool IsClosed
+		{
+			get { return isClosed_; }
+		}
 
 		/// <summary>
 		/// Gets the number of elements in the buffer.
@@ -314,22 +314,22 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		}
 
 
-        public int Length
-        {
-            get { return array_.Length; }
-        }
+		public int Length
+		{
+			get { return array_.Length; }
+		}
 
-        public long BytesWritten
-        {
-            get { return bytesWritten_; }
-        }
+		public long BytesWritten
+		{
+			get { return bytesWritten_; }
+		}
 
-        public long BytesRead
-        {
-            get { return bytesRead_; }
-        }
+		public long BytesRead
+		{
+			get { return bytesRead_; }
+		}
 
-        /// <summary>
+		/// <summary>
 		/// Indexer - Get an element from the tail of the RingBuffer.
 		/// </summary>
 		public byte this[ int index ]
@@ -346,22 +346,22 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		#endregion
 
 		#region Instance Variables
-        /// <summary>
-        /// Flag indicating the buffer is closed.
-        /// </summary>
-        bool isClosed_;
+		/// <summary>
+		/// Flag indicating the buffer is closed.
+		/// </summary>
+		bool isClosed_;
 
 		/// <summary>
 		/// Index for the head of the buffer.
 		/// </summary>
-        /// <remarks>Its the index of the next byte to be <see cref="Write">written</see>.</remarks>
+		/// <remarks>Its the index of the next byte to be <see cref="Write">written</see>.</remarks>
 		int head_;
 
 		/// <summary>
 		/// Index for the tail of the buffer.
 		/// </summary>
-        /// <remarks>Its the index of the next byte to be <see cref="Read">written</see>.</remarks>
-        int tail_;
+		/// <remarks>Its the index of the next byte to be <see cref="Read">written</see>.</remarks>
+		int tail_;
 
 		/// <summary>
 		/// The total number of elements added to the buffer.
@@ -373,186 +373,186 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// </summary>
 		byte[] array_;
 
-        long bytesWritten_;
-        long bytesRead_;
+		long bytesWritten_;
+		long bytesRead_;
 
-        object lockObject_;
+		object lockObject_;
 
-        TimeSpan waitSpan_;
+		TimeSpan waitSpan_;
 
 #if !SimpleSynch
-        ManualResetEvent notEmptyEvent_;
-        ManualResetEvent notFullEvent_;
+		ManualResetEvent notEmptyEvent_;
+		ManualResetEvent notFullEvent_;
 #endif
 		#endregion
 	}
 
-    [TestFixture]
-    public class ExerciseBuffer
-    {
-        [Test]
-        public void Basic()
-        {
-            const int Size = 64;
+	[TestFixture]
+	public class ExerciseBuffer
+	{
+		[Test]
+		public void Basic()
+		{
+			const int Size = 64;
 
-            buffer_ = new ReadWriteRingBuffer(Size);
+			buffer_ = new ReadWriteRingBuffer(Size);
 
-            Assert.IsFalse(buffer_.IsFull);
-            Assert.IsTrue(buffer_.IsEmpty);
+			Assert.IsFalse(buffer_.IsFull);
+			Assert.IsTrue(buffer_.IsEmpty);
 
-            buffer_.WriteByte(1);
+			buffer_.WriteByte(1);
 
-            Assert.IsFalse(buffer_.IsFull);
-            Assert.IsFalse(buffer_.IsEmpty);
-            Assert.AreEqual(1, buffer_.Count);
+			Assert.IsFalse(buffer_.IsFull);
+			Assert.IsFalse(buffer_.IsEmpty);
+			Assert.AreEqual(1, buffer_.Count);
 
-            Assert.AreEqual(1, buffer_.ReadByte());
+			Assert.AreEqual(1, buffer_.ReadByte());
 
-            Assert.IsFalse(buffer_.IsFull);
-            Assert.IsTrue(buffer_.IsEmpty);
+			Assert.IsFalse(buffer_.IsFull);
+			Assert.IsTrue(buffer_.IsEmpty);
 
-            for (int i = 0; i < buffer_.Length; ++i)
-            {
-                buffer_.WriteByte(unchecked((byte)(i & 0xff)));
-            }
+			for (int i = 0; i < buffer_.Length; ++i)
+			{
+				buffer_.WriteByte(unchecked((byte)(i & 0xff)));
+			}
 
-            Assert.IsTrue(buffer_.IsFull);
-            Assert.IsFalse(buffer_.IsEmpty);
+			Assert.IsTrue(buffer_.IsFull);
+			Assert.IsFalse(buffer_.IsEmpty);
 
-            buffer_.Close();
+			buffer_.Close();
 
-            Assert.IsTrue(buffer_.IsClosed);
+			Assert.IsTrue(buffer_.IsClosed);
 
-            bool caught = false;
-            try
-            {
-                buffer_.WriteByte(1);
-            }
-            catch
-            {
-                caught = true;
-            }
+			bool caught = false;
+			try
+			{
+				buffer_.WriteByte(1);
+			}
+			catch
+			{
+				caught = true;
+			}
 
-            Assert.IsTrue(caught);
+			Assert.IsTrue(caught);
 
-            int count = Size;
-            int expected = 0;
+			int count = Size;
+			int expected = 0;
 
-            while (count != 0)
-            {
-                Assert.AreEqual(count, buffer_.Count);
-                Assert.AreEqual(expected, buffer_.ReadByte());
-                count--;
-                expected = (expected + 1) & 0xff;
-            }
+			while (count != 0)
+			{
+				Assert.AreEqual(count, buffer_.Count);
+				Assert.AreEqual(expected, buffer_.ReadByte());
+				count--;
+				expected = (expected + 1) & 0xff;
+			}
 
-            Assert.IsTrue(buffer_.IsEmpty);
-            Assert.AreEqual(-1, buffer_.ReadByte());
-        }
+			Assert.IsTrue(buffer_.IsEmpty);
+			Assert.AreEqual(-1, buffer_.ReadByte());
+		}
 
-        [Test]
-        public void Buffered()
-        {
+		[Test]
+		public void Buffered()
+		{
 
-            const int Size = 64;
+			const int Size = 64;
 
-            buffer_ = new ReadWriteRingBuffer(Size);
+			buffer_ = new ReadWriteRingBuffer(Size);
 
-            byte[] writeBuffer = new byte[16];
-            for (int i = 0; i < 16; ++i)
-            {
-                writeBuffer[i] = (byte)i;
-            }
+			byte[] writeBuffer = new byte[16];
+			for (int i = 0; i < 16; ++i)
+			{
+				writeBuffer[i] = (byte)i;
+			}
 
-            buffer_.Write(writeBuffer, 0, 3);
-            Assert.AreEqual(3, buffer_.Count);
+			buffer_.Write(writeBuffer, 0, 3);
+			Assert.AreEqual(3, buffer_.Count);
 
-            byte[] readBuffer = new byte[16];
-            Assert.AreEqual(3, buffer_.Read(readBuffer, 0, 3));
-            for (int i = 0; i < 3; ++i)
-            {
-                Assert.AreEqual(i, readBuffer[i]);
-            }
+			byte[] readBuffer = new byte[16];
+			Assert.AreEqual(3, buffer_.Read(readBuffer, 0, 3));
+			for (int i = 0; i < 3; ++i)
+			{
+				Assert.AreEqual(i, readBuffer[i]);
+			}
 
-        }
+		}
 
-        [Test]
-        public void Threaded()
-        {
-            buffer_ = new ReadWriteRingBuffer(8);
-            readTarget_ = writeTarget_ = 16384;
+		[Test]
+		public void Threaded()
+		{
+			buffer_ = new ReadWriteRingBuffer(8);
+			readTarget_ = writeTarget_ = 16384;
 
-            Thread reader = new Thread(Reader);
-            reader.Start();
+			Thread reader = new Thread(Reader);
+			reader.Start();
 
-            Thread writer = new Thread(Writer);
-            writer.Start();
+			Thread writer = new Thread(Writer);
+			writer.Start();
 
-            writer.Join();
-            reader.Join();
-        }
+			writer.Join();
+			reader.Join();
+		}
 
-        void Reader()
-        {
-            Random r = new Random();
-            byte nextValue = 0;
+		void Reader()
+		{
+			Random r = new Random();
+			byte nextValue = 0;
 
-            while (readTarget_ > 0)
-            {
-                int thisTime = r.Next(16);
-                if (thisTime > readTarget_)
-                {
-                    thisTime = readTarget_;
-                }
+			while (readTarget_ > 0)
+			{
+				int thisTime = r.Next(16);
+				if (thisTime > readTarget_)
+				{
+					thisTime = readTarget_;
+				}
 
-                while (thisTime > 0)
-                {
-                    int readValue = buffer_.ReadByte();
-                    Assert.AreEqual(nextValue, readValue);
-                    nextValue = (byte)((nextValue + 1) & 0xff);
-                    thisTime--;
-                    readTarget_--;
-                }
+				while (thisTime > 0)
+				{
+					int readValue = buffer_.ReadByte();
+					Assert.AreEqual(nextValue, readValue);
+					nextValue = (byte)((nextValue + 1) & 0xff);
+					thisTime--;
+					readTarget_--;
+				}
 
-                Thread.Sleep(r.Next(10));
+				Thread.Sleep(r.Next(10));
 
-            }
+			}
 
-            int last = buffer_.ReadByte();
+			int last = buffer_.ReadByte();
 
-            Assert.AreEqual(-1, last);
-            Assert.IsTrue(buffer_.IsClosed);
-        }
+			Assert.AreEqual(-1, last);
+			Assert.IsTrue(buffer_.IsClosed);
+		}
 
-        void Writer()
-        {
-            Random r = new Random();
+		void Writer()
+		{
+			Random r = new Random();
 
-            byte nextValue = 0;
-            while (writeTarget_ > 0)
-            {
-                int thisTime = r.Next(16);
-                if (thisTime > writeTarget_)
-                {
-                    thisTime = writeTarget_;
-                }
+			byte nextValue = 0;
+			while (writeTarget_ > 0)
+			{
+				int thisTime = r.Next(16);
+				if (thisTime > writeTarget_)
+				{
+					thisTime = writeTarget_;
+				}
 
-                while (thisTime > 0)
-                {
-                    buffer_.WriteByte(nextValue);
-                    nextValue = (byte)((nextValue + 1) & 0xff);
-                    thisTime--;
-                    writeTarget_--;
-                }
-                Thread.Sleep(r.Next(10));
-            }
-            buffer_.Close();
-        }
+				while (thisTime > 0)
+				{
+					buffer_.WriteByte(nextValue);
+					nextValue = (byte)((nextValue + 1) & 0xff);
+					thisTime--;
+					writeTarget_--;
+				}
+				Thread.Sleep(r.Next(10));
+			}
+			buffer_.Close();
+		}
 
-        int readTarget_;
-        int writeTarget_;
+		int readTarget_;
+		int writeTarget_;
 
-        ReadWriteRingBuffer buffer_;
+		ReadWriteRingBuffer buffer_;
 
-    }
+	}
 }
