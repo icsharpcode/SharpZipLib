@@ -58,9 +58,9 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		#endregion
 	}
 
-    /// <summary>
-    /// A stream that cannot seek.
-    /// </summary>
+	/// <summary>
+	/// A stream that cannot seek.
+	/// </summary>
 	public class MemoryStreamWithoutSeek : MemoryStreamEx
 	{
 		public override bool CanSeek
@@ -71,172 +71,172 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		}
 	}
 
-    public class NullStream : Stream
-    {
-        public override bool CanRead
-        {
-            get { return false; }
-        }
+	public class NullStream : Stream
+	{
+		public override bool CanRead
+		{
+			get { return false; }
+		}
 
-        public override bool CanSeek
-        {
-            get { return false; }
-        }
+		public override bool CanSeek
+		{
+			get { return false; }
+		}
 
-        public override bool CanWrite
-        {
-            get { return true; }
-        }
+		public override bool CanWrite
+		{
+			get { return true; }
+		}
 
-        public override void Flush()
-        {
-        }
+		public override void Flush()
+		{
+		}
 
-        public override long Length
-        {
-            get { throw new Exception("The method or operation is not implemented."); }
-        }
+		public override long Length
+		{
+			get { throw new Exception("The method or operation is not implemented."); }
+		}
 
-        public override long Position
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
+		public override long Position
+		{
+			get
+			{
+				throw new Exception("The method or operation is not implemented.");
+			}
+			set
+			{
+				throw new Exception("The method or operation is not implemented.");
+			}
+		}
 
-        public override int Read(byte[] buffer, int offset, int count)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
+		public override int Read(byte[] buffer, int offset, int count)
+		{
+			throw new Exception("The method or operation is not implemented.");
+		}
 
-        public override long Seek(long offset, SeekOrigin origin)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
+		public override long Seek(long offset, SeekOrigin origin)
+		{
+			throw new Exception("The method or operation is not implemented.");
+		}
 
-        public override void SetLength(long value)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
+		public override void SetLength(long value)
+		{
+			throw new Exception("The method or operation is not implemented.");
+		}
 
-        public override void Write(byte[] buffer, int offset, int count)
-        {
-        }
-    }
+		public override void Write(byte[] buffer, int offset, int count)
+		{
+		}
+	}
 
-    public class WindowedStream : Stream
-    {
-        public WindowedStream(int size)
-        {
-            ringBuffer_ = new ReadWriteRingBuffer(size);
-        }
+	public class WindowedStream : Stream
+	{
+		public WindowedStream(int size)
+		{
+			ringBuffer_ = new ReadWriteRingBuffer(size);
+		}
 
-        public override bool CanRead
-        {
-            get { return true; }
-        }
+		public override bool CanRead
+		{
+			get { return true; }
+		}
 
-        public override bool CanSeek
-        {
-            get { return false; }
-        }
+		public override bool CanSeek
+		{
+			get { return false; }
+		}
 
-        public override bool CanWrite
-        {
-            get { return true; }
-        }
+		public override bool CanWrite
+		{
+			get { return true; }
+		}
 
-        public override void Flush()
-        {
-            // Do nothing
-        }
+		public override void Flush()
+		{
+			// Do nothing
+		}
 
-        public override long Length
-        {
-            // A bit of a HAK as its not true in the stream sense.
-            get { return ringBuffer_.Count; }
-        }
+		public override long Length
+		{
+			// A bit of a HAK as its not true in the stream sense.
+			get { return ringBuffer_.Count; }
+		}
 
-        public override long Position
-        {
-            get
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-            set
-            {
-                throw new Exception("The method or operation is not implemented.");
-            }
-        }
+		public override long Position
+		{
+			get
+			{
+				throw new Exception("The method or operation is not implemented.");
+			}
+			set
+			{
+				throw new Exception("The method or operation is not implemented.");
+			}
+		}
 
-        public override int Read(byte[] buffer, int offset, int count)
-        {
-            int bytesRead = 0;
-            while (count > 0)
-            {
-                int value = ringBuffer_.ReadByte();
-                if (value >= 0)
-                {
-                    buffer[offset] = (byte)(value & 0xff);
-                    offset++;
-                    bytesRead++;
-                    count--;
-                }
-                else
-                {
-                    break;
-                }
-            }
+		public override int Read(byte[] buffer, int offset, int count)
+		{
+			int bytesRead = 0;
+			while (count > 0)
+			{
+				int value = ringBuffer_.ReadByte();
+				if (value >= 0)
+				{
+					buffer[offset] = (byte)(value & 0xff);
+					offset++;
+					bytesRead++;
+					count--;
+				}
+				else
+				{
+					break;
+				}
+			}
 
-            return bytesRead;
-        }
+			return bytesRead;
+		}
 
-        public override long Seek(long offset, SeekOrigin origin)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
+		public override long Seek(long offset, SeekOrigin origin)
+		{
+			throw new Exception("The method or operation is not implemented.");
+		}
 
-        public override void SetLength(long value)
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
+		public override void SetLength(long value)
+		{
+			throw new Exception("The method or operation is not implemented.");
+		}
 
-        public override void Write(byte[] buffer, int offset, int count)
-        {
-            for (int i = 0; i < count; ++i)
-            {
-                ringBuffer_.WriteByte(buffer[offset + i]);
-            }
-        }
+		public override void Write(byte[] buffer, int offset, int count)
+		{
+			for (int i = 0; i < count; ++i)
+			{
+				ringBuffer_.WriteByte(buffer[offset + i]);
+			}
+		}
 
-        public bool IsClosed
-        {
-            get { return ringBuffer_.IsClosed; }
-        }
+		public bool IsClosed
+		{
+			get { return ringBuffer_.IsClosed; }
+		}
 
-        public override void Close()
-        {
-            ringBuffer_.Close();
-        }
+		public override void Close()
+		{
+			ringBuffer_.Close();
+		}
 
-        public long BytesWritten
-        {
-            get { return ringBuffer_.BytesWritten; }
-        }
+		public long BytesWritten
+		{
+			get { return ringBuffer_.BytesWritten; }
+		}
 
-        public long BytesRead
-        {
-            get { return ringBuffer_.BytesRead; }
-        }
+		public long BytesRead
+		{
+			get { return ringBuffer_.BytesRead; }
+		}
 
-        #region Instance Fields
-        ReadWriteRingBuffer ringBuffer_;
+		#region Instance Fields
+		ReadWriteRingBuffer ringBuffer_;
 
-        #endregion
-    }
+		#endregion
+	}
 }
