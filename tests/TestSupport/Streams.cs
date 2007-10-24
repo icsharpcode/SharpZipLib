@@ -14,7 +14,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
 	/// <summary>
 	/// An extended <see cref="MemoryStream">memory stream</see>
-	/// that tracks closing and diposing
+	/// that tracks closing and disposing
 	/// </summary>
 	public class MemoryStreamEx : MemoryStream
 	{
@@ -59,7 +59,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	}
 
 	/// <summary>
-	/// A stream that cannot seek.
+	/// A <see cref="Stream"/> that cannot seek.
 	/// </summary>
 	public class MemoryStreamWithoutSeek : MemoryStreamEx
 	{
@@ -71,6 +71,9 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		}
 	}
 
+	/// <summary>
+	/// A <see cref="Stream"/> that cannot be read but support infinite writes.
+	/// </summary>
 	public class NullStream : Stream
 	{
 		public override bool CanRead
@@ -129,6 +132,11 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		}
 	}
 
+	/// <summary>
+	/// A <see cref="Stream"/> that supports reading and writing from a fixed size memory buffer.
+	/// This provides the ability to test writing and reading from very large stream 
+	/// without using any disk storeage
+	/// </summary>
 	public class WindowedStream : Stream
 	{
 		public WindowedStream(int size)
