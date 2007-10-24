@@ -60,7 +60,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Initialize a new instance of <see cref="ZipNameTransform"></see>
 		/// </summary>
-		/// <param name="trimPrefix">The string to trim from front of paths if found.</param>
+		/// <param name="trimPrefix">The string to trim from the front of paths if found.</param>
 		public ZipNameTransform(string trimPrefix)
 		{
 			TrimPrefix = trimPrefix;
@@ -92,11 +92,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 			InvalidEntryChars[howMany - 2] = '\\';
 			InvalidEntryChars[howMany - 3] = '*';
 			InvalidEntryChars[howMany - 4] = '?';
-
 		}
 
 		/// <summary>
-		/// Transform a directory name according to the Zip file naming conventions.
+		/// Transform a windows directory name according to the Zip file naming conventions.
 		/// </summary>
 		/// <param name="name">The directory name to transform.</param>
 		/// <returns>The transformed name.</returns>
