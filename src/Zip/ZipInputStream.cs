@@ -506,13 +506,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 				inputBuffer.CryptoTransform = null;
 #endif				
 			}
-			
-			if ( (method == (int)CompressionMethod.Deflated) && (inputBuffer.Available > 0) ) {
-				inputBuffer.SetInflaterInput(inf);
+
+			if ((csize > 0) || ((flags & (int)GeneralBitFlags.Descriptor) != 0)) {
+				if ((method == (int)CompressionMethod.Deflated) && (inputBuffer.Available > 0)) {
+					inputBuffer.SetInflaterInput(inf);
+				}
+
+				internalReader = new ReaderDelegate(BodyRead);
+				return BodyRead(destination, offset, count);
 			}
-			
-			internalReader = new ReaderDelegate(BodyRead);
-			return BodyRead(destination, offset, count);
+			else {
+				internalReader = new ReaderDelegate(ReadingNotAvailable);
+				return 0;
+			}
 		}
 		
 		/// <summary>
