@@ -1550,6 +1550,23 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Add a file to the archive.
+		/// </summary>
+		/// <param name="fileName">The name of the file to add.</param>
+		/// <param name="entryName">The name to use for the <see cref="ZipEntry"/> on the Zip file created.</param>
+		public void Add(string fileName, string entryName)
+		{
+			if (fileName == null)
+			{
+				throw new ArgumentNullException("fileName");
+			}
+
+			CheckUpdating();
+			AddUpdate(new ZipUpdate(fileName, EntryFactory.MakeFileEntry(entryName)));
+		}
+
+
+		/// <summary>
 		/// Add a file entry with data.
 		/// </summary>
 		/// <param name="dataSource">The source of the data for this entry.</param>
@@ -3635,7 +3652,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// <summary>
 	/// Default implementation of a <see cref="IStaticDataSource"/> for use with files stored on disk.
 	/// </summary>
-	class StaticDiskDataSource : IStaticDataSource
+	public class StaticDiskDataSource : IStaticDataSource
 	{
 		/// <summary>
 		/// Initialise a new instnace of <see cref="StaticDiskDataSource"/>
@@ -3667,7 +3684,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// <summary>
 	/// Default implementation of <see cref="IDynamicDataSource"/> for files stored on disk.
 	/// </summary>
-	class DynamicDiskDataSource : IDynamicDataSource
+	public class DynamicDiskDataSource : IDynamicDataSource
 	{
 		/// <summary>
 		/// Initialise a default instance of <see cref="DynamicDiskDataSource"/>.
