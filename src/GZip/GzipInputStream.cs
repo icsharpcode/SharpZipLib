@@ -223,7 +223,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 				
 			// 3.1 Check the reserved bits are zero
 			
-			if ((flags & 0xd0) != 0) {
+			if ((flags & 0xE0) != 0) {
 				throw new GZipException("Reserved flag bits in GZIP header != 0");
 			}
 			
