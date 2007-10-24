@@ -448,13 +448,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (curEntry == null) {
 				throw new InvalidOperationException("No open entry");
 			}
+
+			long csize = size;
 			
 			// First finish the deflater, if appropriate
 			if (curMethod == CompressionMethod.Deflated) {
-				base.Finish();
+				if (size > 0) {
+					base.Finish();
+					csize = deflater_.TotalOut;
+				}
+				else {
+					deflater_.Reset();
+				}
 			}
-			
-			long csize = (curMethod == CompressionMethod.Deflated) ? deflater_.TotalOut : size;
 			
 			if (curEntry.Size < 0) {
 				curEntry.Size = size;
