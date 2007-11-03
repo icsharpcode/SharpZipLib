@@ -585,7 +585,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					targetName = extractNameTransform_.TransformDirectory(targetName);
 				}
 				
-				doExtraction = !string.IsNullOrEmpty(targetName);				
+				doExtraction = !((targetName == null) || (targetName.Length == 0));
 			}
 			
 			// TODO: Fire delegate were compression method not supported, or name is invalid?
