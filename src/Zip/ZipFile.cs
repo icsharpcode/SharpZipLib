@@ -3252,7 +3252,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		ZipString newComment_;
 		bool commentEdited_;
 		IEntryFactory updateEntryFactory_ = new ZipEntryFactory();
-		string tempDirectory_ = string.Empty;
 		#endregion
 		#endregion
 		
@@ -3772,7 +3771,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Initializes a new instance of the <see cref="BaseArchiveStorage"/> class.
 		/// </summary>
 		/// <param name="updateMode">The update mode.</param>
-		public BaseArchiveStorage(FileUpdateMode updateMode)
+		protected BaseArchiveStorage(FileUpdateMode updateMode)
 		{
 			updateMode_ = updateMode;
 		}
