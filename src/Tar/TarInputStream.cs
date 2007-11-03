@@ -578,13 +578,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 			/// <summary>
 			/// Create a tar entry based on the header information passed
 			/// </summary>
-			/// <param name="headerBuf">
-			/// Buffer containing header information to base entry on
+			/// <param name="headerBuffer">
+			/// Buffer containing header information to create an an entry from.
 			/// </param>
 			/// <returns>
 			/// Created TarEntry or descendant class
 			/// </returns>
-			TarEntry CreateEntry(byte[] headerBuf);
+			TarEntry CreateEntry(byte[] headerBuffer);
 		}
 
 		/// <summary>
