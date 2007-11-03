@@ -53,7 +53,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public WindowsNameTransform(string baseDirectory)
 		{
 			if ( (baseDirectory != null) && (!IsValidName(baseDirectory)) ) {
-				throw new ArgumentException("baseDirectory");
+#if NETCF_1_0
+				throw new ArgumentException("Directory name is invalid");
+#else
+				throw new ArgumentException("Directory name is invalid", "baseDirectory");
+#endif
 			}
 			baseDirectory_=Path.GetFullPath(baseDirectory);
 		}
@@ -75,7 +79,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { 
 				if ( value != null ) {
 					if ( !IsValidName(value) ) {
-						throw new ArgumentException("value");
+						throw new ArgumentException("Name is invalid");
 					}
 				}
 				baseDirectory_ = Path.GetFullPath(value);
