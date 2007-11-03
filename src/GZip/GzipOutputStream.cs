@@ -91,7 +91,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <param name="baseOutputStream">
 		/// The stream to read data (to be compressed) from
 		/// </param>
-		public GZipOutputStream(Stream baseOutputStream) : this(baseOutputStream, 4096)
+		public GZipOutputStream(Stream baseOutputStream)
+			: this(baseOutputStream, 4096)
 		{
 		}
 		
@@ -184,16 +185,20 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 			base.Finish();
 			
-			int totalin = deflater_.TotalIn;
-			int crcval = (int) (crc.Value & 0xffffffff);
-			
-			byte[] gzipFooter = {
-				(byte) crcval, (byte) (crcval >> 8),
-				(byte) (crcval >> 16), (byte) (crcval >> 24),
-				
-				(byte) totalin, (byte) (totalin >> 8),
-				(byte) (totalin >> 16), (byte) (totalin >> 24)
-			};
+			uint totalin = (uint) (deflater_.TotalIn & 0xffffffff);
+			uint crcval = (uint) (crc.Value & 0xffffffff);
+
+			byte[] gzipFooter;
+
+			unchecked {
+				gzipFooter = new byte[] {
+					(byte) crcval, (byte) (crcval >> 8),
+					(byte) (crcval >> 16), (byte) (crcval >> 24),
+					
+					(byte) totalin, (byte) (totalin >> 8),
+					(byte) (totalin >> 16), (byte) (totalin >> 24)
+				};
+			}
 
 			baseOutputStream_.Write(gzipFooter, 0, gzipFooter.Length);
 		}
