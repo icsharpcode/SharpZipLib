@@ -215,7 +215,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			CompressionMethod method)
 		{
 			if (name == null) {
-				throw new System.ArgumentNullException("ZipEntry name");
+				throw new System.ArgumentNullException("name");
 			}
 
 			if ( name.Length > 0xffff )	{
