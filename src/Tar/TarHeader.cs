@@ -748,7 +748,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		static public long ParseOctal(byte[] header, int offset, int length)
 		{
 			if ( header == null ) {
-				throw new NullReferenceException("header");
+				throw new ArgumentNullException("header");
 			}
 
 			long result = 0;
