@@ -83,9 +83,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public bool OnDirectoryFailure(string directory, Exception e)
 		{
 			bool result = false;
-			if ( DirectoryFailure != null ) {
+			DirectoryFailureHandler handler = DirectoryFailure;
+
+			if ( handler != null ) {
 				ScanFailureEventArgs args = new ScanFailureEventArgs(directory, e);
-				DirectoryFailure(this, args);
+				handler(this, args);
 				result = args.ContinueRunning;
 			}
 			return result;
@@ -100,9 +102,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public bool OnFileFailure(string file, Exception e)
 		{
 			bool result = false;
-			if ( FileFailure != null ) {
+			FileFailureHandler handler = FileFailure;
+
+			if ( handler != null ) {
 				ScanFailureEventArgs args = new ScanFailureEventArgs(file, e);
-				FileFailure(this, args);
+				handler(this, args);
 				result = args.ContinueRunning;
 			}
 			return result;
@@ -116,7 +120,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public bool OnProcessFile(string file)
 		{
 			bool result = true;
-			if ( ProcessFile != null ) {
+			ProcessFileHandler handler = ProcessFile;
+
+			if ( handler != null ) {
 				ScanEventArgs args = new ScanEventArgs(file);
 				ProcessFile(this, args);
 				result = args.ContinueRunning;
@@ -132,9 +138,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public bool OnCompletedFile(string file)
 		{
 			bool result = true;
-			if ( CompletedFile != null ) {
+			CompletedFileHandler handler = CompletedFile;
+			if ( handler != null ) {
 				ScanEventArgs args = new ScanEventArgs(file);
-				CompletedFile(this, args);
+				handler(this, args);
 				result = args.ContinueRunning;
 			}
 			return result;
@@ -149,9 +156,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public bool OnProcessDirectory(string directory, bool hasMatchingFiles)
 		{
 			bool result = true;
-			if ( ProcessDirectory != null ) {
+			ProcessDirectoryHandler handler = ProcessDirectory;
+			if ( handler != null ) {
 				DirectoryEventArgs args = new DirectoryEventArgs(directory, hasMatchingFiles);
-				ProcessDirectory(this, args);
+				handler(this, args);
 				result = args.ContinueRunning;
 			}
 			return result;
@@ -412,7 +420,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			continueRunning_ = true;
 			overwrite_ = overwrite;
 			confirmDelegate_ = confirmDelegate;
-			targetDirectory_ = targetDirectory;
+			extractNameTransform_ = new WindowsNameTransform(targetDirectory);
+			
 			fileFilter_ = new NameFilter(fileFilter);
 			directoryFilter_ = new NameFilter(directoryFilter);
 			restoreDateTimeOnExtract_ = restoreDateTime;
@@ -565,42 +574,31 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		void ExtractEntry(ZipEntry entry)
 		{
-			bool doExtraction = false;
+			bool doExtraction = entry.IsCompressionMethodSupported();
+			string targetName = entry.Name;
 			
-			string nameText = entry.Name;
-			
-			if ( entry.IsFile ) {
-				// TODO: Translate invalid names allowing extraction still.
-				doExtraction = NameIsValid(nameText) && entry.IsCompressionMethodSupported();
-			}
-			else if ( entry.IsDirectory ) {
-				doExtraction = NameIsValid(nameText);
+			if ( doExtraction ) {
+				if ( entry.IsFile ) {
+					targetName = extractNameTransform_.TransformFile(targetName);
+				}
+				else if ( entry.IsDirectory ) {
+					targetName = extractNameTransform_.TransformDirectory(targetName);
+				}
+				
+				doExtraction = !string.IsNullOrEmpty(targetName);				
 			}
 			
 			// TODO: Fire delegate were compression method not supported, or name is invalid?
 
 			string dirName = null;
-			string targetName = null;
 			
 			if ( doExtraction ) {
-				// Handle invalid entry names by chopping of path root.
-				if (Path.IsPathRooted(nameText)) {
-					string workName = Path.GetPathRoot(nameText);
-					nameText = nameText.Substring(workName.Length);
-				}
-				
-				if ( nameText.Length > 0 ) {
-					targetName = Path.Combine(targetDirectory_, nameText);
 					if ( entry.IsDirectory ) {
 						dirName = targetName;
 					}
 					else {
 						dirName = Path.GetDirectoryName(Path.GetFullPath(targetName));
 					}
-				}
-				else {
-					doExtraction = false;
-				}
 			}
 			
 			if ( doExtraction && !Directory.Exists(dirName) ) {
@@ -657,7 +655,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		byte[] buffer_;
 		ZipOutputStream outputStream_;
 		ZipFile zipFile_;
-		string targetDirectory_;
 		string sourceDirectory_;
 		NameFilter fileFilter_;
 		NameFilter directoryFilter_;
@@ -670,6 +667,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		FastZipEvents events_;
 		IEntryFactory entryFactory_ = new ZipEntryFactory();
 
+		INameTransform extractNameTransform_;
+		
 		// Default is dynamic which is not backwards compatible and can cause problems
 		// with XP's built in compression which cant read Zip64 archives.
 		// However it does avoid the situation were a large file is added and cannot be completed correctly.
@@ -677,7 +676,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		// By default the EntryFactory used by FastZip will set fhe file size.
 		UseZip64 useZip64_=UseZip64.Dynamic;
 		
-#if !NETCF_1_0		
+#if !NETCF_1_0
 		string password_;
 #endif	
 
