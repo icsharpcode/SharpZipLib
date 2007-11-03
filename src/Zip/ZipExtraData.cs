@@ -619,7 +619,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					result = new RawTaggedData(tag);
 					break;
 			}
-			result.SetData(data_, readValueStart_, readValueLength_);
+			result.SetData(data, offset, count);
 			return result;
 		}
 		
