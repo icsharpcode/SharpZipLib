@@ -133,8 +133,15 @@ namespace ICSharpCode.SharpZipLib.Tar
 			if ( inputStream == null ) {
 				throw new ArgumentNullException("inputStream");
 			}
-			
-			return CreateInputTarArchive(inputStream, TarBuffer.DefaultBlockFactor);
+
+			TarInputStream tarStream = inputStream as TarInputStream;
+
+			if ( tarStream != null ) {
+				return new TarArchive(tarStream);
+			}
+			else {
+				return CreateInputTarArchive(inputStream, TarBuffer.DefaultBlockFactor);
+			}
 		}
 		
 		/// <summary>
@@ -150,11 +157,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 
 			if ( inputStream is TarInputStream ) {
-				return new TarArchive((TarInputStream)inputStream);
+				throw new ArgumentException("TarInputStream not valid");
 			}
-			else {			
-				return new TarArchive(new TarInputStream(inputStream, blockFactor));
-			}
+			
+			return new TarArchive(new TarInputStream(inputStream, blockFactor));
 		}
 		
 		/// <summary>
@@ -167,12 +173,17 @@ namespace ICSharpCode.SharpZipLib.Tar
 			if ( outputStream == null ) {
 				throw new ArgumentNullException("outputStream");
 			}
-			
-			return CreateOutputTarArchive(outputStream, TarBuffer.DefaultBlockFactor);
+			TarOutputStream tarStream = outputStream as TarOutputStream;
+			if ( tarStream != null ) {
+				return new TarArchive(tarStream);
+			}
+			else {
+				return CreateOutputTarArchive(outputStream, TarBuffer.DefaultBlockFactor);
+			}
 		}
 
 		/// <summary>
-		/// Create a TarArchive for writing to
+		/// Create a <see cref="TarArchive">tar archive</see> for writing.
 		/// </summary>
 		/// <param name="outputStream">The stream to write to</param>
 		/// <param name="blockFactor">The blocking factor to use for buffering.</param>
@@ -184,11 +195,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 
 			if ( outputStream is TarOutputStream ) {
-				return new TarArchive((TarOutputStream)outputStream);
+				throw new ArgumentException("TarOutputStream is not valid");
 			}
-			else {
-				return new TarArchive(new TarOutputStream(outputStream, blockFactor));
-			}
+
+			return new TarArchive(new TarOutputStream(outputStream, blockFactor));
 		}
 		#endregion
 		
@@ -622,9 +632,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 			{
 				if ( recurse ) {
 					TarHeader.SetValueDefaults(sourceEntry.UserId, sourceEntry.UserName,
-					                           sourceEntry.GroupId, sourceEntry.GroupName);
+											   sourceEntry.GroupId, sourceEntry.GroupName);
 				}
-				InternalWriteEntry(sourceEntry, recurse);
+				WriteEntryCore(sourceEntry, recurse);
 			}
 			finally
 			{
@@ -647,7 +657,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="recurse">
 		/// If true, process the children of directory entries.
 		/// </param>
-		void InternalWriteEntry(TarEntry sourceEntry, bool recurse)
+		void WriteEntryCore(TarEntry sourceEntry, bool recurse)
 		{
 			bool asciiTrans = false;
 			
@@ -715,7 +725,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				if (recurse) {
 					TarEntry[] list = entry.GetDirectoryEntries();
 					for (int i = 0; i < list.Length; ++i) {
-						InternalWriteEntry(list[i], recurse);
+						WriteEntryCore(list[i], recurse);
 					}
 				}
 			}
@@ -785,6 +795,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		
 		#region IDisposable Members
 
+		/// <summary>
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
 		void IDisposable.Dispose()
 		{
 			Close();
