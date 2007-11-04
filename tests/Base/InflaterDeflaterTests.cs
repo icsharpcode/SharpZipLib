@@ -166,30 +166,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			TryManyVariants(0, false, new RunCompress(DeflateAndInflate), buffer);
 		}
 
-		[Test]
-		[Explicit]
-		[Category("Base")]
-		[Category("ExcludeFromAutoBuild")]
-		public void FindBug()
-		{
-			using ( FileStream fs = File.OpenRead("c:\\tmp\\original.dat") )
-			{
-				long readOffset =  0;
-				long readLength = fs.Length - readOffset;
-//				readLength -= 5567; // 5568 works 5567 doesnt....
-
-				fs.Seek(readOffset, SeekOrigin.Begin);
-
-				byte[] original = new byte[readLength];
-
-				int bytesRead = fs.Read(original, 0, original.Length);
-				Assert.AreEqual(bytesRead, original.Length);
-
-				MemoryStream ms = Deflate(original, Deflater.BEST_SPEED, true);
-				Inflate(ms, original, Deflater.BEST_SPEED, true);
-			}
-		}
-
 		/// <summary>
 		/// Basic inflate/deflate test
 		/// </summary>
