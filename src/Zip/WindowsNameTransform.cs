@@ -76,11 +76,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public string BaseDirectory
 		{
 			get { return baseDirectory_; }
-			set { 
-				if ( value != null ) {
-					if ( !IsValidName(value) ) {
-						throw new ArgumentException("Name is invalid");
-					}
+			set {
+				if ( value == null ) {
+					throw new ArgumentNullException("value");
+				}
+				if ( !IsValidName(value) ) {
+					throw new ArgumentException("Name is invalid");
 				}
 				baseDirectory_ = Path.GetFullPath(value);
 			}
