@@ -58,13 +58,11 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <returns>A new key value.</returns>
 		static public byte[] GenerateKeys(byte[] seed)
 		{
-			if ( seed == null ) 
-			{
+			if ( seed == null ) {
 				throw new ArgumentNullException("seed");
 			}
 
-			if ( seed.Length == 0 )
-			{
+			if ( seed.Length == 0 ) {
 				throw new ArgumentException("Length is zero", "seed");
 			}
 
@@ -74,8 +72,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 				0x34567890
 			 };
 			
-			for (int i = 0; i < seed.Length; ++i) 
-			{
+			for (int i = 0; i < seed.Length; ++i) {
 				newKeys[0] = Crc32.ComputeCrc32(newKeys[0], seed[i]);
 				newKeys[1] = newKeys[1] + (byte)newKeys[0];
 				newKeys[1] = newKeys[1] * 134775813 + 1;
