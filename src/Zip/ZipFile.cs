@@ -85,7 +85,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion
 		#region Properties
 		/// <summary>
-		/// Get the name of the file for which keys are required.
+		/// Gets the name of the file for which keys are required.
 		/// </summary>
 		public string FileName
 		{
@@ -93,7 +93,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 	
 		/// <summary>
-		/// Get/set the key value
+		/// Gets or sets the key value
 		/// </summary>
 		public byte[] Key
 		{
@@ -101,6 +101,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { key = value; }
 		}
 		#endregion
+		
 		#region Instance Fields
 		string fileName;
 		byte[] key;
@@ -363,7 +364,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 		
-		
 		/// <summary>
 		/// Get/set the encryption key value.
 		/// </summary>
@@ -406,6 +406,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Opens a Zip file with the given name for reading.
 		/// </summary>
 		/// <param name="name">The name of the file to open.</param>
+		/// <exception cref="ArgumentNullException">The argument supplied is null.</exception>
 		/// <exception cref="IOException">
 		/// An i/o error occurs
 		/// </exception>
@@ -414,6 +415,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </exception>
 		public ZipFile(string name)
 		{
+			if ( name == null ) {
+				throw new ArgumentNullException("name");
+			}
+			
 			name_ = name;
 
 			baseStream_ = File.OpenRead(name);
@@ -432,6 +437,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Opens a Zip file reading the given <see cref="FileStream"/>.
 		/// </summary>
 		/// <param name="file">The <see cref="FileStream"/> to read archive data from.</param>
+		/// <exception cref="ArgumentNullException">The supplied argument is null.</exception>
 		/// <exception cref="IOException">
 		/// An i/o error occurs.
 		/// </exception>
@@ -469,8 +475,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// An i/o error occurs
 		/// </exception>
 		/// <exception cref="ZipException">
-		/// The file doesn't contain a valid zip archive.<br/>
-		/// The stream provided cannot seek
+		/// The stream doesn't contain a valid zip archive.<br/>
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		/// The <see cref="Stream">stream</see> doesnt support seeking.
+		/// </exception>
+		/// <exception cref="ArgumentNullException">
+		/// The <see cref="Stream">stream</see> argument is null.
 		/// </exception>
 		public ZipFile(Stream stream)
 		{
@@ -540,6 +551,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="fileName">The name of the archive to create.</param>
 		/// <returns>Returns the newly created <see cref="ZipFile"/></returns>
+		/// <exception cref="ArgumentNullException"><paramref name="fileName"></paramref> is null</exception>
 		public static ZipFile Create(string fileName)
 		{
 			if ( fileName == null ) {
@@ -560,6 +572,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="outStream">The stream providing data storage.</param>
 		/// <returns>Returns the newly created <see cref="ZipFile"/></returns>
+		/// <exception cref="ArgumentNullException"><paramref name="outStream"> is null</paramref></exception>
+		/// <exception cref="ArgumentException"><paramref name="outStream"> doesnt support writing.</paramref></exception>
 		public static ZipFile Create(Stream outStream)
 		{
 			if ( outStream == null ) {
@@ -640,11 +654,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			get 
 			{
-				if (entries_ != null) {
-					return entries_.Length;
-				} else {
-					throw new InvalidOperationException("ZipFile is closed");
-				}
+				return entries_.Length;
 			}
 		}
 		
@@ -655,11 +665,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			get 
 			{
-				if (entries_ != null) {
-					return entries_.Length;
-				} else {
-					throw new InvalidOperationException("ZipFile is closed");
-				}
+				return entries_.Length;
 			}
 		}
 		
@@ -681,15 +687,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Gets an enumerator for the Zip entries in this Zip file.
 		/// </summary>
 		/// <returns>Returns an <see cref="IEnumerator"/> for this archive.</returns>
-		/// <exception cref="InvalidOperationException">
+		/// <exception cref="ObjectDisposedException">
 		/// The Zip file has been closed.
 		/// </exception>
 		public IEnumerator GetEnumerator()
 		{
-			if (entries_ == null) {
-				throw new InvalidOperationException("ZipFile has closed");
+			if (isDisposed_) {
+				throw new ObjectDisposedException("ZipFile");
 			}
-			
+
 			return new ZipEntryEnumerator(entries_);
 		}
 		
@@ -699,14 +705,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="name">Entry name to find</param>
 		/// <param name="ignoreCase">If true the comparison is case insensitive</param>
 		/// <returns>The index position of the matching entry or -1 if not found</returns>
-		/// <exception cref="InvalidOperationException">
+		/// <exception cref="ObjectDisposedException">
 		/// The Zip file has been closed.
 		/// </exception>
 		public int FindEntry(string name, bool ignoreCase)
 		{
-			if (entries_ == null) {
-				throw new InvalidOperationException("ZipFile has been closed");
-			}
+			if (isDisposed_) {
+				throw new ObjectDisposedException("ZipFile");
+			}			
 			
 			// TODO: This will be slow as the next ice age for huge archives!
 			for (int i = 0; i < entries_.Length; i++) {
@@ -727,15 +733,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// A clone of the zip entry, or null if no entry with that name exists.
 		/// </returns>
-		/// <exception cref="InvalidOperationException">
+		/// <exception cref="ObjectDisposedException">
 		/// The Zip file has been closed.
 		/// </exception>
 		public ZipEntry GetEntry(string name)
 		{
-			if (entries_ == null) {
-				throw new InvalidOperationException("ZipFile has been closed");
-			}
-			
+			if (isDisposed_) {
+				throw new ObjectDisposedException("ZipFile");
+			}			
+						
 			int index = FindEntry(name, true);
 			return (index >= 0) ? (ZipEntry) entries_[index].Clone() : null;
 		}
@@ -746,7 +752,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="entry">The <see cref="ZipEntry"/> to obtain a data <see cref="Stream"/> for</param>
 		/// <returns>An input <see cref="Stream"/> containing data for this <see cref="ZipEntry"/></returns>
-		/// <exception cref="InvalidOperationException">
+		/// <exception cref="ObjectDisposedException">
 		/// The ZipFile has already been closed
 		/// </exception>
 		/// <exception cref="ICSharpCode.SharpZipLib.Zip.ZipException">
@@ -761,8 +767,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException("entry");
 			}
 
-			if ( entries_ == null ) {
-				throw new InvalidOperationException("ZipFile has closed");
+			if ( isDisposed_ ) {
+				throw new ObjectDisposedException("ZipFile");
 			}
 			
 			long index = entry.ZipFileIndex;
@@ -782,7 +788,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// An input <see cref="Stream"/> containing data for this <paramref name="entryIndex"/>
 		/// </returns>
-		/// <exception cref="InvalidOperationException">
+		/// <exception cref="ObjectDisposedException">
 		/// The ZipFile has already been closed
 		/// </exception>
 		/// <exception cref="ICSharpCode.SharpZipLib.Zip.ZipException">
@@ -793,8 +799,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </exception>
 		public Stream GetInputStream(long entryIndex)
 		{
-			if ( entries_ == null ) {
-				throw new InvalidOperationException("ZipFile is not open");
+			if ( isDisposed_ ) {
+				throw new ObjectDisposedException("ZipFile");
 			}
 			
 			long start = LocateEntry(entries_[entryIndex]);
@@ -850,8 +856,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="strategy">The <see cref="TestStrategy"></see> to apply.</param>
 		/// <param name="resultHandler">The <see cref="ZipTestResultHandler"></see> handler to call during testing.</param>
 		/// <returns>true if all tests pass, false otherwise</returns>
+		/// <exception cref="ObjectDisposedException">The object has already been closed.</exception>
 		public bool TestArchive(bool testData, TestStrategy strategy, ZipTestResultHandler resultHandler)
 		{
+			if (isDisposed_) {
+				throw new ObjectDisposedException("ZipFile");
+			}
+			
 			TestStatus status = new TestStatus(this);
 
 			if ( resultHandler != null ) {
@@ -1331,18 +1342,25 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="archiveStorage">The <see cref="IArchiveStorage">archive storage</see> for use during the update.</param>
 		/// <param name="dataSource">The <see cref="IDynamicDataSource">data source</see> to utilise during updating.</param>
+		/// <exception cref="ObjectDisposedException">ZipFile has been closed.</exception>
+		/// <exception cref="ArgumentNullException">One of the arguments provided is null</exception>
+		/// <exception cref="ObjectDisposedException">ZipFile has been closed.</exception>
 		public void BeginUpdate(IArchiveStorage archiveStorage, IDynamicDataSource dataSource)
 		{
-			if ( IsEmbeddedArchive ) {
-				throw new ZipException ("Cannot update embedded/SFX archives");
-			}
-
 			if ( archiveStorage == null ) {
 				throw new ArgumentNullException("archiveStorage");
 			}
 
 			if ( dataSource == null ) {
 				throw new ArgumentNullException("dataSource");
+			}
+			
+			if ( isDisposed_ ) {
+				throw new ObjectDisposedException("ZipFile");
+			}
+
+			if ( IsEmbeddedArchive ) {
+				throw new ZipException ("Cannot update embedded/SFX archives");
 			}
 
 			archiveStorage_ = archiveStorage;
@@ -1352,15 +1370,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			updateIndex_ = new Hashtable();
 
-			if ( entries_ != null ) {
-				updates_ = new ArrayList(entries_.Length);
-				foreach(ZipEntry entry in entries_) {
-					int index = updates_.Add(new ZipUpdate(entry));
-					updateIndex_.Add(entry.Name, index);
-				}
-			}
-			else {
-				updates_ = new ArrayList();
+			updates_ = new ArrayList(entries_.Length);
+			foreach(ZipEntry entry in entries_) {
+				int index = updates_.Add(new ZipUpdate(entry));
+				updateIndex_.Add(entry.Name, index);
 			}
 
 			updateCount_ = updates_.Count;
@@ -1400,12 +1413,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <seealso cref="BeginUpdate()"></seealso>
 		/// <seealso cref="AbortUpdate"></seealso>
+		/// <exception cref="ObjectDisposedException">ZipFile has been closed.</exception>
 		public void CommitUpdate()
 		{
+			if ( isDisposed_ ) {
+				throw new ObjectDisposedException("ZipFile");
+			}
+			
 			CheckUpdating();
 
-			try
-			{
+			try {
 				updateIndex_.Clear();
 				updateIndex_=null;
 
@@ -1417,7 +1434,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else {
 					// Create an empty archive if none existed originally.
-					if( (entries_!=null)&&(entries_.Length==0) ) {
+					if( entries_.Length==0 ) {
 						byte[] theComment=(newComment_!=null)?newComment_.RawComment:ZipConstants.ConvertToArray(comment_);
 						using( ZipHelperStream zhs=new ZipHelperStream(baseStream_) ) {
 							zhs.WriteEndOfCentralDirectory(0, 0, 0, theComment);
@@ -1445,8 +1462,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Set the file comment to be recorded when the current update is <see cref="CommitUpdate">commited</see>.
 		/// </summary>
 		/// <param name="comment">The comment to record.</param>
+		/// <exception cref="ObjectDisposedException">ZipFile has been closed.</exception>
 		public void SetComment(string comment)
 		{
+			if ( isDisposed_ ) {
+				throw new ObjectDisposedException("ZipFile");
+			}
+
 			CheckUpdating();
 
 			newComment_ = new ZipString(comment);
@@ -1492,14 +1514,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="fileName">The name of the file to add.</param>
 		/// <param name="compressionMethod">The compression method to use.</param>
 		/// <param name="useUnicodeText">Ensure Unicode text is used for name and comment for this entry.</param>
+		/// <exception cref="ArgumentNullException">Argument supplied is null.</exception>
+		/// <exception cref="ObjectDisposedException">ZipFile has been closed.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">Compression method is not supported.</exception>
 		public void Add(string fileName, CompressionMethod compressionMethod, bool useUnicodeText )
 		{
 			if (fileName == null) {
 				throw new ArgumentNullException("fileName");
 			}
 
+			if ( isDisposed_ ) {
+				throw new ObjectDisposedException("ZipFile");
+			}
+
 			if (!ZipEntry.IsCompressionMethodSupported(compressionMethod)) {
-				throw new ZipException("Compression method not supported");
+				throw new ArgumentOutOfRangeException("Compression method not supported");
 			}
 
 			CheckUpdating();
@@ -1517,6 +1546,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="fileName">The name of the file to add.</param>
 		/// <param name="compressionMethod">The compression method to use.</param>
+		/// <exception cref="ArgumentNullException">ZipFile has been closed.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">The compression method is not supported.</exception>
 		public void Add(string fileName, CompressionMethod compressionMethod)
 		{
 			if ( fileName == null ) {
@@ -1524,7 +1555,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			if ( !ZipEntry.IsCompressionMethodSupported(compressionMethod) ) {
-				throw new ZipException("Compression method not supported");
+				throw new ArgumentOutOfRangeException("Compression method not supported");
 			}
 
 			CheckUpdating();
@@ -1539,6 +1570,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Add a file to the archive.
 		/// </summary>
 		/// <param name="fileName">The name of the file to add.</param>
+		/// <exception cref="ArgumentNullException">Argument supplied is null.</exception>
 		public void Add(string fileName)
 		{
 			if ( fileName == null ) {
@@ -1554,13 +1586,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="fileName">The name of the file to add.</param>
 		/// <param name="entryName">The name to use for the <see cref="ZipEntry"/> on the Zip file created.</param>
+		/// <exception cref="ArgumentNullException">Argument supplied is null.</exception>
 		public void Add(string fileName, string entryName)
 		{
-			if (fileName == null)
-			{
+			if (fileName == null) {
 				throw new ArgumentNullException("fileName");
 			}
 
+			if ( entryName == null ) {
+				throw new ArgumentNullException("entryName");
+			}
+			
 			CheckUpdating();
 			AddUpdate(new ZipUpdate(fileName, EntryFactory.MakeFileEntry(entryName)));
 		}
@@ -1577,6 +1613,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException("dataSource");
 			}
 
+			if ( entryName == null ) {
+				throw new ArgumentNullException("entryName");
+			}
+
 			CheckUpdating();
 			AddUpdate(new ZipUpdate(dataSource, EntryFactory.MakeFileEntry(entryName)));
 		}
@@ -1591,6 +1631,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			if ( dataSource == null ) {
 				throw new ArgumentNullException("dataSource");
+			}
+
+			if ( entryName == null ) {
+				throw new ArgumentNullException("entryName");
 			}
 
 			CheckUpdating();
@@ -1612,6 +1656,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			if (dataSource == null) {
 				throw new ArgumentNullException("dataSource");
+			}
+
+			if ( entryName == null ) {
+				throw new ArgumentNullException("entryName");
 			}
 
 			CheckUpdating();
@@ -1690,6 +1738,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>True if the entry was found and deleted; false otherwise.</returns>
 		public bool Delete(string fileName)
 		{
+			if ( fileName == null ) {
+				throw new ArgumentNullException("entryName");
+			}
+			
 			CheckUpdating();
 
 			bool result = false;
@@ -1712,6 +1764,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="entry">The entry to delete.</param>
 		public void Delete(ZipEntry entry)
 		{
+			if ( entry == null ) {
+				throw new ArgumentNullException("entry");
+			}
+			
 			CheckUpdating();
 
 			int index = FindExistingUpdate(entry);
@@ -2025,6 +2081,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return ZipConstants.CentralHeaderBaseSize + name.Length + centralExtraData.Length + rawComment.Length;
 		}
 		#endregion
+		
 		void PostUpdateCleanup()
 		{
 			if( archiveStorage_!=null ) {
@@ -2710,7 +2767,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		void CheckUpdating()
 		{
 			if ( updates_ == null ) {
-				throw new ZipException("Cannot update until BeginUpdate has been called");
+				throw new InvalidOperationException("BeginUpdate has not been called");
 			}
 		}
 
@@ -2884,12 +2941,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			if ( !isDisposed_ ) {
 				isDisposed_ = true;
-				entries_ = null;
+				entries_ = new ZipEntry[0];
+						
 				if ( IsStreamOwner && (baseStream_ != null) ) {
 					lock(baseStream_) {
 						baseStream_.Close();
 					}
 				}
+				
+				PostUpdateCleanup();
 			}
 		}
 
@@ -3238,6 +3298,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		// Default is dynamic which is not backwards compatible and can cause problems
 		// with XP's built in compression which cant read Zip64 archives.
 		// However it does avoid the situation were a large file is added and cannot be completed correctly.
+		// Hint: Set always ZipEntry size before they are added to an archive and this setting isnt needed.
 		UseZip64 useZip64_ = UseZip64.Dynamic ;
 		
 		#region Zip Update Instance Fields
