@@ -54,6 +54,7 @@
     <Compile Include="Checksums\IChecksum.cs" />
     <Compile Include="Checksums\Adler32.cs" />
     <Compile Include="Checksums\Crc32.cs" />
+    <Compile Include="Zip\WindowsNameTransform.cs" />
     <Compile Include="Zip\ZipEntry.cs" />
     <Compile Include="Zip\ZipInputStream.cs" />
     <Compile Include="Zip\ZipOutputStream.cs" />
