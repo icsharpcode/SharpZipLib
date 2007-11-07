@@ -1012,7 +1012,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				}
 				
 				med = Med3(block[zptr[lo] + d + 1],
-						   block[zptr[hi            ] + d  + 1],
+						   block[zptr[hi            ] + d + 1],
 						   block[zptr[(lo + hi) >> 1] + d + 1]);
 				
 				unLo = ltLo = lo;
@@ -1025,8 +1025,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 						}
 						n = ((int)block[zptr[unLo]+d + 1]) - med;
 						if (n == 0) {
-							int temp = 0;
-							temp = zptr[unLo];
+							int temp = zptr[unLo];
 							zptr[unLo] = zptr[ltLo];
 							zptr[ltLo] = temp;
 							ltLo++;
@@ -1045,8 +1044,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 						}
 						n = ((int)block[zptr[unHi]+d + 1]) - med;
 						if (n == 0) {
-							int temp = 0;
-							temp = zptr[unHi];
+							int temp = zptr[unHi];
 							zptr[unHi] = zptr[gtHi];
 							zptr[gtHi] = temp;
 							gtHi--;
