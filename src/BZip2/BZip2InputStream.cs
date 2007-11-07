@@ -63,11 +63,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		public BZip2InputStream(Stream stream) 
 		{
 			// init arrays
-			for (int i = 0; i < BZip2Constants.N_GROUPS; ++i) 
+			for (int i = 0; i < BZip2Constants.GroupCount; ++i) 
 			{
-				limit[i] = new int[BZip2Constants.MAX_ALPHA_SIZE];
-				baseArray[i]  = new int[BZip2Constants.MAX_ALPHA_SIZE];
-				perm[i]  = new int[BZip2Constants.MAX_ALPHA_SIZE];
+				limit[i] = new int[BZip2Constants.MaximumAlphaSize];
+				baseArray[i]  = new int[BZip2Constants.MaximumAlphaSize];
+				perm[i]  = new int[BZip2Constants.MaximumAlphaSize];
 			}
 			
 			BsSetStream(stream);
@@ -397,30 +397,25 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			return (char)BsR(8);
 		}
 		
-		int BsGetint() 
-		{
-			int u =        BsR(8);
-			u = (u << 8) | BsR(8);
-			u = (u << 8) | BsR(8);
-			u = (u << 8) | BsR(8);
-			return u;
-		}
-		
 		int BsGetIntVS(int numBits) 
 		{
 			return BsR(numBits);
 		}
 		
-		int BsGetInt32() 
+		int BsGetInt32()
 		{
-			return BsGetint();
+			int result = BsR(8);
+			result = (result << 8) | BsR(8);
+			result = (result << 8) | BsR(8);
+			result = (result << 8) | BsR(8);
+			return result;
 		}
 		
 		void RecvDecodingTables() 
 		{
-			char[][] len = new char[BZip2Constants.N_GROUPS][];
-			for (int i = 0; i < BZip2Constants.N_GROUPS; ++i) {
-				len[i] = new char[BZip2Constants.MAX_ALPHA_SIZE];
+			char[][] len = new char[BZip2Constants.GroupCount][];
+			for (int i = 0; i < BZip2Constants.GroupCount; ++i) {
+				len[i] = new char[BZip2Constants.MaximumAlphaSize];
 			}
 			
 			bool[] inUse16 = new bool[16];
@@ -458,7 +453,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 			
 			//--- Undo the MTF values for the selectors. ---
-			byte[] pos = new byte[BZip2Constants.N_GROUPS];
+			byte[] pos = new byte[BZip2Constants.GroupCount];
 			for (int v = 0; v < nGroups; v++) {
 				pos[v] = (byte)v;
 			}
@@ -507,7 +502,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			byte[] yy = new byte[256];
 			int nextSym;
 			
-			int limitLast = BZip2Constants.baseBlockSize * blockSize100k;
+			int limitLast = BZip2Constants.BaseBlockSize * blockSize100k;
 			origPtr = BsGetIntVS(24);
 			
 			RecvDecodingTables();
@@ -533,7 +528,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			
 			if (groupPos == 0) {
 				groupNo++;
-				groupPos = BZip2Constants.G_SIZE;
+				groupPos = BZip2Constants.GroupSize;
 			}
 			
 			groupPos--;
@@ -554,7 +549,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				bsLive--;
 				zvec = (zvec << 1) | zj;
 			}
-			if (zvec - baseArray[zt][zn] < 0 || zvec - baseArray[zt][zn] >= BZip2Constants.MAX_ALPHA_SIZE) {
+			if (zvec - baseArray[zt][zn] < 0 || zvec - baseArray[zt][zn] >= BZip2Constants.MaximumAlphaSize) {
 				throw new BZip2Exception("Bzip data error");
 			}
 			nextSym = perm[zt][zvec - baseArray[zt][zn]];
@@ -564,13 +559,13 @@ namespace ICSharpCode.SharpZipLib.BZip2
 					break;
 				}
 				
-				if (nextSym == BZip2Constants.RUNA || nextSym == BZip2Constants.RUNB) {
+				if (nextSym == BZip2Constants.RunA || nextSym == BZip2Constants.RunB) {
 					int s = -1;
 					int n = 1;
 					do {
-						if (nextSym == BZip2Constants.RUNA) {
+						if (nextSym == BZip2Constants.RunA) {
 							s += (0 + 1) * n;
-						} else if (nextSym == BZip2Constants.RUNB) {
+						} else if (nextSym == BZip2Constants.RunB) {
 							s += (1 + 1) * n;
 						}
 
@@ -578,7 +573,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 						
 						if (groupPos == 0) {
 							groupNo++;
-							groupPos = BZip2Constants.G_SIZE;
+							groupPos = BZip2Constants.GroupSize;
 						}
 						
 						groupPos--;
@@ -597,7 +592,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 							zvec = (zvec << 1) | zj;
 						}
 						nextSym = perm[zt][zvec - baseArray[zt][zn]];
-					} while (nextSym == BZip2Constants.RUNA || nextSym == BZip2Constants.RUNB);
+					} while (nextSym == BZip2Constants.RunA || nextSym == BZip2Constants.RunB);
 					
 					s++;
 					byte ch = seqToUnseq[yy[0]];
@@ -630,7 +625,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 					
 					if (groupPos == 0) {
 						groupNo++;
-						groupPos = BZip2Constants.G_SIZE;
+						groupPos = BZip2Constants.GroupSize;
 					}
 					
 					groupPos--;
@@ -693,7 +688,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				ch2  = ll8[tPos];
 				tPos = tt[tPos];
 				if (rNToGo == 0) {
-					rNToGo = BZip2Constants.rNums[rTPos];
+					rNToGo = BZip2Constants.RandomNumbers[rTPos];
 					rTPos++;
 					if (rTPos == 512) {
 						rTPos = 0;
@@ -743,7 +738,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 					z = ll8[tPos];
 					tPos = tt[tPos];
 					if (rNToGo == 0) {
-						rNToGo = BZip2Constants.rNums[rTPos];
+						rNToGo = BZip2Constants.RandomNumbers[rTPos];
 						rTPos++;
 						if (rTPos == 512) {
 							rTPos = 0;
@@ -822,7 +817,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				return;
 			}
 			
-			int n = BZip2Constants.baseBlockSize * newSize100k;
+			int n = BZip2Constants.BaseBlockSize * newSize100k;
 			ll8 = new byte[n];
 			tt  = new int[n];
 		}
@@ -863,7 +858,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				}
 			}
 			
-			for (int i = 0; i < BZip2Constants.MAX_CODE_LEN; i++) 
+			for (int i = 0; i < BZip2Constants.MaximumCodeLength; i++) 
 			{
 				baseArray[i] = 0;
 			}
@@ -873,12 +868,12 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				++baseArray[length[i] + 1];
 			}
 			
-			for (int i = 1; i < BZip2Constants.MAX_CODE_LEN; i++) 
+			for (int i = 1; i < BZip2Constants.MaximumCodeLength; i++) 
 			{
 				baseArray[i] += baseArray[i - 1];
 			}
 			
-			for (int i = 0; i < BZip2Constants.MAX_CODE_LEN; i++) 
+			for (int i = 0; i < BZip2Constants.MaximumCodeLength; i++) 
 			{
 				limit[i] = 0;
 			}
@@ -928,8 +923,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		byte[] seqToUnseq = new byte[256];
 		byte[] unseqToSeq = new byte[256];
 		
-		byte[] selector    = new byte[BZip2Constants.MAX_SELECTORS];
-		byte[] selectorMtf = new byte[BZip2Constants.MAX_SELECTORS];
+		byte[] selector    = new byte[BZip2Constants.MaximumSelectors];
+		byte[] selectorMtf = new byte[BZip2Constants.MaximumSelectors];
 		
 		int[] tt;
 		byte[] ll8;
@@ -940,10 +935,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		--*/
 		int[] unzftab = new int[256];
 		
-		int[][] limit     = new int[BZip2Constants.N_GROUPS][];
-		int[][] baseArray = new int[BZip2Constants.N_GROUPS][];
-		int[][] perm      = new int[BZip2Constants.N_GROUPS][];
-		int[] minLens     = new int[BZip2Constants.N_GROUPS];
+		int[][] limit     = new int[BZip2Constants.GroupCount][];
+		int[][] baseArray = new int[BZip2Constants.GroupCount][];
+		int[][] perm      = new int[BZip2Constants.GroupCount][];
+		int[] minLens     = new int[BZip2Constants.GroupCount];
 		
 		Stream baseStream;
 		bool   streamEnd;
