@@ -254,51 +254,47 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// Clear flags that the library manages internally
 			entry.Flags &= (int)GeneralBitFlags.UnicodeText;
 			patchEntryHeader = false;
-			bool headerInfoAvailable = true;
-			
-			if (method == CompressionMethod.Stored) {
-				// Cant store values in a data descriptor as you cant extract stored files
-				// if the length isnt known.
-				entry.Flags &= ~8;
-				if (entry.CompressedSize >= 0) {
-					if (entry.Size < 0) {
-						entry.Size = entry.CompressedSize;
-					} else if (entry.Size != entry.CompressedSize) {
-						throw new ZipException("Method STORED, but compressed size != size");
+
+			bool headerInfoAvailable;
+
+			// No need to compress - definitely no data.
+			if (entry.Size == 0)
+			{
+				entry.CompressedSize = entry.Size;
+				entry.Crc = 0;
+				method = CompressionMethod.Stored;
+				headerInfoAvailable = true;
+			}
+			else
+			{
+				headerInfoAvailable = (entry.Size >= 0) && entry.HasCrc;
+
+				// Switch to deflation if storing isnt possible.
+				if (method == CompressionMethod.Stored)
+				{
+					if (!headerInfoAvailable)
+					{
+						if (!CanPatchEntries)
+						{
+							// Can't patch entries so storing is not possible.
+							method = CompressionMethod.Deflated;
+							compressionLevel = 0;
+						}
 					}
-				} else {
-					if (entry.Size >= 0) {
+					else // entry.size must be > 0
+					{
 						entry.CompressedSize = entry.Size;
-					}
-				}
-					
-				if (entry.Size < 0 || entry.Crc < 0) {
-					if (CanPatchEntries == true) {
-						headerInfoAvailable = false;
-					}
-					else {
-						// Can't patch entries so storing is not possible.
-						method = CompressionMethod.Deflated;
-						compressionLevel = 0;
+						headerInfoAvailable = entry.HasCrc;
 					}
 				}
 			}
-				
-			if (method == CompressionMethod.Deflated) {
-				if (entry.Size == 0) {
-					// No need to compress - no data.
-					entry.CompressedSize = entry.Size;
-					entry.Crc = 0;
-					method = CompressionMethod.Stored;
-				} else if ( (entry.CompressedSize < 0) || (entry.Size < 0) || (entry.Crc < 0) ) {
-					headerInfoAvailable = false;
-				}
-			}
-			
+
 			if (headerInfoAvailable == false) {
 				if (CanPatchEntries == false) {
 					// Only way to record size and compressed size is to append a data descriptor
 					// after compressed data.
+
+					// Stored entries of this form have already been converted to deflating.
 					entry.Flags |= 8;
 				} else {
 					patchEntryHeader = true;
