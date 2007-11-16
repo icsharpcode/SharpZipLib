@@ -16,14 +16,14 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	/// An extended <see cref="MemoryStream">memory stream</see>
 	/// that tracks closing and disposing
 	/// </summary>
-	public class MemoryStreamEx : MemoryStream
+	public class TrackedMemoryStream : MemoryStream
 	{
-		public MemoryStreamEx()
+		public TrackedMemoryStream()
 			: base()
 		{
 		}
 
-		public MemoryStreamEx(byte[] buffer)
+		public TrackedMemoryStream(byte[] buffer)
 			: base(buffer)
 		{
 		}
@@ -48,7 +48,6 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		public bool IsDisposed
 		{
 			get { return isDisposed_; }
-			set { isDisposed_=value; }
 		}
 
 		#region Instance Fields
@@ -61,7 +60,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	/// <summary>
 	/// A <see cref="Stream"/> that cannot seek.
 	/// </summary>
-	public class MemoryStreamWithoutSeek : MemoryStreamEx
+	public class MemoryStreamWithoutSeek : TrackedMemoryStream
 	{
 		public override bool CanSeek
 		{
@@ -72,7 +71,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	}
 
 	/// <summary>
-	/// A <see cref="Stream"/> that cannot be read but support infinite writes.
+	/// A <see cref="Stream"/> that cannot be read but supports infinite writes.
 	/// </summary>
 	public class NullStream : Stream
 	{
@@ -93,6 +92,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		public override void Flush()
 		{
+			// Do nothing.
 		}
 
 		public override long Length
@@ -129,12 +129,13 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		public override void Write(byte[] buffer, int offset, int count)
 		{
+			// Do nothing.
 		}
 	}
 
 	/// <summary>
 	/// A <see cref="Stream"/> that supports reading and writing from a fixed size memory buffer.
-	/// This provides the ability to test writing and reading from very large stream 
+	/// This provides the ability to test writing and reading from very large streams 
 	/// without using any disk storeage
 	/// </summary>
 	public class WindowedStream : Stream
