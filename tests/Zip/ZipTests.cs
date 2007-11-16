@@ -698,12 +698,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			outStream.WriteByte(89);
 			outStream.Close();
 
-			MemoryStream ms = new MemoryStream(msw.ToArray());
-			using (ZipFile zf = new ZipFile(ms))
-			{
-				Assert.IsTrue(zf.TestArchive(true));
-			}
-
+			Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
 
 			msw = new MemoryStreamWithoutSeek();
 			outStream = new ZipOutputStream(msw);
@@ -714,11 +709,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			outStream.WriteByte(89);
 			outStream.Close();
 
-			ms = new MemoryStream(msw.ToArray());
-			using (ZipFile zf = new ZipFile(ms))
-			{
-				Assert.IsTrue(zf.TestArchive(true));
-			}
+			Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
 		}
 
 		/// <summary>
@@ -740,11 +731,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			outStream.Finish();
 			outStream.Close();
 
-			MemoryStream ms = new MemoryStream(msw.ToArray());
-			using (ZipFile zf = new ZipFile(ms))
-			{
-				Assert.IsTrue(zf.TestArchive(true));
-			}
+			Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
 		}
 		/// <summary>
 		/// Empty zip entries can be created and read?
@@ -813,7 +800,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Test]
 		public void BaseClosedWhenOwner()
 		{
-			MemoryStreamEx ms=new MemoryStreamEx();
+			TrackedMemoryStream ms=new TrackedMemoryStream();
 
 			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed");
 
@@ -831,7 +818,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Test]
 		public void BaseNotClosedWhenNotOwner()
 		{
-			MemoryStreamEx ms=new MemoryStreamEx();
+			TrackedMemoryStream ms=new TrackedMemoryStream();
 
 			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed");
 
@@ -849,7 +836,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Test]
 		public void BaseClosedAfterFailure()
 		{
-			MemoryStreamEx ms=new MemoryStreamEx(new byte[32]);
+			TrackedMemoryStream ms=new TrackedMemoryStream(new byte[32]);
 
 			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed initially");
 			bool blewUp = false;
@@ -1004,15 +991,62 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 	}
 
-	[TestFixture]
-	public class NameHandling : ZipBase
+	public class TransformBase : ZipBase
 	{
-		void TestFile(ZipNameTransform t, string original, string expected)
+		protected void TestFile(INameTransform t, string original, string expected)
 		{
 			string transformed = t.TransformFile(original);
 			Assert.AreEqual(expected, transformed, "Should be equal");
 		}
 
+		protected void TestDirectory(INameTransform t, string original, string expected)
+		{
+			string transformed = t.TransformDirectory(original);
+			Assert.AreEqual(expected, transformed, "Should be equal");
+		}
+	}
+
+	[TestFixture]
+	public class WindowsNameTransformHandling : TransformBase
+	{
+
+		[Test]
+		public void BasicFiles()
+		{
+			WindowsNameTransform wnt = new WindowsNameTransform();
+			wnt.TrimIncomingPaths = false;
+
+			TestFile(wnt, "Bogan", "Bogan");
+			TestFile(wnt, "absolute/file2", @"absolute\file2");
+			TestFile(wnt, "C:/base/////////t", "C:\\");
+		}
+
+		[Test]
+		public void BasicDirectories()
+		{
+			WindowsNameTransform wnt = new WindowsNameTransform();
+			wnt.TrimIncomingPaths = false;
+
+			string tutu = Path.GetDirectoryName("\\bogan\\ping.txt");
+			TestDirectory(wnt, "d/", "d");
+			TestDirectory(wnt, "d", "d");
+			TestDirectory(wnt, "absolute/file2", @"absolute\file2");
+
+			const string BaseDir1 =  @"C:\Dir";
+			wnt.BaseDirectory = BaseDir1;
+
+			TestDirectory(wnt, "talofa", Path.Combine(BaseDir1 , "talofa"));
+
+			const string BaseDir2 = @"C:\Dir\";
+			wnt.BaseDirectory = BaseDir2;
+
+			TestDirectory(wnt, "talofa", Path.Combine(BaseDir2, "talofa"));
+		}
+	}
+
+	[TestFixture]
+	public class ZipNameTransformHandling : TransformBase
+	{
 		[Test]
 		[Category("Zip")]
 		public void Basic()
@@ -1042,6 +1076,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.AreEqual("Pongo/Directory/", t.TransformDirectory(@"C:\Slippery\Pongo\Directory"), "Value should be trimmed and converted");
 			Assert.AreEqual("PoNgo/Directory/", t.TransformDirectory(@"c:\slipperY\PoNgo\Directory"), "Trimming should be case insensitive");
 			Assert.AreEqual("slippery/Pongo/Directory/", t.TransformDirectory(@"d:\slippery\Pongo\Directory"), "Trimming should be case insensitive");
+
+			Assert.AreEqual("Pongo/File", t.TransformFile(@"C:\Slippery\Pongo\File"), "Value should be trimmed and converted");
 		}
 
 		/// <summary>
@@ -1070,7 +1106,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			Assert.IsTrue(ZipNameTransform.IsValidName(result));
 		}
-
 	}
 
 	/// <summary>
@@ -1417,6 +1452,98 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		public void BasicStoredNonSeekable()
 		{
 			ExerciseZip(CompressionMethod.Stored, 0, 50000, null, false);
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void StoredNonSeekableKnownSizeNoCrc()
+		{
+			// This cannot be stored directly as the crc is not be known.
+			const int TargetSize = 21348;
+			const string Password = null;
+
+			MemoryStream ms = new MemoryStreamWithoutSeek();
+
+			using (ZipOutputStream outStream = new ZipOutputStream(ms))
+			{
+				outStream.Password = Password;
+				outStream.IsStreamOwner = false;
+				ZipEntry entry = new ZipEntry("dummyfile.tst");
+				entry.CompressionMethod = CompressionMethod.Stored;
+
+				// The bit thats in question is setting the size before its added to the archive.
+				entry.Size = TargetSize;
+
+				outStream.PutNextEntry(entry);
+
+				Assert.AreEqual(CompressionMethod.Deflated, entry.CompressionMethod, "Entry should be deflated");
+				Assert.AreEqual(-1, entry.CompressedSize, "Compressed size should be known");
+				
+				System.Random rnd = new Random();
+
+				int size = TargetSize;
+				byte[] original = new byte[size];
+				rnd.NextBytes(original);
+
+				// Although this could be written in one chunk doing it in lumps
+				// throws up buffering problems including with encryption the original
+				// source for this change.
+				int index = 0;
+				while (size > 0) {
+					int count = (size > 0x200) ? 0x200 : size;
+					outStream.Write(original, index, count);
+					size -= 0x200;
+					index += count;
+				}
+
+			}
+			Assert.IsTrue(ZipTesting.TestArchive(ms.ToArray()));
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void StoredNonSeekableKnownSizeNoCrcEncrypted()
+		{
+			// This cant be stored directly as the crc is not known
+			const int TargetSize = 24692;
+			const string Password = "Mabutu";
+
+			MemoryStream ms = new MemoryStreamWithoutSeek();
+
+			using (ZipOutputStream outStream = new ZipOutputStream(ms))
+			{
+				outStream.Password = Password;
+				outStream.IsStreamOwner = false;
+				ZipEntry entry = new ZipEntry("dummyfile.tst");
+				entry.CompressionMethod = CompressionMethod.Stored;
+
+				// The bit thats in question is setting the size before its added to the archive.
+				entry.Size = TargetSize;
+
+				outStream.PutNextEntry(entry);
+
+				Assert.AreEqual(CompressionMethod.Deflated, entry.CompressionMethod, "Entry should be stored");
+				Assert.AreEqual(-1, entry.CompressedSize, "Compressed size should be known");
+
+				System.Random rnd = new Random();
+
+				int size = TargetSize;
+				byte[] original = new byte[size];
+				rnd.NextBytes(original);
+
+				// Although this could be written in one chunk doing it in lumps
+				// throws up buffering problems including with encryption the original
+				// source for this change.
+				int index = 0;
+				while (size > 0)
+				{
+					int count = (size > 0x200) ? 0x200 : size;
+					outStream.Write(original, index, count);
+					size -= 0x200;
+					index += count;
+				}
+			}
+			Assert.IsTrue(ZipTesting.TestArchive(ms.ToArray(), Password));
 		}
 
 		/// <summary>
