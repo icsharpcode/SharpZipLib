@@ -480,33 +480,37 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			
 			if ( e.ContinueRunning ) {
-				ZipEntry entry = entryFactory_.MakeFileEntry(e.Name);
-				outputStream_.PutNextEntry(entry);
-				AddFileContents(e.Name);
+				using( FileStream stream=File.OpenRead(e.Name) ) {
+					ZipEntry entry=entryFactory_.MakeFileEntry(e.Name);
+					outputStream_.PutNextEntry(entry);
+					AddFileContents(e.Name, stream);
+				}
 			}
 		}
 
-		void AddFileContents(string name)
+		void AddFileContents(string name, Stream stream)
 		{
-			if ( buffer_ == null ) {
-				buffer_ = new byte[4096];
+			if( stream==null ) {
+				throw new ArgumentNullException("stream");
 			}
 
-			using (FileStream stream = File.OpenRead(name)) {
-				if ((events_ != null) && (events_.Progress != null)) {
-					StreamUtils.Copy(stream, outputStream_, buffer_,
-						events_.Progress, events_.ProgressInterval, this, name);
-				}
-				else {
-					StreamUtils.Copy(stream, outputStream_, buffer_);
-				}
+			if( buffer_==null ) {
+				buffer_=new byte[4096];
 			}
 
-			if (events_ != null) {
-				continueRunning_ = events_.OnCompletedFile(name);
+			if( (events_!=null)&&(events_.Progress!=null) ) {
+				StreamUtils.Copy(stream, outputStream_, buffer_,
+					events_.Progress, events_.ProgressInterval, this, name);
+			}
+			else {
+				StreamUtils.Copy(stream, outputStream_, buffer_);
+			}
+
+			if( events_!=null ) {
+				continueRunning_=events_.OnCompletedFile(name);
 			}
 		}
-		
+
 		void ExtractFileEntry(ZipEntry entry, string targetName)
 		{
 			bool proceed = true;
