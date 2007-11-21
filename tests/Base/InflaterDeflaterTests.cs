@@ -212,7 +212,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		[Category("Base")]
 		public void DeflatorStreamOwnership()
 		{
-			MemoryStreamEx memStream = new MemoryStreamEx();
+			TrackedMemoryStream memStream = new TrackedMemoryStream();
 			DeflaterOutputStream s = new DeflaterOutputStream(memStream);
 			
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
@@ -223,7 +223,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
 			Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
 			
-			memStream = new MemoryStreamEx();
+			memStream = new TrackedMemoryStream();
 			s = new DeflaterOutputStream(memStream);
 			
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
@@ -241,7 +241,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		[Category("Base")]
 		public void InflatorStreamOwnership()
 		{
-			MemoryStreamEx memStream = new MemoryStreamEx();
+			TrackedMemoryStream memStream = new TrackedMemoryStream();
 			InflaterInputStream s = new InflaterInputStream(memStream);
 
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
@@ -252,7 +252,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
 			Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
 
-			memStream = new MemoryStreamEx();
+			memStream = new TrackedMemoryStream();
 			s = new InflaterInputStream(memStream);
 
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");

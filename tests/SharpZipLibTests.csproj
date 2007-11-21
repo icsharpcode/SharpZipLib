@@ -35,23 +35,19 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <StartAction>Program</StartAction>
-    <StartProgram>C:\Program Files\NUnit-Net-2.0 2.2.9\bin\nunit-gui.exe</StartProgram>
+    <StartProgram>..\..\..\..\..\..\..\..\..\Bin\Nunit\bin\nunit.exe</StartProgram>
     <StartArguments>SharpZipLibTests.dll</StartArguments>
-    <StartWorkingDirectory>bin\Debug\</StartWorkingDirectory>
+    <StartWorkingDirectory>.</StartWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <StartArguments>SharpZipLibTests.dll</StartArguments>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.4.1.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\..\Bin\Nunit-2.4\bin\nunit.framework.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Core\Core.cs" />
     <Compile Include="TestSupport\RingBuffer.cs" />
     <Compile Include="TestSupport\Streams.cs" />
+    <Compile Include="TestSupport\ZipTesting.cs" />
     <Compile Include="Zip\ZipTests.cs" />
     <Compile Include="BZip2\Bzip2Tests.cs" />
     <Compile Include="GZip\GZipTests.cs" />
@@ -63,6 +59,15 @@
       <Project>{18D20629-913A-4474-B2D1-643290E14ED7}</Project>
       <Name>ICSharpCode.SharpZLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.4.3.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\..\Bin\Nunit\bin\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

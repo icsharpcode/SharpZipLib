@@ -120,7 +120,7 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 		[Category("GZip")]
 		public void OutputStreamOwnership()
 		{
-			MemoryStreamEx memStream = new MemoryStreamEx();
+			TrackedMemoryStream memStream = new TrackedMemoryStream();
 			GZipOutputStream s = new GZipOutputStream(memStream);
 
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
@@ -131,7 +131,7 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
 			Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
 
-			memStream = new MemoryStreamEx();
+			memStream = new TrackedMemoryStream();
 			s = new GZipOutputStream(memStream);
 
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
@@ -148,7 +148,7 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 		[Category("GZip")]
 		public void InputStreamOwnership()
 		{
-			MemoryStreamEx memStream = new MemoryStreamEx();
+			TrackedMemoryStream memStream = new TrackedMemoryStream();
 			GZipInputStream s = new GZipInputStream(memStream);
 
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
@@ -159,7 +159,7 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
 			Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
 
-			memStream = new MemoryStreamEx();
+			memStream = new TrackedMemoryStream();
 			s = new GZipInputStream(memStream);
 
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
