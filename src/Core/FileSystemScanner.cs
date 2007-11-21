@@ -57,7 +57,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		#endregion
 		
 		/// <summary>
-		/// The fie or directory name for this event.
+		/// The file or directory name for this event.
 		/// </summary>
 		public string Name
 		{
@@ -194,7 +194,7 @@ namespace ICSharpCode.SharpZipLib.Core
 	/// <summary>
 	/// Arguments passed when scan failures are detected.
 	/// </summary>
-	public class ScanFailureEventArgs
+	public class ScanFailureEventArgs : EventArgs
 	{
 		#region Constructors
 		/// <summary>
@@ -398,9 +398,11 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="file">The file name.</param>
 		void OnProcessFile(string file)
 		{
-			if ( ProcessFile != null ) {
+			ProcessFileHandler handler = ProcessFile;
+
+			if ( handler!= null ) {
 				ScanEventArgs args = new ScanEventArgs(file);
-				ProcessFile(this, args);
+				handler(this, args);
 				alive_ = args.ContinueRunning;
 			}
 		}
@@ -411,10 +413,12 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="file">The file name</param>
 		void OnCompleteFile(string file)
 		{
-			if (CompletedFile != null)
+			CompletedFileHandler handler = CompletedFile;
+
+			if (handler != null)
 			{
 				ScanEventArgs args = new ScanEventArgs(file);
-				CompletedFile(this, args);
+				handler(this, args);
 				alive_ = args.ContinueRunning;
 			}
 		}
@@ -426,9 +430,11 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="hasMatchingFiles">Flag indicating if the directory has matching files.</param>
 		void OnProcessDirectory(string directory, bool hasMatchingFiles)
 		{
-			if ( ProcessDirectory != null ) {
+			ProcessDirectoryHandler handler = ProcessDirectory;
+
+			if ( handler != null ) {
 				DirectoryEventArgs args = new DirectoryEventArgs(directory, hasMatchingFiles);
-				ProcessDirectory(this, args);
+				handler(this, args);
 				alive_ = args.ContinueRunning;
 			}
 		}
