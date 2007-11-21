@@ -8,6 +8,15 @@ Changes for 0.85.5?
 + Updates to unit tests
 + BZip2Constants made internal.  A breaking change in theory but no-one should be using these values.
 + BZip2 QSort3 optimised somewhat by changing StackElement from class to struct as per lytico suggestion.
++ Name filters allow quoting of ';' characters using \;
++ Fix GZIP flag checking bug
++ ArgumentNull instead of NullReference in tar header now thrown.
++ WindowsNameTransform now used in fastzip
++ Disposed checking in ZipFile beefed up.
++ Bug in entry handling for stored entries and sizing fixed.
++ Zip entries with zero bytes written optimised.
++ TarBuffer.IsEofBlock made obsolete use static TarBuffer.IsEndOfArchiveBlock instead.
+
 
 Changes for 0.85.4
 + Fix for encryption going awol in Zip archives sometimes
