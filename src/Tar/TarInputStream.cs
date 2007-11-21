@@ -429,7 +429,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			
 			if (headerBuf == null) {
 				this.hasHitEOF = true;
-			} else if (buffer.IsEOFBlock(headerBuf)) {
+			} else if (TarBuffer.IsEndOfArchiveBlock(headerBuf)) {
 				this.hasHitEOF = true;
 			}
 			

@@ -270,6 +270,7 @@ or which contains garbage records after a zero block.
 		/// </summary>
 		/// <param name = "block">The data block to check.</param>
 		/// <returns>Returns true if the block is an EOF block; false otherwise.</returns>
+		[Obsolete("Use IsEndOfArchiveBlock instead")]
 		public bool IsEOFBlock(byte[] block)
 		{
 			if ( block == null ) {
@@ -281,13 +282,41 @@ or which contains garbage records after a zero block.
 				throw new ArgumentException("block length is invalid");
 			}
 
-			for (int i = 0; i < BlockSize; ++i) 
-			{
+			for (int i = 0; i < BlockSize; ++i) {
 				if (block[i] != 0) {
 					return false;
 				}
 			}
 			
+			return true;
+		}
+
+
+		/// <summary>
+		/// Determine if an archive block indicates the End of an Archive has been reached.
+		/// End of archive is indicated by a block that consists entirely of null bytes.
+		/// All remaining blocks for the record should also be null's
+		/// However some older tars only do a couple of null blocks (Old GNU tar for one)
+		/// and also partial records
+		/// </summary>
+		/// <param name = "block">The data block to check.</param>
+		/// <returns>Returns true if the block is an EOF block; false otherwise.</returns>
+		public static bool IsEndOfArchiveBlock(byte[] block)
+		{
+			if ( block == null ) {
+				throw new ArgumentNullException("block");
+			}
+
+			if ( block.Length != BlockSize ) {
+				throw new ArgumentException("block length is invalid");
+			}
+
+			for ( int i = 0; i < BlockSize; ++i ) {
+				if ( block[i] != 0 ) {
+					return false;
+				}
+			}
+
 			return true;
 		}
 		
