@@ -126,17 +126,27 @@ namespace ICSharpCode.SharpZipLib.Zip
 					name = name.Substring(trimPrefix_.Length);
 				}
 
-				// The following can throw exceptions when the name contains invalid characters
-				if (Path.IsPathRooted(name) == true) {
-					// NOTE:
-					// for UNC names...  \\machine\share\zoom\beet.txt gives \zoom\beet.txt
-					name = name.Substring(Path.GetPathRoot(name).Length);
-				}
-				
 				name = name.Replace(@"\", "/");
+				name = WindowsPathUtils.DropPathRoot(name);
 
-				while ( (name.Length > 0) && (name[0] == '/')) {
+				// Drop any leading slashes.
+				while ((name.Length > 0) && (name[0] == '/'))
+				{
 					name = name.Remove(0, 1);
+				}
+
+				// Drop any trailing slashes.
+				while ((name.Length > 0) && (name[name.Length - 1] == '/'))
+				{
+					name = name.Remove(name.Length - 1, 1);
+				}
+
+				// Convert consecutive // characters to /
+				int index = name.IndexOf("//");
+				while (index >= 0)
+				{
+					name = name.Remove(index, 1);
+					index = name.IndexOf("//");
 				}
 
 				name = MakeValidName(name, '_');
@@ -172,7 +182,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		static string MakeValidName(string name, char replacement)
 		{
 			int index = name.IndexOfAny(InvalidEntryChars);
-			if (index > 0) {
+			if (index >= 0) {
 				StringBuilder builder = new StringBuilder(name);
 
 				while (index >= 0 ) {
@@ -187,6 +197,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				name = builder.ToString();
 			}
+
+			if (name.Length > 0xffff) {
+				throw new PathTooLongException();
+			}
+
 			return name;
 		}
 
