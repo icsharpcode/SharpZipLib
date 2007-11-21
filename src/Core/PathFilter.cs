@@ -62,6 +62,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <param name="name">The name to test.</param>
 		/// <returns>True if the name matches, false otherwise.</returns>
+		/// <remarks><see cref="Path.GetFullPath(string)"/> is used to get the full path before matching.</remarks>
 		public virtual bool IsMatch(string name)
 		{
 			bool result = false;
@@ -138,15 +139,15 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Test a filename to see if it matches the filter.
 		/// </summary>
-		/// <param name="name">The filename to test.</param>
+		/// <param name="fileName">The filename to test.</param>
 		/// <returns>True if the filter matches, false otherwise.</returns>
-		public override bool IsMatch(string name)
+		/// <exception cref="System.IO.FileNotFoundException">The <see paramref="fileName"/> doesnt exist</exception>
+		public override bool IsMatch(string fileName)
 		{
-			bool result = base.IsMatch(name);
+			bool result = base.IsMatch(fileName);
 
-			if ( result )
-			{
-				FileInfo fileInfo = new FileInfo(name);
+			if ( result ) {
+				FileInfo fileInfo = new FileInfo(fileName);
 				result = 
 					(MinSize <= fileInfo.Length) &&
 					(MaxSize >= fileInfo.Length) &&
@@ -160,15 +161,16 @@ namespace ICSharpCode.SharpZipLib.Core
 
 		#region Properties
 		/// <summary>
-		/// Get/set the minimum size for a file that will match this filter.
+		/// Get/set the minimum size/length for a file that will match this filter.
 		/// </summary>
+		/// <remarks>The default value is zero.</remarks>
+		/// <exception cref="ArgumentOutOfRangeException">value is less than zero; greater than <see cref="MaxSize"/></exception>
 		public long MinSize
 		{
 			get { return minSize_; }
 			set
 			{
-				if ( (value < 0) || (maxSize_ < value) )
-				{
+				if ( (value < 0) || (maxSize_ < value) ) {
 					throw new ArgumentOutOfRangeException("value");
 				}
 
@@ -177,15 +179,16 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 		
 		/// <summary>
-		/// Get/set the maximum size for a file that will match this filter.
+		/// Get/set the maximum size/length for a file that will match this filter.
 		/// </summary>
+		/// <remarks>The default value is <see cref="T:long.MaxValue"/></remarks>
+		/// <exception cref="ArgumentOutOfRangeException">value is less than zero or less than <see cref="MinSize"/></exception>
 		public long MaxSize
 		{
 			get { return maxSize_; }
 			set
 			{
-				if ( (value < 0) || (minSize_ > value) )
-				{
+				if ( (value < 0) || (minSize_ > value) ) {
 					throw new ArgumentOutOfRangeException("value");
 				}
 
@@ -206,9 +209,12 @@ namespace ICSharpCode.SharpZipLib.Core
 
 			set
 			{
-				if ( value > maxDate_ )
-				{
-					throw new ArgumentException("Exceeds MaxDate", "value");
+				if ( value > maxDate_ ) {
+#if NETCF_1_0
+					throw new ArgumentOutOfRangeException("value");
+#else
+					throw new ArgumentOutOfRangeException("value", "Exceeds MaxDate");
+#endif
 				}
 
 				minDate_ = value;
@@ -228,9 +234,12 @@ namespace ICSharpCode.SharpZipLib.Core
 
 			set
 			{
-				if ( minDate_ > value )
-				{
-					throw new ArgumentException("Exceeds MinDate", "value");
+				if ( minDate_ > value ) {
+#if NETCF_1_0
+					throw new ArgumentOutOfRangeException("value");
+#else
+					throw new ArgumentOutOfRangeException("value", "Exceeds MinDate");
+#endif
 				}
 
 				maxDate_ = value;
@@ -276,8 +285,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			bool result = base.IsMatch(name);
 
-			if ( result )
-			{
+			if ( result ) {
 				FileInfo fileInfo = new FileInfo(name);
 				long length = fileInfo.Length;
 				result = 
@@ -293,10 +301,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		public long MinSize
 		{
 			get { return minSize_; }
-			set
-			{
-				if ( (value < 0) || (maxSize_ < value) )
-				{
+			set {
+				if ( (value < 0) || (maxSize_ < value) ) {
 					throw new ArgumentOutOfRangeException("value");
 				}
 
@@ -312,8 +318,7 @@ namespace ICSharpCode.SharpZipLib.Core
 			get { return maxSize_; }
 			set
 			{
-				if ( (value < 0) || (minSize_ > value) )
-				{
+				if ( (value < 0) || (minSize_ > value) ) {
 					throw new ArgumentOutOfRangeException("value");
 				}
 
