@@ -210,7 +210,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Gets the number of input bytes processed so far.
 		/// </summary>
-		public int TotalIn {
+		public long TotalIn {
 			get {
 				return engine.TotalIn;
 			}
@@ -521,6 +521,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			state = SETDICT_STATE;
 			engine.SetDictionary(dictionary, index, count);
 		}
+
 		#region Instance Fields
 		/// <summary>
 		/// Compression level.
