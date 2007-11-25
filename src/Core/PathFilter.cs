@@ -139,15 +139,15 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Test a filename to see if it matches the filter.
 		/// </summary>
-		/// <param name="fileName">The filename to test.</param>
+		/// <param name="name">The filename to test.</param>
 		/// <returns>True if the filter matches, false otherwise.</returns>
 		/// <exception cref="System.IO.FileNotFoundException">The <see paramref="fileName"/> doesnt exist</exception>
-		public override bool IsMatch(string fileName)
+		public override bool IsMatch(string name)
 		{
-			bool result = base.IsMatch(fileName);
+			bool result = base.IsMatch(name);
 
 			if ( result ) {
-				FileInfo fileInfo = new FileInfo(fileName);
+				FileInfo fileInfo = new FileInfo(name);
 				result = 
 					(MinSize <= fileInfo.Length) &&
 					(MaxSize >= fileInfo.Length) &&

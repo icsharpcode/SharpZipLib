@@ -146,7 +146,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		static public void Copy(Stream source, Stream destination,
 			byte[] buffer, ProgressHandler progressHandler, TimeSpan updateInterval, object sender, string name)
 		{
-			Copy(source, destination, buffer, progressHandler, updateInterval, sender, name, 0);
+			Copy(source, destination, buffer, progressHandler, updateInterval, sender, name, -1);
 		}
 
 		/// <summary>
@@ -159,7 +159,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="updateInterval">The minimum <see cref="TimeSpan"/> between progress updates.</param>
 		/// <param name="sender">The source for this event.</param>
 		/// <param name="name">The name to use with the event.</param>
-		/// <param name="fixedTarget">A predetermined fixed target value to use for updates.</param>
+		/// <param name="fixedTarget">A predetermined fixed target value to use with progress updates.
+		/// If the value is negative the target is calculated by looking at the stream.</param>
 		/// <remarks>This form is specialised for use within #Zip to support events during archive operations.</remarks>
 		static public void Copy(Stream source, Stream destination,
 			byte[] buffer, 
@@ -196,9 +197,7 @@ namespace ICSharpCode.SharpZipLib.Core
 			if (fixedTarget >= 0) {
 				target = fixedTarget;
 			}
-
-			// Always use stream source if this is available.
-			if (source.CanSeek) {
+			else if (source.CanSeek) {
 				target = source.Length - source.Position;
 			}
 
@@ -206,12 +205,13 @@ namespace ICSharpCode.SharpZipLib.Core
 			ProgressEventArgs args = new ProgressEventArgs(name, processed, target);
 			progressHandler(sender, args);
 
-			bool completeFired = false;
+			bool progressFired = true;
 
 			while (copying) {
 				int bytesRead = source.Read(buffer, 0, buffer.Length);
 				if (bytesRead > 0) {
 					processed += bytesRead;
+					progressFired = false;
 					destination.Write(buffer, 0, bytesRead);
 				}
 				else {
@@ -220,7 +220,7 @@ namespace ICSharpCode.SharpZipLib.Core
 				}
 
 				if (DateTime.Now - marker > updateInterval) {
-					completeFired = (processed == target);
+					progressFired = true;
 					marker = DateTime.Now;
 					args = new ProgressEventArgs(name, processed, target);
 					progressHandler(sender, args);
@@ -229,7 +229,7 @@ namespace ICSharpCode.SharpZipLib.Core
 				}
 			}
 
-			if (!completeFired) {
+			if (!progressFired) {
 				args = new ProgressEventArgs(name, processed, target);
 				progressHandler(sender, args);
 			}
