@@ -15,7 +15,7 @@
         <namespaceSummaryItem name="ICSharpCode.SharpZipLib.Zip.Compression" isDocumented="True">Zip Compression handling</namespaceSummaryItem>
         <namespaceSummaryItem name="ICSharpCode.SharpZipLib.Zip.Compression.Streams" isDocumented="True">Zip compression streams.</namespaceSummaryItem>
     </namespaceSummaries>
-    <ProjectSummary>Welcom to the #Zip compression library!</ProjectSummary>
+    <ProjectSummary>Welcome to the #Zip compression library!</ProjectSummary>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace</MissingTags>
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
     <HtmlHelp1xCompilerPath path="" />
