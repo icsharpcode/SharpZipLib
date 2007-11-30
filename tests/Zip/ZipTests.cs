@@ -265,7 +265,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
-		static protected byte ScatterValue(byte rhs)
+		protected static byte ScatterValue(byte rhs)
 		{
 			return (byte)((rhs * 253 + 7) & 0xff);
 		}
@@ -297,7 +297,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
-		#region MakeZipFile Names
+		#region MakeZipFile
 		protected void MakeZipFile(Stream storage, bool isOwner, string[] names, int size, string comment)
 		{
 			using (ZipOutputStream zOut = new ZipOutputStream(storage)) {
@@ -961,7 +961,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	[TestFixture]
 	public class WindowsNameTransformHandling : TransformBase
 	{
-
 		[Test]
 		public void BasicFiles()
 		{
@@ -3654,6 +3653,50 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					Assert.IsTrue(found.IsUnicodeText);
 					Assert.AreEqual(fixedTime, found.DateTime);
 					Assert.IsTrue(found.IsDOSEntry);
+				}
+			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void NestedArchive()
+		{
+			MemoryStream ms = new MemoryStream();
+			using (ZipOutputStream zos = new ZipOutputStream(ms)) {
+				zos.IsStreamOwner = false;
+				ZipEntry ze = new ZipEntry("Nest1");
+
+				zos.PutNextEntry(ze);
+				byte[] toWrite = Encoding.ASCII.GetBytes("Hello");
+				zos.Write(toWrite, 0, toWrite.Length);
+			}
+
+			byte[] data = ms.ToArray();
+
+			ms = new MemoryStream();
+			using (ZipOutputStream zos = new ZipOutputStream(ms)) {
+				zos.IsStreamOwner = false;
+				ZipEntry ze = new ZipEntry("Container");
+				ze.CompressionMethod = CompressionMethod.Stored;
+				zos.PutNextEntry(ze);
+				zos.Write(data, 0, data.Length);
+			}
+
+			using (ZipFile zipFile = new ZipFile(ms)) {
+				ZipEntry e = zipFile[0];
+				Assert.AreEqual("Container", e.Name);
+
+				using (ZipFile nested = new ZipFile(zipFile.GetInputStream(0))) {
+					Assert.IsTrue(nested.TestArchive(true));
+					Assert.AreEqual(1, nested.Count);
+
+					Stream nestedStream = nested.GetInputStream(0);
+
+					StreamReader reader = new StreamReader(nestedStream);
+
+					string contents = reader.ReadToEnd();
+
+					Assert.AreEqual("Hello", contents);
 				}
 			}
 		}
