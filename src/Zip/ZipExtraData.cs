@@ -604,7 +604,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 
-		ITaggedData Create(short tag, byte[] data, int offset, int count)
+		static ITaggedData Create(short tag, byte[] data, int offset, int count)
 		{
 			ITaggedData result = null;
 			switch ( tag )
