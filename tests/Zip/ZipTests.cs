@@ -2496,6 +2496,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			DateTime modTime = tagData.LastModificationTime;
 			byte[] rawData = tagData.GetData();
 			tagData.LastModificationTime = tagData.LastModificationTime + TimeSpan.FromSeconds(40);
+			Assert.AreNotEqual(tagData.LastModificationTime, modTime);
 			tagData.SetData(rawData, 0, rawData.Length);
 			Assert.AreEqual(10, tagData.TagID, "TagID mismatch");
 			Assert.AreEqual(modTime, tagData.LastModificationTime, "NT Mod time incorrect");
@@ -2510,6 +2511,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			rawData = unixData.GetData();
 			unixData.ModificationTime += TimeSpan.FromSeconds(100);
+			Assert.AreNotEqual(unixData.ModificationTime, modTime);
 			unixData.SetData(rawData, 0, rawData.Length);
 			Assert.AreEqual(0x5455, unixData.TagID, "TagID mismatch");
 			Assert.AreEqual(modTime, unixData.ModificationTime, "Unix mod time incorrect");
