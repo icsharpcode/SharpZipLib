@@ -266,7 +266,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					throw new ZipException("EOF in header");
 				}
 			}
-			byte result = (byte)(rawData[rawLength - available] & 0xff);
+			byte result = rawData[rawLength - available];
 			available -= 1;
 			return result;
 		}
@@ -310,7 +310,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				if ( cryptoTransform != null ) {
 					if ( rawData == clearText ) {
 						if ( internalClearText == null ) {
-							internalClearText = new byte[4096];
+							internalClearText = new byte[rawData.Length];
 						}
 						clearText = internalClearText;
 					}
@@ -443,30 +443,39 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// stream has been reached
 		/// </returns>
 		/// <exception cref="ArgumentOutOfRangeException">
-		/// Number of bytes to skip is less than zero
+		/// <paramref name="count">The number of bytes</paramref> to skip is less than or equal to zero.
 		/// </exception>
 		public long Skip(long count)
 		{
-			if (count < 0) 
-			{
+			if (count <= 0) {
 				throw new ArgumentOutOfRangeException("count");
 			}
 			
 			// v0.80 Skip by seeking if underlying stream supports it...
-			if (baseInputStream.CanSeek) 
-			{
+			if (baseInputStream.CanSeek) {
 				baseInputStream.Seek(count, SeekOrigin.Current);
 				return count;
 			} 
-			else 
-			{
-				int len = 2048;
-				if (count < len) 
-				{
-					len = (int) count;
+			else {
+				int length = 2048;
+				if (count < length) {
+					length = (int) count;
 				}
-				byte[] tmp = new byte[len];
-				return (long)baseInputStream.Read(tmp, 0, tmp.Length);
+
+				byte[] tmp = new byte[length];
+				int readCount = 1;
+				long toSkip = count;
+
+				while ((toSkip > 0) && (readCount > 0) ) {
+					if (toSkip < length) {
+						length = (int)toSkip;
+					}
+
+					readCount = baseInputStream.Read(tmp, 0, length);
+					toSkip -= readCount;
+				}
+
+				return count - toSkip;
 			}
 		}
 		
@@ -486,8 +495,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		public virtual int Available 
 		{
-			get 
-			{
+			get {
 				return inf.IsFinished ? 0 : 1;
 			}
 		}
@@ -665,23 +673,19 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 
 			int remainingBytes = count;
-			while (true)
-			{
+			while (true) {
 				int bytesRead = inf.Inflate(buffer, offset, remainingBytes); 
 				offset += bytesRead;
 				remainingBytes -= bytesRead;
 
-				if (remainingBytes == 0 || inf.IsFinished)
-				{
+				if (remainingBytes == 0 || inf.IsFinished) {
 					break; 
 				}
 
-				if ( inf.IsNeedingInput )
-				{
+				if ( inf.IsNeedingInput ) {
 					Fill();
 				}
-				else if ( bytesRead == 0 )
-				{
+				else if ( bytesRead == 0 ) {
 					throw new ZipException("Dont know what to do");
 				}
 			}
