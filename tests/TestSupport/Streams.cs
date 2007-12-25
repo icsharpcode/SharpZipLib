@@ -36,6 +36,26 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		}
 
 		/// <summary>
+		/// Write a short value in Little Endian order
+		/// </summary>
+		/// <param name="value"></param>
+		public void WriteLEShort(short value)
+		{
+			WriteByte(unchecked((byte)value));
+			WriteByte(unchecked((byte)(value >> 8)));
+		}
+
+		/// <summary>
+		/// Write an int value in little endian order.
+		/// </summary>
+		/// <param name="value"></param>
+		public void WriteLEInt(int value)
+		{
+			WriteLEShort(unchecked((short)value));
+			WriteLEShort(unchecked((short)(value >> 16)));
+		}
+		
+		/// <summary>
 		/// Releases the unmanaged resources used by the <see cref="T:System.IO.MemoryStream"/> class and optionally releases the managed resources.
 		/// </summary>
 		/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>

@@ -434,6 +434,44 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	[TestFixture]
 	public class ZipEntryHandling : ZipBase
 	{
+		byte[] MakeLocalHeader(string asciiName, short versionToExtract, short flags, short method,
+		                      int dostime, int crc, int compressedSize, int size)
+		{
+			using ( TrackedMemoryStream ms = new TrackedMemoryStream())
+			{
+				ms.WriteByte((byte)'P');
+				ms.WriteByte((byte)'K');
+				ms.WriteByte(3);
+				ms.WriteByte(4);
+			
+				ms.WriteLEShort(versionToExtract);
+				ms.WriteLEShort(flags);
+				ms.WriteLEShort(method);
+				ms.WriteLEInt(dostime);
+				ms.WriteLEInt(crc);
+				ms.WriteLEInt(compressedSize);
+				ms.WriteLEInt(size);
+				
+				byte[] rawName = Encoding.ASCII.GetBytes(asciiName);
+				ms.WriteLEShort((short)rawName.Length);
+				ms.WriteLEShort(0);
+				ms.Write(rawName, 0, rawName.Length);
+				return ms.ToArray();
+			}
+		}
+		
+		ZipEntry MakeEntry(string asciiName, short versionToExtract, short flags, short method,
+		                      int dostime, int crc, int compressedSize, int size)
+		{
+			byte[] data = MakeLocalHeader(asciiName,  versionToExtract, flags, method,
+			                              dostime, crc, compressedSize, size);
+			
+			ZipInputStream zis = new ZipInputStream(new MemoryStream(data));
+			
+			ZipEntry ze = zis.GetNextEntry();
+			return ze;
+		}
+		
 		void PiecewiseCompare(ZipEntry lhs, ZipEntry rhs)
 		{
 			Type entryType = typeof(ZipEntry);
@@ -595,6 +633,26 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.AreNotEqual(original, ze.DosTime);
 			Assert.AreEqual(0, TestHelper.CompareDosDateTimes(new DateTime(1987, 9, 12), ze.DateTime));
 		}
+		
+		[Test]
+		public void CanDecompress()
+		{
+            int dosTime = 12;
+            int crc = 0xfeda;
+
+            ZipEntry ze = MakeEntry("a", 10, 0, (short)CompressionMethod.Deflated,
+			                        dosTime, crc, 1, 1);
+			
+			Assert.IsTrue(ze.CanDecompress);
+
+            ze = MakeEntry("a", 45, 0, (short)CompressionMethod.Stored,
+                                    dosTime, crc, 1, 1);
+            Assert.IsTrue(ze.CanDecompress);
+
+            ze = MakeEntry("a", 99, 0, (short)CompressionMethod.Deflated,
+                                    dosTime, crc, 1, 1);
+            Assert.IsFalse(ze.CanDecompress);
+        }
 	}
 
 	/// <summary>
