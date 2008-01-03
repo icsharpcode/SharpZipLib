@@ -1,6 +1,6 @@
 File:    APPNOTE.TXT - .ZIP File Format Specification
-Version: 6.3.1 
-Revised: April 11, 2007
+Version: 6.3.2 
+Revised: September 28, 2007
 Copyright (c) 1989 - 2007 PKWARE Inc., All Rights Reserved.
 
 The use of certain technological aspects disclosed in the current
@@ -104,6 +104,11 @@ Version       Change Description                        Date
 6.3.1         -Corrected standard hash values for      04/11/2007
                SHA-256/384/512
 
+6.3.2         -Added compression method 97             09/28/2007
+
+              -Documented InfoZIP "Extra Field"
+               values for UTF-8 file name and
+               file comment storage
 
 V. General Format of a .ZIP file
 --------------------------------
@@ -571,6 +576,7 @@ V. General Format of a .ZIP file
          17 - Reserved by PKWARE
          18 - File is compressed using IBM TERSE (new)
          19 - IBM LZ77 z Architecture (PFS)
+         97 - WavPack compressed data
          98 - PPMd version I, Rev 1
 
       date and time fields: (2 bytes each)
@@ -762,7 +768,9 @@ V. General Format of a .ZIP file
           0x5455        extended timestamp
           0x554e        Xceed unicode extra field
           0x5855        Info-ZIP UNIX (original, also OS/2, NT, etc)
+          0x6375        Info-ZIP Unicode Comment Extra Field
           0x6542        BeOS/BeBox
+          0x7075        Info-ZIP Unicode Path Extra Field
           0x756e        ASi UNIX
           0x7855        Info-ZIP UNIX (new)
           0xa220        Microsoft Open Packaging Growth Hint
@@ -1247,7 +1255,92 @@ V. General Format of a .ZIP file
               public domain for review and possible adoption as a
               standard."
 
-         -Microsoft Open Packaging Growth Hint (0xa220):
+
+         -Info-ZIP Unicode Comment Extra Field (0x6375):
+
+          Stores the UTF-8 version of the file comment as stored in the
+          central directory header. (Last Revision 20070912)
+
+          Value         Size        Description
+          -----         ----        -----------
+   (UCom) 0x6375        Short       tag for this extra block type ("uc")
+          TSize         Short       total data size for this block
+          Version       1 byte      version of this extra field, currently 1
+          ComCRC32      4 bytes     Comment Field CRC32 Checksum
+          UnicodeCom    Variable    UTF-8 version of the entry comment
+
+          Currently Version is set to the number 1.  If there is a need
+          to change this field, the version will be incremented.  Changes
+          may not be backward compatible so this extra field should not be
+          used if the version is not recognized.
+
+          The ComCRC32 is the standard zip CRC32 checksum of the File Comment
+          field in the central directory header.  This is used to verify that
+          the comment field has not changed since the Unicode Comment extra field
+          was created.  This can happen if a utility changes the File Comment 
+          field but does not update the UTF-8 Comment extra field.  If the CRC 
+          check fails, this Unicode Comment extra field should be ignored and 
+          the File Comment field in the header should be used instead.
+
+          The UnicodeCom field is the UTF-8 version of the File Comment field
+          in the header.  As UnicodeCom is defined to be UTF-8, no UTF-8 byte
+          order mark (BOM) is used.  The length of this field is determined by
+          subtracting the size of the previous fields from TSize.  If both the
+          File Name and Comment fields are UTF-8, the new General Purpose Bit
+          Flag, bit 11 (Language encoding flag (EFS)), can be used to indicate
+          both the header File Name and Comment fields are UTF-8 and, in this
+          case, the Unicode Path and Unicode Comment extra fields are not
+          needed and should not be created.  Note that, for backward
+          compatibility, bit 11 should only be used if the native character set
+          of the paths and comments being zipped up are already in UTF-8. It is
+          expected that the same file comment storage method, either general
+          purpose bit 11 or extra fields, be used in both the Local and Central
+          Directory Header for a file.
+
+
+         -Info-ZIP Unicode Path Extra Field (0x7075):
+
+          Stores the UTF-8 version of the file name field as stored in the
+          local header and central directory header. (Last Revision 20070912)
+
+          Value         Size        Description
+          -----         ----        -----------
+  (UPath) 0x7075        Short       tag for this extra block type ("up")
+          TSize         Short       total data size for this block
+          Version       1 byte      version of this extra field, currently 1
+          NameCRC32     4 bytes     File Name Field CRC32 Checksum
+          UnicodeName   Variable    UTF-8 version of the entry File Name
+
+          Currently Version is set to the number 1.  If there is a need
+          to change this field, the version will be incremented.  Changes
+          may not be backward compatible so this extra field should not be
+          used if the version is not recognized.
+
+          The NameCRC32 is the standard zip CRC32 checksum of the File Name
+          field in the header.  This is used to verify that the header
+          File Name field has not changed since the Unicode Path extra field
+          was created.  This can happen if a utility renames the File Name but
+          does not update the UTF-8 path extra field.  If the CRC check fails,
+          this UTF-8 Path Extra Field should be ignored and the File Name field
+          in the header should be used instead.
+
+          The UnicodeName is the UTF-8 version of the contents of the File Name
+          field in the header.  As UnicodeName is defined to be UTF-8, no UTF-8
+          byte order mark (BOM) is used.  The length of this field is determined
+          by subtracting the size of the previous fields from TSize.  If both
+          the File Name and Comment fields are UTF-8, the new General Purpose
+          Bit Flag, bit 11 (Language encoding flag (EFS)), can be used to
+          indicate that both the header File Name and Comment fields are UTF-8
+          and, in this case, the Unicode Path and Unicode Comment extra fields
+          are not needed and should not be created.  Note that, for backward
+          compatibility, bit 11 should only be used if the native character set
+          of the paths and comments being zipped up are already in UTF-8. It is
+          expected that the same file name storage method, either general
+          purpose bit 11 or extra fields, be used in both the Local and Central
+          Directory Header for a file.
+ 
+
+        -Microsoft Open Packaging Growth Hint (0xa220):
 
           Value         Size        Description
           -----         ----        -----------
@@ -1437,8 +1530,11 @@ V. General Format of a .ZIP file
           reside on the same disk when splitting or spanning
           an archive.
 
-VI. UnShrinking - Method 1
---------------------------
+VI. Explanation of compression methods
+--------------------------------------
+
+UnShrinking - Method 1
+----------------------
 
 Shrinking is a Dynamic Ziv-Lempel-Welch compression algorithm
 with partial clearing.  The initial code size is 9 bits, and
@@ -1469,8 +1565,8 @@ respects:
     re-used last.  The compressor can emit the sequence 256,2
     at any time.
 
-VII. Expanding - Methods 2-5
-----------------------------
+Expanding - Methods 2-5
+-----------------------
 
 The Reducing algorithm is actually a combination of two
 distinct algorithms.  The first algorithm compresses repeated
@@ -1574,8 +1670,8 @@ For compression factor 4:
     F(X) equals 2 if X equals 15 otherwise F(X) equals 3.
     D(X,Y) equals the (upper 4 bits of X) * 256 + Y + 1.
 
-VIII. Imploding - Method 6
---------------------------
+Imploding - Method 6
+--------------------
 
 The Imploding algorithm is actually a combination of two distinct
 algorithms.  The first algorithm compresses repeated byte
@@ -1735,13 +1831,13 @@ loop until done
         the output stream is filled with zeros).
 end loop
 
-IX. Tokenizing - Method 7
--------------------------
+Tokenizing - Method 7
+---------------------
 
 This method is not used by PKZIP.
 
-X. Deflating - Method 8
------------------------
+Deflating - Method 8
+--------------------
 
 The Deflate algorithm is similar to the Implode algorithm using
 a sliding dictionary of up to 32K with secondary compression
@@ -1878,22 +1974,22 @@ if data descriptor exists
    read crc and sizes
 endif
 
-XI. Enhanced Deflating - Method 9
----------------------------------
+Enhanced Deflating - Method 9
+-----------------------------
 
 The Enhanced Deflating algorithm is similar to Deflate but
 uses a sliding dictionary of up to 64K. Deflate64(tm) is supported
 by the Deflate extractor. 
 
-XII. BZIP2 - Method 12
-----------------------
+BZIP2 - Method 12
+-----------------
 
 BZIP2 is an open-source data compression algorithm developed by 
 Julian Seward.  Information and source code for this algorithm
 can be found on the internet.
 
-XIII. LZMA - Method 14 (EFS)
-----------------------------
+LZMA - Method 14 (EFS)
+----------------------
 
 LZMA is a block-oriented, general purpose data compression algorithm  
 developed and maintained by Igor Pavlov.  It is a derivative of LZ77
@@ -1989,8 +2085,36 @@ and implementers should include the EOS marker whenever possible.
 When the EOS marker is used, general purpose bit 1 must be set.  If
 general purpose bit 1 is not set, the EOS marker is not present.
 
-XIV. PPMd - Method 98
----------------------
+WavPack - Method 97
+-------------------
+
+Information describing the use of compression method 97 is 
+provided by WinZIP International, LLC.  This method relies on the
+open source WavPack audio compression utility developed by David Bryant.  
+Information on WavPack is available at www.wavpack.com.  Please consult 
+with the author of this algorithm for information on terms and 
+restrictions on use.
+
+WavPack data for a file begins immediately after the end of the
+local header data.  This data is the output from WavPack compression
+routines.  Within the ZIP file, the use of WavPack compression is
+indicated by setting the compression method field to a value of 97 
+in both the local header and the central directory header.  The Version 
+needed to extract and version made by fields use the same values as are 
+used for data compressed using the Deflate algorithm.
+
+An implementation note for storing digital sample data when using 
+WavPack compression within ZIP files is that all of the bytes of
+the sample data should be compressed.  This includes any unused
+bits up to the byte boundary.  An example is a 2 byte sample that
+uses only 12 bits for the sample data with 4 unused bits.  If only
+12 bits are passed as the sample size to the WavPack routines, the 4 
+unused bits will be set to 0 on extraction regardless of their original 
+state.  To avoid this, the full 16 bits of the sample data size
+should be provided. 
+
+PPMd - Method 98
+----------------
 
 PPMd is a data compression algorithm developed by Dmitry Shkarin
 which includes a carryless rangecoder developed by Dmitry Subbotin.
@@ -2029,8 +2153,8 @@ wPPMd = (Model order - 1) +
         (Model restoration method << 12)
 
 
-XV. Traditional PKWARE Encryption
----------------------------------
+VII. Traditional PKWARE Encryption
+----------------------------------
 
 The following information discusses the decryption steps
 required to support traditional PKWARE encryption.  This
@@ -2133,8 +2257,8 @@ loop until done
 end loop
 
 
-XVI. Strong Encryption Specification
-------------------------------------
+VIII. Strong Encryption Specification
+-------------------------------------
 
 The Strong Encryption technology defined in this specification is 
 covered under a pending patent application. The use or implementation
@@ -2776,8 +2900,8 @@ with certificates only, or on files encrypted with both password
 encryption and certificate encryption.  Files encrypted with both
 methods can safely be decrypted using the password methods documented.
 
-XVII. Change Process
---------------------
+IX. Change Process
+------------------
 
 In order for the .ZIP file format to remain a viable definition, this
 specification should be considered as open for periodic review and
@@ -2794,8 +2918,8 @@ to this specification will be published to ensure interoperability.
 We encourage comments and feedback that may help improve clarity 
 or content.
 
-XVIII. Incorporating PKWARE Proprietary Technology into Your Product
---------------------------------------------------------------------
+X. Incorporating PKWARE Proprietary Technology into Your Product
+----------------------------------------------------------------
 
 PKWARE is committed to the interoperability and advancement of the
 .ZIP format.  PKWARE offers a free license for certain technological
@@ -2806,15 +2930,15 @@ strong encryption, patching, or extended tape operations requires a
 license from PKWARE.  Please contact PKWARE with regard to acquiring
 a license.
 
-XIX. Acknowledgements
-----------------------
+XI. Acknowledgements
+---------------------
 
 In addition to the above mentioned contributors to PKZIP and PKUNZIP,
 I would like to extend special thanks to Robert Mahoney for suggesting
 the extension .ZIP for this software.
 
-XX. References
---------------
+XII. References
+---------------
 
     Fiala, Edward R., and Greene, Daniel H., "Data compression with
        finite windows",  Communications of the ACM, Volume 32, Number 4,
@@ -3065,5 +3189,29 @@ General purpose bit 11 will not imply any encoding of file content or
 password.  Values defining character encoding for file content or 
 password must be stored within the 0x0008 Extended Language Encoding 
 Extra Field.
+
+Ed Gordon of the Info-ZIP group has defined a pair of "extra field" records 
+that can be used to store UTF-8 file name and file comment fields.  These
+records can be used for cases when the general purpose bit 11 method
+for storing UTF-8 data in the standard file name and comment fields is
+not desirable.  A common case for this alternate method is if backward
+compatibility with older programs is required.
+
+Definitions for the record structure of these fields are included above 
+in the section on 3rd party mappings for "extra field" records.  These
+records are identified by Header ID's 0x6375 (Info-ZIP Unicode Comment 
+Extra Field) and 0x7075 (Info-ZIP Unicode Path Extra Field).
+
+The choice of which storage method to use when writing a ZIP file is left
+to the implementation.  Developers should expect that a ZIP file may 
+contain either method and should provide support for reading data in 
+either format. Use of general purpose bit 11 reduces storage requirements 
+for file name data by not requiring additional "extra field" data for
+each file, but can result in older ZIP programs not being able to extract 
+files.  Use of the 0x6375 and 0x7075 records will result in a ZIP file 
+that should always be readable by older ZIP programs, but requires more 
+storage per file to write file name and/or file comment fields.
+
+ 
 
 

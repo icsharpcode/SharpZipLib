@@ -805,7 +805,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			
 			long start = LocateEntry(entries_[entryIndex]);
 			CompressionMethod method = entries_[entryIndex].CompressionMethod;
-			Stream result = new PartialInputStream(baseStream_, start, entries_[entryIndex].CompressedSize);
+			Stream result = new PartialInputStream(this, start, entries_[entryIndex].CompressedSize);
 
 			if (entries_[entryIndex].IsCrypted == true) {
 #if NETCF_1_0
@@ -3618,19 +3618,29 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <summary>
 			/// Initialise a new instance of the <see cref="PartialInputStream"/> class.
 			/// </summary>
-			/// <param name="baseStream">The underlying stream to use for IO.</param>
+			/// <param name="zipFile">The <see cref="ZipFile"/> containing the underlying stream to use for IO.</param>
 			/// <param name="start">The start of the partial data.</param>
 			/// <param name="length">The length of the partial data.</param>
-			public PartialInputStream(Stream baseStream, long start, long length)
+			public PartialInputStream(ZipFile zipFile, long start, long length)
 			{
 				start_ = start;
 				length_ = length;
-				
-				baseStream_ = baseStream;
+
+				// Although this is the only time the zipfile is used
+				// keeping a reference here prevents premature closure of
+				// this zip file and thus the baseStream_.
+
+				// Code like this will cause apparently random failures depending
+				// on the size of the files and when garbage is collected.
+				//
+				// ZipFile z = new ZipFile (stream);
+				// Stream reader = z.GetInputStream(0);
+				// uses reader here....
+				zipFile_ = zipFile;
+				baseStream_ = zipFile_.baseStream_;
 				readPos_ = start;
 				end_ = start + length;
 			}
-			
 			#endregion
 
 			/// <summary>
@@ -3846,6 +3856,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			
 			#region Instance Fields
+			ZipFile zipFile_;
 			Stream baseStream_;
 			long start_;
 			long length_;

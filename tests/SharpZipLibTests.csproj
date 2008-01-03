@@ -47,6 +47,7 @@
     <Compile Include="Core\Core.cs" />
     <Compile Include="TestSupport\RingBuffer.cs" />
     <Compile Include="TestSupport\Streams.cs" />
+    <Compile Include="TestSupport\Utils.cs" />
     <Compile Include="TestSupport\ZipTesting.cs" />
     <Compile Include="Zip\ZipTests.cs" />
     <Compile Include="BZip2\Bzip2Tests.cs" />

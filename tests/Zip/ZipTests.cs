@@ -435,7 +435,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	public class ZipEntryHandling : ZipBase
 	{
 		byte[] MakeLocalHeader(string asciiName, short versionToExtract, short flags, short method,
-		                      int dostime, int crc, int compressedSize, int size)
+							  int dostime, int crc, int compressedSize, int size)
 		{
 			using ( TrackedMemoryStream ms = new TrackedMemoryStream())
 			{
@@ -461,10 +461,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 		
 		ZipEntry MakeEntry(string asciiName, short versionToExtract, short flags, short method,
-		                      int dostime, int crc, int compressedSize, int size)
+							  int dostime, int crc, int compressedSize, int size)
 		{
 			byte[] data = MakeLocalHeader(asciiName,  versionToExtract, flags, method,
-			                              dostime, crc, compressedSize, size);
+										  dostime, crc, compressedSize, size);
 			
 			ZipInputStream zis = new ZipInputStream(new MemoryStream(data));
 			
@@ -637,22 +637,22 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Test]
 		public void CanDecompress()
 		{
-            int dosTime = 12;
-            int crc = 0xfeda;
+			int dosTime = 12;
+			int crc = 0xfeda;
 
-            ZipEntry ze = MakeEntry("a", 10, 0, (short)CompressionMethod.Deflated,
-			                        dosTime, crc, 1, 1);
+			ZipEntry ze = MakeEntry("a", 10, 0, (short)CompressionMethod.Deflated,
+									dosTime, crc, 1, 1);
 			
 			Assert.IsTrue(ze.CanDecompress);
 
-            ze = MakeEntry("a", 45, 0, (short)CompressionMethod.Stored,
-                                    dosTime, crc, 1, 1);
-            Assert.IsTrue(ze.CanDecompress);
+			ze = MakeEntry("a", 45, 0, (short)CompressionMethod.Stored,
+									dosTime, crc, 1, 1);
+			Assert.IsTrue(ze.CanDecompress);
 
-            ze = MakeEntry("a", 99, 0, (short)CompressionMethod.Deflated,
-                                    dosTime, crc, 1, 1);
-            Assert.IsFalse(ze.CanDecompress);
-        }
+			ze = MakeEntry("a", 99, 0, (short)CompressionMethod.Deflated,
+									dosTime, crc, 1, 1);
+			Assert.IsFalse(ze.CanDecompress);
+		}
 	}
 
 	/// <summary>
@@ -2780,14 +2780,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
-		void Compare(byte[] a, byte[] b)
-		{
-			Assert.AreEqual(a.Length, b.Length);
-			for (int i = 0; i < a.Length; ++i) {
-				Assert.AreEqual(a[i], b[i]);
-			}
-		}
-
 		[Test]
 		[Category("Zip")]
 		public void EmbeddedArchive()
@@ -3759,6 +3751,33 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					Assert.AreEqual("Hello", contents);
 				}
 			}
+		}
+		
+		Stream GetPartialStream()
+		{
+			MemoryStream ms = new MemoryStream();
+			using (ZipOutputStream zos = new ZipOutputStream(ms)) {
+				zos.IsStreamOwner = false;
+				ZipEntry ze = new ZipEntry("E1");
+
+				zos.PutNextEntry(ze);
+				byte[] toWrite = Encoding.ASCII.GetBytes("Hello");
+				zos.Write(toWrite, 0, toWrite.Length);
+			}
+
+			ZipFile zf = new ZipFile(ms);
+
+			return zf.GetInputStream(0);
+		}
+		
+		[Test]
+		public void UnreferencedZipFileClosingPartialStream()
+		{
+			Stream s = GetPartialStream();
+			
+			GC.Collect();
+			
+			s.ReadByte();
 		}
 	}
 	
