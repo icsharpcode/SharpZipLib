@@ -1,4 +1,5 @@
 Changes for 0.85.5?
++ Fix for unreferenced ZipFile causing read failure after garbage collection.
 + Fix to ZipInputStream.CloseEntry were skipping could fail for long values.
 + Potential race condition flaw in FastZip event handling fixed up.
 + Wrong exceptions being thrown and wrong arguments for some exceptions fixed.
