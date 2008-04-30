@@ -1,9 +1,13 @@
 <?xml version="1.0"?>
 
 <project name="SharpZipLib VB.NET Examples" default="build" basedir=".">
+
+	<property name="build.dir" value="bin" />
+
 	<target name="setup">
 		<echo message="Setup"/>
-		<copy todir="bin">
+		<mkdir dir="${build.dir}" if="${not directory::exists('${build.dir}')}"/>
+		<copy todir="${build.dir}">
 			<fileset basedir="../../bin">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</fileset>
@@ -17,14 +21,14 @@
 
 		<vbc
 			target="exe" 
-			output="bin/createzipfile.exe" 
+			output="${build.dir}/createzipfile.exe" 
 			debug="False">
 			
 			<sources basedir="CreateZipFile">
 				<include name="**/*.vb"/>
 			</sources>
 			
-			<references basedir="bin">
+			<references basedir="${build.dir}">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</vbc>
@@ -36,7 +40,7 @@
 		<echo message="Building minigzip example"/>
 		<vbc 
 			target="exe" 
-			output="bin/minigzip.exe" 
+			output="${build.dir}/minigzip.exe" 
 			debug="False">
 			
 			<sources basedir="minigzip">
@@ -46,7 +50,7 @@
 				<include name="System.dll"/>
 				<include name="System.Drawing.dll"/>
 				<include name="System.Windows.Forms.dll"/>
-				<include name="bin/ICSharpCode.SharpZipLib.dll"/>
+				<include name="${build.dir}/ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</vbc>
 -->
@@ -55,14 +59,14 @@
 		<echo message="Building viewzipfile example"/>
 		<vbc 
 			target="exe" 
-			output="bin/viewzipfile.exe"
+			output="${build.dir}/viewzipfile.exe"
 			debug="False">
 			
 			<sources basedir="viewzipfile">
 				<include name="**/*.vb"/>
 			</sources>
 			
-			<references basedir="bin">
+			<references basedir="${build.dir}">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</vbc>
@@ -72,13 +76,13 @@
 			
 		<vbc 
 			target="exe" 
-			output="bin/minibzip2.exe" 
+			output="${build.dir}/minibzip2.exe" 
 			debug="False">
 			
 			<sources basedir="minibzip2">
 				<include name="**/*.vb"/>
 			</sources>
-			<references basedir="bin">
+			<references basedir="${build.dir}">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</vbc>
@@ -88,13 +92,13 @@
 		<echo message="Building tar example"/>
 		<vbc 
 			target="exe" 
-			output="bin/tar.exe" 
+			output="${build.dir}/tar.exe" 
 			debug="False">
 			
 			<sources basedir="tar">
 				<include name="**/*.vb"/>
 			</sources>
-			<references basedir="bin">
+			<references basedir="${build.dir}">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</vbc>
@@ -104,13 +108,13 @@
 		
 		<vbc 
 			target="exe" 
-			output="bin/zipfiletest.exe" 
+			output="${build.dir}/zipfiletest.exe" 
 			debug="False">
 			
 			<sources basedir="zipfiletest">
 				<include name="**/*.vb"/>
 			</sources>
-			<references basedir="bin">
+			<references basedir="${build.dir}">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</references>
 		</vbc>
@@ -119,7 +123,7 @@
 	
 	<target name="clean">
 			<delete verbose="true" >
-			<fileset basedir="bin">
+			<fileset basedir="${build.dir}">
 				<include name="*.exe"/>
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 			</fileset>
