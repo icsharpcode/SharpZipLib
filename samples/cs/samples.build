@@ -37,7 +37,7 @@
 			<sources basedir="minigzip">
 				<include name="**/*.cs"/>
 			</sources>
-			<references basedir="bin">
+			<references basedir="${build.dir}">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 				<include name="mscorlib.dll" />
 				<include name="System.dll" />
@@ -55,7 +55,7 @@
 			<sources basedir="sz">
 				<include name="**/*.cs"/>
 			</sources>
-			<references basedir="bin">
+			<references basedir="${build.dir}">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 				<include name="mscorlib.dll" />
 				<include name="System.dll" />
@@ -73,7 +73,7 @@
 			<sources basedir="viewzipfile">
 				<include name="**/*.cs"/>
 			</sources>
-			<references basedir="bin">
+			<references basedir="${build.dir}">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 				<include name="mscorlib.dll" />
 				<include name="System.dll" />
@@ -91,7 +91,7 @@
 			<sources basedir="unzipfile">
 				<include name="**/*.cs"/>
 			</sources>
-			<references basedir="bin">
+			<references basedir="${build.dir}">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 				<include name="mscorlib.dll" />
 				<include name="System.dll" />
@@ -109,7 +109,7 @@
 			<sources basedir="minibzip2">
 				<include name="**/*.cs"/>
 			</sources>
-			<references basedir="bin">
+			<references basedir="${build.dir}">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 				<include name="mscorlib.dll" />
 				<include name="System.dll" />
@@ -127,7 +127,7 @@
 			<sources basedir="tar">
 				<include name="**/*.cs"/>
 			</sources>
-			<references basedir="bin">
+			<references basedir="${build.dir}">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 				<include name="mscorlib.dll" />
 				<include name="System.dll" />
@@ -145,7 +145,7 @@
 			<sources basedir="zipfiletest">
 				<include name="**/*.cs"/>
 			</sources>
-			<references basedir="bin">
+			<references basedir="${build.dir}">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 				<include name="mscorlib.dll" />
 				<include name="System.dll" />
@@ -162,7 +162,7 @@
 			<sources basedir="zf">
 				<include name="**/*.cs"/>
 			</sources>
-			<references basedir="bin">
+			<references basedir="${build.dir}">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 				<include name="mscorlib.dll" />
 				<include name="System.dll" />
@@ -179,7 +179,7 @@
 			<sources basedir="fastzip">
 				<include name="**/*.cs"/>
 			</sources>
-			<references basedir="bin">
+			<references basedir="${build.dir}">
 				<include name="ICSharpCode.SharpZipLib.dll"/>
 				<include name="mscorlib.dll" />
 				<include name="System.dll" />
