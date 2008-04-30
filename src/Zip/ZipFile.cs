@@ -3845,7 +3845,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			public override bool CanRead {
 				get { return true; }
 			}
-
+			
+#if !NET_1_0 && !NET_1_1 && !NETCF_1_0
 			/// <summary>
 			/// Gets a value that determines whether the current stream can time out.
 			/// </summary>
@@ -3854,7 +3855,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			public override bool CanTimeout {
 				get { return baseStream_.CanTimeout; }
 			}
-			
+#endif			
 			#region Instance Fields
 			ZipFile zipFile_;
 			Stream baseStream_;
