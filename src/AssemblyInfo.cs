@@ -45,6 +45,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SharpZipLib for .NET Framework 1.1")]
 #elif (NET_2_0)
 [assembly: AssemblyTitle("SharpZipLib for .NET Framework 2.0")]
+#elif (NET_3_0)
+[assembly: AssemblyTitle("SharpZipLib for .NET Framework 3.0")]
+#elif (NET_3_5)
+[assembly: AssemblyTitle("SharpZipLib for .NET Framework 3.5")]
 #elif (NETCF_1_0)
 [assembly: AssemblyTitle("SharpZipLib for .NET Compact Framework 1.0")]
 #elif (NETCF_2_0)
@@ -73,8 +77,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright 2001-2007 Mike Krueger, John Reilly")]
 [assembly: AssemblyTrademark("Copyright 2001-2007 Mike Krueger, John Reilly")]
 
-[assembly: AssemblyVersion("0.85.4.369")]
-[assembly: AssemblyInformationalVersionAttribute("0.85.4")]
+[assembly: AssemblyVersion("0.85.5.437")]
+[assembly: AssemblyInformationalVersionAttribute("0.85.5")]
 
 
 [assembly: CLSCompliant(true)]
