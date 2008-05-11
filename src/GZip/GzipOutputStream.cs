@@ -76,12 +76,20 @@ namespace ICSharpCode.SharpZipLib.GZip
 	/// </example>
 	public class GZipOutputStream : DeflaterOutputStream
 	{
+        enum OutputState
+        {
+            Header,
+            Footer, 
+            Finished,
+            Closed,
+        };
+
 		#region Instance Fields
 		/// <summary>
 		/// CRC-32 value for uncompressed data
 		/// </summary>
 		protected Crc32 crc = new Crc32();
-		bool headerWritten_;
+        OutputState state_ = OutputState.Header;
 		#endregion
 
 		#region Constructors
@@ -147,7 +155,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <param name="count">Number of bytes to write</param>
 		public override void Write(byte[] buffer, int offset, int count)
 		{
-			if ( ! headerWritten_ ) {
+			if ( state_ == OutputState.Header ) {
 				WriteHeader();
 			}
 
@@ -165,9 +173,12 @@ namespace ICSharpCode.SharpZipLib.GZip
 				Finish();
 			}
 			finally {
-				if( IsStreamOwner ) {
-					baseOutputStream_.Close();
-				}
+                if ( state_ != OutputState.Closed ) {
+                    state_ = OutputState.Closed;
+				    if( IsStreamOwner ) {
+					    baseOutputStream_.Close();
+				    }
+                }
 			}
 		}
 		#endregion
@@ -179,37 +190,43 @@ namespace ICSharpCode.SharpZipLib.GZip
 		public override void Finish()
 		{
 			// If no data has been written a header should be added.
-			if ( !headerWritten_ ) {
+			if ( state_ == OutputState.Header ) {
 				WriteHeader();
 			}
 
-			base.Finish();
-			
-			uint totalin = (uint) (deflater_.TotalIn & 0xffffffff);
-			uint crcval = (uint) (crc.Value & 0xffffffff);
+            if( state_ == OutputState.Footer)
+            {
+                state_=OutputState.Finished;
+                base.Finish();
 
-			byte[] gzipFooter;
+                uint totalin=(uint)(deflater_.TotalIn&0xffffffff);
+                uint crcval=(uint)(crc.Value&0xffffffff);
 
-			unchecked {
-				gzipFooter = new byte[] {
+                byte[] gzipFooter;
+
+                unchecked
+                {
+                    gzipFooter=new byte[] {
 					(byte) crcval, (byte) (crcval >> 8),
 					(byte) (crcval >> 16), (byte) (crcval >> 24),
 					
 					(byte) totalin, (byte) (totalin >> 8),
 					(byte) (totalin >> 16), (byte) (totalin >> 24)
 				};
-			}
+                }
 
-			baseOutputStream_.Write(gzipFooter, 0, gzipFooter.Length);
+                baseOutputStream_.Write(gzipFooter, 0, gzipFooter.Length);
+            }
 		}
 		#endregion
 		
 		#region Support Routines
 		void WriteHeader()
 		{
-			if ( !headerWritten_ ) 
+			if ( state_ == OutputState.Header ) 
 			{
-				headerWritten_ = true;
+                state_=OutputState.Footer;
+
 				int mod_time = (int)((DateTime.Now.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000L);  // Ticks give back 100ns intervals
 				byte[] gzipHeader = {
 					// The two magic bytes
