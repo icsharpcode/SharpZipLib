@@ -70,6 +70,11 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// </summary>
 		public override void Close()
 		{
+            if( isClosed_ )
+            {
+                throw new InvalidOperationException("Already closed");
+            }
+
 			isClosed_=true;
 			base.Close();
 		}
