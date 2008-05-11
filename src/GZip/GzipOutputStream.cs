@@ -159,6 +159,11 @@ namespace ICSharpCode.SharpZipLib.GZip
 				WriteHeader();
 			}
 
+            if( state_!=OutputState.Footer )
+            {
+                throw new InvalidOperationException("Write not permitted in current state");
+            }
+
 			crc.Update(buffer, offset, count);
 			base.Write(buffer, offset, count);
 		}
