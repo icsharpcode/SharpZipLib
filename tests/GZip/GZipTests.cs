@@ -192,8 +192,47 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
             s.Finish();
             s.Close();
             s.Close();
+
+            memStream=new TrackedMemoryStream();
+            using( GZipOutputStream no2=new GZipOutputStream(memStream) )
+            {
+                s.Close();
+            }
         }
 
+        [Test]
+        public void WriteAfterFinish()
+        {
+            TrackedMemoryStream memStream=new TrackedMemoryStream();
+            GZipOutputStream s=new GZipOutputStream(memStream);
+            s.Finish();
+
+            try
+            {
+                s.WriteByte(7);
+                Assert.Fail("Write should fail");
+            }
+            catch
+            {
+            }
+        }
+
+        [Test]
+        public void WriteAfterClose()
+        {
+            TrackedMemoryStream memStream=new TrackedMemoryStream();
+            GZipOutputStream s=new GZipOutputStream(memStream);
+            s.Close();
+
+            try
+            {
+                s.WriteByte(7);
+                Assert.Fail("Write should fail");
+            }
+            catch
+            {
+            }
+        }
 
 		[Test]
 		[Category("GZip")]
