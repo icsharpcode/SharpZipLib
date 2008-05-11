@@ -18,6 +18,7 @@ Changes for 0.85.5?
 + Bug in entry handling for stored entries and sizing fixed.
 + Zip entries with zero bytes written optimised.
 + TarBuffer.IsEofBlock made obsolete use static TarBuffer.IsEndOfArchiveBlock instead.
++ GZip Finish and Close no longer add extra footers.  Close can be called twice without exception.  Writes after finish/close now fail.
 
 
 Changes for 0.85.4
