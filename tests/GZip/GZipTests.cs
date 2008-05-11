@@ -173,6 +173,28 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 
 		}
 
+        [Test]
+        public void DoubleFooter()
+        {
+            TrackedMemoryStream memStream=new TrackedMemoryStream();
+            GZipOutputStream s=new GZipOutputStream(memStream);
+            s.Finish();
+            Int64 length=memStream.Length;
+            s.Close();
+            Assert.AreEqual(length, memStream.ToArray().Length);
+        }
+
+        [Test]
+        public void DoubleClose()
+        {
+            TrackedMemoryStream memStream=new TrackedMemoryStream();
+            GZipOutputStream s=new GZipOutputStream(memStream);
+            s.Finish();
+            s.Close();
+            s.Close();
+        }
+
+
 		[Test]
 		[Category("GZip")]
 		[Category("Long Running")]
