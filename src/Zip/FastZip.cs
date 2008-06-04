@@ -439,6 +439,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					ZipEntry entry = (ZipEntry) enumerator.Current;
 					if ( entry.IsFile )
 					{
+                        // TODO Path.GetDirectory can fail here on invalid characters.
 						if ( directoryFilter_.IsMatch(Path.GetDirectoryName(entry.Name)) && fileFilter_.IsMatch(entry.Name) ) {
 							ExtractEntry(entry);
 						}
