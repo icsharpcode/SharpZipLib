@@ -570,7 +570,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 							continueRunning_ = events_.OnFileFailure(targetName, ex);
 						}
 						else {
-							continueRunning_ = false;
+                            continueRunning_ = false;
+                            throw;
 						}
 					}
 				}
@@ -593,7 +594,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				doExtraction = !((targetName == null) || (targetName.Length == 0));
 			}
 			
-			// TODO: Fire delegate were compression method not supported, or name is invalid?
+			// TODO: Fire delegate/throw exception were compression method not supported, or name is invalid?
 
 			string dirName = null;
 			
@@ -623,6 +624,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						}
 						else {
 							continueRunning_ = false;
+                            throw;
 						}
 					}
 				}
