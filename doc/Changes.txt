@@ -1,4 +1,4 @@
-Changes for 0.85.5?
+Changes for 0.85.5
 + Fix for unreferenced ZipFile causing read failure after garbage collection.
 + Fix to ZipInputStream.CloseEntry were skipping could fail for long values.
 + Potential race condition flaw in FastZip event handling fixed up.
@@ -19,6 +19,7 @@ Changes for 0.85.5?
 + Zip entries with zero bytes written optimised.
 + TarBuffer.IsEofBlock made obsolete use static TarBuffer.IsEndOfArchiveBlock instead.
 + GZip Finish and Close no longer add extra footers.  Close can be called twice without exception.  Writes after finish/close now fail.
++ Fastzip now throws exceptions if they are 'handled' via delegates.
 
 
 Changes for 0.85.4
