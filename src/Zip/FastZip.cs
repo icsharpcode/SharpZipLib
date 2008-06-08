@@ -101,10 +101,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>A boolean indicating if execution should continue or not.</returns>
 		public bool OnFileFailure(string file, Exception e)
 		{
-			bool result = false;
 			FileFailureHandler handler = FileFailure;
+            bool result = (handler != null);
 
-			if ( handler != null ) {
+			if ( result ) {
 				ScanFailureEventArgs args = new ScanFailureEventArgs(file, e);
 				handler(this, args);
 				result = args.ContinueRunning;

@@ -2690,6 +2690,46 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+        [Test]
+        [Category("Zip")]
+        [ExpectedException(typeof(DirectoryNotFoundException))]
+        public void CreateExceptions()
+        {
+            FastZip fastZip = new FastZip();
+            string tempFilePath = GetTempFilePath();
+            Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
+
+            string addFile = Path.Combine(tempFilePath, "test.zip");
+            try
+            {
+                fastZip.CreateZip(addFile, @"z:\doesnt exist", false, null);
+            }
+            finally
+            {
+                File.Delete(addFile);
+            }
+        }
+
+        [Test]
+        [Category("Zip")]
+        [ExpectedException(typeof(FileNotFoundException))]
+        public void ExtractExceptions()
+        {
+            FastZip fastZip = new FastZip();
+            string tempFilePath = GetTempFilePath();
+            Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
+
+            string addFile = Path.Combine(tempFilePath, "test.zip");
+            try
+            {
+                fastZip.ExtractZip(addFile, @"z:\doesnt exist", null);
+            }
+            finally
+            {
+                File.Delete(addFile);
+            }
+        }
+
 		[Test]
 		[Category("Zip")]
 		public void NonAsciiPasswords()

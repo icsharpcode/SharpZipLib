@@ -286,58 +286,6 @@ namespace ICSharpCode.SharpZipLib.Core
 	public delegate void FileFailureHandler(object sender, ScanFailureEventArgs e);
 	#endregion
 
-    /// <summary>
-    /// An exception encountered dutring scanning.
-    /// </summary>
-#if !NETCF_1_0 && !NETCF_2_0
-    [Serializable]
-#endif
-    public class ScanException : SharpZipBaseException
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScanException"/> class.
-        /// </summary>
-        public ScanException()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScanException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        public ScanException(string message)
-            : base(message)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScanException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="innerException">The inner exception.</param>
-        public ScanException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
-
-#if !NETCF_1_0 && !NETCF_2_0
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ScanException"/> class.
-        /// </summary>
-        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
-        /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
-        /// <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
-        /// <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
-        public ScanException(
-            System.Runtime.Serialization.SerializationInfo info,
-            System.Runtime.Serialization.StreamingContext context
-            )
-            : base(info, context)
-        {
-        }
-#endif
-    }
-
 	/// <summary>
 	/// FileSystemScanner provides facilities scanning of files and directories.
 	/// </summary>
@@ -417,18 +365,16 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <param name="directory">The directory name.</param>
 		/// <param name="e">The exception detected.</param>
-		void OnDirectoryFailure(string directory, Exception e)
+		bool OnDirectoryFailure(string directory, Exception e)
 		{
             DirectoryFailureHandler handler = DirectoryFailure;
-            if (handler == null) {
-                alive_ = false;
-                throw new ScanException("Directory scan failure", e);
-            }
-            else {
+            bool result = (handler != null);
+            if ( result ) {
 				ScanFailureEventArgs args = new ScanFailureEventArgs(directory, e);
 				handler(this, args);
 				alive_ = args.ContinueRunning;
 			}
+            return result;
 		}
 		
 		/// <summary>
@@ -436,17 +382,18 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <param name="file">The file name.</param>
 		/// <param name="e">The exception detected.</param>
-		void OnFileFailure(string file, Exception e)
+		bool OnFileFailure(string file, Exception e)
 		{
             FileFailureHandler handler = FileFailure;
-			if ( handler == null ) {
-                alive_ = false;
-                throw new ScanException("File failure", e);
-			} else {
+
+            bool result = (handler != null);
+
+			if ( result ){
 				ScanFailureEventArgs args = new ScanFailureEventArgs(file, e);
 				FileFailure(this, args);
 				alive_ = args.ContinueRunning;
 			}
+            return result;
 		}
 
 		/// <summary>
@@ -534,13 +481,17 @@ namespace ICSharpCode.SharpZipLib.Core
 							}
 						}
 						catch (Exception e) {
-							OnFileFailure(fileName, e);
+                            if (!OnFileFailure(fileName, e)) {
+                                throw;
+                            }
 						}
 					}
 				}
 			}
 			catch (Exception e) {
-                OnDirectoryFailure(directory, e);
+                if (!OnDirectoryFailure(directory, e)) {
+                    throw;
+                }
 			}
 
 			if ( alive_ && recurse ) {
@@ -556,7 +507,9 @@ namespace ICSharpCode.SharpZipLib.Core
 					}
 				}
 				catch (Exception e) {
-                    OnDirectoryFailure(directory, e);
+                    if (!OnDirectoryFailure(directory, e)) {
+                        throw;
+                    }
 				}
 			}
 		}
