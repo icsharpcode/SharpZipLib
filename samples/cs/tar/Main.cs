@@ -161,7 +161,8 @@ public class Tar
 
 		if (this.archiveName != null && ! this.archiveName.Equals("-")) {
 			if (operation == Operation.Create) {
-				if (!Directory.Exists(Path.GetDirectoryName(archiveName))) {
+                string dirName = Path.GetDirectoryName(archiveName);
+				if ((dirName.Length > 0) && !Directory.Exists(dirName)) {
 					Console.Error.WriteLine("Directory for archive doesnt exist");
 					return;
 				}
