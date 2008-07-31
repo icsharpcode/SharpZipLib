@@ -351,7 +351,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				// For local header both sizes appear in Zip64 Extended Information
-				if ( entry.LocalHeaderRequiresZip64 && patchEntryHeader ) {
+				if ( entry.LocalHeaderRequiresZip64 || patchEntryHeader ) {
 					WriteLeInt(-1);
 					WriteLeInt(-1);
 				}
@@ -369,7 +369,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			ZipExtraData ed = new ZipExtraData(entry.ExtraData);
 
-			if (entry.LocalHeaderRequiresZip64 && (headerInfoAvailable || patchEntryHeader)) {
+			if (entry.LocalHeaderRequiresZip64) {
 				ed.StartNewEntry();
 				if (headerInfoAvailable) {
 					ed.AddLeLong(entry.Size);

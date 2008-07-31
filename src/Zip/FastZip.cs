@@ -275,7 +275,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 		
 		/// <summary>
-		/// Gets or sets the setting for <see cref="UseZip64">Zip64 handling.</see>
+		/// Gets or sets the setting for <see cref="UseZip64">Zip64 handling when writing.</see>
 		/// </summary>
         /// <remarks>
         /// The default value is dynamic which is not backwards compatible with old

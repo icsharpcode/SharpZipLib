@@ -275,8 +275,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				longHeader.GroupName = "";
 				longHeader.UserName = "";
 				longHeader.LinkName = "";
-
-				longHeader.Size = entry.TarHeader.Name.Length;
+                longHeader.Size = entry.TarHeader.Name.Length;
 
 				longHeader.WriteHeader(this.blockBuffer);
 				this.buffer.WriteBlock(this.blockBuffer);  // Add special long filename header block

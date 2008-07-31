@@ -737,6 +737,44 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
 		}
 
+        [Test]
+        [Category("Zip")]
+        public void ReadAndWriteZip64()
+        {
+            MemoryStream msw = new MemoryStreamWithoutSeek();
+            using (ZipOutputStream outStream = new ZipOutputStream(msw))
+            {
+                outStream.UseZip64 = UseZip64.On;
+
+                outStream.IsStreamOwner = false;
+                outStream.PutNextEntry(new ZipEntry("StripedMarlin"));
+                outStream.WriteByte(89);
+
+                outStream.PutNextEntry(new ZipEntry("StripedMarlin2"));
+                outStream.WriteByte(89);
+
+                outStream.Close();
+            }
+
+            Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
+
+            msw.Position = 0;
+
+            using (ZipInputStream zis = new ZipInputStream(msw))
+            {
+                ZipEntry ze;
+                while ( (ze = zis.GetNextEntry()) != null )
+                {
+                    int len = 0;
+                    int bufferSize = 1024;
+                    byte[] buffer = new byte[bufferSize];
+                    while ((len = zis.Read(buffer, 0, bufferSize)) > 0) {
+                        // Reading the data is enough
+                    }
+                }
+            }
+        }
+
 		/// <summary>
 		/// Check that adding an entry with no data and Zip64 works OK
 		/// </summary>

@@ -590,7 +590,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Convert a string to a byte array
 		/// </summary>
-		/// <param name="flags">The applicable general purpose bits flags</param>
+        /// <param name="flags">The applicable <see cref="GeneralBitFlags">general purpose bits flags</see></param>
 		/// <param name="str">
 		/// String to convert to an array
 		/// </param>
