@@ -5,23 +5,20 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Text;
 using System.Threading;
-
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
 
 using NUnit.Framework;
-using ICSharpCode.SharpZipLib.Tests.TestSupport;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
 	#region Local Support Classes
 	class RuntimeInfo
 	{
-		public RuntimeInfo(CompressionMethod method, int compressionLevel, int size, string password, bool getCrc)
+		public RuntimeInfo(CompressionMethod method, int compressionLevel, 
+            int size, string password, bool getCrc)
 		{
 			this.method = method;
 			this.compressionLevel = compressionLevel;
@@ -58,7 +55,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			isDirectory_ = isDirectory;
 			original = new byte[0];
 		}
-
 
 		public byte[] Original
 		{
@@ -101,8 +97,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		#region Instance Fields
-		byte[] original;
-		CompressionMethod method;
+	    readonly byte[] original;
+	    readonly CompressionMethod method;
 		int compressionLevel;
 		int size;
 		string password;
@@ -128,7 +124,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		#region IDataSource Members
 
 		/// <summary>
-		/// Get a Stream for this <see cref="DataSource"/>
+		/// Get a Stream for this <see cref="IStaticDataSource"/>
 		/// </summary>
 		/// <returns>Returns a <see cref="Stream"/></returns>
 		public Stream GetSource()
@@ -138,7 +134,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		#endregion
 
 		#region Instance Fields
-		byte[] data_;
+	    readonly byte[] data_;
 		#endregion
 	}
 
@@ -1089,7 +1085,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				string transformed = wnt.TransformDirectory(veryLong);
 				Assert.Fail("Expected an exception");
 			}
-			catch {
+			catch (PathTooLongException) {
 			}
 		}
 
@@ -2437,7 +2433,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.AreEqual(7, zed.UnreadCount);
 			Assert.AreEqual(4, zed.CurrentReadIndex);
 
-			try {
+            exceptionCaught=false;
+            try
+            {
 				zed.Skip(-1);
 			}
 			catch (ZipException) {
