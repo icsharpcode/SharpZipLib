@@ -76,21 +76,23 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// 		using ( ZipInputStream s = new ZipInputStream(File.OpenRead(args[0]))) {
 	///
 	/// 			ZipEntry theEntry;
-	/// 			while ((theEntry = s.GetNextEntry()) != null) {
-	/// 				int size = 2048;
-	/// 				byte[] data = new byte[2048];
-	///
-	/// 				Console.Write("Show contents (y/n) ?");
-	/// 				if (Console.ReadLine() == "y") {
-	/// 					while (true) {
-	/// 						size = s.Read(data, 0, data.Length);
-	/// 						if (size > 0) {
-	/// 							Console.Write(new ASCIIEncoding().GetString(data, 0, size));
-	/// 						} else {
-	/// 							break;
-	/// 						}
-	/// 					}
-	/// 				}
+    /// 			const int size = 2048;
+    /// 			byte[] data = new byte[2048];
+    /// 			
+    /// 			while ((theEntry = s.GetNextEntry()) != null) {
+	///                 if ( entry.IsFile ) {
+	/// 				    Console.Write("Show contents (y/n) ?");
+	/// 				    if (Console.ReadLine() == "y") {
+	/// 				    	while (true) {
+	/// 				    		size = s.Read(data, 0, data.Length);
+	/// 				    		if (size > 0) {
+	/// 				    			Console.Write(new ASCIIEncoding().GetString(data, 0, size));
+	/// 				    		} else {
+	/// 				    			break;
+	/// 				    		}
+	/// 				    	}
+	/// 				    }
+    /// 				}
 	/// 			}
 	/// 		}
 	/// 	}
