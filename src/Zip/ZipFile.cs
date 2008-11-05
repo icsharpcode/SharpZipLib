@@ -421,7 +421,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			
 			name_ = name;
 
-			baseStream_ = File.OpenRead(name);
+			baseStream_ = File.Open(name, FileMode.Open, FileAccess.Read, FileShare.Read);
 			isStreamOwner = true;
 			
 			try {
@@ -1827,6 +1827,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion
 		
 		#region Update Support
+
 		#region Writing Values/Headers
 		void WriteLEShort(int value)
 		{
@@ -2127,27 +2128,30 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 		void PostUpdateCleanup()
 		{
-			if( archiveStorage_!=null ) {
+            updateDataSource_ = null;
+            updates_ = null;
+            updateIndex_ = null;
+
+            if (archiveStorage_ != null)
+            {
 				archiveStorage_.Dispose();
 				archiveStorage_=null;
 			}
-
-			updateDataSource_=null;
-			updates_ = null;
-			updateIndex_ = null;
 		}
 
 		string GetTransformedFileName(string name)
 		{
-			return (NameTransform != null) ?
-				NameTransform.TransformFile(name) :
+            INameTransform transform = NameTransform;
+			return (transform != null) ?
+				transform.TransformFile(name) :
 				name;
 		}
 
 		string GetTransformedDirectoryName(string name)
 		{
-			return (NameTransform != null) ?
-				NameTransform.TransformDirectory(name) :
+            INameTransform transform = NameTransform;
+            return (transform != null) ?
+				transform.TransformDirectory(name) :
 				name;
 		}
 
@@ -2546,7 +2550,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new InvalidOperationException("Name is not known cannot Reopen");
 			}
 
-			Reopen(File.OpenRead(Name));
+			Reopen(File.Open(Name, FileMode.Open, FileAccess.Read, FileShare.Read));
 		}
 
 		void UpdateCommentOnly()
@@ -2751,7 +2755,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				foreach ( ZipUpdate update in updates_ ) {
 					if (update != null)
 					{
-
 						// If the size of the entry is zero leave the crc as 0 as well.
 						// The calculated crc will be all bits on...
 						if ((update.CrcPatchOffset > 0) && (update.OutEntry.CompressedSize > 0)) {
@@ -2774,6 +2777,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 			catch(Exception) {
+                // TODO Catching exceptions here is rumoured to allow invalid archives to be created with no warning?
 				allOk = false;
 			}
 			finally {
@@ -3145,7 +3149,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				// NOTE: Record size = SizeOfFixedFields + SizeOfVariableData - 12.
-				ulong recordSize = ( ulong )ReadLEUlong();
+				ulong recordSize = ReadLEUlong();
 				int versionMadeBy = ReadLEUshort();
 				int versionToExtract = ReadLEUshort();
 				uint thisDisk = ReadLEUint();
@@ -3965,7 +3969,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns a <see cref="Stream"/> provising data.</returns>
 		public Stream GetSource()
 		{
-			return File.OpenRead(fileName_);
+			return File.Open(fileName_, FileMode.Open, FileAccess.Read, FileShare.Read);
 		}
 
 		#endregion
@@ -3999,7 +4003,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			Stream result = null;
 
 			if ( name != null ) {
-				result = File.OpenRead(name);
+				result = File.Open(name, FileMode.Open, FileAccess.Read, FileShare.Read);
 			}
 
 			return result;
@@ -4167,13 +4171,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			if ( temporaryName_ != null ) {
 				temporaryName_ = GetTempFileName(temporaryName_, true);
-				temporaryStream_ = File.OpenWrite(temporaryName_);
+				temporaryStream_ = File.Open(temporaryName_, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
 			}
 			else {
 				// Determine where to place files based on internal strategy.
 				// Currently this is always done in system temp directory.
 				temporaryName_ = Path.GetTempFileName();
-				temporaryStream_ = File.OpenWrite(temporaryName_);
+				temporaryStream_ = File.Open(temporaryName_, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
 			}
 
 			return temporaryStream_;
@@ -4202,7 +4206,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				newFileCreated = true;
 				File.Delete(moveTempName);
 
-				result = File.OpenRead(fileName_);
+				result = File.Open(fileName_, FileMode.Open, FileAccess.Read, FileShare.Read);
 			}
 			catch(Exception) {
 				result  = null;
