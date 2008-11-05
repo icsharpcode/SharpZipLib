@@ -194,7 +194,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		Patched = 0x0020,
 		/// <summary>
-		/// Bit 6 if set strong encryption has been used for this entry.
+		/// Bit 6 if set indicates strong encryption has been used for this entry.
 		/// </summary>
 		StrongEncryption = 0x0040,
 		/// <summary>
@@ -279,7 +279,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public const int VERSION_STRONG_ENCRYPTION = 50;
 		
 		/// <summary>
-		/// The version required for Zip64 extensions
+		/// The version required for Zip64 extensions (4.5 or higher)
 		/// </summary>
 		public const int VersionZip64 = 45;
 		#endregion
