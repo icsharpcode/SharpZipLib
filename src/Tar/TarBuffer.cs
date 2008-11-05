@@ -126,7 +126,7 @@ or which contains garbage records after a zero block.
 		/// <summary>
 		/// Get the Blocking factor for the buffer
 		/// </summary>
-		/// <value>This is the number of block in each record.</value>
+		/// <value>This is the number of blocks in each record.</value>
 		public int BlockFactor {
 			get { 
 				return blockFactor; 
@@ -411,6 +411,8 @@ or which contains garbage records after a zero block.
 		/// <summary>
 		/// Get the current block number, within the current record, zero based.
 		/// </summary>
+        /// <remarks>Block numbers are zero based values</remarks>
+        /// <seealso cref="RecordSize"/>
 		public int CurrentBlock
 		{
 			get { return currentBlockIndex; }
@@ -530,8 +532,7 @@ or which contains garbage records after a zero block.
 		/// </summary>
 		void WriteRecord()
 		{
-			if (outputStream == null)
-			{
+			if (outputStream == null) {
 				throw new TarException("TarBuffer.WriteRecord no output stream defined");
 			}
 			
@@ -543,17 +544,17 @@ or which contains garbage records after a zero block.
 		}
 		
 		/// <summary>
-		/// Flush the current record if it has any data in it.
+		/// WriteFinalRecord writes the current record buffer to output any unwritten data is present.
 		/// </summary>
-		void Flush()
+        /// <remarks>Any trailing bytes are set to zero which is by definition correct behaviour
+        /// for the end of a tar stream.</remarks>
+		void WriteFinalRecord()
 		{
-			if (outputStream == null) 
-			{
-				throw new TarException("TarBuffer.Flush no output stream defined");
+			if (outputStream == null) {
+				throw new TarException("TarBuffer.WriteFinalRecord no output stream defined");
 			}
 			
-			if (currentBlockIndex > 0) 
-			{
+			if (currentBlockIndex > 0) {
 				int dataBytes = currentBlockIndex * BlockSize;
 				Array.Clear(recordBuffer, dataBytes, RecordSize - dataBytes);
 				WriteRecord();
@@ -568,15 +569,13 @@ or which contains garbage records after a zero block.
 		/// </summary>
 		public void Close()
 		{
-			if (outputStream != null)
-			{
-				Flush();
+			if (outputStream != null) {
+				WriteFinalRecord();
 	
 				outputStream.Close();
 				outputStream = null;
 			}
-			else if (inputStream != null)
-			{
+			else if (inputStream != null) {
 				inputStream.Close();
 				inputStream = null;
 			}
