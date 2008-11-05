@@ -1,4 +1,8 @@
 // SharpZipLibrary samples
+//
+// $Id$
+// $URL$
+//
 // Copyright (c) 2007, AlphaSierraPapa
 // All rights reserved.
 //
