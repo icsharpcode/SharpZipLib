@@ -867,9 +867,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			ZipExtraData extraData = new ZipExtraData(this.extra);
 
 			if ( extraData.Find(0x0001) ) {
-				if ( (versionToExtract & 0xff) < ZipConstants.VersionZip64 ) {
-					throw new ZipException("Zip64 Extended information found but version is not valid");
-				}
+                // Version required to extract is ignored here as some archivers dont set it correctly
+                // in theory it should be version 45 or higher
 
 				// The recorded size will change but remember that this is zip64.
 				forceZip64_ = true;
@@ -889,6 +888,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if ( !localHeader && (offset == uint.MaxValue) ) {
 					offset = extraData.ReadLong();
 				}
+
+                // Disk number on which file starts is ignored
 			}
 			else {
 				if ( 
