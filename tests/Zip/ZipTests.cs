@@ -2748,6 +2748,41 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
         [Test]
         [Category("Zip")]
+        public void UnicodeText()
+        {
+            FastZip zippy = new FastZip();
+            ZipEntryFactory factory = new ZipEntryFactory();
+            factory.IsUnicodeText = true;
+            zippy.EntryFactory = factory;
+
+            string tempFilePath = GetTempFilePath();
+            Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
+
+			const string tempName1 = "a.dat";
+            string addFile = Path.Combine(tempFilePath, tempName1);
+            MakeTempFile(addFile, 1);
+
+            try
+            {
+    			MemoryStream target = new MemoryStream();
+                zippy.CreateZip(target, tempFilePath, false, tempName1, null);
+
+                MemoryStream archive = new MemoryStream(target.ToArray());
+
+                using (ZipFile z = new ZipFile(archive))
+                {
+                    Assert.AreEqual(1, z.Count);
+                    Assert.IsTrue(z[0].IsUnicodeText);
+                }
+            }
+            finally
+            {
+                File.Delete(addFile);
+            }
+        }
+
+        [Test]
+        [Category("Zip")]
         [ExpectedException(typeof(FileNotFoundException))]
         public void ExtractExceptions()
         {
@@ -2763,6 +2798,47 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
             finally
             {
                 File.Delete(addFile);
+            }
+        }
+
+        [Test]
+        [Category("Zip")]
+        public void ReadingOfLockedDataFiles()
+        {
+            const string tempName1 = "a.dat";
+
+            MemoryStream target = new MemoryStream();
+
+            string tempFilePath = GetTempFilePath();
+            Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
+
+            string addFile = Path.Combine(tempFilePath, tempName1);
+            MakeTempFile(addFile, 1);
+
+            try
+            {
+                FastZip fastZip = new FastZip();
+
+                using (File.Open(addFile, FileMode.Open, FileAccess.Write, FileShare.ReadWrite))
+                {
+                    fastZip.CreateZip(target, tempFilePath, false, @"a\.dat", null);
+
+                    MemoryStream archive = new MemoryStream(target.ToArray());
+                    using (ZipFile zf = new ZipFile(archive))
+                    {
+                        Assert.AreEqual(1, zf.Count);
+                        ZipEntry entry = zf[0];
+                        Assert.AreEqual(tempName1, entry.Name);
+                        Assert.AreEqual(1, entry.Size);
+                        Assert.IsTrue(zf.TestArchive(true));
+
+                        zf.Close();
+                    }
+                }
+            }
+            finally
+            {
+                File.Delete(tempName1);
             }
         }
 
