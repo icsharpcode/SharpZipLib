@@ -56,9 +56,6 @@ Namespace CreateZipFile
             ' The Me.InitializeComponent call is required for Windows Forms designer support.
             '
             Me.InitializeComponent()
-            '
-            ' TODO : Add constructor code after InitializeComponents
-            '
         End Sub
 
 #Region " Windows Forms Designer generated code "
@@ -137,7 +134,7 @@ Namespace CreateZipFile
             Me.Controls.Add(Me.txtSourceDir)
             Me.Controls.Add(Me.txtZipFileName)
             Me.Name = "MainForm"
-            Me.Text = "MainForm"
+            Me.Text = "Create Zip File Sample"
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -175,30 +172,37 @@ Namespace CreateZipFile
 
             strmZipOutputStream = New ZipOutputStream(File.Create(targetName))
 
-            REM Compression Level: 0-9
-            REM 0: no(Compression)
-            REM 9: maximum compression
-            strmZipOutputStream.SetLevel(9)
+            Try
 
-            Dim strFile As String
+                REM Compression Level: 0-9
+                REM 0: no(Compression)
+                REM 9: maximum compression
+                strmZipOutputStream.SetLevel(9)
 
-            For Each strFile In astrFileNames
-                Dim strmFile As FileStream = File.OpenRead(strFile)
-                Dim abyBuffer(strmFile.Length - 1) As Byte
+                Dim strFile As String
+                Dim abyBuffer(4096) As Byte
 
-                strmFile.Read(abyBuffer, 0, abyBuffer.Length)
-                Dim objZipEntry As ZipEntry = New ZipEntry(strFile)
+                For Each strFile In astrFileNames
+                    Dim strmFile As FileStream = File.OpenRead(strFile)
+                    Try
 
-                objZipEntry.DateTime = DateTime.Now
-                objZipEntry.Size = strmFile.Length
-                strmFile.Close()
-                strmZipOutputStream.PutNextEntry(objZipEntry)
-                strmZipOutputStream.Write(abyBuffer, 0, abyBuffer.Length)
+                        Dim objZipEntry As ZipEntry = New ZipEntry(strFile)
 
-            Next
+                        objZipEntry.DateTime = DateTime.Now
+                        objZipEntry.Size = strmFile.Length
 
-            strmZipOutputStream.Finish()
-            strmZipOutputStream.Close()
+                        strmZipOutputStream.PutNextEntry(objZipEntry)
+                        StreamUtils.Copy(strmFile, strmZipOutputStream, abyBuffer)
+                    Finally
+                        strmFile.Close()
+                    End Try
+                Next
+
+                strmZipOutputStream.Finish()
+
+            Finally
+                strmZipOutputStream.Close()
+            End Try
 
             MessageBox.Show("Operation complete")
         End Sub
