@@ -4,6 +4,7 @@ using System.Text;
 
 using NUnit.Framework;
 
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Tar;
 
 namespace ICSharpCode.SharpZipLib.Tests.Tar {
@@ -50,11 +51,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 				Assert.AreEqual(0, entryCount, "Expected 0 tar entries");
 			}
 		}
+
 		/// <summary>
 		/// Check that the tar block factor can be varied successfully.
 		/// </summary>
 		[Test]
-		public void BlockFactorHandling()
+        [Category("Tar")]
+        public void BlockFactorHandling()
 		{
 			const int MinimumBlockFactor = 1;
 			const int MaximumBlockFactor = 64;
@@ -111,13 +114,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 				}
 			}
 		}
-
 		
 		/// <summary>
 		/// Check that the tar trailer only contains nulls.
 		/// </summary>
 		[Test]
-		public void TrailerContainsNulls()
+        [Category("Tar")]
+        public void TrailerContainsNulls()
 		{
 			const int TestBlockFactor = 3;
 
@@ -438,19 +441,20 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		/// Check invalid mod times are detected
 		/// </summary>
 		[Test]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Category("Tar")]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public void InvalidModTime()
 		{
 			TarEntry e = TarEntry.CreateTarEntry("test");
 			e.ModTime = DateTime.MinValue;
 		}
 		
-		
 		/// <summary>
 		/// Check invalid sizes are detected
 		/// </summary>
 		[Test]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Category("Tar")]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public void InvalidSize()
 		{
 			TarEntry e = TarEntry.CreateTarEntry("test");
@@ -461,7 +465,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		/// Check invalid names are detected
 		/// </summary>
 		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
+        [Category("Tar")]
+        [ExpectedException(typeof(ArgumentNullException))]
 		public void InvalidName()
 		{
 			TarEntry e = TarEntry.CreateTarEntry("test");
@@ -472,7 +477,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		/// Check setting user and group names.
 		/// </summary>
 		[Test]
-		public void UserAndGroupNames()
+        [Category("Tar")]
+        public void UserAndGroupNames()
 		{
 			TarEntry e = TarEntry.CreateTarEntry("test");
 			e.UserName = null;
@@ -487,7 +493,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		/// Check invalid magic values are detected
 		/// </summary>
 		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
+        [Category("Tar")]
+        [ExpectedException(typeof(ArgumentNullException))]
 		public void InvalidMagic()
 		{
 			TarEntry e = TarEntry.CreateTarEntry("test");
@@ -498,7 +505,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		/// Check invalid link names are detected
 		/// </summary>
 		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
+        [Category("Tar")]
+        [ExpectedException(typeof(ArgumentNullException))]
 		public void InvalidLinkName()
 		{
 			TarEntry e = TarEntry.CreateTarEntry("test");
@@ -509,7 +517,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		/// Check invalid version names are detected
 		/// </summary>
 		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
+        [Category("Tar")]
+        [ExpectedException(typeof(ArgumentNullException))]
 		public void InvalidVersionName()
 		{
 			TarEntry e = TarEntry.CreateTarEntry("test");
@@ -517,7 +526,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		}
 
 		[Test]
-		public void CloningAndUniqueness()
+        [Category("Tar")]
+        public void CloningAndUniqueness()
 		{
 			// Partial test of cloning for TarHeader and TarEntry
 			TarEntry e = TarEntry.CreateTarEntry("ohsogood");
@@ -557,5 +567,61 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 
 			Assert.AreNotEqual(headerD.LinkName, entryf.TarHeader.LinkName, "Entry headers should be unique");
 		}
-	}
+
+        [Test]
+        [Category("Tar")]
+        public void OutputStreamOwnership()
+        {
+            TrackedMemoryStream memStream = new TrackedMemoryStream();
+            TarOutputStream s = new TarOutputStream(memStream);
+
+            Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
+            Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
+
+            s.Close();
+
+            Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
+            Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
+
+            memStream = new TrackedMemoryStream();
+            s = new TarOutputStream(memStream);
+
+            Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
+            Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
+
+            s.IsStreamOwner = false;
+            s.Close();
+
+            Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
+            Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
+        }
+
+        [Test]
+        [Category("Tar")]
+        public void InputStreamOwnership()
+        {
+            TrackedMemoryStream memStream = new TrackedMemoryStream();
+            TarInputStream s = new TarInputStream(memStream);
+
+            Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
+            Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
+
+            s.Close();
+
+            Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
+            Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
+
+            memStream = new TrackedMemoryStream();
+            s = new TarInputStream(memStream);
+
+            Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
+            Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
+
+            s.IsStreamOwner = false;
+            s.Close();
+
+            Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
+            Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
+        }
+    }
 }

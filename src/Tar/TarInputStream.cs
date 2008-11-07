@@ -71,6 +71,16 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 		#endregion
 
+        /// <summary>
+        /// Get/set flag indicating ownership of the underlying stream.
+        /// When the flag is true <see cref="Close"></see> will close the underlying stream also.
+        /// </summary>
+        public bool IsStreamOwner
+        {
+            get { return buffer.IsStreamOwner; }
+            set { buffer.IsStreamOwner = value; }
+        }
+
 		#region Stream Overrides
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports reading

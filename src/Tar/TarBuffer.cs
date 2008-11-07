@@ -418,6 +418,16 @@ or which contains garbage records after a zero block.
 			get { return currentBlockIndex; }
 		}
 
+        /// <summary>
+        /// Get/set flag indicating ownership of the underlying stream.
+        /// When the flag is true <see cref="Close"></see> will close the underlying stream also.
+        /// </summary>
+        public bool IsStreamOwner
+        {
+            get { return isStreamOwner_; }
+            set { isStreamOwner_ = value; }
+        }
+
 		/// <summary>
 		/// Get the current block number, within the current record, zero based.
 		/// </summary>
@@ -571,12 +581,16 @@ or which contains garbage records after a zero block.
 		{
 			if (outputStream != null) {
 				WriteFinalRecord();
-	
-				outputStream.Close();
+
+                if (isStreamOwner_) {
+                    outputStream.Close();
+                }
 				outputStream = null;
 			}
 			else if (inputStream != null) {
-				inputStream.Close();
+                if (isStreamOwner_) {
+                    inputStream.Close();
+                }
 				inputStream = null;
 			}
 		}
@@ -591,6 +605,7 @@ or which contains garbage records after a zero block.
 
 		int recordSize = DefaultRecordSize;
 		int blockFactor = DefaultBlockFactor;
+        bool isStreamOwner_ = true;
 		#endregion
 	}
 }
