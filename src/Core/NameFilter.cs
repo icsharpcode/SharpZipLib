@@ -132,7 +132,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Split a string into its component pieces
 		/// </summary>
 		/// <param name="original">The original string</param>
-		/// <returns>Returns a <see cref="T:System.String[]"/> containing the individual filter elements.</returns>
+		/// <returns>Returns an array of <see cref="T:System.String"/> values containing the individual filter elements.</returns>
 		public static string[] SplitQuoted(string original)
 		{
 			char escape = '\\';
@@ -232,7 +232,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <returns>True if the value matches, false otherwise.</returns>
 		public bool IsMatch(string name)
 		{
-			return (IsIncluded(name) == true) && (IsExcluded(name) == false);
+			return (IsIncluded(name) && !IsExcluded(name));
 		}
 		#endregion
 

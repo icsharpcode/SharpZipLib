@@ -35,7 +35,6 @@
 
 
 using System;
-using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Core
 {
@@ -124,14 +123,16 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			get
 			{
+			    float result;
 				if (target_ <= 0)
 				{
-					return 0;
+					result = 0;
 				}
 				else
 				{
-					return ((float)processed_ / (float)target_) * 100.0f;
+					result = ((float)processed_ / (float)target_) * 100.0f;
 				}
+			    return result;
 			}
 		}
 		
