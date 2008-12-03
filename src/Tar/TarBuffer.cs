@@ -34,7 +34,6 @@
 
 using System;
 using System.IO;
-using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tar 
 {
@@ -140,7 +139,7 @@ or which contains garbage records after a zero block.
 		[Obsolete("Use BlockFactor property instead")]
 		public int GetBlockFactor()
 		{
-			return this.blockFactor;
+			return blockFactor;
 		}
 		
 		/// <summary>
@@ -162,7 +161,7 @@ or which contains garbage records after a zero block.
 				throw new ArgumentNullException("inputStream");
 			}
 
-			return CreateInputTarBuffer(inputStream, TarBuffer.DefaultBlockFactor);
+			return CreateInputTarBuffer(inputStream, DefaultBlockFactor);
 		}
 
 		/// <summary>
@@ -207,7 +206,7 @@ or which contains garbage records after a zero block.
 				throw new ArgumentNullException("outputStream");
 			}
 
-			return CreateOutputTarBuffer(outputStream, TarBuffer.DefaultBlockFactor);
+			return CreateOutputTarBuffer(outputStream, DefaultBlockFactor);
 		}
 
 		/// <summary>
@@ -243,10 +242,10 @@ or which contains garbage records after a zero block.
 		/// <summary>
 		/// Initialization common to all constructors.
 		/// </summary>
-		void Initialize(int blockFactor)
+		void Initialize(int archiveBlockFactor)
 		{
-			this.blockFactor  = blockFactor;
-			recordSize   = blockFactor * BlockSize;
+			blockFactor  = archiveBlockFactor;
+			recordSize   = archiveBlockFactor * BlockSize;
 			recordBuffer  = new byte[RecordSize];
 			
 			if (inputStream != null) {
@@ -259,8 +258,6 @@ or which contains garbage records after a zero block.
 			}
 		}
 		
-		// TODO: IsEOFBlock could/should be static but this is a breaking change.
-
 		/// <summary>
 		/// Determine if an archive block indicates End of Archive. End of
 		/// archive is indicated by a block that consists entirely of null bytes.
@@ -325,7 +322,7 @@ or which contains garbage records after a zero block.
 		/// </summary>
 		public void SkipBlock()
 		{
-			if (this.inputStream == null) {
+			if (inputStream == null) {
 				throw new TarException("no input stream defined");
 			}
 			
@@ -440,7 +437,7 @@ or which contains garbage records after a zero block.
 		[Obsolete("Use CurrentBlock property instead")]
 		public int GetCurrentBlockNum()
 		{
-			return this.currentBlockIndex;
+			return currentBlockIndex;
 		}
 		
 		/// <summary>
@@ -463,7 +460,7 @@ or which contains garbage records after a zero block.
 		[Obsolete("Use CurrentRecord property instead")]
 		public int GetCurrentRecordNum()
 		{
-			return this.currentRecordIndex;
+			return currentRecordIndex;
 		}
 		
 		/// <summary>
@@ -524,7 +521,7 @@ or which contains garbage records after a zero block.
 
 			if ((offset + BlockSize) > buffer.Length) {
 				string errorText = string.Format("TarBuffer.WriteBlock - record has length '{0}' with offset '{1}' which is less than the record size of '{2}'",
-					buffer.Length, offset, this.recordSize);
+					buffer.Length, offset, recordSize);
 				throw new TarException(errorText);
 			}
 			
