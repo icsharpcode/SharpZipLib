@@ -841,7 +841,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="buffer">The buffer to add to</param>
 		/// <param name="bufferOffset">The index of the first byte to add</param>
 		/// <param name="length">The number of characters/bytes to add</param>
-		/// <returns>The next free index in the <paramref name="buf">buffer</paramref></returns>
+		/// <returns>The next free index in the <paramref name="buffer"/></returns>
 		public static int GetNameBytes(StringBuilder name, int nameOffset, byte[] buffer, int bufferOffset, int length)
 		{
 			if ( name == null ) {
@@ -863,7 +863,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="buffer">The buffer to add to</param>
 		/// <param name="bufferOffset">The index of the first byte to add</param>
 		/// <param name="length">The number of characters/bytes to add</param>
-		/// <returns>The next free index in the <paramref name="buf">buffer</paramref></returns>
+		/// <returns>The next free index in the <paramref name="buffer/></returns>
 		public static int GetNameBytes(string name, int nameOffset, byte[] buffer, int bufferOffset, int length)
 		{
 			if ( name == null ) 
