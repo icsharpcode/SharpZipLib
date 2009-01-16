@@ -395,7 +395,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// The decompressor to use
 		/// </param>
 		/// <param name = "bufferSize">
-		/// Size of the buffer to use
+		/// Size of the buffer to use (minimum 1024)
 		/// </param>
 		public InflaterInputStream(Stream baseInputStream, Inflater inflater, int bufferSize)
 		{

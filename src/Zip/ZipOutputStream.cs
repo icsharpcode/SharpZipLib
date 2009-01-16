@@ -104,7 +104,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 			: base(baseOutputStream, new Deflater(Deflater.DEFAULT_COMPRESSION, true))
 		{
 		}
-		#endregion
+
+        /// <summary>
+        /// Creates a new Zip output stream, writing a zip archive.
+        /// </summary>
+        /// <param name="baseOutputStream">The output stream to which the archive contents are written.</param>
+        /// <param name="bufferSize">Size of the buffer to use.</param>
+        public ZipOutputStream( Stream baseOutputStream, int bufferSize )
+            : base(baseOutputStream, new Deflater(Deflater.DEFAULT_COMPRESSION, true), bufferSize)
+        {
+        }
+        #endregion
 		
 		/// <summary>
 		/// Gets a flag value of true if the central header has been added for this archive; false if it has not been added.

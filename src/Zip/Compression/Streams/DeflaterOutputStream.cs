@@ -93,7 +93,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// The underlying deflater to use
 		/// </param>
 		/// <param name="bufferSize">
-		/// The buffer size to use when deflating
+		/// The buffer size in bytes to use when deflating (minimum value 512)
 		/// </param>
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// bufsize is less than or equal to zero.
@@ -118,7 +118,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				throw new ArgumentNullException("deflater");
 			}
 			
-			if (bufferSize <= 0) {
+			if (bufferSize <= 512) {
 				throw new ArgumentOutOfRangeException("bufferSize");
 			}
 			

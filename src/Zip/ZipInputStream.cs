@@ -132,7 +132,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			internalReader = new ReadDataHandler(ReadingNotAvailable);
 		}
-		#endregion
+
+        /// <summary>
+        /// Creates a new Zip input stream, for reading a zip archive.
+        /// </summary>
+        /// <param name="baseInputStream">The underlying <see cref="Stream"/> providing data.</param>
+        /// <param name="bufferSize">Size of the buffer.</param>
+        public ZipInputStream( Stream baseInputStream, int bufferSize )
+            : base(baseInputStream, new Inflater(true), bufferSize)
+        {
+            internalReader = new ReadDataHandler(ReadingNotAvailable);
+        }
+        #endregion
 		
 		/// <summary>
 		/// Optional password used for encryption when non-null
