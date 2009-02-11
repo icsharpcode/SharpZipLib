@@ -171,7 +171,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			Array.Copy(invalidPathChars, 0, InvalidEntryChars, 0, invalidPathChars.Length);
 			InvalidEntryChars[howMany - 1] = '*';
 			InvalidEntryChars[howMany - 2] = '?';
-			InvalidEntryChars[howMany - 2] = ':';
+			InvalidEntryChars[howMany - 3] = ':';
 		}
 
 		/// <summary>
