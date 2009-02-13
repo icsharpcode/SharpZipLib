@@ -35,7 +35,6 @@
 
 using System;
 using System.IO;
-using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tar 
 {
@@ -485,8 +484,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </param>
 		static public void AdjustEntryName(byte[] buffer, string newName)
 		{
-			int offset = 0;
-			TarHeader.GetNameBytes(newName, buffer, offset, TarHeader.NAMELEN);
+			TarHeader.GetNameBytes(newName, buffer, 0, TarHeader.NAMELEN);
 		}
 		
 		/// <summary>
