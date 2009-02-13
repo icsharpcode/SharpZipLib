@@ -38,8 +38,6 @@
 
 using System;
 using System.IO;
-using ICSharpCode.SharpZipLib.Checksums;
-using ICSharpCode.SharpZipLib.Zip.Compression;
 
 #if !NETCF_1_0
 using System.Security.Cryptography;
