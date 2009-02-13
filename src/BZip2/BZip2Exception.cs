@@ -39,8 +39,6 @@ using System;
 using System.Runtime.Serialization;
 #endif
 
-using ICSharpCode.SharpZipLib;
-
 namespace ICSharpCode.SharpZipLib.BZip2
 {
 	/// <summary>
