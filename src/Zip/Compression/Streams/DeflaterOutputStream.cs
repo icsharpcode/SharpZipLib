@@ -118,7 +118,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				throw new ArgumentNullException("deflater");
 			}
 			
-			if (bufferSize <= 512) {
+			if (bufferSize < 512) {
 				throw new ArgumentOutOfRangeException("bufferSize");
 			}
 			
