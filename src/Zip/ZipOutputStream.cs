@@ -40,7 +40,6 @@
 using System;
 using System.IO;
 using System.Collections;
-using System.Text;
 
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression;
@@ -351,7 +350,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					WriteLeInt((int)entry.Size);
 				}
 			} else {
-				if (patchEntryHeader == true) {
+				if (patchEntryHeader) {
 					crcPatchPos = baseOutputStream_.Position;
 				}
 				WriteLeInt(0);	// Crc
@@ -431,7 +430,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			size = 0;
 			
-			if (entry.IsCrypted == true) {
+			if (entry.IsCrypted) {
 				if (entry.Crc < 0) {			// so testing Zip will says its ok
 					WriteEncryptionHeader(entry.DosTime << 16);
 				} else {
@@ -488,12 +487,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			
 			offset += csize;
 
-			if (curEntry.IsCrypted == true) {
+			if (curEntry.IsCrypted) {
 				curEntry.CompressedSize += ZipConstants.CryptoHeaderSize;
 			}
 				
 			// Patch the header if possible
-			if (patchEntryHeader == true) {
+			if (patchEntryHeader) {
 				patchEntryHeader = false;
 
 				long curPos = baseOutputStream_.Position;
