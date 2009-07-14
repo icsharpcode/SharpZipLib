@@ -36,7 +36,6 @@
 
 using System;
 using System.IO;
-using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tar 
 {
@@ -287,8 +286,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 				longHeader.LinkName = "";
                 longHeader.Size = entry.TarHeader.Name.Length;
 
-				longHeader.WriteHeader(this.blockBuffer);
-				this.buffer.WriteBlock(this.blockBuffer);  // Add special long filename header block
+				longHeader.WriteHeader(blockBuffer);
+				buffer.WriteBlock(blockBuffer);  // Add special long filename header block
 
 				int nameCharIndex = 0;
 
