@@ -273,23 +273,25 @@ namespace ICSharpCode.SharpZipLib.Tar
 		#endregion
 
 		#region Constructors
+
 		/// <summary>
 		/// Initialise a default TarHeader instance
 		/// </summary>
 		public TarHeader()
 		{
-			this.Magic = TarHeader.TMAGIC;
-			this.Version = " ";
+			Magic = TMAGIC;
+			Version = " ";
 			
-			this.Name     = "";
-			this.LinkName = "";
+			Name     = "";
+			LinkName = "";
 			
-			this.UserId    = defaultUserId;
-			this.GroupId   = defaultGroupId;
-			this.UserName  = defaultUser;
-			this.GroupName = defaultGroupName;
-			this.Size      = 0;
+			UserId    = defaultUserId;
+			GroupId   = defaultGroupId;
+			UserName  = defaultUser;
+			GroupName = defaultGroupName;
+			Size      = 0;
 		}
+
 		#endregion
 
 		#region Properties
@@ -552,7 +554,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>A new <see cref="Object"/> that is a copy of the current instance.</returns>
 		public object Clone()
 		{
-			return this.MemberwiseClone();
+			return MemberwiseClone();
 		}
 		#endregion
 
@@ -632,34 +634,32 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			int offset = 0;
 			
-			offset = GetNameBytes(this.Name, outBuffer, offset, TarHeader.NAMELEN);
-			offset = GetOctalBytes(this.mode, outBuffer, offset, TarHeader.MODELEN);
-			offset = GetOctalBytes(this.UserId, outBuffer, offset, TarHeader.UIDLEN);
-			offset = GetOctalBytes(this.GroupId, outBuffer, offset, TarHeader.GIDLEN);
+			offset = GetNameBytes(Name, outBuffer, offset, NAMELEN);
+			offset = GetOctalBytes(mode, outBuffer, offset, MODELEN);
+			offset = GetOctalBytes(UserId, outBuffer, offset, UIDLEN);
+			offset = GetOctalBytes(GroupId, outBuffer, offset, GIDLEN);
 			
-			long size = this.Size;
-			
-			offset = GetLongOctalBytes(size, outBuffer, offset, TarHeader.SIZELEN);
-			offset = GetLongOctalBytes(GetCTime(this.ModTime), outBuffer, offset, TarHeader.MODTIMELEN);
+			offset = GetLongOctalBytes(Size, outBuffer, offset, SIZELEN);
+			offset = GetLongOctalBytes(GetCTime(ModTime), outBuffer, offset, MODTIMELEN);
 			
 			int csOffset = offset;
-			for (int c = 0; c < TarHeader.CHKSUMLEN; ++c) 
+			for (int c = 0; c < CHKSUMLEN; ++c) 
 			{
 				outBuffer[offset++] = (byte)' ';
 			}
 			
-			outBuffer[offset++] = this.TypeFlag;
+			outBuffer[offset++] = TypeFlag;
 			
-			offset = GetNameBytes(this.LinkName, outBuffer, offset, NAMELEN);
-			offset = GetAsciiBytes(this.Magic, 0, outBuffer, offset, MAGICLEN);
-			offset = GetNameBytes(this.Version, outBuffer, offset, VERSIONLEN);
-			offset = GetNameBytes(this.UserName, outBuffer, offset, UNAMELEN);
-			offset = GetNameBytes(this.GroupName, outBuffer, offset, GNAMELEN);
+			offset = GetNameBytes(LinkName, outBuffer, offset, NAMELEN);
+			offset = GetAsciiBytes(Magic, 0, outBuffer, offset, MAGICLEN);
+			offset = GetNameBytes(Version, outBuffer, offset, VERSIONLEN);
+			offset = GetNameBytes(UserName, outBuffer, offset, UNAMELEN);
+			offset = GetNameBytes(GroupName, outBuffer, offset, GNAMELEN);
 			
-			if (this.TypeFlag == LF_CHR || this.TypeFlag == LF_BLK) 
+			if ((TypeFlag == LF_CHR) || (TypeFlag == LF_BLK)) 
 			{
-				offset = GetOctalBytes(this.DevMajor, outBuffer, offset, DEVLEN);
-				offset = GetOctalBytes(this.DevMinor, outBuffer, offset, DEVLEN);
+				offset = GetOctalBytes(DevMajor, outBuffer, offset, DEVLEN);
+				offset = GetOctalBytes(DevMinor, outBuffer, offset, DEVLEN);
 			}
 			
 			for ( ; offset < outBuffer.Length; ) 
@@ -691,28 +691,30 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			TarHeader localHeader = obj as TarHeader;
 
+		    bool result;
 			if ( localHeader != null ) 
 			{
-				return name == localHeader.name
-					&& mode == localHeader.mode
-					&& UserId == localHeader.UserId
-					&& GroupId == localHeader.GroupId
-					&& Size == localHeader.Size
-					&& ModTime == localHeader.ModTime
-					&& Checksum == localHeader.Checksum
-					&& TypeFlag == localHeader.TypeFlag
-					&& LinkName == localHeader.LinkName
-					&& Magic == localHeader.Magic
-					&& Version == localHeader.Version
-					&& UserName == localHeader.UserName
-					&& GroupName == localHeader.GroupName
-					&& DevMajor == localHeader.DevMajor
-					&& DevMinor == localHeader.DevMinor;
+				result = (name == localHeader.name)
+					&& (mode == localHeader.mode)
+					&& (UserId == localHeader.UserId)
+					&& (GroupId == localHeader.GroupId)
+					&& (Size == localHeader.Size)
+					&& (ModTime == localHeader.ModTime)
+					&& (Checksum == localHeader.Checksum)
+					&& (TypeFlag == localHeader.TypeFlag)
+					&& (LinkName == localHeader.LinkName)
+					&& (Magic == localHeader.Magic)
+					&& (Version == localHeader.Version)
+					&& (UserName == localHeader.UserName)
+					&& (GroupName == localHeader.GroupName)
+					&& (DevMajor == localHeader.DevMajor)
+					&& (DevMinor == localHeader.DevMinor);
 			}
 			else 
 			{
-				return false;
+				result = false;
 			}
+		    return result;
 		}
 		
 		/// <summary>
