@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{CE0CEA62-CC91-4D17-BC57-A5FCACCA6A1F}</ProjectGuid>
-    <RootNamespace>NewProject</RootNamespace>
+    <RootNamespace>ICSharpCode.SharpZipLib.Samples.SZ</RootNamespace>
     <AssemblyName>sz</AssemblyName>
     <OutputType>Exe</OutputType>
     <WarningLevel>4</WarningLevel>
