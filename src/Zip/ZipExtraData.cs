@@ -134,7 +134,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// The tag ID for this instance.
 		/// </summary>
-		protected short _tag;
+		short _tag;
 
 		byte[] _data;
 		#endregion
