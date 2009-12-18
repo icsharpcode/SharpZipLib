@@ -37,6 +37,9 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+// HISTORY
+//	11-08-2009	GeoffHart	T9121	Added Multi-member gzip support
+
 using System;
 using System.IO;
 
@@ -157,9 +160,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			while (toRead > 0) {
 				int count = inputStream.Read(rawData, rawLength, toRead);
 				if ( count <= 0 ) {
-					if (rawLength == 0) {
-						throw new SharpZipBaseException("Unexpected EOF"); 
-					}
 					break;
 				}
 				rawLength += count;
@@ -395,7 +395,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// The decompressor to use
 		/// </param>
 		/// <param name = "bufferSize">
-		/// Size of the buffer to use (minimum 1024)
+		/// Size of the buffer to use
 		/// </param>
 		public InflaterInputStream(Stream baseInputStream, Inflater inflater, int bufferSize)
 		{
@@ -508,7 +508,13 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </exception>
 		protected void Fill()
 		{
-			inputBuffer.Fill();
+			// Protect against redundant calls
+			if (inputBuffer.Available <= 0) {
+				inputBuffer.Fill();
+				if (inputBuffer.Available <= 0) {
+					throw new SharpZipBaseException("Unexpected EOF");
+				}
+			}
 			inputBuffer.SetInflaterInput(inf);
 		}
 
@@ -706,7 +712,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Base stream the inflater reads from.
 		/// </summary>
-		protected Stream baseInputStream;
+		private Stream baseInputStream;
 		
 		/// <summary>
 		/// The compressed size
