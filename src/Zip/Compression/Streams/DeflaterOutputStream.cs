@@ -36,6 +36,9 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+// HISTORY
+//	22-12-2009	DavidPierson	Added AES support
+
 using System;
 using System.IO;
 
@@ -165,6 +168,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 #else
 			if (cryptoTransform_ != null) {
+				if (cryptoTransform_ is ZipAESTransform) {
+					AESAuthCode_ = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
+				}
 				cryptoTransform_.Dispose();
 				cryptoTransform_ = null;
 			}
@@ -200,6 +206,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		uint[] keys;
 #else
 		ICryptoTransform cryptoTransform_;
+		protected byte[] AESAuthCode_;
 #endif
 		
 		/// <summary>
@@ -267,6 +274,26 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			PkzipClassicManaged pkManaged = new PkzipClassicManaged();
 			byte[] key = PkzipClassic.GenerateKeys(ZipConstants.ConvertToArray(password));
 			cryptoTransform_ = pkManaged.CreateEncryptor(key, null);
+#endif
+		}
+
+		/// <summary>
+		/// Initializes encryption keys based on given password.
+		/// </summary>
+		protected void InitializeAESPassword(ZipEntry entry, string rawPassword,
+											out byte[] salt, out byte[] pwdVerifier) {
+#if NETCF_1_0
+			// not implemented
+#else
+			salt = new byte[entry.AESSaltLen];
+			// Salt needs to be cryptographically random, and unique per file
+			if (_aesRnd == null)
+				_aesRnd = new RNGCryptoServiceProvider();
+			_aesRnd.GetBytes(salt);
+			int blockSize = entry.AESKeySize / 8;	// bits to bytes
+
+			cryptoTransform_ = new ZipAESTransform(rawPassword, salt, blockSize, true);
+			pwdVerifier = ((ZipAESTransform)cryptoTransform_).PwdVerifier;
 #endif
 		}
 
@@ -484,6 +511,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					keys=null;
 #else
 					if ( cryptoTransform_ != null ) {
+						if (cryptoTransform_ is ZipAESTransform) {
+							AESAuthCode_ = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
+						}
 						cryptoTransform_.Dispose();
 						cryptoTransform_ = null;
 					}
@@ -549,6 +579,14 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		bool isClosed_;
 		
 		bool isStreamOwner_ = true;
+		#endregion
+
+		#region Static Fields
+
+#if ! NETCF_1_0
+		// Static to help ensure that multiple files within a zip will get different random salt
+		private static RNGCryptoServiceProvider _aesRnd;
+#endif
 		#endregion
 	}
 }

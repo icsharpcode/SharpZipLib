@@ -37,6 +37,9 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+// HISTORY
+//	22-12-2009	DavidPierson	Added AES support
+
 using System;
 using System.IO;
 
@@ -558,7 +561,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				} 
 				else {
 					int result = 10;
-					if ( CentralHeaderRequiresZip64 ) {
+					if (AESKeySize > 0) {
+						result = ZipConstants.VERSION_AES;			// Ver 5.1 = AES
+					}
+					else if (CentralHeaderRequiresZip64) {
 						result = ZipConstants.VersionZip64;	
 					}
 					else if (CompressionMethod.Deflated == method) {
@@ -579,7 +585,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get a value indicating wether this entry can be decompressed by the library.
+		/// Get a value indicating whether this entry can be decompressed by the library.
 		/// </summary>
 		/// <remarks>This is based on the <see cref="Version"></see> and 
 		/// wether the <see cref="IsCompressionMethodSupported()">compression method</see> is supported.</remarks>
@@ -590,7 +596,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 					((Version == 10) ||
 					(Version == 11) ||
 					(Version == 20) ||
-					(Version == 45)) &&
+					(Version == 45) ||
+					(Version == 51)) &&
 					IsCompressionMethodSupported();
 			}
 		}
@@ -823,7 +830,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 				this.method = value;
 			}
 		}
-		
+
+		/// <summary>
+		/// Gets the compression method for outputting to the local or central header.
+		/// Returns same value as CompressionMethod except when AES encrypting, which
+		/// places 99 in the method and places the real method in the extra data.
+		/// </summary>
+		public CompressionMethod CompressionMethodForHeader {
+			get {
+				return (AESKeySize > 0) ? CompressionMethod.WinZipAES : method;
+			}
+		}
+
 		/// <summary>
 		/// Gets/Sets the extra data.
 		/// </summary>
@@ -855,7 +873,67 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 		}
-		
+
+		/// <summary>
+		/// For AES encrypted files returns or sets the number of bits of encryption (128, 192 or 256).
+		/// When setting, only 0 (off), 128 or 256 is supported.
+		/// </summary>
+		public int AESKeySize {
+			get {
+				// the strength (1 or 3) is in the entry header
+				switch (_aesEncryptionStrength) {
+					case 0: return 0;	// Not AES
+					case 1: return 128;
+					case 2: return 192; // Not used by WinZip
+					case 3: return 256;
+					default: throw new ZipException("Invalid AESEncryptionStrength " + _aesEncryptionStrength);
+				}
+			}
+			set {
+				switch (value) {
+					case 0:   _aesEncryptionStrength = 0; break;
+					case 128: _aesEncryptionStrength = 1; break;
+					case 256: _aesEncryptionStrength = 3; break;
+					default: throw new ZipException("AESKeySize must be 0, 128 or 256: " + value);
+				}
+			}
+		}
+
+		/// <summary>
+		/// AES Encryption strength for storage in extra data in entry header.
+		/// 1 is 128 bit, 2 is 192 bit, 3 is 256 bit.
+		/// </summary>
+		public byte AESEncryptionStrength {
+			get {
+				return (byte)_aesEncryptionStrength;
+			}
+		}
+
+		/// <summary>
+		/// Returns the length of the salt, in bytes 
+		/// </summary>
+		public int AESSaltLen {
+			get {
+				// Key size -> Salt length: 128 bits = 8 bytes, 192 bits = 12 bytes, 256 bits = 16 bytes.
+				return AESKeySize / 16;
+			}
+		}
+
+		/// <summary>
+		/// Number of extra bytes required to hold the AES Header fields (Salt, Pwd verify, AuthCode)
+		/// </summary>
+		public int AESOverheadSize {
+			get {
+				// File format:
+				//   Bytes		Content
+				// Variable		Salt value
+				//     2		Password verification value
+				// Variable		Encrypted file data
+				//    10		Authentication code
+				return 12 + AESSaltLen;
+			}
+		}
+
 		/// <summary>
 		/// Process extra data fields updating the entry based on the contents.
 		/// </summary>
@@ -940,6 +1018,34 @@ namespace ICSharpCode.SharpZipLib.Zip
 						new TimeSpan ( 0, 0, 0, iTime, 0 )).ToLocalTime();
 				}
 			}
+			if (method == CompressionMethod.WinZipAES) {
+				ProcessAESExtraData(extraData);
+			}
+		}
+
+		// For AES the method in the entry is 99, and the real compression method is in the extradata
+		//
+		private void ProcessAESExtraData(ZipExtraData extraData) {
+
+			if (extraData.Find(0x9901)) {
+				// Set version and flag for Zipfile.CreateAndInitDecryptionStream
+				versionToExtract = ZipConstants.VERSION_AES;			// Ver 5.1 = AES see "Version" getter
+				// Set StrongEncryption flag for ZipFile.CreateAndInitDecryptionStream
+				Flags = Flags | (int)GeneralBitFlags.StrongEncryption;
+				//
+				// Unpack AES extra data field see http://www.winzip.com/aes_info.htm
+				int length = extraData.ValueLength;			// Data size currently 7
+				if (length < 7)
+					throw new ZipException("AES Extra Data Length " + length + " invalid.");
+				int ver = extraData.ReadShort();			// Version number (1=AE-1 2=AE-2)
+				int vendorId = extraData.ReadShort();		// 2-character vendor ID 0x4541 = "AE"
+				int encrStrength = extraData.ReadByte();	// encryption strength 1 = 128 2 = 192 3 = 256
+				int actualCompress = extraData.ReadShort(); // The actual compression method used to compress the file
+				_aesVer = ver;
+				_aesEncryptionStrength = encrStrength;
+				method = (CompressionMethod)actualCompress;
+			} else
+				throw new ZipException("AES Extra Data missing");
 		}
 
 		/// <summary>
@@ -1124,6 +1230,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 		bool forceZip64_;
 		byte cryptoCheckValue_;
+		int _aesVer;							// Version number (2 = AE-2 ?). Assigned but not used.
+		int _aesEncryptionStrength;				// Encryption strength 1 = 128 2 = 192 3 = 256
 		#endregion
 	}
 }

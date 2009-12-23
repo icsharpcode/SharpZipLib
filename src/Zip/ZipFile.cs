@@ -37,6 +37,9 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+// HISTORY
+//	22-12-2009	DavidPierson	Added AES support
+
 using System;
 using System.Collections;
 using System.IO;
@@ -386,6 +389,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					key = null;
 				}
 				else {
+					rawPassword_ = value;
 					key = PkzipClassic.GenerateKeys(ZipConstants.ConvertToArray(value));
 				}
 			}
@@ -3277,7 +3281,31 @@ namespace ICSharpCode.SharpZipLib.Zip
 				CheckClassicPassword(result, entry);
 			}
 			else {
-				throw new ZipException("Decryption method not supported");
+				if (entry.Version == ZipConstants.VERSION_AES) {
+					//
+					OnKeysRequired(entry.Name);
+					if (HaveKeys == false) {
+						throw new ZipException("No password available for AES encrypted stream");
+					}
+					int saltLen = entry.AESSaltLen;
+					byte[] saltBytes = new byte[saltLen];
+					int saltIn = baseStream.Read(saltBytes, 0, saltLen);
+					if (saltIn != saltLen)
+						throw new ZipException("AES Salt expected " + saltLen + " got " + saltIn);
+					//
+					byte[] pwdVerifyRead = new byte[2];
+					baseStream.Read(pwdVerifyRead, 0, 2);
+					int blockSize = entry.AESKeySize / 8;	// bits to bytes
+
+					ZipAESTransform decryptor = new ZipAESTransform(rawPassword_, saltBytes, blockSize, false);
+					byte[] pwdVerifyCalc = decryptor.PwdVerifier;
+					if (pwdVerifyCalc[0] != pwdVerifyRead[0] || pwdVerifyCalc[1] != pwdVerifyRead[1])
+						throw new Exception("Invalid password for AES");
+					result = new ZipAESStream(baseStream, decryptor, CryptoStreamMode.Read);
+				}
+				else {
+					throw new ZipException("Decryption method not supported");
+				}
 			}
 
 			return result;
@@ -3335,6 +3363,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		bool       isDisposed_;
 		string     name_;
 		string     comment_;
+		string     rawPassword_;
 		Stream     baseStream_;
 		bool       isStreamOwner;
 		long       offsetOfFirstEntry;
