@@ -102,8 +102,8 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 
 			outStream_ = new BZip2OutputStream(window_, 1);
 
-			long target = 0x10000000;
-			readTarget_ = writeTarget_ = target;
+			const long Target = 0x10000000;
+			readTarget_ = writeTarget_ = Target;
 
 			Thread reader = new Thread(Reader);
 			reader.Name = "Reader";
@@ -118,12 +118,12 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 
             reader.Start();
 
-			writer.Join();
-			reader.Join();
+			Assert.IsTrue(writer.Join(TimeSpan.FromMinutes(5.0D)));
+			Assert.IsTrue(reader.Join(TimeSpan.FromMinutes(5.0D)));
 
 			DateTime endTime = DateTime.Now;
 			TimeSpan span = endTime - startTime;
-			Console.WriteLine("Time {0} throughput {1} KB/Sec", span, (target / 1024) / span.TotalSeconds);
+			Console.WriteLine("Time {0} throughput {1} KB/Sec", span, (Target / 1024) / span.TotalSeconds);
 			
 		}
 		
