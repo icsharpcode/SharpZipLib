@@ -197,7 +197,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					int iTime = helperStream.ReadLEInt();
 
-					_modificationTime = (new System.DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
+					_modificationTime = (new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
 						new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
 				}
 
@@ -205,7 +205,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					int iTime = helperStream.ReadLEInt();
 
-					_lastAccessTime = (new System.DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
+					_lastAccessTime = (new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
 						new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
 				}
 				
@@ -213,7 +213,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					int iTime = helperStream.ReadLEInt();
 
-					_createTime = (new System.DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
+					_createTime = (new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
 						new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
 				}
 			}
@@ -231,17 +231,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 				helperStream.IsStreamOwner = false;
 				helperStream.WriteByte((byte)_flags);     // Flags
 				if ( (_flags & Flags.ModificationTime) != 0) {
-					TimeSpan span = _modificationTime.ToUniversalTime() - new System.DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
+					TimeSpan span = _modificationTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
 					int seconds = (int)span.TotalSeconds;
 					helperStream.WriteLEInt(seconds);
 				}
 				if ( (_flags & Flags.AccessTime) != 0) {
-					TimeSpan span = _lastAccessTime.ToUniversalTime() - new System.DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
+					TimeSpan span = _lastAccessTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
 					int seconds = (int)span.TotalSeconds;
 					helperStream.WriteLEInt(seconds);
 				}
 				if ( (_flags & Flags.CreateTime) != 0) {
-					TimeSpan span = _createTime.ToUniversalTime() - new System.DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
+					TimeSpan span = _createTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
 					int seconds = (int)span.TotalSeconds;
 					helperStream.WriteLEInt(seconds);
 				}
