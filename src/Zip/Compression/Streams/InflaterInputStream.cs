@@ -47,9 +47,6 @@ using System.IO;
 using System.Security.Cryptography;
 #endif
 
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using ICSharpCode.SharpZipLib.Checksums;
-
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams 
 {
 
@@ -246,7 +243,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				}
 				
 				int toCopy = Math.Min(currentLength, available);
-				System.Array.Copy(clearText, clearTextLength - (int)available, outBuffer, currentOffset, toCopy);
+				Array.Copy(clearText, clearTextLength - (int)available, outBuffer, currentOffset, toCopy);
 				currentOffset += toCopy;
 				currentLength -= toCopy;
 				available -= toCopy;
@@ -698,6 +695,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			return count - remainingBytes;
 		}
 		#endregion
+
 		#region Instance Fields
 		/// <summary>
 		/// Decompressor for this stream
