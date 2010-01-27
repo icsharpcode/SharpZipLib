@@ -323,7 +323,7 @@ namespace Samples.FastZipDemo
 				case Operation.Extract:
 					if ( argCount == 2 ) {
 						Console.WriteLine("Extracting Zip");
-						fastZip.ExtractZip(arg1, arg2, overwrite, confirmOverwrite, fileFilter, dirFilter, recurse);
+						fastZip.ExtractZip(arg1, arg2, overwrite, confirmOverwrite, fileFilter, dirFilter, restoreDates);
 					}
 					else
 						Console.WriteLine("zipfile and target directory not specified");

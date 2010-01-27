@@ -54,7 +54,7 @@ class MainClass
 			// in a commercial package.
 			string[] filenames = Directory.GetFiles(args[0]);
 			
-			// 'using' statements gaurantee the stream is closed properly which is a big source
+			// 'using' statements guarantee the stream is closed properly which is a big source
 			// of problems otherwise.  Its exception safe as well which is great.
 			using (ZipOutputStream s = new ZipOutputStream(File.Create(args[1]))) {
 			
