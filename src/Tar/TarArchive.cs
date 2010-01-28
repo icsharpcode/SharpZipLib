@@ -33,6 +33,9 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+// HISTORY
+//	28-01-2010	DavidPierson	Added IsStreamOwner
+
 using System;
 using System.IO;
 using System.Text;
@@ -471,6 +474,20 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 		
 		/// <summary>
+		/// Sets the IsStreamOwner property on the underlying stream.
+		/// Set this to false to prevent the Close of the TarArchive from closing the stream.
+		/// </summary>
+		public bool IsStreamOwner {
+			set {
+				if (tarIn != null) {
+					tarIn.IsStreamOwner = value;
+				} else {
+					tarOut.IsStreamOwner = value;
+				}
+			}
+		}
+
+		/// <summary>
 		/// Close the archive.
 		/// </summary>
 		[Obsolete("Use Close instead")]
@@ -540,7 +557,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			
 			string name = entry.Name;
 			
-			if (Path.IsPathRooted(name) == true) {
+			if (Path.IsPathRooted(name)) {
 				// NOTE:
 				// for UNC names...  \\machine\share\zoom\beet.txt gives \zoom\beet.txt
 				name = name.Substring(Path.GetPathRoot(name).Length);
