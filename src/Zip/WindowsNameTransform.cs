@@ -42,7 +42,7 @@ using ICSharpCode.SharpZipLib.Core;
 namespace ICSharpCode.SharpZipLib.Zip
 {
 	/// <summary>
-	/// WindowsNameTransform transforms ZipFile names to windows compatible ones.
+	/// WindowsNameTransform transforms <see cref="ZipFile"/> names to windows compatible ones.
 	/// </summary>
 	public class WindowsNameTransform : INameTransform
 	{
@@ -72,13 +72,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public string BaseDirectory
 		{
-			get { return baseDirectory_; }
+			get { return _baseDirectory; }
 			set {
 				if ( value == null ) {
 					throw new ArgumentNullException("value");
 				}
 
-				baseDirectory_ = Path.GetFullPath(value);
+				_baseDirectory = Path.GetFullPath(value);
 			}
 		}
 		
@@ -87,8 +87,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public bool TrimIncomingPaths
 		{
-			get { return trimIncomingPaths_; }
-			set { trimIncomingPaths_ = value; }
+			get { return _trimIncomingPaths; }
+			set { _trimIncomingPaths = value; }
 		}
 		
 		/// <summary>
@@ -118,16 +118,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public string TransformFile(string name)
 		{
 			if (name != null) {
-				name = MakeValidName(name, replacementChar_);
+				name = MakeValidName(name, _replacementChar);
 				
-				if ( trimIncomingPaths_ ) {
+				if ( _trimIncomingPaths ) {
 					name = Path.GetFileName(name);
 				}
 				
 				// This may exceed windows length restrictions.
 				// Combine will throw a PathTooLongException in that case.
-				if ( baseDirectory_ != null ) {
-					name = Path.Combine(baseDirectory_, name);
+				if ( _baseDirectory != null ) {
+					name = Path.Combine(_baseDirectory, name);
 				}	
 			}
 			else {
@@ -237,7 +237,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public char Replacement
 		{
-			get { return replacementChar_; }
+			get { return _replacementChar; }
 			set { 
 				for ( int i = 0; i < InvalidEntryChars.Length; ++i ) {
 					if ( InvalidEntryChars[i] == value ) {
@@ -249,7 +249,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					throw new ArgumentException("invalid replacement character");
 				}
 				
-				replacementChar_ = value;
+				_replacementChar = value;
 			}
 		}
 		
@@ -260,9 +260,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		const int MaxPath = 260;
 		
 		#region Instance Fields
-		string baseDirectory_;
-		bool trimIncomingPaths_;
-		char replacementChar_ = '_';
+		string _baseDirectory;
+		bool _trimIncomingPaths;
+		char _replacementChar = '_';
 		#endregion
 		
 		#region Class Fields
