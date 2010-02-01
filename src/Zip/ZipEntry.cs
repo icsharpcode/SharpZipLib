@@ -39,6 +39,7 @@
 
 // HISTORY
 //	22-12-2009	DavidPierson	Added AES support
+//	02-02-2010	DavidPierson	Changed NTFS Extra Data min length to 4
 
 using System;
 using System.IO;
@@ -980,7 +981,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if ( extraData.Find(10) ) {
 				// No room for any tags.
-				if ( extraData.ValueLength < 8 ) {
+				if ( extraData.ValueLength < 4 ) {
 					throw new ZipException("NTFS Extra data invalid");
 				}
 
