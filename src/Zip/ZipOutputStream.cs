@@ -38,7 +38,8 @@
 // exception statement from your version.
 
 // HISTORY
-//	22-12-2009	DavidPierson	Added AES support
+//	22-12-2009	Z-1649	Added AES support
+//	22-02-2010	Z-1648	Zero byte entries would create invalid zip files
 
 using System;
 using System.IO;
@@ -473,7 +474,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			
 			// First finish the deflater, if appropriate
 			if (curMethod == CompressionMethod.Deflated) {
-				if (size > 0) {
+				if (size >= 0) {
 					base.Finish();
 					csize = deflater_.TotalOut;
 				}
