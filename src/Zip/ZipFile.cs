@@ -38,7 +38,8 @@
 // exception statement from your version.
 
 // HISTORY
-//	22-12-2009	DavidPierson	Added AES support
+//	2009-12-22	Z-1649	Added AES support
+//	2010-03-02	Z-1650	Fixed updating ODT archives in memory. Exposed exceptions in updating.
 
 using System;
 using System.Collections;
@@ -1423,6 +1424,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 				updateIndex_.Add(entry.Name, index);
 			}
 
+			// We must sort by offset before using offset's calculated sizes
+			updates_.Sort(new UpdateComparer());
+
+			int idx = 0;
+			foreach (ZipUpdate update in updates_) {
+				//If last entry, there is no next entry offset to use
+				if (idx == updates_.Count - 1)
+					break;
+
+				update.OffsetBasedSize = ((ZipUpdate)updates_[idx + 1]).Entry.Offset - update.Entry.Offset;
+				idx++;
+			}
 			updateCount_ = updates_.Count;
 
 			contentsEdited_ = false;
@@ -2502,10 +2515,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			sourcePosition = baseStream_.Position + nameLength + extraLength;
 
-			if ( skipOver ) {
-				destinationPosition += 
-					(sourcePosition - entryDataOffset) + NameLengthOffset +	// Header size
-					update.Entry.CompressedSize + GetDescriptorSize(update);
+			if (skipOver) {
+				if (update.OffsetBasedSize != -1)
+					destinationPosition += update.OffsetBasedSize;
+				else
+					// TODO: Find out why this calculation comes up 4 bytes short on some entries in ODT (Office Document Text) archives.
+					// WinZip produces a warning on these entries:
+					// "caution: value of lrec.csize (compressed size) changed from ..."
+					destinationPosition +=
+						(sourcePosition - entryDataOffset) + NameLengthOffset +	// Header size
+						update.Entry.CompressedSize + GetDescriptorSize(update);
 			}
 			else {
 				if ( update.Entry.CompressedSize > 0 ) {
@@ -2674,7 +2693,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			long sizeEntries = 0;
 			long endOfStream = 0;
-			bool allOk = true;
 			bool directUpdate = false;
 			long destinationPosition = 0; // NOT SFX friendly
 
@@ -2780,38 +2798,23 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 				}
 			}
-			catch(Exception) {
-                // TODO Catching exceptions here is rumoured to allow invalid archives to be created with no warning?
-				allOk = false;
-			}
-			finally {
-				if ( directUpdate ) {
-					if ( allOk ) {
-						workFile.baseStream_.Flush();
-						workFile.baseStream_.SetLength(endOfStream);
-					}
-				}
-				else {
-					workFile.Close();
-				}
-			}
-
-			if ( allOk ) {
-				if ( directUpdate ) {
-					isNewArchive_ = false;
-					workFile.baseStream_.Flush();
-					ReadEntries();
-				}
-				else {
-					baseStream_.Close();
-					Reopen(archiveStorage_.ConvertTemporaryToFinal());
-				}
-			}
-			else {
+			catch {
 				workFile.Close();
-				if ( !directUpdate && (workFile.Name != null) ) {
+				if (!directUpdate && (workFile.Name != null)) {
 					File.Delete(workFile.Name);
 				}
+				throw;
+			}
+
+			if (directUpdate) {
+				workFile.baseStream_.SetLength(endOfStream);
+				workFile.baseStream_.Flush();
+				isNewArchive_ = false;
+				ReadEntries();
+			}
+			else {
+				baseStream_.Close();
+				Reopen(archiveStorage_.ConvertTemporaryToFinal());
 			}
 		}
 
@@ -2955,6 +2958,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 				set { crcPatchOffset_ = value; }
 			}
 
+			/// <summary>
+			/// Get/set the size calculated by offset.
+			/// Specifically, the difference between this and next entry's starting offset.
+			/// </summary>
+			public long OffsetBasedSize
+			{
+				get { return _offsetBasedSize; }
+				set { _offsetBasedSize = value; }
+			}
+
 			public Stream GetSource()
 			{
 				Stream result = null;
@@ -2973,6 +2986,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			string filename_;
 			long sizePatchOffset_ = -1;
 			long crcPatchOffset_ = -1;
+			long _offsetBasedSize = -1;
 			#endregion
 		}
 
