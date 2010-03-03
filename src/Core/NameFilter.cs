@@ -33,6 +33,8 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+// HISTORY
+//	2010-03-03	Z-1654	Fixed bug where escape characters were excluded in SplitQuoted()
 
 using System;
 using System.Collections;
@@ -158,6 +160,9 @@ namespace ICSharpCode.SharpZipLib.Core
 							throw new ArgumentException("Missing terminating escape character", "original");
 #endif
 						}
+						// include escape if this is not an escaped separator
+						if (Array.IndexOf(separators, original[endIndex]) < 0)
+							b.Append(escape);
 
 						b.Append(original[endIndex]);
 					}

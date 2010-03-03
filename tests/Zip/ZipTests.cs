@@ -2598,7 +2598,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("CreatesTempFile")]
 		public void Basics()
 		{
-			const string tempName1 = "a.dat";
+			const string tempName1 = "a(1).dat";
 
 			MemoryStream target = new MemoryStream();
 
@@ -2610,7 +2610,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			try {
 				FastZip fastZip = new FastZip();
-				fastZip.CreateZip(target, tempFilePath, false, @"a\.dat", null);
+				fastZip.CreateZip(target, tempFilePath, false, @"a\(1\)\.dat", null);
 
 				MemoryStream archive = new MemoryStream(target.ToArray());
 				using (ZipFile zf = new ZipFile(archive)) {
