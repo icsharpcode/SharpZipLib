@@ -1043,21 +1043,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// Extra data / zip64 checks
 				if (localExtraData.Find(1))
 				{
-					// TODO Check for tag values being distinct..  Multiple zip64 tags means what?
-
-					// Zip64 extra data but 'extract version' is too low
-					if (extractVersion < ZipConstants.VersionZip64)
-					{
-						throw new ZipException(
-							string.Format("Extra data contains Zip64 information but version {0}.{1} is not high enough",
-							extractVersion / 10, extractVersion % 10));
-					}
-
-					// Zip64 extra data but size fields dont indicate its required.
-					if (((uint)size != uint.MaxValue) && ((uint)compressedSize != uint.MaxValue))
-					{
-						throw new ZipException("Entry sizes not correct for Zip64");
-					}
+					// 2010-03-04 Forum 10512: removed checks for version >= ZipConstants.VersionZip64
+					// and size or compressedSize = MaxValue, due to rogue creators.
 
 					size = localExtraData.ReadLong();
 					compressedSize = localExtraData.ReadLong();
