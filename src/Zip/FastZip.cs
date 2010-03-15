@@ -418,12 +418,32 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="confirmDelegate">A delegate to invoke when confirming overwriting.</param>
 		/// <param name="fileFilter">A filter to apply to files.</param>
 		/// <param name="directoryFilter">A filter to apply to directories.</param>
-		/// <param name="restoreDateTime">Flag indicating wether to restore the date and time for extracted files.</param>
+		/// <param name="restoreDateTime">Flag indicating whether to restore the date and time for extracted files.</param>
 		public void ExtractZip(string zipFileName, string targetDirectory, 
 							   Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate, 
 							   string fileFilter, string directoryFilter, bool restoreDateTime)
 		{
-			if ( (overwrite == Overwrite.Prompt) && (confirmDelegate == null) ) {
+			Stream inputStream = File.Open(zipFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+			ExtractZip(inputStream, targetDirectory, overwrite, confirmDelegate, fileFilter, directoryFilter, restoreDateTime, true);
+		}
+
+		/// <summary>
+		/// Extract the contents of a zip file held in a stream.
+		/// </summary>
+		/// <param name="inputStream">The seekable input stream containing the zip to extract from.</param>
+		/// <param name="targetDirectory">The directory to save extracted information in.</param>
+		/// <param name="overwrite">The style of <see cref="Overwrite">overwriting</see> to apply.</param>
+		/// <param name="confirmDelegate">A delegate to invoke when confirming overwriting.</param>
+		/// <param name="fileFilter">A filter to apply to files.</param>
+		/// <param name="directoryFilter">A filter to apply to directories.</param>
+		/// <param name="restoreDateTime">Flag indicating whether to restore the date and time for extracted files.</param>
+		/// <param name="isStreamOwner">Flag indicating whether the inputStream will be closed by this method.</param>
+		public void ExtractZip(Stream inputStream, string targetDirectory,
+					   Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate,
+					   string fileFilter, string directoryFilter, bool restoreDateTime,
+					   bool isStreamOwner)
+		{
+			if ((overwrite == Overwrite.Prompt) && (confirmDelegate == null)) {
 				throw new ArgumentNullException("confirmDelegate");
 			}
 
@@ -431,31 +451,31 @@ namespace ICSharpCode.SharpZipLib.Zip
 			overwrite_ = overwrite;
 			confirmDelegate_ = confirmDelegate;
 			extractNameTransform_ = new WindowsNameTransform(targetDirectory);
-			
+
 			fileFilter_ = new NameFilter(fileFilter);
 			directoryFilter_ = new NameFilter(directoryFilter);
 			restoreDateTimeOnExtract_ = restoreDateTime;
-			
-			using ( zipFile_ = new ZipFile(zipFileName) ) {
+
+			using (zipFile_ = new ZipFile(inputStream)) {
 
 #if !NETCF_1_0
 				if (password_ != null) {
 					zipFile_.Password = password_;
 				}
 #endif
-
+				zipFile_.IsStreamOwner = isStreamOwner;
 				System.Collections.IEnumerator enumerator = zipFile_.GetEnumerator();
-				while ( continueRunning_ && enumerator.MoveNext()) {
-					ZipEntry entry = (ZipEntry) enumerator.Current;
-					if ( entry.IsFile )
+				while (continueRunning_ && enumerator.MoveNext()) {
+					ZipEntry entry = (ZipEntry)enumerator.Current;
+					if (entry.IsFile)
 					{
-                        // TODO Path.GetDirectory can fail here on invalid characters.
-						if ( directoryFilter_.IsMatch(Path.GetDirectoryName(entry.Name)) && fileFilter_.IsMatch(entry.Name) ) {
+						// TODO Path.GetDirectory can fail here on invalid characters.
+						if (directoryFilter_.IsMatch(Path.GetDirectoryName(entry.Name)) && fileFilter_.IsMatch(entry.Name)) {
 							ExtractEntry(entry);
 						}
 					}
-					else if ( entry.IsDirectory ) {
-						if ( directoryFilter_.IsMatch(entry.Name) && CreateEmptyDirectories ) {
+					else if (entry.IsDirectory) {
+						if (directoryFilter_.IsMatch(entry.Name) && CreateEmptyDirectories) {
 							ExtractEntry(entry);
 						}
 					}
