@@ -4,7 +4,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{90E83588-261C-45A3-964F-4B707357D437}</ProjectGuid>
-    <RootNamespace>zf</RootNamespace>
+    <RootNamespace>ICSharpCode.SharpZipLib.Samples.CS.ZF</RootNamespace>
     <AssemblyName>zf</AssemblyName>
     <OutputType>Exe</OutputType>
     <WarningLevel>4</WarningLevel>
