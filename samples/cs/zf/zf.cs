@@ -3,13 +3,14 @@
 // zf - A command line archiver using the ZipFile class from SharpZipLib
 // for compression
 //
-// Copyright 2006 John Reilly
+// Copyright 2006, 2010 John Reilly
 //
 //------------------------------------------------------------------------------
 // Version History
 // 1 Initial version ported from sz sample.  Some stuff is not used or commented still
 // 2 Display files during extract. --env Now shows .NET version information.
 // 3 Add usezip64 option as a testing aid.
+// 4 Fix format bug in output, remove unused code and other minor refactoring
 
 
 using System;
@@ -17,22 +18,21 @@ using System.IO;
 using System.Collections;
 using System.Text;
 using System.Globalization;
-using System.Diagnostics;
 using System.Reflection;
 
 using ICSharpCode.SharpZipLib.Zip;
-using ICSharpCode.SharpZipLib.Core;	
-using ICSharpCode.SharpZipLib.Zip.Compression;
+using ICSharpCode.SharpZipLib.Core;
 
-namespace SharpZip 
+namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 {
 	
 	/// <summary>
-	/// A command line archiver using the ZipFile class from SharpZipLib compression library
+	/// A command line archiver using the <see cref="ZipFile"/> class from SharpZipLib compression library
 	/// </summary>
 	public class ZipFileArchiver 
 	{
 		#region Enumerations
+
 		/// <summary>
 		/// Options for handling overwriting of files.
 		/// </summary>
@@ -44,7 +44,7 @@ namespace SharpZip
 		}
 
 		/// <summary>
-		/// Kinds of thing we know how to do
+		/// Operations that can be performed
 		/// </summary>
 		enum Operation 
 		{
@@ -56,17 +56,21 @@ namespace SharpZip
 			Test,		// Test the archive for validity.
 		}
 		#endregion
+
 		#region Constructors
-		/// <summary>
-		/// Base constructor - initializes all fields to default values
-		/// </summary>
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZipFileArchiver"/> class.
+        /// </summary>
 		public ZipFileArchiver()
 		{
 			// Do nothing.
 		}
 
 		#endregion
+
 		#region Argument Parsing
+
 		/// <summary>
 		/// Parse command line arguments.
 		/// This is fairly flexible without using any custom classes.  Arguments and options can appear
@@ -106,7 +110,7 @@ namespace SharpZip
 #endif
 					if (option.Length == 0) 
 					{
-						System.Console.Error.WriteLine("Invalid argument (0}", args[argIndex]);
+						Console.Error.WriteLine("Invalid argument '{0}'", args[argIndex]);
 						result = false;
 					}
 					else 
@@ -202,13 +206,13 @@ namespace SharpZip
 														else 
 														{
 															result = false;
-															System.Console.Error.WriteLine("Invalid encoding " + args[argIndex]);
+															Console.Error.WriteLine("Invalid encoding " + args[argIndex]);
 														}
 													}
 													catch (Exception) 
 													{
 														result = false;
-														System.Console.Error.WriteLine("Invalid encoding " + args[argIndex]);
+														Console.Error.WriteLine("Invalid encoding " + args[argIndex]);
 													}
 												} 
 												else 
@@ -220,14 +224,14 @@ namespace SharpZip
 													catch (Exception) 
 													{
 														result = false;
-														System.Console.Error.WriteLine("Invalid encoding " + args[argIndex]);
+														Console.Error.WriteLine("Invalid encoding " + args[argIndex]);
 													}
 												}
 											} 
 											else 
 											{
 												result = false;
-												System.Console.Error.WriteLine("Missing encoding parameter");
+												Console.Error.WriteLine("Missing encoding parameter");
 											}
 											break;
 											
@@ -244,7 +248,7 @@ namespace SharpZip
 											break;
 	
 										default:
-											System.Console.Error.WriteLine("Invalid long argument " + args[argIndex]);
+											Console.Error.WriteLine("Invalid long argument " + args[argIndex]);
 											result = false;
 											break;
 									}
@@ -258,7 +262,7 @@ namespace SharpZip
 									if (optionIndex != 0) 
 									{
 										result = false;
-										System.Console.Error.WriteLine("-s cannot be in a group");
+										Console.Error.WriteLine("-s cannot be in a group");
 									} 
 									else 
 									{
@@ -272,7 +276,7 @@ namespace SharpZip
 										} 
 										else 
 										{
-											System.Console.Error.WriteLine("Missing argument to " + args[argIndex]);
+											Console.Error.WriteLine("Missing argument to " + args[argIndex]);
 										}
 									}
 									optionIndex = option.Length;
@@ -285,31 +289,7 @@ namespace SharpZip
 								case 'c':
 									operation_ = Operation.Create;
 									break;
-								
-								case 'e':
-									if (optionIndex != 0) 
-									{
-										result = false;
-										System.Console.Error.WriteLine("-e cannot be in a group");
-									} 
-									else 
-									{
-										optionIndex = option.Length;
-										if (optArg.Length > 0) 
-										{
-											try 
-											{
-												compressionLevel_ = int.Parse(optArg);
-											}
-											catch (Exception) 
-											{
-												System.Console.Error.WriteLine("Level invalid");
-											}
-										}
-									}
-									optionIndex = option.Length;
-									break;
-								
+															
 								case 'o':
 									optionIndex += 1;
 									overwriteFiles = optionIndex < option.Length ? (option[optionIndex] == '+') ? Overwrite.Always : Overwrite.Never : Overwrite.Never;
@@ -335,7 +315,7 @@ namespace SharpZip
 									if (optionIndex != 0) 
 									{
 										result = false;
-										System.Console.Error.WriteLine("-x cannot be in a group");
+										Console.Error.WriteLine("-x cannot be in a group");
 									} 
 									else 
 									{
@@ -349,7 +329,7 @@ namespace SharpZip
 									break;
 								
 								default:
-									System.Console.Error.WriteLine("Invalid argument: " + args[argIndex]);
+									Console.Error.WriteLine("Invalid argument: " + args[argIndex]);
 									result = false;
 									break;
 							}
@@ -387,7 +367,9 @@ namespace SharpZip
 		}
 
 		#endregion
+
 		#region Show - Help/Environment/Version
+
 		/// <summary>
 		/// Show encoding/locale information
 		/// </summary>
@@ -395,13 +377,13 @@ namespace SharpZip
 		{
 			seenHelp_ = true;
 			Console.Out.WriteLine("");
-			System.Console.Out.WriteLine(
+			Console.Out.WriteLine(
 				"Current encoding is {0}, code page {1}, windows code page {2}",
-				System.Console.Out.Encoding.EncodingName,
-				System.Console.Out.Encoding.CodePage,
-				System.Console.Out.Encoding.WindowsCodePage);
+				Console.Out.Encoding.EncodingName,
+				Console.Out.Encoding.CodePage,
+				Console.Out.Encoding.WindowsCodePage);
 
-			System.Console.WriteLine("Default code page is {0}",
+			Console.WriteLine("Default code page is {0}",
 				Encoding.Default.CodePage);
 			
 			Console.WriteLine( "Current culture LCID 0x{0:X}, {1}", CultureInfo.CurrentCulture.LCID, CultureInfo.CurrentCulture.EnglishName);
@@ -426,7 +408,7 @@ namespace SharpZip
 				if (assembly.GetName().Name == "ICSharpCode.SharpZipLib") 
 				{
 					Console.Out.WriteLine("#ZipLib v{0} {1}", assembly.GetName().Version,
-						assembly.GlobalAssemblyCache == true ? "Running from GAC" : "Running from DLL"
+						assembly.GlobalAssemblyCache ? "Running from GAC" : "Running from DLL"
 						);
 				}
 			}
@@ -438,7 +420,7 @@ namespace SharpZip
 		/// </summary>
 		void ShowHelp()
 		{
-			if (seenHelp_ == true) 
+			if (seenHelp_) 
 			{
 				return;
 			}
@@ -476,7 +458,9 @@ namespace SharpZip
 		}
 		
 		#endregion
+
 		#region Archive Listing
+
 		void ListArchiveContents(ZipFile zipFile, FileInfo fileInfo)
 		{
 			const string headerTitles    = "Name              Length Ratio Size           Date & time     CRC-32     Attr";
@@ -618,7 +602,9 @@ namespace SharpZip
 		}
 
 		#endregion
+
 		#region Creation
+
 		/// <summary>
 		/// Create archives based on specifications passed and internal state
 		/// </summary>		
@@ -634,7 +620,7 @@ namespace SharpZip
 
 			if ( (overwriteFiles == Overwrite.Never) && File.Exists(zipFileName)) 
 			{
-				System.Console.Error.WriteLine("File {0} already exists", zipFileName);
+				Console.Error.WriteLine("File {0} already exists", zipFileName);
 				return;
 			}
 
@@ -673,14 +659,16 @@ namespace SharpZip
 		}
 
 		#endregion
+
 		#region Extraction
+
 		/// <summary>
 		/// Extract a file storing its contents.
 		/// </summary>
-		/// <param name="inputStream">The input stream to source fiel contents from.</param>
+		/// <param name="inputStream">The input stream to source file contents from.</param>
 		/// <param name="theEntry">The <see cref="ZipEntry"/> representing the stored file details </param>
 		/// <param name="targetDir">The directory to store the output.</param>
-		/// <returns>True iff successful; false otherwise.</returns>
+		/// <returns>True if operation is successful; false otherwise.</returns>
 		bool ExtractFile(Stream inputStream, ZipEntry theEntry, string targetDir)
 		{
 			// try and sort out the correct place to save this entry
@@ -718,11 +706,10 @@ namespace SharpZip
 			} 
 			else if (overwriteFiles == Overwrite.Prompt) 
 			{
-				if (File.Exists(targetName) == true) 
+				if (File.Exists(targetName)) 
 				{
 					Console.Write("File " + targetName + " already exists.  Overwrite? ");
 								
-					// TODO: sort out the complexities of Read so single key press can be used
 					string readValue;
 					try 
 					{
@@ -853,7 +840,9 @@ namespace SharpZip
 		}
 
 		#endregion
+
 		#region Testing
+
 		/// <summary>
 		/// Handler for test result callbacks.
 		/// </summary>
@@ -941,7 +930,9 @@ namespace SharpZip
 		}
 
 		#endregion
+
 		#region Deleting
+
 		/// <summary>
 		/// Delete entries from an archive
 		/// </summary>
@@ -973,7 +964,9 @@ namespace SharpZip
 		}
 
 		#endregion
+
 		#region Adding
+
 		/// <summary>
 		/// Callback for adding a new file.
 		/// </summary>
@@ -1061,7 +1054,9 @@ namespace SharpZip
 		}
 
 		#endregion
+
 		#region Class Execute Command
+
 		/// <summary>
 		/// Parse command line arguments and 'execute' them.
 		/// </summary>		
@@ -1116,7 +1111,9 @@ namespace SharpZip
 		}
 		
 		#endregion
+
 		#region Support Routines
+
 		byte[] GetBuffer()
 		{
 			if ( buffer_ == null )
@@ -1127,10 +1124,12 @@ namespace SharpZip
 			return buffer_;
 		}
 		#endregion
+
 		#region Static support routines
+
 		///<summary>
 		/// Calculate compression ratio as a percentage
-		/// Doesnt allow for expansion (ratio > 100) as the resulting strings can get huge easily
+		/// This wont allow for expansion (ratio > 100) as the resulting strings can get huge easily
 		/// </summary>
 		static int GetCompressionRatio(long packedSize, long unpackedSize)
 		{
@@ -1326,7 +1325,9 @@ namespace SharpZip
 		}
 
 		#endregion
+
 		#region Main
+
 		/// <summary>
 		/// Entry point for program, creates archiver and runs it
 		/// </summary>
@@ -1340,7 +1341,9 @@ namespace SharpZip
 		}
 
 		#endregion
+
 		#region Instance Fields
+
 		/// <summary>
 		/// Has user already seen help output?
 		/// </summary>
@@ -1350,13 +1353,8 @@ namespace SharpZip
 		/// File specifications possibly with wildcards from command line
 		/// </summary>
 		ArrayList fileSpecs_ = new ArrayList();
-		
-		/// <summary>
-		/// Deflate compression level
-		/// </summary>
-		int compressionLevel_ = Deflater.DEFAULT_COMPRESSION;
-		
-		/// <summary>
+
+	    /// <summary>
 		/// Create entries for directories with no files
 		/// </summary>
 		bool addEmptyDirectoryEntries_;
