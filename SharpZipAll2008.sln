@@ -17,7 +17,7 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "minibzip2", "samples\vb\min
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "zipfiletest", "samples\vb\zipfiletest\zipfiletest.vbproj", "{54057AFD-35E2-48C3-8419-45D57C351C1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tar", "samples\cs\tar\tar.csproj", "{88B53A25-82F4-406A-920D-163E717F6AB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tar", "samples\cs\tar\Tar.csproj", "{12C2AD0C-B815-426D-AFF1-7787C2DCA0F0}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -61,10 +61,10 @@ Global
 		{54057AFD-35E2-48C3-8419-45D57C351C1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54057AFD-35E2-48C3-8419-45D57C351C1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54057AFD-35E2-48C3-8419-45D57C351C1F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88B53A25-82F4-406A-920D-163E717F6AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88B53A25-82F4-406A-920D-163E717F6AB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88B53A25-82F4-406A-920D-163E717F6AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88B53A25-82F4-406A-920D-163E717F6AB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12C2AD0C-B815-426D-AFF1-7787C2DCA0F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12C2AD0C-B815-426D-AFF1-7787C2DCA0F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12C2AD0C-B815-426D-AFF1-7787C2DCA0F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12C2AD0C-B815-426D-AFF1-7787C2DCA0F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
