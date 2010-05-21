@@ -406,10 +406,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				ed.Delete(1);
 			}
 
+#if !NET_1_1 && !NETCF_2_0
 			if (entry.AESKeySize > 0) {
 				AddExtraDataAES(entry, ed);
 			}
-
+#endif
 			byte[] extra = ed.GetEntryData();
 
 			WriteLeShort(name.Length);
@@ -441,11 +442,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			size = 0;
 
-			if (entry.IsCrypted == true) {
-				// DPI
+			if (entry.IsCrypted) {
+#if !NET_1_1 && !NETCF_2_0
 				if (entry.AESKeySize > 0) {
 					WriteAESHeader(entry);
-				} else {
+				} else
+#endif
+				{
 					if (entry.Crc < 0) {			// so testing Zip will says its ok
 						WriteEncryptionHeader(entry.DosTime << 16);
 					} else {
@@ -485,7 +488,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// Write the AES Authentication Code (a hash of the compressed and encrypted data)
 			if (curEntry.AESKeySize > 0) {
-				baseOutputStream_.Write(AESAuthCode_, 0, 10);
+				baseOutputStream_.Write(AESAuthCode, 0, 10);
 			}
 
 			if (curEntry.Size < 0) {
@@ -578,6 +581,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			baseOutputStream_.Write(cryptBuffer, 0, cryptBuffer.Length);
 		}
 
+#if !NET_1_1 && !NETCF_2_0
 		private static void AddExtraDataAES(ZipEntry entry, ZipExtraData extraData) {
 
 			// Vendor Version: AE-1 IS 1. AE-2 is 2. With AE-2 no CRC is required and 0 is stored.
@@ -613,8 +617,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// salt value, password verification value, encrypted data, and authentication code.
 			baseOutputStream_.Write(salt, 0, salt.Length);
 			baseOutputStream_.Write(pwdVerifier, 0, pwdVerifier.Length);
-
 		}
+#endif
 
 		/// <summary>
 		/// Writes the given buffer to the current entry.
@@ -774,10 +778,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 					ed.Delete(1);
 				}
 
+#if !NET_1_1 && !NETCF_2_0
 				if (entry.AESKeySize > 0) {
 					AddExtraDataAES(entry, ed);
 				}
-
+#endif
 				byte[] extra = ed.GetEntryData();
 				
 				byte[] entryComment = 

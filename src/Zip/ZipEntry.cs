@@ -875,6 +875,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
+
+#if !NET_1_1 && !NETCF_2_0
 		/// <summary>
 		/// For AES encrypted files returns or sets the number of bits of encryption (128, 192 or 256).
 		/// When setting, only 0 (off), 128 or 256 is supported.
@@ -909,6 +911,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return (byte)_aesEncryptionStrength;
 			}
 		}
+#else
+		/// <summary>
+		/// AES unsupported prior to .NET 2.0
+		/// </summary>
+		public int AESKeySize;
+#endif
 
 		/// <summary>
 		/// Returns the length of the salt, in bytes 
@@ -1028,6 +1036,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		//
 		private void ProcessAESExtraData(ZipExtraData extraData) {
 
+#if !NET_1_1 && !NETCF_2_0
 			if (extraData.Find(0x9901)) {
 				// Set version and flag for Zipfile.CreateAndInitDecryptionStream
 				versionToExtract = ZipConstants.VERSION_AES;			// Ver 5.1 = AES see "Version" getter
@@ -1047,6 +1056,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				method = (CompressionMethod)actualCompress;
 			} else
 				throw new ZipException("AES Extra Data missing");
+#else
+				throw new ZipException("AES unsupported");
+#endif
 		}
 
 		/// <summary>
@@ -1231,8 +1243,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		
 		bool forceZip64_;
 		byte cryptoCheckValue_;
+#if !NET_1_1 && !NETCF_2_0
 		int _aesVer;							// Version number (2 = AE-2 ?). Assigned but not used.
 		int _aesEncryptionStrength;				// Encryption strength 1 = 128 2 = 192 3 = 256
+#endif
 		#endregion
 	}
 }

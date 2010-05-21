@@ -6,8 +6,8 @@ if exist current (
 
 mkdir current
 
-mkdir current\netcf-10
-nant -t:netcf-1.0 -D:build.output.dir=current\netcf-10 -buildfile:sharpZLib.build build
+REM mkdir current\netcf-10
+REM nant -t:netcf-1.0 -D:build.output.dir=current\netcf-10 -buildfile:sharpZLib.build build
 
 mkdir current\netcf-20
 nant -t:netcf-2.0 -D:build.output.dir=current\netcf-20 -buildfile:sharpZLib.build build

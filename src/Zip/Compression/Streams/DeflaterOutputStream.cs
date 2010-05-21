@@ -144,7 +144,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				if (len <= 0) {
 					break;
 				}
-				
+
 #if NETCF_1_0
 				if ( keys != null ) {
 #else
@@ -168,9 +168,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 #else
 			if (cryptoTransform_ != null) {
+#if !NET_1_1 && !NETCF_2_0
 				if (cryptoTransform_ is ZipAESTransform) {
-					AESAuthCode_ = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
+					AESAuthCode = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
 				}
+#endif
 				cryptoTransform_.Dispose();
 				cryptoTransform_ = null;
 			}
@@ -206,7 +208,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		uint[] keys;
 #else
 		ICryptoTransform cryptoTransform_;
-		protected byte[] AESAuthCode_;
+
+		/// <summary>
+		/// Returns the 10 byte AUTH CODE to be appended immediately following the AES data stream.
+		/// </summary>
+		protected byte[] AESAuthCode;
 #endif
 		
 		/// <summary>
@@ -277,14 +283,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 #endif
 		}
 
+#if !NET_1_1 && !NETCF_2_0
 		/// <summary>
 		/// Initializes encryption keys based on given password.
 		/// </summary>
 		protected void InitializeAESPassword(ZipEntry entry, string rawPassword,
 											out byte[] salt, out byte[] pwdVerifier) {
-#if NETCF_1_0
-			// not implemented
-#else
 			salt = new byte[entry.AESSaltLen];
 			// Salt needs to be cryptographically random, and unique per file
 			if (_aesRnd == null)
@@ -294,8 +298,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 			cryptoTransform_ = new ZipAESTransform(rawPassword, salt, blockSize, true);
 			pwdVerifier = ((ZipAESTransform)cryptoTransform_).PwdVerifier;
-#endif
 		}
+#endif
 
 #if NETCF_1_0
 		
@@ -324,7 +328,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 #endif
 
 		#endregion
-		
+
 		#region Deflation Support
 		/// <summary>
 		/// Deflates everything in the input buffers.  This will call
@@ -511,9 +515,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					keys=null;
 #else
 					if ( cryptoTransform_ != null ) {
-						if (cryptoTransform_ is ZipAESTransform) {
-							AESAuthCode_ = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
-						}
+						GetAuthCodeIfAES();
 						cryptoTransform_.Dispose();
 						cryptoTransform_ = null;
 					}
@@ -526,7 +528,15 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				}
 			}
 		}
-		
+
+		private void GetAuthCodeIfAES() {
+#if !NET_1_1 && !NETCF_2_0
+			if (cryptoTransform_ is ZipAESTransform) {
+				AESAuthCode = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
+			}
+#endif
+		}
+
 		/// <summary>
 		/// Writes a single byte to the compressed output stream.
 		/// </summary>
@@ -583,7 +593,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		#region Static Fields
 
-#if ! NETCF_1_0
+#if !NET_1_1 && !NETCF_2_0
 		// Static to help ensure that multiple files within a zip will get different random salt
 		private static RNGCryptoServiceProvider _aesRnd;
 #endif

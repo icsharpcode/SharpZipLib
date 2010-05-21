@@ -35,7 +35,7 @@
 // exception statement from your version.
 // 
 
-#if !NETCF_1_0
+#if !NET_1_1 && !NETCF_2_0
 
 using System;
 using System.IO;

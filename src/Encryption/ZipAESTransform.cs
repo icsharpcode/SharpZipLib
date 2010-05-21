@@ -35,7 +35,8 @@
 // exception statement from your version.
 //
 
-#if !NETCF_1_0
+#if !NET_1_1 && !NETCF_2_0
+// Framework version 2.0 required for Rfc2898DeriveBytes 
 
 using System;
 using System.Security.Cryptography;
@@ -47,7 +48,7 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 	/// </summary>
 	public class ZipAESTransform : ICryptoTransform {
 
-		public const int PWD_VER_LENGTH = 2;
+		private const int PWD_VER_LENGTH = 2;
 
 		// WinZip use iteration count of 1000 for PBKDF2 key generation
 		private const int KEY_ROUNDS = 1000;
@@ -88,7 +89,6 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 			_encryptBuffer = new byte[_blockSize];
 			_encrPos = ENCRYPT_BLOCK;
 
-			// Needs .NET Framework version 2.0
 			// Performs the equivalent of derive_key in Dr Brian Gladman's pwd2key.c
 			Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(key, saltBytes, KEY_ROUNDS);
 			RijndaelManaged rm = new RijndaelManaged();
@@ -101,10 +101,6 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 			//
 			_hmacsha1 = new HMACSHA1(byteKey2);
 			_writeMode = writeMode;
-		}
-
-		public void Dispose() {
-			_encryptor.Dispose();
 		}
 
 		/// <summary>
@@ -141,35 +137,6 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 			return inputCount;
 		}
 
-		public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {
-
-			throw new NotImplementedException("ZipAESTransform.TransformFinalBlock");
-		}
-
-		public int InputBlockSize {
-			get {
-				return _blockSize;
-			}
-		}
-
-		public int OutputBlockSize {
-			get {
-				return _blockSize;
-			}
-		}
-
-		public bool CanTransformMultipleBlocks {
-			get {
-				return true;
-			}
-		}
-
-		public bool CanReuseTransform {
-			get {
-				return true;
-			}
-		}
-
 		/// <summary>
 		/// Returns the 2 byte password verifier
 		/// </summary>
@@ -191,6 +158,62 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 			}
 			return _hmacsha1.Hash;
 		}
+
+		#region ICryptoTransform Members
+
+		/// <summary>
+		/// Not implemented.
+		/// </summary>
+		public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {
+
+			throw new NotImplementedException("ZipAESTransform.TransformFinalBlock");
+		}
+
+		/// <summary>
+		/// Gets the size of the input data blocks in bytes.
+		/// </summary>
+		public int InputBlockSize {
+			get {
+				return _blockSize;
+			}
+		}
+
+		/// <summary>
+		/// Gets the size of the output data blocks in bytes.
+		/// </summary>
+		public int OutputBlockSize {
+			get {
+				return _blockSize;
+			}
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether multiple blocks can be transformed.
+		/// </summary>
+		public bool CanTransformMultipleBlocks {
+			get {
+				return true;
+			}
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether the current transform can be reused.
+		/// </summary>
+		public bool CanReuseTransform {
+			get {
+				return true;
+			}
+		}
+
+		/// <summary>
+		/// Cleanup internal state.
+		/// </summary>
+		public void Dispose() {
+			_encryptor.Dispose();
+		}
+
+		#endregion
+
 	}
 }
 #endif

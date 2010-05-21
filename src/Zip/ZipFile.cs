@@ -3282,6 +3282,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				CheckClassicPassword(result, entry);
 			}
 			else {
+#if !NET_1_1 && !NETCF_2_0
 				if (entry.Version == ZipConstants.VERSION_AES) {
 					//
 					OnKeysRequired(entry.Name);
@@ -3304,7 +3305,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 						throw new Exception("Invalid password for AES");
 					result = new ZipAESStream(baseStream, decryptor, CryptoStreamMode.Read);
 				}
-				else {
+				else
+#endif
+				{
 					throw new ZipException("Decryption method not supported");
 				}
 			}
