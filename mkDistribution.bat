@@ -18,7 +18,7 @@ nant -t:net-1.1 -D:build.output.dir=current\net-11 -buildfile:sharpZLib.build bu
 mkdir current\net-20
 nant -t:net-2.0 -D:build.output.dir=current\net-20 -buildfile:sharpZLib.build build
 
-
+@rem Version 1.8 of Sandcastle Help File Builder no longer includes the Console.exe, use the GUI instead
 "c:\Program Files\EWSoftware\Sandcastle Help File Builder\SandcastleBuilderConsole.exe" .\SharpZipLib.shfb
 
 mkdir current\doc

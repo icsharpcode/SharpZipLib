@@ -49,7 +49,7 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 	/// <summary>
 	/// Encrypts and decrypts AES ZIP
 	/// </summary>
-	public class ZipAESStream : CryptoStream {
+	internal class ZipAESStream : CryptoStream {
 
 		/// <summary>
 		/// Constructor

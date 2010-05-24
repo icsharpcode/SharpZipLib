@@ -837,7 +837,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Returns same value as CompressionMethod except when AES encrypting, which
 		/// places 99 in the method and places the real method in the extra data.
 		/// </summary>
-		public CompressionMethod CompressionMethodForHeader {
+		internal CompressionMethod CompressionMethodForHeader {
 			get {
 				return (AESKeySize > 0) ? CompressionMethod.WinZipAES : method;
 			}
@@ -906,7 +906,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// AES Encryption strength for storage in extra data in entry header.
 		/// 1 is 128 bit, 2 is 192 bit, 3 is 256 bit.
 		/// </summary>
-		public byte AESEncryptionStrength {
+		internal byte AESEncryptionStrength {
 			get {
 				return (byte)_aesEncryptionStrength;
 			}
@@ -915,13 +915,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// AES unsupported prior to .NET 2.0
 		/// </summary>
-		public int AESKeySize;
+		internal int AESKeySize;
 #endif
 
 		/// <summary>
 		/// Returns the length of the salt, in bytes 
 		/// </summary>
-		public int AESSaltLen {
+		internal int AESSaltLen {
 			get {
 				// Key size -> Salt length: 128 bits = 8 bytes, 192 bits = 12 bytes, 256 bits = 16 bytes.
 				return AESKeySize / 16;
@@ -931,7 +931,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Number of extra bytes required to hold the AES Header fields (Salt, Pwd verify, AuthCode)
 		/// </summary>
-		public int AESOverheadSize {
+		internal int AESOverheadSize {
 			get {
 				// File format:
 				//   Bytes		Content

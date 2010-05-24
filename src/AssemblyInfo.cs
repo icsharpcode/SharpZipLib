@@ -74,11 +74,11 @@ using System.Runtime.InteropServices;
 
 
 [assembly: AssemblyCompany("ICSharpCode.net")]
-[assembly: AssemblyCopyright("Copyright 2001-2007 Mike Krueger, John Reilly")]
-[assembly: AssemblyTrademark("Copyright 2001-2007 Mike Krueger, John Reilly")]
+[assembly: AssemblyCopyright("Copyright 2001-2010 Mike Krueger, John Reilly")]
+[assembly: AssemblyTrademark("Copyright 2001-2010 Mike Krueger, John Reilly")]
 
-[assembly: AssemblyVersion("0.85.5.437")]
-[assembly: AssemblyInformationalVersionAttribute("0.85.5")]
+[assembly: AssemblyVersion("0.86.0.516")]
+[assembly: AssemblyInformationalVersionAttribute("0.86.0")]
 
 
 [assembly: CLSCompliant(true)]
