@@ -1,3 +1,21 @@
+Changes for 0.86.0
++ Multi-member gzip files are now supported. Contributed by Geoff Hart.
++ Zero byte files caused ZipOutputStream to create invalid zipfiles. Contributed by Mark Ritchie.
++ ZipFile.CommitUpdate failed on ODT (Open Document) files when updating in memory. Contributed by Dricks.
++ Exceptions occurring within ZipFile.CommitUpdate were being silently discarded.
++ In FastZip, the NameFilter erroneously removed all escapes from regex. Contributed by John Lemberger.
+  Note: This is a breaking change - if you had detoured this filter bug via doubled-up backslashes,
+        please halve them - for example change @"\\\\myextract.txt$" to @"\\myextract.txt$", or
+        change "\\\\\\\\myextract.txt$" to "\\\\myextract.txt$".
++ AES Encryption and Decryption is now supported.
++ TarArchive now has IsStreamOwner property, for use with MemoryStream.
++ Removed exception "Extra data contains Zip64 information but version 2.0 is not high enough" due to rogue zip creators.
++ FastZip.ExtractZip now accepts an Input Stream.
++ Zip input and output streams can now specify buffer sizes.
++ Solved "NTFS Extra data invalid" exception when reading zip files with zero-length NTFS ExtraData entry.
++ Fixed "Size mismatch" exceptions reading zips created by SharpZipLib with an explicit entry CRC and Size.
+
+
 Changes for 0.85.5
 + Fix for unreferenced ZipFile causing read failure after garbage collection.
 + Fix to ZipInputStream.CloseEntry were skipping could fail for long values.

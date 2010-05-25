@@ -37,8 +37,10 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+// HISTORY
+//	2010-05-25	Z-1663	Fixed exception when testing local header compressed size of -1
+
 using System;
-using System.Text;
 using System.IO;
 
 using ICSharpCode.SharpZipLib.Checksums;
@@ -613,8 +615,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 							throw new ZipException("Inflater not finished!");
 						}
 						inputBuffer.Available = inf.RemainingInput;
-						
-						if ((flags & 8) == 0 && (inf.TotalIn != csize || inf.TotalOut != size)) {
+
+						// A csize of -1 is from an unpatched local header
+						if ((flags & 8) == 0 &&
+							(inf.TotalIn != csize && csize != 0xFFFFFFFF && csize != -1 || inf.TotalOut != size)) {
 							throw new ZipException("Size mismatch: " + csize + ";" + size + " <-> " + inf.TotalIn + ";" + inf.TotalOut);
 						}
 						inf.Reset();

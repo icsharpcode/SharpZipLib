@@ -40,6 +40,7 @@
 // HISTORY
 //	2009-12-22	Z-1649	Added AES support
 //	2010-03-02	Z-1650	Fixed updating ODT archives in memory. Exposed exceptions in updating.
+//	2010-05-25	Z-1663	Fixed exception when testing local header compressed size of -1
 
 using System;
 using System.Collections;
@@ -1255,7 +1256,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 								entry.Size, size));
 					}
 
-					if (compressedSize != entry.CompressedSize) {
+					if (compressedSize != entry.CompressedSize &&
+						compressedSize != 0xFFFFFFFF && compressedSize != -1) {
 						throw new ZipException(
 							string.Format("Compressed size mismatch between central header({0}) and local header({1})",
 							entry.CompressedSize, compressedSize));
