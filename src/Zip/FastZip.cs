@@ -514,7 +514,7 @@ namespace ICSharpCode.SharpZipLib.Zip
                 try {
                     // The open below is equivalent to OpenRead which gaurantees that if opened the 
                     // file will not be changed by subsequent openers, but precludes opening in some cases
-                    // were it could succeed.
+                    // were it could succeed. ie the open may fail as its already open for writing and the share mode should reflect that.
                     using (FileStream stream = File.Open(e.Name, FileMode.Open, FileAccess.Read, FileShare.Read)) {
                         ZipEntry entry = entryFactory_.MakeFileEntry(e.Name);
                         outputStream_.PutNextEntry(entry);
