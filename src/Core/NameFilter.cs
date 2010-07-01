@@ -97,31 +97,29 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <returns>True if the expression is valid, false otherwise.</returns>
 		public static bool IsValidFilterExpression(string toTest)
 		{
-			if ( toTest == null ) {
-				throw new ArgumentNullException("toTest");
-			}
-
 			bool result = true;
 
 			try {
-				string[] items = SplitQuoted(toTest);
-				for (int i = 0; i < items.Length; ++i) {
-					if ((items[i] != null) && (items[i].Length > 0)) {
-						string toCompile;
+                if (toTest != null) {
+                    string[] items = SplitQuoted(toTest);
+                    for (int i = 0; i < items.Length; ++i) {
+                        if ((items[i] != null) && (items[i].Length > 0)) {
+                            string toCompile;
 
-						if (items[i][0] == '+') {
-							toCompile = items[i].Substring(1, items[i].Length - 1);
-						}
-						else if (items[i][0] == '-') {
-							toCompile = items[i].Substring(1, items[i].Length - 1);
-						}
-						else {
-							toCompile = items[i];
-						}
+                            if (items[i][0] == '+') {
+                                toCompile = items[i].Substring(1, items[i].Length - 1);
+                            }
+                            else if (items[i][0] == '-') {
+                                toCompile = items[i].Substring(1, items[i].Length - 1);
+                            }
+                            else {
+                                toCompile = items[i];
+                            }
 
-						Regex testRegex = new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Singleline);
-					}
-				}
+                            Regex testRegex = new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                        }
+                    }
+                }
 			}
 			catch (ArgumentException) {
 				result = false;

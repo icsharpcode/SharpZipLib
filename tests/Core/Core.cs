@@ -33,11 +33,22 @@ namespace ICSharpCode.SharpZipLib.Tests.Core
 			}
 		}
 
+        [Test]
+        public void NullFilter()
+        {
+            NameFilter nf = new NameFilter(null);
+            Assert.IsTrue(nf.IsIncluded("o78i6bgv5rvu\\kj//&*"));
+        }
+
 		[Test]
 		public void ValidFilter()
 		{
-			Assert.IsTrue(NameFilter.IsValidFilterExpression("a"));
-			Assert.IsFalse(NameFilter.IsValidFilterExpression(@"\,)"));
+            Assert.IsTrue(NameFilter.IsValidFilterExpression(null));
+            Assert.IsTrue(NameFilter.IsValidFilterExpression(string.Empty));
+            Assert.IsTrue(NameFilter.IsValidFilterExpression("a"));
+
+            Assert.IsFalse(NameFilter.IsValidFilterExpression(@"\,)"));
+            Assert.IsFalse(NameFilter.IsValidFilterExpression(@"[]"));
 		}
 	}
 }
