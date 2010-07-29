@@ -27,8 +27,6 @@
 
 using System;
 using System.IO;
-
-using ICSharpCode.SharpZipLib;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.BZip2;
@@ -129,14 +127,14 @@ public class Tar
 	/// </summary>
 	public Tar()
 	{
-		this.blockingFactor = TarBuffer.DefaultBlockFactor;
-		this.userId   = 0;
+		blockingFactor = TarBuffer.DefaultBlockFactor;
+		userId   = 0;
 		
 		string sysUserName = Environment.UserName;
-		this.userName = ((sysUserName == null) ? "" : sysUserName);
+		userName = ((sysUserName == null) ? "" : sysUserName);
 		
-		this.groupId   = 0;
-		this.groupName = "None";
+		groupId   = 0;
+		groupName = "None";
 	}
 
 	/// <summary>
