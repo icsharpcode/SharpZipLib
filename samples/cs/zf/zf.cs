@@ -27,7 +27,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 {
 	
 	/// <summary>
-	/// A command line archiver using the <see cref="ZipFile"/> class from SharpZipLib compression library
+	/// A command line archiver using the <see cref="ZipFile"/> class from the SharpZipLib compression library
 	/// </summary>
 	public class ZipFileArchiver 
 	{
@@ -156,6 +156,10 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 											operation_ = Operation.Test;
 											break;
 	
+                                        case "-dryrun":
+									        dryRun_ = true;
+									        break;
+
 										case "-env":
 											ShowEnvironment();
 											break;
@@ -433,7 +437,8 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 
 			Console.Out.WriteLine("--add                      Add files to archive");
 			Console.Out.WriteLine("--create                   Create new archive");
-			Console.Out.WriteLine("--data                     Test archive data");			Console.Out.WriteLine("--delete                   Delete files from archive");
+			Console.Out.WriteLine("--data                     Test archive data");
+            Console.Out.WriteLine("--delete                   Delete files from archive");
 			Console.Out.WriteLine("--encoding=codepage|name   Set code page for encoding by name or number");
 			Console.Out.WriteLine("--extract{=dir}            Extract archive contents to dir(default .)");
 			Console.Out.WriteLine("--help                     Show this help");
@@ -526,7 +531,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 				Console.Out.WriteLine(headerUnderline);
 				Console.Out.WriteLine(
 					"{0,-12}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss}",
-					entryCount.ToString() + " entries", totalSize, GetCompressionRatio(totalCompressedSize, totalSize), fileInfo.Length, fileInfo.LastWriteTime);
+					entryCount + " entries", totalSize, GetCompressionRatio(totalCompressedSize, totalSize), fileInfo.Length, fileInfo.LastWriteTime);
 			}
 		}
 
@@ -671,84 +676,133 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		/// <returns>True if operation is successful; false otherwise.</returns>
 		bool ExtractFile(Stream inputStream, ZipEntry theEntry, string targetDir)
 		{
-			// try and sort out the correct place to save this entry
-			string entryFileName;
-						
-			if (Path.IsPathRooted(theEntry.Name)) 
-			{
-				string workName = Path.GetPathRoot(theEntry.Name);
-				workName = theEntry.Name.Substring(workName.Length);
-				entryFileName = Path.Combine(Path.GetDirectoryName(workName), Path.GetFileName(theEntry.Name));
-			} 
-			else 
-			{
-				entryFileName = theEntry.Name;
-			}
+            if (inputStream == null)
+            {
+                throw new ArgumentNullException("inputStream");
+            }
 
-			string targetName = Path.Combine(targetDir, entryFileName);			
-			string fullPath = Path.GetDirectoryName(Path.GetFullPath(targetName));
+		    if (theEntry == null)
+            {
+                throw new ArgumentNullException("theEntry");
+            }
+
+            if (!theEntry.IsFile)
+            {
+                throw new ArgumentException("Not a file", "theEntry");
+            }
+
+		    if (targetDir == null)
+            {
+                throw new ArgumentNullException("targetDir");
+            }
+
+		    // try and sort out the correct place to save this entry
+
+		    bool result = true;
+            bool process = theEntry.Name.Length > 0;
+
+            if (!process)
+            {
+                // A fuller program would generate or prompt for a filename here...
+                if (!silent_)
+                {
+                    Console.WriteLine("Ignoring empty name");
+                }
+
+                return false;
+            }
+
+		    string entryFileName;
+
+            if (Path.IsPathRooted(theEntry.Name))
+            {
+                string workName = Path.GetPathRoot(theEntry.Name);
+                workName = theEntry.Name.Substring(workName.Length);
+                entryFileName = Path.Combine(Path.GetDirectoryName(workName), Path.GetFileName(theEntry.Name));
+            }
+            else
+            {
+                entryFileName = theEntry.Name;
+            }
+
+            string targetName = Path.Combine(targetDir, entryFileName);
+            string fullDirectoryName = Path.GetDirectoryName(Path.GetFullPath(targetName));
+
 #if TEST
 			Console.WriteLine("Decompress targetfile name " + entryFileName);
-			Console.WriteLine("Decompress targetpath " + fullPath);
+			Console.WriteLine("Decompress targetpath " + fullDirectoryName);
 #endif
-						
-			// Could be an option or parameter to allow failure or try creation
-			if (Directory.Exists(fullPath) == false)
-			{
-				try 
-				{
-					Directory.CreateDirectory(fullPath);
-				}
-				catch 
-				{
-					return false;
-				}
-			} 
-			else if (overwriteFiles == Overwrite.Prompt) 
-			{
-				if (File.Exists(targetName)) 
-				{
-					Console.Write("File " + targetName + " already exists.  Overwrite? ");
-								
-					string readValue;
-					try 
-					{
-						readValue = Console.ReadLine();
-					}
-					catch 
-					{
-						readValue = null;
-					}
-								
-					if ( (readValue == null) || (readValue.ToLower() != "y") )
-					{
-						return true;
-					}
-				}
-			}
-					
-			if (entryFileName.Length > 0) 
+
+            // Could be an option or parameter to allow failure or try creation
+            if (process)
+            {
+                if (Directory.Exists(fullDirectoryName) == false)
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(fullDirectoryName);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (!silent_)
+                        {
+                            Console.Write("Exception creating directory '{0}' - {1}", fullDirectoryName, ex.Message);
+                        }
+
+                        result = false;
+                        process = false;
+                    }
+                }
+                else if (overwriteFiles == Overwrite.Prompt)
+                {
+                    if (File.Exists(targetName))
+                    {
+                        Console.Write("File " + targetName + " already exists.  Overwrite? ");
+
+                        string readValue;
+                        try
+                        {
+                            readValue = Console.ReadLine();
+                        }
+                        catch
+                        {
+                            readValue = null;
+                        }
+
+                        if ((readValue == null) || (readValue.ToLower() != "y"))
+                        {
+                            process = false;
+                        }
+                    }
+                }
+            }
+
+		    if (process)
 			{
 				if ( !silent_ )
 				{
 					Console.Write("{0}", targetName);
 				}
-				using (FileStream outputStream = File.Create(targetName))
-				{
-					StreamUtils.Copy(inputStream, outputStream, GetBuffer());
-				}
-							
-				if (restoreDateTime_) 
-				{
-					File.SetLastWriteTime(targetName, theEntry.DateTime);
-				}
-				
-				if ( !silent_ )
+
+                if (!dryRun_)
+                {
+                    using (FileStream outputStream = File.Create(targetName))
+                    {
+                        StreamUtils.Copy(inputStream, outputStream, GetBuffer());
+                    }
+
+                    if (restoreDateTime_)
+                    {
+                        File.SetLastWriteTime(targetName, theEntry.DateTime);
+                    }
+                }
+
+			    if ( !silent_ )
 				{
 					Console.WriteLine(" OK");
 				}
 			}
-			return true;
+			return result;
 		}
 
 		/// <summary>
@@ -768,17 +822,23 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 					zf.Password = password_;
 					foreach ( ZipEntry entry in zf )
 					{
-						if ( entry.IsFile )
-						{
-							ExtractFile(zf.GetInputStream(entry), entry, targetDir);
-						}
-						else
-						{
-							if ( !silent_ )
-							{
-								Console.WriteLine("Skipping {0}", entry.Name);
-							}
-						}
+                        if (entry.IsFile)
+                        {
+                            if (!ExtractFile(zf.GetInputStream(entry), entry, targetDir))
+                            {
+                                if (!silent_)
+                                {
+                                    Console.WriteLine("Extraction failed {0}", entry.Name);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (!silent_)
+                            {
+                                Console.WriteLine("Skipping {0}", entry.Name);
+                            }
+                        }
 					}
 					
 					if ( !silent_ )
@@ -1398,6 +1458,11 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		/// Flag whose value is true if data should be tested; false if it should not.
 		/// </summary>
 		bool testData_;
+
+        /// <summary>
+        /// Dont extract or compress just display what would be done - testing
+        /// </summary>
+	    private bool dryRun_;
 
 		/// <summary>
 		/// The currently active <see cref="ZipFile"/>.
