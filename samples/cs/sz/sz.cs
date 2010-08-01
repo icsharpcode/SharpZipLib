@@ -583,7 +583,7 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
         /// Calculate compression ratio as a percentage
         /// Doesnt allow for expansion (ratio > 100) as the resulting strings can get huge easily
         /// </summary>
-        int GetCompressionRatio(long packedSize, long unpackedSize)
+        static int GetCompressionRatio(long packedSize, long unpackedSize)
         {
             int result = 0;
             if (unpackedSize > 0 && unpackedSize >= packedSize) {
@@ -661,7 +661,7 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
                             Console.WriteLine(headerUnderline);
                             Console.WriteLine(
                                 "{0,-15}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss}",
-                                entryCount.ToString() + " entries", totalSize, GetCompressionRatio(fileInfo.Length, totalSize), fileInfo.Length, fileInfo.LastWriteTime);
+                                entryCount + " entries", totalSize, GetCompressionRatio(fileInfo.Length, totalSize), fileInfo.Length, fileInfo.LastWriteTime);
                         }
                     }
                 }
@@ -736,7 +736,7 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
                     Console.WriteLine(headerUnderline);
                     Console.WriteLine(
                         "{0,-12}  {1,10:0}  {2,3}% {3,10:0} {4,10:d} {4:hh:mm:ss}",
-                        entryCount.ToString() + " entries", totalSize, GetCompressionRatio(fileInfo.Length, totalSize), fileInfo.Length, fileInfo.LastWriteTime);
+                        entryCount + " entries", totalSize, GetCompressionRatio(fileInfo.Length, totalSize), fileInfo.Length, fileInfo.LastWriteTime);
                 }
             }
             catch(Exception exception) {
@@ -1129,13 +1129,13 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
         /// Extract archives based on user input
         /// Allows simple wildcards to specify multiple archives
         /// </summary>
-        void Extract(ArrayList fileSpecs)
+        void Extract(ArrayList fileSpecifications)
         {
             if (targetOutputDirectory == null || targetOutputDirectory.Length == 0) {
                 targetOutputDirectory = @".\";
             }
 			
-            foreach(string spec in fileSpecs) {
+            foreach(string spec in fileSpecifications) {
 				
                 string [] names;
                 if (spec.IndexOf('*') >= 0 || spec.IndexOf('?') >= 0) {
