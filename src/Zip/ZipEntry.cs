@@ -38,8 +38,9 @@
 // exception statement from your version.
 
 // HISTORY
-//	22-12-2009	DavidPierson	Added AES support
-//	02-02-2010	DavidPierson	Changed NTFS Extra Data min length to 4
+//	2009-12-22	Z-1649	Added AES support
+//	2010-02-02	DavidP	Changed NTFS Extra Data min length to 4
+//	2012-06-03	Z-1744	Use only the low order byte of "Version Needed to Extract"
 
 using System;
 using System.IO;
@@ -558,7 +559,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get {
 				// Return recorded version if known.
 				if (versionToExtract != 0) {
-					return versionToExtract;
+					return versionToExtract & 0x00ff;				// Only lower order byte. High order is O/S file system.
 				} 
 				else {
 					int result = 10;
