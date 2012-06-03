@@ -10,7 +10,7 @@ using ICSharpCode.SharpZipLib.Tar;
 namespace ICSharpCode.SharpZipLib.Tests.Tar {
 	
 	/// <summary>
-	/// This class contains test cases for Tar archive handling
+	/// This class contains test cases for Tar archive handling.
 	/// </summary>
 	[TestFixture]
 	public class TarTestSuite
