@@ -34,6 +34,9 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+// HISTORY
+//	2012-06-04	Z-1419	Last char of file name was dropped if path length > 100
+
 using System;
 using System.IO;
 
@@ -284,7 +287,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				longHeader.GroupName = "";
 				longHeader.UserName = "";
 				longHeader.LinkName = "";
-                longHeader.Size = entry.TarHeader.Name.Length;
+                longHeader.Size = entry.TarHeader.Name.Length + 1;	// Plus one to avoid dropping last char
 
 				longHeader.WriteHeader(blockBuffer);
 				buffer.WriteBlock(blockBuffer);  // Add special long filename header block
