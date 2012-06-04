@@ -37,7 +37,8 @@
 // exception statement from your version.
 
 // HISTORY
-//	11-08-2009	GeoffHart	T9121	Added Multi-member gzip support
+//	2009-08-11	T9121	Geoff Hart Added Multi-member gzip support
+//	2012-06-03	Z-1802	Incorrect endianness in FEXTRA handling
 
 using System;
 using System.IO;
@@ -279,7 +280,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 				headCRC.Update(len1);
 				headCRC.Update(len2);
 
-				int extraLen = (len1 << 8) | len2;
+				int extraLen = (len2 << 8) | len1;		// gzip is LSB first
 				for (int i = 0; i < extraLen;i++) {
 					int readByte = inputBuffer.ReadLeByte();
 					if (readByte < 0) 
