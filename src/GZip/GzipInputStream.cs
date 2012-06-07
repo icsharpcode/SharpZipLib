@@ -38,7 +38,7 @@
 
 // HISTORY
 //	2009-08-11	T9121	Geoff Hart Added Multi-member gzip support
-//	2012-06-03	Z-1802	Incorrect endianness in FEXTRA handling
+//	2012-06-03	Z-1802	Incorrect endianness and subfield in FEXTRA handling. 
 
 using System;
 using System.IO;
@@ -258,19 +258,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 			// 7. Read extra field
 			if ((flags & GZipConstants.FEXTRA) != 0) {
-				// Skip subfield id
-				for (int i=0; i< 2; i++) {
-					int readByte = inputBuffer.ReadLeByte();
-					if (readByte < 0) {
-						throw new EndOfStreamException("EOS reading GZIP header");
-					}
-					headCRC.Update(readByte);
-				}
 
-				if (inputBuffer.ReadLeByte() < 0 || inputBuffer.ReadLeByte() < 0) {
-					throw new EndOfStreamException("EOS reading GZIP header");
-				}
-
+				// XLEN is total length of extra subfields, we will skip them all
 				int len1, len2;
 				len1 = inputBuffer.ReadLeByte();
 				len2 = inputBuffer.ReadLeByte();
