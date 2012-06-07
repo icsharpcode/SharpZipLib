@@ -34,7 +34,8 @@
 // exception statement from your version.
 
 // HISTORY
-//	28-01-2010	DavidPierson	Added IsStreamOwner
+//	2010-01-28			Added IsStreamOwner
+//	2012-06-07	Z-1675	RootPath was case and slash direction sensitive; trailing slash caused failure
 
 using System;
 using System.IO;
@@ -315,8 +316,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 				if ( isDisposed ) {
 					throw new ObjectDisposedException("TarArchive");
 				}
-			
-				rootPath = value;
+				// Convert to forward slashes for matching. Trim trailing / for correct final path
+				rootPath = value.Replace('\\', '/').TrimEnd('/');
 			}
 		}
 		
@@ -727,7 +728,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			string newName = null;
 		
 			if (rootPath != null) {
-				if (entry.Name.StartsWith(rootPath)) {
+				if (entry.Name.StartsWith(rootPath, StringComparison.OrdinalIgnoreCase)) {
 					newName = entry.Name.Substring(rootPath.Length + 1 );
 				}
 			}
