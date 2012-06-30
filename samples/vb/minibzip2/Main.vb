@@ -172,7 +172,7 @@ Public Class MainForm
 
 			fsOutput = File.Create(strOutputFilename)
 
-			BZip2.Decompress(fsBZ2Archive, fsOutput)
+			BZip2.Decompress(fsBZ2Archive, fsOutput, False)
 
 			fsBZ2Archive.Close()
 			fsOutput.Flush()
@@ -183,7 +183,7 @@ Public Class MainForm
 			fsInputFile = File.OpenRead(txtFileName.Text)
 			fsBZ2Archive = File.Create(txtFileName.Text + ".bz")
 
-			BZip2.Compress(fsInputFile, fsBZ2Archive, 4026)
+			BZip2.Compress(fsInputFile, fsBZ2Archive, False, 4026)
 
 			fsInputFile.Close()
 			' fsBZ2Archive.Flush() & fsBZ2Archive.Close() are automatically called by .Compress
