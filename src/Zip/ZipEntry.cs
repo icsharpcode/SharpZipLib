@@ -41,6 +41,7 @@
 //	2009-12-22	Z-1649	Added AES support
 //	2010-02-02	DavidP	Changed NTFS Extra Data min length to 4
 //	2012-06-03	Z-1744	Use only the low order byte of "Version Needed to Extract"
+//	2012-07-18	Z-1676	Translate to forward slashes and remove drive from name in constructor
 
 using System;
 using System.IO;
@@ -220,7 +221,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			CompressionMethod method)
 		{
 			if (name == null) {
-				throw new System.ArgumentNullException("name");
+				throw new ArgumentNullException("name");
 			}
 
 			if ( name.Length > 0xffff )	{
@@ -231,8 +232,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentOutOfRangeException("versionRequiredToExtract");
 			}
 			
-			this.DateTime = System.DateTime.Now;
-			this.name = name;
+			this.DateTime = DateTime.Now;
+			this.name = CleanName(name);
 			this.versionMadeBy = (ushort)madeByInfo;
 			this.versionToExtract = (ushort)versionRequiredToExtract;
 			this.method = method;
@@ -1205,7 +1206,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return string.Empty;
 			}
 			
-			if (Path.IsPathRooted(name) == true) {
+			if (Path.IsPathRooted(name)) {
 				// NOTE:
 				// for UNC names...  \\machine\share\zoom\beet.txt gives \zoom\beet.txt
 				name = name.Substring(Path.GetPathRoot(name).Length);
