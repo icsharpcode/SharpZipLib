@@ -40,6 +40,7 @@
 // HISTORY
 //	22-12-2009	Z-1649	Added AES support
 //	22-02-2010	Z-1648	Zero byte entries would create invalid zip files
+//	27-07-2012	Z-1724	Compressed size was incorrect in local header when CRC and Size are known
 
 using System;
 using System.IO;
@@ -280,7 +281,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			else
 			{
-				headerInfoAvailable = (entry.Size >= 0) && entry.HasCrc;
+				headerInfoAvailable = (entry.Size >= 0) && entry.HasCrc && entry.CompressedSize >= 0;
 
 				// Switch to deflation if storing isnt possible.
 				if (method == CompressionMethod.Stored)
@@ -343,7 +344,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLeInt((int)entry.DosTime);
 
 			// TODO: Refactor header writing.  Its done in several places.
-			if (headerInfoAvailable == true) {
+			if (headerInfoAvailable) {
 				WriteLeInt((int)entry.Crc);
 				if ( entry.LocalHeaderRequiresZip64 ) {
 					WriteLeInt(-1);
