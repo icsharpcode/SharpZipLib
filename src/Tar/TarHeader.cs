@@ -33,6 +33,8 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+// HISTORY
+//	27-07-2012	Z-1647	Added handling of Tar formats for files over 8GB such as Posix and Pax
 
 /* The tar format and its POSIX successor PAX have a long history which makes for compatability
    issues when creating and reading files.
@@ -584,8 +586,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 			
 			GroupId = (int)TarHeader.ParseOctal(header, offset, TarHeader.GIDLEN);
 			offset += TarHeader.GIDLEN;
-			
-			Size = TarHeader.ParseOctal(header, offset, TarHeader.SIZELEN);
+
+			Size = TarHeader.ParseBinaryOrOctal(header, offset, TarHeader.SIZELEN);
 			offset += TarHeader.SIZELEN;
 			
 			ModTime = GetDateTimeFromCTime(TarHeader.ParseOctal(header, offset, TarHeader.MODTIMELEN));
@@ -638,10 +640,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 			offset = GetOctalBytes(mode, outBuffer, offset, MODELEN);
 			offset = GetOctalBytes(UserId, outBuffer, offset, UIDLEN);
 			offset = GetOctalBytes(GroupId, outBuffer, offset, GIDLEN);
-			
-			offset = GetLongOctalBytes(Size, outBuffer, offset, SIZELEN);
-			offset = GetLongOctalBytes(GetCTime(ModTime), outBuffer, offset, MODTIMELEN);
-			
+
+			offset = GetBinaryOrOctalBytes(Size, outBuffer, offset, SIZELEN);
+			offset = GetOctalBytes(GetCTime(ModTime), outBuffer, offset, MODTIMELEN);
+
 			int csOffset = offset;
 			for (int c = 0; c < CHKSUMLEN; ++c) 
 			{
@@ -738,6 +740,21 @@ namespace ICSharpCode.SharpZipLib.Tar
 			defaultUser = userNameAsSet;
 			defaultGroupId = groupIdAsSet;
 			defaultGroupName = groupNameAsSet;
+		}
+
+		// Return value that may be stored in octal or binary. Length must exceed 8.
+		//
+		static private long ParseBinaryOrOctal(byte[] header, int offset, int length) {
+			if (header[offset] >= 128) {
+				// File sizes over 8GB are stored in 8 right-justified bytes of binary indicated by setting the high-order bit of the leftmost byte of a numeric field.
+				int pos = length - 8;
+				long result = 0;
+				while (pos < length) {
+					result = result << 8 | header[offset + pos++];
+				}
+				return result;
+			}
+			return ParseOctal(header, offset, length);
 		}
 
 		/// <summary>
@@ -1017,15 +1034,25 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 		
 		/// <summary>
-		/// Put an octal representation of a value into a buffer
+		/// Put an octal or binary representation of a value into a buffer
 		/// </summary>
 		/// <param name = "value">Value to be convert to octal</param>
 		/// <param name = "buffer">The buffer to update</param>
 		/// <param name = "offset">The offset into the buffer to store the value</param>
-		/// <param name = "length">The length of the octal string</param>
+		/// <param name = "length">The length of the octal string. Must be 12.</param>
 		/// <returns>Index of next byte</returns>
-		public static int GetLongOctalBytes(long value, byte[] buffer, int offset, int length)
+		private static int GetBinaryOrOctalBytes(long value, byte[] buffer, int offset, int length)
 		{
+			if (value > 0x1FFFFFFFF) {	// Octal 77777777777 (11 digits)
+				// Put value as binary, right-justified into the buffer. Set high order bit of left-most byte.
+				int pos = length - 1;
+				while (pos > 0) {
+					buffer[offset + pos--] = (byte)value;
+					value = value >> 8;
+				}
+				buffer[offset] = 128;
+				return offset + length;
+			}
 			return GetOctalBytes(value, buffer, offset, length);
 		}
 		
