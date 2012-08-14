@@ -575,48 +575,48 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			int offset = 0;
 			
-			name = TarHeader.ParseName(header, offset, TarHeader.NAMELEN).ToString();
-			offset += TarHeader.NAMELEN;
+			name = ParseName(header, offset, NAMELEN).ToString();
+			offset += NAMELEN;
 			
-			mode = (int)TarHeader.ParseOctal(header, offset, TarHeader.MODELEN);
-			offset += TarHeader.MODELEN;
+			mode = (int)ParseOctal(header, offset, MODELEN);
+			offset += MODELEN;
 			
-			UserId = (int)TarHeader.ParseOctal(header, offset, TarHeader.UIDLEN);
-			offset += TarHeader.UIDLEN;
+			UserId = (int)ParseOctal(header, offset, UIDLEN);
+			offset += UIDLEN;
 			
-			GroupId = (int)TarHeader.ParseOctal(header, offset, TarHeader.GIDLEN);
-			offset += TarHeader.GIDLEN;
+			GroupId = (int)ParseOctal(header, offset, GIDLEN);
+			offset += GIDLEN;
 
-			Size = TarHeader.ParseBinaryOrOctal(header, offset, TarHeader.SIZELEN);
-			offset += TarHeader.SIZELEN;
+			Size = ParseBinaryOrOctal(header, offset, SIZELEN);
+			offset += SIZELEN;
 			
-			ModTime = GetDateTimeFromCTime(TarHeader.ParseOctal(header, offset, TarHeader.MODTIMELEN));
-			offset += TarHeader.MODTIMELEN;
+			ModTime = GetDateTimeFromCTime(ParseOctal(header, offset, MODTIMELEN));
+			offset += MODTIMELEN;
 			
-			checksum = (int)TarHeader.ParseOctal(header, offset, TarHeader.CHKSUMLEN);
-			offset += TarHeader.CHKSUMLEN;
+			checksum = (int)ParseOctal(header, offset, CHKSUMLEN);
+			offset += CHKSUMLEN;
 			
 			TypeFlag = header[ offset++ ];
 
-			LinkName = TarHeader.ParseName(header, offset, TarHeader.NAMELEN).ToString();
-			offset += TarHeader.NAMELEN;
+			LinkName = ParseName(header, offset, NAMELEN).ToString();
+			offset += NAMELEN;
 			
-			Magic = TarHeader.ParseName(header, offset, TarHeader.MAGICLEN).ToString();
-			offset += TarHeader.MAGICLEN;
+			Magic = ParseName(header, offset, MAGICLEN).ToString();
+			offset += MAGICLEN;
 			
-			Version = TarHeader.ParseName(header, offset, TarHeader.VERSIONLEN).ToString();
-			offset += TarHeader.VERSIONLEN;
+			Version = ParseName(header, offset, VERSIONLEN).ToString();
+			offset += VERSIONLEN;
 			
-			UserName = TarHeader.ParseName(header, offset, TarHeader.UNAMELEN).ToString();
-			offset += TarHeader.UNAMELEN;
+			UserName = ParseName(header, offset, UNAMELEN).ToString();
+			offset += UNAMELEN;
 			
-			GroupName = TarHeader.ParseName(header, offset, TarHeader.GNAMELEN).ToString();
-			offset += TarHeader.GNAMELEN;
+			GroupName = ParseName(header, offset, GNAMELEN).ToString();
+			offset += GNAMELEN;
 			
-			DevMajor = (int)TarHeader.ParseOctal(header, offset, TarHeader.DEVLEN);
-			offset += TarHeader.DEVLEN;
+			DevMajor = (int)ParseOctal(header, offset, DEVLEN);
+			offset += DEVLEN;
 			
-			DevMinor = (int)TarHeader.ParseOctal(header, offset, TarHeader.DEVLEN);
+			DevMinor = (int)ParseOctal(header, offset, DEVLEN);
 			
 			// Fields past this point not currently parsed or used...
 			
@@ -745,12 +745,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		// Return value that may be stored in octal or binary. Length must exceed 8.
 		//
 		static private long ParseBinaryOrOctal(byte[] header, int offset, int length) {
-			if (header[offset] >= 128) {
+			if (header[offset] >= 0x80) {
 				// File sizes over 8GB are stored in 8 right-justified bytes of binary indicated by setting the high-order bit of the leftmost byte of a numeric field.
-				int pos = length - 8;
 				long result = 0;
-				while (pos < length) {
-					result = result << 8 | header[offset + pos++];
+				for (int pos = length - 8; pos < length; pos++) {
+					result = result << 8 | header[offset + pos];
 				}
 				return result;
 			}
@@ -1045,12 +1044,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			if (value > 0x1FFFFFFFF) {	// Octal 77777777777 (11 digits)
 				// Put value as binary, right-justified into the buffer. Set high order bit of left-most byte.
-				int pos = length - 1;
-				while (pos > 0) {
-					buffer[offset + pos--] = (byte)value;
+				for (int pos = length - 1; pos > 0; pos--) {
+					buffer[offset + pos] = (byte)value;
 					value = value >> 8;
 				}
-				buffer[offset] = 128;
+				buffer[offset] = 0x80;
 				return offset + length;
 			}
 			return GetOctalBytes(value, buffer, offset, length);
@@ -1068,10 +1066,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// The final space is already there, from checksumming
 		/// </param>
 		/// <returns>The modified buffer offset</returns>
-		static int GetCheckSumOctalBytes(long value, byte[] buffer, int offset, int length)
+		static void GetCheckSumOctalBytes(long value, byte[] buffer, int offset, int length)
 		{
-			TarHeader.GetOctalBytes(value, buffer, offset, length - 1);
-			return offset + length;
+			GetOctalBytes(value, buffer, offset, length - 1);
 		}
 		
 		/// <summary>
@@ -1102,7 +1099,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				sum += buffer[i];
 			}
 		
-			for ( int i = 0; i < TarHeader.CHKSUMLEN; ++i)
+			for ( int i = 0; i < CHKSUMLEN; ++i)
 			{
 				sum += (byte)' ';
 			}
@@ -1114,7 +1111,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			return sum;
 		}
 		
-		static int GetCTime(System.DateTime dateTime)
+		static int GetCTime(DateTime dateTime)
 		{
 			return unchecked((int)((dateTime.Ticks - dateTime1970.Ticks) / timeConversionFactor));
 		}
