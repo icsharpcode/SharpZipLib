@@ -41,6 +41,7 @@
 //	2009-12-22	Z-1649	Added AES support
 //	2010-03-02	Z-1650	Fixed updating ODT archives in memory. Exposed exceptions in updating.
 //	2010-05-25	Z-1663	Fixed exception when testing local header compressed size of -1
+//	2012-11-29	Z-1684	Fixed ZipFile.Add(string fileName, string entryName) losing the file TimeStamp
 
 using System;
 using System.Collections;
@@ -1647,7 +1648,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			
 			CheckUpdating();
-			AddUpdate(new ZipUpdate(fileName, EntryFactory.MakeFileEntry(entryName)));
+			AddUpdate(new ZipUpdate(fileName, EntryFactory.MakeFileEntry(fileName, entryName, true)));
 		}
 
 

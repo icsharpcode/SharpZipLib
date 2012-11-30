@@ -35,6 +35,9 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+// HISTORY
+//	2012-11-29	Z-1684	Added MakeFileEntry(string fileName, string entryName, bool useFileSystem)
+
 using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
@@ -58,6 +61,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="useFileSystem">If true get details from the file system if the file exists.</param>
 		/// <returns>Returns a <see cref="ZipEntry">file entry</see> based on the <paramref name="fileName"/> passed.</returns>
 		ZipEntry MakeFileEntry(string fileName, bool useFileSystem);
+
+		/// <summary>
+		/// Create a <see cref="ZipEntry"/> for a file given its actual name and optional override name
+		/// </summary>
+		/// <param name="fileName">The name of the file to create an entry for.</param>
+		/// <param name="entryName">An alternative name to be used for the new entry. Null if not applicable.</param>
+		/// <param name="useFileSystem">If true get details from the file system if the file exists.</param>
+		/// <returns>Returns a <see cref="ZipEntry">file entry</see> based on the <paramref name="fileName"/> passed.</returns>
+		ZipEntry MakeFileEntry(string fileName, string entryName, bool useFileSystem);
 
 		/// <summary>
 		/// Create a <see cref="ZipEntry"/> for a directory given its name

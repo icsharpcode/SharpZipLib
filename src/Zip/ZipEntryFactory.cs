@@ -35,6 +35,9 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
+// HISTORY
+//	2012-11-29	Z-1684	Added MakeFileEntry(string fileName, string entryName, bool useFileSystem)
+
 using System;
 using System.IO;
 
@@ -207,18 +210,29 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns a new <see cref="ZipEntry"/> based on the <paramref name="fileName"/>.</returns>
 		public ZipEntry MakeFileEntry(string fileName)
 		{
-			return MakeFileEntry(fileName, true);
+			return MakeFileEntry(fileName, null, true);
+		}
+
+		/// <summary>
+		/// Make a new <see cref="ZipEntry"/> for a file.
+		/// </summary>
+		/// <param name="fileName">The name of the file to create a new entry for.</param>
+		/// <param name="useFileSystem">If true entry detail is retrieved from the file system if the file exists.</param>
+		/// <returns>Returns a new <see cref="ZipEntry"/> based on the <paramref name="fileName"/>.</returns>
+		public ZipEntry MakeFileEntry(string fileName, bool useFileSystem) {
+			return MakeFileEntry(fileName, null, useFileSystem);
 		}
 
 		/// <summary>
 		/// Make a new <see cref="ZipEntry"/> from a name.
 		/// </summary>
 		/// <param name="fileName">The name of the file to create a new entry for.</param>
+		/// <param name="entryName">An alternative name to be used for the new entry. Null if not applicable.</param>
 		/// <param name="useFileSystem">If true entry detail is retrieved from the file system if the file exists.</param>
 		/// <returns>Returns a new <see cref="ZipEntry"/> based on the <paramref name="fileName"/>.</returns>
-		public ZipEntry MakeFileEntry(string fileName, bool useFileSystem)
+		public ZipEntry MakeFileEntry(string fileName, string entryName, bool useFileSystem)
 		{
-			ZipEntry result = new ZipEntry(nameTransform_.TransformFile(fileName));
+			ZipEntry result = new ZipEntry(nameTransform_.TransformFile(entryName != null && entryName.Length > 0 ? entryName : fileName));
 			result.IsUnicodeText = isUnicodeText_;
 
 			int externalAttributes = 0;
