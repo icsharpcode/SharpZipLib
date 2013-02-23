@@ -1,0 +1,8 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+
+Name: sharpziplib
+Description: C# Zip, GZip, Tar and BZip2 library for .NET
+Version: 0.86
+Libs: -r:${libdir}/mono/sharpziplib/ICSharpCode.SharpZipLib.dll
