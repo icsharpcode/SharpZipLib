@@ -1249,16 +1249,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// Size can be verified only if it is known in the local header.
 				// it will always be known in the central header.
 				if (((localFlags & (int)GeneralBitFlags.Descriptor) == 0) ||
-					((size > 0) || (compressedSize > 0))) {
+					((size > 0 || compressedSize > 0) && entry.Size > 0)) {
 
-					if (size != entry.Size) {
+					if ((size != 0)
+						&& (size != entry.Size)) {
 						throw new ZipException(
 							string.Format("Size mismatch between central header({0}) and local header({1})",
 								entry.Size, size));
 					}
 
-					if (compressedSize != entry.CompressedSize &&
-						compressedSize != 0xFFFFFFFF && compressedSize != -1) {
+					if ((compressedSize != 0)
+						&& (compressedSize != entry.CompressedSize && compressedSize != 0xFFFFFFFF && compressedSize != -1)) {
 						throw new ZipException(
 							string.Format("Compressed size mismatch between central header({0}) and local header({1})",
 							entry.CompressedSize, compressedSize));
