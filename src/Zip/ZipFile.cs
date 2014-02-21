@@ -3305,7 +3305,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					ZipAESTransform decryptor = new ZipAESTransform(rawPassword_, saltBytes, blockSize, false);
 					byte[] pwdVerifyCalc = decryptor.PwdVerifier;
 					if (pwdVerifyCalc[0] != pwdVerifyRead[0] || pwdVerifyCalc[1] != pwdVerifyRead[1])
-						throw new Exception("Invalid password for AES");
+						throw new ZipException("Invalid password for AES");
 					result = new ZipAESStream(baseStream, decryptor, CryptoStreamMode.Read);
 				}
 				else
