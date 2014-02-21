@@ -1006,7 +1006,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 							long lastAccess = extraData.ReadLong();
 							long createTime = extraData.ReadLong();
 
-							DateTime = System.DateTime.FromFileTime(lastModification);
+							DateTime = System.DateTime.FromFileTimeUtc(lastModification);
 						}
 						break;
 					}
@@ -1025,8 +1025,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if ( ((flags & 1) != 0) && (length >= 5) ) {
 					int iTime = extraData.ReadInt();
 
-					DateTime = (new System.DateTime ( 1970, 1, 1, 0, 0, 0 ).ToUniversalTime() +
-						new TimeSpan ( 0, 0, 0, iTime, 0 )).ToLocalTime();
+					DateTime = (new System.DateTime ( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc ) +
+						new TimeSpan ( 0, 0, 0, iTime, 0 ));
 				}
 			}
 			if (method == CompressionMethod.WinZipAES) {
