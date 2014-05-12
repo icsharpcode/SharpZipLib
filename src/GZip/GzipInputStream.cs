@@ -90,7 +90,20 @@ namespace ICSharpCode.SharpZipLib.GZip
         /// This is tracked per-block as the file is parsed.
         /// </summary>
 		bool readGZIPHeader;
-		#endregion
+
+        /// <summary>
+        /// Flag to indicate if we've read the GZIP original length yet
+        /// </summary>
+	    private bool readLength;
+
+        /// <summary>
+        /// Internal length placeholder
+        /// </summary>
+	    private long _length;
+
+	    private Stream _baseInputStream;
+
+        #endregion
 
 		#region Constructors
 		/// <summary>
@@ -102,6 +115,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		public GZipInputStream(Stream baseInputStream)
 			: this(baseInputStream, 4096)
 		{
+		    _baseInputStream = baseInputStream;
 		}
 		
 		/// <summary>
@@ -116,7 +130,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 		public GZipInputStream(Stream baseInputStream, int size)
 			: base(baseInputStream, new Inflater(true), size)
 		{
-		}
+            _baseInputStream = baseInputStream;
+        }
 		#endregion	
 
 		#region Stream overrides
@@ -369,6 +384,55 @@ namespace ICSharpCode.SharpZipLib.GZip
 			// Mark header read as false so if another header exists, we'll continue reading through the file
 			readGZIPHeader = false;
 		}
+
+        /// <summary>
+        /// Return length from input gzip file stream
+        /// </summary>
+        public override long Length
+        {
+            get
+            {
+                if (!readLength)
+                {
+                    long currentPosition = _baseInputStream.Position;
+
+                    _baseInputStream.Seek(-8, SeekOrigin.End);
+
+                    byte[] footer = new byte[8];
+
+                    // End of stream; reclaim all bytes from inf, read the final byte count, and reset the inflator
+                    long bytesRead = inf.TotalOut & 0xffffffff;
+                    inputBuffer.Available += inf.RemainingInput;
+                    inf.Reset();
+
+                    // Read footer from inputBuffer
+                    int needed = 8;
+                    while (needed > 0)
+                    {
+                        int count = inputBuffer.ReadClearTextBuffer(footer, 8 - needed, needed);
+                        if (count <= 0)
+                        {
+                            throw new EndOfStreamException("EOS reading GZIP footer");
+                        }
+                        needed -= count; // Jewel Jan 16
+                    }
+
+                    // NOTE The total here is the original total modulo 2 ^ 32.
+                    uint total =
+                        (uint) ((uint) footer[4] & 0xff) |
+                        (uint) (((uint) footer[5] & 0xff) << 8) |
+                        (uint) (((uint) footer[6] & 0xff) << 16) |
+                        (uint) ((uint) footer[7] << 24);
+
+                    _length = total;
+
+                    _baseInputStream.Seek(currentPosition, SeekOrigin.Begin);
+
+                    readLength = true;
+                }
+                return _length;
+            }
+        }
 		#endregion
 	}
 }
