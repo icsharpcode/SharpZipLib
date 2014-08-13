@@ -59,6 +59,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SharpZipLib for Mono 1.0")]
 #elif (MONO_2_0)
 [assembly: AssemblyTitle("SharpZipLib for Mono 2.0")]
+#elif (PCL)
+[assembly: AssemblyTitle("SharpZipLib for Portable Class Library (.Net 4.0, WP 8.0, WP 8.1, WinStore 8.1, MonoTouch, MonoDroid)")]
 #else
 [assembly: AssemblyTitle("SharpZipLibrary unlabelled version")]
 #endif
@@ -92,10 +94,12 @@ using System.Runtime.InteropServices;
 [assembly: System.Security.AllowPartiallyTrustedCallers]
 #endif
 
+#if (!PCL)
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
+#endif
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 

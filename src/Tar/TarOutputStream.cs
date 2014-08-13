@@ -81,10 +81,17 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 		#endregion		
 
+#if !PCL
         /// <summary>
         /// Get/set flag indicating ownership of the underlying stream.
         /// When the flag is true <see cref="Close"></see> will close the underlying stream also.
         /// </summary>
+#else
+        /// <summary>
+        /// Get/set flag indicating ownership of the underlying stream.
+        /// When the flag is true <see cref="Dispose"></see> will close the underlying stream also.
+        /// </summary>
+#endif
         public bool IsStreamOwner
         {
             get { return buffer.IsStreamOwner; }
@@ -221,6 +228,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <remarks>This means that Finish() is called followed by calling the
 		/// TarBuffer's Close().</remarks>
+#if !PCL
 		public override void Close()
 		{
 			if ( !isClosed )
@@ -230,7 +238,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 				buffer.Close();
 			}
 		}
-		
+#else
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing && !isClosed)
+            {
+                isClosed = true;
+                Finish();
+                buffer.Close();
+            }
+        }
+#endif
 		/// <summary>
 		/// Get the record size being used by this stream's TarBuffer.
 		/// </summary>
@@ -294,7 +313,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 				int nameCharIndex = 0;
 
-				while (nameCharIndex < entry.TarHeader.Name.Length) {
+                // ygrenier : Correct the LongNames() test failed with a 512 string length
+				while (nameCharIndex <= entry.TarHeader.Name.Length) {
 					Array.Clear(blockBuffer, 0, blockBuffer.Length);
 					TarHeader.GetAsciiBytes(entry.TarHeader.Name, nameCharIndex, this.blockBuffer, 0, TarBuffer.BlockSize);
 					nameCharIndex += TarBuffer.BlockSize;

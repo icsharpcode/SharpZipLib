@@ -47,12 +47,16 @@ namespace ICSharpCode.SharpZipLib
 	/// </summary>
 	/// <remarks>NOTE: Not all exceptions thrown will be derived from this class.
 	/// A variety of other exceptions are possible for example <see cref="ArgumentNullException"></see></remarks>
-#if !NETCF_1_0 && !NETCF_2_0
+#if !NETCF_1_0 && !NETCF_2_0 && !PCL
 	[Serializable]
 #endif
-	public class SharpZipBaseException : ApplicationException
-	{
-#if !NETCF_1_0 && !NETCF_2_0
+#if PCL
+	public class SharpZipBaseException : Exception
+#else
+    public class SharpZipBaseException : ApplicationException
+#endif
+    {
+#if !NETCF_1_0 && !NETCF_2_0 && !PCL
 		/// <summary>
 		/// Deserialization constructor 
 		/// </summary>

@@ -32,9 +32,15 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		{
 			using (MemoryStream ms = new MemoryStream(data))
 			using (ZipFile zipFile = new ZipFile(ms)) {
+#if !PCL
 				zipFile.Password = password;
+#else
+                if (!String.IsNullOrWhiteSpace(password))
+                    throw new InvalidOperationException("Password not supported in PCL");
+#endif
 				return zipFile.TestArchive(true);
 			}
 		}
+
 	}
 }

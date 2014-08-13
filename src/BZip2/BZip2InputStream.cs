@@ -78,10 +78,17 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		
 		#endregion
 
+#if !PCL
 		/// <summary>
 		/// Get/set flag indicating ownership of underlying stream.
 		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
 		/// </summary>
+#else
+        /// <summary>
+        /// Get/set flag indicating ownership of underlying stream.
+        /// When the flag is true <see cref="Dispose"></see> will close the underlying stream also.
+        /// </summary>
+#endif
 		public bool IsStreamOwner
 		{
 			get { return isStreamOwner; }
@@ -229,12 +236,23 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Closes the stream, releasing any associated resources.
 		/// </summary>
+#if !PCL
 		public override void Close()
 		{
 			if ( IsStreamOwner && (baseStream != null) ) {
 				baseStream.Close();
 			}
 		}
+#else
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing && IsStreamOwner && (baseStream != null))
+            {
+                baseStream.Dispose();
+            }
+        }
+#endif
 		/// <summary>
 		/// Read a byte from stream advancing position
 		/// </summary>

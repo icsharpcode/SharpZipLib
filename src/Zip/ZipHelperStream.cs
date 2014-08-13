@@ -105,6 +105,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	internal class ZipHelperStream : Stream
 	{
 		#region Constructors
+#if !PCL
 		/// <summary>
 		/// Initialise an instance of this class.
 		/// </summary>
@@ -114,7 +115,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			stream_ = new FileStream(name, FileMode.Open, FileAccess.ReadWrite);
 			isOwner_ = true;
 		}
-
+#endif
 		/// <summary>
 		/// Initialise a new instance of <see cref="ZipHelperStream"/>.
 		/// </summary>
@@ -200,6 +201,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>
 		/// The underlying stream is closed only if <see cref="IsStreamOwner"/> is true.
 		/// </remarks>
+#if !PCL
 		override public void Close()
 		{
 			Stream toClose = stream_;
@@ -210,6 +212,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 				toClose.Close();
 			}
 		}
+#else
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                Stream toClose = stream_;
+                stream_ = null;
+                if (isOwner_ && (toClose != null))
+                {
+                    isOwner_ = false;
+                    toClose.Dispose();
+                }
+            }
+        }
+#endif
 		#endregion
 		
 		// Write the local file header

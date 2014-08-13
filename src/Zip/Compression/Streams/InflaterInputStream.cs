@@ -43,7 +43,7 @@
 using System;
 using System.IO;
 
-#if !NETCF_1_0
+#if !NETCF_1_0 && !PCL
 using System.Security.Cryptography;
 #endif
 
@@ -163,7 +163,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				toRead -= count;
 			}
 			
-#if !NETCF_1_0
+#if !NETCF_1_0 && !PCL
 			if ( cryptoTransform != null ) {
 				clearTextLength = cryptoTransform.TransformBlock(rawData, 0, rawLength, clearText, 0);
 			}
@@ -295,7 +295,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			return (uint)ReadLeInt() | ((long)ReadLeInt() << 32);
 		}
 
-#if !NETCF_1_0
+#if !NETCF_1_0 && !PCL
 		/// <summary>
 		/// Get/set the <see cref="ICryptoTransform"/> to apply to any data.
 		/// </summary>
@@ -329,19 +329,20 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		
 		int clearTextLength;
 		byte[] clearText;
-#if !NETCF_1_0		
+#if !NETCF_1_0	&& !PCL
 		byte[] internalClearText;
 #endif
 		
 		int available;
 		
-#if !NETCF_1_0
+#if !NETCF_1_0 && !PCL
 		ICryptoTransform cryptoTransform;
 #endif		
 		Stream inputStream;
 		#endregion
 	}
 	
+#if !PCL
 	/// <summary>
 	/// This filter stream is used to decompress data compressed using the "deflate"
 	/// format. The "deflate" format is described in RFC 1951.
@@ -351,6 +352,14 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 	///
 	/// Author of the original java version : John Leuner.
 	/// </summary>
+#else
+    /// <summary>
+    /// This filter stream is used to decompress data compressed using the "deflate"
+    /// format. The "deflate" format is described in RFC 1951.
+    ///
+    /// Author of the original java version : John Leuner.
+    /// </summary>
+#endif
 	public class InflaterInputStream : Stream
 	{
 		#region Constructors
@@ -416,6 +425,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		
 		#endregion
 
+#if !PCL
 		/// <summary>
 		/// Get/set flag indicating ownership of underlying stream.
 		/// When the flag is true <see cref="Close"/> will close the underlying stream also.
@@ -423,6 +433,15 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <remarks>
 		/// The default value is true.
 		/// </remarks>
+#else
+        /// <summary>
+        /// Get/set flag indicating ownership of underlying stream.
+        /// When the flag is true <see cref="Dispose"/> will close the underlying stream also.
+        /// </summary>
+        /// <remarks>
+        /// The default value is true.
+        /// </remarks>
+#endif
 		public bool IsStreamOwner
 		{
 			get { return isStreamOwner; }
@@ -479,12 +498,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Clear any cryptographic state.
 		/// </summary>		
-		protected void StopDecrypting()
-		{
-#if !NETCF_1_0			
+        protected void StopDecrypting()
+        {
+#if !NETCF_1_0	&& !PCL
 			inputBuffer.CryptoTransform = null;
-#endif			
-		}
+#endif
+        }
 
 		/// <summary>
 		/// Returns 0 once the end of the stream (EOF) has been reached.
@@ -622,7 +641,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			throw new NotSupportedException("InflaterInputStream WriteByte not supported");
 		}
-		
+#if !PCL
 		/// <summary>
 		/// Entry point to begin an asynchronous write.  Always throws a NotSupportedException.
 		/// </summary>
@@ -637,11 +656,13 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			throw new NotSupportedException("InflaterInputStream BeginWrite not supported");
 		}
-		
+#endif
+
 		/// <summary>
 		/// Closes the input stream.  When <see cref="IsStreamOwner"></see>
 		/// is true the underlying stream is also closed.
 		/// </summary>
+#if !PCL
 		public override void Close()
 		{
 			if ( !isClosed ) {
@@ -651,7 +672,20 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				}
 			}
 		}
-
+#else
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing && !isClosed)
+            {
+                isClosed = true;
+                if (isStreamOwner)
+                {
+                    baseInputStream.Dispose();
+                }
+            }
+        }
+#endif
 		/// <summary>
 		/// Reads decompressed data into the provided buffer byte array
 		/// </summary>

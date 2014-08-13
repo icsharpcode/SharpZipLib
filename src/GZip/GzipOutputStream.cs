@@ -172,6 +172,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// Writes remaining compressed output data to the output stream
 		/// and closes it.
 		/// </summary>
+#if !PCL
 		public override void Close()
 		{
 			try {
@@ -186,6 +187,30 @@ namespace ICSharpCode.SharpZipLib.GZip
                 }
 			}
 		}
+#else
+        protected override void Dispose(bool disposing)
+        {
+            //base.Dispose(disposing);
+            if (disposing)
+            {
+                try
+                {
+                    Finish();
+                }
+                finally
+                {
+                    if (state_ != OutputState.Closed)
+                    {
+                        state_ = OutputState.Closed;
+                        if (IsStreamOwner)
+                        {
+                            baseOutputStream_.Dispose();
+                        }
+                    }
+                }
+            }
+        }
+#endif
 		#endregion
 		
 		#region DeflaterOutputStream overrides

@@ -238,6 +238,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int externalAttributes = 0;
 			bool useAttributes = (setAttributes_ != 0);
 
+#if !PCL
 			FileInfo fi = null;
 			if (useFileSystem)
 			{
@@ -299,11 +300,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			else
 			{
+#endif
 				if (timeSetting_ == TimeSetting.Fixed)
 				{
 					result.DateTime = fixedDateTime_;
 				}
+#if !PCL
 			}
+#endif
 
 			if (useAttributes)
 			{
@@ -338,7 +342,7 @@ namespace ICSharpCode.SharpZipLib.Zip
             result.Size = 0;
 			
 			int externalAttributes = 0;
-
+#if !PCL
 			DirectoryInfo di = null;
 
 			if (useFileSystem)
@@ -399,11 +403,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			else
 			{
+#endif
 				if (timeSetting_ == TimeSetting.Fixed)
 				{
 					result.DateTime = fixedDateTime_;
 				}
+#if !PCL
 			}
+#endif
 
 			// Always set directory attribute on.
 			externalAttributes |= (setAttributes_ | 16);

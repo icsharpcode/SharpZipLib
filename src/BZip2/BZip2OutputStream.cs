@@ -295,7 +295,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// End the current block and end compression.
 		/// Close the stream and free any resources
 		/// </summary>
+#if !PCL
 		public override void Close()
+#else
+        public void Close()
+#endif
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
@@ -403,7 +407,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			finally {
 				if ( disposing ) {
 					if ( IsStreamOwner ) {
+#if !PCL
 						baseStream.Close();
+#else
+                        baseStream.Dispose();
+#endif
 					}
 				}
 			}

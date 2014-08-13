@@ -77,8 +77,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if ( value == null ) {
 					throw new ArgumentNullException("value");
 				}
-
+#if !PCL
 				_baseDirectory = Path.GetFullPath(value);
+#else
+                _baseDirectory = value;
+#endif
 			}
 		}
 		

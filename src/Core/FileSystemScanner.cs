@@ -287,6 +287,7 @@ namespace ICSharpCode.SharpZipLib.Core
 	public delegate void FileFailureHandler(object sender, ScanFailureEventArgs e);
 	#endregion
 
+#if !PCL
 	/// <summary>
 	/// FileSystemScanner provides facilities scanning of files and directories.
 	/// </summary>
@@ -530,4 +531,5 @@ namespace ICSharpCode.SharpZipLib.Core
 		bool alive_;
 		#endregion
 	}
+#endif
 }

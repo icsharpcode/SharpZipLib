@@ -47,7 +47,7 @@ using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
-#if !NETCF_1_0
+#if !NETCF_1_0 && !PCL
 using ICSharpCode.SharpZipLib.Encryption;
 #endif
 
@@ -202,16 +202,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			
 			int header = inputBuffer.ReadLeInt();
-			
-			if (header == ZipConstants.CentralHeaderSignature ||
-				header == ZipConstants.EndOfCentralDirectorySignature ||
-				header == ZipConstants.CentralHeaderDigitalSignature ||
-				header == ZipConstants.ArchiveExtraDataSignature ||
-				header == ZipConstants.Zip64CentralFileHeaderSignature) {
-				// No more individual entries exist
+
+            if (header == ZipConstants.CentralHeaderSignature ||
+                header == ZipConstants.EndOfCentralDirectorySignature ||
+                header == ZipConstants.CentralHeaderDigitalSignature ||
+                header == ZipConstants.ArchiveExtraDataSignature ||
+                header == ZipConstants.Zip64CentralFileHeaderSignature)
+            {
+                // No more individual entries exist
+#if !PCL
 				Close();
-				return null;
-			}
+#else
+                Dispose();
+#endif
+                return null;
+            }
 			
 			// -jr- 07-Dec-2003 Ignore spanning temporary signatures if found
 			// Spanning signature is same as descriptor signature and is untested as yet.
@@ -494,6 +499,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (entry.IsCrypted) {
 #if NETCF_1_0
 				throw new ZipException("Encryption not supported for Compact Framework 1.0");
+#elif PCL
+				throw new ZipException("Encryption not supported for Portable Class Library");
 #else
 				if (password == null) {
 					throw new ZipException("No password set.");
@@ -520,7 +527,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 #endif				
 			} else {
-#if !NETCF_1_0
+#if !NETCF_1_0 && !PCL
 				inputBuffer.CryptoTransform = null;
 #endif				
 			}
@@ -663,6 +670,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Closes the zip input stream
 		/// </summary>
+#if !PCL
 		public override void Close()
 		{
 			internalReader = new ReadDataHandler(ReadingNotAvailable);
@@ -671,5 +679,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			base.Close();
 		}
+#else
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                internalReader = new ReadDataHandler(ReadingNotAvailable);
+                crc = null;
+                entry = null;
+            }
+            base.Dispose(disposing);
+        }
+#endif
 	}
 }

@@ -407,7 +407,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				ed.Delete(1);
 			}
 
-#if !NET_1_1 && !NETCF_2_0
+#if !NET_1_1 && !NETCF_2_0 && !PCL
 			if (entry.AESKeySize > 0) {
 				AddExtraDataAES(entry, ed);
 			}
@@ -444,7 +444,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			size = 0;
 
 			if (entry.IsCrypted) {
-#if !NET_1_1 && !NETCF_2_0
+#if !NET_1_1 && !NETCF_2_0 && !PCL
 				if (entry.AESKeySize > 0) {
 					WriteAESHeader(entry);
 				} else
@@ -488,9 +488,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			// Write the AES Authentication Code (a hash of the compressed and encrypted data)
+#if !PCL
 			if (curEntry.AESKeySize > 0) {
 				baseOutputStream_.Write(AESAuthCode, 0, 10);
 			}
+#endif
 
 			if (curEntry.Size < 0) {
 				curEntry.Size = size;
@@ -582,7 +584,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			baseOutputStream_.Write(cryptBuffer, 0, cryptBuffer.Length);
 		}
 
-#if !NET_1_1 && !NETCF_2_0
+#if !NET_1_1 && !NETCF_2_0 && !PCL
 		private static void AddExtraDataAES(ZipEntry entry, ZipExtraData extraData) {
 
 			// Vendor Version: AE-1 IS 1. AE-2 is 2. With AE-2 no CRC is required and 0 is stored.
@@ -779,7 +781,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					ed.Delete(1);
 				}
 
-#if !NET_1_1 && !NETCF_2_0
+#if !NET_1_1 && !NETCF_2_0 && !PCL
 				if (entry.AESKeySize > 0) {
 					AddExtraDataAES(entry, ed);
 				}

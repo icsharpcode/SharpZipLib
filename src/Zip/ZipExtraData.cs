@@ -969,7 +969,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public void Dispose()
 		{
 			if ( _newEntry != null ) {
+#if !PCL
 				_newEntry.Close();
+#else
+                _newEntry.Dispose();
+#endif
 			}
 		}
 

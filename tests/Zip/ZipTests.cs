@@ -145,6 +145,21 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 		}
 	}
+
+#if PCL
+    class FileDataSource : IStaticDataSource
+    {
+        String _Filename;
+        public FileDataSource(String filename)
+        {
+            _Filename = filename;
+        }
+        public Stream GetSource()
+        {
+            return File.OpenRead(_Filename);
+        }
+    }
+#endif
 	#endregion
 
 	#region ZipBase
@@ -1593,7 +1608,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 			Assert.IsTrue(ZipTesting.TestArchive(ms.ToArray()));
 		}
-
+#if !PCL
 		[Test]
 		[Category("Zip")]
 		public void StoredNonSeekableKnownSizeNoCrcEncrypted()
@@ -1663,7 +1678,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				ExerciseZip(CompressionMethod.Deflated, i, 50000, "Rosebud", false);
 			}
 		}
-
+#endif
 		[Test]
 		[Category("Zip")]
 		public void SkipEncryptedEntriesWithoutSettingPassword()
@@ -1686,7 +1701,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			inStream.Close();
 		}
-
+#if !PCL
 		[Test]
 		[Category("Zip")]
 		public void MixedEncryptedAndPlain()
@@ -1743,8 +1758,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			ExerciseZip(CompressionMethod.Stored, 0, 50000, "Rosebud", false);
 		}
-
-		/// <summary>
+#endif
+        /// <summary>
 		/// Check that when the output stream cannot seek that requests for stored
 		/// are in fact converted to defalted level 0
 		/// </summary>
@@ -1835,8 +1850,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			if (tempFile != null) {
 				tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
 				MakeZipFile(tempFile, new String[] { "Farriera", "Champagne", "Urban myth" }, 10, "Aha");
-
+#if !PCL
 				using (ZipFile zipFile = new ZipFile(tempFile)) {
+#else
+                using(var tempStream = new FileStream(tempFile, FileMode.Open, FileAccess.ReadWrite))
+                using (ZipFile zipFile = new ZipFile(tempStream))
+                {
+#endif
 					Stream stream = zipFile.GetInputStream(0);
 					stream.Close();
 
@@ -1858,8 +1878,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				data[i] = nextValue;
 			}
 
+#if !PCL
 			using (ZipFile zFile = new ZipFile(tempFile)) {
-				Assert.AreEqual(targetFiles, zFile.Count);
+#else
+            using(var tempStream = new FileStream("tempFile", FileMode.Open, FileAccess.ReadWrite))
+            using (ZipFile zFile = new ZipFile(tempStream))
+            {
+#endif
+                Assert.AreEqual(targetFiles, zFile.Count);
 				byte[] readData = new byte[BlockSize];
 				int readIndex;
 				foreach (ZipEntry ze in zFile) {
@@ -2046,7 +2072,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void UnicodeNameConversion()
 		{
+#if !PCL
 			ZipConstants.DefaultCodePage = 850;
+#else
+            ZipConstants.DefaultEncoding = Encoding.ASCII;
+#endif
 			string sample = "Hello world";
 
 			byte[] rawData = Encoding.ASCII.GetBytes(sample);
@@ -2064,7 +2094,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			converted = ZipConstants.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
 			Assert.AreEqual(sample, converted);
 		}
-
+#if !PCL
 		/// <summary>
 		/// Regression test for problem where the password check would fail for an archive whose
 		/// date was updated from the extra data.
@@ -2110,6 +2140,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				Assert.AreEqual(checkTime, uno.DateTime);
 			}
 		}
+#endif
 	}
 
 	[TestFixture]
@@ -2589,7 +2620,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.AreEqual(modTime, unixData.ModificationTime, "Unix mod time incorrect");
 		}
 	}
-
+#if !PCL
 	[TestFixture]
 	public class FastZipHandling : ZipBase
 	{
@@ -2857,7 +2888,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 	}
-
+#endif
 	[TestFixture]
 	public class ZipFileHandling : ZipBase
 	{
@@ -2893,8 +2924,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsNotNull(tempFile, "No permission to execute this test?");
 
 			const int target = 65537;
-
+#if !PCL
 			using (ZipFile zipFile = ZipFile.Create(Path.GetTempFileName())) {
+#else
+            using (var tempStr = new FileStream(Path.GetTempFileName(), FileMode.Create, FileAccess.ReadWrite))
+            using (ZipFile zipFile = ZipFile.Create(tempStr))
+            {
+#endif
 				zipFile.BeginUpdate();
 
 				for (int i = 0; i < target; ++i) {
@@ -2986,7 +3022,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			// were not quite correct...
 		}
 
-		[Test]
+#if !PCL
+        [Test]
 		[Category("Zip")]
 		public void BasicEncryption()
 		{
@@ -3098,7 +3135,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			}
 		}
-
+#endif
 		void TryDeleting(byte[] master, int totalEntries, int additions, params string[] toDelete)
 		{
 			MemoryStream ms = new MemoryStream();
@@ -3227,16 +3264,33 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
 
+#if !PCL
 			using (ZipFile f = ZipFile.Create(tempFile)) {
+#else
+            using(var tempStr=new FileStream(tempFile, FileMode.Create, FileAccess.ReadWrite))
+            using (ZipFile f = ZipFile.Create(tempStr))
+            {
+#endif
 				f.BeginUpdate();
+#if !PCL
 				f.Add(addFile);
 				f.Add(addFile2);
+#else
+                f.Add(new FileDataSource(addFile), addFile);
+                f.Add(new FileDataSource(addFile2), addFile2);
+#endif
 				f.CommitUpdate();
 				Assert.IsTrue(f.TestArchive(true));
 			}
 
+#if !PCL
 			using (ZipFile f = new ZipFile(tempFile)) {
-				Assert.AreEqual(2, f.Count);
+#else
+            using (var tempStr = new FileStream(tempFile, FileMode.Open, FileAccess.ReadWrite))
+            using (ZipFile f = new ZipFile(tempStr))
+            {
+#endif
+                Assert.AreEqual(2, f.Count);
 				Assert.IsTrue(f.TestArchive(true));
 				f.BeginUpdate();
 				f.Delete(f[0]);
@@ -3253,23 +3307,29 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// <summary>
 		/// Simple round trip test for ZipFile class
 		/// </summary>
-		[Test]
-		[Category("Zip")]
-		[Category("CreatesTempFile")]
-		public void RoundTrip()
-		{
-			string tempFile = GetTempFilePath();
-			Assert.IsNotNull(tempFile, "No permission to execute this test?");
+        [Test]
+        [Category("Zip")]
+        [Category("CreatesTempFile")]
+        public void RoundTrip()
+        {
+            string tempFile = GetTempFilePath();
+            Assert.IsNotNull(tempFile, "No permission to execute this test?");
 
-			tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
+            tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
 
             try
             {
                 MakeZipFile(tempFile, "", 10, 1024, "");
 
-                using ( ZipFile zipFile = new ZipFile(tempFile) )
+#if !PCL
+                using (ZipFile zipFile = new ZipFile(tempFile))
                 {
-                    foreach ( ZipEntry e in zipFile )
+#else
+                using (var tempStr = new FileStream(tempFile, FileMode.Open, FileAccess.ReadWrite))
+                using (ZipFile zipFile = new ZipFile(tempStr))
+                {
+#endif
+                    foreach (ZipEntry e in zipFile)
                     {
                         Stream instream = zipFile.GetInputStream(e);
                         CheckKnownEntry(instream, 1024);
@@ -3281,7 +3341,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
             {
                 File.Delete(tempFile);
             }
-		}
+        }
 
 		/// <summary>
 		/// Simple round trip test for ZipFile class
@@ -3317,17 +3377,31 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
             {
                 tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
 
-                using ( ZipFile f = ZipFile.Create(tempFile) )
+#if !PCL
+			    using (ZipFile f = ZipFile.Create(tempFile)) {
+#else
+                using (var tempStr = new FileStream(tempFile, FileMode.Create, FileAccess.ReadWrite))
+                using (ZipFile f = ZipFile.Create(tempStr))
                 {
+#endif
                     f.BeginUpdate();
+#if !PCL
                     f.Add(addFile);
+#else
+                    f.Add(new FileDataSource(addFile), addFile);
+#endif
                     f.CommitUpdate();
                     Assert.AreEqual(1, f.Count);
                     Assert.IsTrue(f.TestArchive(true));
                 }
 
-                using ( ZipFile f = new ZipFile(tempFile) )
+#if !PCL
+			    using (ZipFile f = new ZipFile(tempFile)) {
+#else
+                using (var tempStr = new FileStream(tempFile, FileMode.Open, FileAccess.ReadWrite))
+                using (ZipFile f = new ZipFile(tempStr))
                 {
+#endif
                     Assert.AreEqual(1, f.Count);
                     f.BeginUpdate();
                     f.Delete(f[0]);
@@ -3354,15 +3428,27 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
 
+#if !PCL
 			using (ZipFile f = ZipFile.Create(tempFile)) {
-				f.BeginUpdate();
+#else
+            using (var tempStr = new FileStream(tempFile, FileMode.Create, FileAccess.ReadWrite))
+            using (ZipFile f = ZipFile.Create(tempStr))
+            {
+#endif
+                f.BeginUpdate();
 				f.CommitUpdate();
 				Assert.IsTrue(f.TestArchive(true));
 				f.Close();
 			}
 
-			using (ZipFile f = new ZipFile(tempFile)) {
-				Assert.AreEqual(0, f.Count);
+#if !PCL
+			    using (ZipFile f = new ZipFile(tempFile)) {
+#else
+            using (var tempStr = new FileStream(tempFile, FileMode.Open, FileAccess.ReadWrite))
+            using (ZipFile f = new ZipFile(tempStr))
+            {
+#endif
+                Assert.AreEqual(0, f.Count);
 			}
 
             File.Delete(tempFile);
@@ -3385,9 +3471,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
             try
             {
-                using ( ZipFile zipFile = new ZipFile(tempFile) )
+#if !PCL
+			    using (ZipFile zipFile = new ZipFile(tempFile)) {
+#else
+                using (var tempStr = new FileStream(tempFile, FileMode.Open, FileAccess.ReadWrite))
+                using (ZipFile zipFile = new ZipFile(tempStr))
                 {
-                    foreach ( ZipEntry e in zipFile )
+#endif
+                    foreach (ZipEntry e in zipFile)
                     {
                         Stream instream = zipFile.GetInputStream(e);
                         CheckKnownEntry(instream, 1);
@@ -3425,8 +3516,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			bool fails = false;
 			try {
-				using (ZipFile zipFile = new ZipFile(tempFile)) {
-					foreach (ZipEntry e in zipFile) {
+#if !PCL
+			    using (ZipFile zipFile = new ZipFile(tempFile)) {
+#else
+                using (var tempStr = new FileStream(tempFile, FileMode.Open, FileAccess.ReadWrite))
+                using (ZipFile zipFile = new ZipFile(tempStr))
+                {
+#endif
+                    foreach (ZipEntry e in zipFile)
+                    {
 						Stream instream = zipFile.GetInputStream(e);
 						CheckKnownEntry(instream, 1);
 					}
@@ -3455,8 +3553,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
 			MakeZipFile(tempFile, new string[] { "Farriera", "Champagne", "Urban myth" }, 10, "Aha");
 
-			using (ZipFile zipFile = new ZipFile(tempFile)) {
-				Assert.AreEqual(3, zipFile.Count, "Expected 1 entry");
+#if !PCL
+			    using (ZipFile zipFile = new ZipFile(tempFile)) {
+#else
+            using (var tempStr = new FileStream(tempFile, FileMode.Open, FileAccess.ReadWrite))
+            using (ZipFile zipFile = new ZipFile(tempStr))
+            {
+#endif
+                Assert.AreEqual(3, zipFile.Count, "Expected 1 entry");
 
 				int testIndex = zipFile.FindEntry("Farriera", false);
 				Assert.AreEqual(0, testIndex, "Case sensitive find failure");
@@ -3498,9 +3602,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
 			MakeZipFile(tempFile, "", 0, 1, "Aha");
 
-			using (ZipFile zipFile = new ZipFile(tempFile))
-			{
-				Assert.AreEqual(0, zipFile.Count);
+#if !PCL
+			    using (ZipFile zipFile = new ZipFile(tempFile)) {
+#else
+            using (var tempStr = new FileStream(tempFile, FileMode.Open, FileAccess.ReadWrite))
+            using (ZipFile zipFile = new ZipFile(tempStr))
+            {
+#endif
+                Assert.AreEqual(0, zipFile.Count);
 				zipFile.Close();
 			}
 
@@ -3579,7 +3688,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			TestEncryptedDirectoryEntry(new MemoryStream());
 			TestEncryptedDirectoryEntry(new MemoryStreamWithoutSeek());
 		}
-
+#if !PCL
 		[Test]
 		[Category("Zip")]
 		public void Crypto_AddEncryptedEntryToExistingArchiveSafe()
@@ -3655,7 +3764,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				Assert.IsTrue(testFile[entryIndex].IsCrypted);
 			}
 		}
-
+#endif
 		[Test]
 		[Category("Zip")]
 		public void UnicodeNames()
@@ -3729,7 +3838,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				Assert.AreEqual("Here is my comment", testFile.ZipFileComment);
 			}
 		}
-
+#if !PCL
 		[Test]
 		[Category("Zip")]
 		[Category("CreatesTempFile")]
@@ -3805,7 +3914,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 			File.Delete(tempFile);
 		}
-
+#endif
 		[Test]
 		[Category("Zip")]
 		public void NameFactory()
@@ -3999,7 +4108,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsTrue(TestHelper.CompareDosDateTimes(startTime, entry.DateTime) <= 0, "Write time failure");
 			Assert.AreEqual(-1, entry.Size);
 		}
-
+#if !PCL
 		[Test]
 		[Category("Zip")]
 		[Category("CreatesTempFile")]
@@ -4091,5 +4200,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			}
 		}
+#endif
 	}
 }

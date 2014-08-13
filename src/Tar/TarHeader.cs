@@ -496,6 +496,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 				else {
 #if NETCF_1_0 || NETCF_2_0
 					string currentUser = "PocketPC";
+#elif PCL
+                    string currentUser = "PCL";
 #else
 					string currentUser = Environment.UserName;
 #endif

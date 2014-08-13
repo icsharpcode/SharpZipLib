@@ -543,8 +543,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 			headerE.LinkName = "LanceLink";
 
 			TarEntry d = (TarEntry)e.Clone();
-
+#if !PCL
 			Assert.AreEqual(d.File, e.File);
+#endif
 			Assert.AreEqual(d.GroupId, e.GroupId);
 			Assert.AreEqual(d.GroupName, e.GroupName);
 			Assert.AreEqual(d.IsDirectory, e.IsDirectory);
