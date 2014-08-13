@@ -71,10 +71,17 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 		#endregion
 
+#if !PCL
         /// <summary>
         /// Get/set flag indicating ownership of the underlying stream.
         /// When the flag is true <see cref="Close"></see> will close the underlying stream also.
         /// </summary>
+#else
+        /// <summary>
+        /// Get/set flag indicating ownership of the underlying stream.
+        /// When the flag is true <see cref="Dispose"></see> will close the underlying stream also.
+        /// </summary>
+#endif
         public bool IsStreamOwner
         {
             get { return tarBuffer.IsStreamOwner; }
@@ -305,11 +312,19 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Closes this stream. Calls the TarBuffer's close() method.
 		/// The underlying stream is closed by the TarBuffer.
 		/// </summary>
+#if !PCL
 		public override void Close()
 		{
 			tarBuffer.Close();
 		}
-		
+#else
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+                tarBuffer.Close();
+        }
+#endif
 		#endregion
 
 		/// <summary>
@@ -612,7 +627,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			{
 				return TarEntry.CreateTarEntry(name);
 			}
-			
+
 			/// <summary>
 			/// Create a tar entry with details obtained from <paramref name="fileName">file</paramref>
 			/// </summary>
@@ -620,7 +635,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 			/// <returns>A new <see cref="TarEntry"/></returns>
 			public TarEntry CreateEntryFromFile(string fileName)
 			{
+#if !PCL
 				return TarEntry.CreateEntryFromFile(fileName);
+#else
+                throw new InvalidOperationException("Not available in Portable Class Library");
+#endif
 			}
 
 			/// <summary>

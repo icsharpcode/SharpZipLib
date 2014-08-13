@@ -62,6 +62,14 @@
     <Compile Include="Main.cs" />
     <Compile Include="PortableProxies.cs" />
     <Compile Include="SharpZipBaseException.cs" />
+    <Compile Include="Tar\InvalidHeaderException.cs" />
+    <Compile Include="Tar\TarArchive.cs" />
+    <Compile Include="Tar\TarBuffer.cs" />
+    <Compile Include="Tar\TarEntry.cs" />
+    <Compile Include="Tar\TarException.cs" />
+    <Compile Include="Tar\TarHeader.cs" />
+    <Compile Include="Tar\TarInputStream.cs" />
+    <Compile Include="Tar\TarOutputStream.cs" />
     <Compile Include="Zip\Compression\Deflater.cs" />
     <Compile Include="Zip\Compression\DeflaterConstants.cs" />
     <Compile Include="Zip\Compression\DeflaterEngine.cs" />

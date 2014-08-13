@@ -112,7 +112,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public object Clone()
 		{
 			TarEntry entry = new TarEntry();
+#if !PCL
 			entry.file = file;
+#endif
 			entry.header = (TarHeader)header.Clone();
 			entry.Name = Name;
 			return entry;
@@ -131,7 +133,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			TarEntry.NameTarHeader(entry.header, name);
 			return entry;
 		}
-		
+#if !PCL
 		/// <summary>
 		/// Construct an entry for a file. File is set to file, and the
 		/// header is constructed from information from the file.
@@ -144,7 +146,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			entry.GetFileTarHeader(entry.header, fileName);
 			return entry;
 		}
-		
+#endif
 		/// <summary>
 		/// Determine if the two entries are equal. Equality is determined
 		/// by the header names being equal.
@@ -313,6 +315,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 		}
 		
+#if !PCL
 		/// <summary>
 		/// Get this entry's file.
 		/// </summary>
@@ -324,7 +327,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 				return file;
 			}
 		}
-		
+#endif
+
 		/// <summary>
 		/// Get/set this entry's recorded file size.
 		/// </summary>
@@ -345,10 +349,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </returns>
 		public bool IsDirectory {
 			get {
+#if !PCL
 				if (file != null) {
 					return Directory.Exists(file);
 				}
-				
+#endif		
 				if (header != null) {
 					if ((header.TypeFlag == TarHeader.LF_DIR) || Name.EndsWith( "/" )) {
 						return true;
@@ -357,7 +362,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				return false;
 			}
 		}
-		
+#if !PCL
 		/// <summary>
 		/// Fill in a TarHeader with information from a File.
 		/// </summary>
@@ -382,7 +387,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			// bugfix from torhovl from #D forum:
 			string name = file;
 
-#if !NETCF_1_0 && !NETCF_2_0
+#if !NETCF_1_0 && !NETCF_2_0 && !PCL
 			// 23-Jan-2004 GnuTar allows device names in path where the name is not local to the current directory
 			if (name.IndexOf(Environment.CurrentDirectory) == 0) {
 				name = name.Substring(Environment.CurrentDirectory.Length);
@@ -460,7 +465,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			
 			return result;
 		}
-		
+#endif
 		/// <summary>
 		/// Write an entry's header information to a header buffer.
 		/// </summary>
@@ -527,11 +532,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 
 		#region Instance Fields
+#if !PCL
 		/// <summary>
 		/// The name of the file this entry represents or null if the entry is not based on a file.
 		/// </summary>
 		string file;
-		
+#endif
 		/// <summary>
 		/// The entry's header information.
 		/// </summary>

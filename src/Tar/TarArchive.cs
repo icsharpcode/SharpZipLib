@@ -518,7 +518,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				OnProgressMessageEvent(entry, null);
 			}
 		}
-		
+#if !PCL		
 		/// <summary>
 		/// Perform the "extract" command and extract the contents of the archive.
 		/// </summary>
@@ -541,7 +541,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				ExtractEntry(destinationDirectory, entry);
 			}
 		}
-		
+
 		/// <summary>
 		/// Extract an entry from the archive. This method assumes that the
 		/// tarIn stream has been properly set with a call to GetNextEntry().
@@ -630,7 +630,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 		}
 
-		/// <summary>
+        /// <summary>
 		/// Write an entry to the archive. This method will call the putNextEntry
 		/// and then write the contents of the entry, and finally call closeEntry()
 		/// for entries that are files. For directories, it will call putNextEntry(),
@@ -668,7 +668,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Write an entry to the archive. This method will call the putNextEntry
 		/// and then write the contents of the entry, and finally call closeEntry()
@@ -772,7 +772,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				tarOut.CloseEntry();
 			}
 		}
-
+#endif
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -794,12 +794,20 @@ namespace ICSharpCode.SharpZipLib.Tar
 				if ( disposing ) {
 					if ( tarOut != null ) {
 						tarOut.Flush();
+#if !PCL
 						tarOut.Close();
+#else
+                        tarOut.Dispose();
+#endif
 					}
 		
 					if ( tarIn != null ) {
+#if !PCL
 						tarIn.Close();
-					}
+#else
+                        tarIn.Dispose();
+#endif
+                    }
 				}
 			}
         }
@@ -820,7 +828,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			Dispose(false);
 		}
-		
+
+#if !PCL
 		static void EnsureDirectoryExists(string directoryName)
 		{
 			if (!Directory.Exists(directoryName)) {
@@ -855,7 +864,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 			return false;
 		}		
-		
+#endif
+
 		#region Instance Fields
 		bool keepOldFiles;
 		bool asciiTranslate;

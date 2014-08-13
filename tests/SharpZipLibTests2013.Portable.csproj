@@ -74,6 +74,7 @@
     <Compile Include="BZip2\Bzip2Tests.cs" />
     <Compile Include="Core\Core.cs" />
     <Compile Include="GZip\GZipTests.cs" />
+    <Compile Include="Tar\TarTests.cs" />
     <Compile Include="TestSupport\RingBuffer.cs" />
     <Compile Include="TestSupport\Streams.cs" />
     <Compile Include="TestSupport\Utils.cs" />
@@ -110,8 +111,6 @@
       <Name>ICSharpCode.SharpZib.Portable</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Tar\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

@@ -190,6 +190,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 #else
         protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
             if (disposing)
             {
                 try
