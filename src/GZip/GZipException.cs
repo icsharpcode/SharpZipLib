@@ -35,7 +35,7 @@
 
 using System;
 
-#if !NETCF_1_0 && !NETCF_2_0
+#if !NETCF_1_0 && !NETCF_2_0 && !PCL
 using System.Runtime.Serialization;
 #endif
 
@@ -43,13 +43,13 @@ namespace ICSharpCode.SharpZipLib.GZip
 {
 	/// <summary>
 	/// GZipException represents a Gzip specific exception	
-	/// </summary>
-#if !NETCF_1_0 && !NETCF_2_0
+    /// </summary>
+#if !NETCF_1_0 && !NETCF_2_0 && !PCL
 	[Serializable]
-#endif	
-	public class GZipException : SharpZipBaseException
-	{
-#if !NETCF_1_0 && !NETCF_2_0
+#endif
+    public class GZipException : SharpZipBaseException
+    {
+#if !NETCF_1_0 && !NETCF_2_0 && !PCL
 		/// <summary>
 		/// Deserialization constructor 
 		/// </summary>
@@ -62,7 +62,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		}
 #endif
 
-		/// <summary>
+        /// <summary>
 		/// Initialise a new instance of GZipException
 		/// </summary>
 		public GZipException()

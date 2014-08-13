@@ -55,6 +55,10 @@
     <Compile Include="Core\WindowsPathUtils.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GZip\GZIPConstants.cs" />
+    <Compile Include="GZip\GZipException.cs" />
+    <Compile Include="GZip\GzipInputStream.cs" />
+    <Compile Include="GZip\GzipOutputStream.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="PortableProxies.cs" />
     <Compile Include="SharpZipBaseException.cs" />
