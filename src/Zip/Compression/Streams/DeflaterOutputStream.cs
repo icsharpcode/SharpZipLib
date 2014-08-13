@@ -42,9 +42,11 @@
 using System;
 using System.IO;
 
-#if !NETCF_1_0
+#if !NETCF_1_0 && !PCL
 using System.Security.Cryptography;
 using ICSharpCode.SharpZipLib.Encryption;
+#else
+using ICSharpCode.SharpZipLib.Checksums;
 #endif
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams 
@@ -145,7 +147,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					break;
 				}
 
-#if NETCF_1_0
+#if NETCF_1_0 || PCL
 				if ( keys != null ) {
 #else
 				if (cryptoTransform_ != null) {
@@ -161,9 +163,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 
 			baseOutputStream_.Flush();
-			
-#if NETCF_1_0
-			if ( keys != null ) {
+
+#if NETCF_1_0 || PCL
+            if ( keys != null ) {
 				keys = null;
 			}
 #else
@@ -179,10 +181,17 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 #endif			
 		}
 		
+#if !PCL
 		/// <summary>
 		/// Get/set flag indicating ownership of the underlying stream.
 		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
 		/// </summary>
+#else
+        /// <summary>
+        /// Get/set flag indicating ownership of the underlying stream.
+        /// When the flag is true <see cref="Dispose"></see> will close the underlying stream also.
+        /// </summary>
+#endif
 		public bool IsStreamOwner
 		{
 			get { return isStreamOwner_; }
@@ -204,7 +213,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		
 		string password;
 		
-#if NETCF_1_0
+#if NETCF_1_0 || PCL
 		uint[] keys;
 #else
 		ICryptoTransform cryptoTransform_;
@@ -246,7 +255,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </param>
 		protected void EncryptBlock(byte[] buffer, int offset, int length)
 		{
-#if NETCF_1_0
+#if NETCF_1_0 || PCL
 			for (int i = offset; i < offset + length; ++i) {
 				byte oldbyte = buffer[i];
 				buffer[i] ^= EncryptByte();
@@ -263,7 +272,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <param name="password">The password.</param>
 		protected void InitializePassword(string password)
 		{
-#if NETCF_1_0
+#if NETCF_1_0 || PCL
 			keys = new uint[] {
 				0x12345678,
 				0x23456789,
@@ -283,7 +292,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 #endif
 		}
 
-#if !NET_1_1 && !NETCF_2_0
+#if !NET_1_1 && !NETCF_2_0 && !PCL
 		/// <summary>
 		/// Initializes encryption keys based on given password.
 		/// </summary>
@@ -301,7 +310,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 #endif
 
-#if NETCF_1_0
+#if NETCF_1_0 || PCL
 		
 		/// <summary>
 		/// Encrypt a single byte 
@@ -344,7 +353,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				if (deflateCount <= 0) {
 					break;
 				}
-#if NETCF_1_0
+#if NETCF_1_0 || PCL
 				if (keys != null) 
 #else
 				if (cryptoTransform_ != null) 
@@ -458,7 +467,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			throw new NotSupportedException("DeflaterOutputStream Read not supported");
 		}
-		
+#if !PCL
 		/// <summary>
 		/// Asynchronous reads are not supported a NotSupportedException is always thrown
 		/// </summary>
@@ -488,7 +497,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			throw new NotSupportedException("BeginWrite is not supported");
 		}
-		
+#endif
 		/// <summary>
 		/// Flushes the stream by calling <see cref="DeflaterOutputStream.Flush">Flush</see> on the deflater and then
 		/// on the underlying stream.  This ensures that all bytes are flushed.
@@ -504,9 +513,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Calls <see cref="Finish"/> and closes the underlying
 		/// stream when <see cref="IsStreamOwner"></see> is true.
 		/// </summary>
+#if !PCL
 		public override void Close()
-		{
-			if ( !isClosed_ ) {
+        {
+            if (!isClosed_)
+            {
 				isClosed_ = true;
 
 				try {
@@ -528,9 +539,32 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				}
 			}
 		}
+#else
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing && !isClosed_)
+            {
+                isClosed_ = true;
+
+                try
+                {
+                    Finish();
+					keys=null;
+                }
+                finally
+                {
+                    if (isStreamOwner_)
+                    {
+                        baseOutputStream_.Dispose();
+                    }
+                }
+            }
+        }
+#endif
 
 		private void GetAuthCodeIfAES() {
-#if !NET_1_1 && !NETCF_2_0
+#if !NET_1_1 && !NETCF_2_0 && !PCL
 			if (cryptoTransform_ is ZipAESTransform) {
 				AESAuthCode = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
 			}
@@ -593,7 +627,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		#region Static Fields
 
-#if !NET_1_1 && !NETCF_2_0
+#if !NET_1_1 && !NETCF_2_0 && !PCL
 		// Static to help ensure that multiple files within a zip will get different random salt
 		private static RNGCryptoServiceProvider _aesRnd;
 #endif

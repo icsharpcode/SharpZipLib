@@ -44,7 +44,7 @@ using System;
 using System.Text;
 using System.Threading;
 
-#if NETCF_1_0 || NETCF_2_0
+#if NETCF_1_0 || NETCF_2_0 || PCL
 using System.Globalization;
 #endif
 
@@ -472,10 +472,12 @@ namespace ICSharpCode.SharpZipLib.Zip
         // Trying to work out an appropriate OEM code page would be good.
         // 850 is a good default for english speakers particularly in Europe.
 		static int defaultCodePage = CultureInfo.CurrentCulture.TextInfo.ANSICodePage;
+#elif PCL
+        static Encoding defaultEncoding = Encoding.UTF8;
 #else
 		static int defaultCodePage = Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage;
 #endif
-		
+#if !PCL
 		/// <summary>
 		/// Default encoding used for string conversion.  0 gives the default system OEM code page.
 		/// Dont use unicode encodings if you want to be Zip compatible!
@@ -491,6 +493,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 				defaultCodePage = value; 
 			}
 		}
+#else
+        /// <summary>
+        /// PCL don't support CodePage so we used Encoding instead of
+        /// </summary>
+        public static Encoding DefaultEncoding
+        {
+            get
+            {
+                return defaultEncoding;
+            }
+            set
+            {
+                defaultEncoding = value;
+            }
+        }
+#endif
 
 		/// <summary>
 		/// Convert a portion of a byte array to a string.
@@ -509,8 +527,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if ( data == null ) {
 				return string.Empty;	
 			}
-			
+#if !PCL
 			return Encoding.GetEncoding(DefaultCodePage).GetString(data, 0, count);
+#else
+            return DefaultEncoding.GetString(data, 0, count);
+#endif
 		}
 	
 		/// <summary>
@@ -591,8 +612,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if ( str == null ) {
 				return new byte[0];
 			}
-			
+#if !PCL
 			return Encoding.GetEncoding(DefaultCodePage).GetBytes(str);
+#else
+            return DefaultEncoding.GetBytes(str);
+#endif
 		}
 
 		/// <summary>
