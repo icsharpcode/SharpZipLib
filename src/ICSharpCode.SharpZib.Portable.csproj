@@ -38,6 +38,11 @@
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="BZip2\BZip2.cs" />
+    <Compile Include="BZip2\BZip2Constants.cs" />
+    <Compile Include="BZip2\BZip2Exception.cs" />
+    <Compile Include="BZip2\BZip2InputStream.cs" />
+    <Compile Include="BZip2\BZip2OutputStream.cs" />
     <Compile Include="Checksums\Adler32.cs" />
     <Compile Include="Checksums\CRC32.cs" />
     <Compile Include="Checksums\IChecksum.cs" />

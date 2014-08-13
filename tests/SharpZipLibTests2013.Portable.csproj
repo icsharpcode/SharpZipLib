@@ -71,6 +71,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="BZip2\Bzip2Tests.cs" />
     <Compile Include="Core\Core.cs" />
     <Compile Include="TestSupport\RingBuffer.cs" />
     <Compile Include="TestSupport\Streams.cs" />
@@ -109,7 +110,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BZip2\" />
     <Folder Include="GZip\" />
     <Folder Include="Tar\" />
   </ItemGroup>

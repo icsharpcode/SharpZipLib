@@ -67,7 +67,11 @@ namespace ICSharpCode.SharpZipLib.BZip2 {
 			} finally {
 				if (isStreamOwner) {
 					// inStream is closed by the BZip2InputStream if stream owner
+#if !PCL
 					outStream.Close();
+#else
+                    outStream.Dispose();
+#endif
 				}
 			}
 		}
@@ -95,7 +99,11 @@ namespace ICSharpCode.SharpZipLib.BZip2 {
 			} finally {
 				if (isStreamOwner) {
 					// outStream is closed by the BZip2OutputStream if stream owner
+#if !PCL
 					inStream.Close();
+#else
+                    inStream.Dispose();
+#endif
 				}
 			}
 		}
