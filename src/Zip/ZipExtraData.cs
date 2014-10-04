@@ -193,12 +193,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// bit 2           if set, creation time is present
 				
 				_flags = (Flags)helperStream.ReadByte();
-				if (((_flags & Flags.ModificationTime) != 0) && (count >= 5))
+				if (((_flags & Flags.ModificationTime) != 0))
 				{
 					int iTime = helperStream.ReadLEInt();
 
 					_modificationTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) +
 						new TimeSpan(0, 0, 0, iTime, 0);
+
+					// Central-header version is truncated after modification time
+					if (count <= 5) return;
 				}
 
 				if ((_flags & Flags.AccessTime) != 0)
@@ -326,7 +329,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get/set the <see cref="Flags">values</see> to include.
 		/// </summary>
-		Flags Include
+		public Flags Include
 		{
 			get { return _flags; }
 			set { _flags = value; }
@@ -591,35 +594,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the <see cref="ITaggedData">tagged data</see> for a tag.
 		/// </summary>
-		/// <param name="tag">The tag to search for.</param>
+		/// <typeparam name="T">The tag to search for.</typeparam>
 		/// <returns>Returns a <see cref="ITaggedData">tagged value</see> or null if none found.</returns>
-		private ITaggedData GetData(short tag)
+		public T GetData<T>()
+			where T : class, ITaggedData, new()
 		{
-			ITaggedData result = null;
-			if (Find(tag))
+			T result = new T();
+			if (Find(result.TagID))
 			{
-				result = Create(tag, _data, _readValueStart, _readValueLength);
+				result.SetData(_data, _readValueStart, _readValueLength);
+				return result;
 			}
-			return result;
-		}
-
-		static ITaggedData Create(short tag, byte[] data, int offset, int count)
-		{
-			ITaggedData result = null;
-			switch ( tag )
-			{
-				case 0x000A:
-					result = new NTTaggedData();
-					break;
-				case 0x5455:
-					result = new ExtendedUnixData();
-					break;
-				default:
-					result = new RawTaggedData(tag);
-					break;
-			}
-			result.SetData(data, offset, count);
-			return result;
+			else return null;
 		}
 		
 		/// <summary>

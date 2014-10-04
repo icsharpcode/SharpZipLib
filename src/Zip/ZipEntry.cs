@@ -984,57 +984,39 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
-			if ( extraData.Find(10) ) {
-				// No room for any tags.
-				if ( extraData.ValueLength < 4 ) {
-					throw new ZipException("NTFS Extra data invalid");
-				}
-
-				extraData.ReadInt(); // Reserved
-
-				while ( extraData.UnreadCount >= 4 ) {
-					int ntfsTag = extraData.ReadShort();
-					int ntfsLength = extraData.ReadShort();
-					if ( ntfsTag == 1 ) {
-						if ( ntfsLength >= 24 ) {
-							long lastModification = extraData.ReadLong();
-							long lastAccess = extraData.ReadLong();
-							long createTime = extraData.ReadLong();
-
-							dateTime = System.DateTime.FromFileTimeUtc(lastModification);
-						}
-						break;
-					}
-					else {
-						// An unknown NTFS tag so simply skip it.
-						extraData.Skip(ntfsLength);
-					}
-				}
-			}
-			else if ( extraData.Find(0x5455) ) {
-				int length = extraData.ValueLength;	
-				int flags = extraData.ReadByte();
-					
-				// Can include other times but these are ignored.  Length of data should
-				// actually be 1 + 4 * no of bits in flags.
-				if ( ((flags & 1) != 0) && (length >= 5) ) {
-					int iTime = extraData.ReadInt();
-
-					dateTime = (new System.DateTime ( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc ) +
-						new TimeSpan ( 0, 0, 0, iTime, 0 ));
-				}
-			} else {
-				uint sec = Math.Min(59, 2 * (dosTime & 0x1f));
-				uint min = Math.Min(59, (dosTime >> 5) & 0x3f);
-				uint hrs = Math.Min(23, (dosTime >> 11) & 0x1f);
-				uint mon = Math.Max(1, Math.Min(12, ((dosTime >> 21) & 0xf)));
-				uint year = ((dosTime >> 25) & 0x7f) + 1980;
-				int day = Math.Max(1, Math.Min(DateTime.DaysInMonth((int)year, (int)mon), (int)((dosTime >> 16) & 0x1f)));
-				dateTime = new DateTime((int)year, (int)mon, day, (int)hrs, (int)min, (int)sec, DateTimeKind.Utc);
-			}
+			dateTime = GetDateTime(extraData);
 			if (method == CompressionMethod.WinZipAES) {
 				ProcessAESExtraData(extraData);
 			}
+		}
+
+		private DateTime GetDateTime(ZipExtraData extraData) {
+			// Check for NT timestamp
+            // NOTE: Disable by default to match behavior of InfoZIP
+#if RESPECT_NT_TIMESTAMP
+			NTTaggedData ntData = extraData.GetData<NTTaggedData>();
+			if (ntData != null)
+				return ntData.LastModificationTime;
+#endif
+
+			// Check for Unix timestamp
+			ExtendedUnixData unixData = extraData.GetData<ExtendedUnixData>();
+			if (unixData != null &&
+				// Only apply modification time, but require all other values to be present
+				// This is done to match InfoZIP's behaviour
+				((unixData.Include & ExtendedUnixData.Flags.ModificationTime) != 0) &&
+				((unixData.Include & ExtendedUnixData.Flags.AccessTime) != 0) &&
+				((unixData.Include & ExtendedUnixData.Flags.CreateTime) != 0))
+				return unixData.ModificationTime;
+
+			// Fall back to DOS time
+			uint sec = Math.Min(59, 2 * (dosTime & 0x1f));
+			uint min = Math.Min(59, (dosTime >> 5) & 0x3f);
+			uint hrs = Math.Min(23, (dosTime >> 11) & 0x1f);
+			uint mon = Math.Max(1, Math.Min(12, ((dosTime >> 21) & 0xf)));
+			uint year = ((dosTime >> 25) & 0x7f) + 1980;
+			int day = Math.Max(1, Math.Min(DateTime.DaysInMonth((int)year, (int)mon), (int)((dosTime >> 16) & 0x1f)));
+			return new DateTime((int)year, (int)mon, day, (int)hrs, (int)min, (int)sec, DateTimeKind.Utc);
 		}
 
 		// For AES the method in the entry is 99, and the real compression method is in the extradata
