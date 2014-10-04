@@ -451,8 +451,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public bool IsDOSEntry
 		{
 			get {
-				return ((HostSystem == ( int )HostSystemID.Msdos) ||
-					(HostSystem == ( int )HostSystemID.WindowsNT));
+				return ((HostSystem == HostSystemID.Msdos) ||
+					(HostSystem == HostSystemID.WindowsNT));
 			}
 		}
 
@@ -468,8 +468,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			bool result = false;
 			if ( (known & Known.ExternalAttributes) != 0 ) {
-				if ( ((HostSystem == (int)HostSystemID.Msdos) || 
-					(HostSystem == (int)HostSystemID.WindowsNT)) && 
+				if ( ((HostSystem == HostSystemID.Msdos) ||
+					(HostSystem == HostSystemID.WindowsNT)) &&
 					(ExternalFileAttributes & attributes) == attributes) {
 					result = true;
 				}
@@ -514,15 +514,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <item>remainder - unused</item>
 		/// </list>
 		/// </remarks>
-		public int HostSystem 
+		public HostSystemID HostSystem 
 		{
 			get {
-				return (versionMadeBy >> 8) & 0xff; 
+				return (HostSystemID)((versionMadeBy >> 8) & 0xff);
 			}
 
 			set {
 				versionMadeBy &= 0xff;
-				versionMadeBy |= (ushort)((value & 0xff) << 8);
+				versionMadeBy |= (ushort)(((int)value & 0xff) << 8);
 			}
 		}
 		
