@@ -258,6 +258,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			compressedSize         = entry.compressedSize;
 			crc                    = entry.crc;
 			dosTime                = entry.dosTime;
+			dateTime               = entry.dateTime;
 			method                 = entry.method;
 			comment                = entry.comment;
 			versionToExtract       = entry.versionToExtract;
@@ -694,17 +695,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </remarks>
 		public DateTime DateTime 
 		{
-			get {
-				uint sec  = Math.Min(59, 2 * (dosTime & 0x1f));
-				uint min  = Math.Min(59, (dosTime >> 5) & 0x3f);
-				uint hrs  = Math.Min(23, (dosTime >> 11) & 0x1f);
-				uint mon  = Math.Max(1, Math.Min(12, ((dosTime >> 21) & 0xf)));
-				uint year = ((dosTime >> 25) & 0x7f) + 1980;
-				int day = Math.Max(1, Math.Min(DateTime.DaysInMonth((int)year, (int)mon), (int)((dosTime >> 16) & 0x1f)));
-				return new System.DateTime((int)year, (int)mon, day, (int)hrs, (int)min, (int)sec);
-			}
+			get { return dateTime; }
 
 			set {
+				dateTime = value;
+
 				uint year = (uint) value.Year;
 				uint month = (uint) value.Month;
 				uint day = (uint) value.Day;
@@ -1006,7 +1001,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 							long lastAccess = extraData.ReadLong();
 							long createTime = extraData.ReadLong();
 
-							DateTime = System.DateTime.FromFileTimeUtc(lastModification);
+							dateTime = System.DateTime.FromFileTimeUtc(lastModification);
 						}
 						break;
 					}
@@ -1025,9 +1020,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if ( ((flags & 1) != 0) && (length >= 5) ) {
 					int iTime = extraData.ReadInt();
 
-					DateTime = (new System.DateTime ( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc ) +
+					dateTime = (new System.DateTime ( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc ) +
 						new TimeSpan ( 0, 0, 0, iTime, 0 ));
 				}
+			} else {
+				uint sec = Math.Min(59, 2 * (dosTime & 0x1f));
+				uint min = Math.Min(59, (dosTime >> 5) & 0x3f);
+				uint hrs = Math.Min(23, (dosTime >> 11) & 0x1f);
+				uint mon = Math.Max(1, Math.Min(12, ((dosTime >> 21) & 0xf)));
+				uint year = ((dosTime >> 25) & 0x7f) + 1980;
+				int day = Math.Max(1, Math.Min(DateTime.DaysInMonth((int)year, (int)mon), (int)((dosTime >> 16) & 0x1f)));
+				dateTime = new DateTime((int)year, (int)mon, day, (int)hrs, (int)min, (int)sec, DateTimeKind.Utc);
 			}
 			if (method == CompressionMethod.WinZipAES) {
 				ProcessAESExtraData(extraData);
@@ -1233,6 +1236,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		ushort versionToExtract;                // Version required to extract (library handles <= 2.0)
 		uint   crc;
 		uint   dosTime;
+		DateTime dateTime;
 		
 		CompressionMethod  method = CompressionMethod.Deflated;
 		byte[] extra;
