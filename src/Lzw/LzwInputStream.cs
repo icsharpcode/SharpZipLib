@@ -129,7 +129,7 @@ namespace ICSharpCode.SharpZipLib.LZW
         public override int Read(byte[] buffer, int offset, int count) {
             if (!headerParsed) ParseHeader();
 
-            if (eof) return -1;
+            if (eof) return 0;
             int start = offset;
 
             /* Using local copies of various variables speeds things up by as
