@@ -473,7 +473,16 @@ namespace ICSharpCode.SharpZipLib.Zip
         // 850 is a good default for english speakers particularly in Europe.
 		static int defaultCodePage = CultureInfo.CurrentCulture.TextInfo.ANSICodePage;
 #else
-		static int defaultCodePage = Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage;
+		/// <remarks>
+		/// Get OEM codepage from NetFX, which parses the NLP file with culture info table etc etc.
+		/// But sometimes it yields the special value of 1 which is nicknamed <c>CodePageNoOEM</c> in <see cref="Encoding"/> sources (might also mean <c>CP_OEMCP</c>, but Encoding puts it so).
+		/// This was observed on Ukranian and Hindu systems.
+		/// Given this value, <see cref="Encoding.GetEncoding(int)"/> throws an <see cref="ArgumentException"/>.
+		/// So replace it with some fallback, e.g. 437 which is the default cpcp in a console in a default Windows installation.
+		/// </remarks>
+		static int defaultCodePage = 
+			Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage != 1 /* CodePageNoOEM constant, causes ArgumentException in subsequent calls to Encoding::GetEncoding() */ ?
+			Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage : 437 /* The default OEM encoding in a console in a default Windows installation, as a fallback. */;
 #endif
 		
 		/// <summary>
