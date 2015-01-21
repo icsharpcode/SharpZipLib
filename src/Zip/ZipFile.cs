@@ -1023,7 +1023,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					throw new ZipException(string.Format("Wrong local header signature @{0:X}", offsetOfFirstEntry + entry.Offset));
 				}
 
-				short extractVersion = ( short )ReadLEUshort();
+				short extractVersion = ( short ) (ReadLEUshort() & 0x00ff);
 				short localFlags = ( short )ReadLEUshort();
 				short compressionMethod = ( short )ReadLEUshort();
 				short fileTime = ( short )ReadLEUshort();
