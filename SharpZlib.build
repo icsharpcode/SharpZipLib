@@ -30,7 +30,7 @@
 	<property name="debug" value="False"/>
 	<property name="optimize" value="True"/>
 	<property name="checked" value="False" />
-	<property name="version" value="0.85.5"/>
+	<property name="version" value="0.86.0"/>
 
 	<property name="build.output.dir" value="bin" overwrite="False" />
 	<property name="sharpziplib.name" value="ICSharpCode.SharpZipLib" />
@@ -127,7 +127,7 @@
 	</target>
 
 	<target name="build-mono-2.0" >
-		<fail message="Dont know how to build for Mono 2.0." />
+		<call target="build-net-2.0" />
 	</target>
 
 	<target name="build-samples" >
