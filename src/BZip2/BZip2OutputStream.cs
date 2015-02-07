@@ -384,28 +384,32 @@ namespace ICSharpCode.SharpZipLib.BZip2
 #endif			
 		{
 			try {
+				try {
 #if !NET_1_0 && !NET_1_1 && !NETCF_1_0
-				base.Dispose(disposing);
+					base.Dispose(disposing);
 #endif			
-				if( !disposed_ ) {
-					disposed_=true;
+					if( !disposed_ ) {
+						disposed_=true;
 
-					if( runLength>0 ) {
-						WriteRun();
+						if( runLength>0 ) {
+							WriteRun();
+						}
+
+						currentChar=-1;
+						EndBlock();
+						EndCompression();
+						Flush();
 					}
-
-					currentChar=-1;
-					EndBlock();
-					EndCompression();
-					Flush();
+				}
+				finally {
+					if ( disposing ) {
+						if ( IsStreamOwner ) {
+							baseStream.Close();
+						}
+					}
 				}
 			}
-			finally {
-				if ( disposing ) {
-					if ( IsStreamOwner ) {
-						baseStream.Close();
-					}
-				}
+			catch {
 			}
 		}
 
