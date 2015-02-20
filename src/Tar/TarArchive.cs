@@ -537,6 +537,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 				if (entry == null) {
 					break;
 				}
+
+				if (entry.TarHeader.TypeFlag == TarHeader.LF_LINK)
+					continue;
 				
 				ExtractEntry(destinationDirectory, entry);
 			}
