@@ -493,7 +493,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 						headerBuf = this.tarBuffer.ReadBlock();
 					} else if (header.TypeFlag != TarHeader.LF_NORMAL && 
 							   header.TypeFlag != TarHeader.LF_OLDNORM &&
-							   header.TypeFlag != TarHeader.LF_DIR) {
+							   header.TypeFlag != TarHeader.LF_DIR &&
+							   header.TypeFlag != TarHeader.LFLINK) {
 						// Ignore things we dont understand completely for now
 						SkipToNextEntry();
 						headerBuf = tarBuffer.ReadBlock();
