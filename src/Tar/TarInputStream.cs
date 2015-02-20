@@ -477,26 +477,21 @@ namespace ICSharpCode.SharpZipLib.Tar
 							numToRead -= numRead;
 						}
 						
-						SkipToNextEntry();
-						headerBuf = this.tarBuffer.ReadBlock();
+						return GetNextEntry();
 					} else if (header.TypeFlag == TarHeader.LF_GHDR) {  // POSIX global extended header 
 						// Ignore things we dont understand completely for now
-						SkipToNextEntry();
-						headerBuf = this.tarBuffer.ReadBlock();
+						return GetNextEntry();
 					} else if (header.TypeFlag == TarHeader.LF_XHDR) {  // POSIX extended header
 						// Ignore things we dont understand completely for now
-						SkipToNextEntry();
-						headerBuf = this.tarBuffer.ReadBlock();
+						return GetNextEntry();
 					} else if (header.TypeFlag == TarHeader.LF_GNU_VOLHDR) {
 						// TODO: could show volume name when verbose
-						SkipToNextEntry();
-						headerBuf = this.tarBuffer.ReadBlock();
+						return GetNextEntry();
 					} else if (header.TypeFlag != TarHeader.LF_NORMAL && 
 							   header.TypeFlag != TarHeader.LF_OLDNORM &&
 							   header.TypeFlag != TarHeader.LF_DIR) {
 						// Ignore things we dont understand completely for now
-						SkipToNextEntry();
-						headerBuf = tarBuffer.ReadBlock();
+						return GetNextEntry();
 					}
 					
 					if (entryFactory == null) {
