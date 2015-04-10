@@ -966,11 +966,35 @@ namespace ICSharpCode.SharpZipLib.Zip
 					throw new ZipException("Extra data extended Zip64 information length is invalid");
 				}
 
-				if ( localHeader || (size == uint.MaxValue) ) {
+				// (localHeader ||) was deleted, because actually there is no specific difference with reading sizes between local header & central directory 
+				// https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT 
+				// ...
+				// 4.4  Explanation of fields
+				// ...
+				//	4.4.8 compressed size: (4 bytes)
+				//	4.4.9 uncompressed size: (4 bytes)
+				// 
+				//		The size of the file compressed (4.4.8) and uncompressed,
+				//		(4.4.9) respectively.  When a decryption header is present it 
+				//		will be placed in front of the file data and the value of the
+				//		compressed file size will include the bytes of the decryption
+				//		header.  If bit 3 of the general purpose bit flag is set, 
+				//		these fields are set to zero in the local header and the 
+				//		correct values are put in the data descriptor and
+				//		in the central directory.  If an archive is in ZIP64 format
+				//		and the value in this field is 0xFFFFFFFF, the size will be
+				//		in the corresponding 8 byte ZIP64 extended information 
+				//		extra field.  When encrypting the central directory, if the
+				//		local header is not in ZIP64 format and general purpose bit 
+				//		flag 13 is set indicating masking, the value stored for the 
+				//		uncompressed size in the Local Header will be zero. 
+				// 
+				// Othewise there is problem with minizip implementation
+				if ( size == uint.MaxValue ) {
 					size = (ulong)extraData.ReadLong();
 				}
 
-				if ( localHeader || (compressedSize == uint.MaxValue) ) {
+				if ( compressedSize == uint.MaxValue ) {
 					compressedSize = (ulong)extraData.ReadLong();
 				}
 
