@@ -1258,7 +1258,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 
 					if (compressedSize != entry.CompressedSize &&
-						compressedSize != 0xFFFFFFFF && compressedSize != -1) {
+						compressedSize != 0xFFFFFFFF && compressedSize != -1 &&
+						compressedSize != 0) {
 						throw new ZipException(
 							string.Format("Compressed size mismatch between central header({0}) and local header({1})",
 							entry.CompressedSize, compressedSize));
