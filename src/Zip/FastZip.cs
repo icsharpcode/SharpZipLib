@@ -485,6 +485,70 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 		}
+
+        /// <summary>
+        /// Extract the contents of a zip file.
+        /// </summary>
+        /// <param name="zipFileName">The zip file to extract from.</param>
+        /// <param name="targetDirectory">The directory to save extracted information in.</param>
+        /// <param name="overwrite">The style of <see cref="Overwrite">overwriting</see> to apply.</param>
+        /// <param name="confirmDelegate">A delegate to invoke when confirming overwriting.</param>
+        /// <param name="fileFilter">A method-filter to apply to files.</param>
+        /// <param name="directoryFilter">A method-filter to apply to directories.</param>
+        public void ExtractZip(
+            string zipFileName,
+            string targetDirectory,
+            Overwrite overwrite,
+            ConfirmOverwriteDelegate confirmDelegate,
+            Func<string, bool> fileFilter,
+            Func<string, bool> directoryFilter)
+        {
+            if ((overwrite == Overwrite.Prompt) && (confirmDelegate == null))
+            {
+                throw new ArgumentNullException("confirmDelegate");
+            }
+
+            continueRunning_ = true;
+            overwrite_ = overwrite;
+            confirmDelegate_ = confirmDelegate;
+            extractNameTransform_ = new WindowsNameTransform(targetDirectory);
+
+            restoreDateTimeOnExtract_ = true;
+
+            Stream inputStream = File.Open(zipFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+            using (zipFile_ = new ZipFile(inputStream))
+            {
+
+#if !NETCF_1_0
+                if (password_ != null)
+                {
+                    zipFile_.Password = password_;
+                }
+#endif
+                zipFile_.IsStreamOwner = true;
+                System.Collections.IEnumerator enumerator = zipFile_.GetEnumerator();
+                while (continueRunning_ && enumerator.MoveNext())
+                {
+                    ZipEntry entry = (ZipEntry)enumerator.Current;
+                    if (entry.IsFile)
+                    {
+                        // TODO Path.GetDirectory can fail here on invalid characters.
+                        if (directoryFilter(Path.GetDirectoryName(entry.Name)) && fileFilter(entry.Name))
+                        {
+                            ExtractEntry(entry);
+                        }
+                    }
+                    else if (entry.IsDirectory)
+                    {
+                        if (directoryFilter(entry.Name) && CreateEmptyDirectories)
+                        {
+                            ExtractEntry(entry);
+                        }
+                    }
+                }
+            }
+        }
+
 		#endregion
 		
 		#region Internal Processing
