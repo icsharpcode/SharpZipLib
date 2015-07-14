@@ -1057,10 +1057,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			wnt.TrimIncomingPaths = false;
 
 			TestFile(wnt, "Bogan", "Bogan");
-			TestFile(wnt, "absolute/file2", @"absolute\file2");
-			TestFile(wnt, "C:/base/////////t", @"base\t");
-			TestFile(wnt, "//unc/share/zebidi/and/dylan", @"zebidi\and\dylan");
-			TestFile(wnt, @"\\unc\share\/zebidi\/and\/dylan", @"zebidi\and\dylan");
+			TestFile(wnt, "absolute/file2", Path.Combine("absolute", "file2"));
+			TestFile(wnt, "C:/base/////////t", Path.Combine("base", "t"));
+			TestFile(wnt, "//unc/share/zebidi/and/dylan", Path.Combine("zebidi", "and", "dylan"));
+			TestFile(wnt, @"\\unc\share\/zebidi\/and\/dylan", Path.Combine("zebidi", "and", "dylan"));
 		}
 
 		[Test]
@@ -1070,7 +1070,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			wnt.TrimIncomingPaths = false;
 
 			TestFile(wnt, "c::", "_");
-			TestFile(wnt, "c\\/>", @"c\_");
+			TestFile(wnt, "c\\/>", Path.Combine("c", "_"));
 		}
 
 		[Test]
@@ -1150,12 +1150,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			TestDirectory(wnt, "d", "d");
 			TestDirectory(wnt, "absolute/file2", @"absolute\file2");
 
-			const string BaseDir1 =  @"C:\Dir";
+			string BaseDir1 =  Path.Combine("C:", "Dir");
 			wnt.BaseDirectory = BaseDir1;
 
 			TestDirectory(wnt, "talofa", Path.Combine(BaseDir1 , "talofa"));
 
-			const string BaseDir2 = @"C:\Dir\";
+			string BaseDir2 = string.Format(@"C:{0}Dir{0}", Path.DirectorySeparatorChar);
 			wnt.BaseDirectory = BaseDir2;
 
 			TestDirectory(wnt, "talofa", Path.Combine(BaseDir2, "talofa"));

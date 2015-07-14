@@ -100,7 +100,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			name = TransformFile(name);
 			if (name.Length > 0) {
-				while ( name.EndsWith(@"\") ) {
+				while ( name.EndsWith(Path.DirectorySeparatorChar.ToString()) ) {
 					name = name.Remove(name.Length - 1, 1);
 				}
 			}
@@ -186,23 +186,23 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException("name");
 			}
 			
-			name = WindowsPathUtils.DropPathRoot(name.Replace("/", @"\"));
+			name = WindowsPathUtils.DropPathRoot(name.Replace("/", Path.DirectorySeparatorChar.ToString()));
 
 			// Drop any leading slashes.
-			while ( (name.Length > 0) && (name[0] == '\\')) {
+			while ( (name.Length > 0) && (name[0] == Path.DirectorySeparatorChar)) {
 				name = name.Remove(0, 1);
 			}
 
 			// Drop any trailing slashes.
-			while ( (name.Length > 0) && (name[name.Length - 1] == '\\')) {
+			while ( (name.Length > 0) && (name[name.Length - 1] == Path.DirectorySeparatorChar)) {
 				name = name.Remove(name.Length - 1, 1);
 			}
 
 			// Convert consecutive \\ characters to \
-			int index = name.IndexOf(@"\\");
+			int index = name.IndexOf(string.Format("{0}{0}", Path.DirectorySeparatorChar));
 			while (index >= 0) {
 				name = name.Remove(index, 1);
-				index = name.IndexOf(@"\\");
+				index = name.IndexOf(Path.DirectorySeparatorChar);
 			}
 
 			// Convert any invalid characters using the replacement one.
@@ -245,7 +245,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 				}
 
-				if ((value == '\\') || (value == '/')) {
+				if ((value == Path.DirectorySeparatorChar) || (value == Path.AltDirectorySeparatorChar)) {
 					throw new ArgumentException("invalid replacement character");
 				}
 				
