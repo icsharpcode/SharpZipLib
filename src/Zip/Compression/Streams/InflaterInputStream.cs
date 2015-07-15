@@ -549,7 +549,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		public override long Length {
 			get {
-				return inputBuffer.RawLength;
+				//return inputBuffer.RawLength;
+                throw new NotSupportedException("InflaterInputStream Length is not supported");
 			}
 		}
 		
