@@ -3778,8 +3778,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 							return 0;
 						}
 					}
-					
-					baseStream_.Seek(readPos_, SeekOrigin.Begin);
+					// Protect against Stream implementations that throw away their buffer on every Seek
+					// (for example, Mono FileStream)
+					if (baseStream_.Position != readPos_) {
+						baseStream_.Seek(readPos_, SeekOrigin.Begin);
+					}
 					int readCount = baseStream_.Read(buffer, offset, count);
 					if (readCount > 0) {
 						readPos_ += readCount;
