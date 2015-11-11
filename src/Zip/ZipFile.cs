@@ -1542,6 +1542,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			contentsEdited_ = true;
 
 			int index = FindExistingUpdate(update.Entry.Name);
+			
+			// FindExistingUpdate returns One based index, so adjusting it by decrementing one so that index can work with Generic List updates_
+			if (index != 0) index--;
 
 			if (index >= 0) {
 				if ( updates_[index] == null ) {
