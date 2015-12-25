@@ -42,6 +42,7 @@ using System;
 using System.IO;
 
 using ICSharpCode.SharpZipLib.Core;
+using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -235,7 +236,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			ZipEntry result = new ZipEntry(nameTransform_.TransformFile(entryName != null && entryName.Length > 0 ? entryName : fileName));
 			result.IsUnicodeText = isUnicodeText_;
 
-			int externalAttributes = 0;
+            int externalAttributes = 0;
 			bool useAttributes = (setAttributes_ != 0);
 
 			FileInfo fi = null;
