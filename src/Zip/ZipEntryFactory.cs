@@ -236,6 +236,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 			ZipEntry result = new ZipEntry(nameTransform_.TransformFile(entryName != null && entryName.Length > 0 ? entryName : fileName));
 			result.IsUnicodeText = isUnicodeText_;
 
+            Encoding defaultEncoding = Encoding.GetEncoding(ZipConstants.DefaultCodePage);
+            byte[] unicodeFileNameBytes = defaultEncoding.GetBytes(result.Name);
+            string unicodeFileName = defaultEncoding.GetString(unicodeFileNameBytes);
+            if (unicodeFileName != result.Name)
+            {
+                result.IsUnicodeText = true;
+            }
+
+
             int externalAttributes = 0;
 			bool useAttributes = (setAttributes_ != 0);
 
