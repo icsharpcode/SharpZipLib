@@ -200,16 +200,33 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { isUnicodeText_ = value; }
 		}
 
-		#endregion
+        #endregion
 
-		#region IEntryFactory Members
+        #region Private Methods
 
-		/// <summary>
-		/// Make a new <see cref="ZipEntry"/> for a file.
-		/// </summary>
-		/// <param name="fileName">The name of the file to create a new entry for.</param>
-		/// <returns>Returns a new <see cref="ZipEntry"/> based on the <paramref name="fileName"/>.</returns>
-		public ZipEntry MakeFileEntry(string fileName)
+        /// <summary>
+        /// Check whether the file name is unicode encoded or not.
+        /// </summary>
+        /// <param name="fileName">The name of the file to check its encoding.</param>
+        /// <returns></returns>
+        private bool IsUnicodeFileName(string fileName)
+        {
+            Encoding defaultEncoding = Encoding.GetEncoding(ZipConstants.DefaultCodePage);
+            byte[] unicodeFileNameBytes = defaultEncoding.GetBytes(fileName);
+            string unicodeFileName = defaultEncoding.GetString(unicodeFileNameBytes);
+            return unicodeFileName != fileName;
+        }
+
+        #endregion
+
+        #region IEntryFactory Members
+
+        /// <summary>
+        /// Make a new <see cref="ZipEntry"/> for a file.
+        /// </summary>
+        /// <param name="fileName">The name of the file to create a new entry for.</param>
+        /// <returns>Returns a new <see cref="ZipEntry"/> based on the <paramref name="fileName"/>.</returns>
+        public ZipEntry MakeFileEntry(string fileName)
 		{
 			return MakeFileEntry(fileName, null, true);
 		}
@@ -236,14 +253,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 			ZipEntry result = new ZipEntry(nameTransform_.TransformFile(entryName != null && entryName.Length > 0 ? entryName : fileName));
 			result.IsUnicodeText = isUnicodeText_;
 
-            Encoding defaultEncoding = Encoding.GetEncoding(ZipConstants.DefaultCodePage);
-            byte[] unicodeFileNameBytes = defaultEncoding.GetBytes(result.Name);
-            string unicodeFileName = defaultEncoding.GetString(unicodeFileNameBytes);
-            if (unicodeFileName != result.Name)
+            if (IsUnicodeFileName(result.Name))
             {
                 result.IsUnicodeText = true;
             }
-
 
             int externalAttributes = 0;
 			bool useAttributes = (setAttributes_ != 0);
