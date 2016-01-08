@@ -40,9 +40,7 @@
 //	2009-08-11	T9121	Geoff Hart Added Multi-member gzip support
 //	2012-06-03	Z-1802	Incorrect endianness and subfield in FEXTRA handling. 
 
-using System;
 using System.IO;
-
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
@@ -90,7 +88,21 @@ namespace ICSharpCode.SharpZipLib.GZip
         /// This is tracked per-block as the file is parsed.
         /// </summary>
 		bool readGZIPHeader;
+
+		private bool stopConsuming;
+		
+		private bool disableMultiMemberSupport;
+		
 		#endregion
+
+		/// <summary>
+		/// Disable Multi member support (ie stops at end of first footer encountered)
+		/// </summary>
+		public bool DisableMultiMemberSupport
+		{
+			get { return disableMultiMemberSupport; }
+			set { disableMultiMemberSupport = value; }
+		}
 
 		#region Constructors
 		/// <summary>
@@ -169,8 +181,12 @@ namespace ICSharpCode.SharpZipLib.GZip
 		#endregion	
 
 		#region Support routines
-		bool ReadHeader() 
+		bool ReadHeader()
 		{
+			if (stopConsuming)
+			{
+				return false;
+			}
 			// Initialize CRC for this block
 			crc = new Crc32();
 
@@ -357,10 +373,10 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 			// NOTE The total here is the original total modulo 2 ^ 32.
 			uint total = 
-				(uint)((uint)footer[4] & 0xff) |
-				(uint)(((uint)footer[5] & 0xff) << 8) |
-				(uint)(((uint)footer[6] & 0xff) << 16) |
-				(uint)((uint)footer[7] << 24);
+				(uint)footer[4] & 0xff |
+				((uint)footer[5] & 0xff) << 8 |
+				((uint)footer[6] & 0xff) << 16 |
+				(uint)footer[7] << 24;
 
 			if (bytesRead != total) {
 				throw new GZipException("Number of bytes mismatch in footer");
@@ -368,6 +384,11 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 			// Mark header read as false so if another header exists, we'll continue reading through the file
 			readGZIPHeader = false;
+			if (DisableMultiMemberSupport)
+			{
+				stopConsuming = true;
+			}
+
 		}
 		#endregion
 	}
