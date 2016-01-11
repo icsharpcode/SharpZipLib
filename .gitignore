@@ -1,2 +1,13 @@
 bin/
 obj/
+/src/*.nupkg
+/packages/*/
+/_ReSharper*/
+*.bak
+*.cache
+*.pidb
+*.suo
+*.user
+*.userprefs
+*.DotSettings
+*.resources

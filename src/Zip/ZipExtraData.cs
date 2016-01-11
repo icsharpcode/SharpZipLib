@@ -193,28 +193,31 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// bit 2           if set, creation time is present
 				
 				_flags = (Flags)helperStream.ReadByte();
-				if (((_flags & Flags.ModificationTime) != 0) && (count >= 5))
+				if (((_flags & Flags.ModificationTime) != 0))
 				{
 					int iTime = helperStream.ReadLEInt();
 
-					_modificationTime = (new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
-						new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
+					_modificationTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) +
+						new TimeSpan(0, 0, 0, iTime, 0);
+
+					// Central-header version is truncated after modification time
+					if (count <= 5) return;
 				}
 
 				if ((_flags & Flags.AccessTime) != 0)
 				{
 					int iTime = helperStream.ReadLEInt();
 
-					_lastAccessTime = (new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
-						new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
+					_lastAccessTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) +
+						new TimeSpan(0, 0, 0, iTime, 0);
 				}
 				
 				if ((_flags & Flags.CreateTime) != 0)
 				{
 					int iTime = helperStream.ReadLEInt();
 
-					_createTime = (new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
-						new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
+					_createTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) +
+						new TimeSpan(0, 0, 0, iTime, 0);
 				}
 			}
 		}
@@ -231,17 +234,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 				helperStream.IsStreamOwner = false;
 				helperStream.WriteByte((byte)_flags);     // Flags
 				if ( (_flags & Flags.ModificationTime) != 0) {
-					TimeSpan span = _modificationTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
+					TimeSpan span = _modificationTime - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 					int seconds = (int)span.TotalSeconds;
 					helperStream.WriteLEInt(seconds);
 				}
 				if ( (_flags & Flags.AccessTime) != 0) {
-					TimeSpan span = _lastAccessTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
+					TimeSpan span = _lastAccessTime - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 					int seconds = (int)span.TotalSeconds;
 					helperStream.WriteLEInt(seconds);
 				}
 				if ( (_flags & Flags.CreateTime) != 0) {
-					TimeSpan span = _createTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
+					TimeSpan span = _createTime - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 					int seconds = (int)span.TotalSeconds;
 					helperStream.WriteLEInt(seconds);
 				}
@@ -326,7 +329,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get/set the <see cref="Flags">values</see> to include.
 		/// </summary>
-		Flags Include
+		public Flags Include
 		{
 			get { return _flags; }
 			set { _flags = value; }
@@ -374,13 +377,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 						if (ntfsLength >= 24)
 						{
 							long lastModificationTicks = helperStream.ReadLELong();
-							_lastModificationTime = DateTime.FromFileTime(lastModificationTicks);
+							_lastModificationTime = DateTime.FromFileTimeUtc(lastModificationTicks);
 
 							long lastAccessTicks = helperStream.ReadLELong();
-							_lastAccessTime = DateTime.FromFileTime(lastAccessTicks);
+							_lastAccessTime = DateTime.FromFileTimeUtc(lastAccessTicks);
 
 							long createTimeTicks = helperStream.ReadLELong();
-							_createTime = DateTime.FromFileTime(createTimeTicks);
+							_createTime = DateTime.FromFileTimeUtc(createTimeTicks);
 						}
 						break;
 					}
@@ -406,9 +409,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				helperStream.WriteLEInt(0);       // Reserved
 				helperStream.WriteLEShort(1);     // Tag
 				helperStream.WriteLEShort(24);    // Length = 3 x 8.
-				helperStream.WriteLELong(_lastModificationTime.ToFileTime());
-				helperStream.WriteLELong(_lastAccessTime.ToFileTime());
-				helperStream.WriteLELong(_createTime.ToFileTime());
+				helperStream.WriteLELong(_lastModificationTime.ToFileTimeUtc());
+				helperStream.WriteLELong(_lastAccessTime.ToFileTimeUtc());
+				helperStream.WriteLELong(_createTime.ToFileTimeUtc());
 				return ms.ToArray();
 			}
 		}
@@ -482,9 +485,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#region Instance Fields
-		DateTime _lastAccessTime = DateTime.FromFileTime(0);
-		DateTime _lastModificationTime = DateTime.FromFileTime(0);
-		DateTime _createTime = DateTime.FromFileTime(0);
+		DateTime _lastAccessTime = DateTime.FromFileTimeUtc(0);
+		DateTime _lastModificationTime = DateTime.FromFileTimeUtc(0);
+		DateTime _createTime = DateTime.FromFileTimeUtc(0);
 		#endregion
 	}
 
@@ -591,35 +594,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the <see cref="ITaggedData">tagged data</see> for a tag.
 		/// </summary>
-		/// <param name="tag">The tag to search for.</param>
+		/// <typeparam name="T">The tag to search for.</typeparam>
 		/// <returns>Returns a <see cref="ITaggedData">tagged value</see> or null if none found.</returns>
-		private ITaggedData GetData(short tag)
+		public T GetData<T>()
+			where T : class, ITaggedData, new()
 		{
-			ITaggedData result = null;
-			if (Find(tag))
+			T result = new T();
+			if (Find(result.TagID))
 			{
-				result = Create(tag, _data, _readValueStart, _readValueLength);
+				result.SetData(_data, _readValueStart, _readValueLength);
+				return result;
 			}
-			return result;
-		}
-
-		static ITaggedData Create(short tag, byte[] data, int offset, int count)
-		{
-			ITaggedData result = null;
-			switch ( tag )
-			{
-				case 0x000A:
-					result = new NTTaggedData();
-					break;
-				case 0x5455:
-					result = new ExtendedUnixData();
-					break;
-				default:
-					result = new RawTaggedData(tag);
-					break;
-			}
-			result.SetData(data, offset, count);
-			return result;
+			else return null;
 		}
 		
 		/// <summary>

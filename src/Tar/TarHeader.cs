@@ -147,6 +147,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public const int DEVLEN = 8;
 		
+		/// <summary>
+		/// The length of the name prefix field in a header buffer.
+		/// </summary>
+		public const int PREFIXLEN = 155;
+		
 		//
 		// LF_ constants represent the "type" of an entry
 		//
@@ -604,21 +609,26 @@ namespace ICSharpCode.SharpZipLib.Tar
 			Magic = ParseName(header, offset, MAGICLEN).ToString();
 			offset += MAGICLEN;
 			
-			Version = ParseName(header, offset, VERSIONLEN).ToString();
-			offset += VERSIONLEN;
-			
-			UserName = ParseName(header, offset, UNAMELEN).ToString();
-			offset += UNAMELEN;
-			
-			GroupName = ParseName(header, offset, GNAMELEN).ToString();
-			offset += GNAMELEN;
-			
-			DevMajor = (int)ParseOctal(header, offset, DEVLEN);
-			offset += DEVLEN;
-			
-			DevMinor = (int)ParseOctal(header, offset, DEVLEN);
-			
-			// Fields past this point not currently parsed or used...
+			if (Magic == "ustar")
+			{
+				Version = ParseName(header, offset, VERSIONLEN).ToString();
+				offset += VERSIONLEN;
+				
+				UserName = ParseName(header, offset, UNAMELEN).ToString();
+				offset += UNAMELEN;
+				
+				GroupName = ParseName(header, offset, GNAMELEN).ToString();
+				offset += GNAMELEN;
+				
+				DevMajor = (int) ParseOctal(header, offset, DEVLEN);
+				offset += DEVLEN;
+				
+				DevMinor = (int) ParseOctal(header, offset, DEVLEN);
+				offset += DEVLEN;
+				
+				string prefix = ParseName(header, offset, PREFIXLEN).ToString();
+				if (!string.IsNullOrEmpty(prefix)) Name = prefix + '/' + Name;
+			}
 			
 			isChecksumValid = Checksum == TarHeader.MakeCheckSum(header);
 		}
@@ -896,7 +906,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			int i;
 			
-			for (i = 0 ; i < length - 1 && nameOffset + i < name.Length; ++i) {
+			for (i = 0 ; i < length && nameOffset + i < name.Length; ++i) {
 				buffer[bufferOffset + i] = (byte)name[nameOffset + i];
 			}
 			

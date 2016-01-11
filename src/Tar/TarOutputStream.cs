@@ -278,14 +278,15 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ArgumentNullException("entry");
 			}
 
-			if (entry.TarHeader.Name.Length >= TarHeader.NAMELEN) {
+			if (entry.TarHeader.Name.Length > TarHeader.NAMELEN) {
 				TarHeader longHeader = new TarHeader();
 				longHeader.TypeFlag = TarHeader.LF_GNU_LONGNAME;
 				longHeader.Name = longHeader.Name + "././@LongLink";
-				longHeader.UserId = 0;
-				longHeader.GroupId = 0;
-				longHeader.GroupName = "";
-				longHeader.UserName = "";
+				longHeader.Mode = 420;//644 by default
+				longHeader.UserId = entry.UserId;
+				longHeader.GroupId = entry.GroupId;
+				longHeader.GroupName = entry.GroupName;
+				longHeader.UserName = entry.UserName;
 				longHeader.LinkName = "";
                 longHeader.Size = entry.TarHeader.Name.Length + 1;	// Plus one to avoid dropping last char
 
