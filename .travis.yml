@@ -1,0 +1,8 @@
+language: csharp
+solution: ICSharpCode.SharpZipLib.sln
+install:
+  - nuget restore ICSharpCode.SharpZipLib.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+script:
+  - xbuild /p:Configuration=Release ICSharpCode.SharpZipLib.sln
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./tests/bin/Release/SharpZipLibTests.dll
