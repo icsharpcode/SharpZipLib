@@ -60,7 +60,7 @@ using System.Runtime.InteropServices;
 #elif (MONO_2_0)
 [assembly: AssemblyTitle("SharpZipLib for Mono 2.0")]
 #else
-[assembly: AssemblyTitle("SharpZipLibrary unlabelled version")]
+[assembly: AssemblyTitle("SharpZipLib unlabelled version")]
 #endif
 
 [assembly: AssemblyDescription("A free C# compression library")]

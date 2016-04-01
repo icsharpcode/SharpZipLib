@@ -8,7 +8,7 @@ Imports System.Runtime.CompilerServices
 ' you compile.
 
 <assembly: AssemblyTitle("CreateZipFile")>
-<assembly: AssemblyDescription("SharpZipLibrary Sample")>
+<assembly: AssemblyDescription("SharpZipLib Sample")>
 <assembly: AssemblyConfiguration("")>
 <assembly: AssemblyCompany("ICSharpCode.NET")>
 <assembly: AssemblyProduct("")>

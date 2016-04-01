@@ -1,4 +1,4 @@
-// SharpZipLibrary samples
+// SharpZipLib samples
 // Copyright (c) 2007, AlphaSierraPapa
 // All rights reserved.
 //

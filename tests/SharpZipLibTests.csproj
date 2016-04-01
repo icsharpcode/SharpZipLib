@@ -56,9 +56,9 @@
     <Compile Include="Base\InflaterDeflaterTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\ICSharpCode.SharpZLib.csproj">
+    <ProjectReference Include="..\src\ICSharpCode.SharpZipLib.csproj">
       <Project>{18D20629-913A-4474-B2D1-643290E14ED7}</Project>
-      <Name>ICSharpCode.SharpZLib</Name>
+      <Name>ICSharpCode.SharpZipLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
