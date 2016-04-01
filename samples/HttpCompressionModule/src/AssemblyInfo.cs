@@ -13,7 +13,7 @@ using System.Reflection;
 // Set the CompanyName, LegalCopyright, and LegalTrademark fields
 // You shouldn't have to mess with these
 [assembly: AssemblyCompany("blowery.org")]
-[assembly: AssemblyCopyright("Copyright (c) 2002 Ben Lowery")]
+[assembly: AssemblyCopyright("Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team")]
 
 #endregion
 

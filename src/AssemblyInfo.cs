@@ -1,7 +1,6 @@
 // AssemblyInfo.cs
 //
-// Copyright (C) 2001 Mike Krueger
-// Copyright 2004 John Reilly
+// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -15,7 +14,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //
 // Linking this library statically or dynamically with other modules is
 // making a combined work based on this library.  Thus, the terms and
@@ -60,11 +59,11 @@ using System.Runtime.InteropServices;
 #elif (MONO_2_0)
 [assembly: AssemblyTitle("SharpZipLib for Mono 2.0")]
 #else
-[assembly: AssemblyTitle("SharpZipLibrary unlabelled version")]
+[assembly: AssemblyTitle("SharpZipLib unlabelled version")]
 #endif
 
 [assembly: AssemblyDescription("A free C# compression library")]
-[assembly: AssemblyProduct("#ZipLibrary")]
+[assembly: AssemblyProduct("#ZipLib")]
 [assembly: AssemblyDefaultAlias("SharpZipLib")]
 [assembly: AssemblyCulture("")]
 
@@ -75,9 +74,9 @@ using System.Runtime.InteropServices;
 #endif
 
 
-[assembly: AssemblyCompany("ICSharpCode.net")]
-[assembly: AssemblyCopyright("Copyright 2001-2010 Mike Krueger, John Reilly")]
-[assembly: AssemblyTrademark("Copyright 2001-2010 Mike Krueger, John Reilly")]
+[assembly: AssemblyCompany("AlphaSierraPapa")]
+[assembly: AssemblyCopyright("Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team")]
+[assembly: AssemblyTrademark("")]
 
 [assembly: AssemblyVersion("0.86.0.518")]
 [assembly: AssemblyInformationalVersionAttribute("0.86.0")]

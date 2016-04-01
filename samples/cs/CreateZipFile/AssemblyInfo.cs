@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("A SharpDevelop sample")]
-[assembly: AssemblyCopyright("Mike Krueger 2000")]
+[assembly: AssemblyCopyright("Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

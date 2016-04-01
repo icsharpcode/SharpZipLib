@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ICSharpCode.net")]
 [assembly: AssemblyProduct("#ZipLibrary")]
-[assembly: AssemblyCopyright("Copyright 2001-2007 Mike Krueger, John Reilly")]
+[assembly: AssemblyCopyright("Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

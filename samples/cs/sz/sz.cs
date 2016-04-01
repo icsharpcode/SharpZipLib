@@ -3,7 +3,7 @@
 // $Id$
 // $URL$
 //
-// Copyright (c) 2007, AlphaSierraPapa
+// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification, are
@@ -520,7 +520,8 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
         /// </summary>		
         void ShowVersion() {
             seenHelp = true;
-            Console.WriteLine("SharpZip Archiver v0.37   Copyright 2004 John Reilly");
+            Console.WriteLine("SharpZip Archiver v0.37");
+            Console.WriteLine("Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team");
 #if !NETCF			
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
