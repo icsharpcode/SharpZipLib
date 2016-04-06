@@ -12,7 +12,7 @@ Imports System.Runtime.CompilerServices
 <assembly: AssemblyConfiguration("")>
 <assembly: AssemblyCompany("ICSharpCode.NET")>
 <assembly: AssemblyProduct("")>
-<assembly: AssemblyCopyright("")>
+<Assembly: AssemblyCopyright("Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team")>
 <assembly: AssemblyTrademark("")>
 <assembly: AssemblyCulture("")>
 

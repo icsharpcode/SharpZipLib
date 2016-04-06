@@ -1,5 +1,5 @@
 // SharpZipLibrary samples
-// Copyright (c) 2007, AlphaSierraPapa
+// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification, are
@@ -590,8 +590,7 @@ public class Tar
 		Console.Error.WriteLine( "tar 2.0.6.2" );
 		Console.Error.WriteLine( "" );
 		Console.Error.WriteLine( "{0}", SharpZipVersion() );
-		Console.Error.WriteLine( "Copyright (c) 2002 by Mike Krueger" );
-		Console.Error.WriteLine( "Copyright (c) 1998,1999 by Tim Endres (Java version)" );
+		Console.Error.WriteLine( "Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team" );
 		Console.Error.WriteLine( "" );
 		Console.Error.WriteLine( "This program is free software licensed to you under the" );
 		Console.Error.WriteLine( "GNU General Public License. See the accompanying LICENSE" );

@@ -11,7 +11,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("")> 
-<Assembly: AssemblyCopyright("")> 
+<Assembly: AssemblyCopyright("Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team")> 
 <Assembly: AssemblyTrademark("")> 
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM

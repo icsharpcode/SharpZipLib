@@ -11,7 +11,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("")> 
-<Assembly: AssemblyCopyright("")> 
+<Assembly: AssemblyCopyright("Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team")> 
 <Assembly: AssemblyTrademark("")> 
 
 ' Version information for an assembly consists of the following four values:

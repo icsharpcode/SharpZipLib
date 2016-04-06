@@ -12,8 +12,8 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("#ZipLibrary")]
-[assembly: AssemblyCopyright("")]
-[assembly: AssemblyTrademark("Copyright 2004 John Reilly")]
+[assembly: AssemblyCopyright("Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // The assembly version has following format :
