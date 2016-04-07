@@ -1,4 +1,4 @@
-// SharpZipLibrary samples
+// SharpZipLib samples
 // Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 // All rights reserved.
 //
@@ -35,7 +35,7 @@ using ICSharpCode.SharpZipLib.Tar;
 /// <summary>
 /// The tar class implements a simplistic version of the
 /// traditional UNIX tar command. It currently supports
-/// creating, listing, and extracting from archives. 
+/// creating, listing, and extracting from archives.
 /// It supports GZIP, unix compress and bzip2 compression
 /// GNU long filename extensions are supported, POSIX extensions are not yet supported...
 /// See the help (-? or --help) for option details.
@@ -68,7 +68,7 @@ public class Tar
 	/// Flag that determines if verbose feedback is to be provided.
 	/// </summary>
 	bool verbose;
-	
+
 	/// <summary>
 	/// What kind of <see cref="Compression"/> to use.
 	/// </summary>
@@ -83,38 +83,38 @@ public class Tar
 	/// True if we are not to overwrite existing files.  (Unix noKlobber option)
 	/// </summary>
 	bool keepOldFiles;
-	
+
 	/// <summary>
 	/// True if we are to convert ASCII text files from local line endings
 	/// to the UNIX standard '\n'.
 	/// </summary>
 	bool asciiTranslate;
-	
+
 	/// <summary>
 	/// The archive name provided on the command line, '-' if stdio.
 	/// </summary>
 	string archiveName;
-	
+
 	/// <summary>
 	/// The blocking factor to use for the tar archive IO. Set by the '-b' option.
 	/// </summary>
 	int blockingFactor;
-	
+
 	/// <summary>
 	/// The userId to use for files written to archives. Set by '-U' option.
 	/// </summary>
 	int userId;
-	
+
 	/// <summary>
 	/// The userName to use for files written to archives. Set by '-u' option.
 	/// </summary>
 	string userName;
-	
+
 	/// <summary>
 	/// The groupId to use for files written to archives. Set by '-G' option.
 	/// </summary>
 	int groupId;
-	
+
 	/// <summary>
 	/// The groupName to use for files written to archives. Set by '-g' option.
 	/// </summary>
@@ -129,10 +129,10 @@ public class Tar
 	{
 		blockingFactor = TarBuffer.DefaultBlockFactor;
 		userId   = 0;
-		
+
 		string sysUserName = Environment.UserName;
 		userName = ((sysUserName == null) ? "" : sysUserName);
-		
+
 		groupId   = 0;
 		groupName = "None";
 	}
@@ -145,7 +145,7 @@ public class Tar
 		Tar tarApp = new Tar();
 		tarApp.InstanceMain(argv);
 	}
-	
+
 	/// <summary>
 	/// This is the "real" main. The class main() instantiates a tar object
 	/// for the application and then calls this method. Process the arguments
@@ -154,7 +154,7 @@ public class Tar
 	public void InstanceMain(string[] argv)
 	{
 		TarArchive archive = null;
-		
+
 		int argIdx = this.ProcessArguments(argv);
 
 		if (this.archiveName != null && ! this.archiveName.Equals("-")) {
@@ -172,14 +172,14 @@ public class Tar
 				}
 			}
 		}
-		
+
 		if (operation == Operation.Create) { 		               // WRITING
 			Stream outStream = Console.OpenStandardOutput();
-			
+
 			if (this.archiveName != null && ! this.archiveName.Equals("-")) {
 				outStream = File.Create(archiveName);
 			}
-			
+
 			if (outStream != null) {
 				switch (this.compression) {
 					case Compression.Compress:
@@ -198,11 +198,11 @@ public class Tar
 			}
 		} else {								// EXTRACTING OR LISTING
 			Stream inStream = Console.OpenStandardInput();
-			
+
 			if (this.archiveName != null && ! this.archiveName.Equals( "-" )) {
 				inStream = File.OpenRead(archiveName);
 			}
-			
+
 			if (inStream != null) {
 				switch (this.compression) {
 					case Compression.Compress:
@@ -212,7 +212,7 @@ public class Tar
 					case Compression.Gzip:
 						inStream = new GZipInputStream(inStream);
 						break;
-					
+
 					case Compression.Bzip2:
 						inStream = new BZip2InputStream(inStream);
 						break;
@@ -220,14 +220,14 @@ public class Tar
 				archive = TarArchive.CreateInputTarArchive(inStream, this.blockingFactor);
 			}
 		}
-		
+
 		if (archive != null) {						// SET ARCHIVE OPTIONS
 			archive.SetKeepOldFiles(this.keepOldFiles);
 			archive.AsciiTranslate = this.asciiTranslate;
-			
+
 			archive.SetUserInfo(this.userId, this.userName, this.groupId, this.groupName);
 		}
-		
+
 		if (archive == null) {
 			Console.Error.WriteLine( "no processing due to errors" );
 		} else if (operation == Operation.Create) {                        // WRITING
@@ -254,7 +254,7 @@ public class Tar
 			if (verbose) {
 				archive.ProgressMessageEvent += new ProgressMessageHandler(ShowTarProgressMessage);
 			}
-			
+
 			if (userDir != null) {
 				archive.ExtractContents(userDir);
 			}
@@ -264,7 +264,7 @@ public class Tar
 			archive.Close();
 		}
 	}
-	
+
 	/// <summary>
 	/// Display progress information on console
 	/// </summary>
@@ -281,14 +281,14 @@ public class Tar
 				string modeString = DecodeType(entry.TarHeader.TypeFlag, entry.Name.EndsWith("/")) + DecodeMode(entry.TarHeader.Mode);
 				string userString = (entry.UserName == null || entry.UserName.Length == 0) ? entry.UserId.ToString() : entry.UserName;
 				string groupString = (entry.GroupName == null || entry.GroupName.Length == 0) ? entry.GroupId.ToString() : entry.GroupName;
-				
+
 				Console.WriteLine(string.Format("{0} {1}/{2} {3,8} {4:yyyy-MM-dd HH:mm:ss} {5}", modeString, userString, groupString, entry.Size, entry.ModTime.ToLocalTime(), entry.Name));
 			} else {
 				Console.WriteLine(entry.Name);
 			}
 		}
 	}
-	
+
 	///
 	/// <summary>
 	/// Process arguments, handling options, and return the index of the
@@ -302,18 +302,18 @@ public class Tar
 		int idx = 0;
 		bool bailOut = false;
 		bool gotOP = false;
-		
+
 		for ( ; idx < args.Length ; ++idx ) {
 			string arg = args[ idx ];
-			
+
 			if (!arg.StartsWith("-")) {
 				break;
 			}
-			
+
 			if (arg.StartsWith("--" )) {
 				int valuePos = arg.IndexOf('=');
 				string argValue = null;
-				
+
 				if (valuePos >= 0) {
 					argValue = arg.Substring(valuePos + 1);
 					arg = arg.Substring(0, valuePos);
@@ -370,7 +370,7 @@ public class Tar
 							if (size % TarBuffer.BlockSize != 0) {
 								Console.Error.WriteLine("Record size must be a multiple of " + TarBuffer.BlockSize.ToString());
 								bailOut = true;
-							} else 
+							} else
 								blockingFactor = size / TarBuffer.BlockSize;
 						} catch {
 							Console.Error.WriteLine("non-numeric record size");
@@ -384,7 +384,7 @@ public class Tar
 				}
 			} else {
 				for (int cIdx = 1; cIdx < arg.Length; ++cIdx) {
-					switch (arg[cIdx]) 
+					switch (arg[cIdx])
 					{
 						case '?':
 							ShowHelp();
@@ -536,7 +536,7 @@ public class Tar
 	}
 
 	static string DecodeMode(int mode)
-	{	
+	{
 
 		const int S_ISUID = 0x0800;
 		const int S_ISGID = 0x0400;
@@ -581,7 +581,7 @@ public class Tar
 		Version v = zipAssembly.GetName().Version;
 		return "#ZipLib v" + v.Major + "." + v.Minor + "." + v.Build + "." + v.Revision;
 	}
-	
+
 	/// <summary>
 	/// Print version information.
 	/// </summary>
@@ -598,7 +598,7 @@ public class Tar
 		Console.Error.WriteLine( "visit www.gnu.org for more details." );
 		Console.Error.WriteLine( "" );
 	}
-	
+
 	/// <summary>
 	/// Print help information.
 	/// </summary>
@@ -647,7 +647,7 @@ public class Tar
 		Environment.Exit(1);
 	}
 }
-			
+
 /*
 ** Authored by Timothy Gerard Endres
 ** <mailto:time@gjt.org>  <http://www.trustice.com>

@@ -5,7 +5,7 @@
   </StartMode>
   <Entries>
     <Entry filename=".\FastZip.prjx" />
-    <Entry filename="..\..\..\ICSharpCode.SharpZLib.cmbx" />
+    <Entry filename="..\..\..\ICSharpCode.SharpZipLib.cmbx" />
   </Entries>
   <Configurations active="Debug">
     <Configuration name="Release">

@@ -1,4 +1,4 @@
-// SharpZipLibrary samples
+// SharpZipLib samples
 // Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 // All rights reserved.
 //
@@ -40,12 +40,12 @@ class MainClass
 			Console.WriteLine("Usage: ZipList file");
 			return;
 		}
-		
+
 		if ( !File.Exists(args[0]) ) {
 			Console.WriteLine("Cannot find file");
 			return;
 		}
-		
+
 		using (ZipFile zFile = new ZipFile(args[0])) {
 			Console.WriteLine("Listing of : " + zFile.Name);
 			Console.WriteLine("");

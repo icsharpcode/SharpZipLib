@@ -1,4 +1,4 @@
-// SharpZipLibrary samples
+// SharpZipLib samples
 //
 // $Id$
 // $URL$

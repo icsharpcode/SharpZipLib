@@ -1,4 +1,4 @@
-// SharpZipLibrary samples
+// SharpZipLib samples
 // Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 // All rights reserved.
 //
@@ -41,7 +41,7 @@ class MainClass
 		Console.WriteLine("  -c compress (default)");
 		Console.WriteLine("  -? Show help");
 	}
-	
+
 	#region Command parsing
 	enum Command
 	{
@@ -51,7 +51,7 @@ class MainClass
 		Decompress,
 		Stop,
 	}
-	
+
 	class ArgumentParser
 	{
 		public ArgumentParser(string[] args)
@@ -75,7 +75,7 @@ class MainClass
 				{
 					if ( file_ == null ) {
 						file_ = argument;
-						
+
 						if ( !System.IO.File.Exists(file_) ) {
 							Console.WriteLine("File not found '{0}'", file_);
 							command_ = Command.Stop;
@@ -87,7 +87,7 @@ class MainClass
 					}
 				}
 			}
-			
+
 			if ( command_ == Command.Nothing ) {
 				if ( file_ == null ) {
 					command_ = Command.Help;
@@ -97,7 +97,7 @@ class MainClass
 				}
 			}
 		}
-		
+
 		void SetCommand(Command command)
 		{
 			if ( (command_ != Command.Nothing) && (command_ != Command.Stop) ) {
@@ -108,12 +108,12 @@ class MainClass
 				command_ = command;
 			}
 		}
-		
+
 		public string Source
 		{
 			get { return file_; }
 		}
-		
+
 		public string Target
 		{
 			get {
@@ -127,19 +127,19 @@ class MainClass
 				return result;
 			}
 		}
-	
+
 		public Command Command
 		{
 			get { return command_; }
 		}
-		
+
 		#region Instance Fields
 		Command command_ = Command.Nothing;
 		string file_;
 		#endregion
 	}
 	#endregion
-	
+
 	public static void Main(string[] args)
 	{
 
@@ -149,12 +149,12 @@ class MainClass
 			case Command.Help:
 				ShowHelp();
 				break;
-				
+
 			case Command.Compress:
 				Console.WriteLine("Compressing {0} to {1}", parser.Source, parser.Target);
 				BZip2.Compress(File.OpenRead(parser.Source), File.Create(parser.Target), 4096);
 				break;
-				
+
 			case Command.Decompress:
 				Console.WriteLine("Decompressing {0} to {1}", parser.Source, parser.Target);
 				BZip2.Decompress(File.OpenRead(parser.Source), File.Create(parser.Target));

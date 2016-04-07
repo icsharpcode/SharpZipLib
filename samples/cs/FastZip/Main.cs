@@ -1,4 +1,4 @@
-// SharpZipLibrary samples
+// SharpZipLib samples
 // Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 // All rights reserved.
 //
@@ -49,7 +49,7 @@ namespace Samples.FastZipDemo
             using (ZipFile zipFile = new ZipFile(fileName)) {
                 PathFilter localFileFilter = new PathFilter(fileFilter);
                 PathFilter localDirFilter = new PathFilter(directoryFilter);
-				
+
                 if ( zipFile.Count == 0 ) {
                     Console.WriteLine("No entries to list");
                 }
@@ -77,12 +77,12 @@ namespace Samples.FastZipDemo
                 }
             }
         }
-		
+
         void ListFile(object sender, ScanEventArgs e)
         {
             Console.WriteLine("{0}", e.Name);
         }
-		
+
         void ListDir(object sender, DirectoryEventArgs e)
         {
             if ( !e.HasMatchingFiles ) {
@@ -108,7 +108,7 @@ namespace Samples.FastZipDemo
         {
             Console.WriteLine(e.Name);
         }
-		
+
         void ProcessDirectory(object sender, DirectoryEventArgs e)
         {
             if ( !e.HasMatchingFiles ) {
@@ -122,7 +122,7 @@ namespace Samples.FastZipDemo
             string yesNo = Console.ReadLine();
             return (yesNo != null) && string.Compare(yesNo.Trim(), "y", true) == 0;
         }
-		
+
         void Run(string[] args)
         {
             bool recurse = false;
@@ -139,17 +139,17 @@ namespace Samples.FastZipDemo
             bool createEmptyDirs = false;
             FastZip.Overwrite overwrite = FastZip.Overwrite.Always;
             FastZip.ConfirmOverwriteDelegate confirmOverwrite = null;
-			
+
             Operation op = Operation.Unknown;
             int argCount = 0;
-			
+
             for ( int i = 0; i < args.Length; ++i ) {
                 if ( args[i][0] == '-' ) {
                     string option = args[i].Substring(1).ToLower();
                     string optArg = "";
-	
+
                     int parameterIndex = option.IndexOf('=');
-	
+
                     if (parameterIndex >= 0)
                     {
                         if (parameterIndex < option.Length - 1) {
@@ -157,13 +157,13 @@ namespace Samples.FastZipDemo
                         }
                         option = option.Substring(0, parameterIndex);
                     }
-					
+
                     switch ( option ) {
                         case "e":
                         case "empty":
                             createEmptyDirs = true;
                             break;
-							
+
                         case "x":
                         case "extract":
                             if ( op == Operation.Unknown ) {
@@ -174,7 +174,7 @@ namespace Samples.FastZipDemo
                                 op = Operation.Error;
                             }
                             break;
-							
+
                         case "c":
                         case "create":
                             if ( op == Operation.Unknown ) {
@@ -197,7 +197,7 @@ namespace Samples.FastZipDemo
                             }
                             break;
 
-							
+
                         case "p":
                         case "progress":
                             progress = true;
@@ -208,7 +208,7 @@ namespace Samples.FastZipDemo
                         case "recurse":
                             recurse = true;
                             break;
-							
+
                         case "v":
                         case "verbose":
                             verbose = true;
@@ -229,7 +229,7 @@ namespace Samples.FastZipDemo
                                 op = Operation.Error;
                             }
                             break;
-							
+
                         case "dir":
                             if ( NameFilter.IsValidFilterExpression(optArg) ) {
                                 dirFilter = optArg;
@@ -239,7 +239,7 @@ namespace Samples.FastZipDemo
                                 op = Operation.Error;
                             }
                             break;
-							
+
                         case "o":
                         case "overwrite":
                             switch ( optArg )
@@ -248,32 +248,32 @@ namespace Samples.FastZipDemo
                                     overwrite = FastZip.Overwrite.Always;
                                     confirmOverwrite = null;
                                     break;
-									
+
                                 case "never":
                                     overwrite = FastZip.Overwrite.Never;
                                     confirmOverwrite = null;
                                     break;
-									
+
                                 case "prompt":
                                     overwrite = FastZip.Overwrite.Prompt;
                                     confirmOverwrite = new FastZip.ConfirmOverwriteDelegate(ConfirmOverwrite);
                                     break;
-									
+
                                 default:
                                     Console.WriteLine("Invalid overwrite option");
                                     op = Operation.Error;
                                     break;
                             }
                             break;
-							
+
                         case "oa":
                             restoreAttributes = true;
                             break;
-							
+
                         case "od":
                             restoreDates = true;
                             break;
-							
+
                         default:
                             Console.WriteLine("Unknown option {0}", args[i]);
                             op = Operation.Error;
@@ -291,7 +291,7 @@ namespace Samples.FastZipDemo
             }
 
             FastZipEvents events = null;
-			
+
             if ( verbose ) {
                 events = new FastZipEvents();
                 events.ProcessDirectory = new ProcessDirectoryHandler(ProcessDirectory);
@@ -303,12 +303,12 @@ namespace Samples.FastZipDemo
                     events.ProgressInterval = interval;
                 }
             }
-			
+
             FastZip fastZip = new FastZip(events);
             fastZip.CreateEmptyDirectories = createEmptyDirs;
             fastZip.RestoreAttributesOnExtract = restoreAttributes;
             fastZip.RestoreDateTimeOnExtract = restoreDates;
-			
+
             switch ( op ) {
                 case Operation.Create:
                     if ( argCount == 2 ) {
@@ -319,7 +319,7 @@ namespace Samples.FastZipDemo
                     else
                         Console.WriteLine("Invalid arguments");
                     break;
-					
+
                 case Operation.Extract:
                     if ( argCount == 2 ) {
                         Console.WriteLine("Extracting Zip");
@@ -328,7 +328,7 @@ namespace Samples.FastZipDemo
                     else
                         Console.WriteLine("zipfile and target directory not specified");
                     break;
-					
+
                 case Operation.List:
                     if ( File.Exists(arg1) ) {
                         ListZipFile(arg1, fileFilter, dirFilter);
@@ -340,7 +340,7 @@ namespace Samples.FastZipDemo
                         Console.WriteLine("No valid list file or directory");
                     }
                     break;
-					
+
                 case Operation.Unknown:
                     Console.WriteLine(
                         "FastZip v0.5\n"
@@ -363,13 +363,13 @@ namespace Samples.FastZipDemo
                         +  "  -overwrite=prompt|always|never   : Overwrite on extract handling\n"
                         );
                     break;
-				
+
                 case Operation.Error:
                     // Do nothing for now...
                     break;
             }
         }
-		
+
         /// <summary>
         /// Main entry point for FastZip sample.
         /// </summary>
