@@ -1,4 +1,4 @@
-' SharpZipLibrary samples
+' SharpZipLib samples
 ' Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 ' All rights reserved.
 '
@@ -40,7 +40,7 @@ Public Class MainForm
 	Friend GroupBox1 As System.Windows.Forms.GroupBox
 	Friend btnExecute As System.Windows.Forms.Button
 	Friend rdDecompress As System.Windows.Forms.RadioButton
-	
+
 
 #Region " Windows Form Designer generated code "
 
@@ -154,13 +154,13 @@ Public Class MainForm
 			MessageBox.Show("Please enter a file name", "File name is missing")
 			Return
 		End If
-		
+
 		If Not File.Exists(txtFileName.Text)
 			MessageBox.Show(txtFileName.Text, "Cannot open file")
 			Return
 		End If
-		
-		
+
+
 		If (False = rdCompress.Checked) Then
 			' Decompression of single-file archive
 			Dim fsBZ2Archive As FileStream, fsOutput As FileStream
@@ -192,7 +192,7 @@ Public Class MainForm
 
 	Private Sub btnBrowseForBZClick(ByVal sender As System.Object, ByVal e As System.EventArgs)
 		Dim ofn As New OpenFileDialog()
-		
+
 		ofn.InitialDirectory = "c:\"
 		ofn.Filter = "BZ files (*.bz)|*.bz|All files (*.*)|*.*"
 
@@ -201,4 +201,3 @@ Public Class MainForm
 		End If
 	End Sub
 End Class
-

@@ -1,4 +1,4 @@
-' SharpZipLibrary samples
+' SharpZipLib samples
 ' Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 ' All rights reserved.
 '
@@ -40,13 +40,13 @@ Public Class MainForm
 	Friend btnView As System.Windows.Forms.Button
 	Friend Label1 As System.Windows.Forms.Label
 	Friend txtContent As System.Windows.Forms.TextBox
-	
+
 
 	Public Shared Sub Main()
 		Dim fMainForm As New MainForm
 		fMainForm.ShowDialog
 	End Sub
-	
+
 	Public Sub New()
 		MyBase.New()
 
@@ -128,7 +128,7 @@ Public Class MainForm
 			MessageBox.Show(txtFileName.Text, "Cannot open file")
 			Return
 		End If
-		
+
 		Dim strmZipInputStream As ZipInputStream = New ZipInputStream(File.OpenRead(txtFileName.Text))
 		Dim objEntry As ZipEntry
 		Dim strBuilder As StringBuilder = New StringBuilder()
@@ -152,7 +152,7 @@ Public Class MainForm
 					strBuilder.Append(New ASCIIEncoding().GetString(abyData, 0, nSize) + vbCrLf)
 					strBuilder.Append("---END---" + vbCrLf + vbCrLf)
 				End If
-				
+
 			End If
 
 			objEntry = strmZipInputStream.GetNextEntry()
@@ -163,4 +163,3 @@ Public Class MainForm
 	End Sub
 
 End Class
-

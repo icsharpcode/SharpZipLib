@@ -1,4 +1,4 @@
-' SharpZipLibrary samples
+' SharpZipLib samples
 ' Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 ' All rights reserved.
 '
@@ -34,7 +34,7 @@ Imports ICSharpCode.SharpZipLib.Core
 Imports ICSharpCode.SharpZipLib.Zip
 
 Namespace CreateZipFile
-	
+
 	Public Class MainForm
 		Inherits System.Windows.Forms.Form
         Private label2 As System.Windows.Forms.Label
@@ -206,6 +206,6 @@ Namespace CreateZipFile
 
             MessageBox.Show("Operation complete")
         End Sub
-		
+
 	End Class
 End Namespace

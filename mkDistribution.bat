@@ -7,16 +7,16 @@ if exist current (
 mkdir current
 
 REM mkdir current\netcf-10
-REM nant -t:netcf-1.0 -D:build.output.dir=current\netcf-10 -buildfile:sharpZLib.build build
+REM nant -t:netcf-1.0 -D:build.output.dir=current\netcf-10 -buildfile:SharpZipLib.build build
 
 mkdir current\netcf-20
-nant -t:netcf-2.0 -D:build.output.dir=current\netcf-20 -buildfile:sharpZLib.build build
+nant -t:netcf-2.0 -D:build.output.dir=current\netcf-20 -buildfile:SharpZipLib.build build
 
 mkdir current\net-11
-nant -t:net-1.1 -D:build.output.dir=current\net-11 -buildfile:sharpZLib.build build
+nant -t:net-1.1 -D:build.output.dir=current\net-11 -buildfile:SharpZipLib.build build
 
 mkdir current\net-20
-nant -t:net-2.0 -D:build.output.dir=current\net-20 -buildfile:sharpZLib.build build
+nant -t:net-2.0 -D:build.output.dir=current\net-20 -buildfile:SharpZipLib.build build
 
 @rem Version 1.8 of Sandcastle Help File Builder no longer includes the Console.exe, use the GUI instead
 "c:\Program Files\EWSoftware\Sandcastle Help File Builder\SandcastleBuilderConsole.exe" .\SharpZipLib.shfb
