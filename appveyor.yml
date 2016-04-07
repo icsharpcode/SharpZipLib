@@ -6,4 +6,4 @@ before_build:
 build:
   project: ICSharpCode.SharpZipLib.sln
   parallel: true
-  verbosity: verbose
+  verbosity: detailed
