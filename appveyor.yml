@@ -1,0 +1,9 @@
+version: 0.87.{build}
+configuration: Debug
+platform: Any CPU
+before_build:
+- nuget restore ICSharpCode.SharpZipLib.sln
+build:
+  project: ICSharpCode.SharpZipLib.sln
+  parallel: true
+  verbosity: verbose

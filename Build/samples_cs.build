@@ -1,0 +1,242 @@
+﻿<?xml version="1.0"?>
+
+<project name="SharpZipLib C# Examples" default="build" basedir=".">
+
+	<property name="build.dir" value="bin" />
+
+	<target name="build" depends="setup" description="Build samples" >
+		
+		<!-- compile CreateZipFile example -->
+		<echo message="Building CreateZipFile example ${build.defines}"/>
+			
+		<csc 
+			target="exe" 
+			output="${build.dir}/createzipfile.exe" 
+			define="${build.defines}"
+			debug="False" >
+			
+			<sources basedir="CreateZipFile">
+				<include name="**/*.cs"/>
+			</sources>
+
+			<references basedir="bin">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="mscorlib.dll" />
+				<include name="System.dll" />
+			</references>
+		</csc>
+
+		<!-- compile minigzip example -->
+		<echo message="Building minigzip example"/>
+		<csc 
+			target="exe" 
+			output="${build.dir}/minigzip.exe" 
+			define="${build.defines}"
+			debug="False" >
+			
+			<sources basedir="minigzip">
+				<include name="**/*.cs"/>
+			</sources>
+			<references basedir="${build.dir}">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="mscorlib.dll" />
+				<include name="System.dll" />
+			</references>
+		</csc>
+
+		<!-- compile sz archiver example -->
+		<echo message="Building sz example"/>
+		<csc 
+			target="exe" 
+			define="${build.defines}"
+			output="${build.dir}/sz.exe" 
+			debug="False" >
+			
+			<sources basedir="sz">
+				<include name="**/*.cs"/>
+			</sources>
+			<references basedir="${build.dir}">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="mscorlib.dll" />
+				<include name="System.dll" />
+			</references>
+		</csc>
+
+		<!-- compile viewzipfile example -->
+		<echo message="Building viewzipfile example"/>
+		<csc 
+			target="exe" 
+			define="${build.defines}"
+			output="${build.dir}/viewzipfile.exe" 
+			debug="False" >
+			
+			<sources basedir="viewzipfile">
+				<include name="**/*.cs"/>
+			</sources>
+			<references basedir="${build.dir}">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="mscorlib.dll" />
+				<include name="System.dll" />
+			</references>
+		</csc>
+		
+		<!-- compile unzipfile example -->
+		<echo message="Building unzipfile example"/>
+		<csc 
+			target="exe" 
+			define="${build.defines}"
+			output="${build.dir}/unzipfile.exe" 
+			debug="False" >
+			
+			<sources basedir="unzipfile">
+				<include name="**/*.cs"/>
+			</sources>
+			<references basedir="${build.dir}">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="mscorlib.dll" />
+				<include name="System.dll" />
+			</references>
+		</csc>
+
+		<!-- compile minibzip2 example -->
+		<echo message="Building minibzip2 example"/>
+		<csc 
+			target="exe" 
+			define="${build.defines}"
+			output="${build.dir}/minibzip2.exe" 
+			debug="False" >
+			
+			<sources basedir="minibzip2">
+				<include name="**/*.cs"/>
+			</sources>
+			<references basedir="${build.dir}">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="mscorlib.dll" />
+				<include name="System.dll" />
+			</references>
+		</csc>
+		
+		<!-- compile tar example -->
+		<echo message="Building tar example"/>
+		<csc 
+			target="exe" 
+			define="${build.defines}"
+			output="${build.dir}/tar.exe" 
+			debug="False" >
+			
+			<sources basedir="tar">
+				<include name="**/*.cs"/>
+			</sources>
+			<references basedir="${build.dir}">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="mscorlib.dll" />
+				<include name="System.dll" />
+			</references>
+		</csc>
+
+		<!-- compile zipfiletest example -->
+		<echo message="Building zipfiletest example"/>
+		<csc 
+			target="exe" 
+			define="${build.defines}"
+			output="${build.dir}/zipfiletest.exe" 
+			debug="False" >
+			
+			<sources basedir="zipfiletest">
+				<include name="**/*.cs"/>
+			</sources>
+			<references basedir="${build.dir}">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="mscorlib.dll" />
+				<include name="System.dll" />
+			</references>
+		</csc>
+	
+		<!-- Compile zf sample -->
+		<echo message="Building zf sample"/>
+		<csc
+			target="exe" 
+			define="${build.defines}"
+			output="${build.dir}/zf.exe" 
+			debug="False" >
+			<sources basedir="zf">
+				<include name="**/*.cs"/>
+			</sources>
+			<references basedir="${build.dir}">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="mscorlib.dll" />
+				<include name="System.dll" />
+			</references>
+		</csc>
+
+		<!-- Compile FastZip sample -->
+		<echo message="Building FastZip sample"/>
+		<csc
+			target="exe" 
+			define="${build.defines}"
+			output="${build.dir}/fastzip.exe" 
+			debug="False" >
+			<sources basedir="fastzip">
+				<include name="**/*.cs"/>
+			</sources>
+			<references basedir="${build.dir}">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+				<include name="mscorlib.dll" />
+				<include name="System.dll" />
+			</references>
+		</csc>
+	</target>
+	
+	<target name="clean" description="Remove build artefacts">
+		<delete verbose="true" >
+			<fileset basedir="${build.dir}">
+				<include name="*.exe"/>
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="rebuild" depends="clean, build" description="Rebuild samples" />
+
+	<target name="setup">
+		<if test="${target::exists('setup-for-' + framework::get-target-framework())}">
+			<call target="setup-for-${framework::get-target-framework()}" />
+		</if>
+		<mkdir dir="${build.dir}" if="${not directory::exists('${build.dir}')}"/>
+		<copy todir="${build.dir}" overwrite="True" >
+			<fileset basedir="../../bin">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="setup-for-net-1.0">
+		<property name="build.defines" value="AUTOBUILD,NET,NET_1_0" />
+	</target>
+
+	<target name="setup-for-net-1.1">
+		<property name="build.defines" value="AUTOBUILD,NET,NET_1_1" />
+	</target>
+
+	<target name="setup-for-net-2.0">
+		<property name="build.defines" value="AUTOBUILD,NET,NET_2_0" />
+	</target>
+
+	<target name="setup-for-netcf-1.0">
+		<property name="build.defines" value="AUTOBUILD,NETCF,NETCF_1_0" />
+	</target>
+
+	<target name="setup-for-netcf-2.0">
+		<property name="build.defines" value="AUTOBUILD,NETCF,NETCF_2_0" />
+	</target>
+
+	<!-- Mono has not actually been used or tested please let us know if you use Mono! -->
+	<target name="setup-for-mono-1.0">
+		<property name="build.defines" value="AUTOBUILD,MONO,MONO_1_0" />
+	</target>
+
+	<target name="setup-for-mono-2.0">
+		<property name="build.defines" value="AUTOBUILD,MONO,MONO_2_0" />
+	</target>
+
+</project>

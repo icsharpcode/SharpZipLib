@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+
+<project name="SharpZipLib VB.NET Examples" default="build" basedir=".">
+
+	<property name="build.dir" value="bin" />
+
+	<target name="setup">
+		<echo message="Setup"/>
+		<mkdir dir="${build.dir}" if="${not directory::exists('${build.dir}')}"/>
+		<copy todir="${build.dir}">
+			<fileset basedir="../../bin">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="build" depends="setup">
+
+		<!-- compile CreateZipFile example -->
+		<echo message="Building CreateZipFile example"/>
+
+		<vbc
+			target="exe" 
+			output="${build.dir}/createzipfile.exe" 
+			debug="False">
+			
+			<sources basedir="CreateZipFile">
+				<include name="**/*.vb"/>
+			</sources>
+			
+			<references basedir="${build.dir}">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</vbc>
+
+		<!-- compile minigzip example -->
+
+<!-- There is no such sample currently
+
+		<echo message="Building minigzip example"/>
+		<vbc 
+			target="exe" 
+			output="${build.dir}/minigzip.exe" 
+			debug="False">
+			
+			<sources basedir="minigzip">
+				<include name="**/*.vb"/>
+			</sources>
+			<references>
+				<include name="System.dll"/>
+				<include name="System.Drawing.dll"/>
+				<include name="System.Windows.Forms.dll"/>
+				<include name="${build.dir}/ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</vbc>
+-->
+
+		<!-- compile viewzipfile example -->
+		<echo message="Building viewzipfile example"/>
+		<vbc 
+			target="exe" 
+			output="${build.dir}/viewzipfile.exe"
+			debug="False">
+			
+			<sources basedir="viewzipfile">
+				<include name="**/*.vb"/>
+			</sources>
+			
+			<references basedir="${build.dir}">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</vbc>
+
+		<!-- compile minibzip2 example -->
+		<echo message="Building minibzip2 example"/>
+			
+		<vbc 
+			target="exe" 
+			output="${build.dir}/minibzip2.exe" 
+			debug="False">
+			
+			<sources basedir="minibzip2">
+				<include name="**/*.vb"/>
+			</sources>
+			<references basedir="${build.dir}">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</vbc>
+		
+		<!-- compile tar example -->
+<!--
+		<echo message="Building tar example"/>
+		<vbc 
+			target="exe" 
+			output="${build.dir}/tar.exe" 
+			debug="False">
+			
+			<sources basedir="tar">
+				<include name="**/*.vb"/>
+			</sources>
+			<references basedir="${build.dir}">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</vbc>
+-->
+		<!-- compile zipfiletest example -->
+		<echo message="Building zipfiletest example"/>
+		
+		<vbc 
+			target="exe" 
+			output="${build.dir}/zipfiletest.exe" 
+			debug="False">
+			
+			<sources basedir="zipfiletest">
+				<include name="**/*.vb"/>
+			</sources>
+			<references basedir="${build.dir}">
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+			</references>
+		</vbc>
+	
+	</target>
+	
+	<target name="clean">
+			<delete verbose="true" >
+			<fileset basedir="${build.dir}">
+				<include name="*.exe"/>
+				<include name="ICSharpCode.SharpZipLib.dll"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="rebuild" depends="clean, build" />
+
+</project>
