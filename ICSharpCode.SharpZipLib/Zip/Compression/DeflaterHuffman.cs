@@ -508,8 +508,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				do {
 					// Find the first bit length which could increase:
 					while (bl_counts[--incrBitLen] == 0)
-						;
-					
+					{
+					}
+
 					// Move this node one down and remove a corresponding
 					// number of overflow nodes.
 					do {
