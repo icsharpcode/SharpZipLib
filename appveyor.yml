@@ -19,6 +19,11 @@ branches:
   # whitelist
   only:
   - build
+  
+  # blacklist
+  except:
+    - gh-pages
+    - coverity_scan
 
 # Do not build on tags (GitHub only)
 skip_tags: true
