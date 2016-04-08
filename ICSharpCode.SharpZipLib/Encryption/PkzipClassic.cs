@@ -59,11 +59,11 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		static public byte[] GenerateKeys(byte[] seed)
 		{
 			if ( seed == null ) {
-				throw new ArgumentNullException("seed");
+				throw new ArgumentNullException(nameof(seed));
 			}
 
 			if ( seed.Length == 0 ) {
-				throw new ArgumentException("Length is zero", "seed");
+				throw new ArgumentException("Length is zero", nameof(seed));
 			}
 
 			uint[] newKeys = new uint[] {
@@ -121,7 +121,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		protected void SetKeys(byte[] keyData)
 		{
 			if ( keyData == null ) {
-				throw new ArgumentNullException("keyData");
+				throw new ArgumentNullException(nameof(keyData));
 			}
 		
 			if ( keyData.Length != 12 ) {
@@ -441,7 +441,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		
 			set {
 				if ( value == null ) {
-					throw new ArgumentNullException("value");
+					throw new ArgumentNullException(nameof(value));
 				}
 				
 				if ( value.Length != 12 ) {

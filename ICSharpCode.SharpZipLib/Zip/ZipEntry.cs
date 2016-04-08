@@ -220,15 +220,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 			CompressionMethod method)
 		{
 			if (name == null) {
-				throw new ArgumentNullException("name");
+				throw new ArgumentNullException(nameof(name));
 			}
 
 			if ( name.Length > 0xffff )	{
-				throw new ArgumentException("Name is too long", "name");
+				throw new ArgumentException("Name is too long", nameof(name));
 			}
 
 			if ( (versionRequiredToExtract != 0) && (versionRequiredToExtract < 10) ) {
-				throw new ArgumentOutOfRangeException("versionRequiredToExtract");
+				throw new ArgumentOutOfRangeException(nameof(versionRequiredToExtract));
 			}
 			
 			this.DateTime = DateTime.Now;
@@ -248,7 +248,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public ZipEntry(ZipEntry entry)
 		{
 			if ( entry == null ) {
-				throw new ArgumentNullException("entry");
+				throw new ArgumentNullException(nameof(entry));
 			}
 
 			known                  = entry.known;
@@ -805,7 +805,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			set {
 				if (((ulong)crc & 0xffffffff00000000L) != 0) {
-					throw new ArgumentOutOfRangeException("value");
+					throw new ArgumentOutOfRangeException(nameof(value));
 				}
 				this.crc = (uint)value;
 				this.known |= Known.Crc;
@@ -867,7 +867,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else {
 					if (value.Length > 0xffff) {
-						throw new System.ArgumentOutOfRangeException("value");
+						throw new System.ArgumentOutOfRangeException(nameof(value));
 					}
 				
 					extra = new byte[value.Length];
@@ -1091,7 +1091,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 #if NETCF_1_0
 					throw new ArgumentOutOfRangeException("value");
 #else
-					throw new ArgumentOutOfRangeException("value", "cannot exceed 65535");
+					throw new ArgumentOutOfRangeException(nameof(value), "cannot exceed 65535");
 #endif
 				}
 				

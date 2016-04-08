@@ -165,7 +165,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set
 			{
 				if (value.Year < 1970) {
-					throw new ArgumentException("Value is too old to be valid", "value");
+					throw new ArgumentException("Value is too old to be valid", nameof(value));
 				}
 				fixedDateTime_ = value;
 			}

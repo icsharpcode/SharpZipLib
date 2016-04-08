@@ -213,7 +213,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		{
 			if ( buffer == null )
 			{
-				throw new ArgumentNullException("buffer");
+				throw new ArgumentNullException(nameof(buffer));
 			}
 
 			for (int i = 0; i < count; ++i) {

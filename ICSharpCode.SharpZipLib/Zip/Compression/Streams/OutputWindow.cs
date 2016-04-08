@@ -156,7 +156,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		public void CopyDict(byte[] dictionary, int offset, int length)
 		{
 			if ( dictionary == null ) {
-				throw new ArgumentNullException("dictionary");
+				throw new ArgumentNullException(nameof(dictionary));
 			}
 
 			if (windowFilled > 0) {

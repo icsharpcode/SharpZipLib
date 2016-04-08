@@ -131,7 +131,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		public void SetLevel(int level)
 		{
 			if (level < Deflater.BEST_SPEED) {
-				throw new ArgumentOutOfRangeException("level");
+				throw new ArgumentOutOfRangeException(nameof(level));
 			}
 			deflater_.SetLevel(level);
 		}

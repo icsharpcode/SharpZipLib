@@ -104,7 +104,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		protected TarArchive(TarInputStream stream)
 		{
 			if ( stream == null ) {
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 			}
 			
 			tarIn = stream;
@@ -117,7 +117,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		protected TarArchive(TarOutputStream stream)
 		{
 			if ( stream == null ) {
-				throw new ArgumentNullException("stream");
+				throw new ArgumentNullException(nameof(stream));
 			}
 			
 			tarOut = stream;
@@ -136,7 +136,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public static TarArchive CreateInputTarArchive(Stream inputStream)
 		{
 			if ( inputStream == null ) {
-				throw new ArgumentNullException("inputStream");
+				throw new ArgumentNullException(nameof(inputStream));
 			}
 
 			TarInputStream tarStream = inputStream as TarInputStream;
@@ -160,7 +160,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public static TarArchive CreateInputTarArchive(Stream inputStream, int blockFactor)
 		{
 			if ( inputStream == null ) {
-				throw new ArgumentNullException("inputStream");
+				throw new ArgumentNullException(nameof(inputStream));
 			}
 
 			if ( inputStream is TarInputStream ) {
@@ -178,7 +178,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public static TarArchive CreateOutputTarArchive(Stream outputStream)
 		{
 			if ( outputStream == null ) {
-				throw new ArgumentNullException("outputStream");
+				throw new ArgumentNullException(nameof(outputStream));
 			}
 			
             TarOutputStream tarStream = outputStream as TarOutputStream;
@@ -202,7 +202,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public static TarArchive CreateOutputTarArchive(Stream outputStream, int blockFactor)
 		{
 			if ( outputStream == null ) {
-				throw new ArgumentNullException("outputStream");
+				throw new ArgumentNullException(nameof(outputStream));
 			}
 
 			if ( outputStream is TarOutputStream ) {
@@ -646,7 +646,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public void WriteEntry(TarEntry sourceEntry, bool recurse)
 		{
 			if ( sourceEntry == null ) {
-				throw new ArgumentNullException("sourceEntry");
+				throw new ArgumentNullException(nameof(sourceEntry));
 			}
 			
 			if ( isDisposed ) {

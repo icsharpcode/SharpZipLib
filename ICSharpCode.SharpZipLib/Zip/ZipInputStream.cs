@@ -549,14 +549,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public override int Read(byte[] buffer, int offset, int count)
 		{
 			if ( buffer == null ) {
-				throw new ArgumentNullException("buffer");
+				throw new ArgumentNullException(nameof(buffer));
 			}
 
 			if ( offset < 0 ) {
 #if NETCF_1_0
 				throw new ArgumentOutOfRangeException("offset");
 #else
-				throw new ArgumentOutOfRangeException("offset", "Cannot be negative");
+				throw new ArgumentOutOfRangeException(nameof(offset), "Cannot be negative");
 #endif				
 			}
 
@@ -564,7 +564,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 #if NETCF_1_0
 				throw new ArgumentOutOfRangeException("count");
 #else
-				throw new ArgumentOutOfRangeException("count", "Cannot be negative");
+				throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
 #endif
 			}
 

@@ -155,7 +155,7 @@ namespace ICSharpCode.SharpZipLib.Core
 #if NETCF_1_0
 							throw new ArgumentException("Missing terminating escape character");
 #else
-							throw new ArgumentException("Missing terminating escape character", "original");
+							throw new ArgumentException("Missing terminating escape character", nameof(original));
 #endif
 						}
 						// include escape if this is not an escaped separator

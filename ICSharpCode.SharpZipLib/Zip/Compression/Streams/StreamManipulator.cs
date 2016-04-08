@@ -188,7 +188,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		public int CopyBytes(byte[] output, int offset, int length)
 		{
 			if (length < 0) {
-				throw new ArgumentOutOfRangeException("length");
+				throw new ArgumentOutOfRangeException(nameof(length));
 			}
 
 			if ((bitsInBuffer_ & 7) != 0) {
@@ -243,14 +243,14 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		public void SetInput(byte[] buffer, int offset, int count)
 		{
 			if ( buffer == null ) {
-				throw new ArgumentNullException("buffer");
+				throw new ArgumentNullException(nameof(buffer));
 			}
 
 			if ( offset < 0 ) {
 #if NETCF_1_0
 				throw new ArgumentOutOfRangeException("offset");
 #else
-				throw new ArgumentOutOfRangeException("offset", "Cannot be negative");
+				throw new ArgumentOutOfRangeException(nameof(offset), "Cannot be negative");
 #endif				
 			}
 
@@ -258,7 +258,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 #if NETCF_1_0
 				throw new ArgumentOutOfRangeException("count");
 #else
-				throw new ArgumentOutOfRangeException("count", "Cannot be negative");
+				throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
 #endif				
 			}
 
@@ -271,7 +271,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			// We want to throw an ArrayIndexOutOfBoundsException early.
 			// Note the check also handles integer wrap around.
 			if ((offset > end) || (end > buffer.Length) ) {
-				throw new ArgumentOutOfRangeException("count");
+				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 			
 			if ((count & 1) != 0) {

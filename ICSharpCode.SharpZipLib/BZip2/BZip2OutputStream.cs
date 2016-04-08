@@ -242,17 +242,17 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		public override void Write(byte[] buffer, int offset, int count)
 		{
 			if ( buffer == null ) {
-				throw new ArgumentNullException("buffer");
+				throw new ArgumentNullException(nameof(buffer));
 			}
 
 			if ( offset < 0 )
 			{
-				throw new ArgumentOutOfRangeException("offset");
+				throw new ArgumentOutOfRangeException(nameof(offset));
 			}
 
 			if ( count < 0 )
 			{
-				throw new ArgumentOutOfRangeException("count");
+				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 
 			if ( buffer.Length - offset < count )

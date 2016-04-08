@@ -158,7 +158,7 @@ or which contains garbage records after a zero block.
 		{
 			if ( inputStream == null )
 			{
-				throw new ArgumentNullException("inputStream");
+				throw new ArgumentNullException(nameof(inputStream));
 			}
 
 			return CreateInputTarBuffer(inputStream, DefaultBlockFactor);
@@ -174,7 +174,7 @@ or which contains garbage records after a zero block.
 		{
 			if ( inputStream == null )
 			{
-				throw new ArgumentNullException("inputStream");
+				throw new ArgumentNullException(nameof(inputStream));
 			}
 			
 			if ( blockFactor <= 0 )
@@ -182,7 +182,7 @@ or which contains garbage records after a zero block.
 #if NETCF_1_0
 				throw new ArgumentOutOfRangeException("blockFactor");
 #else
-				throw new ArgumentOutOfRangeException("blockFactor", "Factor cannot be negative");
+				throw new ArgumentOutOfRangeException(nameof(blockFactor), "Factor cannot be negative");
 #endif				
 			}
 
@@ -203,7 +203,7 @@ or which contains garbage records after a zero block.
 		{
 			if ( outputStream == null )
 			{
-				throw new ArgumentNullException("outputStream");
+				throw new ArgumentNullException(nameof(outputStream));
 			}
 
 			return CreateOutputTarBuffer(outputStream, DefaultBlockFactor);
@@ -219,7 +219,7 @@ or which contains garbage records after a zero block.
 		{
 			if ( outputStream == null )
 			{
-				throw new ArgumentNullException("outputStream");
+				throw new ArgumentNullException(nameof(outputStream));
 			}
 
 			if ( blockFactor <= 0 )
@@ -227,7 +227,7 @@ or which contains garbage records after a zero block.
 #if NETCF_1_0
 				throw new ArgumentOutOfRangeException("blockFactor");
 #else
-				throw new ArgumentOutOfRangeException("blockFactor", "Factor cannot be negative");
+				throw new ArgumentOutOfRangeException(nameof(blockFactor), "Factor cannot be negative");
 #endif				
 			}
 
@@ -271,7 +271,7 @@ or which contains garbage records after a zero block.
 		public bool IsEOFBlock(byte[] block)
 		{
 			if ( block == null ) {
-				throw new ArgumentNullException("block");
+				throw new ArgumentNullException(nameof(block));
 			}
 
 			if ( block.Length != BlockSize ) 
@@ -301,7 +301,7 @@ or which contains garbage records after a zero block.
 		public static bool IsEndOfArchiveBlock(byte[] block)
 		{
 			if ( block == null ) {
-				throw new ArgumentNullException("block");
+				throw new ArgumentNullException(nameof(block));
 			}
 
 			if ( block.Length != BlockSize ) {
@@ -472,7 +472,7 @@ or which contains garbage records after a zero block.
 		public void WriteBlock(byte[] block)
 		{
 			if ( block == null ) {
-				throw new ArgumentNullException("block");
+				throw new ArgumentNullException(nameof(block));
 			}
 
 			if (outputStream == null) {
@@ -507,7 +507,7 @@ or which contains garbage records after a zero block.
 		public void WriteBlock(byte[] buffer, int offset)
 		{
 			if ( buffer == null ) {
-				throw new ArgumentNullException("buffer");
+				throw new ArgumentNullException(nameof(buffer));
 			}
 
 			if (outputStream == null) {
@@ -516,7 +516,7 @@ or which contains garbage records after a zero block.
 						
 			if ( (offset < 0) || (offset >= buffer.Length) )
 			{
-				throw new ArgumentOutOfRangeException("offset");
+				throw new ArgumentOutOfRangeException(nameof(offset));
 			}
 
 			if ((offset + BlockSize) > buffer.Length) {

@@ -165,17 +165,17 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		{
 			if ( buffer == null ) 
 			{
-				throw new ArgumentNullException("buffer");
+				throw new ArgumentNullException(nameof(buffer));
 			}
 
 			if ( offset < 0 ) 
 			{
-				throw new ArgumentOutOfRangeException("offset");
+				throw new ArgumentOutOfRangeException(nameof(offset));
 			}
 
 			if ( count < 0 ) 
 			{
-				throw new ArgumentOutOfRangeException("count");
+				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 
 			if (inputOff < inputEnd) 
@@ -190,7 +190,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			*/
 			if ((offset > end) || (end > buffer.Length) ) 
 			{
-				throw new ArgumentOutOfRangeException("count");
+				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 			
 			inputBuf = buffer;
@@ -314,7 +314,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		{
 			if ( (level < 0) || (level > 9) )
 			{
-				throw new ArgumentOutOfRangeException("level");
+				throw new ArgumentOutOfRangeException(nameof(level));
 			}
 
 			goodLength = DeflaterConstants.GOOD_LENGTH[level];

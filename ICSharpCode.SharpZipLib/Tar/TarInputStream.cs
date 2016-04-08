@@ -227,7 +227,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			if ( buffer == null ) 
 			{
-				throw new ArgumentNullException("buffer");
+				throw new ArgumentNullException(nameof(buffer));
 			}
 
 			int totalRead = 0;
