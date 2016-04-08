@@ -199,7 +199,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			// Convert consecutive \\ characters to \
-			int index = name.IndexOf(string.Format("{0}{0}", Path.DirectorySeparatorChar));
+			int index = name.IndexOf(string.Format("{0}{0}", Path.DirectorySeparatorChar), StringComparison.Ordinal);
 			while (index >= 0) {
 				name = name.Remove(index, 1);
 				index = name.IndexOf(Path.DirectorySeparatorChar);

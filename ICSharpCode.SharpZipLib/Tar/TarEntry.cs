@@ -384,7 +384,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 #if !NETCF_1_0 && !NETCF_2_0
 			// 23-Jan-2004 GnuTar allows device names in path where the name is not local to the current directory
-			if (name.IndexOf(Environment.CurrentDirectory) == 0) {
+			if (name.IndexOf(Environment.CurrentDirectory, StringComparison.Ordinal) == 0) {
 				name = name.Substring(Environment.CurrentDirectory.Length);
 			}
 #endif

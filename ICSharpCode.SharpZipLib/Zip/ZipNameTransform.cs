@@ -122,7 +122,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			if (name != null) {
 				string lowerName = name.ToLower();
-				if ( (trimPrefix_ != null) && (lowerName.IndexOf(trimPrefix_) == 0) ) {
+				if ( (trimPrefix_ != null) && (lowerName.IndexOf(trimPrefix_, StringComparison.Ordinal) == 0) ) {
 					name = name.Substring(trimPrefix_.Length);
 				}
 
@@ -142,11 +142,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				// Convert consecutive // characters to /
-				int index = name.IndexOf("//");
+				int index = name.IndexOf("//", StringComparison.Ordinal);
 				while (index >= 0)
 				{
 					name = name.Remove(index, 1);
-					index = name.IndexOf("//");
+					index = name.IndexOf("//", StringComparison.Ordinal);
 				}
 
 				name = MakeValidName(name, '_');
