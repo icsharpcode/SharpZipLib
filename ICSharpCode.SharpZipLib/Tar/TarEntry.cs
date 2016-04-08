@@ -190,7 +190,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ArgumentNullException(nameof(toTest));
 			}
 
-			return toTest.Name.StartsWith(Name);
+			return toTest.Name.StartsWith(Name, StringComparison.Ordinal);
 		}
 		
 		/// <summary>
@@ -412,7 +412,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			// No absolute pathnames
 			// Windows (and Posix?) paths can start with UNC style "\\NetworkDrive\",
 			// so we loop on starting /'s.
-			while (name.StartsWith("/")) {
+			while (name.StartsWith("/", StringComparison.Ordinal)) {
 				name = name.Substring(1);
 			}
 
