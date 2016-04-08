@@ -38,28 +38,25 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+// Version name | Version number | Release date
+// 1.0 RTM | 1.0.2268.0 | 2002 late
+// 1.0 SP1 | 1.0.3111.0 | 2003
+// 1.0 SP2 | 1.0.3316.0 | unknown
+// 1.0 SP3 | 1.0.4292.0 | 2005 January
+// 2.0 RTM | 2.0.5238.0 | 2005 October
+// 2.0 SP1 | 2.0.6129.0 | 2006 June
+// 2.0 SP2 | 2.0.7045.0 | 2007 March
+
 #if (NET_1_0)
 [assembly: AssemblyTitle("SharpZipLib for .NET Framework 1.0")]
 #elif (NET_1_1)
 [assembly: AssemblyTitle("SharpZipLib for .NET Framework 1.1")]
-#elif (NET_2_0)
-[assembly: AssemblyTitle("SharpZipLib for .NET Framework 2.0")]
-#elif (NET_3_0)
-[assembly: AssemblyTitle("SharpZipLib for .NET Framework 3.0")]
-#elif (NET_3_5)
-[assembly: AssemblyTitle("SharpZipLib for .NET Framework 3.5")]
-#elif (NET_4_0)
-[assembly: AssemblyTitle("SharpZipLib for .NET Framework 4.0")]
 #elif (NETCF_1_0)
 [assembly: AssemblyTitle("SharpZipLib for .NET Compact Framework 1.0")]
 #elif (NETCF_2_0)
 [assembly: AssemblyTitle("SharpZipLib for .NET Compact Framework 2.0")]
-#elif (MONO_1_0)
-[assembly: AssemblyTitle("SharpZipLib for Mono 1.0")]
-#elif (MONO_2_0)
-[assembly: AssemblyTitle("SharpZipLib for Mono 2.0")]
 #else
-[assembly: AssemblyTitle("SharpZipLib unlabelled version")]
+[assembly: AssemblyTitle("SharpZipLib")]
 #endif
 
 [assembly: AssemblyDescription("A free C# compression library")]

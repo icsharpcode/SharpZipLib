@@ -17,7 +17,7 @@
     <PreBuildEvent />
     <PostBuildEvent />
     <DocumentationFile>..\bin\ICSharpCode.SharpZipLib.xml</DocumentationFile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -29,7 +29,7 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DebugType>None</DebugType>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>..\bin\Release\ICSharpCode.SharpZipLib.XML</DocumentationFile>
+    <DocumentationFile>..\bin\Release\ICSharpCode.SharpZipLib.xml</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -43,7 +43,7 @@
     <DebugType>Full</DebugType>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>..\bin\Debug\ICSharpCode.SharpZipLib.xml</DocumentationFile>
-    <DefineConstants>DEBUG;NET_2_0</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -53,9 +53,6 @@
     <BaseAddress>4194304</BaseAddress>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <FileAlignment>4096</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DefineConstants>NET_2_0</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
