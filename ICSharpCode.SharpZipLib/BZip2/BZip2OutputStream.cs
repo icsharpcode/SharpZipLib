@@ -73,7 +73,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		because the number of elems to sort is
 		usually small, typically <= 20.
 		--*/
-		readonly int[] increments = new int[] { 
+		readonly int[] increments = { 
 												  1, 4, 13, 40, 121, 364, 1093, 3280,
 												  9841, 29524, 88573, 265720,
 												  797161, 2391484 

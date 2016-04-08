@@ -66,7 +66,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 				throw new ArgumentException("Length is zero", nameof(seed));
 			}
 
-			uint[] newKeys = new uint[] {
+			uint[] newKeys = {
 				0x12345678,
 				0x23456789,
 				0x34567890
