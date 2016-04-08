@@ -1,0 +1,168 @@
+			The gzip file format
+
+The data format used by gzip is described by RFCs (Request for Comments)
+1951 and 1952 in the files http://www.ietf.org/rfc/rfc1951.txt (deflate
+format) and rfc1952.txt (gzip format). These documents are also available in
+other formats from ftp://ftp.uu.net/graphics/png/documents/zlib/zdoc-index.html
+
+This file provides additional information not provided in the RFCs. The
+RFCs must be read first.
+
+The format was designed to allow single pass compression without any
+backwards seek, and without a priori knowledge of the uncompressed
+input size or the available size on the output media. If input does
+not come from a regular disk file, the file modification time is set
+to the time at which compression started.
+
+The gzip format allows multiple compression methods (although gzip
+currently supports only the 'deflate' method).  It must be possible to
+detect the end of the compressed data with any compression method,
+regardless of the actual size of the compressed data. In particular,
+the decompressor must be able to detect and skip extra data appended
+to a valid compressed file on a record-oriented file system, or when
+the compressed data can only be read from a device in multiples of a
+certain block size. (This condition is not fulfilled by the 'compress'
+program, which has no way of determining the end of compressed data
+from the data itself.)
+
+gzip emits a warning when detecting trailing garbage, except when
+the --quiet option is used, or when the trailing garbage starts with
+a zero byte. The latter case is not flagged as a warning to help
+"tar --gzip" and file transfers from record oriented systems, which
+can both append zeroes to a valid .gz file. [The zero byte feature is
+not present in gzip 1.2.4]
+
+The time stamp is useful mainly when one gzip file is transferred over
+a network. In this case it would not help to keep ownership
+attributes. In the local case, the ownership attributes are preserved
+by gzip when compressing/decompressing the file. A time stamp of zero
+is ignored.
+
+Compression is always performed, even if the compressed file is
+slightly larger than the original. The worst case expansion is
+a few bytes for the gzip file header, plus 5 bytes every 32K block,
+or an expansion ratio of 0.015% for large files. Note that the actual
+number of used disk blocks almost never increases.
+
+OS codes:
+
+The following codes are defined; they are the same as those used by
+zip & unzip http://www.info-zip.org, see unzpriv.h in the unzip package.
+
+          0 - FAT file system (DOS, OS/2, NT) + PKZIPW 2.50 VFAT, NTFS
+          1 - Amiga
+          2 - VMS (VAX or Alpha AXP)
+          3 - Unix
+          4 - VM/CMS
+          5 - Atari
+          6 - HPFS file system (OS/2, NT 3.x)
+          7 - Macintosh
+          8 - Z-System
+          9 - CP/M
+          10 - TOPS-20
+          11 - NTFS file system (NT)
+          12 - SMS/QDOS
+          13 - Acorn RISC OS
+          14 - VFAT file system (Win95, NT)
+          15 - MVS (code also taken for PRIMOS)
+          16 - BeOS (BeBox or PowerMac)
+          17 - Tandem/NSK
+	  18 - THEOS
+
+Extra fields:
+
+The following extra-field ids are currently defined (send requests for
+other ids to support@gzip.org). See appendix A for the details.
+
+  AC (0x41, 0x43) : Acorn RISC OS/BBC MOS file type information
+                      Kevin Bracey <kbracey@acorn.co.uk>
+  Ap (0x41, 0x70) : Apollo file type information
+                      David Sundstrom <sunds@asictest.sc.ti.com>
+  cp (0x63, 0x70) : file compressed by cpio
+                      Geoffrey Dairiki <dairiki@apl.washington.edu>
+  GS (0x1D, 0x53) : gzsig
+                      http://www.monkey.org/~dugsong/gzsig-0.1.tar.gz
+                      Dug Song <dugsong@arbor.net>
+  KN (0x4b, 0x4e) : KeyNote assertion (RFC 2704)
+                      http://www.cis.upenn.edu/~keynote/
+                      Dug Song <dugsong@arbor.net>
+  Mc (0x4d, 0x63) : Macintosh info (Type and Creator values)
+                      Cary Scofield <scofield@mv.mv.com>
+  RO (0x52, 0x4F) : Acorn Risc OS file type information
+                      Adam Goodfellow <adam@comptech.demon.co.uk>
+
+Jean-loup Gailly
+jloup@gzip.org
+
+last modification: 2 July 2002
+
+
+Appendix A. Description of the extra-fields
+
+A.1) Acorn RISC OS extra field
+
+    AC (0x41, 0x43) : Acorn RISC OS/BBC MOS file type information
+                        Kevin Bracey <kbracey@acorn.co.uk>
+
+The AC subfield is 28 bytes long, consisting of 7 little-endian 32-bit
+words:
+
+      Word 0: Load address          (OS_File 5 R2)
+      Word 1: Execution address     (OS_File 5 R3)
+      Word 2: Object attributes     (OS_File 5 R5)
+      Word 3: Object length         (OS_File 5 R4)
+      Words 4-6: reserved (0)
+      
+The notes in brackets show how these values correspond to the output of the
+RISC OS call OS_File 5 ("Read catalogue information for a named object").
+
+Object attributes is a bitfield:
+
+        bit 0       Object has owner read access
+        bit 1       Object has owner write acces
+        bit 2       Reserved (0)
+        bit 3       Object is locked against deletion
+        bit 4       Object has public read access
+        bit 5       Object has public write access
+        bits 6-31   Reserved (0)
+
+The load and execution addresses say where to load the file into memory, and
+where the entry point is (if it is run as an executable). They are very
+rarely actually used for that now - this dates back to the days of the BBC
+micro (1980-87). Instead they usually store filetype and date stamp
+information:
+
+       Load address       0xFFFtttdd
+       Execution address  0xdddddddd
+
+The FFF at the top of the load address is a magic marker saying that the
+rest of the fields contain the filetype (ttt) and timestamp (dddddddddd).
+
+The timestamp is a 40-bit unsigned number which is the number of centiseconds
+since 00:00:00 on 1st January 1900 (UTC). The most significant byte
+is in the load address.
+
+Filetypes are allocated by Acorn. Allocations include:
+
+       FFF   Text
+       FFD   Data
+       FFB   BASIC program
+       FF8   Absolute (executable to be loaded and entered at 0x8000)
+       FF5   Postscript
+       FAF   HTML
+       F83   MNG
+       F89   gzip 
+       C85   JPEG                
+       C46   Tar
+       B60   PNG
+       AE4   Java class file
+       ADF   PDF
+       695   GIF
+
+
+A.2) cpio extra-field
+
+  cp (0x63, 0x70) : file compressed by cpio
+                      Geoffrey Dairiki <dairiki@apl.washington.edu>
+
+                    2 extra bytes: length of FNAME field

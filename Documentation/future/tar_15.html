@@ -1,0 +1,516 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!--
+This manual is for GNU tar (version
+1.28, 22 July 2014), which creates and extracts files
+from archives.
+
+Copyright C 1992, 1994-1997, 1999-2001, 2003-2013 Free
+Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License", with the
+Front-Cover Texts being "A GNU Manual", and with the Back-Cover Texts
+as in (a) below.  A copy of the license is included in the section
+entitled "GNU Free Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual."
+
+-->
+<!-- Created on July, 28 2014 by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>GNU tar 1.28: E. Genfile</title>
+
+<meta name="description" content="GNU tar 1.28: E. Genfile">
+<meta name="keywords" content="GNU tar 1.28: E. Genfile">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Genfile"></a>
+<a name="SEC192"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="tar_14.html#SEC191" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC193" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar_14.html#SEC183" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_16.html#SEC196" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h1 class="appendix"> E. Genfile </h1>
+
+
+<p>    This appendix describes <code>genfile</code>, an auxiliary program
+used in the GNU tar testsuite. If you are not interested in developing
+GNU tar, skip this appendix.
+</p>
+<p>    Initially, <code>genfile</code> was used to generate data files for
+the testsuite, hence its name. However, new operation modes were being
+implemented as the testsuite grew more sophisticated, and now
+<code>genfile</code> is a multi-purpose instrument.
+</p>
+<p>    There are three basic operation modes:
+</p>
+<dl compact="compact">
+<dt> File Generation</dt>
+<dd><p>    This is the default mode. In this mode, <code>genfile</code>
+generates data files.
+</p>
+</dd>
+<dt> File Status</dt>
+<dd><p>    In this mode <code>genfile</code> displays status of specified files.
+</p>
+</dd>
+<dt> Synchronous Execution.</dt>
+<dd><p>    In this mode <code>genfile</code> executes the given program with
+<samp>`--checkpoint'</samp> option and executes a set of actions when
+specified checkpoints are reached.
+</p></dd>
+</dl>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC193">E.1 Generate Mode</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">     File Generation Mode.
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC194">E.2 Status Mode</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">       File Status Mode.
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC195">E.3 Exec Mode</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">         Synchronous Execution mode.
+</td></tr>
+</table>
+
+<hr size="6">
+<a name="Generate-Mode"></a>
+<a name="SEC193"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC192" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC194" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC192" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC192" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_16.html#SEC196" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="appendixsec"> E.1 Generate Mode </h2>
+
+<p>    In this mode <code>genfile</code> creates a data file for the test
+suite. The size of the file is given with the <samp>`--length'</samp>
+(<samp>`-l'</samp>) option. By default the file contents is written to the
+standard output, this can be changed using <samp>`--file'</samp>
+(<samp>`-f'</samp>) command line option. Thus, the following two commands
+are equivalent:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">genfile --length 100 &gt; outfile
+genfile --length 100 --file outfile
+</pre></td></tr></table>
+<p>    If <samp>`--length'</samp> is not given, <code>genfile</code> will
+generate an empty (zero-length) file.
+</p>
+<a name="IDX583"></a>
+<p>    The command line option <samp>`--seek=<var>N</var>'</samp> istructs <code>genfile</code>
+to skip the given number of bytes (<var>N</var>) in the output file before
+writing to it.  It is similar to the <samp>`seek=<var>N</var>'</samp> of the
+<code>dd</code> utility.
+</p>
+<a name="IDX584"></a>
+<p>    You can instruct <code>genfile</code> to create several files at one
+go, by giving it <samp>`--files-from'</samp> (<samp>`-T'</samp>) option followed
+by a name of file containing a list of file names. Using dash
+(<samp>`-'</samp>) instead of the file name causes <code>genfile</code> to read
+file list from the standard input. For example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample"># Read file names from file <tt>`file.list'</tt>
+genfile --files-from file.list
+# Read file names from standard input
+genfile --files-from -
+</pre></td></tr></table>
+<a name="IDX585"></a>
+<p>    The list file is supposed to contain one file name per line. To
+use file lists separated by ASCII NUL character, use <samp>`--null'</samp>
+(<samp>`-0'</samp>) command line option:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">genfile --null --files-from file.list
+</pre></td></tr></table>
+<a name="IDX586"></a>
+<p>    The default data pattern for filling the generated file consists
+of first 256 letters of ASCII code, repeated enough times to fill the
+entire file. This behavior can be changed with <samp>`--pattern'</samp>
+option. This option takes a mandatory argument, specifying pattern
+name to use. Currently two patterns are implemented:
+</p>
+<dl compact="compact">
+<dt> <samp>`--pattern=default'</samp></dt>
+<dd><p>    The default pattern as described above.
+</p>
+</dd>
+<dt> <samp>`--pattern=zero'</samp></dt>
+<dd><p>    Fills the file with zeroes.
+</p></dd>
+</dl>
+
+<p>    If no file name was given, the program exits with the code
+<code>0</code>.  Otherwise, it exits with <code>0</code> only if it was able to
+create a file of the specified length.
+</p>
+<a name="IDX587"></a>
+<a name="IDX588"></a>
+<p>    Special option <samp>`--sparse'</samp> (<samp>`-s'</samp>) instructs
+<code>genfile</code> to create a sparse file. Sparse files consist of
+<em>data fragments</em>, separated by <em>holes</em> or blocks of zeros. On
+many operating systems, actual disk storage is not allocated for
+holes, but they are counted in the length of the file. To create a
+sparse file, <code>genfile</code> should know where to put data fragments,
+and what data to use to fill them. So, when <samp>`--sparse'</samp> is given
+the rest of the command line specifies a so-called <em>file map</em>.
+</p>
+<p>    The file map consists of any number of <em>fragment
+descriptors</em>. Each descriptor is composed of two values: a number,
+specifying fragment offset from the end of the previous fragment or,
+for the very first fragment, from the beginning of the file, and
+<em>contents string</em>, i.e., a string of characters, specifying the
+pattern to fill the fragment with. File offset can be suffixed with
+the following quantifiers:
+</p>
+<dl compact="compact">
+<dt> <samp>`k'</samp></dt>
+<dt> <samp>`K'</samp></dt>
+<dd><p>The number is expressed in kilobytes.
+</p></dd>
+<dt> <samp>`m'</samp></dt>
+<dt> <samp>`M'</samp></dt>
+<dd><p>The number is expressed in megabytes.
+</p></dd>
+<dt> <samp>`g'</samp></dt>
+<dt> <samp>`G'</samp></dt>
+<dd><p>The number is expressed in gigabytes.
+</p></dd>
+</dl>
+
+<p>    For each letter in contents string <code>genfile</code> will generate
+a <em>block</em> of data, filled with this letter and will write it to
+the fragment. The size of block is given by <samp>`--block-size'</samp>
+option. It defaults to 512. Thus, if the string consists of <var>n</var>
+characters, the resulting file fragment will contain
+<code><var>n</var>*<var>block-size</var></code> of data.
+</p>
+<p>    Last fragment descriptor can have only file offset part. In this
+case <code>genfile</code> will create a hole at the end of the file up to
+the given offset.
+</p>
+<p>    For example, consider the following invocation:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">genfile --sparse --file sparsefile 0 ABCD 1M EFGHI 2000K
+</pre></td></tr></table>
+
+<p>It will create 3101184-bytes long file of the following structure:
+</p>
+<table>
+<tr><td><p> Offset  </p></td><td><p> Length       </p></td><td><p> Contents
+</p></td></tr>
+<tr><td><p> 0       </p></td><td><p> 4*512=2048   </p></td><td><p> Four 512-byte blocks, filled with
+letters <samp>`A'</samp>, <samp>`B'</samp>, <samp>`C'</samp> and <samp>`D'</samp>.
+</p></td></tr>
+<tr><td><p> 2048    </p></td><td><p> 1046528      </p></td><td><p> Zero bytes
+</p></td></tr>
+<tr><td><p> 1050624 </p></td><td><p> 5*512=2560   </p></td><td><p> Five blocks, filled with letters
+<samp>`E'</samp>, <samp>`F'</samp>, <samp>`G'</samp>, <samp>`H'</samp>, <samp>`I'</samp>.
+</p></td></tr>
+<tr><td><p> 1053184  </p></td><td><p> 2048000     </p></td><td><p> Zero bytes
+</p></td></tr>
+</table>
+
+<p>    The exit code of <code>genfile --status</code> command is <code>0</code>
+only if created file is actually sparse.
+</p>
+<hr size="6">
+<a name="Status-Mode"></a>
+<a name="SEC194"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC193" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC195" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC192" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC192" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_16.html#SEC196" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="appendixsec"> E.2 Status Mode </h2>
+
+<p>    In status mode, <code>genfile</code> prints file system status for
+each file specified in the command line. This mode is toggled by
+<samp>`--stat'</samp> (<samp>`-S'</samp>) command line option. An optional argument to this
+option specifies output <em>format</em>: a comma-separated list of
+<code>struct stat</code> fields to be displayed. This list can contain
+following identifiers:
+</p>
+<dl compact="compact">
+<dt> name</dt>
+<dd><p>    The file name.
+</p>
+</dd>
+<dt> dev</dt>
+<dt> st_dev</dt>
+<dd><p>    Device number in decimal.
+</p>
+</dd>
+<dt> ino</dt>
+<dt> st_ino</dt>
+<dd><p>    Inode number.
+</p>
+</dd>
+<dt> mode[.<var>number</var>]</dt>
+<dt> st_mode[.<var>number</var>]</dt>
+<dd>
+<p>See <cite>Should we also support <samp>`%'</samp> notations as in stat(1)?</cite>
+</p>
+
+<p>    File mode in octal.  Optional <var>number</var> specifies octal mask to
+be applied to the mode before outputting.  For example, <code>--stat
+mode.777</code> will preserve lower nine bits of it.  Notice, that you can
+use any punctuation character in place of <samp>`.'</samp>.
+</p>
+</dd>
+<dt> nlink</dt>
+<dt> st_nlink</dt>
+<dd><p>    Number of hard links.
+</p>
+</dd>
+<dt> uid</dt>
+<dt> st_uid</dt>
+<dd><p>    User ID of owner.
+</p>
+</dd>
+<dt> gid</dt>
+<dt> st_gid</dt>
+<dd><p>    Group ID of owner.
+</p>
+</dd>
+<dt> size</dt>
+<dt> st_size</dt>
+<dd><p>    File size in decimal.
+</p>
+</dd>
+<dt> blksize</dt>
+<dt> st_blksize</dt>
+<dd><p>    The size in bytes of each file block.
+</p>
+</dd>
+<dt> blocks</dt>
+<dt> st_blocks</dt>
+<dd><p>    Number of blocks allocated.
+</p>
+</dd>
+<dt> atime</dt>
+<dt> st_atime</dt>
+<dd><p>    Time of last access.
+</p>
+</dd>
+<dt> mtime</dt>
+<dt> st_mtime</dt>
+<dd><p>    Time of last modification
+</p>
+</dd>
+<dt> ctime</dt>
+<dt> st_ctime</dt>
+<dd><p>    Time of last status change
+</p>
+</dd>
+<dt> sparse</dt>
+<dd><p>    A boolean value indicating whether the file is <samp>`sparse'</samp>.
+</p></dd>
+</dl>
+
+<p>    Modification times are displayed in <acronym>UTC</acronym> as
+<acronym>UNIX</acronym> timestamps, unless suffixed with <samp>`H'</samp> (for
+&quot;human-readable&quot;), as in <samp>`ctimeH'</samp>, in which case usual
+<code>tar tv</code> output format is used.
+</p>
+<p>    The default output format is: <samp>`name,dev,ino,mode,
+nlink,uid,gid,size,blksize,blocks,atime,mtime,ctime'</samp>.
+</p>
+<p>    For example, the following command will display file names and
+corresponding times of last access for each file in the current working
+directory:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">genfile --stat=name,atime *
+</pre></td></tr></table>
+<hr size="6">
+<a name="Exec-Mode"></a>
+<a name="SEC195"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC194" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="tar_16.html#SEC196" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC192" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC192" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_16.html#SEC196" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="appendixsec"> E.3 Exec Mode </h2>
+
+<p>    This mode is designed for testing the behavior of <code>paxutils</code>
+commands when some of the files change during archiving. It is an
+experimental mode.
+</p>
+<p>    The <samp>`Exec Mode'</samp> is toggled by <samp>`--run'</samp> command line
+option (or its alias <samp>`-r'</samp>). The non-optional arguments to
+<code>getopt</code> give the command line to be executed. Normally,
+it should contain at least the <samp>`--checkpoint'</samp> option.
+</p>
+<p>    A set of options is provided for defining checkpoint values and
+actions to be executed upon reaching them. Checkpoint values are
+introduced with the <samp>`--checkpoint'</samp> command line
+option. Argument to this option is the number of checkpoint in decimal.
+</p>
+<p>    Any number of <em>actions</em> may be specified after a
+checkpoint. Available actions are
+</p>
+<dl compact="compact">
+<dt> <samp>`--cut <var>file</var>'</samp></dt>
+<dt> <samp>`--truncate <var>file</var>'</samp></dt>
+<dd><p>    Truncate <var>file</var> to the size specified by previous
+<samp>`--length'</samp> option (or 0, if it is not given).
+</p>
+</dd>
+<dt> <samp>`--append <var>file</var>'</samp></dt>
+<dd><p>    Append data to <var>file</var>. The size of data and its pattern are
+given by previous <samp>`--length'</samp> and <samp>`pattern'</samp> options.
+</p>
+</dd>
+<dt> <samp>`--touch <var>file</var>'</samp></dt>
+<dd><p>    Update the access and modification times of <var>file</var>. These
+timestamps are changed to the current time, unless <samp>`--date'</samp>
+option was given, in which case they are changed to the specified
+time. Argument to <samp>`--date'</samp> option is a date specification in
+an almost arbitrary format (see section <a href="tar_7.html#SEC120">Date input formats</a>).
+</p>
+</dd>
+<dt> <samp>`--exec <var>command</var>'</samp></dt>
+<dd><p>    Execute given shell command.
+</p>
+</dd>
+<dt> <samp>`--unlink <var>file</var>'</samp></dt>
+<dd><p>    Unlink the <var>file</var>.
+</p></dd>
+</dl>
+
+<p>    Option <samp>`--verbose'</samp> instructs <code>genfile</code> to print on
+standard output notifications about checkpoints being executed and to
+verbosely describe exit status of the command.
+</p>
+<p>    While the command is being executed its standard output remains
+connected to descriptor 1. All messages it prints to file descriptor
+2, except checkpoint notifications, are forwarded to standard
+error.
+</p>
+<p>    <code>Genfile</code> exits with the exit status of the executed command.
+</p>
+<p>    For compatibility with previous <code>genfile</code> versions, the
+<samp>`--run'</samp> option takes an optional argument. If used this way,
+its argument supplies the command line to be executed. There should
+be no non-optional arguments in the <code>genfile</code> command line.
+</p>
+<p>    The actual command line is constructed by inserting
+the <samp>`--checkpoint'</samp> option between the command name and its
+first argument (if any). Due to this, the argument to <samp>`--run'</samp>
+may not use traditional <code>tar</code> option syntax, i.e., the
+following is wrong:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample"># Wrong!
+genfile --run='tar cf foo bar'
+</pre></td></tr></table>
+
+
+<p>Use the following syntax instead:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">genfile --run='tar -cf foo bar' <var>actions</var>...
+</pre></td></tr></table>
+<p>The above command line is equivalent to
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">genfile <var>actions</var>... -- tar -cf foo bar
+</pre></td></tr></table>
+<p>Notice, that the use of compatibility mode is deprecated.
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC192" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="tar_16.html#SEC196" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated on <i>July, 28 2014</i> using <a href="http://texi2html.cvshome.org/"><i>texi2html 1.76</i></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

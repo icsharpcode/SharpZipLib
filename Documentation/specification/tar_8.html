@@ -1,0 +1,2028 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!--
+This manual is for GNU tar (version
+1.28, 22 July 2014), which creates and extracts files
+from archives.
+
+Copyright C 1992, 1994-1997, 1999-2001, 2003-2013 Free
+Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License", with the
+Front-Cover Texts being "A GNU Manual", and with the Back-Cover Texts
+as in (a) below.  A copy of the license is included in the section
+entitled "GNU Free Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual."
+
+-->
+<!-- Created on July, 28 2014 by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>GNU tar 1.28: 8. Controlling the Archive Format</title>
+
+<meta name="description" content="GNU tar 1.28: 8. Controlling the Archive Format">
+<meta name="keywords" content="GNU tar 1.28: 8. Controlling the Archive Format">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Formats"></a>
+<a name="SEC132"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="tar_7.html#SEC131" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC133" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar_7.html#SEC120" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h1 class="chapter"> 8. Controlling the Archive Format </h1>
+
+<p>Due to historical reasons, there are several formats of tar archives.
+All of them are based on the same principles, but have some subtle
+differences that often make them incompatible with each other.
+</p>
+<p>GNU tar is able to create and handle archives in a variety of formats.
+The most frequently used formats are (in alphabetical order):
+</p>
+<dl compact="compact">
+<dt> gnu</dt>
+<dd><p>Format used by <acronym>GNU</acronym> <code>tar</code> versions up to 1.13.25.  This format derived
+from an early <acronym>POSIX</acronym> standard, adding some improvements such as
+sparse file handling and incremental archives.  Unfortunately these
+features were implemented in a way incompatible with other archive
+formats.
+</p>
+<p>Archives in <samp>`gnu'</samp> format are able to hold file names of unlimited
+length.
+</p>
+</dd>
+<dt> oldgnu</dt>
+<dd><p>Format used by <acronym>GNU</acronym> <code>tar</code> of versions prior to 1.12.
+</p>
+</dd>
+<dt> v7</dt>
+<dd><p>Archive format, compatible with the V7 implementation of tar.  This
+format imposes a number of limitations.  The most important of them
+are:
+</p>
+<ol>
+<li> The maximum length of a file name is limited to 99 characters.
+</li><li> The maximum length of a symbolic link is limited to 99 characters.
+</li><li> It is impossible to store special files (block and character
+devices, fifos etc.)
+</li><li> Maximum value of user or group <acronym>ID</acronym> is limited to 2097151 (7777777
+octal)
+</li><li> V7 archives do not contain symbolic ownership information (user
+and group name of the file owner).
+</li></ol>
+
+<p>This format has traditionally been used by Automake when producing
+Makefiles.  This practice will change in the future, in the meantime,
+however this means that projects containing file names more than 99
+characters long will not be able to use <acronym>GNU</acronym> <code>tar</code> 1.28 and
+Automake prior to 1.9.
+</p>
+</dd>
+<dt> ustar</dt>
+<dd><p>Archive format defined by <acronym>POSIX.1-1988</acronym> specification.  It stores
+symbolic ownership information.  It is also able to store
+special files.  However, it imposes several restrictions as well:
+</p>
+<ol>
+<li> The maximum length of a file name is limited to 256 characters,
+provided that the file name can be split at a directory separator in
+two parts, first of them being at most 155 bytes long.  So, in most
+cases the maximum file name length will be shorter than 256
+characters.
+</li><li> The maximum length of a symbolic link name is limited to
+100 characters.
+</li><li> Maximum size of a file the archive is able to accommodate
+is 8GB
+</li><li> Maximum value of UID/GID is 2097151.
+</li><li> Maximum number of bits in device major and minor numbers is 21.
+</li></ol>
+
+</dd>
+<dt> star</dt>
+<dd><p>Format used by J&ouml;rg Schilling <code>star</code>
+implementation.  <acronym>GNU</acronym> <code>tar</code> is able to read <samp>`star'</samp> archives but
+currently does not produce them.
+</p>
+</dd>
+<dt> posix</dt>
+<dd><p>Archive format defined by <acronym>POSIX.1-2001</acronym> specification.  This is the
+most flexible and feature-rich format.  It does not impose any
+restrictions on file sizes or file name lengths.  This format is quite
+recent, so not all tar implementations are able to handle it properly.
+However, this format is designed in such a way that any tar
+implementation able to read <samp>`ustar'</samp> archives will be able to read
+most <samp>`posix'</samp> archives as well, with the only exception that any
+additional information (such as long file names etc.) will in such
+case be extracted as plain text files along with the files it refers to.
+</p>
+<p>This archive format will be the default format for future versions
+of <acronym>GNU</acronym> <code>tar</code>.
+</p>
+</dd>
+</dl>
+
+<p>The following table summarizes the limitations of each of these
+formats:
+</p>
+<table>
+<thead><tr><th><p> Format </p></th><th><p> UID </p></th><th><p> File Size </p></th><th><p> File Name </p></th><th><p> Devn
+</p></th></tr></thead>
+<tr><td><p> gnu    </p></td><td><p> 1.8e19 </p></td><td><p> Unlimited </p></td><td><p> Unlimited </p></td><td><p> 63
+</p></td></tr>
+<tr><td><p> oldgnu </p></td><td><p> 1.8e19 </p></td><td><p> Unlimited </p></td><td><p> Unlimited </p></td><td><p> 63
+</p></td></tr>
+<tr><td><p> v7     </p></td><td><p> 2097151 </p></td><td><p> 8GB </p></td><td><p> 99 </p></td><td><p> n/a
+</p></td></tr>
+<tr><td><p> ustar  </p></td><td><p> 2097151 </p></td><td><p> 8GB </p></td><td><p> 256 </p></td><td><p> 21
+</p></td></tr>
+<tr><td><p> posix  </p></td><td><p> Unlimited </p></td><td><p> Unlimited </p></td><td><p> Unlimited </p></td><td><p> Unlimited
+</p></td></tr>
+</table>
+
+<p>The default format for <acronym>GNU</acronym> <code>tar</code> is defined at compilation
+time.  You may check it by running <code>tar --help</code>, and examining
+the last lines of its output.  Usually, <acronym>GNU</acronym> <code>tar</code> is configured
+to create archives in <samp>`gnu'</samp> format, however, future version will
+switch to <samp>`posix'</samp>.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC133">8.1 Using Less Space through Compression</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC137">8.2 Handling File Attributes</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC138">8.3 Making <code>tar</code> Archives More Portable</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC152">8.4 Comparison of <code>tar</code> and <code>cpio</code></a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
+
+<hr size="6">
+<a name="Compression"></a>
+<a name="SEC133"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC132" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC134" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 8.1 Using Less Space through Compression </h2>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC134">8.1.1 Creating and Reading Compressed Archives</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC136">8.1.2 Archiving Sparse Files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
+
+<hr size="6">
+<a name="gzip"></a>
+<a name="SEC134"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC133" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC135" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC133" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> 8.1.1 Creating and Reading Compressed Archives </h3>
+
+<p><acronym>GNU</acronym> <code>tar</code> is able to create and read compressed archives.  It supports
+a wide variety of compression programs, namely: <code>gzip</code>,
+<code>bzip2</code>, <code>lzip</code>, <code>lzma</code>, <code>lzop</code>,
+<code>xz</code> and traditional <code>compress</code>. The latter is
+supported mostly for backward compatibility, and we recommend
+against using it, because it is by far less effective than the other
+compression programs<a name="DOCF19" href="tar_fot.html#FOOT19">(19)</a>.
+</p>
+<p>Creating a compressed archive is simple: you just specify a
+<em>compression option</em> along with the usual archive creation
+commands.  The compression option is <samp>`-z'</samp> (<samp>`--gzip'</samp>) to
+create a <code>gzip</code> compressed archive, <samp>`-j'</samp>
+(<samp>`--bzip2'</samp>) to create a <code>bzip2</code> compressed archive,
+<samp>`--lzip'</samp> to create an lzip compressed archive,
+<samp>`-J'</samp> (<samp>`--xz'</samp>) to create an XZ archive,
+<samp>`--lzma'</samp> to create an LZMA compressed
+archive, <samp>`--lzop'</samp> to create an LSOP archive, and
+<samp>`-Z'</samp> (<samp>`--compress'</samp>) to use <code>compress</code> program.
+For example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>tar czf archive.tar.gz .</kbd>
+</pre></td></tr></table>
+<p>You can also let <acronym>GNU</acronym> <code>tar</code> select the compression program based on
+the suffix of the archive file name. This is done using
+<samp>`--auto-compress'</samp> (<samp>`-a'</samp>) command line option. For
+example, the following invocation will use <code>bzip2</code> for
+compression:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>tar caf archive.tar.bz2 .</kbd>
+</pre></td></tr></table>
+
+<p>whereas the following one will use <code>lzma</code>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>tar caf archive.tar.lzma .</kbd>
+</pre></td></tr></table>
+<p>For a complete list of file name suffixes recognized by <acronym>GNU</acronym> <code>tar</code>,
+see <a href="#auto_002dcompress">auto-compress</a>.
+</p>
+<p>Reading compressed archive is even simpler: you don't need to specify
+any additional options as <acronym>GNU</acronym> <code>tar</code> recognizes its format
+automatically.  Thus, the following commands will list and extract the
+archive created in previous example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample"># List the compressed archive
+$ <kbd>tar tf archive.tar.gz</kbd>
+# Extract the compressed archive
+$ <kbd>tar xf archive.tar.gz</kbd>
+</pre></td></tr></table>
+<p>The format recognition algorithm is based on <em>signatures</em>, a
+special byte sequences in the beginning of file, that are specific for
+certain compression formats.  If this approach fails, <code>tar</code>
+falls back to using archive name suffix to determine its format
+(see <a href="#auto_002dcompress">auto-compress</a>, for a list of recognized suffixes).
+</p>
+<p><a name="alternative-decompression-programs"></a>
+<a name="IDX496"></a>
+Some compression programs are able to handle different compression
+formats.  <acronym>GNU</acronym> <code>tar</code> uses this, if the principal decompressor for the
+given format is not available.  For example, if <code>compress</code> is
+not installed, <code>tar</code> will try to use <code>gzip</code>.  As of
+version 1.28 the following alternatives are
+tried<a name="DOCF20" href="tar_fot.html#FOOT20">(20)</a>:
+</p>
+<table>
+<thead><tr><th><p> Format </p></th><th><p> Main decompressor </p></th><th><p> Alternatives
+</p></th></tr></thead>
+<tr><td><p> compress </p></td><td><p> compress </p></td><td><p> gzip
+</p></td></tr>
+<tr><td><p> lzma     </p></td><td><p> lzma     </p></td><td><p> xz
+</p></td></tr>
+<tr><td><p> bzip2    </p></td><td><p> bzip2    </p></td><td><p> lbzip2
+</p></td></tr>
+</table>
+
+<p>The only case when you have to specify a decompression option while
+reading the archive is when reading from a pipe or from a tape drive
+that does not support random access.  However, in this case <acronym>GNU</acronym> <code>tar</code>
+will indicate which option you should use.  For example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>cat archive.tar.gz | tar tf -</kbd>
+tar: Archive is compressed.  Use -z option
+tar: Error is not recoverable: exiting now
+</pre></td></tr></table>
+<p>If you see such diagnostics, just add the suggested option to the
+invocation of <acronym>GNU</acronym> <code>tar</code>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>cat archive.tar.gz | tar tzf -</kbd>
+</pre></td></tr></table>
+<p>Notice also, that there are several restrictions on operations on
+compressed archives.  First of all, compressed archives cannot be
+modified, i.e., you cannot update (<samp>`--update'</samp>, alias <samp>`-u'</samp>)
+them or delete (<samp>`--delete'</samp>) members from them or
+add (<samp>`--append'</samp>, alias <samp>`-r'</samp>) members to them.  Likewise, you
+cannot append another <code>tar</code> archive to a compressed archive using
+<samp>`--concatenate'</samp> (<samp>`-A'</samp>).  Secondly, multi-volume
+archives cannot be compressed.
+</p>
+<p>The following options allow to select a particular compressor program:
+</p>
+<dl compact="compact">
+<dd><a name="IDX497"></a>
+<a name="IDX498"></a>
+</dd>
+<dt> <samp>`-z'</samp></dt>
+<dt> <samp>`--gzip'</samp></dt>
+<dt> <samp>`--ungzip'</samp></dt>
+<dd><p>Filter the archive through <code>gzip</code>.
+</p>
+<a name="IDX499"></a>
+</dd>
+<dt> <samp>`-J'</samp></dt>
+<dt> <samp>`--xz'</samp></dt>
+<dd><p>Filter the archive through <code>xz</code>.
+</p>
+</dd>
+<dt> <samp>`-j'</samp></dt>
+<dt> <samp>`--bzip2'</samp></dt>
+<dd><p>Filter the archive through <code>bzip2</code>.
+</p>
+<a name="IDX500"></a>
+</dd>
+<dt> <samp>`--lzip'</samp></dt>
+<dd><p>Filter the archive through <code>lzip</code>.
+</p>
+<a name="IDX501"></a>
+</dd>
+<dt> <samp>`--lzma'</samp></dt>
+<dd><p>Filter the archive through <code>lzma</code>.
+</p>
+<a name="IDX502"></a>
+</dd>
+<dt> <samp>`--lzop'</samp></dt>
+<dd><p>Filter the archive through <code>lzop</code>.
+</p>
+<a name="IDX503"></a>
+<a name="IDX504"></a>
+</dd>
+<dt> <samp>`-Z'</samp></dt>
+<dt> <samp>`--compress'</samp></dt>
+<dt> <samp>`--uncompress'</samp></dt>
+<dd><p>Filter the archive through <code>compress</code>.
+</p></dd>
+</dl>
+
+<p>When any of these options is given, <acronym>GNU</acronym> <code>tar</code> searches the compressor
+binary in the current path and invokes it.  The name of the compressor
+program is specified at compilation time using a corresponding
+<samp>`--with-<var>compname</var>'</samp> option to <code>configure</code>, e.g.
+<samp>`--with-bzip2'</samp> to select a specific <code>bzip2</code> binary.
+See section <a href="#SEC135">Using lbzip2 with <acronym>GNU</acronym> <code>tar</code>.</a>, for a detailed discussion.
+</p>
+<p>The output produced by <code>tar --help</code> shows the actual
+compressor names along with each of these options.
+</p>
+<p>You can use any of these options on physical devices (tape drives,
+etc.) and remote files as well as on normal files; data to or from
+such devices or remote files is reblocked by another copy of the
+<code>tar</code> program to enforce the specified (or default) record
+size.  The default compression parameters are used.  Most compression
+programs let you override these by setting a program-specific
+environment variable.  For example, with <code>gzip</code> you can set
+<code>GZIP</code>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>GZIP='-9 -n' tar czf archive.tar.gz subdir</kbd>
+</pre></td></tr></table><p>Another way would be to use the <samp>`-I'</samp> option instead (see
+below), e.g.:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>tar -cf archive.tar.gz -I 'gzip -9 -n' subdir</kbd>
+</pre></td></tr></table>
+
+<p>Finally, the third, traditional, way to do this is to use a pipe:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>tar cf - subdir | gzip -9 -n &gt; archive.tar.gz</kbd>
+</pre></td></tr></table>
+<a name="IDX505"></a>
+<p>Compressed archives are easily corrupted, because compressed files
+have little redundancy.  The adaptive nature of the
+compression scheme means that the compression tables are implicitly
+spread all over the archive.  If you lose a few blocks, the dynamic
+construction of the compression tables becomes unsynchronized, and there
+is little chance that you could recover later in the archive.
+</p>
+<p>Other compression options provide better control over creating
+compressed archives.  These are:
+</p>
+<dl compact="compact">
+<dd><p><a name="auto_002dcompress"></a>
+<a name="IDX506"></a>
+</p></dd>
+<dt> <samp>`--auto-compress'</samp></dt>
+<dt> <samp>`-a'</samp></dt>
+<dd><p>Select a compression program to use by the archive file name
+suffix.  The following suffixes are recognized:
+</p>
+<table>
+<thead><tr><th><p> Suffix </p></th><th><p> Compression program
+</p></th></tr></thead>
+<tr><td><p> <samp>`.gz'</samp> </p></td><td><p> <code>gzip</code>
+</p></td></tr>
+<tr><td><p> <samp>`.tgz'</samp> </p></td><td><p> <code>gzip</code>
+</p></td></tr>
+<tr><td><p> <samp>`.taz'</samp> </p></td><td><p> <code>gzip</code>
+</p></td></tr>
+<tr><td><p> <samp>`.Z'</samp> </p></td><td><p> <code>compress</code>
+</p></td></tr>
+<tr><td><p> <samp>`.taZ'</samp> </p></td><td><p> <code>compress</code>
+</p></td></tr>
+<tr><td><p> <samp>`.bz2'</samp> </p></td><td><p> <code>bzip2</code>
+</p></td></tr>
+<tr><td><p> <samp>`.tz2'</samp> </p></td><td><p> <code>bzip2</code>
+</p></td></tr>
+<tr><td><p> <samp>`.tbz2'</samp> </p></td><td><p> <code>bzip2</code>
+</p></td></tr>
+<tr><td><p> <samp>`.tbz'</samp> </p></td><td><p> <code>bzip2</code>
+</p></td></tr>
+<tr><td><p> <samp>`.lz'</samp> </p></td><td><p> <code>lzip</code>
+</p></td></tr>
+<tr><td><p> <samp>`.lzma'</samp> </p></td><td><p> <code>lzma</code>
+</p></td></tr>
+<tr><td><p> <samp>`.tlz'</samp> </p></td><td><p> <code>lzma</code>
+</p></td></tr>
+<tr><td><p> <samp>`.lzo'</samp> </p></td><td><p> <code>lzop</code>
+</p></td></tr>
+<tr><td><p> <samp>`.xz'</samp> </p></td><td><p> <code>xz</code>
+</p></td></tr>
+</table>
+
+<p><a name="use_002dcompress_002dprogram"></a>
+<a name="IDX507"></a>
+</p></dd>
+<dt> <samp>`--use-compress-program=<var>command</var>'</samp></dt>
+<dt> <samp>`-I=<var>command</var>'</samp></dt>
+<dd><p>Use external compression program <var>command</var>.  Use this option if you
+are not happy with the compression program associated with the suffix
+at compile time or if you have a compression program that <acronym>GNU</acronym> <code>tar</code>
+does not support.  The <var>command</var> argument is a valid command
+invocation, as you would type it at the command line prompt, with any
+additional options as needed.  Enclose it in quotes if it contains
+white space (see <a href="tar_3.html#SEC54">Running External Commands</a>, for more detail).
+</p>
+<p>The <var>command</var> should follow two conventions:
+</p>
+<p>First, when invoked without additional options, it should read data
+from standard input, compress it and output it on standard output.
+</p>
+<p>Secondly, if invoked with the additional <samp>`-d'</samp> option, it should
+do exactly the opposite, i.e., read the compressed data from the
+standard input and produce uncompressed data on the standard output.
+</p>
+<p>The latter requirement means that you must not use the <samp>`-d'</samp>
+option as a part of the <var>command</var> itself.
+</p></dd>
+</dl>
+
+<a name="IDX508"></a>
+<a name="IDX509"></a>
+<a name="IDX510"></a>
+<p>The <samp>`--use-compress-program'</samp> option, in particular, lets you
+implement your own filters, not necessarily dealing with
+compression/decompression.  For example, suppose you wish to implement
+PGP encryption on top of compression, using <code>gpg</code> (see <a href="../gpg/index.html#Top">gpg: (gpg)Top</a> section `gpg --- encryption and signing tool' in <cite>GNU Privacy Guard Manual</cite>).  The following script does that:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">#! /bin/sh
+case $1 in
+-d) gpg --decrypt - | gzip -d -c;;
+'') gzip -c | gpg -s;;
+*)  echo &quot;Unknown option $1&quot;&gt;&amp;2; exit 1;;
+esac
+</pre></td></tr></table>
+<p>Suppose you name it <tt>`gpgz'</tt> and save it somewhere in your
+<code>PATH</code>.  Then the following command will create a compressed
+archive signed with your private key:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>tar -cf foo.tar.gpgz -Igpgz .</kbd>
+</pre></td></tr></table>
+
+<p>Likewise, the command below will list its contents:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>tar -tf foo.tar.gpgz -Igpgz .</kbd>
+</pre></td></tr></table>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC135">8.1.1.1 Using lbzip2 with <acronym>GNU</acronym> <code>tar</code>.</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
+
+<hr size="6">
+<a name="lbzip2"></a>
+<a name="SEC135"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC134" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC136" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC134" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h4 class="subsubsection"> 8.1.1.1 Using lbzip2 with <acronym>GNU</acronym> <code>tar</code>. </h4>
+<p>  <code>Lbzip2</code> is a multithreaded utility for handling
+<samp>`bzip2'</samp> compression, written by Laszlo Ersek.  It makes use of
+multiple processors to speed up its operation and in general works
+considerably faster than <code>bzip2</code>.  For a detailed description
+of <code>lbzip2</code> see <a href="http://freshmeat.net/projects/lbzip2">http://freshmeat.net/projects/lbzip2</a> and
+<a href="http://www.linuxinsight.com/lbzip2-parallel-bzip2-utility.html">lbzip2: parallel bzip2 utility</a>.
+</p>
+<p>  Recent versions of <code>lbzip2</code> are mostly command line compatible
+with <code>bzip2</code>, which makes it possible to automatically invoke
+it via the <samp>`--bzip2'</samp> <acronym>GNU</acronym> <code>tar</code> command line option.  To do so,
+<acronym>GNU</acronym> <code>tar</code> must be configured with the <samp>`--with-bzip2'</samp> command
+line option, like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>./configure --with-bzip2=lbzip2 [<var>other-options</var>]</kbd>
+</pre></td></tr></table>
+<p>  Once configured and compiled this way, <code>tar --help</code> will show the
+following:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>tar --help | grep -- --bzip2</kbd>
+  -j, --bzip2                filter the archive through lbzip2
+</pre></td></tr></table>
+
+<p>which means that running <code>tar --bzip2</code> will invoke <code>lbzip2</code>.
+</p>
+<hr size="6">
+<a name="sparse"></a>
+<a name="SEC136"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC135" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC137" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC133" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> 8.1.2 Archiving Sparse Files </h3>
+
+<p>Files in the file system occasionally have <em>holes</em>.  A <em>hole</em>
+in a file is a section of the file's contents which was never written.
+The contents of a hole reads as all zeros.  On many operating systems,
+actual disk storage is not allocated for holes, but they are counted
+in the length of the file.  If you archive such a file, <code>tar</code>
+could create an archive longer than the original.  To have <code>tar</code>
+attempt to recognize the holes in a file, use <samp>`--sparse'</samp>
+(<samp>`-S'</samp>).  When you use this option, then, for any file using
+less disk space than would be expected from its length, <code>tar</code>
+searches the file for consecutive stretches of zeros.  It then records
+in the archive for the file where the consecutive stretches of zeros
+are, and only archives the &quot;real contents&quot; of the file.  On
+extraction (using <samp>`--sparse'</samp> is not needed on extraction) any
+such files have holes created wherever the continuous stretches of zeros
+were found.  Thus, if you use <samp>`--sparse'</samp>, <code>tar</code> archives
+won't take more space than the original.
+</p>
+<dl compact="compact">
+<dd><a name="IDX511"></a>
+</dd>
+<dt> <samp>`-S'</samp></dt>
+<dt> <samp>`--sparse'</samp></dt>
+<dd><p>This option instructs <code>tar</code> to test each file for sparseness
+before attempting to archive it.  If the file is found to be sparse it
+is treated specially, thus allowing to decrease the amount of space
+used by its image in the archive.
+</p>
+<p>This option is meaningful only when creating or updating archives.  It
+has no effect on extraction.
+</p></dd>
+</dl>
+
+<p>Consider using <samp>`--sparse'</samp> when performing file system backups,
+to avoid archiving the expanded forms of files stored sparsely in the
+system.
+</p>
+<p>Even if your system has no sparse files currently, some may be
+created in the future.  If you use <samp>`--sparse'</samp> while making file
+system backups as a matter of course, you can be assured the archive
+will never take more space on the media than the files take on disk
+(otherwise, archiving a disk filled with sparse files might take
+hundreds of tapes).  See section <a href="tar_5.html#SEC95">Using <code>tar</code> to Perform Incremental Dumps</a>.
+</p>
+<p>However, be aware that <samp>`--sparse'</samp> option presents a serious
+drawback.  Namely, in order to determine if the file is sparse
+<code>tar</code> has to read it before trying to archive it, so in total
+the file is read <strong>twice</strong>.  So, always bear in mind that the
+time needed to process all files with this option is roughly twice
+the time needed to archive them without it.
+See <cite>A technical note:
+</cite> </p>
+<p><cite>Programs like <code>dump</code> do not have to read the entire file; by
+examining the file system directly, they can determine in advance
+exactly where the holes are and thus avoid reading through them.  The
+only data it need read are the actual allocated data blocks.
+<acronym>GNU</acronym> <code>tar</code> uses a more portable and straightforward
+archiving approach, it would be fairly difficult that it does
+otherwise.  Elizabeth Zwicky writes to <tt>`comp.unix.internals'</tt>, on
+1990-12-10:
+</cite> </p>
+<blockquote><p><cite>What I did say is that you cannot tell the difference between a hole and an
+equivalent number of nulls without reading raw blocks.  <code>st_blocks</code> at
+best tells you how many holes there are; it doesn't tell you <em>where</em>.
+Just as programs may, conceivably, care what <code>st_blocks</code> is (care
+to name one that does?), they may also care where the holes are (I have
+no examples of this one either, but it's equally imaginable).
+</cite> </p>
+<p><cite>I conclude from this that good archivers are not portable.  One can
+arguably conclude that if you want a portable program, you can in good
+conscience restore files with as many holes as possible, since you can't
+get it right.
+</cite> </p></blockquote>
+<p><cite></cite>
+</p>
+
+<a name="IDX512"></a>
+<p>When using <samp>`POSIX'</samp> archive format, <acronym>GNU</acronym> <code>tar</code> is able to store
+sparse files using in three distinct ways, called <em>sparse
+formats</em>.  A sparse format is identified by its <em>number</em>,
+consisting, as usual of two decimal numbers, delimited by a dot.  By
+default, format <samp>`1.0'</samp> is used.  If, for some reason, you wish to
+use an earlier format, you can select it using
+<samp>`--sparse-version'</samp> option.
+</p>
+<dl compact="compact">
+<dd><a name="IDX513"></a>
+</dd>
+<dt> <samp>`--sparse-version=<var>version</var>'</samp></dt>
+<dd>
+<p>Select the format to store sparse files in.  Valid <var>version</var> values
+are: <samp>`0.0'</samp>, <samp>`0.1'</samp> and <samp>`1.0'</samp>.  See section <a href="tar_14.html#SEC186">Storing Sparse Files</a>,
+for a detailed description of each format.
+</p></dd>
+</dl>
+
+<p>Using <samp>`--sparse-format'</samp> option implies <samp>`--sparse'</samp>.
+</p>
+<hr size="6">
+<a name="Attributes"></a>
+<a name="SEC137"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC136" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC138" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 8.2 Handling File Attributes </h2>
+
+<p>When <code>tar</code> reads files, it updates their access times.  To
+avoid this, use the <samp>`--atime-preserve[=METHOD]'</samp> option, which can either
+reset the access time retroactively or avoid changing it in the first
+place.
+</p>
+<dl compact="compact">
+<dd><a name="IDX514"></a>
+</dd>
+<dt> <samp>`--atime-preserve'</samp></dt>
+<dt> <samp>`--atime-preserve=replace'</samp></dt>
+<dt> <samp>`--atime-preserve=system'</samp></dt>
+<dd><p>Preserve the access times of files that are read.  This works only for
+files that you own, unless you have superuser privileges.
+</p>
+<p><samp>`--atime-preserve=replace'</samp> works on most systems, but it also
+restores the data modification time and updates the status change
+time.  Hence it doesn't interact with incremental dumps nicely
+(see section <a href="tar_5.html#SEC95">Using <code>tar</code> to Perform Incremental Dumps</a>), and it can set access or data modification times
+incorrectly if other programs access the file while <code>tar</code> is
+running.
+</p>
+<p><samp>`--atime-preserve=system'</samp> avoids changing the access time in
+the first place, if the operating system supports this.
+Unfortunately, this may or may not work on any given operating system
+or file system.  If <code>tar</code> knows for sure it won't work, it
+complains right away.
+</p>
+<p>Currently <samp>`--atime-preserve'</samp> with no operand defaults to
+<samp>`--atime-preserve=replace'</samp>, but this is intended to change to
+<samp>`--atime-preserve=system'</samp> when the latter is better-supported.
+</p>
+<a name="IDX515"></a>
+</dd>
+<dt> <samp>`-m'</samp></dt>
+<dt> <samp>`--touch'</samp></dt>
+<dd><p>Do not extract data modification time.
+</p>
+<p>When this option is used, <code>tar</code> leaves the data modification times
+of the files it extracts as the times when the files were extracted,
+instead of setting it to the times recorded in the archive.
+</p>
+<p>This option is meaningless with <samp>`--list'</samp> (<samp>`-t'</samp>).
+</p>
+<a name="IDX516"></a>
+</dd>
+<dt> <samp>`--same-owner'</samp></dt>
+<dd><p>Create extracted files with the same ownership they have in the
+archive.
+</p>
+<p>This is the default behavior for the superuser,
+so this option is meaningful only for non-root users, when <code>tar</code>
+is executed on those systems able to give files away.  This is
+considered as a security flaw by many people, at least because it
+makes quite difficult to correctly account users for the disk space
+they occupy.  Also, the <code>suid</code> or <code>sgid</code> attributes of
+files are easily and silently lost when files are given away.
+</p>
+<p>When writing an archive, <code>tar</code> writes the user <acronym>ID</acronym> and user name
+separately.  If it can't find a user name (because the user <acronym>ID</acronym> is not
+in <tt>`/etc/passwd'</tt>), then it does not write one.  When restoring,
+it tries to look the name (if one was written) up in
+<tt>`/etc/passwd'</tt>.  If it fails, then it uses the user <acronym>ID</acronym> stored in
+the archive instead.
+</p>
+<a name="IDX517"></a>
+</dd>
+<dt> <samp>`--no-same-owner'</samp></dt>
+<dt> <samp>`-o'</samp></dt>
+<dd><p>Do not attempt to restore ownership when extracting.  This is the
+default behavior for ordinary users, so this option has an effect
+only for the superuser.
+</p>
+<a name="IDX518"></a>
+</dd>
+<dt> <samp>`--numeric-owner'</samp></dt>
+<dd><p>The <samp>`--numeric-owner'</samp> option allows (ANSI) archives to be written
+without user/group name information or such information to be ignored
+when extracting.  It effectively disables the generation and/or use
+of user/group name information.  This option forces extraction using
+the numeric ids from the archive, ignoring the names.
+</p>
+<p>This is useful in certain circumstances, when restoring a backup from
+an emergency floppy with different passwd/group files for example.
+It is otherwise impossible to extract files with the right ownerships
+if the password file in use during the extraction does not match the
+one belonging to the file system(s) being extracted.  This occurs,
+for example, if you are restoring your files after a major crash and
+had booted from an emergency floppy with no password file or put your
+disk into another machine to do the restore.
+</p>
+<p>The numeric ids are <em>always</em> saved into <code>tar</code> archives.
+The identifying names are added at create time when provided by the
+system, unless <samp>`--format=oldgnu'</samp> is used.  Numeric ids could be
+used when moving archives between a collection of machines using
+a centralized management for attribution of numeric ids to users
+and groups.  This is often made through using the NIS capabilities.
+</p>
+<p>When making a <code>tar</code> file for distribution to other sites, it
+is sometimes cleaner to use a single owner for all files in the
+distribution, and nicer to specify the write permission bits of the
+files as stored in the archive independently of their actual value on
+the file system.  The way to prepare a clean distribution is usually
+to have some Makefile rule creating a directory, copying all needed
+files in that directory, then setting ownership and permissions as
+wanted (there are a lot of possible schemes), and only then making a
+<code>tar</code> archive out of this directory, before cleaning
+everything out.  Of course, we could add a lot of options to
+<acronym>GNU</acronym> <code>tar</code> for fine tuning permissions and ownership.
+This is not the good way, I think.  <acronym>GNU</acronym> <code>tar</code> is
+already crowded with options and moreover, the approach just explained
+gives you a great deal of control already.
+</p>
+<a name="IDX519"></a>
+<a name="IDX520"></a>
+</dd>
+<dt> <samp>`-p'</samp></dt>
+<dt> <samp>`--same-permissions'</samp></dt>
+<dt> <samp>`--preserve-permissions'</samp></dt>
+<dd><p>Extract all protection information.
+</p>
+<p>This option causes <code>tar</code> to set the modes (access permissions) of
+extracted files exactly as recorded in the archive.  If this option
+is not used, the current <code>umask</code> setting limits the permissions
+on extracted files.  This option is by default enabled when
+<code>tar</code> is executed by a superuser.
+</p>
+
+<p>This option is meaningless with <samp>`--list'</samp> (<samp>`-t'</samp>).
+</p>
+<a name="IDX521"></a>
+</dd>
+<dt> <samp>`--preserve'</samp></dt>
+<dd><p>Same as both <samp>`--same-permissions'</samp> and <samp>`--same-order'</samp>.
+</p>
+<p>This option is deprecated, and will be removed in <acronym>GNU</acronym> <code>tar</code> version 1.23.
+</p>
+</dd>
+</dl>
+
+<hr size="6">
+<a name="Portability"></a>
+<a name="SEC138"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC137" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC139" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 8.3 Making <code>tar</code> Archives More Portable </h2>
+
+<p>Creating a <code>tar</code> archive on a particular system that is meant to be
+useful later on many other machines and with other versions of <code>tar</code>
+is more challenging than you might think.  <code>tar</code> archive formats
+have been evolving since the first versions of Unix.  Many such formats
+are around, and are not always compatible with each other.  This section
+discusses a few problems, and gives some advice about making <code>tar</code>
+archives more portable.
+</p>
+<p>One golden rule is simplicity.  For example, limit your <code>tar</code>
+archives to contain only regular files and directories, avoiding
+other kind of special files.  Do not attempt to save sparse files or
+contiguous files as such.  Let's discuss a few more problems, in turn.
+</p>
+<p>See <cite>Discuss GNU extensions (incremental backups, multi-volume
+archives and archive labels) in GNU and PAX formats.</cite>
+</p>
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC139">8.3.1 Portable Names</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC140">8.3.2 Symbolic Links</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC141">8.3.3 Hard Links</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC142">8.3.4 Old V7 Archives</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC143">8.3.5 Ustar Archive Format</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">                       Ustar Archives
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC144">8.3.6 <acronym>GNU</acronym> and old <acronym>GNU</acronym> <code>tar</code> format</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">                         GNU and old GNU format archives.
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC145">8.3.7 <acronym>GNU</acronym> <code>tar</code> and <acronym>POSIX</acronym> <code>tar</code></a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">                       <acronym>POSIX</acronym> archives
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC147">8.3.8 Checksumming Problems</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC148">8.3.9 Large or Negative Values</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">    Large files, negative time stamps, etc.
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC149">8.3.10 How to Extract GNU-Specific Data Using Other <code>tar</code> Implementations</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
+
+<hr size="6">
+<a name="Portable-Names"></a>
+<a name="SEC139"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC138" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC140" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC138" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> 8.3.1 Portable Names </h3>
+
+<p>Use portable file and member names.  A name is portable if it contains
+only <acronym>ASCII</acronym> letters and digits, <samp>`/'</samp>, <samp>`.'</samp>, <samp>`_'</samp>, and
+<samp>`-'</samp>; it cannot be empty, start with <samp>`-'</samp> or <samp>`//'</samp>, or
+contain <samp>`/-'</samp>.  Avoid deep directory nesting.  For portability to
+old Unix hosts, limit your file name components to 14 characters or
+less.
+</p>
+<p>If you intend to have your <code>tar</code> archives to be read under
+MSDOS, you should not rely on case distinction for file names, and you
+might use the <acronym>GNU</acronym> <code>doschk</code> program for helping you
+further diagnosing illegal MSDOS names, which are even more limited
+than System V's.
+</p>
+<hr size="6">
+<a name="dereference"></a>
+<a name="SEC140"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC139" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC141" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC138" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> 8.3.2 Symbolic Links </h3>
+
+<p>Normally, when <code>tar</code> archives a symbolic link, it writes a
+block to the archive naming the target of the link.  In that way, the
+<code>tar</code> archive is a faithful record of the file system contents.
+When <samp>`--dereference'</samp> (<samp>`-h'</samp>) is used with
+<samp>`--create'</samp> (<samp>`-c'</samp>), <code>tar</code> archives the files
+symbolic links point to, instead of
+the links themselves.
+</p>
+<p>When creating portable archives, use <samp>`--dereference'</samp>
+(<samp>`-h'</samp>): some systems do not support
+symbolic links, and moreover, your distribution might be unusable if
+it contains unresolved symbolic links.
+</p>
+<p>When reading from an archive, the <samp>`--dereference'</samp> (<samp>`-h'</samp>)
+option causes <code>tar</code> to follow an already-existing symbolic
+link when <code>tar</code> writes or reads a file named in the archive.
+Ordinarily, <code>tar</code> does not follow such a link, though it may
+remove the link before writing a new file.  See section <a href="tar_4.html#SEC75">Options Controlling the Overwriting of Existing Files</a>.
+</p>
+<p>The <samp>`--dereference'</samp> option is unsafe if an untrusted user can
+modify directories while <code>tar</code> is running.  See section <a href="tar_10.html#SEC175">Security</a>.
+</p>
+<hr size="6">
+<a name="hard-links"></a>
+<a name="SEC141"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC140" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC142" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC138" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> 8.3.3 Hard Links </h3>
+
+<p>Normally, when <code>tar</code> archives a hard link, it writes a
+block to the archive naming the target of the link (a <samp>`1'</samp> type
+block).  In that way, the actual file contents is stored in file only
+once.  For example, consider the following two files:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ ls -l
+-rw-r--r-- 2 gray staff 4 2007-10-30 15:11 one
+-rw-r--r-- 2 gray staff 4 2007-10-30 15:11 jeden
+</pre></td></tr></table>
+<p>Here, <tt>`jeden'</tt> is a link to <tt>`one'</tt>.  When archiving this
+directory with a verbose level 2, you will get an output similar to
+the following:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ tar cvvf ../archive.tar .
+drwxr-xr-x gray/staff        0 2007-10-30 15:13 ./
+-rw-r--r-- gray/staff        4 2007-10-30 15:11 ./jeden
+hrw-r--r-- gray/staff        0 2007-10-30 15:11 ./one link to ./jeden
+</pre></td></tr></table>
+<p>The last line shows that, instead of storing two copies of the file,
+<code>tar</code> stored it only once, under the name <tt>`jeden'</tt>, and
+stored file <tt>`one'</tt> as a hard link to this file.
+</p>
+<p>It may be important to know that all hard links to the given file are
+stored in the archive.  For example, this may be necessary for exact
+reproduction of the file system.  The following option does that:
+</p>
+<dl compact="compact">
+<dd><a name="IDX522"></a>
+</dd>
+<dt> <samp>`--check-links'</samp></dt>
+<dt> <samp>`-l'</samp></dt>
+<dd><p>Check the number of links dumped for each processed file.  If this
+number does not match the total number of hard links for the file, print
+a warning message.
+</p></dd>
+</dl>
+
+<p>For example, trying to archive only file <tt>`jeden'</tt> with this option
+produces the following diagnostics:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ tar -c -f ../archive.tar -l jeden
+tar: Missing links to 'jeden'.
+</pre></td></tr></table>
+<p>Although creating special records for hard links helps keep a faithful
+record of the file system contents and makes archives more compact, it
+may present some difficulties when extracting individual members from
+the archive.  For example, trying to extract file <tt>`one'</tt> from the
+archive created in previous examples produces, in the absense of file
+<tt>`jeden'</tt>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ tar xf archive.tar ./one
+tar: ./one: Cannot hard link to './jeden': No such file or directory
+tar: Error exit delayed from previous errors
+</pre></td></tr></table>
+<p>The reason for this behavior is that <code>tar</code> cannot seek back in
+the archive to the previous member (in this case, <tt>`one'</tt>), to
+extract it<a name="DOCF21" href="tar_fot.html#FOOT21">(21)</a>.
+If you wish to avoid such problems at the cost of a bigger archive,
+use the following option:
+</p>
+<dl compact="compact">
+<dd><a name="IDX523"></a>
+</dd>
+<dt> <samp>`--hard-dereference'</samp></dt>
+<dd><p>Dereference hard links and store the files they refer to.
+</p></dd>
+</dl>
+
+<p>For example, trying this option on our two sample files, we get two
+copies in the archive, each of which can then be extracted
+independently of the other:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ tar -c -vv -f ../archive.tar --hard-dereference .
+drwxr-xr-x gray/staff        0 2007-10-30 15:13 ./
+-rw-r--r-- gray/staff        4 2007-10-30 15:11 ./jeden
+-rw-r--r-- gray/staff        4 2007-10-30 15:11 ./one
+</pre></td></tr></table>
+<hr size="6">
+<a name="old"></a>
+<a name="SEC142"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC141" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC143" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC138" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> 8.3.4 Old V7 Archives </h3>
+
+<p>Certain old versions of <code>tar</code> cannot handle additional
+information recorded by newer <code>tar</code> programs.  To create an
+archive in V7 format (not ANSI), which can be read by these old
+versions, specify the <samp>`--format=v7'</samp> option in
+conjunction with the <samp>`--create'</samp> (<samp>`-c'</samp>) (<code>tar</code> also
+accepts <samp>`--portability'</samp> or <samp>`--old-archive'</samp> for this
+option).  When you specify it,
+<code>tar</code> leaves out information about directories, pipes, fifos,
+contiguous files, and device files, and specifies file ownership by
+group and user IDs instead of group and user names.
+</p>
+<p>When updating an archive, do not use <samp>`--format=v7'</samp>
+unless the archive was created using this option.
+</p>
+<p>In most cases, a <em>new</em> format archive can be read by an <em>old</em>
+<code>tar</code> program without serious trouble, so this option should
+seldom be needed.  On the other hand, most modern <code>tar</code>s are
+able to read old format archives, so it might be safer for you to
+always use <samp>`--format=v7'</samp> for your distributions.  Notice,
+however, that <samp>`ustar'</samp> format is a better alternative, as it is
+free from many of <samp>`v7'</samp>'s drawbacks.
+</p>
+<hr size="6">
+<a name="ustar"></a>
+<a name="SEC143"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC142" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC144" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC138" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> 8.3.5 Ustar Archive Format </h3>
+
+<p>The archive format defined by the <acronym>POSIX</acronym>.1-1988 specification is
+called <code>ustar</code>.  Although it is more flexible than the V7 format, it
+still has many restrictions (see section <a href="#SEC132">ustar</a>, for the detailed
+description of <code>ustar</code> format).  Along with V7 format,
+<code>ustar</code> format is a good choice for archives intended to be read
+with other implementations of <code>tar</code>.
+</p>
+<p>To create an archive in <code>ustar</code> format, use the <samp>`--format=ustar'</samp>
+option in conjunction with <samp>`--create'</samp> (<samp>`-c'</samp>).
+</p>
+<hr size="6">
+<a name="gnu"></a>
+<a name="SEC144"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC143" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC145" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC138" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> 8.3.6 <acronym>GNU</acronym> and old <acronym>GNU</acronym> <code>tar</code> format </h3>
+
+<p><acronym>GNU</acronym> <code>tar</code> was based on an early draft of the
+<acronym>POSIX</acronym> 1003.1 <code>ustar</code> standard.  <acronym>GNU</acronym> extensions to
+<code>tar</code>, such as the support for file names longer than 100
+characters, use portions of the <code>tar</code> header record which were
+specified in that <acronym>POSIX</acronym> draft as unused.  Subsequent changes in
+<acronym>POSIX</acronym> have allocated the same parts of the header record for
+other purposes.  As a result, <acronym>GNU</acronym> <code>tar</code> format is
+incompatible with the current <acronym>POSIX</acronym> specification, and with
+<code>tar</code> programs that follow it.
+</p>
+<p>In the majority of cases, <code>tar</code> will be configured to create
+this format by default.  This will change in future releases, since
+we plan to make <samp>`POSIX'</samp> format the default.
+</p>
+<p>To force creation a <acronym>GNU</acronym> <code>tar</code> archive, use option
+<samp>`--format=gnu'</samp>.
+</p>
+<hr size="6">
+<a name="posix"></a>
+<a name="SEC145"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC144" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC146" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC138" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> 8.3.7 <acronym>GNU</acronym> <code>tar</code> and <acronym>POSIX</acronym> <code>tar</code> </h3>
+
+<p>Starting from version 1.14 <acronym>GNU</acronym> <code>tar</code> features full support for
+<acronym>POSIX.1-2001</acronym> archives.
+</p>
+<p>A <acronym>POSIX</acronym> conformant archive will be created if <code>tar</code>
+was given <samp>`--format=posix'</samp> (<samp>`--format=pax'</samp>) option.  No
+special option is required to read and extract from a <acronym>POSIX</acronym>
+archive.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC146">8.3.7.1 Controlling Extended Header Keywords</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
+
+<hr size="6">
+<a name="PAX-keywords"></a>
+<a name="SEC146"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC145" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC147" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC145" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h4 class="subsubsection"> 8.3.7.1 Controlling Extended Header Keywords </h4>
+
+<dl compact="compact">
+<dd><a name="IDX524"></a>
+</dd>
+<dt> <samp>`--pax-option=<var>keyword-list</var>'</samp></dt>
+<dd><p>Handle keywords in <acronym>PAX</acronym> extended headers.  This option is
+equivalent to <samp>`-o'</samp> option of the <code>pax</code> utility.
+</p></dd>
+</dl>
+
+<p><var>Keyword-list</var> is a comma-separated
+list of keyword options, each keyword option taking one of
+the following forms:
+</p>
+<dl compact="compact">
+<dt> <code>delete=<var>pattern</var></code></dt>
+<dd><p>When used with one of archive-creation commands,
+this option instructs <code>tar</code> to omit from extended header records
+that it produces any keywords matching the string <var>pattern</var>.
+</p>
+<p>When used in extract or list mode, this option instructs tar
+to ignore any keywords matching the given <var>pattern</var> in the extended
+header records.  In both cases, matching is performed using the pattern
+matching notation described in <acronym>POSIX 1003.2</acronym>, 3.13
+(see section <a href="tar_6.html#SEC111">Wildcards Patterns and Matching</a>).  For example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">--pax-option delete=security.*
+</pre></td></tr></table>
+<p>would suppress security-related information.
+</p>
+</dd>
+<dt> <code>exthdr.name=<var>string</var></code></dt>
+<dd>
+<p>This keyword allows user control over the name that is written into the
+ustar header blocks for the extended headers.  The name is obtained
+from <var>string</var> after making the following substitutions:
+</p>
+<table>
+<thead><tr><th><p> Meta-character </p></th><th><p> Replaced By
+</p></th></tr></thead>
+<tr><td><p> %d </p></td><td><p>  The directory name of the file, equivalent to the
+result of the <code>dirname</code> utility on the translated file name.
+</p></td></tr>
+<tr><td><p> %f </p></td><td><p>  The name of the file with the directory information
+stripped, equivalent to the result of the <code>basename</code> utility
+on the translated file name.
+</p></td></tr>
+<tr><td><p> %p </p></td><td><p>  The process <acronym>ID</acronym> of the <code>tar</code> process.
+</p></td></tr>
+<tr><td><p> %% </p></td><td><p>  A <samp>`%'</samp> character.
+</p></td></tr>
+</table>
+
+<p>Any other <samp>`%'</samp> characters in <var>string</var> produce undefined
+results.
+</p>
+<p>If no option <samp>`exthdr.name=string'</samp> is specified, <code>tar</code>
+will use the following default value:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">%d/PaxHeaders.%p/%f
+</pre></td></tr></table>
+</dd>
+<dt> <code>exthdr.mtime=<var>value</var></code></dt>
+<dd>
+<p>This keyword defines the value of the <samp>`mtime'</samp> field that
+is written into the ustar header blocks for the extended headers.
+By default, the <samp>`mtime'</samp> field is set to the modification time
+of the archive member described by that extended headers.
+</p>
+</dd>
+<dt> <code>globexthdr.name=<var>string</var></code></dt>
+<dd><p>This keyword allows user control over the name that is written into
+the ustar header blocks for global extended header records.  The name
+is obtained from the contents of <var>string</var>, after making
+the following substitutions:
+</p>
+<table>
+<thead><tr><th><p> Meta-character </p></th><th><p> Replaced By
+</p></th></tr></thead>
+<tr><td><p> %n </p></td><td><p> An integer that represents the
+sequence number of the global extended header record in the archive,
+starting at 1.
+</p></td></tr>
+<tr><td><p> %p </p></td><td><p> The process <acronym>ID</acronym> of the <code>tar</code> process.
+</p></td></tr>
+<tr><td><p> %% </p></td><td><p> A <samp>`%'</samp> character.
+</p></td></tr>
+</table>
+
+<p>Any other <samp>`%'</samp> characters in <var>string</var> produce undefined results.
+</p>
+<p>If no option <samp>`globexthdr.name=string'</samp> is specified, <code>tar</code>
+will use the following default value:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$TMPDIR/GlobalHead.%p.%n
+</pre></td></tr></table>
+
+<p>where <samp>`$TMPDIR'</samp> represents the value of the <var>TMPDIR</var>
+environment variable.  If <var>TMPDIR</var> is not set, <code>tar</code>
+uses <samp>`/tmp'</samp>.
+</p>
+</dd>
+<dt> <code>globexthdr.mtime=<var>value</var></code></dt>
+<dd>
+<p>This keyword defines the value of the <samp>`mtime'</samp> field that
+is written into the ustar header blocks for the global extended headers.
+By default, the <samp>`mtime'</samp> field is set to the time when
+<code>tar</code> was invoked.
+</p>
+</dd>
+<dt> <code><var>keyword</var>=<var>value</var></code></dt>
+<dd><p>When used with one of archive-creation commands, these keyword/value pairs
+will be included at the beginning of the archive in a global extended
+header record.  When used with one of archive-reading commands,
+<code>tar</code> will behave as if it has encountered these keyword/value
+pairs at the beginning of the archive in a global extended header
+record.
+</p>
+</dd>
+<dt> <code><var>keyword</var>:=<var>value</var></code></dt>
+<dd><p>When used with one of archive-creation commands, these keyword/value pairs
+will be included as records at the beginning of an extended header for
+each file.  This is effectively equivalent to <var>keyword</var>=<var>value</var>
+form except that it creates no global extended header records.
+</p>
+<p>When used with one of archive-reading commands, <code>tar</code> will
+behave as if these keyword/value pairs were included as records at the
+end of each extended header; thus, they will override any global or
+file-specific extended header record keywords of the same names.
+For example, in the command:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">tar --format=posix --create \
+    --file archive --pax-option gname:=user .
+</pre></td></tr></table>
+<p>the group name will be forced to a new value for all files
+stored in the archive.
+</p></dd>
+</dl>
+
+<p>In any of the forms described above, the <var>value</var> may be
+a string enclosed in curly braces.  In that case, the string
+between the braces is understood either as a textual time
+representation, as described in <a href="tar_7.html#SEC120">Date input formats</a>, or a name of
+the existing file, starting with <samp>`/'</samp> or <samp>`.'</samp>.  In the latter
+case, the modification time of that file is used.
+</p>
+<p>For example, to set all modification times to the current date, you
+use the following option:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">--pax-option='mtime:={now}'
+</pre></td></tr></table>
+<p>Note quoting of the option's argument.
+</p>
+<a name="IDX525"></a>
+<a name="IDX526"></a>
+<p>As another example, here is the option that ensures that any two
+archives created using it, will be binary equivalent if they have the
+same contents:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">--pax-option=exthdr.name=%d/PaxHeaders/%f,atime:=0
+</pre></td></tr></table>
+<hr size="6">
+<a name="Checksumming"></a>
+<a name="SEC147"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC146" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC148" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC138" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> 8.3.8 Checksumming Problems </h3>
+
+<p>SunOS and HP-UX <code>tar</code> fail to accept archives created using
+<acronym>GNU</acronym> <code>tar</code> and containing non-<acronym>ASCII</acronym> file names, that
+is, file names having characters with the eighth bit set, because they
+use signed checksums, while <acronym>GNU</acronym> <code>tar</code> uses unsigned
+checksums while creating archives, as per <acronym>POSIX</acronym> standards.  On
+reading, <acronym>GNU</acronym> <code>tar</code> computes both checksums and accepts either of them.
+It is somewhat worrying that a lot of people may go
+around doing backup of their files using faulty (or at least
+non-standard) software, not learning about it until it's time to
+restore their missing files with an incompatible file extractor, or
+vice versa.
+</p>
+<p><acronym>GNU</acronym> <code>tar</code> computes checksums both ways, and accepts either of them
+on read, so <acronym>GNU</acronym> tar can read Sun tapes even with their
+wrong checksums.  <acronym>GNU</acronym> <code>tar</code> produces the standard
+checksum, however, raising incompatibilities with Sun.  That is to
+say, <acronym>GNU</acronym> <code>tar</code> has not been modified to
+<em>produce</em> incorrect archives to be read by buggy <code>tar</code>'s.
+I've been told that more recent Sun <code>tar</code> now read standard
+archives, so maybe Sun did a similar patch, after all?
+</p>
+<p>The story seems to be that when Sun first imported <code>tar</code>
+sources on their system, they recompiled it without realizing that
+the checksums were computed differently, because of a change in
+the default signing of <code>char</code>'s in their compiler.  So they
+started computing checksums wrongly.  When they later realized their
+mistake, they merely decided to stay compatible with it, and with
+themselves afterwards.  Presumably, but I do not really know, HP-UX
+has chosen their <code>tar</code> archives to be compatible with Sun's.
+The current standards do not favor Sun <code>tar</code> format.  In any
+case, it now falls on the shoulders of SunOS and HP-UX users to get
+a <code>tar</code> able to read the good archives they receive.
+</p>
+<hr size="6">
+<a name="Large-or-Negative-Values"></a>
+<a name="SEC148"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC147" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC149" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC138" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> 8.3.9 Large or Negative Values </h3>
+<blockquote><p><em>(This message will disappear, once this node revised.)</em>
+</p></blockquote>
+
+
+<p>The above sections suggest to use <samp>`oldest possible'</samp> archive
+format if in doubt.  However, sometimes it is not possible.  If you
+attempt to archive a file whose metadata cannot be represented using
+required format, <acronym>GNU</acronym> <code>tar</code> will print error message and ignore such a
+file.  You will than have to switch to a format that is able to
+handle such values.  The format summary table (see section <a href="#SEC132">Controlling the Archive Format</a>) will
+help you to do so.
+</p>
+<p>In particular, when trying to archive files larger than 8GB or with
+timestamps not in the range 1970-01-01 00:00:00 through 2242-03-16
+12:56:31 <small>UTC</small>, you will have to chose between <acronym>GNU</acronym> and
+<acronym>POSIX</acronym> archive formats.  When considering which format to
+choose, bear in mind that the <acronym>GNU</acronym> format uses
+two's-complement base-256 notation to store values that do not fit
+into standard <acronym>ustar</acronym> range.  Such archives can generally be
+read only by a <acronym>GNU</acronym> <code>tar</code> implementation.  Moreover, they sometimes
+cannot be correctly restored on another hosts even by <acronym>GNU</acronym> <code>tar</code>.  For
+example, using two's complement representation for negative time
+stamps that assumes a signed 32-bit <code>time_t</code> generates archives
+that are not portable to hosts with differing <code>time_t</code>
+representations.
+</p>
+<p>On the other hand, <acronym>POSIX</acronym> archives, generally speaking, can
+be extracted by any tar implementation that understands older
+<acronym>ustar</acronym> format.  The only exception are files larger than 8GB.
+</p>
+<p>See <cite>Describe how <acronym>POSIX</acronym> archives are extracted by non
+POSIX-aware tars.</cite>
+</p>
+
+<hr size="6">
+<a name="Other-Tars"></a>
+<a name="SEC149"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC148" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC150" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC138" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="subsection"> 8.3.10 How to Extract GNU-Specific Data Using Other <code>tar</code> Implementations </h3>
+
+<p>In previous sections you became acquainted with various quirks
+necessary to make your archives portable.  Sometimes you may need to
+extract archives containing GNU-specific members using some
+third-party <code>tar</code> implementation or an older version of
+<acronym>GNU</acronym> <code>tar</code>.  Of course your best bet is to have <acronym>GNU</acronym> <code>tar</code> installed,
+but if it is for some reason impossible, this section will explain
+how to cope without it.
+</p>
+<p>When we speak about <em>GNU-specific</em> members we mean two classes of
+them: members split between the volumes of a multi-volume archive and
+sparse members.  You will be able to always recover such members if
+the archive is in PAX format.  In addition split members can be
+recovered from archives in old GNU format.  The following subsections
+describe the required procedures in detail.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC150">8.3.10.1 Extracting Members Split Between Volumes</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">       Members Split Between Volumes
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC151">8.3.10.2 Extracting Sparse Members</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">      Sparse Members
+</td></tr>
+</table>
+
+<hr size="6">
+<a name="Split-Recovery"></a>
+<a name="SEC150"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC149" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC151" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC149" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h4 class="subsubsection"> 8.3.10.1 Extracting Members Split Between Volumes </h4>
+
+<p>If a member is split between several volumes of an old GNU format archive
+most third party <code>tar</code> implementation will fail to extract
+it.  To extract it, use <code>tarcat</code> program (see section <a href="tar_9.html#SEC166">Concatenate Volumes into a Single Archive</a>).
+This program is available from
+<a href="http://www.gnu.org/software/tar/utils/tarcat.html"><acronym>GNU</acronym> <code>tar</code> home page</a>.  It concatenates several archive volumes into a single
+valid archive.  For example, if you have three volumes named from
+<tt>`vol-1.tar'</tt> to <tt>`vol-3.tar'</tt>, you can do the following to
+extract them using a third-party <code>tar</code>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>tarcat vol-1.tar vol-2.tar vol-3.tar | tar xf -</kbd>
+</pre></td></tr></table>
+<a name="IDX527"></a>
+<p>You could use this approach for most (although not all) PAX
+format archives as well.  However, extracting split members from a PAX
+archive is a much easier task, because PAX volumes are constructed in
+such a way that each part of a split member is extracted to a
+different file by <code>tar</code> implementations that are not aware of
+GNU extensions.  More specifically, the very first part retains its
+original name, and all subsequent parts are named using the pattern:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">%d/GNUFileParts.%p/%f.%n
+</pre></td></tr></table>
+
+<p>where symbols preceeded by <samp>`%'</samp> are <em>macro characters</em> that
+have the following meaning:
+</p>
+<table>
+<thead><tr><th><p> Meta-character </p></th><th><p> Replaced By
+</p></th></tr></thead>
+<tr><td><p> %d </p></td><td><p>  The directory name of the file, equivalent to the
+result of the <code>dirname</code> utility on its full name.
+</p></td></tr>
+<tr><td><p> %f </p></td><td><p>  The file name of the file, equivalent to the result
+of the <code>basename</code> utility on its full name.
+</p></td></tr>
+<tr><td><p> %p </p></td><td><p>  The process <acronym>ID</acronym> of the <code>tar</code> process that
+created the archive.
+</p></td></tr>
+<tr><td><p> %n </p></td><td><p>  Ordinal number of this particular part.
+</p></td></tr>
+</table>
+
+<p>For example, if the file <tt>`var/longfile'</tt> was split during archive
+creation between three volumes, and the creator <code>tar</code> process
+had process <acronym>ID</acronym> <samp>`27962'</samp>, then the member names will be:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">var/longfile
+var/GNUFileParts.27962/longfile.1
+var/GNUFileParts.27962/longfile.2
+</pre></td></tr></table>
+<p>When you extract your archive using a third-party <code>tar</code>, these
+files will be created on your disk, and the only thing you will need
+to do to restore your file in its original form is concatenate them in
+the proper order, for example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>cd var</kbd>
+$ <kbd>cat GNUFileParts.27962/longfile.1 \
+  GNUFileParts.27962/longfile.2 &gt;&gt; longfile</kbd>
+$ rm -f GNUFileParts.27962
+</pre></td></tr></table>
+<p>Notice, that if the <code>tar</code> implementation you use supports PAX
+format archives, it will probably emit warnings about unknown keywords
+during extraction.  They will look like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">Tar file too small
+Unknown extended header keyword 'GNU.volume.filename' ignored.
+Unknown extended header keyword 'GNU.volume.size' ignored.
+Unknown extended header keyword 'GNU.volume.offset' ignored.
+</pre></td></tr></table>
+
+<p>You can safely ignore these warnings.
+</p>
+<p>If your <code>tar</code> implementation is not PAX-aware, you will get
+more warnings and more files generated on your disk, e.g.:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>tar xf vol-1.tar</kbd>
+var/PaxHeaders.27962/longfile: Unknown file type 'x', extracted as
+normal file
+Unexpected EOF in archive
+$ <kbd>tar xf vol-2.tar</kbd>
+tmp/GlobalHead.27962.1: Unknown file type 'g', extracted as normal file
+GNUFileParts.27962/PaxHeaders.27962/sparsefile.1: Unknown file type
+'x', extracted as normal file
+</pre></td></tr></table>
+<p>Ignore these warnings.  The <tt>`PaxHeaders.*'</tt> directories created
+will contain files with <em>extended header keywords</em> describing the
+extracted files.  You can delete them, unless they describe sparse
+members.  Read further to learn more about them.
+</p>
+<hr size="6">
+<a name="Sparse-Recovery"></a>
+<a name="SEC151"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC150" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC152" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC149" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h4 class="subsubsection"> 8.3.10.2 Extracting Sparse Members </h4>
+
+<p>Any <code>tar</code> implementation will be able to extract sparse members from a
+PAX archive.  However, the extracted files will be <em>condensed</em>,
+i.e., any zero blocks will be removed from them.  When we restore such
+a condensed file to its original form, by adding zero blocks (or
+<em>holes</em>) back to their original locations, we call this process
+<em>expanding</em> a compressed sparse file.
+</p>
+<a name="IDX528"></a>
+<p>To expand a file, you will need a simple auxiliary program called
+<code>xsparse</code>.  It is available in source form from
+<a href="http://www.gnu.org/software/tar/utils/xsparse.html"><acronym>GNU</acronym> <code>tar</code> home page</a>.
+</p>
+<a name="IDX529"></a>
+<p>Let's begin with archive members in <em>sparse format
+version 1.0</em><a name="DOCF22" href="tar_fot.html#FOOT22">(22)</a>, which are the easiest to expand.
+The condensed file will contain both file map and file data, so no
+additional data will be needed to restore it.  If the original file
+name was <tt>`<var>dir</var>/<var>name</var>'</tt>, then the condensed file will be
+named <tt>`<var>dir</var>/GNUSparseFile.<var>n</var>/<var>name</var>'</tt>, where
+<var>n</var> is a decimal number<a name="DOCF23" href="tar_fot.html#FOOT23">(23)</a>.
+</p>
+<p>To expand a version 1.0 file, run <code>xsparse</code> as follows:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>xsparse <tt>`cond-file'</tt></kbd>
+</pre></td></tr></table>
+
+<p>where <tt>`cond-file'</tt> is the name of the condensed file.  The utility
+will deduce the name for the resulting expanded file using the
+following algorithm:
+</p>
+<ol>
+<li> If <tt>`cond-file'</tt> does not contain any directories,
+<tt>`../cond-file'</tt> will be used;
+
+</li><li> If <tt>`cond-file'</tt> has the form
+<tt>`<var>dir</var>/<var>t</var>/<var>name</var>'</tt>, where both <var>t</var> and <var>name</var>
+are simple names, with no <samp>`/'</samp> characters in them, the output file
+name will be <tt>`<var>dir</var>/<var>name</var>'</tt>.
+
+</li><li> Otherwise, if <tt>`cond-file'</tt> has the form
+<tt>`<var>dir</var>/<var>name</var>'</tt>, the output file name will be
+<tt>`<var>name</var>'</tt>.
+</li></ol>
+
+<p>In the unlikely case when this algorithm does not suit your needs,
+you can explicitly specify output file name as a second argument to
+the command:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>xsparse <tt>`cond-file'</tt> <tt>`out-file'</tt></kbd>
+</pre></td></tr></table>
+<p>It is often a good idea to run <code>xsparse</code> in <em>dry run</em> mode
+first.  In this mode, the command does not actually expand the file,
+but verbosely lists all actions it would be taking to do so.  The dry
+run mode is enabled by <samp>`-n'</samp> command line argument:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>xsparse -n /home/gray/GNUSparseFile.6058/sparsefile</kbd>
+Reading v.1.0 sparse map
+Expanding file '/home/gray/GNUSparseFile.6058/sparsefile' to
+'/home/gray/sparsefile'
+Finished dry run
+</pre></td></tr></table>
+<p>To actually expand the file, you would run:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>xsparse /home/gray/GNUSparseFile.6058/sparsefile</kbd>
+</pre></td></tr></table>
+
+<p>The program behaves the same way all UNIX utilities do: it will keep
+quiet unless it has simething important to tell you (e.g. an error
+condition or something).  If you wish it to produce verbose output,
+similar to that from the dry run mode, use <samp>`-v'</samp> option:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>xsparse -v /home/gray/GNUSparseFile.6058/sparsefile</kbd>
+Reading v.1.0 sparse map
+Expanding file '/home/gray/GNUSparseFile.6058/sparsefile' to
+'/home/gray/sparsefile'
+Done
+</pre></td></tr></table>
+<p>Additionally, if your <code>tar</code> implementation has extracted the
+<em>extended headers</em> for this file, you can instruct <code>xstar</code>
+to use them in order to verify the integrity of the expanded file.
+The option <samp>`-x'</samp> sets the name of the extended header file to
+use.  Continuing our example:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>xsparse -v -x /home/gray/PaxHeaders.6058/sparsefile \
+  /home/gray/GNUSparseFile.6058/sparsefile</kbd>
+Reading extended header file
+Found variable GNU.sparse.major = 1
+Found variable GNU.sparse.minor = 0
+Found variable GNU.sparse.name = sparsefile
+Found variable GNU.sparse.realsize = 217481216
+Reading v.1.0 sparse map
+Expanding file '/home/gray/GNUSparseFile.6058/sparsefile' to
+'/home/gray/sparsefile'
+Done
+</pre></td></tr></table>
+<p><a name="extracting-sparse-v_002e0_002ex"></a>
+<a name="IDX530"></a>
+<a name="IDX531"></a>
+An <em>extended header</em> is a special <code>tar</code> archive header
+that precedes an archive member and contains a set of
+<em>variables</em>, describing the member properties that cannot be
+stored in the standard <code>ustar</code> header.  While optional for
+expanding sparse version 1.0 members, the use of extended headers is
+mandatory when expanding sparse members in older sparse formats: v.0.0
+and v.0.1 (The sparse formats are described in detail in <a href="tar_14.html#SEC186">Storing Sparse Files</a>.)  So, for these formats, the question is: how to obtain
+extended headers from the archive?
+</p>
+<p>If you use a <code>tar</code> implementation that does not support PAX
+format, extended headers for each member will be extracted as a
+separate file.  If we represent the member name as
+<tt>`<var>dir</var>/<var>name</var>'</tt>, then the extended header file will be
+named <tt>`<var>dir</var>/PaxHeaders.<var>n</var>/<var>name</var>'</tt>, where
+<var>n</var> is an integer number.
+</p>
+<p>Things become more difficult if your <code>tar</code> implementation
+does support PAX headers, because in this case you will have to
+manually extract the headers.  We recommend the following algorithm:
+</p>
+<ol>
+<li>
+Consult the documentation of your <code>tar</code> implementation for an
+option that prints <em>block numbers</em> along with the archive
+listing (analogous to <acronym>GNU</acronym> <code>tar</code>'s <samp>`-R'</samp> option).  For example,
+<code>star</code> has <samp>`-block-number'</samp>.
+
+</li><li>
+Obtain verbose listing using the <samp>`block number'</samp> option, and
+find block numbers of the sparse member in question and the member
+immediately following it.  For example, running <code>star</code> on our
+archive we obtain:
+
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>star -t -v -block-number -f arc.tar</kbd>
+&hellip;
+star: Unknown extended header keyword 'GNU.sparse.size' ignored.
+star: Unknown extended header keyword 'GNU.sparse.numblocks' ignored.
+star: Unknown extended header keyword 'GNU.sparse.name' ignored.
+star: Unknown extended header keyword 'GNU.sparse.map' ignored.
+block        56:  425984 -rw-r--r--  gray/users Jun 25 14:46 2006 GNUSparseFile.28124/sparsefile
+block       897:   65391 -rw-r--r--  gray/users Jun 24 20:06 2006 README
+&hellip;
+</pre></td></tr></table>
+
+<p>(as usual, ignore the warnings about unknown keywords.)
+</p>
+</li><li>
+Let <var>size</var> be the size of the sparse member, <var>Bs</var> be its block number
+and <var>Bn</var> be the block number of the next member.
+Compute:
+
+<table><tr><td>&nbsp;</td><td><pre class="smallexample"><var>N</var> = <var>Bs</var> - <var>Bn</var> - <var>size</var>/512 - 2
+</pre></td></tr></table>
+
+<p>This number gives the size of the extended header part in tar <em>blocks</em>.
+In our example, this formula gives: <code>897 - 56 - 425984 / 512 - 2
+= 7</code>.
+</p>
+</li><li>
+Use <code>dd</code> to extract the headers:
+
+<table><tr><td>&nbsp;</td><td><pre class="smallexample"><kbd>dd if=<var>archive</var> of=<var>hname</var> bs=512 skip=<var>Bs</var> count=<var>N</var></kbd>
+</pre></td></tr></table>
+
+<p>where <var>archive</var> is the archive name, <var>hname</var> is a name of the
+file to store the extended header in, <var>Bs</var> and <var>N</var> are
+computed in previous steps.
+</p>
+<p>In our example, this command will be
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>dd if=arc.tar of=xhdr bs=512 skip=56 count=7</kbd>
+</pre></td></tr></table></li></ol>
+
+<p>Finally, you can expand the condensed file, using the obtained header:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>xsparse -v -x xhdr GNUSparseFile.6058/sparsefile</kbd>
+Reading extended header file
+Found variable GNU.sparse.size = 217481216
+Found variable GNU.sparse.numblocks = 208
+Found variable GNU.sparse.name = sparsefile
+Found variable GNU.sparse.map = 0,2048,1050624,2048,&hellip;
+Expanding file 'GNUSparseFile.28124/sparsefile' to 'sparsefile'
+Done
+</pre></td></tr></table>
+<hr size="6">
+<a name="cpio"></a>
+<a name="SEC152"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC151" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC132" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="section"> 8.4 Comparison of <code>tar</code> and <code>cpio</code> </h2>
+<blockquote><p><em>(This message will disappear, once this node revised.)</em>
+</p></blockquote>
+
+
+<p>See <cite>Reorganize the following material</cite>
+</p>
+
+<p>The <code>cpio</code> archive formats, like <code>tar</code>, do have maximum
+file name lengths.  The binary and old <acronym>ASCII</acronym> formats have a maximum file
+length of 256, and the new <acronym>ASCII</acronym> and <acronym>CRC ASCII</acronym> formats have a max
+file length of 1024.  <acronym>GNU</acronym> <code>cpio</code> can read and write archives
+with arbitrary file name lengths, but other <code>cpio</code> implementations
+may crash unexplainedly trying to read them.
+</p>
+<p><code>tar</code> handles symbolic links in the form in which it comes in <acronym>BSD</acronym>;
+<code>cpio</code> doesn't handle symbolic links in the form in which it comes
+in System V prior to SVR4, and some vendors may have added symlinks
+to their system without enhancing <code>cpio</code> to know about them.
+Others may have enhanced it in a way other than the way I did it
+at Sun, and which was adopted by AT&amp;T (and which is, I think, also
+present in the <code>cpio</code> that Berkeley picked up from AT&amp;T and put
+into a later <acronym>BSD</acronym> release--I think I gave them my changes).
+</p>
+<p>(SVR4 does some funny stuff with <code>tar</code>; basically, its <code>cpio</code>
+can handle <code>tar</code> format input, and write it on output, and it
+probably handles symbolic links.  They may not have bothered doing
+anything to enhance <code>tar</code> as a result.)
+</p>
+<p><code>cpio</code> handles special files; traditional <code>tar</code> doesn't.
+</p>
+<p><code>tar</code> comes with V7, System III, System V, and <acronym>BSD</acronym> source;
+<code>cpio</code> comes only with System III, System V, and later <acronym>BSD</acronym>
+(4.3-tahoe and later).
+</p>
+<p><code>tar</code>'s way of handling multiple hard links to a file can handle
+file systems that support 32-bit i-numbers (e.g., the <acronym>BSD</acronym> file system);
+<code>cpio</code>s way requires you to play some games (in its &quot;binary&quot;
+format, i-numbers are only 16 bits, and in its &quot;portable <acronym>ASCII</acronym>&quot; format,
+they're 18 bits--it would have to play games with the &quot;file system <acronym>ID</acronym>&quot;
+field of the header to make sure that the file system <acronym>ID</acronym>/i-number pairs
+of different files were always different), and I don't know which
+<code>cpio</code>s, if any, play those games.  Those that don't might get
+confused and think two files are the same file when they're not, and
+make hard links between them.
+</p>
+<p><code>tar</code>s way of handling multiple hard links to a file places only
+one copy of the link on the tape, but the name attached to that copy
+is the <em>only</em> one you can use to retrieve the file; <code>cpio</code>s
+way puts one copy for every link, but you can retrieve it using any
+of the names.
+</p>
+<blockquote><p>What type of check sum (if any) is used, and how is this calculated.
+</p></blockquote>
+
+<p>See the attached manual pages for <code>tar</code> and <code>cpio</code> format.
+<code>tar</code> uses a checksum which is the sum of all the bytes in the
+<code>tar</code> header for a file; <code>cpio</code> uses no checksum.
+</p>
+<blockquote><p>If anyone knows why <code>cpio</code> was made when <code>tar</code> was present
+at the unix scene,
+</p></blockquote>
+
+<p>It wasn't.  <code>cpio</code> first showed up in PWB/UNIX 1.0; no
+generally-available version of UNIX had <code>tar</code> at the time.  I don't
+know whether any version that was generally available <em>within AT&amp;T</em>
+had <code>tar</code>, or, if so, whether the people within AT&amp;T who did
+<code>cpio</code> knew about it.
+</p>
+<p>On restore, if there is a corruption on a tape <code>tar</code> will stop at
+that point, while <code>cpio</code> will skip over it and try to restore the
+rest of the files.
+</p>
+<p>The main difference is just in the command syntax and header format.
+</p>
+<p><code>tar</code> is a little more tape-oriented in that everything is blocked
+to start on a record boundary.
+</p>
+<blockquote><p>Is there any differences between the ability to recover crashed
+archives between the two of them.  (Is there any chance of recovering
+crashed archives at all.)
+</p></blockquote>
+
+<p>Theoretically it should be easier under <code>tar</code> since the blocking
+lets you find a header with some variation of <samp>`dd skip=<var>nn</var>'</samp>.
+However, modern <code>cpio</code>'s and variations have an option to just
+search for the next file header after an error with a reasonable chance
+of resyncing.  However, lots of tape driver software won't allow you to
+continue past a media error which should be the only reason for getting
+out of sync unless a file changed sizes while you were writing the
+archive.
+</p>
+<blockquote><p>If anyone knows why <code>cpio</code> was made when <code>tar</code> was present
+at the unix scene, please tell me about this too.
+</p></blockquote>
+
+<p>Probably because it is more media efficient (by not blocking everything
+and using only the space needed for the headers where <code>tar</code>
+always uses 512 bytes per file header) and it knows how to archive
+special files.
+</p>
+<p>You might want to look at the freely available alternatives.  The
+major ones are <code>afio</code>, <acronym>GNU</acronym> <code>tar</code>, and
+<code>pax</code>, each of which have their own extensions with some
+backwards compatibility.
+</p>
+<p>Sparse files were <code>tar</code>red as sparse files (which you can
+easily test, because the resulting archive gets smaller, and
+<acronym>GNU</acronym> <code>cpio</code> can no longer read it).
+</p>
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC132" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="tar_9.html#SEC153" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated on <i>July, 28 2014</i> using <a href="http://texi2html.cvshome.org/"><i>texi2html 1.76</i></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>
