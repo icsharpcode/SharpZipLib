@@ -1,9 +1,121 @@
+# Notes:
+#   - Minimal appveyor.yml file is an empty file. All sections are optional.
+#   - Indent each level of configuration with 2 spaces. Do not use tabs!
+#   - All section names are case-sensitive.
+#   - Section names should be unique on each level.
+
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+# version format
 version: 0.87.{build}
-configuration: Debug
+
+# you can use {branch} name in version format too
+# version: 1.0.{build}-{branch}
+
+# branches to build
+branches:
+  # whitelist
+  only:
+  - build
+
+# Do not build on tags (GitHub only)
+skip_tags: true
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+# Operating system (build VM template)
+image:
+- Visual Studio 2015
+- Visual Studio 2013
+
+# build cache to preserve files/folders between builds
+cache:
+  - packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+# build platform, i.e. x86, x64, Any CPU. This setting is optional.
 platform: Any CPU
-before_build:
-- nuget restore ICSharpCode.SharpZipLib.sln
+
+# to add several platforms to build matrix:
+#platform:
+#  - x86
+#  - Any CPU
+
+# build Configuration, i.e. Debug, Release, etc.
+#configuration: Release
+
+# to add several configurations to build matrix:
+configuration:
+  - Debug
+  - Release
+
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+
 build:
   project: ICSharpCode.SharpZipLib.sln
+  publish_nuget: true
+  publish_nuget_symbols: true
+  include_nuget_references: true
   parallel: true
-  verbosity: detailed
+  verbosity: normal
+
+# scripts to run before build
+before_build:
+- cmd: nuget restore ICSharpCode.SharpZipLib.sln
+
+#---------------------------------#
+#       tests configuration       #
+#---------------------------------#
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+artifacts:
+- path: bin\Debug\ICSharpCode.SharpZipLib.dll
+  name: Debug
+- path: bin\Debug\ICSharpCode.SharpZipLib.pdb
+  name: Debug
+- path: bin\Release\ICSharpCode.SharpZipLib.dll
+  name: Release
+- path: bin\Release\ICSharpCode.SharpZipLib.pdb
+  name: Release
+
+#---------------------------------#
+#     deployment configuration    #
+#---------------------------------#
+
+# providers: Local, FTP, WebDeploy, AzureCS, AzureBlob, S3, NuGet, Environment
+# provider names are case-sensitive!
+
+#---------------------------------#
+#        global handlers          #
+#---------------------------------#
+
+#---------------------------------#
+#         notifications           #
+#---------------------------------#
+
+notifications:
+
+# Email
+- provider: Email
+  to:
+    - mcneight+appveyor@gmail.com
+  subject: 'Build {{status}}'                  # optional
+  message: "{{message}}, {{commitId}}, ..."    # optional
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: true

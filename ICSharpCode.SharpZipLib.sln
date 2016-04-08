@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZipLib", "ICSharpCode.SharpZipLib\ICSharpCode.SharpZipLib.csproj", "{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZipLib.Tests", "ICSharpCode.SharpZipLib.Tests\ICSharpCode.SharpZipLib.Tests.csproj", "{82211166-9C45-4603-8E3A-2CA2EFFCBC26}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD} = {0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
