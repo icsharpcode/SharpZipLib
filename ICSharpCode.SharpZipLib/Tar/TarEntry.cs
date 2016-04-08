@@ -350,7 +350,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				}
 				
 				if (header != null) {
-					if ((header.TypeFlag == TarHeader.LF_DIR) || Name.EndsWith( "/" )) {
+					if ((header.TypeFlag == TarHeader.LF_DIR) || Name.EndsWith("/", StringComparison.Ordinal)) {
 						return true;
 					}
 				}
@@ -506,7 +506,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ArgumentNullException(nameof(name));
 			}
 
-			bool isDir = name.EndsWith("/");
+			bool isDir = name.EndsWith("/", StringComparison.Ordinal);
 			
 			header.Name = name;
 			header.Mode = isDir ? 1003 : 33216;

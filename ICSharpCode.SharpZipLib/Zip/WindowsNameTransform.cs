@@ -100,7 +100,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			name = TransformFile(name);
 			if (name.Length > 0) {
-				while ( name.EndsWith(Path.DirectorySeparatorChar.ToString()) ) {
+				while (name.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal)) {
 					name = name.Remove(name.Length - 1, 1);
 				}
 			}
