@@ -4019,12 +4019,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	public class DynamicDiskDataSource : IDynamicDataSource
 	{
-		/// <summary>
-		/// Initialise a default instance of <see cref="DynamicDiskDataSource"/>.
-		/// </summary>
-		public DynamicDiskDataSource()
-		{
-		}
 
 		#region IDataSource Members
 		/// <summary>

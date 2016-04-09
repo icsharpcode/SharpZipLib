@@ -58,13 +58,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 	/// </summary>
 	public class StreamManipulator
 	{
-		#region Constructors
-		/// <summary>
-		/// Constructs a default StreamManipulator with all buffers empty
-		/// </summary>
-		public StreamManipulator()
-		{
-		}
 		#endregion
 
 		/// <summary>
