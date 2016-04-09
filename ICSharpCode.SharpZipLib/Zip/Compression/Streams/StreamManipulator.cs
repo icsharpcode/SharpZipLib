@@ -58,8 +58,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 	/// </summary>
 	public class StreamManipulator
 	{
-		#endregion
-
 		/// <summary>
 		/// Get the next sequence of bits but don't increase input pointer.  bitCount must be
 		/// less or equal 16 and if this call succeeds, you must drop
