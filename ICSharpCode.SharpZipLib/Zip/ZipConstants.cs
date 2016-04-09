@@ -172,7 +172,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// Defines the contents of the general bit flags field for an archive entry.
 	/// </summary>
 	[Flags]
-	public enum GeneralBitFlags : int
+	public enum GeneralBitFlags
 	{
 		/// <summary>
 		/// Bit 0 if set indicates that the file is encrypted
@@ -241,7 +241,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		ReservedPkware15 = 0x8000
 	}
-	
+
 	#endregion
 
 	/// <summary>
