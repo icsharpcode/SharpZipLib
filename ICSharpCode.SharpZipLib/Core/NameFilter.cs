@@ -82,7 +82,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			bool result = true;
 			try {
-				Regex exp = new Regex(expression, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+				var exp = new Regex(expression, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 			}
 			catch (ArgumentException) {
 				result = false;
@@ -116,7 +116,7 @@ namespace ICSharpCode.SharpZipLib.Core
                                 toCompile = items[i];
                             }
 
-                            Regex testRegex = new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                            var testRegex = new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Singleline);
                         }
                     }
                 }
@@ -138,11 +138,11 @@ namespace ICSharpCode.SharpZipLib.Core
 			char escape = '\\';
 			char[] separators = { ';' };
 
-			ArrayList result = new ArrayList();
+			var result = new ArrayList();
 
 			if ((original != null) && (original.Length > 0)) {
 				int endIndex = -1;
-				StringBuilder b = new StringBuilder();
+				var b = new StringBuilder();
 
 				while (endIndex < original.Length) {
 					endIndex += 1;

@@ -702,12 +702,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			set {
-				uint year = (uint) value.Year;
-				uint month = (uint) value.Month;
-				uint day = (uint) value.Day;
-				uint hour = (uint) value.Hour;
-				uint minute = (uint) value.Minute;
-				uint second = (uint) value.Second;
+				var year = (uint) value.Year;
+				var month = (uint) value.Month;
+				var day = (uint) value.Day;
+				var hour = (uint) value.Hour;
+				var minute = (uint) value.Minute;
+				var second = (uint) value.Second;
 				
 				if ( year < 1980 ) {
 					year = 1980;
@@ -950,7 +950,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </param>
 		internal void ProcessExtraData(bool localHeader)
 		{
-			ZipExtraData extraData = new ZipExtraData(this.extra);
+			var extraData = new ZipExtraData(this.extra);
 
 			if ( extraData.Find(0x0001) ) {
                 // Version required to extract is ignored here as some archivers dont set it correctly
@@ -1150,7 +1150,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>An <see cref="Object"/> that is a copy of the current instance.</returns>
 		public object Clone()
 		{
-			ZipEntry result = (ZipEntry)this.MemberwiseClone();
+			var result = (ZipEntry)this.MemberwiseClone();
 
 			// Ensure extra data is unique if it exists.
 			if ( extra != null ) {

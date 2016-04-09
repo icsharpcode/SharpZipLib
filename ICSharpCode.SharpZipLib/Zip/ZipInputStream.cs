@@ -222,11 +222,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ZipException("Wrong Local header signature: 0x" + String.Format("{0:X}", header));
 			}
 			
-			short versionRequiredToExtract = (short)inputBuffer.ReadLeShort();
+			var versionRequiredToExtract = (short)inputBuffer.ReadLeShort();
 			
 			flags          = inputBuffer.ReadLeShort();
 			method         = inputBuffer.ReadLeShort();
-			uint dostime   = (uint)inputBuffer.ReadLeInt();
+			var dostime   = (uint)inputBuffer.ReadLeInt();
 			int crc2       = inputBuffer.ReadLeInt();
 			csize          = inputBuffer.ReadLeInt();
 			size           = inputBuffer.ReadLeInt();
@@ -499,7 +499,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				
 				// Generate and set crypto transform...
-				PkzipClassicManaged managed = new PkzipClassicManaged();
+				var managed = new PkzipClassicManaged();
 				byte[] key = PkzipClassic.GenerateKeys(ZipConstants.ConvertToArray(password));
 				
 				inputBuffer.CryptoTransform = managed.CreateDecryptor(key, null);

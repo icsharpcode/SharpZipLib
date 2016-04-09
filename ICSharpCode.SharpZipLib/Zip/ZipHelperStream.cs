@@ -264,7 +264,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ZipException("Entry name too long.");
 			}
 
-			ZipExtraData ed = new ZipExtraData(entry.ExtraData);
+			var ed = new ZipExtraData(entry.ExtraData);
 
 			if (entry.LocalHeaderRequiresZip64 && (headerInfoAvailable || patchEntryHeader)) {
 				ed.StartNewEntry();

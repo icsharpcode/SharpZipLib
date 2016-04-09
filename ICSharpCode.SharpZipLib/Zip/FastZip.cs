@@ -86,7 +86,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			DirectoryFailureHandler handler = DirectoryFailure;
 
 			if ( handler != null ) {
-				ScanFailureEventArgs args = new ScanFailureEventArgs(directory, e);
+				var args = new ScanFailureEventArgs(directory, e);
 				handler(this, args);
 				result = args.ContinueRunning;
 			}
@@ -105,7 +105,7 @@ namespace ICSharpCode.SharpZipLib.Zip
             bool result = (handler != null);
 
 			if ( result ) {
-				ScanFailureEventArgs args = new ScanFailureEventArgs(file, e);
+				var args = new ScanFailureEventArgs(file, e);
 				handler(this, args);
 				result = args.ContinueRunning;
 			}
@@ -123,7 +123,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			ProcessFileHandler handler = ProcessFile;
 
 			if ( handler != null ) {
-				ScanEventArgs args = new ScanEventArgs(file);
+				var args = new ScanEventArgs(file);
 				handler(this, args);
 				result = args.ContinueRunning;
 			}
@@ -140,7 +140,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			bool result = true;
 			CompletedFileHandler handler = CompletedFile;
 			if ( handler != null ) {
-				ScanEventArgs args = new ScanEventArgs(file);
+				var args = new ScanEventArgs(file);
 				handler(this, args);
 				result = args.ContinueRunning;
 			}
@@ -158,7 +158,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			bool result = true;
 			EventHandler<DirectoryEventArgs> handler = ProcessDirectory;
 			if ( handler != null ) {
-				DirectoryEventArgs args = new DirectoryEventArgs(directory, hasMatchingFiles);
+				var args = new DirectoryEventArgs(directory, hasMatchingFiles);
 				handler(this, args);
 				result = args.ContinueRunning;
 			}
@@ -375,7 +375,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 #endif
 
 				outputStream_.UseZip64 = UseZip64;
-				FileSystemScanner scanner = new FileSystemScanner(fileFilter, directoryFilter);
+				var scanner = new FileSystemScanner(fileFilter, directoryFilter);
 				scanner.ProcessFile += new ProcessFileHandler(ProcessFile);
 				if ( this.CreateEmptyDirectories ) {
 					scanner.ProcessDirectory += new EventHandler<DirectoryEventArgs>(ProcessDirectory);
@@ -466,7 +466,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				zipFile_.IsStreamOwner = isStreamOwner;
 				System.Collections.IEnumerator enumerator = zipFile_.GetEnumerator();
 				while (continueRunning_ && enumerator.MoveNext()) {
-					ZipEntry entry = (ZipEntry)enumerator.Current;
+					var entry = (ZipEntry)enumerator.Current;
 					if (entry.IsFile)
 					{
 						// TODO Path.GetDirectory can fail here on invalid characters.
@@ -602,7 +602,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						}
 						
 						if ( RestoreAttributesOnExtract && entry.IsDOSEntry && (entry.ExternalFileAttributes != -1)) {
-							FileAttributes fileAttributes = (FileAttributes) entry.ExternalFileAttributes;
+							var fileAttributes = (FileAttributes) entry.ExternalFileAttributes;
 							// TODO: FastZip - Setting of other file attributes on extraction is a little trickier.
 							fileAttributes &= (FileAttributes.Archive | FileAttributes.Normal | FileAttributes.ReadOnly | FileAttributes.Hidden);
 							File.SetAttributes(targetName, fileAttributes);

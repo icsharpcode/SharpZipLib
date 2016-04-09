@@ -309,7 +309,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
 		{
 			for (int i = inputOffset; i < inputOffset + inputCount; ++i) {
-				byte newByte = (byte)(inputBuffer[i] ^ TransformByte());
+				var newByte = (byte)(inputBuffer[i] ^ TransformByte());
 				outputBuffer[outputOffset++] = newByte;
 				UpdateKeys(newByte);
 			}
@@ -458,7 +458,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		public override void GenerateKey()
 		{
 			key_ = new byte[12];
-			Random rnd = new Random();
+			var rnd = new Random();
 			rnd.NextBytes(key_);
 		}
 

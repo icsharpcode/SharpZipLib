@@ -185,7 +185,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			}
 
 			// 1. Check the two magic bytes
-			Crc32 headCRC = new Crc32();
+			var headCRC = new Crc32();
 			int magic = inputBuffer.ReadLeByte();
 
 			if (magic < 0) {

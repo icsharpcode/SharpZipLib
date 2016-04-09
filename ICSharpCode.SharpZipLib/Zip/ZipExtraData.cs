@@ -232,17 +232,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 				helperStream.WriteByte((byte)_flags);     // Flags
 				if ( (_flags & Flags.ModificationTime) != 0) {
 					TimeSpan span = _modificationTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
-					int seconds = (int)span.TotalSeconds;
+					var seconds = (int)span.TotalSeconds;
 					helperStream.WriteLEInt(seconds);
 				}
 				if ( (_flags & Flags.AccessTime) != 0) {
 					TimeSpan span = _lastAccessTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
-					int seconds = (int)span.TotalSeconds;
+					var seconds = (int)span.TotalSeconds;
 					helperStream.WriteLEInt(seconds);
 				}
 				if ( (_flags & Flags.CreateTime) != 0) {
 					TimeSpan span = _createTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime();
-					int seconds = (int)span.TotalSeconds;
+					var seconds = (int)span.TotalSeconds;
 					helperStream.WriteLEInt(seconds);
 				}
 				return ms.ToArray();

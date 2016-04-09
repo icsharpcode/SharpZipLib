@@ -208,7 +208,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// Convert any invalid characters using the replacement one.
 			index = name.IndexOfAny(InvalidEntryChars);
 			if (index >= 0) {
-				StringBuilder builder = new StringBuilder(name);
+				var builder = new StringBuilder(name);
 
 				while (index >= 0 ) {
 					builder[index] = replacement;

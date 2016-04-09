@@ -139,7 +139,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ArgumentNullException(nameof(inputStream));
 			}
 
-			TarInputStream tarStream = inputStream as TarInputStream;
+			var tarStream = inputStream as TarInputStream;
 
 		    TarArchive result;
 			if ( tarStream != null ) {
@@ -181,7 +181,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ArgumentNullException(nameof(outputStream));
 			}
 			
-            TarOutputStream tarStream = outputStream as TarOutputStream;
+            var tarStream = outputStream as TarOutputStream;
 
 		    TarArchive result;
 			if ( tarStream != null ) {
@@ -575,7 +575,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				EnsureDirectoryExists(parentDirectory);
 				
 				bool process = true;
-				FileInfo fileInfo = new FileInfo(destFile);
+				var fileInfo = new FileInfo(destFile);
 				if (fileInfo.Exists) {
 					if (keepOldFiles) {
 						OnProgressMessageEvent(entry, "Destination file already exists");
@@ -687,7 +687,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			string tempFileName = null;
 			string entryFilename   = sourceEntry.File;
 			
-			TarEntry entry = (TarEntry)sourceEntry.Clone();
+			var entry = (TarEntry)sourceEntry.Clone();
 
 			if ( applyUserInfoOverrides ) {
 				entry.GroupId = groupId;

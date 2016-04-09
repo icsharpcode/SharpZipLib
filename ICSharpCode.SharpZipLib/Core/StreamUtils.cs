@@ -202,7 +202,7 @@ namespace ICSharpCode.SharpZipLib.Core
 			}
 
 			// Always fire 0% progress..
-			ProgressEventArgs args = new ProgressEventArgs(name, processed, target);
+			var args = new ProgressEventArgs(name, processed, target);
 			progressHandler(sender, args);
 
 			bool progressFired = true;

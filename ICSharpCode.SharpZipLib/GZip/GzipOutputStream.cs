@@ -204,8 +204,8 @@ namespace ICSharpCode.SharpZipLib.GZip
                 state_=OutputState.Finished;
                 base.Finish();
 
-                uint totalin=(uint)(deflater_.TotalIn&0xffffffff);
-                uint crcval=(uint)(crc.Value&0xffffffff);
+                var totalin=(uint)(deflater_.TotalIn&0xffffffff);
+                var crcval=(uint)(crc.Value&0xffffffff);
 
                 byte[] gzipFooter;
 
@@ -232,7 +232,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			{
                 state_=OutputState.Footer;
 
-				int mod_time = (int)((DateTime.Now.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000L);  // Ticks give back 100ns intervals
+				var mod_time = (int)((DateTime.Now.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000L);  // Ticks give back 100ns intervals
 				byte[] gzipHeader = {
 					// The two magic bytes
 					(byte) (GZipConstants.GZIP_MAGIC >> 8), (byte) (GZipConstants.GZIP_MAGIC & 0xff),

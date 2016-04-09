@@ -380,7 +380,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ZipException("Entry name too long.");
 			}
 
-			ZipExtraData ed = new ZipExtraData(entry.ExtraData);
+			var ed = new ZipExtraData(entry.ExtraData);
 
 			if (entry.LocalHeaderRequiresZip64) {
 				ed.StartNewEntry();
@@ -573,7 +573,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			InitializePassword(Password);
 			
 			byte[] cryptBuffer = new byte[ZipConstants.CryptoHeaderSize];
-			Random rnd = new Random();
+			var rnd = new Random();
 			rnd.NextBytes(cryptBuffer);
 			cryptBuffer[11] = (byte)(crcValue >> 24);
 			
@@ -751,7 +751,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					throw new ZipException("Name too long.");
 				}
 				
-				ZipExtraData ed = new ZipExtraData(entry.ExtraData);
+				var ed = new ZipExtraData(entry.ExtraData);
 
 				if ( entry.CentralHeaderRequiresZip64 ) {
 					ed.StartNewEntry();

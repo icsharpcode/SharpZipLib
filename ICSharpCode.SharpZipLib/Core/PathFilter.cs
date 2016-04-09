@@ -147,7 +147,7 @@ namespace ICSharpCode.SharpZipLib.Core
 			bool result = base.IsMatch(name);
 
 			if ( result ) {
-				FileInfo fileInfo = new FileInfo(name);
+				var fileInfo = new FileInfo(name);
 				result = 
 					(MinSize <= fileInfo.Length) &&
 					(MaxSize >= fileInfo.Length) &&
@@ -286,7 +286,7 @@ namespace ICSharpCode.SharpZipLib.Core
 			bool result = base.IsMatch(name);
 
 			if ( result ) {
-				FileInfo fileInfo = new FileInfo(name);
+				var fileInfo = new FileInfo(name);
 				long length = fileInfo.Length;
 				result = 
 					(MinSize <= length) &&

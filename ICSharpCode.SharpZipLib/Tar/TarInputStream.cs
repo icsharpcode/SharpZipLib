@@ -276,7 +276,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					throw new TarException("unexpected EOF with " + numToRead + " bytes unread");
 				}
 				
-				int sz     = (int)numToRead;
+				var sz     = (int)numToRead;
 				int recLen = rec.Length;
 				
 				if (recLen > sz) 
@@ -446,7 +446,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				currentEntry = null;
 			} else {
 				try {
-					TarHeader header = new TarHeader();
+					var header = new TarHeader();
 					header.ParseBuffer(headerBuf);
 					if ( !header.IsChecksumValid )
 					{

@@ -363,7 +363,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		void OnKeysRequired(string fileName)
 		{
 			if (KeysRequired != null) {
-				KeysRequiredEventArgs krea = new KeysRequiredEventArgs(fileName, key);
+				var krea = new KeysRequiredEventArgs(fileName, key);
 				KeysRequired(this, krea);
 				key = krea.Key;
 			}
@@ -566,7 +566,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			FileStream fs = File.Create(fileName);
 			
-			ZipFile result = new ZipFile();
+			var result = new ZipFile();
 			result.name_ = fileName;
 			result.baseStream_ = fs;
 			result.isStreamOwner = true;
@@ -594,7 +594,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentException("Stream is not seekable", nameof(outStream));
 			}
 
-			ZipFile result = new ZipFile();
+			var result = new ZipFile();
 			result.baseStream_ = outStream;
 			return result;
 		}
@@ -869,7 +869,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ObjectDisposedException("ZipFile");
 			}
 			
-			TestStatus status = new TestStatus(this);
+			var status = new TestStatus(this);
 
 			if ( resultHandler != null ) {
 				resultHandler(status, null);
@@ -911,7 +911,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 							resultHandler(status, null);
 						}
 
-                        Crc32 crc = new Crc32();
+                        var crc = new Crc32();
 
                         using (Stream entryStream = this.GetInputStream(this[entryIndex]))
                         {
@@ -945,8 +945,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 						}
 
 						if (( this[entryIndex].Flags & (int)GeneralBitFlags.Descriptor) != 0 ) {
-							ZipHelperStream helper = new ZipHelperStream(baseStream_);
-							DescriptorData data = new DescriptorData();
+							var helper = new ZipHelperStream(baseStream_);
+							var data = new DescriptorData();
 							helper.ReadDataDescriptor(this[entryIndex].LocalHeaderRequiresZip64, data);
 							if (this[entryIndex].Crc != data.Crc) {
 								status.AddError();
@@ -1022,11 +1022,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 					throw new ZipException(string.Format("Wrong local header signature @{0:X}", offsetOfFirstEntry + entry.Offset));
 				}
 
-				short extractVersion = ( short ) (ReadLEUshort() & 0x00ff);
-				short localFlags = ( short )ReadLEUshort();
-				short compressionMethod = ( short )ReadLEUshort();
-				short fileTime = ( short )ReadLEUshort();
-				short fileDate = ( short )ReadLEUshort();
+				var extractVersion = ( short ) (ReadLEUshort() & 0x00ff);
+				var localFlags = ( short )ReadLEUshort();
+				var compressionMethod = ( short )ReadLEUshort();
+				var fileTime = ( short )ReadLEUshort();
+				var fileDate = ( short )ReadLEUshort();
 				uint crcValue = ReadLEUint();
 				long compressedSize = ReadLEUint();
 				long size = ReadLEUint();
@@ -1039,7 +1039,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				byte[] extraData = new byte[extraDataLength];
 				StreamUtils.ReadFully(baseStream_, extraData);
 
-				ZipExtraData localExtraData = new ZipExtraData(extraData);
+				var localExtraData = new ZipExtraData(extraData);
 
 				// Extra data / zip64 checks
 				if (localExtraData.Find(1))
@@ -1968,7 +1968,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ZipException("Entry name too long.");
 			}
 
-			ZipExtraData ed = new ZipExtraData(entry.ExtraData);
+			var ed = new ZipExtraData(entry.ExtraData);
 
 			if ( entry.LocalHeaderRequiresZip64 ) {
 				ed.StartNewEntry();
@@ -2059,7 +2059,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLEShort(name.Length);
 
 			// Central header extra data is different to local header version so regenerate.
-			ZipExtraData ed = new ZipExtraData(entry.ExtraData);
+			var ed = new ZipExtraData(entry.ExtraData);
 
 			if ( entry.CentralHeaderRequiresZip64 ) {
 				ed.StartNewEntry();
@@ -2203,7 +2203,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			// NOTE: Compressed size is updated elsewhere.
-			Crc32 crc = new Crc32();
+			var crc = new Crc32();
 			byte[] buffer = GetBuffer();
 
 			long targetBytes = bytesToCopy;
@@ -2260,7 +2260,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int bytesToCopy = GetDescriptorSize(update);
 
 			while ( bytesToCopy > 0 ) {
-				int readSize = (int)bytesToCopy;
+				var readSize = (int)bytesToCopy;
 				byte[] buffer = GetBuffer();
 
 				stream.Position = sourcePosition;
@@ -2283,7 +2283,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			long bytesToCopy = update.Entry.CompressedSize;
 			
 			// NOTE: Compressed size is updated elsewhere.
-			Crc32 crc = new Crc32();
+			var crc = new Crc32();
 			byte[] buffer = GetBuffer();
 
 			long targetBytes = bytesToCopy;
@@ -2396,7 +2396,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					break;
 
 				case CompressionMethod.Deflated:
-					DeflaterOutputStream dos = new DeflaterOutputStream(result, new Deflater(9, true));
+					var dos = new DeflaterOutputStream(result, new Deflater(9, true));
 					dos.IsStreamOwner = false;
 					result = dos;
 					break;
@@ -2445,7 +2445,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					if ((update.OutEntry.Flags & (int)GeneralBitFlags.Descriptor) == (int)GeneralBitFlags.Descriptor)
 					{
-						ZipHelperStream helper = new ZipHelperStream(workFile.baseStream_);
+						var helper = new ZipHelperStream(workFile.baseStream_);
 						helper.WriteDataDescriptor(update.OutEntry);
 					}
 				}
@@ -2637,8 +2637,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				object x,
 				object y)
 			{
-				ZipUpdate zx = x as ZipUpdate;
-				ZipUpdate zy = y as ZipUpdate;
+				var zx = x as ZipUpdate;
+				var zy = y as ZipUpdate;
 
 				int result;
 
@@ -3194,8 +3194,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				int method             = ReadLEUshort();
 				uint dostime           = ReadLEUint();
 				uint crc               = ReadLEUint();
-				long csize             = (long)ReadLEUint();
-				long size              = (long)ReadLEUint();
+				var csize             = (long)ReadLEUint();
+				var size              = (long)ReadLEUint();
 				int nameLen            = ReadLEUshort();
 				int extraLen           = ReadLEUshort();
 				int commentLen         = ReadLEUshort();
@@ -3211,7 +3211,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				StreamUtils.ReadFully(baseStream_, buffer, 0, nameLen);
 				string name = ZipConstants.ConvertToStringExt(bitFlags, buffer, nameLen);
 				
-				ZipEntry entry = new ZipEntry(name, versionToExtract, versionMadeBy, (CompressionMethod)method);
+				var entry = new ZipEntry(name, versionToExtract, versionMadeBy, (CompressionMethod)method);
 				entry.Crc = crc & 0xffffffffL;
 				entry.Size = size & 0xffffffffL;
 				entry.CompressedSize = csize & 0xffffffffL;
@@ -3270,7 +3270,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if ( (entry.Version < ZipConstants.VersionStrongEncryption)
 				|| (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0) {
-				PkzipClassicManaged classicManaged = new PkzipClassicManaged();
+				var classicManaged = new PkzipClassicManaged();
 
 				OnKeysRequired(entry.Name);
 				if (HaveKeys == false) {
@@ -3298,7 +3298,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					baseStream.Read(pwdVerifyRead, 0, 2);
 					int blockSize = entry.AESKeySize / 8;	// bits to bytes
 
-					ZipAESTransform decryptor = new ZipAESTransform(rawPassword_, saltBytes, blockSize, false);
+					var decryptor = new ZipAESTransform(rawPassword_, saltBytes, blockSize, false);
 					byte[] pwdVerifyCalc = decryptor.PwdVerifier;
 					if (pwdVerifyCalc[0] != pwdVerifyRead[0] || pwdVerifyCalc[1] != pwdVerifyRead[1])
 						throw new Exception("Invalid password for AES");
@@ -3319,7 +3319,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			CryptoStream result = null;
 			if ( (entry.Version < ZipConstants.VersionStrongEncryption)
 				|| (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0) {
-				PkzipClassicManaged classicManaged = new PkzipClassicManaged();
+				var classicManaged = new PkzipClassicManaged();
 
 				OnKeysRequired(entry.Name);
 				if (HaveKeys == false) {
@@ -3354,7 +3354,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		static void WriteEncryptionHeader(Stream stream, long crcValue)
 		{
 			byte[] cryptBuffer = new byte[ZipConstants.CryptoHeaderSize];
-			Random rnd = new Random();
+			var rnd = new Random();
 			rnd.NextBytes(cryptBuffer);
 			cryptBuffer[11] = (byte)(crcValue >> 24);
 			stream.Write(cryptBuffer, 0, cryptBuffer.Length);
