@@ -90,7 +90,7 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		/// Reads a sequence of bytes from the current CryptoStream into buffer,
 		/// and advances the position within the stream by the number of bytes read.
 		/// </summary>
-		public override int Read(byte[] outBuffer, int offset, int count) {
+		public override int Read(byte[] buffer, int offset, int count) {
 			int nBytes = 0;
 			while (nBytes < count) {
 				// Calculate buffer quantities vs read-ahead size, and check for sufficient free space
@@ -119,7 +119,7 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 					_transform.TransformBlock(_slideBuffer,
 											  _slideBufStartPos,
 											  CRYPTO_BLOCK_SIZE,
-											  outBuffer,
+											  buffer,
 											  offset);
 					nBytes += CRYPTO_BLOCK_SIZE;
 					offset += CRYPTO_BLOCK_SIZE;
@@ -132,7 +132,7 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 						_transform.TransformBlock(_slideBuffer,
 												  _slideBufStartPos,
 												  finalBlock,
-												  outBuffer,
+												  buffer,
 												  offset);
 
 						nBytes += finalBlock;
