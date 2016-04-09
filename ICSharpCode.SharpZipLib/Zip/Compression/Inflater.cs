@@ -476,9 +476,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					}
 					input.DropBits(3);
 					
-					if ((type & 1) != 0) {
-						isLastBlock = true;
-					}
+					isLastBlock |= (type & 1) != 0;
 					switch (type >> 1){
 						case DeflaterConstants.STORED_BLOCK:
 							input.SkipToByteBoundary();

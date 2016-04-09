@@ -466,11 +466,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			bool result = false;
 			if ( (known & Known.ExternalAttributes) != 0 ) {
-				if ( ((HostSystem == (int)HostSystemID.Msdos) || 
-					(HostSystem == (int)HostSystemID.WindowsNT)) && 
-					(ExternalFileAttributes & attributes) == attributes) {
-					result = true;
-				}
+				result |= (((HostSystem == (int)HostSystemID.Msdos) ||
+					(HostSystem == (int)HostSystemID.WindowsNT)) &&
+					(ExternalFileAttributes & attributes) == attributes);
 			}
 			return result;
 		}

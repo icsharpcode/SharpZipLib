@@ -440,9 +440,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			
 			if (headerBuf == null) {
 				hasHitEOF = true;
-			} else if (TarBuffer.IsEndOfArchiveBlock(headerBuf)) {
-				hasHitEOF = true;
-			}
+			} else hasHitEOF |= TarBuffer.IsEndOfArchiveBlock(headerBuf);
 			
 			if (hasHitEOF) {
 				currentEntry = null;

@@ -2477,10 +2477,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		void CopyEntryDirect(ZipFile workFile, ZipUpdate update, ref long destinationPosition)
 		{
-			bool skipOver = false;
-			if ( update.Entry.Offset == destinationPosition ) {
-				skipOver = true;
-			}
+			bool skipOver = false || update.Entry.Offset == destinationPosition;
 
 			if ( !skipOver ) {
 				baseStream_.Position = destinationPosition;

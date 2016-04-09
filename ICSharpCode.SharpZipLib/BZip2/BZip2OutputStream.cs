@@ -1741,10 +1741,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 						j++;
 					}
 					len[i - 1] = (char)j;
-					if (j > maxLen) 
-					{
-						tooLong = true;
-					}
+					tooLong |= j > maxLen;
 				}
 				
 				if (!tooLong) 
