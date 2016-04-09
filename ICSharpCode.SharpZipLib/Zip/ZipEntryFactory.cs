@@ -233,7 +233,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns a new <see cref="ZipEntry"/> based on the <paramref name="fileName"/>.</returns>
 		public ZipEntry MakeFileEntry(string fileName, string entryName, bool useFileSystem)
 		{
-			var result = new ZipEntry(nameTransform_.TransformFile(entryName != null && entryName.Length > 0 ? entryName : fileName));
+			var result = new ZipEntry(nameTransform_.TransformFile(!string.IsNullOrEmpty(entryName)? entryName : fileName));
 			result.IsUnicodeText = isUnicodeText_;
 
 			int externalAttributes = 0;

@@ -140,7 +140,7 @@ namespace ICSharpCode.SharpZipLib.Core
 
 			var result = new ArrayList();
 
-			if ((original != null) && (original.Length > 0)) {
+			if (!string.IsNullOrEmpty(original)) {
 				int endIndex = -1;
 				var b = new StringBuilder();
 

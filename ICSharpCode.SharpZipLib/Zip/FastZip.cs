@@ -635,7 +635,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					targetName = extractNameTransform_.TransformDirectory(targetName);
 				}
 				
-				doExtraction = !((targetName == null) || (targetName.Length == 0));
+				doExtraction = !(string.IsNullOrEmpty(targetName));
 			}
 			
 			// TODO: Fire delegate/throw exception were compression method not supported, or name is invalid?
@@ -694,8 +694,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 #else
 		static bool NameIsValid(string name)
 		{
-			return (name != null) &&
-				(name.Length > 0) &&
+			return !string.IsNullOrEmpty(name)&&
 				(name.IndexOfAny(Path.GetInvalidPathChars()) < 0);
 		}
 #endif

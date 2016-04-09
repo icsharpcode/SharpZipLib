@@ -765,7 +765,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					}
 				}
 				
-				if ( (tempFileName != null) && (tempFileName.Length > 0) ) {
+				if ( !string.IsNullOrEmpty(tempFileName)) {
 					File.Delete(tempFileName);
 				}
 				
