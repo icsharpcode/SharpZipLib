@@ -186,7 +186,9 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			get { return hasMatchingFiles_; }
 		}
-		
+
+		readonly
+
 		#region Instance Fields
 		bool hasMatchingFiles_;
 		#endregion

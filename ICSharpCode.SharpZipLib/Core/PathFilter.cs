@@ -73,6 +73,8 @@ namespace ICSharpCode.SharpZipLib.Core
 			}
 			return result;
 		}
+
+		readonly
 		#endregion
 
 		#region Instance Fields

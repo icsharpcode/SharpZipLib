@@ -3682,6 +3682,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				baseStream_.Write(buffer, offset, count);
 			}
 
+			readonly
+
 			#region Instance Fields
 			Stream baseStream_;
 			#endregion
@@ -4003,6 +4005,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			return File.Open(fileName_, FileMode.Open, FileAccess.Read, FileShare.Read);
 		}
+
+		readonly
 
 		#endregion
 		#region Instance Fields

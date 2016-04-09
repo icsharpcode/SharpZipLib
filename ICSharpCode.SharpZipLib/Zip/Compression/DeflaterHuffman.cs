@@ -108,8 +108,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			public int     numCodes;
 			
 			short[] codes;
-			int[]   bl_counts;
-			int     maxLength;
+			readonly int[] bl_counts;
+			readonly int maxLength;
 			DeflaterHuffman dh;
 			#endregion
 

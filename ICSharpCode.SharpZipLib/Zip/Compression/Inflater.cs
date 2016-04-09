@@ -172,8 +172,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// footer.
 		/// </summary>
 		bool noHeader;
-		
-		StreamManipulator input;
+		readonly StreamManipulator input;
 		OutputWindow outputWindow;
 		InflaterDynHeader dynHeader;
 		InflaterHuffmanTree litlenTree, distTree;

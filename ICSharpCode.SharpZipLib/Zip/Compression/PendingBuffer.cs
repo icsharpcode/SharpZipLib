@@ -51,12 +51,13 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 	/// </summary>
 	public class PendingBuffer
 	{
+		readonly
 		#region Instance Fields
 		/// <summary>
 		/// Internal work buffer
 		/// </summary>
 		byte[] buffer_;
-		
+
 		int    start;
 		int    end;
 		
