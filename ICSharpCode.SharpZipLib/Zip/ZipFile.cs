@@ -900,9 +900,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 								string.Format("Exception during test - '{0}'", ex.Message));
 						}
 
-						if ( strategy == TestStrategy.FindFirstError ) {
-							testing = false; 
-						}
+						testing &= strategy != TestStrategy.FindFirstError;
 					}
 
 					if ( testing && testData && this[entryIndex].IsFile ) {
@@ -939,9 +937,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 								resultHandler(status, "CRC mismatch");
 							}
 
-							if ( strategy == TestStrategy.FindFirstError ) {
-								testing = false;
-							}
+							testing &= strategy != TestStrategy.FindFirstError;
 						}
 
 						if (( this[entryIndex].Flags & (int)GeneralBitFlags.Descriptor) != 0 ) {

@@ -156,10 +156,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			{
 				bool empty = true;
 				for (int i = 0; i < freqs.Length; i++) {
-					if (freqs[i] != 0) {
-						//Console.WriteLine("freqs[" + i + "] == " + freqs[i]);
-						empty = false;
-					}
+					empty &= freqs[i] == 0;
 				}
 				
 				if (!empty) {
