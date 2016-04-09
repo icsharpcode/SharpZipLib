@@ -47,7 +47,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Delegate to invoke when processing directories.
 		/// </summary>
-		public ProcessDirectoryHandler ProcessDirectory;
+		public event EventHandler<DirectoryEventArgs> ProcessDirectory;
 		
 		/// <summary>
 		/// Delegate to invoke when processing files.
@@ -156,7 +156,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public bool OnProcessDirectory(string directory, bool hasMatchingFiles)
 		{
 			bool result = true;
-			ProcessDirectoryHandler handler = ProcessDirectory;
+			EventHandler<DirectoryEventArgs> handler = ProcessDirectory;
 			if ( handler != null ) {
 				DirectoryEventArgs args = new DirectoryEventArgs(directory, hasMatchingFiles);
 				handler(this, args);
@@ -378,7 +378,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				FileSystemScanner scanner = new FileSystemScanner(fileFilter, directoryFilter);
 				scanner.ProcessFile += new ProcessFileHandler(ProcessFile);
 				if ( this.CreateEmptyDirectories ) {
-					scanner.ProcessDirectory += new ProcessDirectoryHandler(ProcessDirectory);
+					scanner.ProcessDirectory += new EventHandler<DirectoryEventArgs>(ProcessDirectory);
 				}
 				
 				if (events_ != null) {

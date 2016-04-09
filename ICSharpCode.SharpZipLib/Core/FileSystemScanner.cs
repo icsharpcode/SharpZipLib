@@ -247,11 +247,6 @@ namespace ICSharpCode.SharpZipLib.Core
 	
 	#region Delegates
 	/// <summary>
-	/// Delegate invoked before starting to process a directory.
-	/// </summary>
-	public delegate void ProcessDirectoryHandler(object sender, DirectoryEventArgs e);
-	
-	/// <summary>
 	/// Delegate invoked before starting to process a file.
 	/// </summary>
 	/// <param name="sender">The source of the event</param>
@@ -338,7 +333,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Delegate to invoke when a directory is processed.
 		/// </summary>
-		public ProcessDirectoryHandler ProcessDirectory;
+		public event EventHandler<DirectoryEventArgs> ProcessDirectory;
 		
 		/// <summary>
 		/// Delegate to invoke when a file is processed.
@@ -435,7 +430,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="hasMatchingFiles">Flag indicating if the directory has matching files.</param>
 		void OnProcessDirectory(string directory, bool hasMatchingFiles)
 		{
-			ProcessDirectoryHandler handler = ProcessDirectory;
+			EventHandler<DirectoryEventArgs> handler = ProcessDirectory;
 
 			if ( handler != null ) {
 				DirectoryEventArgs args = new DirectoryEventArgs(directory, hasMatchingFiles);
