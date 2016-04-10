@@ -486,7 +486,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		int InitialRead(byte[] destination, int offset, int count)
 		{
 			if ( !CanDecompressEntry ) {
-				throw new ZipException("Library cannot extract this entry. Version required is (" + entry.Version.ToString() + ")");
+				throw new ZipException("Library cannot extract this entry. Version required is (" + entry.Version + ")");
 			}
 			
 			// Handle encryption if required.
