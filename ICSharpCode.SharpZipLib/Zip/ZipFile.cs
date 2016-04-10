@@ -3608,10 +3608,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				get	{
 					return baseStream_.Position;
 				}
-				
-				set
-				{
-				}
 			}
 
 			/// <summary>
