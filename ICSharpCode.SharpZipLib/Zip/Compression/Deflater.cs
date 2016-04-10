@@ -441,37 +441,44 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				}
 				
 				if (!engine.Deflate((state & IS_FLUSHING) != 0, (state & IS_FINISHING) != 0)) {
-					if (state == BUSY_STATE) {
-						// We need more input now
-						return origLength - length;
-					} else if (state == FLUSHING_STATE) {
-						if (level != NO_COMPRESSION) {
-							/* We have to supply some lookahead.  8 bit lookahead
-							 * is needed by the zlib inflater, and we must fill
-							 * the next byte, so that all bits are flushed.
-							 */
-							int neededbits = 8 + ((-pending.BitCount) & 7);
-							while (neededbits > 0) {
-								/* write a static tree block consisting solely of
-								 * an EOF:
-								 */
-								pending.WriteBits(2, 10);
-								neededbits -= 10;
-							}
-						}
-						state = BUSY_STATE;
-					} else if (state == FINISHING_STATE) {
-						pending.AlignToByte();
+                    switch (state)
+                    {
+                        case BUSY_STATE:
+                            // We need more input now
+                            return origLength - length;
+                        case FLUSHING_STATE:
+                            if (level != NO_COMPRESSION)
+                            {
+                                /* We have to supply some lookahead.  8 bit lookahead
+                                 * is needed by the zlib inflater, and we must fill
+                                 * the next byte, so that all bits are flushed.
+                                 */
+                                int neededbits = 8 + ((-pending.BitCount) & 7);
+                                while (neededbits > 0)
+                                {
+                                    /* write a static tree block consisting solely of
+                                     * an EOF:
+                                     */
+                                    pending.WriteBits(2, 10);
+                                    neededbits -= 10;
+                                }
+                            }
+                            state = BUSY_STATE;
+                            break;
+                        case FINISHING_STATE:
+                            pending.AlignToByte();
 
-						// Compressed data is complete.  Write footer information if required.
-						if (!noZlibHeaderOrFooter) {
-							int adler = engine.Adler;
-							pending.WriteShortMSB(adler >> 16);
-							pending.WriteShortMSB(adler & 0xffff);
-						}
-						state = FINISHED_STATE;
-					}
-				}
+                            // Compressed data is complete.  Write footer information if required.
+                            if (!noZlibHeaderOrFooter)
+                            {
+                                int adler = engine.Adler;
+                                pending.WriteShortMSB(adler >> 16);
+                                pending.WriteShortMSB(adler & 0xffff);
+                            }
+                            state = FINISHED_STATE;
+                            break;
+                    }
+                }
 			}
 			return origLength - length;
 		}
