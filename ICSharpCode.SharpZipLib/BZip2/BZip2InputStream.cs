@@ -265,8 +265,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				case NO_RAND_PART_A_STATE:
 				case RAND_PART_A_STATE:
 					break;
-				default:
-					break;
 			}
 			return retChar;
 		}
