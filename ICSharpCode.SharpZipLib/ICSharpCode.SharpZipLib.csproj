@@ -129,10 +129,6 @@
       <Link>SharpZipLibCodeMap.dgml</Link>
     </None>
     <None Include="ICSharpCode.SharpZipLib.snk" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\RefactoringEssentials.4.0.0\analyzers\dotnet\RefactoringEssentials.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
