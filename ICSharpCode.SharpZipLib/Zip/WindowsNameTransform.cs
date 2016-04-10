@@ -147,7 +147,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			bool result = 
 				(name != null) &&
 				(name.Length <= MaxPath) &&
-				(string.Compare(name, MakeValidName(name, '_')) == 0)
+				(string.Compare(name, MakeValidName(name, '_'), StringComparison.Ordinal) == 0)
 				;
 
 			return result;
