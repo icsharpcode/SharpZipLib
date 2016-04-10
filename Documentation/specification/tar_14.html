@@ -1,0 +1,1327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html>
+<!--
+This manual is for GNU tar (version
+1.28, 22 July 2014), which creates and extracts files
+from archives.
+
+Copyright C 1992, 1994-1997, 1999-2001, 2003-2013 Free
+Software Foundation, Inc.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with the
+Invariant Sections being "GNU General Public License", with the
+Front-Cover Texts being "A GNU Manual", and with the Back-Cover Texts
+as in (a) below.  A copy of the license is included in the section
+entitled "GNU Free Documentation License".
+
+(a) The FSF's Back-Cover Text is: "You have the freedom to
+copy and modify this GNU manual."
+
+-->
+<!-- Created on July, 28 2014 by texi2html 1.76 -->
+<!--
+Written by: Lionel Cons <Lionel.Cons@cern.ch> (original author)
+            Karl Berry  <karl@freefriends.org>
+            Olaf Bachmann <obachman@mathematik.uni-kl.de>
+            and many others.
+Maintained by: Many creative people <dev@texi2html.cvshome.org>
+Send bugs and suggestions to <users@texi2html.cvshome.org>
+
+-->
+<head>
+<title>GNU tar 1.28: D. Tar Internals</title>
+
+<meta name="description" content="GNU tar 1.28: D. Tar Internals">
+<meta name="keywords" content="GNU tar 1.28: D. Tar Internals">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="texi2html 1.76">
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+pre.display {font-family: serif}
+pre.format {font-family: serif}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: serif; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: serif; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.sansserif {font-family:sans-serif; font-weight:normal;}
+ul.toc {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en" bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
+
+<a name="Tar-Internals"></a>
+<a name="SEC183"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="tar_13.html#SEC182" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC184" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar_13.html#SEC182" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_15.html#SEC192" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h1 class="appendix"> D. Tar Internals </h1>
+
+
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC184">Basic Tar Format</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC185"><acronym>GNU</acronym> Extensions to the Archive Format</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC186">Storing Sparse Files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC190">Format of the Incremental Snapshot Files</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC191">Dumpdir</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+</table>
+
+<hr size="6">
+<a name="Standard"></a>
+<a name="SEC184"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC183" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC185" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC183" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC183" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_15.html#SEC192" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="unnumberedsec"> Basic Tar Format </h2>
+<blockquote><p><em>(This message will disappear, once this node revised.)</em>
+</p></blockquote>
+
+
+<p>While an archive may contain many files, the archive itself is a
+single ordinary file.  Like any other file, an archive file can be
+written to a storage device such as a tape or disk, sent through a
+pipe or over a network, saved on the active file system, or even
+stored in another archive.  An archive file is not easy to read or
+manipulate without using the <code>tar</code> utility or Tar mode in
+<acronym>GNU</acronym> Emacs.
+</p>
+<p>Physically, an archive consists of a series of file entries terminated
+by an end-of-archive entry, which consists of two 512 blocks of zero
+bytes.  A file
+entry usually describes one of the files in the archive (an
+<em>archive member</em>), and consists of a file header and the contents
+of the file.  File headers contain file names and statistics, checksum
+information which <code>tar</code> uses to detect file corruption, and
+information about file types.
+</p>
+<p>Archives are permitted to have more than one member with the same
+member name.  One way this situation can occur is if more than one
+version of a file has been stored in the archive.  For information
+about adding new versions of a file to an archive, see <a href="tar_4.html#SEC62">Updating an Archive</a>.
+</p>
+<p>In addition to entries describing archive members, an archive may
+contain entries which <code>tar</code> itself uses to store information.
+See section <a href="tar_9.html#SEC167">Including a Label in the Archive</a>, for an example of such an archive entry.
+</p>
+<p>A <code>tar</code> archive file contains a series of blocks.  Each block
+contains <code>BLOCKSIZE</code> bytes.  Although this format may be thought
+of as being on magnetic tape, other media are often used.
+</p>
+<p>Each file archived is represented by a header block which describes
+the file, followed by zero or more blocks which give the contents
+of the file.  At the end of the archive file there are two 512-byte blocks
+filled with binary zeros as an end-of-file marker.  A reasonable system
+should write such end-of-file marker at the end of an archive, but
+must not assume that such a block exists when reading an archive.  In
+particular <acronym>GNU</acronym> <code>tar</code> always issues a warning if it does not encounter it.
+</p>
+<p>The blocks may be <em>blocked</em> for physical I/O operations.
+Each record of <var>n</var> blocks (where <var>n</var> is set by the
+<samp>`--blocking-factor=<var>512-size</var>'</samp> (<samp>`-b <var>512-size</var>'</samp>) option to <code>tar</code>) is written with a single
+<samp>`write ()'</samp> operation.  On magnetic tapes, the result of
+such a write is a single record.  When writing an archive,
+the last record of blocks should be written at the full size, with
+blocks after the zero block containing all zeros.  When reading
+an archive, a reasonable system should properly handle an archive
+whose last record is shorter than the rest, or which contains garbage
+records after a zero block.
+</p>
+<p>The header block is defined in C as follows.  In the <acronym>GNU</acronym> <code>tar</code>
+distribution, this is part of file <tt>`src/tar.h'</tt>:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">
+
+/* tar Header Block, from POSIX 1003.1-1990.  */
+
+/* POSIX header.  */
+
+struct posix_header
+{                              /* byte offset */
+  char name[100];               /*   0 */
+  char mode[8];                 /* 100 */
+  char uid[8];                  /* 108 */
+  char gid[8];                  /* 116 */
+  char size[12];                /* 124 */
+  char mtime[12];               /* 136 */
+  char chksum[8];               /* 148 */
+  char typeflag;                /* 156 */
+  char linkname[100];           /* 157 */
+  char magic[6];                /* 257 */
+  char version[2];              /* 263 */
+  char uname[32];               /* 265 */
+  char gname[32];               /* 297 */
+  char devmajor[8];             /* 329 */
+  char devminor[8];             /* 337 */
+  char prefix[155];             /* 345 */
+                                /* 500 */
+};
+
+#define TMAGIC   &quot;ustar&quot;        /* ustar and a null */
+#define TMAGLEN  6
+#define TVERSION &quot;00&quot;           /* 00 and no null */
+#define TVERSLEN 2
+
+/* Values used in typeflag field.  */
+#define REGTYPE  '0'            /* regular file */
+#define AREGTYPE '\0'           /* regular file */
+#define LNKTYPE  '1'            /* link */
+#define SYMTYPE  '2'            /* reserved */
+#define CHRTYPE  '3'            /* character special */
+#define BLKTYPE  '4'            /* block special */
+#define DIRTYPE  '5'            /* directory */
+#define FIFOTYPE '6'            /* FIFO special */
+#define CONTTYPE '7'            /* reserved */
+
+#define XHDTYPE  'x'            /* Extended header referring to the
+                                   next file in the archive */
+#define XGLTYPE  'g'            /* Global extended header */
+
+/* Bits used in the mode field, values in octal.  */
+#define TSUID    04000          /* set UID on execution */
+#define TSGID    02000          /* set GID on execution */
+#define TSVTX    01000          /* reserved */
+                                /* file permissions */
+#define TUREAD   00400          /* read by owner */
+#define TUWRITE  00200          /* write by owner */
+#define TUEXEC   00100          /* execute/search by owner */
+#define TGREAD   00040          /* read by group */
+#define TGWRITE  00020          /* write by group */
+#define TGEXEC   00010          /* execute/search by group */
+#define TOREAD   00004          /* read by other */
+#define TOWRITE  00002          /* write by other */
+#define TOEXEC   00001          /* execute/search by other */
+
+/* tar Header Block, GNU extensions.  */
+
+/* In GNU tar, SYMTYPE is for to symbolic links, and CONTTYPE is for
+   contiguous files, so maybe disobeying the &quot;reserved&quot; comment in POSIX
+   header description.  I suspect these were meant to be used this way, and
+   should not have really been &quot;reserved&quot; in the published standards.  */
+
+/* *BEWARE* *BEWARE* *BEWARE* that the following information is still
+   boiling, and may change.  Even if the OLDGNU format description should be
+   accurate, the so-called GNU format is not yet fully decided.  It is
+   surely meant to use only extensions allowed by POSIX, but the sketch
+   below repeats some ugliness from the OLDGNU format, which should rather
+   go away.  Sparse files should be saved in such a way that they do *not*
+   require two passes at archive creation time.  Huge files get some POSIX
+   fields to overflow, alternate solutions have to be sought for this.  */
+
+/* Descriptor for a single file hole.  */
+
+struct sparse
+{                              /* byte offset */
+  char offset[12];              /*   0 */
+  char numbytes[12];            /*  12 */
+                                /*  24 */
+};
+
+/* Sparse files are not supported in POSIX ustar format.  For sparse files
+   with a POSIX header, a GNU extra header is provided which holds overall
+   sparse information and a few sparse descriptors.  When an old GNU header
+   replaces both the POSIX header and the GNU extra header, it holds some
+   sparse descriptors too.  Whether POSIX or not, if more sparse descriptors
+   are still needed, they are put into as many successive sparse headers as
+   necessary.  The following constants tell how many sparse descriptors fit
+   in each kind of header able to hold them.  */
+
+#define SPARSES_IN_EXTRA_HEADER  16
+#define SPARSES_IN_OLDGNU_HEADER 4
+#define SPARSES_IN_SPARSE_HEADER 21
+
+/* Extension header for sparse files, used immediately after the GNU extra
+   header, and used only if all sparse information cannot fit into that
+   extra header.  There might even be many such extension headers, one after
+   the other, until all sparse information has been recorded.  */
+
+struct sparse_header
+{                              /* byte offset */
+  struct sparse sp[SPARSES_IN_SPARSE_HEADER];
+                                /*   0 */
+  char isextended;              /* 504 */
+                                /* 505 */
+};
+
+/* The old GNU format header conflicts with POSIX format in such a way that
+   POSIX archives may fool old GNU tar's, and POSIX tar's might well be
+   fooled by old GNU tar archives.  An old GNU format header uses the space
+   used by the prefix field in a POSIX header, and cumulates information
+   normally found in a GNU extra header.  With an old GNU tar header, we
+   never see any POSIX header nor GNU extra header.  Supplementary sparse
+   headers are allowed, however.  */
+
+struct oldgnu_header
+{                              /* byte offset */
+  char unused_pad1[345];        /*   0 */
+  char atime[12];               /* 345 Incr. archive: atime of the file */
+  char ctime[12];               /* 357 Incr. archive: ctime of the file */
+  char offset[12];              /* 369 Multivolume archive: the offset of
+                                   the start of this volume */
+  char longnames[4];            /* 381 Not used */
+  char unused_pad2;             /* 385 */
+  struct sparse sp[SPARSES_IN_OLDGNU_HEADER];
+                                /* 386 */
+  char isextended;              /* 482 Sparse file: Extension sparse header
+                                   follows */
+  char realsize[12];            /* 483 Sparse file: Real size*/
+                                /* 495 */
+};
+
+/* OLDGNU_MAGIC uses both magic and version fields, which are contiguous.
+   Found in an archive, it indicates an old GNU header format, which will be
+   hopefully become obsolescent.  With OLDGNU_MAGIC, uname and gname are
+   valid, though the header is not truly POSIX conforming.  */
+#define OLDGNU_MAGIC &quot;ustar  &quot;  /* 7 chars and a null */
+
+/* The standards committee allows only capital A through capital Z for
+   user-defined expansion.  Other letters in use include:
+
+   'A' Solaris Access Control List
+   'E' Solaris Extended Attribute File
+   'I' Inode only, as in 'star'
+   'N' Obsolete GNU tar, for file names that do not fit into the main header.
+   'X' POSIX 1003.1-2001 eXtended (VU version)  */
+
+/* This is a dir entry that contains the names of files that were in the
+   dir at the time the dump was made.  */
+#define GNUTYPE_DUMPDIR 'D'
+
+/* Identifies the *next* file on the tape as having a long linkname.  */
+#define GNUTYPE_LONGLINK 'K'
+
+/* Identifies the *next* file on the tape as having a long name.  */
+#define GNUTYPE_LONGNAME 'L'
+
+/* This is the continuation of a file that began on another volume.  */
+#define GNUTYPE_MULTIVOL 'M'
+
+/* This is for sparse files.  */
+#define GNUTYPE_SPARSE 'S'
+
+/* This file is a tape/volume header.  Ignore it on extraction.  */
+#define GNUTYPE_VOLHDR 'V'
+
+/* Solaris extended header */
+#define SOLARIS_XHDTYPE 'X'
+
+/* J&ouml;rg Schilling star header */
+
+struct star_header
+{                              /* byte offset */
+  char name[100];               /*   0 */
+  char mode[8];                 /* 100 */
+  char uid[8];                  /* 108 */
+  char gid[8];                  /* 116 */
+  char size[12];                /* 124 */
+  char mtime[12];               /* 136 */
+  char chksum[8];               /* 148 */
+  char typeflag;                /* 156 */
+  char linkname[100];           /* 157 */
+  char magic[6];                /* 257 */
+  char version[2];              /* 263 */
+  char uname[32];               /* 265 */
+  char gname[32];               /* 297 */
+  char devmajor[8];             /* 329 */
+  char devminor[8];             /* 337 */
+  char prefix[131];             /* 345 */
+  char atime[12];               /* 476 */
+  char ctime[12];               /* 488 */
+                                /* 500 */
+};
+
+#define SPARSES_IN_STAR_HEADER      4
+#define SPARSES_IN_STAR_EXT_HEADER  21
+
+struct star_in_header
+{
+  char fill[345];       /*   0  Everything that is before t_prefix */
+  char prefix[1];       /* 345  t_name prefix */
+  char fill2;           /* 346  */
+  char fill3[8];        /* 347  */
+  char isextended;      /* 355  */
+  struct sparse sp[SPARSES_IN_STAR_HEADER]; /* 356  */
+  char realsize[12];    /* 452  Actual size of the file */
+  char offset[12];      /* 464  Offset of multivolume contents */
+  char atime[12];       /* 476  */
+  char ctime[12];       /* 488  */
+  char mfill[8];        /* 500  */
+  char xmagic[4];       /* 508  &quot;tar&quot; */
+};
+
+struct star_ext_header
+{
+  struct sparse sp[SPARSES_IN_STAR_EXT_HEADER];
+  char isextended;
+};
+
+</pre></td></tr></table>
+<p>All characters in header blocks are represented by using 8-bit
+characters in the local variant of ASCII.  Each field within the
+structure is contiguous; that is, there is no padding used within
+the structure.  Each character on the archive medium is stored
+contiguously.
+</p>
+<p>Bytes representing the contents of files (after the header block
+of each file) are not translated in any way and are not constrained
+to represent characters in any character set.  The <code>tar</code> format
+does not distinguish text files from binary files, and no translation
+of file contents is performed.
+</p>
+<p>The <code>name</code>, <code>linkname</code>, <code>magic</code>, <code>uname</code>, and
+<code>gname</code> are null-terminated character strings.  All other fields
+are zero-filled octal numbers in ASCII.  Each numeric field of width
+<var>w</var> contains <var>w</var> minus 1 digits, and a null.
+</p>
+<p>The <code>name</code> field is the file name of the file, with directory names
+(if any) preceding the file name, separated by slashes.
+</p>
+<p>See <cite>how big a name before field overflows?</cite>
+</p>
+
+<p>The <code>mode</code> field provides nine bits specifying file permissions
+and three bits to specify the Set <acronym>UID</acronym>, Set <acronym>GID</acronym>, and Save Text
+(<em>sticky</em>) modes.  Values for these bits are defined above.
+When special permissions are required to create a file with a given
+mode, and the user restoring files from the archive does not hold such
+permissions, the mode bit(s) specifying those special permissions
+are ignored.  Modes which are not supported by the operating system
+restoring files from the archive will be ignored.  Unsupported modes
+should be faked up when creating or updating an archive; e.g., the
+group permission could be copied from the <em>other</em> permission.
+</p>
+<p>The <code>uid</code> and <code>gid</code> fields are the numeric user and group
+<acronym>ID</acronym> of the file owners, respectively.  If the operating system does
+not support numeric user or group <acronym>ID</acronym>s, these fields should
+be ignored.
+</p>
+<p>The <code>size</code> field is the size of the file in bytes; linked files
+are archived with this field specified as zero.
+</p>
+<p>The <code>mtime</code> field is the data modification time of the file at
+the time it was archived.  It is the ASCII representation of the octal
+value of the last time the file's contents were modified, represented
+as an integer number of
+seconds since January 1, 1970, 00:00 Coordinated Universal Time.
+</p>
+<p>The <code>chksum</code> field is the ASCII representation of the octal value
+of the simple sum of all bytes in the header block.  Each 8-bit
+byte in the header is added to an unsigned integer, initialized to
+zero, the precision of which shall be no less than seventeen bits.
+When calculating the checksum, the <code>chksum</code> field is treated as
+if it were all blanks.
+</p>
+<p>The <code>typeflag</code> field specifies the type of file archived.  If a
+particular implementation does not recognize or permit the specified
+type, the file will be extracted as if it were a regular file.  As this
+action occurs, <code>tar</code> issues a warning to the standard error.
+</p>
+<p>The <code>atime</code> and <code>ctime</code> fields are used in making incremental
+backups; they store, respectively, the particular file's access and
+status change times.
+</p>
+<p>The <code>offset</code> is used by the <samp>`--multi-volume'</samp> (<samp>`-M'</samp>) option, when
+making a multi-volume archive.  The offset is number of bytes into
+the file that we need to restart at to continue the file on the next
+tape, i.e., where we store the location that a continued file is
+continued at.
+</p>
+<p>The following fields were added to deal with sparse files.  A file
+is <em>sparse</em> if it takes in unallocated blocks which end up being
+represented as zeros, i.e., no useful data.  A test to see if a file
+is sparse is to look at the number blocks allocated for it versus the
+number of characters in the file; if there are fewer blocks allocated
+for the file than would normally be allocated for a file of that
+size, then the file is sparse.  This is the method <code>tar</code> uses to
+detect a sparse file, and once such a file is detected, it is treated
+differently from non-sparse files.
+</p>
+<p>Sparse files are often <code>dbm</code> files, or other database-type files
+which have data at some points and emptiness in the greater part of
+the file.  Such files can appear to be very large when an <samp>`ls
+-l'</samp> is done on them, when in truth, there may be a very small amount
+of important data contained in the file.  It is thus undesirable
+to have <code>tar</code> think that it must back up this entire file, as
+great quantities of room are wasted on empty blocks, which can lead
+to running out of room on a tape far earlier than is necessary.
+Thus, sparse files are dealt with so that these empty blocks are
+not written to the tape.  Instead, what is written to the tape is a
+description, of sorts, of the sparse file: where the holes are, how
+big the holes are, and how much data is found at the end of the hole.
+This way, the file takes up potentially far less room on the tape,
+and when the file is extracted later on, it will look exactly the way
+it looked beforehand.  The following is a description of the fields
+used to handle a sparse file:
+</p>
+<p>The <code>sp</code> is an array of <code>struct sparse</code>.  Each <code>struct
+sparse</code> contains two 12-character strings which represent an offset
+into the file and a number of bytes to be written at that offset.
+The offset is absolute, and not relative to the offset in preceding
+array element.
+</p>
+<p>The header can hold four of these <code>struct sparse</code> at the moment;
+if more are needed, they are not stored in the header.
+</p>
+<p>The <code>isextended</code> flag is set when an <code>extended_header</code>
+is needed to deal with a file.  Note that this means that this flag
+can only be set when dealing with a sparse file, and it is only set
+in the event that the description of the file will not fit in the
+allotted room for sparse structures in the header.  In other words,
+an extended_header is needed.
+</p>
+<p>The <code>extended_header</code> structure is used for sparse files which
+need more sparse structures than can fit in the header.  The header can
+fit 4 such structures; if more are needed, the flag <code>isextended</code>
+gets set and the next block is an <code>extended_header</code>.
+</p>
+<p>Each <code>extended_header</code> structure contains an array of 21
+sparse structures, along with a similar <code>isextended</code> flag
+that the header had.  There can be an indeterminate number of such
+<code>extended_header</code>s to describe a sparse file.
+</p>
+<dl compact="compact">
+<dt> <code>REGTYPE</code></dt>
+<dt> <code>AREGTYPE</code></dt>
+<dd><p>These flags represent a regular file.  In order to be compatible
+with older versions of <code>tar</code>, a <code>typeflag</code> value of
+<code>AREGTYPE</code> should be silently recognized as a regular file.
+New archives should be created using <code>REGTYPE</code>.  Also, for
+backward compatibility, <code>tar</code> treats a regular file whose name
+ends with a slash as a directory.
+</p>
+</dd>
+<dt> <code>LNKTYPE</code></dt>
+<dd><p>This flag represents a file linked to another file, of any type,
+previously archived.  Such files are identified in Unix by each
+file having the same device and inode number.  The linked-to name is
+specified in the <code>linkname</code> field with a trailing null.
+</p>
+</dd>
+<dt> <code>SYMTYPE</code></dt>
+<dd><p>This represents a symbolic link to another file.  The linked-to name
+is specified in the <code>linkname</code> field with a trailing null.
+</p>
+</dd>
+<dt> <code>CHRTYPE</code></dt>
+<dt> <code>BLKTYPE</code></dt>
+<dd><p>These represent character special files and block special files
+respectively.  In this case the <code>devmajor</code> and <code>devminor</code>
+fields will contain the major and minor device numbers respectively.
+Operating systems may map the device specifications to their own
+local specification, or may ignore the entry.
+</p>
+</dd>
+<dt> <code>DIRTYPE</code></dt>
+<dd><p>This flag specifies a directory or sub-directory.  The directory
+name in the <code>name</code> field should end with a slash.  On systems where
+disk allocation is performed on a directory basis, the <code>size</code> field
+will contain the maximum number of bytes (which may be rounded to
+the nearest disk block allocation unit) which the directory may
+hold.  A <code>size</code> field of zero indicates no such limiting.  Systems
+which do not support limiting in this manner should ignore the
+<code>size</code> field.
+</p>
+</dd>
+<dt> <code>FIFOTYPE</code></dt>
+<dd><p>This specifies a FIFO special file.  Note that the archiving of a
+FIFO file archives the existence of this file and not its contents.
+</p>
+</dd>
+<dt> <code>CONTTYPE</code></dt>
+<dd><p>This specifies a contiguous file, which is the same as a normal
+file except that, in operating systems which support it, all its
+space is allocated contiguously on the disk.  Operating systems
+which do not allow contiguous allocation should silently treat this
+type as a normal file.
+</p>
+</dd>
+<dt> <code>A</code> &hellip; <code>Z</code></dt>
+<dd><p>These are reserved for custom implementations.  Some of these are
+used in the <acronym>GNU</acronym> modified format, as described below.
+</p>
+</dd>
+</dl>
+
+<p>Other values are reserved for specification in future revisions of
+the P1003 standard, and should not be used by any <code>tar</code> program.
+</p>
+<p>The <code>magic</code> field indicates that this archive was output in
+the P1003 archive format.  If this field contains <code>TMAGIC</code>,
+the <code>uname</code> and <code>gname</code> fields will contain the ASCII
+representation of the owner and group of the file respectively.
+If found, the user and group <acronym>ID</acronym>s are used rather than the values in
+the <code>uid</code> and <code>gid</code> fields.
+</p>
+<p>For references, see ISO/IEC 9945-1:1990 or IEEE Std 1003.1-1990, pages
+169-173 (section 10.1) for <cite>Archive/Interchange File Format</cite>; and
+IEEE Std 1003.2-1992, pages 380-388 (section 4.48) and pages 936-940
+(section E.4.48) for <cite>pax - Portable archive interchange</cite>.
+</p>
+<hr size="6">
+<a name="Extensions"></a>
+<a name="SEC185"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC184" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC186" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC183" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC183" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_15.html#SEC192" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="unnumberedsec"> <acronym>GNU</acronym> Extensions to the Archive Format </h2>
+<blockquote><p><em>(This message will disappear, once this node revised.)</em>
+</p></blockquote>
+
+
+<p>The <acronym>GNU</acronym> format uses additional file types to describe new types of
+files in an archive.  These are listed below.
+</p>
+<dl compact="compact">
+<dt> <code>GNUTYPE_DUMPDIR</code></dt>
+<dt> <code>'D'</code></dt>
+<dd><p>This represents a directory and a list of files created by the
+<samp>`--incremental'</samp> (<samp>`-G'</samp>) option.  The <code>size</code> field gives the total
+size of the associated list of files.  Each file name is preceded by
+either a <samp>`Y'</samp> (the file should be in this archive) or an <samp>`N'</samp>.
+(The file is a directory, or is not stored in the archive.)  Each file
+name is terminated by a null.  There is an additional null after the
+last file name.
+</p>
+</dd>
+<dt> <code>GNUTYPE_MULTIVOL</code></dt>
+<dt> <code>'M'</code></dt>
+<dd><p>This represents a file continued from another volume of a multi-volume
+archive created with the <samp>`--multi-volume'</samp> (<samp>`-M'</samp>) option.  The original
+type of the file is not given here.  The <code>size</code> field gives the
+maximum size of this piece of the file (assuming the volume does
+not end before the file is written out).  The <code>offset</code> field
+gives the offset from the beginning of the file where this part of
+the file begins.  Thus <code>size</code> plus <code>offset</code> should equal
+the original size of the file.
+</p>
+</dd>
+<dt> <code>GNUTYPE_SPARSE</code></dt>
+<dt> <code>'S'</code></dt>
+<dd><p>This flag indicates that we are dealing with a sparse file.  Note
+that archiving a sparse file requires special operations to find
+holes in the file, which mark the positions of these holes, along
+with the number of bytes of data to be found after the hole.
+</p>
+</dd>
+<dt> <code>GNUTYPE_VOLHDR</code></dt>
+<dt> <code>'V'</code></dt>
+<dd><p>This file type is used to mark the volume header that was given with
+the <samp>`--label=<var>archive-label</var>'</samp> (<samp>`-V <var>archive-label</var>'</samp>) option when the archive was created.  The <code>name</code>
+field contains the <code>name</code> given after the <samp>`--label=<var>archive-label</var>'</samp> (<samp>`-V <var>archive-label</var>'</samp>) option.
+The <code>size</code> field is zero.  Only the first file in each volume
+of an archive should have this type.
+</p>
+</dd>
+</dl>
+
+<p>You may have trouble reading a <acronym>GNU</acronym> format archive on a
+non-<acronym>GNU</acronym> system if the options <samp>`--incremental'</samp> (<samp>`-G'</samp>),
+<samp>`--multi-volume'</samp> (<samp>`-M'</samp>), <samp>`--sparse'</samp> (<samp>`-S'</samp>), or <samp>`--label=<var>archive-label</var>'</samp> (<samp>`-V <var>archive-label</var>'</samp>) were
+used when writing the archive.  In general, if <code>tar</code> does not
+use the <acronym>GNU</acronym>-added fields of the header, other versions of
+<code>tar</code> should be able to read the archive.  Otherwise, the
+<code>tar</code> program will give an error, the most likely one being a
+checksum error.
+</p>
+<hr size="6">
+<a name="Sparse-Formats"></a>
+<a name="SEC186"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC185" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC187" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC183" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC183" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_15.html#SEC192" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="unnumberedsec"> Storing Sparse Files </h2>
+
+
+<p>The notion of sparse file, and the ways of handling it from the point
+of view of <acronym>GNU</acronym> <code>tar</code> user have been described in detail in
+<a href="tar_8.html#SEC136">Archiving Sparse Files</a>.  This chapter describes the internal format <acronym>GNU</acronym> <code>tar</code>
+uses to store such files.
+</p>
+<p>The support for sparse files in <acronym>GNU</acronym> <code>tar</code> has a long history.  The
+earliest version featuring this support that I was able to find was 1.09,
+released in November, 1990.  The format introduced back then is called
+<em>old GNU</em> sparse format and in spite of the fact that its design
+contained many flaws, it was the only format <acronym>GNU</acronym> <code>tar</code> supported
+until version 1.14 (May, 2004), which introduced initial support for
+sparse archives in <acronym>PAX</acronym> archives (see section <a href="tar_8.html#SEC145"><acronym>GNU</acronym> <code>tar</code> and <acronym>POSIX</acronym> <code>tar</code></a>).  This
+format was not free from design flaws, either and it was subsequently
+improved in versions 1.15.2 (November, 2005) and 1.15.92 (June,
+2006).
+</p>
+<p>In addition to GNU sparse format, <acronym>GNU</acronym> <code>tar</code> is able to read and
+extract sparse files archived by <code>star</code>.
+</p>
+<p>The following subsections describe each format in detail.
+</p>
+<table class="menu" border="0" cellspacing="0">
+<tr><td align="left" valign="top"><a href="#SEC187">D.0.1 Old GNU Format</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+</td></tr>
+<tr><td align="left" valign="top"><a href="#SEC188">D.0.2 PAX Format, Versions 0.0 and 0.1</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top"><a href="#SEC189">D.0.3 PAX Format, Version 1.0</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top"></td></tr>
+</table>
+
+<hr size="6">
+<a name="Old-GNU-Format"></a>
+<a name="SEC187"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC186" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC188" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC183" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC186" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_15.html#SEC192" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="appendixsubsec"> D.0.1 Old GNU Format </h3>
+
+<p>The format introduced in November 1990 (v. 1.09) was
+designed on top of standard <code>ustar</code> headers in such an
+unfortunate way that some of its fields overwrote fields required by
+POSIX.
+</p>
+<p>An old GNU sparse header is designated by type <samp>`S'</samp>
+(<code>GNUTYPE_SPARSE</code>) and has the following layout:
+</p>
+<table>
+<thead><tr><th><p> Offset </p></th><th><p> Size </p></th><th><p> Name   </p></th><th><p> Data type   </p></th><th><p> Contents
+</p></th></tr></thead>
+<tr><td><p>          0 </p></td><td><p> 345  </p></td><td>        </td><td><p> N/A         </p></td><td><p> Not used.
+</p></td></tr>
+<tr><td><p>        345 </p></td><td><p>  12  </p></td><td><p> atime  </p></td><td><p> Number      </p></td><td><p> <code>atime</code> of the file.
+</p></td></tr>
+<tr><td><p>        357 </p></td><td><p>  12  </p></td><td><p> ctime  </p></td><td><p> Number      </p></td><td><p> <code>ctime</code> of the file .
+</p></td></tr>
+<tr><td><p>        369 </p></td><td><p>  12  </p></td><td><p> offset </p></td><td><p> Number      </p></td><td><p> For
+multivolume archives: the offset of the start of this volume.
+</p></td></tr>
+<tr><td><p>        381 </p></td><td><p>   4  </p></td><td>        </td><td><p> N/A         </p></td><td><p> Not used.
+</p></td></tr>
+<tr><td><p>        385 </p></td><td><p>   1  </p></td><td>        </td><td><p> N/A         </p></td><td><p> Not used.
+</p></td></tr>
+<tr><td><p>        386 </p></td><td><p>  96  </p></td><td><p> sp     </p></td><td><p> <code>sparse_header</code> </p></td><td><p> (4 entries) File map.
+</p></td></tr>
+<tr><td><p>        482 </p></td><td><p>   1  </p></td><td><p> isextended </p></td><td><p> Bool        </p></td><td><p> <code>1</code> if an
+extension sparse header follows, <code>0</code> otherwise.
+</p></td></tr>
+<tr><td><p>        483 </p></td><td><p>  12  </p></td><td><p> realsize </p></td><td><p> Number      </p></td><td><p> Real size of the file.
+</p></td></tr>
+</table>
+
+<p>Each of <code>sparse_header</code> object at offset 386 describes a single
+data chunk. It has the following structure:
+</p>
+<table>
+<thead><tr><th><p> Offset </p></th><th><p> Size </p></th><th><p> Data type   </p></th><th><p> Contents
+</p></th></tr></thead>
+<tr><td><p>          0 </p></td><td><p>   12 </p></td><td><p> Number      </p></td><td><p> Offset of the
+beginning of the chunk.
+</p></td></tr>
+<tr><td><p>         12 </p></td><td><p>   12 </p></td><td><p> Number      </p></td><td><p> Size of the chunk.
+</p></td></tr>
+</table>
+
+<p>If the member contains more than four chunks, the <code>isextended</code>
+field of the header has the value <code>1</code> and the main header is
+followed by one or more <em>extension headers</em>.  Each such header has
+the following structure:
+</p>
+<table>
+<thead><tr><th><p> Offset </p></th><th><p> Size </p></th><th><p> Name   </p></th><th><p> Data type   </p></th><th><p> Contents
+</p></th></tr></thead>
+<tr><td><p>          0 </p></td><td><p>   21 </p></td><td><p> sp     </p></td><td><p> <code>sparse_header</code> </p></td><td>
+<p>(21 entries) File map.
+</p></td></tr>
+<tr><td><p>        504 </p></td><td><p>    1 </p></td><td><p> isextended </p></td><td><p> Bool    </p></td><td><p> <code>1</code> if an
+extension sparse header follows, or <code>0</code> otherwise.
+</p></td></tr>
+</table>
+
+<p>A header with <code>isextended=0</code> ends the map.
+</p>
+<hr size="6">
+<a name="PAX-0"></a>
+<a name="SEC188"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC187" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC189" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC183" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC186" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_15.html#SEC192" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="appendixsubsec"> D.0.2 PAX Format, Versions 0.0 and 0.1 </h3>
+
+<p>There are two formats available in this branch.  The version <code>0.0</code>
+is the initial version of sparse format used by <code>tar</code>
+versions 1.14-1.15.1.  The sparse file map is kept in extended
+(<code>x</code>) PAX header variables:
+</p>
+<dl compact="compact">
+<dt> <code>GNU.sparse.size</code></dt>
+<dd><p>Real size of the stored file;
+</p>
+</dd>
+<dt> <code>GNU.sparse.numblocks</code></dt>
+<dd><p>Number of blocks in the sparse map;
+</p>
+</dd>
+<dt> <code>GNU.sparse.offset</code></dt>
+<dd><p>Offset of the data block;
+</p>
+</dd>
+<dt> <code>GNU.sparse.numbytes</code></dt>
+<dd><p>Size of the data block.
+</p></dd>
+</dl>
+
+<p>The latter two variables repeat for each data block, so the overall
+structure is like this:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">GNU.sparse.size=<var>size</var>
+GNU.sparse.numblocks=<var>numblocks</var>
+repeat <var>numblocks</var> times
+  GNU.sparse.offset=<var>offset</var>
+  GNU.sparse.numbytes=<var>numbytes</var>
+end repeat
+</pre></td></tr></table>
+<p>This format presented the following two problems:
+</p>
+<ol>
+<li>
+Whereas the POSIX specification allows a variable to appear multiple
+times in a header, it requires that only the last occurrence be
+meaningful.  Thus, multiple occurrences of <code>GNU.sparse.offset</code> and
+<code>GNU.sparse.numbytes</code> are conflicting with the POSIX specs.
+
+</li><li>
+Attempting to extract such archives using a third-party's <code>tar</code>
+results in extraction of sparse files in <em>condensed form</em>.  If
+the <code>tar</code> implementation in question does not support POSIX
+format, it will also extract a file containing extension header
+attributes.  This file can be used to expand the file to its original
+state.  However, posix-aware <code>tar</code>s will usually ignore the
+unknown variables, which makes restoring the file more
+difficult.  See <a href="tar_8.html#extracting-sparse-v_002e0_002ex">Extraction of sparse members in v.0.0 format</a>, for the detailed description of how to
+restore such members using non-GNU <code>tar</code>s.
+</li></ol>
+
+<a name="IDX574"></a>
+<p><acronym>GNU</acronym> <code>tar</code> 1.15.2 introduced sparse format version <code>0.1</code>, which
+attempted to solve these problems.  As its predecessor, this format
+stores sparse map in the extended POSIX header.  It retains
+<code>GNU.sparse.size</code> and <code>GNU.sparse.numblocks</code> variables, but
+instead of <code>GNU.sparse.offset</code>/<code>GNU.sparse.numbytes</code> pairs
+it uses a single variable:
+</p>
+<dl compact="compact">
+<dt> <code>GNU.sparse.map</code></dt>
+<dd><p>Map of non-null data chunks.  It is a string consisting of
+comma-separated values &quot;<var>offset</var>,<var>size</var>[,<var>offset-1</var>,<var>size-1</var>...]&quot;
+</p></dd>
+</dl>
+
+<p>To address the 2nd problem, the <code>name</code> field in <code>ustar</code>
+is replaced with a special name, constructed using the following pattern:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">%d/GNUSparseFile.%p/%f
+</pre></td></tr></table>
+<p>The real name of the sparse file is stored in the variable
+<code>GNU.sparse.name</code>.  Thus, those <code>tar</code> implementations
+that are not aware of GNU extensions will at least extract the files
+into separate directories, giving the user a possibility to expand it
+afterwards.  See <a href="tar_8.html#extracting-sparse-v_002e0_002ex">Extraction of sparse members in v.0.1 format</a>, for the detailed description of how to
+restore such members using non-GNU <code>tar</code>s.
+</p>
+<p>The resulting <code>GNU.sparse.map</code> string can be <em>very</em> long.
+Although POSIX does not impose any limit on the length of a <code>x</code>
+header variable, this possibly can confuse some <code>tar</code>s.
+</p>
+<hr size="6">
+<a name="PAX-1"></a>
+<a name="SEC189"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC188" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC190" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC183" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC186" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_15.html#SEC192" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h3 class="appendixsubsec"> D.0.3 PAX Format, Version 1.0 </h3>
+
+<p>The version <code>1.0</code> of sparse format was introduced with <acronym>GNU</acronym> <code>tar</code>
+1.15.92.  Its main objective was to make the resulting file
+extractable with little effort even by non-posix aware <code>tar</code>
+implementations.  Starting from this version, the extended header
+preceding a sparse member always contains the following variables that
+identify the format being used:
+</p>
+<dl compact="compact">
+<dt> <code>GNU.sparse.major</code></dt>
+<dd><p>Major version
+</p>
+</dd>
+<dt> <code>GNU.sparse.minor</code></dt>
+<dd><p>Minor version
+</p></dd>
+</dl>
+
+<p>The <code>name</code> field in <code>ustar</code> header contains a special name,
+constructed using the following pattern:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">%d/GNUSparseFile.%p/%f
+</pre></td></tr></table>
+<p>The real name of the sparse file is stored in the variable
+<code>GNU.sparse.name</code>.  The real size of the file is stored in the
+variable <code>GNU.sparse.realsize</code>.
+</p>
+<p>The sparse map itself is stored in the file data block, preceding the actual
+file data.  It consists of a series of octal numbers of arbitrary length, delimited
+by newlines. The map is padded with nulls to the nearest block boundary.
+</p>
+<p>The first number gives the number of entries in the map. Following are map entries,
+each one consisting of two numbers giving the offset and size of the
+data block it describes.
+</p>
+<p>The format is designed in such a way that non-posix aware <code>tar</code>s and <code>tar</code>s not
+supporting <code>GNU.sparse.*</code> keywords will extract each sparse file
+in its condensed form with the file map prepended and will place it
+into a separate directory.  Then, using a simple program it would be
+possible to expand the file to its original form even without <acronym>GNU</acronym> <code>tar</code>.
+See section <a href="tar_8.html#SEC151">Extracting Sparse Members</a>, for the detailed information on how to extract
+sparse members without <acronym>GNU</acronym> <code>tar</code>.
+</p>
+<hr size="6">
+<a name="Snapshot-Files"></a>
+<a name="SEC190"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC189" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC191" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC183" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC183" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_15.html#SEC192" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="unnumberedsec"> Format of the Incremental Snapshot Files </h2>
+
+
+<p>  A <em>snapshot file</em> (or <em>directory file</em>) is created during
+incremental backups (see section <a href="tar_5.html#SEC95">Using <code>tar</code> to Perform Incremental Dumps</a>).  It
+contains the status of the file system at the time of the dump and is
+used to determine which files were modified since the last backup.
+</p>
+<p>  <acronym>GNU</acronym> <code>tar</code> version 1.28 supports three snapshot file
+formats.  The first format, called <em>format 0</em>, is the one used by
+<acronym>GNU</acronym> <code>tar</code> versions up to and including 1.15.1. The second format, called 
+<em>format 1</em> is an extended version of this format, that contains more
+metadata and allows for further extensions. It was used by alpha release
+version 1.15.90. For alpha version 1.15.91 and stable releases
+version 1.16 up through 1.28, the <em>format 2</em> is used.
+</p>
+<p>  <acronym>GNU</acronym> <code>tar</code> is able to read all three formats, but will create
+snapshots only in format 2.
+</p>
+<p>  This appendix describes all three formats in detail.
+</p>
+<ol>
+<li><a name="IDX575"></a>
+<a name="IDX576"></a>
+</li><li>
+  <samp>`Format 0'</samp> snapshot file begins with a line containing a
+decimal number that represents a <acronym>UNIX</acronym> timestamp of the
+beginning of the last archivation. This line is followed by directory
+metadata descriptions, one per line. Each description has the
+following format:
+
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">[<var>nfs</var>]<var>dev</var> <var>inode</var> <var>name</var>
+</pre></td></tr></table>
+
+<p>where:
+</p>
+<dl compact="compact">
+<dt> <var>nfs</var></dt>
+<dd><p>A single plus character (<samp>`+'</samp>), if this directory is located on
+an <acronym>NFS</acronym>-mounted partition, otherwise empty.  
+</p>
+<p>(That is, for non-NFS directories, the first character on the
+description line contains the start of the <var>dev</var> field.)
+</p>
+</dd>
+<dt> <var>dev</var></dt>
+<dd><p>Device number of the directory;
+</p>
+</dd>
+<dt> <var>inode</var></dt>
+<dd><p>I-node number of the directory;
+</p>
+</dd>
+<dt> <var>name</var></dt>
+<dd><p>Name of the directory. Any special characters (white-space,
+backslashes, etc.) are quoted.
+</p></dd>
+</dl>
+
+<a name="IDX577"></a>
+<a name="IDX578"></a>
+</li><li>
+  <samp>`Format 1'</samp> snapshot file begins with a line specifying the
+format of the file. This line has the following structure:
+
+<table><tr><td>&nbsp;</td><td><pre class="smallexample"><samp>`GNU tar-'</samp><var>tar-version</var><samp>`-'</samp><var>incr-format-version</var>
+</pre></td></tr></table>
+
+<p>where <var>tar-version</var> is the version number of <acronym>GNU</acronym> <code>tar</code>
+implementation that created this snapshot, and
+<var>incr-format-version</var> is the version number of the snapshot format
+(in this case <samp>`1'</samp>).
+</p>
+<p>  Next line contains two decimal numbers, representing the
+time of the last backup. First number is the number of seconds, the
+second one is the number of nanoseconds, since the beginning of the
+epoch.
+</p>
+<p>  Lines that follow contain directory metadata, one line per
+directory. Each line is formatted as follows:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">[<var>nfs</var>]<var>mtime-sec</var> <var>mtime-nsec</var> <var>dev</var> <var>inode</var> <var>name</var>
+</pre></td></tr></table>
+
+<p>where <var>mtime-sec</var> and <var>mtime-nsec</var> represent last
+modification time of this directory with nanosecond precision;
+<var>nfs</var>, <var>dev</var>, <var>inode</var> and <var>name</var> have the same meaning
+as with <samp>`format 0'</samp>.
+</p>
+<a name="IDX579"></a>
+<a name="IDX580"></a>
+</li><li>
+  <samp>`Format 2'</samp> snapshot file begins with a format identifier, as described for
+version 1, e.g.:
+
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">GNU tar-1.28-2
+</pre></td></tr></table>
+<p>  This line is followed by newline. Rest of file consists of
+records, separated by null (<acronym>ASCII</acronym> 0)
+characters. Thus, in contrast to the previous formats, format 2
+snapshot is a binary file.
+</p>
+<p>  First two records are decimal integers, representing the
+time of the last backup.  First number is the number of seconds, the
+second one is the number of nanoseconds, since the beginning of the
+epoch.  These are followed by arbitrary number of directory records.
+</p>
+<p>  Each <em>directory record</em> contains a set of metadata describing a
+particular directory.  Parts of a directory record are delimited with
+<acronym>ASCII</acronym> 0 characters.  The following table describes each
+part.  The <em>Number</em> type in this table stands for a decimal integer
+in <acronym>ASCII</acronym> notation.  (Negative values are preceeded with a &quot;-&quot;
+character, while positive values have no leading punctuation.)
+</p>
+<table>
+<thead><tr><th><p> Field </p></th><th><p> Type </p></th><th><p> Description
+</p></th></tr></thead>
+<tr><td><p> nfs </p></td><td><p> Character </p></td><td><p> <samp>`1'</samp> if the directory is located on
+an <acronym>NFS</acronym>-mounted partition, or <samp>`0'</samp> otherwise;
+</p></td></tr>
+<tr><td><p> timestamp_sec </p></td><td><p> Number </p></td><td><p> Modification time, seconds;
+</p></td></tr>
+<tr><td><p> timestamp_nsec </p></td><td><p> Number </p></td><td><p> Modification time, nanoseconds;
+</p></td></tr>
+<tr><td><p> dev </p></td><td><p> Number </p></td><td><p> Device number;
+</p></td></tr>
+<tr><td><p> ino </p></td><td><p> Number </p></td><td><p> I-node number;
+</p></td></tr>
+<tr><td><p> name </p></td><td><p> String </p></td><td><p> Directory name; in contrast to the
+previous versions it is not quoted;
+</p></td></tr>
+<tr><td><p> contents </p></td><td><p> Dumpdir </p></td><td><p> Contents of the directory;
+See section <a href="#SEC191">Dumpdir</a>, for a description of its format.
+</p></td></tr>
+<tr><td>
+</td></tr>
+</table>
+
+<p>  Dumpdirs stored in snapshot files contain only records of types
+<samp>`Y'</samp>, <samp>`N'</samp> and <samp>`D'</samp>.
+</p>
+<a name="IDX581"></a>
+<a name="IDX582"></a>
+<p>The specific range of values allowed in each of the <em>Number</em> fields
+depends on the underlying C datatypes as determined when <code>tar</code>
+is compiled.  To see the specific ranges allowed for a particular
+<code>tar</code> binary, you can use the
+<samp>`--show-snapshot-field-ranges'</samp> option:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">$ <kbd>tar --show-shapshot-field-ranges</kbd>
+This tar's snapshot file field ranges are
+   (field name      =&gt; [ min, max ]):
+
+    nfs             =&gt; [ 0, 1 ],
+    timestamp_sec   =&gt; [ -9223372036854775808, 9223372036854775807 ],
+    timestamp_nsec  =&gt; [ 0, 999999999 ],
+    dev             =&gt; [ 0, 18446744073709551615 ],
+    ino             =&gt; [ 0, 18446744073709551615 ],
+</pre></td></tr></table>
+<p>(This example is from a GNU/Linux x86_64 system.)
+</p>
+</li></ol>
+
+
+<hr size="6">
+<a name="Dumpdir"></a>
+<a name="SEC191"></a>
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC190" title="Previous section in reading order"> &lt; </a>]</td>
+<td valign="middle" align="left">[<a href="tar_15.html#SEC192" title="Next section in reading order"> &gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="#SEC183" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="#SEC183" title="Up section"> Up </a>]</td>
+<td valign="middle" align="left">[<a href="tar_15.html#SEC192" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<h2 class="unnumberedsec"> Dumpdir </h2>
+
+
+<p>  Incremental archives keep information about contents of each
+dumped directory in special data blocks called <em>dumpdirs</em>.
+</p>
+<p>  Dumpdir is a sequence of entries of the following form:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample"><var>C</var> <var>filename</var> \0
+</pre></td></tr></table>
+
+<p>where <var>C</var> is one of the <em>control codes</em> described below,
+<var>filename</var> is the name of the file <var>C</var> operates upon, and
+<samp>`\0'</samp> represents a nul character (ASCII 0).  The white space
+characters were added for readability, real dumpdirs do not contain
+them.
+</p>
+<p>  Each dumpdir ends with a single nul character.
+</p>
+<p>  The following table describes control codes and their meanings:
+</p>
+<dl compact="compact">
+<dt> <samp>`Y'</samp></dt>
+<dd><p><var>filename</var> is contained in the archive.
+</p>
+</dd>
+<dt> <samp>`N'</samp></dt>
+<dd><p><var>filename</var> was present in the directory at the time the archive
+was made, yet it was not dumped to the archive, because it had not
+changed since the last backup.
+</p>
+</dd>
+<dt> <samp>`D'</samp></dt>
+<dd><p><var>filename</var> is a directory.
+</p>
+</dd>
+<dt> <samp>`R'</samp></dt>
+<dd><p>This code requests renaming of the <var>filename</var> to the name
+specified with the <samp>`T'</samp> command, that immediately follows it.
+</p>
+</dd>
+<dt> <samp>`T'</samp></dt>
+<dd><p>Specify target file name for <samp>`R'</samp> command (see below).
+</p>
+</dd>
+<dt> <samp>`X'</samp></dt>
+<dd><p>Specify <em>temporary directory</em> name for a rename operation (see below).
+</p></dd>
+</dl>
+
+<p>  Codes <samp>`Y'</samp>, <samp>`N'</samp> and <samp>`D'</samp> require <var>filename</var> argument
+to be a relative file name to the directory this dumpdir describes,
+whereas codes <samp>`R'</samp>, <samp>`T'</samp> and <samp>`X'</samp> require their argument
+to be an absolute file name.
+</p>
+<p> The three codes <samp>`R'</samp>, <samp>`T'</samp> and <samp>`X'</samp> specify a
+<em>renaming operation</em>.  In the simplest case it is:
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">R<tt>`source'</tt>\0T<tt>`dest'</tt>\0
+</pre></td></tr></table>
+
+<p>which means &quot;rename file <tt>`source'</tt> to file <tt>`dest'</tt>&quot;.
+</p>
+<p>  However, there are cases that require using a <em>temporary
+directory</em>.  For example, consider the following scenario:
+</p>
+<ol>
+<li>
+Previous run dumped a directory <tt>`foo'</tt> which contained the
+following three directories:
+
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">a
+b
+c
+</pre></td></tr></table>
+</li><li>
+They were renamed <em>cyclically</em>, so that:
+
+<table><tr><td>&nbsp;</td><td><pre class="example"><tt>`a'</tt> became <tt>`b'</tt>
+<tt>`b'</tt> became <tt>`c'</tt>
+<tt>`c'</tt> became <tt>`a'</tt>
+</pre></td></tr></table>
+</li><li>
+New incremental dump was made.
+</li></ol>
+
+<p>  This case cannot be handled by three successive renames, since
+renaming <tt>`a'</tt> to <tt>`b'</tt> will destroy the existing directory.
+To correctly process it, <acronym>GNU</acronym> <code>tar</code> needs a temporary directory, so
+it creates the following dumpdir (newlines have been added for
+readability):
+</p>
+<table><tr><td>&nbsp;</td><td><pre class="smallexample">Xfoo\0
+Rfoo/a\0T\0
+Rfoo/b\0Tfoo/c\0
+Rfoo/c\0Tfoo/a\0
+R\0Tfoo/a\0
+</pre></td></tr></table>
+<p>  The first command, <samp>`Xfoo\0'</samp>, instructs the extractor to create a
+temporary directory in the directory <tt>`foo'</tt>.  Second command,
+<samp>`Rfoo/aT\0'</samp>, says &quot;rename file <tt>`foo/a'</tt> to the temporary
+directory that has just been created&quot; (empty file name after a
+command means use temporary directory).  Third and fourth commands
+work as usual, and, finally, the last command, <samp>`R\0Tfoo/a\0'</samp>
+tells tar to rename the temporary directory to <tt>`foo/a'</tt>.
+</p>
+<p>  The exact placement of a dumpdir in the archive depends on the
+archive format (see section <a href="tar_8.html#SEC132">Controlling the Archive Format</a>):
+</p>
+<ul class="toc">
+<li> PAX archives
+
+<p>In PAX archives, dumpdir is stored in the extended header of the
+corresponding directory, in variable <code>GNU.dumpdir</code>.
+</p>
+</li><li> GNU and old GNU archives
+
+<p>These formats implement special header type <samp>`D'</samp>, which is similar
+to ustar header <samp>`5'</samp> (directory), except that it precedes a data
+block containing the dumpdir.
+</p></li></ul>
+
+
+<hr size="6">
+<table cellpadding="1" cellspacing="1" border="0">
+<tr><td valign="middle" align="left">[<a href="#SEC183" title="Beginning of this chapter or previous chapter"> &lt;&lt; </a>]</td>
+<td valign="middle" align="left">[<a href="tar_15.html#SEC192" title="Next chapter"> &gt;&gt; </a>]</td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left"> &nbsp; </td>
+<td valign="middle" align="left">[<a href="tar.html#SEC_Top" title="Cover (top) of document">Top</a>]</td>
+<td valign="middle" align="left">[<a href="tar_toc.html#SEC_Contents" title="Table of contents">Contents</a>]</td>
+<td valign="middle" align="left">[<a href="tar_18.html#SEC199" title="Index">Index</a>]</td>
+<td valign="middle" align="left">[<a href="tar_abt.html#SEC_About" title="About (help)"> ? </a>]</td>
+</tr></table>
+<p>
+ <font size="-1">
+  This document was generated on <i>July, 28 2014</i> using <a href="http://texi2html.cvshome.org/"><i>texi2html 1.76</i></a>.
+ </font>
+ <br>
+
+</p>
+</body>
+</html>

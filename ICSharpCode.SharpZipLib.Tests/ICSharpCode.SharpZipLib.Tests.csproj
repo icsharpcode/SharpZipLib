@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <AssemblyName>ICSharpCode.SharpZipLib.Tests</AssemblyName>
+    <BaseAddress>4194304</BaseAddress>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <FileAlignment>4096</FileAlignment>
+    <FileUpgradeFlags />
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <MapFileExtensions>true</MapFileExtensions>
+    <NoConfig>False</NoConfig>
+    <NoStdLib>False</NoStdLib>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <OutputType>Library</OutputType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ProjectGuid>{82211166-9C45-4603-8E3A-2CA2EFFCBC26}</ProjectGuid>
+    <PublishUrl>publish\</PublishUrl>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <RootNamespace>ICSharpCode.SharpZipLib</RootNamespace>
+    <SchemaVersion>2.0</SchemaVersion>
+    <TargetFrameworkProfile />
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <UpgradeBackupLocation />
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <StartAction>Program</StartAction>
+    <StartArguments>ICSharpCode.SharpZipLib.Tests.dll</StartArguments>
+    <StartProgram>packages\NUnit.Runners.2.6.4\tools\nunit.exe</StartProgram>
+    <StartWorkingDirectory />
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DebugSymbols>False</DebugSymbols>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <Prefer32Bit>false</Prefer32Bit>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <StartAction>Program</StartAction>
+    <StartArguments>ICSharpCode.SharpZipLib.Tests.dll</StartArguments>
+    <StartProgram>packages\NUnit.Runners.2.6.4\tools\nunit.exe</StartProgram>
+    <StartWorkingDirectory />
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Base\InflaterDeflaterTests.cs" />
+    <Compile Include="BZip2\Bzip2Tests.cs" />
+    <Compile Include="Core\Core.cs" />
+    <Compile Include="GZip\GZipTests.cs" />
+    <Compile Include="Tar\TarTests.cs" />
+    <Compile Include="TestSupport\RingBuffer.cs" />
+    <Compile Include="TestSupport\Streams.cs" />
+    <Compile Include="TestSupport\Utils.cs" />
+    <Compile Include="TestSupport\ZipTesting.cs" />
+    <Compile Include="Zip\ZipTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\Release\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+</Project>
