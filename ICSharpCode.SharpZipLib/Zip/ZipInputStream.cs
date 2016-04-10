@@ -395,7 +395,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				csize -= inputBuffer.Available;
 				inputBuffer.Available = 0;
 				while (csize != 0) {
-					long skipped = base.Skip(csize);
+					long skipped = Skip(csize);
 				
 					if (skipped <= 0) {
 						throw new ZipException("Zip archive ends early.");
