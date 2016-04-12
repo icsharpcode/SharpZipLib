@@ -1,8 +1,9 @@
 language: csharp
 mono:
-  - latest
-  - 3.12.0
-  - 2.10.8
+  - 4.2.3
+os:
+  - linux
+  - osx
 solution: ICSharpCode.SharpZipLib.sln
 #install:
 #  - nuget restore ICSharpCode.SharpZipLib.sln

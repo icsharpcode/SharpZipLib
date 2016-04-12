@@ -1,18 +1,40 @@
 # SharpZipLib
 
-[![Build Status](https://travis-ci.org/McNeight/SharpZipLib.svg?branch=build)](https://travis-ci.org/McNeight/SharpZipLib)
-[![Build status](https://ci.appveyor.com/api/projects/status/oe7kwnaib3qscm8l/branch/build?svg=true)](https://ci.appveyor.com/project/McNeight/SharpZipLib/branch/build)
+[![Join the chat at https://gitter.im/icsharpcode/SharpZipLib](https://badges.gitter.im/icsharpcode/SharpZipLib.svg)](https://gitter.im/icsharpcode/SharpZipLib?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-\#ziplib (SharpZipLib, formerly NZipLib) is a **Zip, GZip, Tar and BZip2 library** written entirely in C\# for the .NET framework. It is implemented as an assembly (installable in the GAC), and thus can easily be incorporated into other projects (in any .NET language). The creator of #ziplib put it this way: "I've ported the zip library over to C\# because I needed gzip/zip compression and I didn't want to use libzip.dll or something like this. I want all in pure C\#."
+<table>
+  <tr>
+    <th style="text-align:center">Build Server</th>
+    <th>Operating System</th>
+    <th>Framework</th>
+    <th style="text-align:center">Status</th>
+  </tr>
+  <tr>
+    <td style="text-align:center">AppVeyor</td>
+    <td>Windows Server 2012</td>
+    <td>.NET Framework 4.5</td>
+    <td  style="text-align:center">[![Build status](https://ci.appveyor.com/api/projects/status/oe7kwnaib3qscm8l/branch/build?svg=true)](https://ci.appveyor.com/project/McNeight/SharpZipLib/branch/build)</td>
+  </tr>
+  <tr>
+    <td style="text-align:center" rowspan="2">Travis</td>
+    <td>Linux</td>
+    <td>Mono 4.2.3</td>
+    <td style="text-align:center" rowspan="2">[![Build Status](https://travis-ci.org/McNeight/SharpZipLib.svg?branch=build)](https://travis-ci.org/McNeight/SharpZipLib)</td>
+  </tr>
+  <tr>
+    <td>OSX</td>
+    <td>Mono 4.2.3</td>
+  </tr>
+</table>
+
+SharpZipLib (\#ziplib, formerly NZipLib) is a **Zip, GZip, Tar and BZip2 library** written entirely in C\# for the .NET framework. It is implemented as an assembly (installable in the GAC), and thus can easily be incorporated into other projects (in any .NET language). The creator of SharpZipLib put it this way: "I've ported the zip library over to C\# because I needed gzip/zip compression and I didn't want to use libzip.dll or something like this. I want all in pure C\#."
 
 Introduction
 ------------
 
 SharpZipLib was originally ported from the [GNU Classpath](http://www.gnu.org/software/classpath/) java.util.zip library for use with [SharpDevelop](http://www.icsharpcode.net/OpenSource/SD), which needed gzip/zip compression. bzip2 compression and tar archiving were added later due to popular demand.
 
-There is a web site from which You can download the assembly and/or the source code (<http://icsharpcode.net/OpenSource/SharpZipLib>). A forum is also available at http://community.sharpdevelop.net/forums/12/ShowForum.aspx.
-
-Please see the [\#ziplib homepage](http://icsharpcode.github.io/SharpZipLib/) for precompiled downloads, license information, link to the forum (support), release history, samples and more.
+The [SharpZipLib homepage](http://icsharpcode.github.io/SharpZipLib/) has precompiled libraries available for download, [a link to the forum for support](http://community.sharpdevelop.net/forums/12/ShowForum.aspx), release history, samples and more.
 
 License
 -------
@@ -22,19 +44,6 @@ This software is released under the [GNU General Public License, version 2](http
 >Linking this library statically or dynamically with other modules is making a combined work based on this library. Thus, the terms and conditions of the GNU General Public License cover the whole combination.
 
 >As a special exception, the copyright holders of this library give you permission to link this library with independent modules to produce an executable, regardless of the license terms of these independent modules, and to copy and distribute the resulting executable under terms of your choice, provided that you also meet, for each linked independent module, the terms and conditions of the license of that module.  An independent module is a module which is not derived from or based on this library.  If you modify this library, you may extend this exception to your version of the library, but you are not obligated to do so. If you do not wish to do so, delete this exception statement from your version.
-
-Building the library
---------------------
-
-There are multiple ways to build this library, however the library build is tested with the following methods:
-
-[AppVeyor](https://ci.appveyor.com/project/McNeight/SharpZipLib/branch/build)
-
-This builds SharpZipLib on Windows useing Visual Studio 2013 and Visual Studio 2015
-
-[Travis CI](https://travis-ci.org/McNeight/SharpZipLib)
-
-This builds SharpZipLib on Linux with Mono 2.10.8, 3.12.1, and the latest version available
 
 Namespace layout
 ----------------
@@ -51,17 +60,14 @@ Namespace layout
 |Inflater/Deflater|ICSharpCode.SharpZipLib.Zip.Compression.\*|
 |Inflater/Deflater streams|ICSharpCode.SharpZipLib.Zip.Compression.Streams.\*|
 
-Reporting Bugs/Submit Patches
------------------------------
-
 Credits
 -------
 
-\#ziplib was initially been developed by [Mike Krueger](http://www.icsharpcode.net/pub/relations/krueger.aspx), however, much existing Java code helped a lot in speeding the creation of this library. Therefore credits fly out to other people.
+SharpZipLib was initially developed by [Mike Krüger](http://www.icsharpcode.net/pub/relations/krueger.aspx). Past maintainers are John Reilly and David Pierson. The current maintainer is Neil McNeight.
 
-The current maintainer of \#ziplib is David Pierson. Please contact him regarding features, bugs etc via the [forum](http://community.sharpdevelop.net/forums/12.aspx).
+Much existing Java code helped to speed the creation of this library. Therefore credits fly out to other people.
 
-Zip/Gzip implementation:
+Zip/GZip implementation:
 
 A Java version of the zlib which was originally created by the [Free Software Foundation (FSF)](http://www.fsf.org). So all credits should go to the FSF and the authors who have worked on this piece of code.
 
