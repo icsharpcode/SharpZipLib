@@ -19,6 +19,8 @@
     <DocumentationFile>..\bin\ICSharpCode.SharpZipLib.xml</DocumentationFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -43,7 +45,7 @@
     <DebugType>Full</DebugType>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>..\bin\Debug\ICSharpCode.SharpZipLib.xml</DocumentationFile>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS;</DefineConstants>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -58,12 +60,15 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>ICSharpCode.SharpZipLib.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\ICSharpCode.SharpZipLib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="BZip2\BZip2.cs" />
     <Compile Include="BZip2\BZip2Constants.cs" />
@@ -128,7 +133,9 @@
     <None Include="..\Documentation\SharpZipLibCodeMap.dgml">
       <Link>SharpZipLibCodeMap.dgml</Link>
     </None>
-    <None Include="ICSharpCode.SharpZipLib.snk" />
+    <None Include="..\ICSharpCode.SharpZipLib.snk">
+      <Link>ICSharpCode.SharpZipLib.snk</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

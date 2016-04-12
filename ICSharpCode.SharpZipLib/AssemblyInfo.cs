@@ -35,8 +35,6 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 // Version name | Version number | Release date
 // 1.0 RTM | 1.0.2268.0 | 2002 late
@@ -60,24 +58,8 @@ using System.Runtime.InteropServices;
 #endif
 
 [assembly: AssemblyDescription("A free C# compression library")]
-[assembly: AssemblyProduct("#ZipLib")]
-[assembly: AssemblyDefaultAlias("SharpZipLib")]
+[assembly: AssemblyDefaultAlias("ICSharpCode.SharpZipLib")]
 [assembly: AssemblyCulture("")]
-
-#if DEBUG
-[assembly: AssemblyConfiguration("Debug")]
-#else
-[assembly: AssemblyConfiguration("Release")]
-#endif
-
-
-[assembly: AssemblyCompany("AlphaSierraPapa")]
-[assembly: AssemblyCopyright("Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team")]
-[assembly: AssemblyTrademark("")]
-
-[assembly: AssemblyVersion("0.87.*")]
-[assembly: AssemblyInformationalVersionAttribute("0.87.*")]
-
 
 [assembly: CLSCompliant(true)]
 
@@ -87,8 +69,3 @@ using System.Runtime.InteropServices;
 //
 [assembly: System.Security.AllowPartiallyTrustedCallers]
 #endif
-
-// Setting ComVisible to false makes the types in this assembly not visible
-// to COM components.  If you need to access a type in this assembly from
-// COM, set the ComVisible attribute to true on that type.
-[assembly: ComVisible(false)]

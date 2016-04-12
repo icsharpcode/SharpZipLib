@@ -5,8 +5,8 @@ os:
   - linux
   - osx
 solution: ICSharpCode.SharpZipLib.sln
-#install:
-#  - nuget restore ICSharpCode.SharpZipLib.sln
+install:
+  - nuget restore ICSharpCode.SharpZipLib.sln
 #  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Debug ICSharpCode.SharpZipLib.sln

@@ -68,12 +68,12 @@ assembly_info:
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}-{branch} AppVeyor'
 
-xamarin:
-  email: mcneight+xamarin@gmail.com
-  password:
-    secure: vkBoEpwLjBnLcLJrwnkYiA==
-  android: true
-  ios: true
+#xamarin:
+#  email: mcneight+xamarin@gmail.com
+#  password:
+#    secure: vkBoEpwLjBnLcLJrwnkYiA==
+#  android: true
+#  ios: true
 
 # scripts to run before build
 before_build:
@@ -129,13 +129,13 @@ notifications:
   on_build_status_changed: true
   
 # VSOTeamRoom
-- provider: VSOTeamRoom
-  room: CI
-  account: sharpziplib
-  username: neilmcneight@hotmail.com
-  password:
-    secure: kFG0QjE+Broo7Y1UsWrLEg==
-  template: Version {{version}} {{commitId}} from {{branch}} {{status}} {{message}}
-  on_build_success: true
-  on_build_failure: true
-  on_build_status_changed: true
+#- provider: VSOTeamRoom
+#  room: CI
+#  account: sharpziplib
+#  username: neilmcneight@hotmail.com
+#  password:
+#    secure: kFG0QjE+Broo7Y1UsWrLEg==
+#  template: Version {{version}} {{commitId}} from {{branch}} {{status}} {{message}}
+#  on_build_success: true
+#  on_build_failure: true
+#  on_build_status_changed: true

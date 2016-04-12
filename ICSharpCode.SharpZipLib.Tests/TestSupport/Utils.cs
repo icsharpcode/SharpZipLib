@@ -2,7 +2,7 @@ using System;
 
 using NUnit.Framework;
 
-namespace SharpZipLibTests.TestSupport
+namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
 	/// <summary>
 	/// Miscellaneous test utilities.
