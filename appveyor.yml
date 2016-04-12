@@ -35,7 +35,7 @@ skip_tags: true
 # Operating system (build VM template)
 image:
 - Visual Studio 2015
-- Visual Studio 2013
+#- Visual Studio 2013
 
 # build cache to preserve files/folders between builds
 cache:
@@ -65,8 +65,19 @@ assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
   assembly_version: '{version}'
-#  assembly_file_version: '{version}'
-#  assembly_informational_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}-{branch} AppVeyor'
+
+xamarin:
+  email: mcneight+xamarin@gmail.com
+  password:
+    secure: vkBoEpwLjBnLcLJrwnkYiA==
+  android: true
+  ios: true
+
+# scripts to run before build
+before_build:
+- cmd: nuget restore ICSharpCode.SharpZipLib.sln
 
 build:
   project: ICSharpCode.SharpZipLib.sln
@@ -75,10 +86,6 @@ build:
   include_nuget_references: true
   parallel: true
   verbosity: normal
-
-# scripts to run before build
-before_build:
-- cmd: nuget restore ICSharpCode.SharpZipLib.sln
 
 #---------------------------------#
 #       tests configuration       #
@@ -89,14 +96,10 @@ before_build:
 #---------------------------------#
 
 artifacts:
-- path: bin\Debug\ICSharpCode.SharpZipLib.dll
-  name: Debug
-- path: bin\Debug\ICSharpCode.SharpZipLib.pdb
-  name: Debug
-- path: bin\Release\ICSharpCode.SharpZipLib.dll
-  name: Release
-- path: bin\Release\ICSharpCode.SharpZipLib.pdb
-  name: Release
+- path: bin\Debug
+  name: BuildDebug
+- path: bin\Release
+  name: BuildRelease
 
 #---------------------------------#
 #     deployment configuration    #
@@ -119,8 +122,20 @@ notifications:
 - provider: Email
   to:
     - mcneight+appveyor@gmail.com
-  subject: 'Build {{status}}'                  # optional
-  message: "{{message}}, {{commitId}}, ..."    # optional
+  subject: Build {{status}}
+  message: Version {{version}} {{commitId}} from {{branch}} {{status}} {{message}}
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: true
+  
+# VSOTeamRoom
+- provider: VSOTeamRoom
+  room: CI
+  account: sharpziplib
+  username: neilmcneight@hotmail.com
+  password:
+    secure: kFG0QjE+Broo7Y1UsWrLEg==
+  template: Version {{version}} {{commitId}} from {{branch}} {{status}} {{message}}
   on_build_success: true
   on_build_failure: true
   on_build_status_changed: true
