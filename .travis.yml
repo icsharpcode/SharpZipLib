@@ -10,6 +10,6 @@ install:
   - nuget install NUnit.ConsoleRunner -Version 3.2.0 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Debug ICSharpCode.SharpZipLib.sln
-  - mono ./testrunner/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe /framework:net-4.0 /result:nunit3-debug-test-results.xml ./ICSharpCode.SharpZipLib.Tests/bin/Debug/ICSharpCode.SharpZipLib.Tests.Basic.dll
+  - mono ./testrunner/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe /framework:mono-4.0 /result:nunit3-debug-test-results.xml ./ICSharpCode.SharpZipLib.Tests/bin/Debug/ICSharpCode.SharpZipLib.Tests.Basic.dll
   - xbuild /p:Configuration=Release ICSharpCode.SharpZipLib.sln
-  - mono ./testrunner/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe /framework:net-4.0 /result:nunit3-release-test-results.xml ./ICSharpCode.SharpZipLib.Tests/bin/Release/ICSharpCode.SharpZipLib.Tests.Basic.dll
+  - mono ./testrunner/NUnit.ConsoleRunner.3.2.0/tools/nunit3-console.exe /framework:mono-4.0 /result:nunit3-release-test-results.xml ./ICSharpCode.SharpZipLib.Tests/bin/Release/ICSharpCode.SharpZipLib.Tests.Basic.dll
