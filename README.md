@@ -13,14 +13,14 @@
     <td style="text-align:center">AppVeyor</td>
     <td>Windows Server 2012</td>
     <td>.NET Framework 4.5</td>
-    <td  style="text-align:center"><a href="https://ci.appveyor.com/project/McNeight/SharpZipLib/branch/build"><img src="https://ci.appveyor.com/api/projects/status/oe7kwnaib3qscm8l/branch/build?svg=true" alt="AppVeyor build status" /></a></td>
+    <td style="text-align:center"><a href="https://ci.appveyor.com/project/McNeight/SharpZipLib/branch/master"><img src="https://ci.appveyor.com/api/projects/status/oe7kwnaib3qscm8l/branch/master?svg=true" alt="AppVeyor build status" /></a></td>
   </tr>
   <tr>
     <td style="text-align:center" rowspan="2">Travis</td>
     <td>Linux</td>
     <td>Mono 4.2.3</td>
     <td style="text-align:center" rowspan="2">
-    <a href="https://travis-ci.org/McNeight/SharpZipLib"><img src="https://travis-ci.org/McNeight/SharpZipLib.svg?branch=build" alt="Travis build status" /></a></td>
+    <a href="https://travis-ci.org/McNeight/SharpZipLib"><img src="https://travis-ci.org/McNeight/SharpZipLib.svg?branch=master" alt="Travis build status" /></a></td>
   </tr>
   <tr>
     <td>OSX</td>
