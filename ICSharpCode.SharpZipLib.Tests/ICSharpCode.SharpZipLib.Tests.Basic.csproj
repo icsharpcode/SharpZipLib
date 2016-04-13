@@ -91,26 +91,6 @@
     <Compile Include="TestSupport\ZipTesting.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Mono.Cecil, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.Engine.3.2.0\lib\Mono.Cecil.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit-agent, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.Engine.3.2.0\lib\nunit-agent.exe</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit-agent-x86, Version=3.2.0.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\NUnit.Engine.3.2.0\lib\nunit-agent-x86.exe</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.engine, Version=3.2.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.Engine.3.2.0\lib\nunit.engine.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.engine.api, Version=3.0.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.Engine.3.2.0\lib\nunit.engine.api.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="nunit.framework, Version=3.2.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>

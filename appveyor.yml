@@ -18,12 +18,12 @@ version: 0.87.{build}
 branches:
   # whitelist
   only:
-  - build
+  - master
 
   # blacklist
   except:
-    - gh-pages
-    - coverity_scan
+  - gh-pages
+  - coverity_scan
 
 # Do not build on tags (GitHub only)
 skip_tags: true
@@ -127,7 +127,7 @@ notifications:
   on_build_success: true
   on_build_failure: true
   on_build_status_changed: true
-  
+
 # VSOTeamRoom
 #- provider: VSOTeamRoom
 #  room: CI
