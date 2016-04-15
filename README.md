@@ -1,7 +1,9 @@
 # SharpZipLib
 
-[![Build Status](https://travis-ci.org/McNeight/SharpZipLib.svg?branch=build)](https://travis-ci.org/McNeight/SharpZipLib)
-[![Build status](https://ci.appveyor.com/api/projects/status/oe7kwnaib3qscm8l/branch/build?svg=true)](https://ci.appveyor.com/project/McNeight/SharpZipLib/branch/build)
+[![Join the chat at https://gitter.im/icsharpcode/SharpZipLib](https://badges.gitter.im/icsharpcode/SharpZipLib.svg)](https://gitter.im/icsharpcode/SharpZipLib?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+[![Build Status](https://travis-ci.org/McNeight/SharpZipLib.svg?branch=master)](https://travis-ci.org/McNeight/SharpZipLib)
+[![Build status](https://ci.appveyor.com/api/projects/status/oe7kwnaib3qscm8l/branch/master?svg=true)](https://ci.appveyor.com/project/McNeight/SharpZipLib/branch/master)
 
 \#ziplib (SharpZipLib, formerly NZipLib) is a **Zip, GZip, Tar and BZip2 library** written entirely in C\# for the .NET framework. It is implemented as an assembly (installable in the GAC), and thus can easily be incorporated into other projects (in any .NET language). The creator of #ziplib put it this way: "I've ported the zip library over to C\# because I needed gzip/zip compression and I didn't want to use libzip.dll or something like this. I want all in pure C\#."
 
