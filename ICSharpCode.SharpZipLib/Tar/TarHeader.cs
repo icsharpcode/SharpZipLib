@@ -896,7 +896,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			int i;
 			
-			for (i = 0 ; i < length - 1 && nameOffset + i < name.Length; ++i) {
+			for (i = 0 ; i < length && nameOffset + i < name.Length; ++i) {
 				buffer[bufferOffset + i] = (byte)name[nameOffset + i];
 			}
 			
