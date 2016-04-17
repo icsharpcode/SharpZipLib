@@ -11,22 +11,23 @@
     <ApplicationIcon />
     <WarningLevel>4</WarningLevel>
     <StartupObject />
-    <NoStdLib>False</NoStdLib>
-    <NoConfig>False</NoConfig>
+    <NoStdLib>false</NoStdLib>
+    <NoConfig>false</NoConfig>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <PreBuildEvent />
     <PostBuildEvent />
     <DocumentationFile>..\bin\ICSharpCode.SharpZipLib.xml</DocumentationFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
-    <Optimize>True</Optimize>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <Optimize>true</Optimize>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <OutputPath>..\bin\Release\</OutputPath>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DebugType>None</DebugType>
@@ -37,9 +38,9 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <Optimize>False</Optimize>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <Optimize>false</Optimize>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <OutputPath>..\bin\Debug\</OutputPath>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DebugType>Full</DebugType>
@@ -50,7 +51,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <RegisterForComInterop>False</RegisterForComInterop>
+    <RegisterForComInterop>false</RegisterForComInterop>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <BaseAddress>4194304</BaseAddress>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -79,6 +80,8 @@
     <Compile Include="Checksums\Crc32.cs" />
     <Compile Include="Checksums\IChecksum.cs" />
     <Compile Include="Checksums\StrangeCrc.cs" />
+    <Compile Include="CompressionLevel.cs" />
+    <Compile Include="CompressionMode.cs" />
     <Compile Include="Core\FileSystemScanner.cs" />
     <Compile Include="Core\INameTransform.cs" />
     <Compile Include="Core\IScanFilter.cs" />
@@ -93,6 +96,9 @@
     <Compile Include="GZip\GZipException.cs" />
     <Compile Include="GZip\GzipInputStream.cs" />
     <Compile Include="GZip\GzipOutputStream.cs" />
+    <Compile Include="Lzw\LzwConstants.cs" />
+    <Compile Include="Lzw\LzwException.cs" />
+    <Compile Include="Lzw\LzwInputStream.cs" />
     <Compile Include="SharpZipBaseException.cs" />
     <Compile Include="Tar\InvalidHeaderException.cs" />
     <Compile Include="Tar\TarArchive.cs" />
@@ -128,6 +134,7 @@
     <Compile Include="Zip\ZipInputStream.cs" />
     <Compile Include="Zip\ZipNameTransform.cs" />
     <Compile Include="Zip\ZipOutputStream.cs" />
+    <Compile Include="ZipArchiveMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Documentation\SharpZipLibCodeMap.dgml">

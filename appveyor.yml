@@ -33,13 +33,44 @@ skip_tags: true
 #---------------------------------#
 
 # Operating system (build VM template)
+os: Windows Server 2012
+
 image:
 - Visual Studio 2015
 #- Visual Studio 2013
 
+# scripts that are called at very beginning, before repo cloning
+init:
+  - git config --global core.autocrlf input
+
 # build cache to preserve files/folders between builds
 cache:
   - packages -> **\packages.config  # preserve "packages" directory in the root of build folder but will reset it if packages.config is modified
+
+# scripts that run after cloning repository
+install:
+  # by default, all script lines are interpreted as batch
+  - echo This is batch
+  # to run script as a PowerShell command prepend it with ps:
+  - ps: Write-Host 'This is PowerShell'
+  # batch commands start from cmd:
+  - cmd: echo This is batch again
+  - cmd: set MY_VAR=12345
+
+# enable patching of AssemblyInfo.* files
+assembly_info:
+  patch: true
+  file: 'GlobalAssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+
+# Automatically register private account and/or project AppVeyor NuGet feeds.
+nuget:
+  account_feed: true
+  project_feed: true
+  disable_publish_on_pr: true     # disable publishing of .nupkg artifacts to
+                                  # account/project feeds for pull request builds
 
 #---------------------------------#
 #       build configuration       #
@@ -61,13 +92,7 @@ configuration:
   - Debug
   - Release
 
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: '{version}'
-  assembly_file_version: '{version}'
-  assembly_informational_version: '{version}-{branch} AppVeyor'
-
+# Save this for when there is an Android or iOS test application
 #xamarin:
 #  email: mcneight+xamarin@gmail.com
 #  password:
@@ -75,21 +100,66 @@ assembly_info:
 #  android: true
 #  ios: true
 
-# scripts to run before build
-before_build:
-- cmd: nuget restore ICSharpCode.SharpZipLib.sln
-
 build:
+  parallel: true
   project: ICSharpCode.SharpZipLib.sln
   publish_nuget: true
   publish_nuget_symbols: true
   include_nuget_references: true
-  parallel: true
+
+  # MSBuild verbosity level
   verbosity: normal
+
+# scripts to run before build
+before_build:
+- cmd: nuget restore ICSharpCode.SharpZipLib.sln
+
+# scripts to run *after* solution is built and *before* automatic packaging occurs (web apps, NuGet packages, Azure Cloud Services)
+before_package:
+
+# scripts to run after build
+after_build:
+
+# to run your custom scripts instead of automatic MSBuild
+build_script:
+
+# to disable automatic builds
+#build: off
 
 #---------------------------------#
 #       tests configuration       #
 #---------------------------------#
+
+test:
+  assemblies:
+    - asm1.dll
+    - asm2.dll
+
+  categories:
+    - UI
+    - E2E
+
+# to run tests from different categories as separate jobs in parallel
+#test:
+#  categories:
+#    - A            # A category common for all jobs
+#    - [UI]         # 1st job
+#    - [DAL, BL]    # 2nd job
+
+# scripts to run before tests
+before_test:
+  - echo script1
+  - ps: Write-Host "script1"
+
+# scripts to run after tests
+after_test:
+
+# to run your custom scripts instead of automatic tests
+test_script:
+    - cmd: nunit-console bin\UnitTests\ICSharpCode.WpfDesign.Tests.dll /framework:net-4.5
+
+# to disable automatic tests 
+#test: off
 
 #---------------------------------#
 #      artifacts configuration    #

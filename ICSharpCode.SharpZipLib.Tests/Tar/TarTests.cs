@@ -442,11 +442,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		/// </summary>
 		[Test]
         [Category("Tar")]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+		//[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public void InvalidModTime()
 		{
 			TarEntry e = TarEntry.CreateTarEntry("test");
-			e.ModTime = DateTime.MinValue;
+			//e.ModTime = DateTime.MinValue;
+
+			Assert.That(() => e.ModTime = DateTime.MinValue,
+				Throws.TypeOf<ArgumentOutOfRangeException>());
 		}
 		
 		/// <summary>
@@ -454,11 +457,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		/// </summary>
 		[Test]
         [Category("Tar")]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+		//[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public void InvalidSize()
 		{
 			TarEntry e = TarEntry.CreateTarEntry("test");
-			e.Size = -6;
+			//e.Size = -6;
+
+			Assert.That(() => e.Size = -6,
+				Throws.TypeOf<ArgumentOutOfRangeException>());
 		}
 		
 		/// <summary>
@@ -466,11 +472,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		/// </summary>
 		[Test]
         [Category("Tar")]
-        [ExpectedException(typeof(ArgumentNullException))]
+		//[ExpectedException(typeof(ArgumentNullException))]
 		public void InvalidName()
 		{
 			TarEntry e = TarEntry.CreateTarEntry("test");
-			e.Name = null;
+			//e.Name = null;
+
+			Assert.That(() => e.Name = null,
+				Throws.TypeOf<ArgumentNullException>());
 		}
 		
 		/// <summary>
@@ -494,11 +503,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		/// </summary>
 		[Test]
         [Category("Tar")]
-        [ExpectedException(typeof(ArgumentNullException))]
+		//[ExpectedException(typeof(ArgumentNullException))]
 		public void InvalidMagic()
 		{
 			TarEntry e = TarEntry.CreateTarEntry("test");
-			e.TarHeader.Magic = null;
+			//e.TarHeader.Magic = null;
+
+			Assert.That(() => e.TarHeader.Magic = null,
+				Throws.TypeOf<ArgumentNullException>());
 		}
 		
 		/// <summary>
@@ -506,11 +518,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		/// </summary>
 		[Test]
         [Category("Tar")]
-        [ExpectedException(typeof(ArgumentNullException))]
+		//[ExpectedException(typeof(ArgumentNullException))]
 		public void InvalidLinkName()
 		{
 			TarEntry e = TarEntry.CreateTarEntry("test");
-			e.TarHeader.LinkName = null;
+			//e.TarHeader.LinkName = null;
+
+			Assert.That(() => e.TarHeader.LinkName = null,
+				Throws.TypeOf<ArgumentNullException>());
 		}
 		
 		/// <summary>
@@ -518,11 +533,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		/// </summary>
 		[Test]
         [Category("Tar")]
-        [ExpectedException(typeof(ArgumentNullException))]
+		//[ExpectedException(typeof(ArgumentNullException))]
 		public void InvalidVersionName()
 		{
 			TarEntry e = TarEntry.CreateTarEntry("test");
-			e.TarHeader.Version = null;
+			//e.TarHeader.Version = null;
+
+			Assert.That(() => e.TarHeader.Version = null,
+				Throws.TypeOf<ArgumentNullException>());
 		}
 
 		[Test]

@@ -17,14 +17,28 @@
   </tr>
   <tr>
     <td style="text-align:center" rowspan="2">Travis</td>
-    <td>Linux</td>
+    <td>Ubuntu 12.04.5 LTS</td>
     <td>Mono 4.2.3</td>
     <td style="text-align:center" rowspan="2">
     <a href="https://travis-ci.org/McNeight/SharpZipLib"><img src="https://travis-ci.org/McNeight/SharpZipLib.svg?branch=master" alt="Travis build status" /></a></td>
   </tr>
   <tr>
-    <td>OSX</td>
+    <td>MacOSX 13.4.0.0</td>
     <td>Mono 4.2.3</td>
+  </tr>
+  <tr>
+    <td style="text-align:center" rowspan="3">Bitrise (Soon)</td>
+    <td>OSX</td>
+    <td>Xamarin.iOS</td>
+    <td style="text-align:center" rowspan="3"></td>
+  </tr>
+  <tr>
+    <td>OSX</td>
+    <td>Xamarin.Android</td>
+  </tr>
+  <tr>
+    <td>OSX</td>
+    <td>Xamarin.Mac</td>
   </tr>
 </table>
 

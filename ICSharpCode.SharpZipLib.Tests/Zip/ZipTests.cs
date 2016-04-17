@@ -581,11 +581,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// </summary>
 		[Test]
 		[Category("Zip")]
-		[ExpectedException(typeof(ArgumentNullException))]
+		//[ExpectedException(typeof(ArgumentNullException))]
 		public void NullNameInConstructor()
 		{
 			string name = null;
-			ZipEntry test = new ZipEntry(name);
+			ZipEntry test; // = new ZipEntry(name);
+
+			Assert.That(() => test = new ZipEntry(name),
+				Throws.TypeOf<ArgumentNullException>());
 		}		
 		
 		[Test]
@@ -1360,11 +1363,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		[Test]
 		[Category("Zip")]
-		[ExpectedException(typeof(NotSupportedException))]
+		//[ExpectedException(typeof(NotSupportedException))]
 		public void UnsupportedCompressionMethod()
 		{
 			ZipEntry ze = new ZipEntry("HumblePie");
-			ze.CompressionMethod = CompressionMethod.BZip2;
+			//ze.CompressionMethod = CompressionMethod.BZip2;
+
+			Assert.That(() => ze.CompressionMethod = CompressionMethod.BZip2,
+				Throws.TypeOf<NotSupportedException>());
 		}
 
 		/// <summary>
@@ -1372,7 +1378,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// </summary>
 		[Test]
 		[Category("Zip")]
-		[ExpectedException(typeof(ZipException))]
+		//[ExpectedException(typeof(ZipException))]
 		public void InvalidPasswordSeekable()
 		{
 			byte[] originalData = null;
@@ -1435,7 +1441,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// </summary>
 		[Test]
 		[Category("Zip")]
-		[ExpectedException(typeof(ZipException))]
+		//[ExpectedException(typeof(ZipException))]
 		public void InvalidPasswordNonSeekable()
 		{
 			byte[] originalData = null;
@@ -1466,13 +1472,16 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// </summary>
 		[Test]
 		[Category("Zip")]
-		[ExpectedException(typeof(InvalidOperationException))]
+		//[ExpectedException(typeof(InvalidOperationException))]
 		public void AddEntryAfterFinish()
 		{
 			MemoryStream ms = new MemoryStream();
 			ZipOutputStream s = new ZipOutputStream(ms);
 			s.Finish();
-			s.PutNextEntry(new ZipEntry("dummyfile.tst"));
+			//s.PutNextEntry(new ZipEntry("dummyfile.tst"));
+
+			Assert.That(() => s.PutNextEntry(new ZipEntry("dummyfile.tst")),
+				Throws.TypeOf<InvalidOperationException>());
 		}
 
 		/// <summary>
@@ -1480,12 +1489,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// </summary>
 		[Test]
 		[Category("Zip")]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
+		//[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public void SetCommentOversize()
 		{
 			MemoryStream ms = new MemoryStream();
 			ZipOutputStream s = new ZipOutputStream(ms);
-			s.SetComment(new String('A', 65536));
+			//s.SetComment(new String('A', 65536));
+
+			Assert.That(() => s.SetComment(new String('A', 65536)),
+				Throws.TypeOf<ArgumentOutOfRangeException>());
 		}
 
 		/// <summary>
@@ -2706,7 +2718,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
         [Test]
         [Category("Zip")]
-        [ExpectedException(typeof(DirectoryNotFoundException))]
+        //[ExpectedException(typeof(DirectoryNotFoundException))]
         public void CreateExceptions()
         {
             FastZip fastZip = new FastZip();
@@ -2761,7 +2773,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
         [Test]
         [Category("Zip")]
-        [ExpectedException(typeof(FileNotFoundException))]
+        //[ExpectedException(typeof(FileNotFoundException))]
         public void ExtractExceptions()
         {
             FastZip fastZip = new FastZip();
