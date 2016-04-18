@@ -330,7 +330,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			using (ZipOutputStream zOut = new ZipOutputStream(fs)) {
 				zOut.SetComment(comment);
 				for (int i = 0; i < entries; ++i) {
-					zOut.PutNextEntry(new ZipEntry(entryNamePrefix + (i + 1).ToString()));
+					zOut.PutNextEntry(new ZipEntry(entryNamePrefix + (i + 1)));
 					AddKnownDataToEntry(zOut, size);
 				}
 			}
@@ -343,7 +343,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				zOut.IsStreamOwner = isOwner;
 				zOut.SetComment(comment);
 				for (int i = 0; i < entries; ++i) {
-					zOut.PutNextEntry(new ZipEntry(entryNamePrefix + (i + 1).ToString()));
+					zOut.PutNextEntry(new ZipEntry(entryNamePrefix + (i + 1)));
 					AddKnownDataToEntry(zOut, size);
 				}
 			}
