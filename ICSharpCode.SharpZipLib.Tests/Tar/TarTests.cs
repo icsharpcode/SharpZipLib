@@ -426,7 +426,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 					modTime.Hour, modTime.Minute, modTime.Second);
 				Assert.AreEqual(truncatedTime, nextEntry.ModTime, "Modtimes should match");
 			
-				int entryCount = 0;
+				entryCount = 0;
 				while ( nextEntry != null )
 				{
 					++entryCount;
