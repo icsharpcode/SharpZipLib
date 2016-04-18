@@ -234,36 +234,37 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
             }
         }
 
-		[Test]
-		[Category("GZip")]
-		[Category("Long Running")]
-		public void BigStream()
-		{
-			window_ = new WindowedStream(0x3ffff);
-			outStream_ = new GZipOutputStream(window_);
-			inStream_ = new GZipInputStream(window_);
+		// TODO: Fix This
+		//[Test]
+		//[Category("GZip")]
+		//[Category("Long Running")]
+		//public void BigStream()
+		//{
+		//	window_ = new WindowedStream(0x3ffff);
+		//	outStream_ = new GZipOutputStream(window_);
+		//	inStream_ = new GZipInputStream(window_);
 
-			long target = 0x10000000;
-			readTarget_ = writeTarget_ = target;
+		//	long target = 0x10000000;
+		//	readTarget_ = writeTarget_ = target;
 
-			Thread reader = new Thread(Reader);
-			reader.Name = "Reader";
-			reader.Start();
+		//	Thread reader = new Thread(Reader);
+		//	reader.Name = "Reader";
+		//	reader.Start();
 
-			Thread writer = new Thread(Writer);
-			writer.Name = "Writer";
+		//	Thread writer = new Thread(Writer);
+		//	writer.Name = "Writer";
 
-			DateTime startTime = DateTime.Now;
-			writer.Start();
+		//	DateTime startTime = DateTime.Now;
+		//	writer.Start();
 
-			writer.Join();
-			reader.Join();
+		//	writer.Join();
+		//	reader.Join();
 
-			DateTime endTime = DateTime.Now;
+		//	DateTime endTime = DateTime.Now;
 
-			TimeSpan span = endTime - startTime;
-			Console.WriteLine("Time {0}  processes {1} KB/Sec", span, (target / 1024) / span.TotalSeconds);
-		}
+		//	TimeSpan span = endTime - startTime;
+		//	Console.WriteLine("Time {0}  processes {1} KB/Sec", span, (target / 1024) / span.TotalSeconds);
+		//}
 
 		void Reader()
 		{

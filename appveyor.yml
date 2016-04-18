@@ -50,12 +50,12 @@ cache:
 # scripts that run after cloning repository
 install:
   # by default, all script lines are interpreted as batch
-  - echo This is batch
+#  - echo This is batch
   # to run script as a PowerShell command prepend it with ps:
-  - ps: Write-Host 'This is PowerShell'
+#  - ps: Write-Host 'This is PowerShell'
   # batch commands start from cmd:
-  - cmd: echo This is batch again
-  - cmd: set MY_VAR=12345
+#  - cmd: echo This is batch again
+#  - cmd: set MY_VAR=12345
 
 # enable patching of AssemblyInfo.* files
 assembly_info:
@@ -132,12 +132,12 @@ build_script:
 
 test:
   assemblies:
-    - asm1.dll
-    - asm2.dll
+    - ICSharpCode.SharpZipLib.dll
+    - ICSharpCode.SharpZipLib.Tests.dll
 
-  categories:
-    - UI
-    - E2E
+#  categories:
+#    - UI
+#    - E2E
 
 # to run tests from different categories as separate jobs in parallel
 #test:
@@ -148,17 +148,17 @@ test:
 
 # scripts to run before tests
 before_test:
-  - echo script1
-  - ps: Write-Host "script1"
+#  - echo script1
+#  - ps: Write-Host "script1"
 
 # scripts to run after tests
 after_test:
 
 # to run your custom scripts instead of automatic tests
 test_script:
-    - cmd: nunit-console bin\UnitTests\ICSharpCode.WpfDesign.Tests.dll /framework:net-4.5
+    - cmd: nunit3-console /framework:net-4.5 /result:./Documentation/nunit3-test-results-appveyor.xml ./bin/Release/ICSharpCode.SharpZipLib.Tests.dll
 
-# to disable automatic tests 
+# to disable automatic tests
 #test: off
 
 #---------------------------------#
