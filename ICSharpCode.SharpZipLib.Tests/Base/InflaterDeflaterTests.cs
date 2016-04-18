@@ -119,7 +119,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 
 		int runLevel;
 		bool runZlib;
-		long runCount = 0;
+		long runCount;
 		Random runRandom = new Random(5);
 
 		void DeflateAndInflate(byte[] buffer)
