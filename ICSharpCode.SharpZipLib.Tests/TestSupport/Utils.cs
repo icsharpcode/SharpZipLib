@@ -9,9 +9,6 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	/// </summary>
 	public class Utils
 	{
-		public Utils()
-		{
-		}
 		
 		static void Compare(byte[] a, byte[] b)
 		{
