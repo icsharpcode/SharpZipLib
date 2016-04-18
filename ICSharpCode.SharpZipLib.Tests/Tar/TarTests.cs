@@ -365,7 +365,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 			var ms3 = new MemoryStream();
 			ms3.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms3.Seek(0, SeekOrigin.Begin);
-			ms3.Write(new byte[1] { 34 }, 0, 1);
+			ms3.Write(new byte[] { 34 }, 0, 1);
 			ms3.Seek(0, SeekOrigin.Begin);
 
 			using (TarInputStream tarIn = new TarInputStream(ms3))
