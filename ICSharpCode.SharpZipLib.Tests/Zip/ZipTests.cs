@@ -1237,10 +1237,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void FilenameCleaning()
 		{
-			Assert.AreEqual(0, string.Compare(ZipEntry.CleanName("hello"), "hello"));
-			Assert.AreEqual(0, string.Compare(ZipEntry.CleanName(@"z:\eccles"), "eccles"));
-			Assert.AreEqual(0, string.Compare(ZipEntry.CleanName(@"\\server\share\eccles"), "eccles"));
-			Assert.AreEqual(0, string.Compare(ZipEntry.CleanName(@"\\server\share\dir\eccles"), "dir/eccles"));
+			Assert.AreEqual(0, string.Compare(ZipEntry.CleanName("hello"), "hello", StringComparison.Ordinal));
+			Assert.AreEqual(0, string.Compare(ZipEntry.CleanName(@"z:\eccles"), "eccles", StringComparison.Ordinal));
+			Assert.AreEqual(0, string.Compare(ZipEntry.CleanName(@"\\server\share\eccles"), "eccles", StringComparison.Ordinal));
+			Assert.AreEqual(0, string.Compare(ZipEntry.CleanName(@"\\server\share\dir\eccles"), "dir/eccles", StringComparison.Ordinal));
 		}
 
 		[Test]
@@ -3474,18 +3474,18 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				int testIndex = zipFile.FindEntry("Farriera", false);
 				Assert.AreEqual(0, testIndex, "Case sensitive find failure");
-				Assert.IsTrue(string.Compare(zipFile[testIndex].Name, "Farriera", false) == 0);
+				Assert.IsTrue(string.Compare(zipFile[testIndex].Name, "Farriera", StringComparison.Ordinal) == 0);
 
 				testIndex = zipFile.FindEntry("Farriera", true);
 				Assert.AreEqual(0, testIndex, "Case insensitive find failure");
-				Assert.IsTrue(string.Compare(zipFile[testIndex].Name, "Farriera", true) == 0);
+				Assert.IsTrue(string.Compare(zipFile[testIndex].Name, "Farriera", StringComparison.OrdinalIgnoreCase) == 0);
 
 				testIndex = zipFile.FindEntry("urban mYTH", false);
 				Assert.AreEqual(-1, testIndex, "Case sensitive find failure");
 
 				testIndex = zipFile.FindEntry("urban mYTH", true);
 				Assert.AreEqual(2, testIndex, "Case insensitive find failure");
-				Assert.IsTrue(string.Compare(zipFile[testIndex].Name, "urban mYTH", true) == 0);
+				Assert.IsTrue(string.Compare(zipFile[testIndex].Name, "urban mYTH", StringComparison.OrdinalIgnoreCase) == 0);
 
 				testIndex = zipFile.FindEntry("Champane.", false);
 				Assert.AreEqual(-1, testIndex, "Case sensitive find failure");
