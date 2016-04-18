@@ -22,7 +22,6 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// Initializes a new instance of the <see cref="TrackedMemoryStream"/> class.
 		/// </summary>
 		public TrackedMemoryStream()
-			: base()
 		{
 		}
 
