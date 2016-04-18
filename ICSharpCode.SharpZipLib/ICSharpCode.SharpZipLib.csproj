@@ -81,7 +81,7 @@
     <Compile Include="Checksums\Adler32.cs" />
     <Compile Include="Checksums\Crc32.cs" />
     <Compile Include="Checksums\IChecksum.cs" />
-    <Compile Include="Checksums\StrangeCrc.cs" />
+    <Compile Include="Checksums\BZip2Crc.cs" />
     <Compile Include="CompressionLevel.cs" />
     <Compile Include="CompressionMode.cs" />
     <Compile Include="Core\FileSystemScanner.cs" />

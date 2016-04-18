@@ -43,10 +43,6 @@ using System;
 using System.Text;
 using System.Threading;
 
-#if NETCF_1_0 || NETCF_2_0
-using System.Globalization;
-#endif
-
 namespace ICSharpCode.SharpZipLib.Zip 
 {
 
@@ -466,12 +462,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public const int ENDSIG = 'P' | ('K' << 8) | (5 << 16) | (6 << 24);
 		#endregion
 		
-#if NETCF_1_0 || NETCF_2_0
-		// This isnt so great but is better than nothing.
-        // Trying to work out an appropriate OEM code page would be good.
-        // 850 is a good default for english speakers particularly in Europe.
-		static int defaultCodePage = CultureInfo.CurrentCulture.TextInfo.ANSICodePage;
-#else
 	    /// <remarks>
 	    /// Get OEM codepage from NetFX, which parses the NLP file with culture info table etc etc.
 	    /// But sometimes it yields the special value of 1 which is nicknamed <c>CodePageNoOEM</c> in <see cref="Encoding"/> sources (might also mean <c>CP_OEMCP</c>, but Encoding puts it so).
@@ -484,7 +474,6 @@ namespace ICSharpCode.SharpZipLib.Zip
             ((Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 1) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 2) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 3) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 42))
             ? 437 // The default OEM encoding in a console in a default Windows installation, as a fallback.
 	        : Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage;  
-#endif
 		
 		/// <summary>
 		/// Default encoding used for string conversion.  0 gives the default system OEM code page.

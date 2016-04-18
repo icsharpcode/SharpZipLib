@@ -718,19 +718,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			}
 
 			if ( count < 0 ) {
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("count");
-#else
 				throw new ArgumentOutOfRangeException(nameof(count), "count cannot be negative");
-#endif
 			}
 
 			if ( offset < 0 ) {
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("offset");
-#else
 				throw new ArgumentOutOfRangeException(nameof(offset), "offset cannot be negative");
-#endif
 			}
 
 			if ( offset + count > buffer.Length ) {

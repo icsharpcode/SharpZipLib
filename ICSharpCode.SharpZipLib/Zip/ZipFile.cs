@@ -48,10 +48,8 @@ using System.IO;
 using System.Text;
 using System.Globalization;
 
-#if !NETCF_1_0
 using System.Security.Cryptography;
 using ICSharpCode.SharpZipLib.Encryption;
-#endif
 
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Checksums;
@@ -378,7 +376,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { key = value; }
 		}
 		
-#if !NETCF_1_0				
 		/// <summary>
 		/// Password to be used for encrypting/decrypting files.
 		/// </summary>
@@ -396,7 +393,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 		}
-#endif
 
 		/// <summary>
 		/// Get a value indicating wether encryption keys are currently available.
@@ -814,14 +810,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 			Stream result = new PartialInputStream(this, start, entries_[entryIndex].CompressedSize);
 
 			if (entries_[entryIndex].IsCrypted == true) {
-#if NETCF_1_0
-				throw new ZipException("decryption not supported for Compact Framework 1.0");
-#else
 				result = CreateAndInitDecryptionStream(result, entries_[entryIndex]);
 				if (result == null) {
 					throw new ZipException("Unable to decrypt this entry");
 				}
-#endif				
 			}
 
 			switch (method) {
@@ -1324,11 +1316,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get { return bufferSize_; }
 			set {
 				if ( value < 1024 ) {
-#if NETCF_1_0					
-					throw new ArgumentOutOfRangeException("value");
-#else
 					throw new ArgumentOutOfRangeException(nameof(value), "cannot be below 1024");
-#endif					
 				}
 
 				if ( bufferSize_ != value ) {
@@ -2379,11 +2367,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			Stream result = baseStream_;
 
 			if ( entry.IsCrypted == true ) {
-#if NETCF_1_0
-				throw new ZipException("Encryption not supported for Compact Framework 1.0");
-#else
 				result = CreateAndInitEncryptionStream(result, entry);
-#endif
 			}
 
 			switch ( entry.CompressionMethod ) {
@@ -3259,7 +3243,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return TestLocalHeader(entry, HeaderTest.Extract);
 		}
 		
-#if !NETCF_1_0		
 		Stream CreateAndInitDecryptionStream(Stream baseStream, ZipEntry entry)
 		{
 			CryptoStream result = null;
@@ -3277,7 +3260,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				CheckClassicPassword(result, entry);
 			}
 			else {
-#if !NET_1_1 && !NETCF_2_0
 				if (entry.Version == ZipConstants.VERSION_AES) {
 					//
 					OnKeysRequired(entry.Name);
@@ -3301,7 +3283,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 					result = new ZipAESStream(baseStream, decryptor, CryptoStreamMode.Read);
 				}
 				else
-#endif
 				{
 					throw new ZipException("Decryption method not supported");
 				}
@@ -3345,7 +3326,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ZipException("Invalid password");
 			}
 		}
-#endif
 		
 		static void WriteEncryptionHeader(Stream stream, long crcValue)
 		{
@@ -3922,7 +3902,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				get { return true; }
 			}
 			
-#if !NET_1_0 && !NET_1_1 && !NETCF_1_0
 			/// <summary>
 			/// Gets a value that determines whether the current stream can time out.
 			/// </summary>
@@ -3931,7 +3910,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			public override bool CanTimeout {
 				get { return baseStream_.CanTimeout; }
 			}
-#endif			
 			#region Instance Fields
 			ZipFile zipFile_;
 			Stream baseStream_;

@@ -41,66 +41,62 @@
 
 using System;
 using System.IO;
-
 using ICSharpCode.SharpZipLib.Checksums;
+using ICSharpCode.SharpZipLib.Encryption;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
-#if !NETCF_1_0
-using ICSharpCode.SharpZipLib.Encryption;
-#endif
-
 namespace ICSharpCode.SharpZipLib.Zip
 {
-	/// <summary>
-	/// This is an InflaterInputStream that reads the files baseInputStream an zip archive
-	/// one after another.  It has a special method to get the zip entry of
-	/// the next file.  The zip entry contains information about the file name
-	/// size, compressed size, Crc, etc.
-	/// It includes support for Stored and Deflated entries.
-	/// <br/>
-	/// <br/>Author of the original java version : Jochen Hoenicke
-	/// </summary>
-	/// 
-	/// <example> This sample shows how to read a zip file
-	/// <code lang="C#">
-	/// using System;
-	/// using System.Text;
-	/// using System.IO;
-	/// 
-	/// using ICSharpCode.SharpZipLib.Zip;
-	/// 
-	/// class MainClass
-	/// {
-	/// 	public static void Main(string[] args)
-	/// 	{
-	/// 		using ( ZipInputStream s = new ZipInputStream(File.OpenRead(args[0]))) {
-	///
-	/// 			ZipEntry theEntry;
+    /// <summary>
+    /// This is an InflaterInputStream that reads the files baseInputStream an zip archive
+    /// one after another.  It has a special method to get the zip entry of
+    /// the next file.  The zip entry contains information about the file name
+    /// size, compressed size, Crc, etc.
+    /// It includes support for Stored and Deflated entries.
+    /// <br/>
+    /// <br/>Author of the original java version : Jochen Hoenicke
+    /// </summary>
+    /// 
+    /// <example> This sample shows how to read a zip file
+    /// <code lang="C#">
+    /// using System;
+    /// using System.Text;
+    /// using System.IO;
+    /// 
+    /// using ICSharpCode.SharpZipLib.Zip;
+    /// 
+    /// class MainClass
+    /// {
+    /// 	public static void Main(string[] args)
+    /// 	{
+    /// 		using ( ZipInputStream s = new ZipInputStream(File.OpenRead(args[0]))) {
+    ///
+    /// 			ZipEntry theEntry;
     /// 			const int size = 2048;
     /// 			byte[] data = new byte[2048];
     /// 			
     /// 			while ((theEntry = s.GetNextEntry()) != null) {
-	///                 if ( entry.IsFile ) {
-	/// 				    Console.Write("Show contents (y/n) ?");
-	/// 				    if (Console.ReadLine() == "y") {
-	/// 				    	while (true) {
-	/// 				    		size = s.Read(data, 0, data.Length);
-	/// 				    		if (size > 0) {
-	/// 				    			Console.Write(new ASCIIEncoding().GetString(data, 0, size));
-	/// 				    		} else {
-	/// 				    			break;
-	/// 				    		}
-	/// 				    	}
-	/// 				    }
+    ///                 if ( entry.IsFile ) {
+    /// 				    Console.Write("Show contents (y/n) ?");
+    /// 				    if (Console.ReadLine() == "y") {
+    /// 				    	while (true) {
+    /// 				    		size = s.Read(data, 0, data.Length);
+    /// 				    		if (size > 0) {
+    /// 				    			Console.Write(new ASCIIEncoding().GetString(data, 0, size));
+    /// 				    		} else {
+    /// 				    			break;
+    /// 				    		}
+    /// 				    	}
+    /// 				    }
     /// 				}
-	/// 			}
-	/// 		}
-	/// 	}
-	/// }
-	/// </code>
-	/// </example>
-	public class ZipInputStream : InflaterInputStream
+    /// 			}
+    /// 		}
+    /// 	}
+    /// }
+    /// </code>
+    /// </example>
+    public class ZipInputStream : InflaterInputStream
 	{
 		#region Instance Fields
 
@@ -491,9 +487,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			
 			// Handle encryption if required.
 			if (entry.IsCrypted) {
-#if NETCF_1_0
-				throw new ZipException("Encryption not supported for Compact Framework 1.0");
-#else
 				if (password == null) {
 					throw new ZipException("No password set.");
 				}
@@ -517,11 +510,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				else if ( (entry.Flags & (int)GeneralBitFlags.Descriptor) == 0 ) {
 					throw new ZipException(string.Format("Entry compressed size {0} too small for encryption", csize));
 				}
-#endif				
 			} else {
-#if !NETCF_1_0
 				inputBuffer.CryptoTransform = null;
-#endif				
 			}
 
 			if ((csize > 0) || ((flags & (int)GeneralBitFlags.Descriptor) != 0)) {
@@ -553,19 +543,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			if ( offset < 0 ) {
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("offset");
-#else
 				throw new ArgumentOutOfRangeException(nameof(offset), "Cannot be negative");
-#endif				
 			}
 
 			if ( count < 0 ) {
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("count");
-#else
 				throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
-#endif
 			}
 
 			if ( (buffer.Length - offset) < count ) {

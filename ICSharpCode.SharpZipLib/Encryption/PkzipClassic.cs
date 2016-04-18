@@ -35,9 +35,6 @@
 // exception statement from your version.
 //
 
-
-#if !NETCF_1_0
-
 using System;
 using System.Security.Cryptography;
 using ICSharpCode.SharpZipLib.Checksums;
@@ -495,4 +492,3 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		#endregion
 	}
 }
-#endif

@@ -35,8 +35,6 @@
 // exception statement from your version.
 // 
 
-#if !NET_1_1 && !NETCF_2_0
-
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -167,4 +165,3 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		}
 	}
 }
-#endif

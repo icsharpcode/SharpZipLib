@@ -152,11 +152,7 @@ namespace ICSharpCode.SharpZipLib.Core
 					else if (original[endIndex] == escape) {
 						endIndex += 1;
 						if (endIndex >= original.Length) {
-#if NETCF_1_0
-							throw new ArgumentException("Missing terminating escape character");
-#else
 							throw new ArgumentException("Missing terminating escape character", nameof(original));
-#endif
 						}
 						// include escape if this is not an escaped separator
 						if (Array.IndexOf(separators, original[endIndex]) < 0)

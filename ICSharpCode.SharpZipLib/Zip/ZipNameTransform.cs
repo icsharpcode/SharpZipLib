@@ -73,11 +73,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		static ZipNameTransform()
 		{
 			char[] invalidPathChars;
-#if NET_1_0 || NET_1_1 || NETCF_1_0
-			invalidPathChars = Path.InvalidPathChars;
-#else
 			invalidPathChars = Path.GetInvalidPathChars();
-#endif
 			int howMany = invalidPathChars.Length + 2;
 
 			InvalidEntryCharsRelaxed = new char[howMany];

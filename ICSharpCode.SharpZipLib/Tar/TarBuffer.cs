@@ -179,11 +179,7 @@ or which contains garbage records after a zero block.
 			
 			if ( blockFactor <= 0 )
 			{
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("blockFactor");
-#else
 				throw new ArgumentOutOfRangeException(nameof(blockFactor), "Factor cannot be negative");
-#endif				
 			}
 
 			var tarBuffer = new TarBuffer();
@@ -224,11 +220,7 @@ or which contains garbage records after a zero block.
 
 			if ( blockFactor <= 0 )
 			{
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("blockFactor");
-#else
 				throw new ArgumentOutOfRangeException(nameof(blockFactor), "Factor cannot be negative");
-#endif				
 			}
 
 			var tarBuffer = new TarBuffer();

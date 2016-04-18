@@ -406,11 +406,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				ed.Delete(1);
 			}
 
-#if !NET_1_1 && !NETCF_2_0
 			if (entry.AESKeySize > 0) {
 				AddExtraDataAES(entry, ed);
 			}
-#endif
 			byte[] extra = ed.GetEntryData();
 
 			WriteLeShort(name.Length);
@@ -443,11 +441,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			size = 0;
 
 			if (entry.IsCrypted) {
-#if !NET_1_1 && !NETCF_2_0
 				if (entry.AESKeySize > 0) {
 					WriteAESHeader(entry);
 				} else
-#endif
 				{
 					if (entry.Crc < 0) {			// so testing Zip will says its ok
 						WriteEncryptionHeader(entry.DosTime << 16);
@@ -581,7 +577,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			baseOutputStream_.Write(cryptBuffer, 0, cryptBuffer.Length);
 		}
 
-#if !NET_1_1 && !NETCF_2_0
 		private static void AddExtraDataAES(ZipEntry entry, ZipExtraData extraData) {
 
 			// Vendor Version: AE-1 IS 1. AE-2 is 2. With AE-2 no CRC is required and 0 is stored.
@@ -618,7 +613,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			baseOutputStream_.Write(salt, 0, salt.Length);
 			baseOutputStream_.Write(pwdVerifier, 0, pwdVerifier.Length);
 		}
-#endif
 
 		/// <summary>
 		/// Writes the given buffer to the current entry.
@@ -639,19 +633,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			
 			if ( offset < 0 ) {
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("offset");
-#else
 				throw new ArgumentOutOfRangeException(nameof(offset), "Cannot be negative");
-#endif
 			}
 
 			if ( count < 0 ) {
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("count");
-#else
 				throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
-#endif
 			}
 
 			if ( (buffer.Length - offset) < count ) {
@@ -778,11 +764,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 					ed.Delete(1);
 				}
 
-#if !NET_1_1 && !NETCF_2_0
 				if (entry.AESKeySize > 0) {
 					AddExtraDataAES(entry, ed);
 				}
-#endif
 				byte[] extra = ed.GetEntryData();
 				
 				byte[] entryComment = 

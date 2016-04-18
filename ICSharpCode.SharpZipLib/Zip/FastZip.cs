@@ -236,7 +236,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { createEmptyDirectories_ = value; }
 		}
 
-#if !NETCF_1_0
 		/// <summary>
 		/// Get / set the password value.
 		/// </summary>
@@ -245,7 +244,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get { return password_; }
 			set { password_ = value; }
 		}
-#endif
 
 		/// <summary>
 		/// Get or set the <see cref="INameTransform"></see> active when creating Zip files.
@@ -368,11 +366,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			using ( outputStream_ = new ZipOutputStream(outputStream) ) {
 
-#if !NETCF_1_0
 				if ( password_ != null ) {
 					outputStream_.Password = password_;
 				}
-#endif
 
 				outputStream_.UseZip64 = UseZip64;
 				var scanner = new FileSystemScanner(fileFilter, directoryFilter);
@@ -458,11 +454,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			using (zipFile_ = new ZipFile(inputStream)) {
 
-#if !NETCF_1_0
 				if (password_ != null) {
 					zipFile_.Password = password_;
 				}
-#endif
 				zipFile_.IsStreamOwner = isStreamOwner;
 				System.Collections.IEnumerator enumerator = zipFile_.GetEnumerator();
 				while (continueRunning_ && enumerator.MoveNext()) {
@@ -596,7 +590,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 							}
 						}
 
-#if !NETCF_1_0 && !NETCF_2_0
 						if ( restoreDateTimeOnExtract_ ) {
 							File.SetLastWriteTime(targetName, entry.DateTime);
 						}
@@ -607,7 +600,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 							fileAttributes &= (FileAttributes.Archive | FileAttributes.Normal | FileAttributes.ReadOnly | FileAttributes.Hidden);
 							File.SetAttributes(targetName, fileAttributes);
 						}
-#endif						
 					}
 					catch(Exception ex) {
 						if ( events_ != null ) {
@@ -684,20 +676,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return (int)info.Attributes;
 		}
 		
-#if NET_1_0 || NET_1_1 || NETCF_1_0
-		static bool NameIsValid(string name)
-		{
-			return (name != null) &&
-				(name.Length > 0) &&
-				(name.IndexOfAny(Path.InvalidPathChars) < 0);
-		}
-#else
 		static bool NameIsValid(string name)
 		{
 			return !string.IsNullOrEmpty(name)&&
 				(name.IndexOfAny(Path.GetInvalidPathChars()) < 0);
 		}
-#endif
 		#endregion
 		
 		#region Instance Fields
@@ -719,9 +702,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		INameTransform extractNameTransform_;
 		UseZip64 useZip64_=UseZip64.Dynamic;
 		
-#if !NETCF_1_0
 		string password_;
-#endif	
 
 		#endregion
 	}

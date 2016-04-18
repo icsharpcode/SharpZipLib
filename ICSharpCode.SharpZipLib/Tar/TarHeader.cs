@@ -369,11 +369,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			get { return size; }
 			set { 
 				if ( value < 0 ) {
-#if NETCF_1_0
-					throw new ArgumentOutOfRangeException("value");
-#else
 					throw new ArgumentOutOfRangeException(nameof(value), "Cannot be less than zero");
-#endif					
 				}
 				size = value; 
 			}
@@ -393,11 +389,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			set {
 				if ( value < dateTime1970 )
 				{
-#if NETCF_1_0
-					throw new ArgumentOutOfRangeException("value");
-#else
 					throw new ArgumentOutOfRangeException(nameof(value), "ModTime cannot be before Jan 1st 1970");
-#endif					
 				}
 				modTime = new DateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second);
 			}
@@ -494,11 +486,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					userName = value.Substring(0, Math.Min(UNAMELEN, value.Length));
 				}
 				else {
-#if NETCF_1_0 || NETCF_2_0
-					string currentUser = "PocketPC";
-#else
 					string currentUser = Environment.UserName;
-#endif
 					if (currentUser.Length > UNAMELEN) {
 						currentUser = currentUser.Substring(0, UNAMELEN);
 					}
@@ -818,20 +806,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 
 			if ( offset < 0 ) {
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("offset");
-#else
 				throw new ArgumentOutOfRangeException(nameof(offset), "Cannot be less than zero");
-#endif				
 			}
 
 			if ( length < 0 )
 			{
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("length");
-#else
 				throw new ArgumentOutOfRangeException(nameof(length), "Cannot be less than zero");
-#endif				
 			}
 
 			if ( offset + length > header.Length )

@@ -238,19 +238,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 
 			if ( offset < 0 ) {
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("offset");
-#else
 				throw new ArgumentOutOfRangeException(nameof(offset), "Cannot be negative");
-#endif				
 			}
 
 			if ( count < 0 ) {
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("count");
-#else
 				throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
-#endif				
 			}
 
 			if (windowStart_ < windowEnd_) {

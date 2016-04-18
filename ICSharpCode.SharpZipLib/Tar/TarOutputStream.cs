@@ -375,11 +375,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			
 			if ( offset < 0 )
 			{
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("offset");
-#else
 				throw new ArgumentOutOfRangeException(nameof(offset), "Cannot be negative");
-#endif				
 			}
 
 			if ( buffer.Length - offset < count )
@@ -389,21 +385,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			if ( count < 0 )
 			{
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("count");
-#else
 				throw new ArgumentOutOfRangeException(nameof(count), "Cannot be negative");
-#endif
 			}
 
 			if ( (currBytes + count) > currSize ) {
 				string errorText = string.Format("request to write '{0}' bytes exceeds size in header of '{1}' bytes",
 					count, this.currSize);
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("count");
-#else
 				throw new ArgumentOutOfRangeException(nameof(count), errorText);
-#endif				
 			}
 			
 			//

@@ -720,11 +720,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int addLength = (fieldData == null) ? 0 : fieldData.Length;
 
 			if ( addLength > ushort.MaxValue ) {
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("fieldData");
-#else
 				throw new ArgumentOutOfRangeException(nameof(fieldData), "exceeds maximum length");
-#endif
 			}
 
 			// Test for new length before adjusting data.

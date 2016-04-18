@@ -1,4 +1,4 @@
-// StrangeCRC.cs - computes a crc used in the bziplib
+// BZip2Crc.cs - computes a crc used in the bzip2lib
 //
 // Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 //
@@ -43,7 +43,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 	/// <summary>
 	/// Bzip2 checksum algorithm
 	/// </summary>
-	public class StrangeCRC : IChecksum
+	public class BZip2Crc : IChecksum
 	{
 		readonly static uint[] crc32Table = {
 			0x00000000, 0x04c11db7, 0x09823b6e, 0x0d4326d9,
@@ -115,9 +115,9 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		int globalCrc;
 
 		/// <summary>
-		/// Initialise a default instance of <see cref="StrangeCRC"></see>
+		/// Initialise a default instance of <see cref="BZip2Crc"></see>
 		/// </summary>	
-		public StrangeCRC() 
+		public BZip2Crc() 
 		{
 			Reset();
 		}
@@ -179,20 +179,12 @@ namespace ICSharpCode.SharpZipLib.Checksums
 			
 			if ( offset < 0 )
 			{
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("offset");
-#else
 				throw new ArgumentOutOfRangeException(nameof(offset), "cannot be less than zero");
-#endif				
 			}
 
 			if ( count < 0 )
 			{
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("count");
-#else
 				throw new ArgumentOutOfRangeException(nameof(count), "cannot be less than zero");
-#endif
 			}
 
 			if ( offset + count > buffer.Length )

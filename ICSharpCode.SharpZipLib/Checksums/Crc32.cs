@@ -200,11 +200,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 			}
 			
 			if ( count < 0 ) {
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("count");
-#else
 				throw new ArgumentOutOfRangeException(nameof(count), "Count cannot be less than zero");
-#endif				
 			}
 			
 			if (offset < 0 || offset + count > buffer.Length) {
