@@ -46,7 +46,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 			using ( TarArchive tarIn = TarArchive.CreateInputTarArchive(ms2) )
 			{
 				entryCount = 0;
-				tarIn.ProgressMessageEvent += new ProgressMessageHandler(EntryCounter);
+				tarIn.ProgressMessageEvent += EntryCounter;
 				tarIn.ListContents();
 				Assert.AreEqual(0, entryCount, "Expected 0 tar entries");
 			}
