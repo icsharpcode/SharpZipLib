@@ -30,12 +30,13 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <OutputPath>..\bin\Release\</OutputPath>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <DebugType>None</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>..\bin\Release\ICSharpCode.SharpZipLib.xml</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>CODE_ANALYSIS</DefineConstants>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+    <WarningLevel>0</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -153,4 +154,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
- </Project>
+</Project>

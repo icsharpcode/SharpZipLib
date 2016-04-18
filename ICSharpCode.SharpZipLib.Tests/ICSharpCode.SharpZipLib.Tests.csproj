@@ -47,8 +47,8 @@
     <OutputPath>..\bin\Debug\</OutputPath>
     <Prefer32Bit>false</Prefer32Bit>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <StartAction>Program</StartAction>
-    <StartArguments>ICSharpCode.SharpZipLib.Tests.dll /framework:net-4.5 /result:nunit3-test-results-debug.xml</StartArguments>
+    <StartAction>Project</StartAction>
+    <StartArguments>ICSharpCode.SharpZipLib.Tests.dll /framework:net-4.5 /result:..\Documentation\nunit3-test-results-debug.xml</StartArguments>
     <StartProgram>..\packages\NUnit.ConsoleRunner.3.2.0\tools\nunit3-console.exe</StartProgram>
     <StartWorkingDirectory />
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
@@ -59,15 +59,15 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DebugSymbols>False</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\bin\Release\</OutputPath>
     <Prefer32Bit>false</Prefer32Bit>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <StartAction>Program</StartAction>
-    <StartArguments>ICSharpCode.SharpZipLib.Tests.dll /framework:net-4.5 /result:nunit3-test-results-release.xml</StartArguments>
+    <StartAction>Project</StartAction>
+    <StartArguments>ICSharpCode.SharpZipLib.Tests.dll /framework:net-4.5 /result:..\Documentation\nunit3-test-results-release.xml</StartArguments>
     <StartProgram>..\packages\NUnit.ConsoleRunner.3.2.0\tools\nunit3-console.exe</StartProgram>
     <StartWorkingDirectory />
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
@@ -88,6 +88,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Base\InflaterDeflaterTests.cs" />
     <Compile Include="BZip2\Bzip2Tests.cs" />
+    <Compile Include="Checksums\Crc32Tests.cs" />
     <Compile Include="Core\Core.cs" />
     <Compile Include="GZip\GZipTests.cs" />
     <Compile Include="Lzw\LzwTests.cs" />
@@ -112,7 +113,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -137,9 +137,7 @@
       <Name>ICSharpCode.SharpZipLib</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Checksums\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

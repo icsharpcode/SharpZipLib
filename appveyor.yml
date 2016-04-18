@@ -85,12 +85,12 @@ platform: Any CPU
 #  - Any CPU
 
 # build Configuration, i.e. Debug, Release, etc.
-#configuration: Release
+configuration: Release
 
 # to add several configurations to build matrix:
-configuration:
-  - Debug
-  - Release
+#configuration:
+#  - Debug
+#  - Release
 
 # Save this for when there is an Android or iOS test application
 #xamarin:
@@ -153,10 +153,11 @@ before_test:
 
 # scripts to run after tests
 after_test:
+  - cmd: nuget pack Build\ICSharpCode.SharpZipLib.nuspec -BasePath bin\Release -OutputDirectory bin\Release
 
 # to run your custom scripts instead of automatic tests
 test_script:
-    - cmd: nunit3-console /framework:net-4.5 /result:./Documentation/nunit3-test-results-appveyor.xml ./bin/Release/ICSharpCode.SharpZipLib.Tests.dll
+  - cmd: nunit3-console /framework:net-4.5 /result:./Documentation/nunit3-test-results-appveyor.xml;format=AppVeyor ./bin/Release/ICSharpCode.SharpZipLib.Tests.dll
 
 # to disable automatic tests
 #test: off
@@ -166,10 +167,14 @@ test_script:
 #---------------------------------#
 
 artifacts:
-- path: bin\Debug
-  name: BuildDebug
+#- path: bin\Debug
+#  name: BuildDebug
 - path: bin\Release
   name: BuildRelease
+- path: bin\**\*.nupkg
+  name: NuGet
+- path: Documentation\nunit3-test-results-appveyor.xml
+  name: TestResults
 
 #---------------------------------#
 #     deployment configuration    #
@@ -177,6 +182,22 @@ artifacts:
 
 # providers: Local, FTP, WebDeploy, AzureCS, AzureBlob, S3, NuGet, Environment
 # provider names are case-sensitive!
+deploy:
+  release: dogfood-$(appveyor_build_version)
+  description: 'Something To Eat'
+  provider: GitHub
+  auth_token:
+    secure: pZ5zHJ/2mZsmqQH0gPke0LMqSgUhz79wbcCjdDTCEIl6hRJYlYhkaPianw2hz26k # your encrypted token from GitHub
+  artifact: BuildRelease,TestResults
+  draft: true
+  prerelease: true
+  on:
+    branch: master                 # release from master branch only
+    appveyor_repo_tag: true        # deploy on tag push only
+- provider: NuGet
+  api_key:
+    secure: z+iy8Iv5qqQghGrATRbx2I921HCHD7x7/xIrmkGGauMgpA/d1DBoOVUNNCHLE9Dj
+  artifact: NuGet
 
 #---------------------------------#
 #        global handlers          #
