@@ -183,12 +183,12 @@ artifacts:
 # providers: Local, FTP, WebDeploy, AzureCS, AzureBlob, S3, NuGet, Environment
 # provider names are case-sensitive!
 deploy:
-  release: dogfood-$(appveyor_build_version)
+- provider: GitHub
+  release: sharpziplib-dogfood-$(appveyor_build_version)
   description: 'Something To Eat'
-  provider: GitHub
   auth_token:
     secure: pZ5zHJ/2mZsmqQH0gPke0LMqSgUhz79wbcCjdDTCEIl6hRJYlYhkaPianw2hz26k # your encrypted token from GitHub
-  artifact: BuildRelease,TestResults
+  artifact: BuildRelease
   draft: true
   prerelease: true
   on:
