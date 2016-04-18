@@ -482,9 +482,11 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			get { return ringBuffer_.BytesRead; }
 		}
 
-		#region Instance Fields
-		ReadWriteRingBuffer ringBuffer_;
+        readonly
 
-		#endregion
-	}
+        #region Instance Fields
+        ReadWriteRingBuffer ringBuffer_;
+
+        #endregion
+    }
 }

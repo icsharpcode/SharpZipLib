@@ -87,9 +87,9 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 				Assert.AreEqual(pos, 0);
 			}
 		}
-		
-		BZip2OutputStream outStream_;
-		BZip2InputStream inStream_;
+
+        readonly BZip2OutputStream outStream_;
+        BZip2InputStream inStream_;
 		WindowedStream window_;
 		long readTarget_;
 		long writeTarget_;
