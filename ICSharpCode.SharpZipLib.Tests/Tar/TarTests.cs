@@ -29,7 +29,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		[Category("Tar")]
 		public void EmptyTar()
 		{
-			MemoryStream ms = new MemoryStream();
+			var ms = new MemoryStream();
 			int recordSize = 0;
 			using ( TarArchive tarOut = TarArchive.CreateOutputTarArchive(ms) )
 			{
@@ -39,7 +39,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 			Assert.IsTrue(ms.GetBuffer().Length > 0, "Archive size must be > zero");
 			Assert.AreEqual(ms.GetBuffer().Length % recordSize, 0, "Archive size must be a multiple of record size");
 			
-			MemoryStream ms2 = new MemoryStream();
+			var ms2 = new MemoryStream();
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 			
@@ -65,7 +65,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 
 			for ( int factor = MinimumBlockFactor; factor < MaximumBlockFactor; ++factor)
 			{
-				MemoryStream ms = new MemoryStream();
+				var ms = new MemoryStream();
 
 				using ( TarOutputStream tarOut = new TarOutputStream(ms, factor) )
 				{
@@ -75,7 +75,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 
 					byte[] buffer = new byte[TarBuffer.BlockSize];
 
-					Random r = new Random();
+					var r = new Random();
 					r.NextBytes(buffer);
 
 					// Last block is a partial one
@@ -126,7 +126,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 
 			for ( int iteration = 0; iteration < TestBlockFactor * 2; ++iteration)
 			{
-				MemoryStream ms = new MemoryStream();
+				var ms = new MemoryStream();
 
 				using ( TarOutputStream tarOut = new TarOutputStream(ms, TestBlockFactor) )
 				{
@@ -139,7 +139,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 
 					byte[] buffer = new byte[TarBuffer.BlockSize];
 
-					Random r = new Random();
+					var r = new Random();
 					r.NextBytes(buffer);
 
 					if ( iteration > 0 )
@@ -189,7 +189,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 
 		void TryLongName(string name)
 		{
-			MemoryStream ms = new MemoryStream();
+			var ms = new MemoryStream();
 			using ( TarOutputStream tarOut = new TarOutputStream(ms) )
 			{
 				DateTime modTime = DateTime.Now;
@@ -198,7 +198,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 				tarOut.PutNextEntry(entry);
 			}
 
-			MemoryStream ms2 = new MemoryStream();
+			var ms2 = new MemoryStream();
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 
@@ -258,8 +258,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		[Category("Tar")]
 		public void HeaderEquality()
 		{
-			TarHeader h1 = new TarHeader();
-			TarHeader h2 = new TarHeader();
+			var h1 = new TarHeader();
+			var h2 = new TarHeader();
 
 			Assert.IsTrue(h1.Equals(h2));
 
@@ -340,7 +340,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		[Category("Tar")]
 		public void Checksum()
 		{
-			MemoryStream ms = new MemoryStream();
+			var ms = new MemoryStream();
 			using ( TarOutputStream tarOut = new TarOutputStream(ms) )
 			{
 				DateTime modTime = DateTime.Now;
@@ -351,7 +351,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 				tarOut.PutNextEntry(entry);
 			}
 
-			MemoryStream ms2 = new MemoryStream();
+			var ms2 = new MemoryStream();
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 			TarEntry nextEntry;
@@ -362,7 +362,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 				Assert.IsTrue(nextEntry.TarHeader.IsChecksumValid, "Checksum should be valid");
 			}
 
-			MemoryStream ms3 = new MemoryStream();
+			var ms3 = new MemoryStream();
 			ms3.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms3.Seek(0, SeekOrigin.Begin);
 			ms3.Write(new byte[1] { 34 }, 0, 1);
@@ -392,7 +392,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 		[Category("Tar")]
 		public void ValuesPreserved()
 		{
-			MemoryStream ms = new MemoryStream();
+			var ms = new MemoryStream();
 			TarEntry entry;
 			DateTime modTime = DateTime.Now;
 
@@ -409,7 +409,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 				tarOut.PutNextEntry(entry);
 			}
 
-			MemoryStream ms2 = new MemoryStream();
+			var ms2 = new MemoryStream();
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 			
@@ -422,7 +422,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 				Assert.IsTrue(nextEntry.TarHeader.Equals(entry.TarHeader), "Headers should match");
 
 				// Tar only stores seconds 
-				DateTime truncatedTime = new DateTime(modTime.Year, modTime.Month, modTime.Day, 
+				var truncatedTime = new DateTime(modTime.Year, modTime.Month, modTime.Day, 
 					modTime.Hour, modTime.Minute, modTime.Second);
 				Assert.AreEqual(truncatedTime, nextEntry.ModTime, "Modtimes should match");
 			
@@ -560,7 +560,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 			headerE.DevMinor = 98;
 			headerE.LinkName = "LanceLink";
 
-			TarEntry d = (TarEntry)e.Clone();
+			var d = (TarEntry)e.Clone();
 
 			Assert.AreEqual(d.File, e.File);
 			Assert.AreEqual(d.GroupId, e.GroupId);
@@ -579,7 +579,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
 
 			Assert.AreEqual("LanceLink", headerD.LinkName);
 
-			TarEntry entryf = new TarEntry(headerD);
+			var entryf = new TarEntry(headerD);
 
 			headerD.LinkName = "Something different";
 
@@ -590,8 +590,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
         [Category("Tar")]
         public void OutputStreamOwnership()
         {
-            TrackedMemoryStream memStream = new TrackedMemoryStream();
-            TarOutputStream s = new TarOutputStream(memStream);
+            var memStream = new TrackedMemoryStream();
+            var s = new TarOutputStream(memStream);
 
             Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
             Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
@@ -618,8 +618,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar {
         [Category("Tar")]
         public void InputStreamOwnership()
         {
-            TrackedMemoryStream memStream = new TrackedMemoryStream();
-            TarInputStream s = new TarInputStream(memStream);
+            var memStream = new TrackedMemoryStream();
+            var s = new TarInputStream(memStream);
 
             Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
             Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");

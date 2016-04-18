@@ -22,8 +22,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		{
 			ms.Seek(0, SeekOrigin.Begin);
 			
-			Inflater inflater = new Inflater(!zlib);
-			InflaterInputStream inStream = new InflaterInputStream(ms, inflater);
+			var inflater = new Inflater(!zlib);
+			var inStream = new InflaterInputStream(ms, inflater);
 			byte[] buf2 = new byte[original.Length];
 
 			int currentIndex  = 0;
@@ -61,7 +61,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 					string description = string.Format("Difference at {0} level {1} zlib {2} ", i, level, zlib);
 					if ( original.Length < 2048 )
 					{
-						StringBuilder builder = new StringBuilder(description);
+						var builder = new StringBuilder(description);
 						for (int d = 0; d < original.Length; ++d)
 						{
 							builder.AppendFormat("{0} ", original[d]);
@@ -79,9 +79,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 
 		MemoryStream Deflate(byte[] data, int level, bool zlib)
 		{
-			MemoryStream memoryStream = new MemoryStream();
+			var memoryStream = new MemoryStream();
 			
-			Deflater deflater = new Deflater(level, !zlib);
+			var deflater = new Deflater(level, !zlib);
 			using ( DeflaterOutputStream outStream = new DeflaterOutputStream(memoryStream, deflater) )
 			{
 				outStream.IsStreamOwner = false;
@@ -95,7 +95,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		void RandomDeflateInflate(int size, int level, bool zlib)
 		{
 			byte[] buffer = new byte[size];
-			System.Random rnd = new Random();
+			var rnd = new Random();
 			rnd.NextBytes(buffer);
 			
 			MemoryStream ms = Deflate(buffer, level, zlib);
@@ -209,8 +209,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		[Category("Base")]
 		public void DeflatorStreamOwnership()
 		{
-			TrackedMemoryStream memStream = new TrackedMemoryStream();
-			DeflaterOutputStream s = new DeflaterOutputStream(memStream);
+			var memStream = new TrackedMemoryStream();
+			var s = new DeflaterOutputStream(memStream);
 			
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
@@ -238,8 +238,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		[Category("Base")]
 		public void InflatorStreamOwnership()
 		{
-			TrackedMemoryStream memStream = new TrackedMemoryStream();
-			InflaterInputStream s = new InflaterInputStream(memStream);
+			var memStream = new TrackedMemoryStream();
+			var s = new InflaterInputStream(memStream);
 
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
@@ -295,7 +295,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 				int readCount = textReader.Read(buffer, 0, 5);
 				Assert.AreEqual(5, readCount);
 
-				StringBuilder b = new StringBuilder();
+				var b = new StringBuilder();
 				b.Append(buffer);
 				Assert.AreEqual("Hello", b.ToString());
 

@@ -23,11 +23,11 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 		[Category("BZip2")]
 		public void BasicRoundTrip()
 		{
-			MemoryStream ms = new MemoryStream();
-			BZip2OutputStream outStream = new BZip2OutputStream(ms);
+			var ms = new MemoryStream();
+			var outStream = new BZip2OutputStream(ms);
 			
 			byte[] buf = new byte[10000];
-			System.Random rnd = new Random();
+			var rnd = new Random();
 			rnd.NextBytes(buf);
 			
 			outStream.Write(buf, 0, buf.Length);
@@ -63,8 +63,8 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 		[Category("BZip2")]
 		public void CreateEmptyArchive()
 		{
-			MemoryStream ms = new MemoryStream();
-			BZip2OutputStream outStream = new BZip2OutputStream(ms);
+			var ms = new MemoryStream();
+			var outStream = new BZip2OutputStream(ms);
 			outStream.Close();
 			ms = new MemoryStream(ms.GetBuffer());
 			

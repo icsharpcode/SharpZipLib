@@ -36,7 +36,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Core
         [Test]
         public void NullFilter()
         {
-            NameFilter nf = new NameFilter(null);
+            var nf = new NameFilter(null);
             Assert.IsTrue(nf.IsIncluded("o78i6bgv5rvu\\kj//&*"));
         }
 

@@ -25,11 +25,11 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 		[Category("GZip")]
 		public void TestGZip()
 		{
-			MemoryStream ms = new MemoryStream();
-			GZipOutputStream outStream = new GZipOutputStream(ms);
+			var ms = new MemoryStream();
+			var outStream = new GZipOutputStream(ms);
 
 			byte[] buf = new byte[100000];
-			System.Random rnd = new Random();
+			var rnd = new Random();
 			rnd.NextBytes(buf);
 
 			outStream.Write(buf, 0, buf.Length);
@@ -38,7 +38,7 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 
 			ms.Seek(0, SeekOrigin.Begin);
 
-			GZipInputStream inStream = new GZipInputStream(ms);
+			var inStream = new GZipInputStream(ms);
 			byte[] buf2 = new byte[buf.Length];
 			int currentIndex = 0;
 			int count = buf2.Length;
@@ -66,7 +66,7 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 		[Category("GZip")]
 		public void DelayedHeaderWriteNoData()
 		{
-			MemoryStream ms = new MemoryStream();
+			var ms = new MemoryStream();
 			Assert.AreEqual(0, ms.Length);
 			
 			using (GZipOutputStream outStream = new GZipOutputStream(ms)) {
@@ -85,7 +85,7 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 		[Category("GZip")]
 		public void DelayedHeaderWriteWithData()
 		{
-			MemoryStream ms = new MemoryStream();
+			var ms = new MemoryStream();
 			Assert.AreEqual(0, ms.Length);
 			using (GZipOutputStream outStream = new GZipOutputStream(ms)) {
 				Assert.AreEqual(0, ms.Length);
@@ -104,7 +104,7 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 		[Category("GZip")]
 		public void ZeroLengthInputStream()
 		{
-			GZipInputStream gzi = new GZipInputStream(new MemoryStream());
+			var gzi = new GZipInputStream(new MemoryStream());
 			bool exception = false;
 			try {
 				gzi.ReadByte();
@@ -120,8 +120,8 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 		[Category("GZip")]
 		public void OutputStreamOwnership()
 		{
-			TrackedMemoryStream memStream = new TrackedMemoryStream();
-			GZipOutputStream s = new GZipOutputStream(memStream);
+			var memStream = new TrackedMemoryStream();
+			var s = new GZipOutputStream(memStream);
 
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
@@ -148,8 +148,8 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 		[Category("GZip")]
 		public void InputStreamOwnership()
 		{
-			TrackedMemoryStream memStream = new TrackedMemoryStream();
-			GZipInputStream s = new GZipInputStream(memStream);
+			var memStream = new TrackedMemoryStream();
+			var s = new GZipInputStream(memStream);
 
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
@@ -176,8 +176,8 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
         [Test]
         public void DoubleFooter()
         {
-            TrackedMemoryStream memStream=new TrackedMemoryStream();
-            GZipOutputStream s=new GZipOutputStream(memStream);
+            var memStream=new TrackedMemoryStream();
+            var s=new GZipOutputStream(memStream);
             s.Finish();
             Int64 length=memStream.Length;
             s.Close();
@@ -187,8 +187,8 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
         [Test]
         public void DoubleClose()
         {
-            TrackedMemoryStream memStream=new TrackedMemoryStream();
-            GZipOutputStream s=new GZipOutputStream(memStream);
+            var memStream=new TrackedMemoryStream();
+            var s=new GZipOutputStream(memStream);
             s.Finish();
             s.Close();
             s.Close();
@@ -203,8 +203,8 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
         [Test]
         public void WriteAfterFinish()
         {
-            TrackedMemoryStream memStream=new TrackedMemoryStream();
-            GZipOutputStream s=new GZipOutputStream(memStream);
+            var memStream=new TrackedMemoryStream();
+            var s=new GZipOutputStream(memStream);
             s.Finish();
 
             try
@@ -220,8 +220,8 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
         [Test]
         public void WriteAfterClose()
         {
-            TrackedMemoryStream memStream=new TrackedMemoryStream();
-            GZipOutputStream s=new GZipOutputStream(memStream);
+            var memStream=new TrackedMemoryStream();
+            var s=new GZipOutputStream(memStream);
             s.Close();
 
             try

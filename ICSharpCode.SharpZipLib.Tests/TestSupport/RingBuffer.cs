@@ -482,10 +482,10 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			buffer_ = new ReadWriteRingBuffer(8);
 			readTarget_ = writeTarget_ = 16384;
 
-			Thread reader = new Thread(Reader);
+			var reader = new Thread(Reader);
 			reader.Start();
 
-			Thread writer = new Thread(Writer);
+			var writer = new Thread(Writer);
 			writer.Start();
 
 			writer.Join();
@@ -494,7 +494,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		void Reader()
 		{
-			Random r = new Random();
+			var r = new Random();
 			byte nextValue = 0;
 
 			while (readTarget_ > 0)
@@ -526,7 +526,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		void Writer()
 		{
-			Random r = new Random();
+			var r = new Random();
 
 			byte nextValue = 0;
 			while (writeTarget_ > 0)

@@ -40,7 +40,7 @@ namespace ICSharpCode.SharpZipLib.Tests.LZW
         [Test]
         [Category("LZW")]
         public void ZeroLengthInputStream() {
-            LzwInputStream lis = new LzwInputStream(new MemoryStream());
+            var lis = new LzwInputStream(new MemoryStream());
             bool exception = false;
             try {
                 lis.ReadByte();
@@ -55,8 +55,8 @@ namespace ICSharpCode.SharpZipLib.Tests.LZW
         [Test]
         [Category("LZW")]
         public void InputStreamOwnership() {
-            TrackedMemoryStream memStream = new TrackedMemoryStream();
-            LzwInputStream s = new LzwInputStream(memStream);
+            var memStream = new TrackedMemoryStream();
+            var s = new LzwInputStream(memStream);
 
             Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
             Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
