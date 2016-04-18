@@ -7,7 +7,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	/// <summary>
 	/// Miscellaneous test utilities.
 	/// </summary>
-	public class Utils
+	public static class Utils
 	{
 		
 		static void Compare(byte[] a, byte[] b)
