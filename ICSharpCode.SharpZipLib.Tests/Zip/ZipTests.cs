@@ -3681,11 +3681,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				f.BeginUpdate(new MemoryArchiveStorage());
 
-				var names = new string[] 
-				{
-					"\u030A\u03B0",     // Greek
-					"\u0680\u0685",     // Arabic
-				};
+				var names = new string[]
+                {
+                    "\u030A\u03B0",     // Greek
+                    "\u0680\u0685"      // Arabic
+                };
 
 				foreach (string name in names)
 				{
@@ -3835,11 +3835,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				((ZipEntryFactory)f.EntryFactory).SetAttributes = 1;
 				f.BeginUpdate(new MemoryArchiveStorage());
 
-				var names = new string[] 
-				{
-					"\u030A\u03B0",     // Greek
-					"\u0680\u0685",     // Arabic
-				};
+				var names = new string[]
+                {
+                    "\u030A\u03B0",     // Greek
+                    "\u0680\u0685"      // Arabic
+                };
 
 				foreach (string name in names)
 				{
