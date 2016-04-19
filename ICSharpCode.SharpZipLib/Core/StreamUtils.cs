@@ -66,26 +66,26 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <exception cref="EndOfStreamException">End of stream is encountered before all the data has been read.</exception>
 		static public void ReadFully(Stream stream, byte[] buffer, int offset, int count)
 		{
-			if ( stream == null ) {
+			if (stream == null) {
 				throw new ArgumentNullException(nameof(stream));
 			}
 
-			if ( buffer == null ) {
+			if (buffer == null) {
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
 			// Offset can equal length when buffer and count are 0.
-			if ( (offset < 0) || (offset > buffer.Length) ) {
+			if ((offset < 0) || (offset > buffer.Length)) {
 				throw new ArgumentOutOfRangeException(nameof(offset));
 			}
 
-			if ( (count < 0) || (offset + count > buffer.Length) ) {
+			if ((count < 0) || (offset + count > buffer.Length)) {
 				throw new ArgumentOutOfRangeException(nameof(count));
 			}
 
-			while ( count > 0 ) {
+			while (count > 0) {
 				int readCount = stream.Read(buffer, offset, count);
-				if ( readCount <= 0 ) {
+				if (readCount <= 0) {
 					throw new EndOfStreamException();
 				}
 				offset += readCount;
@@ -124,8 +124,7 @@ namespace ICSharpCode.SharpZipLib.Core
 				int bytesRead = source.Read(buffer, 0, buffer.Length);
 				if (bytesRead > 0) {
 					destination.Write(buffer, 0, bytesRead);
-				}
-				else {
+				} else {
 					destination.Flush();
 					copying = false;
 				}
@@ -163,8 +162,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// If the value is negative the target is calculated by looking at the stream.</param>
 		/// <remarks>This form is specialised for use within #Zip to support events during archive operations.</remarks>
 		static public void Copy(Stream source, Stream destination,
-			byte[] buffer, 
-			ProgressHandler progressHandler, TimeSpan updateInterval, 
+			byte[] buffer,
+			ProgressHandler progressHandler, TimeSpan updateInterval,
 			object sender, string name, long fixedTarget)
 		{
 			if (source == null) {
@@ -196,8 +195,7 @@ namespace ICSharpCode.SharpZipLib.Core
 
 			if (fixedTarget >= 0) {
 				target = fixedTarget;
-			}
-			else if (source.CanSeek) {
+			} else if (source.CanSeek) {
 				target = source.Length - source.Position;
 			}
 
@@ -213,8 +211,7 @@ namespace ICSharpCode.SharpZipLib.Core
 					processed += bytesRead;
 					progressFired = false;
 					destination.Write(buffer, 0, bytesRead);
-				}
-				else {
+				} else {
 					destination.Flush();
 					copying = false;
 				}

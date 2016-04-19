@@ -1,4 +1,3 @@
-//
 // ZipAESTransform.cs
 //
 // Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
@@ -40,12 +39,14 @@
 using System;
 using System.Security.Cryptography;
 
-namespace ICSharpCode.SharpZipLib.Encryption {
+namespace ICSharpCode.SharpZipLib.Encryption
+{
 
 	/// <summary>
 	/// Transforms stream using AES in CTR mode
 	/// </summary>
-	internal class ZipAESTransform : ICryptoTransform {
+	internal class ZipAESTransform : ICryptoTransform
+	{
 
 		private const int PWD_VER_LENGTH = 2;
 
@@ -77,9 +78,10 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		/// <param name="blockSize">The encryption strength, in bytes eg 16 for 128 bits.</param>
 		/// <param name="writeMode">True when creating a zip, false when reading. For the AuthCode.</param>
 		///
-		public ZipAESTransform(string key, byte[] saltBytes, int blockSize, bool writeMode) {
+		public ZipAESTransform(string key, byte[] saltBytes, int blockSize, bool writeMode)
+		{
 
-			if (blockSize != 16 && blockSize != 32)	// 24 valid for AES but not supported by Winzip
+			if (blockSize != 16 && blockSize != 32) // 24 valid for AES but not supported by Winzip
 				throw new Exception("Invalid blocksize " + blockSize + ". Must be 16 or 32.");
 			if (saltBytes.Length != blockSize / 2)
 				throw new Exception("Invalid salt len. Must be " + blockSize / 2 + " for blocksize " + blockSize);
@@ -91,7 +93,7 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 			// Performs the equivalent of derive_key in Dr Brian Gladman's pwd2key.c
 			var pdb = new Rfc2898DeriveBytes(key, saltBytes, KEY_ROUNDS);
 			var rm = new RijndaelManaged();
-			rm.Mode = CipherMode.ECB;			// No feedback from cipher for CTR mode
+			rm.Mode = CipherMode.ECB;           // No feedback from cipher for CTR mode
 			_counterNonce = new byte[_blockSize];
 			byte[] byteKey1 = pdb.GetBytes(_blockSize);
 			byte[] byteKey2 = pdb.GetBytes(_blockSize);
@@ -105,7 +107,8 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		/// <summary>
 		/// Implement the ICryptoTransform method.
 		/// </summary>
-		public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {
+		public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
+		{
 
 			// Pass the data stream to the hash algorithm for generating the Auth Code.
 			// This does not change the inputBuffer. Do this before decryption for read mode.
@@ -139,8 +142,10 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		/// <summary>
 		/// Returns the 2 byte password verifier
 		/// </summary>
-		public byte[] PwdVerifier {
-			get {
+		public byte[] PwdVerifier
+		{
+			get
+			{
 				return _pwdVerifier;
 			}
 		}
@@ -148,7 +153,8 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		/// <summary>
 		/// Returns the 10 byte AUTH CODE to be checked or appended immediately following the AES data stream.
 		/// </summary>
-		public byte[] GetAuthCode() {
+		public byte[] GetAuthCode()
+		{
 			// We usually don't get advance notice of final block. Hash requres a TransformFinal.
 			if (!_finalised) {
 				byte[] dummy = new byte[0];
@@ -163,7 +169,8 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		/// <summary>
 		/// Not implemented.
 		/// </summary>
-		public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {
+		public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
+		{
 
 			throw new NotImplementedException("ZipAESTransform.TransformFinalBlock");
 		}
@@ -171,8 +178,10 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		/// <summary>
 		/// Gets the size of the input data blocks in bytes.
 		/// </summary>
-		public int InputBlockSize {
-			get {
+		public int InputBlockSize
+		{
+			get
+			{
 				return _blockSize;
 			}
 		}
@@ -180,8 +189,10 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		/// <summary>
 		/// Gets the size of the output data blocks in bytes.
 		/// </summary>
-		public int OutputBlockSize {
-			get {
+		public int OutputBlockSize
+		{
+			get
+			{
 				return _blockSize;
 			}
 		}
@@ -189,8 +200,10 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		/// <summary>
 		/// Gets a value indicating whether multiple blocks can be transformed.
 		/// </summary>
-		public bool CanTransformMultipleBlocks {
-			get {
+		public bool CanTransformMultipleBlocks
+		{
+			get
+			{
 				return true;
 			}
 		}
@@ -198,8 +211,10 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		/// <summary>
 		/// Gets a value indicating whether the current transform can be reused.
 		/// </summary>
-		public bool CanReuseTransform {
-			get {
+		public bool CanReuseTransform
+		{
+			get
+			{
 				return true;
 			}
 		}
@@ -207,7 +222,8 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		/// <summary>
 		/// Cleanup internal state.
 		/// </summary>
-		public void Dispose() {
+		public void Dispose()
+		{
 			_encryptor.Dispose();
 		}
 

@@ -67,7 +67,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			bool result = false;
 
-			if ( name != null ) {
+			if (name != null) {
 				string cooked = (name.Length > 0) ? Path.GetFullPath(name) : "";
 				result = nameFilter_.IsMatch(cooked);
 			}
@@ -148,9 +148,9 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			bool result = base.IsMatch(name);
 
-			if ( result ) {
+			if (result) {
 				var fileInfo = new FileInfo(name);
-				result = 
+				result =
 					(MinSize <= fileInfo.Length) &&
 					(MaxSize >= fileInfo.Length) &&
 					(MinDate <= fileInfo.LastWriteTime) &&
@@ -172,14 +172,14 @@ namespace ICSharpCode.SharpZipLib.Core
 			get { return minSize_; }
 			set
 			{
-				if ( (value < 0) || (maxSize_ < value) ) {
+				if ((value < 0) || (maxSize_ < value)) {
 					throw new ArgumentOutOfRangeException(nameof(value));
 				}
 
 				minSize_ = value;
 			}
 		}
-		
+
 		/// <summary>
 		/// Get/set the maximum size/length for a file that will match this filter.
 		/// </summary>
@@ -190,7 +190,7 @@ namespace ICSharpCode.SharpZipLib.Core
 			get { return maxSize_; }
 			set
 			{
-				if ( (value < 0) || (minSize_ > value) ) {
+				if ((value < 0) || (minSize_ > value)) {
 					throw new ArgumentOutOfRangeException(nameof(value));
 				}
 
@@ -211,7 +211,7 @@ namespace ICSharpCode.SharpZipLib.Core
 
 			set
 			{
-				if ( value > maxDate_ ) {
+				if (value > maxDate_) {
 					throw new ArgumentOutOfRangeException(nameof(value), "Exceeds MaxDate");
 				}
 
@@ -232,7 +232,7 @@ namespace ICSharpCode.SharpZipLib.Core
 
 			set
 			{
-				if ( minDate_ > value ) {
+				if (minDate_ > value) {
 					throw new ArgumentOutOfRangeException(nameof(value), "Exceeds MinDate");
 				}
 
@@ -269,7 +269,7 @@ namespace ICSharpCode.SharpZipLib.Core
 			MinSize = minSize;
 			MaxSize = maxSize;
 		}
-		
+
 		/// <summary>
 		/// Test a filename to see if it matches the filter.
 		/// </summary>
@@ -279,31 +279,32 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			bool result = base.IsMatch(name);
 
-			if ( result ) {
+			if (result) {
 				var fileInfo = new FileInfo(name);
 				long length = fileInfo.Length;
-				result = 
+				result =
 					(MinSize <= length) &&
 					(MaxSize >= length);
 			}
 			return result;
 		}
-		
+
 		/// <summary>
 		/// Get/set the minimum size for a file that will match this filter.
 		/// </summary>
 		public long MinSize
 		{
 			get { return minSize_; }
-			set {
-				if ( (value < 0) || (maxSize_ < value) ) {
+			set
+			{
+				if ((value < 0) || (maxSize_ < value)) {
 					throw new ArgumentOutOfRangeException(nameof(value));
 				}
 
 				minSize_ = value;
 			}
 		}
-		
+
 		/// <summary>
 		/// Get/set the maximum size for a file that will match this filter.
 		/// </summary>
@@ -312,7 +313,7 @@ namespace ICSharpCode.SharpZipLib.Core
 			get { return maxSize_; }
 			set
 			{
-				if ( (value < 0) || (minSize_ > value) ) {
+				if ((value < 0) || (minSize_ > value)) {
 					throw new ArgumentOutOfRangeException(nameof(value));
 				}
 

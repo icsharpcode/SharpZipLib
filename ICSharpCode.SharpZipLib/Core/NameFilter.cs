@@ -83,8 +83,7 @@ namespace ICSharpCode.SharpZipLib.Core
 			bool result = true;
 			try {
 				var exp = new Regex(expression, RegexOptions.IgnoreCase | RegexOptions.Singleline);
-			}
-			catch (ArgumentException) {
+			} catch (ArgumentException) {
 				result = false;
 			}
 			return result;
@@ -100,28 +99,25 @@ namespace ICSharpCode.SharpZipLib.Core
 			bool result = true;
 
 			try {
-                if (toTest != null) {
-                    string[] items = SplitQuoted(toTest);
-                    for (int i = 0; i < items.Length; ++i) {
-                        if ((items[i] != null) && (items[i].Length > 0)) {
-                            string toCompile;
+				if (toTest != null) {
+					string[] items = SplitQuoted(toTest);
+					for (int i = 0; i < items.Length; ++i) {
+						if ((items[i] != null) && (items[i].Length > 0)) {
+							string toCompile;
 
-                            if (items[i][0] == '+') {
-                                toCompile = items[i].Substring(1, items[i].Length - 1);
-                            }
-                            else if (items[i][0] == '-') {
-                                toCompile = items[i].Substring(1, items[i].Length - 1);
-                            }
-                            else {
-                                toCompile = items[i];
-                            }
+							if (items[i][0] == '+') {
+								toCompile = items[i].Substring(1, items[i].Length - 1);
+							} else if (items[i][0] == '-') {
+								toCompile = items[i].Substring(1, items[i].Length - 1);
+							} else {
+								toCompile = items[i];
+							}
 
-                            var testRegex = new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Singleline);
-                        }
-                    }
-                }
-			}
-			catch (ArgumentException) {
+							var testRegex = new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+						}
+					}
+				}
+			} catch (ArgumentException) {
 				result = false;
 			}
 
@@ -148,8 +144,7 @@ namespace ICSharpCode.SharpZipLib.Core
 					endIndex += 1;
 					if (endIndex >= original.Length) {
 						result.Add(b.ToString());
-					}
-					else if (original[endIndex] == escape) {
+					} else if (original[endIndex] == escape) {
 						endIndex += 1;
 						if (endIndex >= original.Length) {
 							throw new ArgumentException("Missing terminating escape character", nameof(original));
@@ -159,13 +154,11 @@ namespace ICSharpCode.SharpZipLib.Core
 							b.Append(escape);
 
 						b.Append(original[endIndex]);
-					}
-					else {
+					} else {
 						if (Array.IndexOf(separators, original[endIndex]) >= 0) {
 							result.Add(b.ToString());
 							b.Length = 0;
-						}
-						else {
+						} else {
 							b.Append(original[endIndex]);
 						}
 					}
@@ -192,12 +185,11 @@ namespace ICSharpCode.SharpZipLib.Core
 		public bool IsIncluded(string name)
 		{
 			bool result = false;
-			if ( inclusions_.Count == 0 ) {
+			if (inclusions_.Count == 0) {
 				result = true;
-			}
-			else {
-				foreach ( Regex r in inclusions_ ) {
-					if ( r.IsMatch(name) ) {
+			} else {
+				foreach (Regex r in inclusions_) {
+					if (r.IsMatch(name)) {
 						result = true;
 						break;
 					}
@@ -214,8 +206,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		public bool IsExcluded(string name)
 		{
 			bool result = false;
-			foreach ( Regex r in exclusions_ ) {
-				if ( r.IsMatch(name) ) {
+			foreach (Regex r in exclusions_) {
+				if (r.IsMatch(name)) {
 					result = true;
 					break;
 				}
@@ -242,33 +234,30 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			// TODO: Check to see if combining RE's makes it faster/smaller.
 			// simple scheme would be to have one RE for inclusion and one for exclusion.
-			if ( filter_ == null ) {
+			if (filter_ == null) {
 				return;
 			}
 
 			string[] items = SplitQuoted(filter_);
-			for ( int i = 0; i < items.Length; ++i ) {
-				if ( (items[i] != null) && (items[i].Length > 0) ) {
+			for (int i = 0; i < items.Length; ++i) {
+				if ((items[i] != null) && (items[i].Length > 0)) {
 					bool include = (items[i][0] != '-');
 					string toCompile;
 
-					if ( items[i][0] == '+' ) {
+					if (items[i][0] == '+') {
 						toCompile = items[i].Substring(1, items[i].Length - 1);
-					}
-					else if ( items[i][0] == '-' ) {
+					} else if (items[i][0] == '-') {
 						toCompile = items[i].Substring(1, items[i].Length - 1);
-					}
-					else {
+					} else {
 						toCompile = items[i];
 					}
 
 					// NOTE: Regular expressions can fail to compile here for a number of reasons that cause an exception
 					// these are left unhandled here as the caller is responsible for ensuring all is valid.
 					// several functions IsValidFilterExpression and IsValidExpression are provided for such checking
-					if ( include ) {
+					if (include) {
 						inclusions_.Add(new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline));
-					}
-					else {
+					} else {
 						exclusions_.Add(new Regex(toCompile, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline));
 					}
 				}

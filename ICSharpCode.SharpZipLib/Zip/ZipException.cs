@@ -39,9 +39,9 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace ICSharpCode.SharpZipLib.Zip 
+namespace ICSharpCode.SharpZipLib.Zip
 {
-	
+
 	/// <summary>
 	/// Represents exception conditions specific to Zip archive handling
 	/// </summary>
@@ -53,8 +53,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="info"><see cref="SerializationInfo"/> for this constructor</param>
 		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
-		protected ZipException(SerializationInfo info, StreamingContext context )
-			: base( info, context )
+		protected ZipException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
 		{
 		}
 
@@ -64,7 +64,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public ZipException()
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the ZipException class with a specified error message.
 		/// </summary>

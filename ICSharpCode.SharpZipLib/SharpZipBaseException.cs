@@ -52,18 +52,18 @@ namespace ICSharpCode.SharpZipLib
 		/// </summary>
 		/// <param name="info"><see cref="System.Runtime.Serialization.SerializationInfo"/> for this constructor</param>
 		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
-		protected SharpZipBaseException(SerializationInfo info, StreamingContext context )
-			: base( info, context )
+		protected SharpZipBaseException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the SharpZipBaseException class.
 		/// </summary>
 		public SharpZipBaseException()
 		{
 		}
-		
+
 		/// <summary>
 		/// Initializes a new instance of the SharpZipBaseException class with a specified error message.
 		/// </summary>

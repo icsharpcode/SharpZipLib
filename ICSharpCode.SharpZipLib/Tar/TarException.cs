@@ -36,8 +36,9 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace ICSharpCode.SharpZipLib.Tar {
-	
+namespace ICSharpCode.SharpZipLib.Tar
+{
+
 	/// <summary>
 	/// TarExceptions are used for exceptions specific to tar classes and code.	
 	/// </summary>
@@ -61,7 +62,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		public TarException()
 		{
 		}
-		
+
 		/// <summary>
 		/// Initialises a new instance of the TarException class with a specified message.
 		/// </summary>

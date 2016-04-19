@@ -1,12 +1,3 @@
-/*
- * Created by SharpDevelop.
- * User: JohnR
- * Date: 4/08/2007
- * Time: 7:09 a.m.
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-
 using System;
 using System.IO;
 
@@ -53,14 +44,14 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			WriteLEShort(unchecked((short)value));
 			WriteLEShort(unchecked((short)(value >> 16)));
 		}
-		
+
 		/// <summary>
 		/// Releases the unmanaged resources used by the <see cref="T:System.IO.MemoryStream"/> class and optionally releases the managed resources.
 		/// </summary>
 		/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
 		protected override void Dispose(bool disposing)
 		{
-			isDisposed_=true;
+			isDisposed_ = true;
 			base.Dispose(disposing);
 		}
 
@@ -69,12 +60,11 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// </summary>
 		public override void Close()
 		{
-            if( isClosed_ )
-            {
-                throw new InvalidOperationException("Already closed");
-            }
+			if (isClosed_) {
+				throw new InvalidOperationException("Already closed");
+			}
 
-			isClosed_=true;
+			isClosed_ = true;
 			base.Close();
 		}
 
@@ -117,7 +107,8 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// <returns>true if the stream is open.</returns>
 		public override bool CanSeek
 		{
-			get {
+			get
+			{
 				return false;
 			}
 		}
@@ -377,18 +368,14 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		public override int Read(byte[] buffer, int offset, int count)
 		{
 			int bytesRead = 0;
-			while (count > 0)
-			{
+			while (count > 0) {
 				int value = ringBuffer_.ReadByte();
-				if (value >= 0)
-				{
+				if (value >= 0) {
 					buffer[offset] = (byte)(value & 0xff);
 					offset++;
 					bytesRead++;
 					count--;
-				}
-				else
-				{
+				} else {
 					break;
 				}
 			}
@@ -440,8 +427,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
 		public override void Write(byte[] buffer, int offset, int count)
 		{
-			for (int i = 0; i < count; ++i)
-			{
+			for (int i = 0; i < count; ++i) {
 				ringBuffer_.WriteByte(buffer[offset + i]);
 			}
 		}
@@ -481,11 +467,11 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			get { return ringBuffer_.BytesRead; }
 		}
 
-        readonly
+		readonly
 
-        #region Instance Fields
-        ReadWriteRingBuffer ringBuffer_;
+		#region Instance Fields
+		ReadWriteRingBuffer ringBuffer_;
 
-        #endregion
-    }
+		#endregion
+	}
 }

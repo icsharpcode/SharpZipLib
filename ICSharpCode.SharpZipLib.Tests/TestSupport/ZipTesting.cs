@@ -1,8 +1,4 @@
-using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Text;
-
 using ICSharpCode.SharpZipLib.Zip;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport

@@ -1,14 +1,8 @@
 using System;
 using System.IO;
-using System.Threading;
-
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using ICSharpCode.SharpZipLib.GZip;
-
-using NUnit.Framework;
-
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
+using NUnit.Framework;
 
 namespace ICSharpCode.SharpZipLib.Tests.GZip
 {
@@ -42,7 +36,7 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			byte[] buf2 = new byte[buf.Length];
 			int currentIndex = 0;
 			int count = buf2.Length;
-			
+
 			while (true) {
 				int numRead = inStream.Read(buf2, currentIndex, count);
 				if (numRead <= 0) {
@@ -53,7 +47,7 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			}
 
 			Assert.AreEqual(0, count);
-			
+
 			for (int i = 0; i < buf.Length; ++i) {
 				Assert.AreEqual(buf2[i], buf[i]);
 			}
@@ -68,11 +62,11 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 		{
 			var ms = new MemoryStream();
 			Assert.AreEqual(0, ms.Length);
-			
+
 			using (GZipOutputStream outStream = new GZipOutputStream(ms)) {
 				Assert.AreEqual(0, ms.Length);
 			}
-			
+
 			byte[] data = ms.ToArray();
 
 			Assert.IsTrue(data.Length > 0);
@@ -108,8 +102,7 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			bool exception = false;
 			try {
 				gzi.ReadByte();
-			}
-			catch {
+			} catch {
 				exception = true;
 			}
 
@@ -173,66 +166,59 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 
 		}
 
-        [Test]
-        public void DoubleFooter()
-        {
-            var memStream=new TrackedMemoryStream();
-            var s=new GZipOutputStream(memStream);
-            s.Finish();
-            Int64 length=memStream.Length;
-            s.Close();
-            Assert.AreEqual(length, memStream.ToArray().Length);
-        }
+		[Test]
+		public void DoubleFooter()
+		{
+			var memStream = new TrackedMemoryStream();
+			var s = new GZipOutputStream(memStream);
+			s.Finish();
+			Int64 length = memStream.Length;
+			s.Close();
+			Assert.AreEqual(length, memStream.ToArray().Length);
+		}
 
-        [Test]
-        public void DoubleClose()
-        {
-            var memStream=new TrackedMemoryStream();
-            var s=new GZipOutputStream(memStream);
-            s.Finish();
-            s.Close();
-            s.Close();
+		[Test]
+		public void DoubleClose()
+		{
+			var memStream = new TrackedMemoryStream();
+			var s = new GZipOutputStream(memStream);
+			s.Finish();
+			s.Close();
+			s.Close();
 
-            memStream=new TrackedMemoryStream();
-            using( GZipOutputStream no2=new GZipOutputStream(memStream) )
-            {
-                s.Close();
-            }
-        }
+			memStream = new TrackedMemoryStream();
+			using (GZipOutputStream no2 = new GZipOutputStream(memStream)) {
+				s.Close();
+			}
+		}
 
-        [Test]
-        public void WriteAfterFinish()
-        {
-            var memStream=new TrackedMemoryStream();
-            var s=new GZipOutputStream(memStream);
-            s.Finish();
+		[Test]
+		public void WriteAfterFinish()
+		{
+			var memStream = new TrackedMemoryStream();
+			var s = new GZipOutputStream(memStream);
+			s.Finish();
 
-            try
-            {
-                s.WriteByte(7);
-                Assert.Fail("Write should fail");
-            }
-            catch
-            {
-            }
-        }
+			try {
+				s.WriteByte(7);
+				Assert.Fail("Write should fail");
+			} catch {
+			}
+		}
 
-        [Test]
-        public void WriteAfterClose()
-        {
-            var memStream=new TrackedMemoryStream();
-            var s=new GZipOutputStream(memStream);
-            s.Close();
+		[Test]
+		public void WriteAfterClose()
+		{
+			var memStream = new TrackedMemoryStream();
+			var s = new GZipOutputStream(memStream);
+			s.Close();
 
-            try
-            {
-                s.WriteByte(7);
-                Assert.Fail("Write should fail");
-            }
-            catch
-            {
-            }
-        }
+			try {
+				s.WriteByte(7);
+				Assert.Fail("Write should fail");
+			} catch {
+			}
+		}
 
 		// TODO: Fix This
 		//[Test]
@@ -274,7 +260,7 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 
 			long passifierLevel = readTarget_ - 0x10000000;
 
-			while ( (readTarget_ > 0) && (readBytes > 0) ) {
+			while ((readTarget_ > 0) && (readBytes > 0)) {
 				int count = Size;
 				if (count > readTarget_) {
 					count = (int)readTarget_;
@@ -311,7 +297,7 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 				}
 
 				outStream_.Write(buffer, 0, thisTime);
-				writeTarget_-= thisTime;
+				writeTarget_ -= thisTime;
 			}
 			outStream_.Close();
 		}

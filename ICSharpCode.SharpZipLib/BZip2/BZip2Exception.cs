@@ -61,7 +61,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		public BZip2Exception()
 		{
 		}
-		
+
 		/// <summary>
 		/// Initialise a new instance of BZip2Exception with its message set to message.
 		/// </summary>

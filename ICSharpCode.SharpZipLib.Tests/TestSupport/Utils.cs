@@ -1,5 +1,4 @@
 using System;
-
 using NUnit.Framework;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
@@ -9,22 +8,22 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	/// </summary>
 	public static class Utils
 	{
-		
+
 		static void Compare(byte[] a, byte[] b)
 		{
-			if ( a == null ) {
+			if (a == null) {
 				throw new ArgumentNullException(nameof(a));
 			}
 
-			if ( b == null ) {
+			if (b == null) {
 				throw new ArgumentNullException(nameof(b));
 			}
-			
+
 			Assert.AreEqual(a.Length, b.Length);
 			for (int i = 0; i < a.Length; ++i) {
 				Assert.AreEqual(a[i], b[i]);
 			}
 		}
-		
+
 	}
 }

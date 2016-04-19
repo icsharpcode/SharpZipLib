@@ -5,9 +5,9 @@
 namespace ICSharpCode.SharpZipLib
 {
 	public enum CompressionMode
-    {
-        Decompress = 0,
-        Compress = 1
-    }
+	{
+		Decompress = 0,
+		Compress = 1
+	}
 }
 

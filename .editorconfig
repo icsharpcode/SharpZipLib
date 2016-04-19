@@ -8,7 +8,7 @@ root = true
 # Use 4 spaces as indentation
 [*]
 insert_final_newline = true
-indent_style = space
+indent_style = tab
 indent_size = 4
 
 # C++ Files

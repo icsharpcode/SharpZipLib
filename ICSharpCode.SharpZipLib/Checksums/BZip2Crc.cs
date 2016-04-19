@@ -38,7 +38,7 @@
 
 using System;
 
-namespace ICSharpCode.SharpZipLib.Checksums 
+namespace ICSharpCode.SharpZipLib.Checksums
 {
 	/// <summary>
 	/// Bzip2 checksum algorithm
@@ -111,13 +111,13 @@ namespace ICSharpCode.SharpZipLib.Checksums
 			0xafb010b1, 0xab710d06, 0xa6322bdf, 0xa2f33668,
 			0xbcb4666d, 0xb8757bda, 0xb5365d03, 0xb1f740b4
 		};
-		
+
 		int globalCrc;
 
 		/// <summary>
 		/// Initialise a default instance of <see cref="BZip2Crc"></see>
 		/// </summary>	
-		public BZip2Crc() 
+		public BZip2Crc()
 		{
 			Reset();
 		}
@@ -133,12 +133,14 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		/// <summary>
 		/// Get the current Crc value.
 		/// </summary>
-		public long Value {
-			get {
+		public long Value
+		{
+			get
+			{
 				return ~globalCrc;
 			}
 		}
-		
+
 		/// <summary>
 		/// Update the Crc value.
 		/// </summary>
@@ -161,10 +163,10 @@ namespace ICSharpCode.SharpZipLib.Checksums
 			if (buffer == null) {
 				throw new ArgumentNullException(nameof(buffer));
 			}
-			
+
 			Update(buffer, 0, buffer.Length);
 		}
-		
+
 		/// <summary>
 		/// Update Crc based on a portion of a block of data
 		/// </summary>
@@ -176,22 +178,19 @@ namespace ICSharpCode.SharpZipLib.Checksums
 			if (buffer == null) {
 				throw new ArgumentNullException(nameof(buffer));
 			}
-			
-			if ( offset < 0 )
-			{
+
+			if (offset < 0) {
 				throw new ArgumentOutOfRangeException(nameof(offset), "cannot be less than zero");
 			}
 
-			if ( count < 0 )
-			{
+			if (count < 0) {
 				throw new ArgumentOutOfRangeException(nameof(count), "cannot be less than zero");
 			}
 
-			if ( offset + count > buffer.Length )
-			{
+			if (offset + count > buffer.Length) {
 				throw new ArgumentOutOfRangeException(nameof(count));
 			}
-			
+
 			for (int i = 0; i < count; ++i) {
 				Update(buffer[offset++]);
 			}

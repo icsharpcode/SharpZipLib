@@ -1,4 +1,5 @@
 // BZip2Constants.cs
+//
 // Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 //
 // This program is free software; you can redistribute it and/or
@@ -32,9 +33,9 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-namespace ICSharpCode.SharpZipLib.BZip2 
+namespace ICSharpCode.SharpZipLib.BZip2
 {
-	
+
 	/// <summary>
 	/// Defines internal values for both compression and decompression
 	/// </summary>
@@ -103,58 +104,58 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// 9 gives the best compression but uses the most memory.
 		/// </summary>		
 		public const int BaseBlockSize = 100000;
-		
+
 		/// <summary>
 		/// Backend constant
 		/// </summary>
 		public const int MaximumAlphaSize = 258;
-		
+
 		/// <summary>
 		/// Backend constant
 		/// </summary>
 		public const int MaximumCodeLength = 23;
-		
+
 		/// <summary>
 		/// Backend constant
 		/// </summary>
 		public const int RunA = 0;
-		
+
 		/// <summary>
 		/// Backend constant
 		/// </summary>
 		public const int RunB = 1;
-		
+
 		/// <summary>
 		/// Backend constant
 		/// </summary>
 		public const int GroupCount = 6;
-		
+
 		/// <summary>
 		/// Backend constant
 		/// </summary>
 		public const int GroupSize = 50;
-		
+
 		/// <summary>
 		/// Backend constant
 		/// </summary>
 		public const int NumberOfIterations = 4;
-		
+
 		/// <summary>
 		/// Backend constant
 		/// </summary>
 		public const int MaximumSelectors = (2 + (900000 / GroupSize));
-		
+
 		/// <summary>
 		/// Backend constant
 		/// </summary>
 		public const int OvershootBytes = 20;
-		
+
 		private BZip2Constants()
 		{
 		}
 	}
 }
-	
+
 /* This file was derived from a file containing this license:
  * 
  * This file is a part of bzip2 and/or libbzip2, a program and

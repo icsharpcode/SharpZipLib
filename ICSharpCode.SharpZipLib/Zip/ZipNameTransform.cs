@@ -66,7 +66,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			TrimPrefix = trimPrefix;
 		}
 		#endregion
-		
+
 		/// <summary>
 		/// Static constructor.
 		/// </summary>
@@ -81,7 +81,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			InvalidEntryCharsRelaxed[howMany - 1] = '*';
 			InvalidEntryCharsRelaxed[howMany - 2] = '?';
 
-			howMany = invalidPathChars.Length + 4; 
+			howMany = invalidPathChars.Length + 4;
 			InvalidEntryChars = new char[howMany];
 			Array.Copy(invalidPathChars, 0, InvalidEntryChars, 0, invalidPathChars.Length);
 			InvalidEntryChars[howMany - 1] = ':';
@@ -99,16 +99,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			name = TransformFile(name);
 			if (name.Length > 0) {
-				if ( !name.EndsWith("/", StringComparison.Ordinal)) {
+				if (!name.EndsWith("/", StringComparison.Ordinal)) {
 					name += "/";
 				}
-			}
-			else {
+			} else {
 				throw new ZipException("Cannot have an empty directory name");
 			}
 			return name;
 		}
-		
+
 		/// <summary>
 		/// Transform a windows file name according to the Zip file naming conventions.
 		/// </summary>
@@ -118,7 +117,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			if (name != null) {
 				string lowerName = name.ToLower();
-				if ( (trimPrefix_ != null) && (lowerName.IndexOf(trimPrefix_, StringComparison.Ordinal) == 0) ) {
+				if ((trimPrefix_ != null) && (lowerName.IndexOf(trimPrefix_, StringComparison.Ordinal) == 0)) {
 					name = name.Substring(trimPrefix_.Length);
 				}
 
@@ -126,33 +125,29 @@ namespace ICSharpCode.SharpZipLib.Zip
 				name = WindowsPathUtils.DropPathRoot(name);
 
 				// Drop any leading slashes.
-				while ((name.Length > 0) && (name[0] == '/'))
-				{
+				while ((name.Length > 0) && (name[0] == '/')) {
 					name = name.Remove(0, 1);
 				}
 
 				// Drop any trailing slashes.
-				while ((name.Length > 0) && (name[name.Length - 1] == '/'))
-				{
+				while ((name.Length > 0) && (name[name.Length - 1] == '/')) {
 					name = name.Remove(name.Length - 1, 1);
 				}
 
 				// Convert consecutive // characters to /
 				int index = name.IndexOf("//", StringComparison.Ordinal);
-				while (index >= 0)
-				{
+				while (index >= 0) {
 					name = name.Remove(index, 1);
 					index = name.IndexOf("//", StringComparison.Ordinal);
 				}
 
 				name = MakeValidName(name, '_');
-			}
-			else {
+			} else {
 				name = string.Empty;
 			}
 			return name;
 		}
-		
+
 		/// <summary>
 		/// Get/set the path prefix to be trimmed from paths if present.
 		/// </summary>
@@ -161,7 +156,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public string TrimPrefix
 		{
 			get { return trimPrefix_; }
-			set {
+			set
+			{
 				trimPrefix_ = value;
 				if (trimPrefix_ != null) {
 					trimPrefix_ = trimPrefix_.ToLower();
@@ -181,13 +177,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (index >= 0) {
 				var builder = new StringBuilder(name);
 
-				while (index >= 0 ) {
+				while (index >= 0) {
 					builder[index] = replacement;
 
 					if (index >= name.Length) {
 						index = -1;
-					}
-					else {
+					} else {
 						index = name.IndexOfAny(InvalidEntryChars, index + 1);
 					}
 				}
@@ -217,12 +212,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			bool result = (name != null);
 
-			if ( result ) {
-				if ( relaxed ) {
+			if (result) {
+				if (relaxed) {
 					result = name.IndexOfAny(InvalidEntryCharsRelaxed) < 0;
-				}
-				else {
-					result = 
+				} else {
+					result =
 						(name.IndexOfAny(InvalidEntryChars) < 0) &&
 						(name.IndexOf('/') != 0);
 				}
@@ -245,7 +239,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </remarks>
 		public static bool IsValidName(string name)
 		{
-			bool result = 
+			bool result =
 				(name != null) &&
 				(name.IndexOfAny(InvalidEntryChars) < 0) &&
 				(name.IndexOf('/') != 0)
@@ -256,7 +250,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#region Instance Fields
 		string trimPrefix_;
 		#endregion
-		
+
 		#region Class Fields
 		static readonly char[] InvalidEntryChars;
 		static readonly char[] InvalidEntryCharsRelaxed;

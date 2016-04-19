@@ -46,7 +46,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		internal WindowsPathUtils()
 		{
 		}
-		
+
 		/// <summary>
 		/// Remove any path root present in the path
 		/// </summary>
@@ -56,8 +56,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		public static string DropPathRoot(string path)
 		{
 			string result = path;
-			
-			if ( !string.IsNullOrEmpty(path)) {
+
+			if (!string.IsNullOrEmpty(path)) {
 				if ((path[0] == '\\') || (path[0] == '/')) {
 					// UNC name ?
 					if ((path.Length > 1) && ((path[1] == '\\') || (path[1] == '/'))) {
@@ -74,13 +74,11 @@ namespace ICSharpCode.SharpZipLib.Core
 
 						if (index < path.Length) {
 							result = path.Substring(index);
-						}
-						else {
+						} else {
 							result = "";
 						}
 					}
-				}
-				else if ((path.Length > 1) && (path[1] == ':')) {
+				} else if ((path.Length > 1) && (path[1] == ':')) {
 					int dropCount = 2;
 					if ((path.Length > 2) && ((path[2] == '\\') || (path[2] == '/'))) {
 						dropCount = 3;

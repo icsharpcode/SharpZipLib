@@ -47,9 +47,9 @@ using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
-namespace ICSharpCode.SharpZipLib.GZip 
+namespace ICSharpCode.SharpZipLib.GZip
 {
-	
+
 	/// <summary>
 	/// This filter stream is used to decompress a "GZIP" format stream.
 	/// The "GZIP" format is described baseInputStream RFC 1952.
@@ -83,12 +83,12 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <summary>
 		/// CRC-32 value for uncompressed data
 		/// </summary>
-        protected Crc32 crc;
-		
-        /// <summary>
-        /// Flag to indicate if we've read the GZIP header yet for the current member (block of compressed data).
-        /// This is tracked per-block as the file is parsed.
-        /// </summary>
+		protected Crc32 crc;
+
+		/// <summary>
+		/// Flag to indicate if we've read the GZIP header yet for the current member (block of compressed data).
+		/// This is tracked per-block as the file is parsed.
+		/// </summary>
 		bool readGZIPHeader;
 		#endregion
 
@@ -103,7 +103,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			: this(baseInputStream, 4096)
 		{
 		}
-		
+
 		/// <summary>
 		/// Creates a GZIPInputStream with the specified buffer size
 		/// </summary>
@@ -117,7 +117,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			: base(baseInputStream, new Inflater(true), size)
 		{
 		}
-		#endregion	
+		#endregion
 
 		#region Stream overrides
 		/// <summary>
@@ -133,7 +133,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// The number of uncompressed bytes to be read
 		/// </param>
 		/// <returns>Returns the number of bytes actually read.</returns>
-		public override int Read(byte[] buffer, int offset, int count) 
+		public override int Read(byte[] buffer, int offset, int count)
 		{
 			// A GZIP file can contain multiple blocks of compressed data, although this is quite rare.
 			// A compressed block could potentially be empty, so we need to loop until we reach EOF or
@@ -141,11 +141,11 @@ namespace ICSharpCode.SharpZipLib.GZip
 			while (true) {
 
 				// If we haven't read the header for this block, read it
-				if (! readGZIPHeader) {
+				if (!readGZIPHeader) {
 
 					// Try to read header. If there is no header (0 bytes available), this is EOF. If there is
 					// an incomplete header, this will throw an exception.
-					if (! ReadHeader()) {
+					if (!ReadHeader()) {
 						return 0;
 					}
 				}
@@ -166,10 +166,10 @@ namespace ICSharpCode.SharpZipLib.GZip
 				}
 			}
 		}
-		#endregion	
+		#endregion
 
 		#region Support routines
-		bool ReadHeader() 
+		bool ReadHeader()
 		{
 			// Initialize CRC for this block
 			crc = new Crc32();
@@ -213,11 +213,11 @@ namespace ICSharpCode.SharpZipLib.GZip
 			// 2. Check the compression type (must be 8)
 			int compressionType = inputBuffer.ReadLeByte();
 
-			if ( compressionType < 0 ) {
+			if (compressionType < 0) {
 				throw new EndOfStreamException("EOS reading GZIP header");
 			}
 
-			if ( compressionType != 8 ) {
+			if (compressionType != 8) {
 				throw new GZipException("Error GZIP header, data not in deflate format");
 			}
 			headCRC.Update(compressionType);
@@ -248,7 +248,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			}
 
 			// 4.-6. Skip the modification time, extra flags, and OS type
-			for (int i=0; i< 6; i++) {
+			for (int i = 0; i < 6; i++) {
 				int readByte = inputBuffer.ReadLeByte();
 				if (readByte < 0) {
 					throw new EndOfStreamException("EOS reading GZIP header");
@@ -269,11 +269,10 @@ namespace ICSharpCode.SharpZipLib.GZip
 				headCRC.Update(len1);
 				headCRC.Update(len2);
 
-				int extraLen = (len2 << 8) | len1;		// gzip is LSB first
-				for (int i = 0; i < extraLen;i++) {
+				int extraLen = (len2 << 8) | len1;      // gzip is LSB first
+				for (int i = 0; i < extraLen; i++) {
 					int readByte = inputBuffer.ReadLeByte();
-					if (readByte < 0) 
-					{
+					if (readByte < 0) {
 						throw new EndOfStreamException("EOS reading GZIP header");
 					}
 					headCRC.Update(readByte);
@@ -283,7 +282,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			// 8. Read file name
 			if ((flags & GZipConstants.FNAME) != 0) {
 				int readByte;
-				while ( (readByte = inputBuffer.ReadLeByte()) > 0) {
+				while ((readByte = inputBuffer.ReadLeByte()) > 0) {
 					headCRC.Update(readByte);
 				}
 
@@ -296,7 +295,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			// 9. Read comment
 			if ((flags & GZipConstants.FCOMMENT) != 0) {
 				int readByte;
-				while ( (readByte = inputBuffer.ReadLeByte()) > 0) {
+				while ((readByte = inputBuffer.ReadLeByte()) > 0) {
 					headCRC.Update(readByte);
 				}
 
@@ -321,7 +320,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 				}
 
 				crcval = (crcval << 8) | tempByte;
-				if (crcval != ((int) headCRC.Value & 0xffff)) {
+				if (crcval != ((int)headCRC.Value & 0xffff)) {
 					throw new GZipException("Header CRC value mismatch");
 				}
 			}
@@ -329,15 +328,15 @@ namespace ICSharpCode.SharpZipLib.GZip
 			readGZIPHeader = true;
 			return true;
 		}
-		
-		void ReadFooter() 
+
+		void ReadFooter()
 		{
 			byte[] footer = new byte[8];
 
 			// End of stream; reclaim all bytes from inf, read the final byte count, and reset the inflator
 			long bytesRead = inf.TotalOut & 0xffffffff;
 			inputBuffer.Available += inf.RemainingInput;
-			inf.Reset();            
+			inf.Reset();
 
 			// Read footer from inputBuffer
 			int needed = 8;
@@ -351,12 +350,12 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 			// Calculate CRC
 			int crcval = (footer[0] & 0xff) | ((footer[1] & 0xff) << 8) | ((footer[2] & 0xff) << 16) | (footer[3] << 24);
-			if (crcval != (int) crc.Value) {
-				throw new GZipException("GZIP crc sum mismatch, theirs \"" + crcval + "\" and ours \"" + (int) crc.Value);
+			if (crcval != (int)crc.Value) {
+				throw new GZipException("GZIP crc sum mismatch, theirs \"" + crcval + "\" and ours \"" + (int)crc.Value);
 			}
 
 			// NOTE The total here is the original total modulo 2 ^ 32.
-			uint total = 
+			uint total =
 				(uint)((uint)footer[4] & 0xff) |
 				(uint)(((uint)footer[5] & 0xff) << 8) |
 				(uint)(((uint)footer[6] & 0xff) << 16) |

@@ -11,9 +11,9 @@ namespace ICSharpCode.SharpZipLib
 	// This is an abstract concept and NOT the ZLib compression level.
 	// There may or may not be any correspondence with the a possible implementation-specific level-parameter of the deflater.
 	public enum CompressionLevel
-    {
-        Optimal = 0,
-        Fastest = 1,
-        NoCompression = 2
-    }
+	{
+		Optimal = 0,
+		Fastest = 1,
+		NoCompression = 2
+	}
 }

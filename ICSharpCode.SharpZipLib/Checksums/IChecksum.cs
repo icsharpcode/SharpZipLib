@@ -1,4 +1,5 @@
 // IChecksum.cs - Interface to compute a data checksum
+//
 // Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 //
 // This file was translated from java, it was part of the GNU Classpath
@@ -35,9 +36,9 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-namespace ICSharpCode.SharpZipLib.Checksums 
+namespace ICSharpCode.SharpZipLib.Checksums
 {
-	
+
 	/// <summary>
 	/// Interface to compute a data checksum used by checked input/output streams.
 	/// A data checksum can be updated by one byte or with a byte array. After each
@@ -50,16 +51,16 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		/// <summary>
 		/// Returns the data checksum computed so far.
 		/// </summary>
-		long Value 
+		long Value
 		{
 			get;
 		}
-		
+
 		/// <summary>
 		/// Resets the data checksum as if no update was ever called.
 		/// </summary>
 		void Reset();
-		
+
 		/// <summary>
 		/// Adds one byte to the data checksum.
 		/// </summary>
@@ -67,7 +68,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		/// the data value to add. The high byte of the int is ignored.
 		/// </param>
 		void Update(int value);
-		
+
 		/// <summary>
 		/// Updates the data checksum with the bytes taken from the array.
 		/// </summary>
@@ -75,7 +76,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		/// buffer an array of bytes
 		/// </param>
 		void Update(byte[] buffer);
-		
+
 		/// <summary>
 		/// Adds the byte array to the data checksum.
 		/// </summary>

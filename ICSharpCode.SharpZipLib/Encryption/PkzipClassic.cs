@@ -1,4 +1,3 @@
-//
 // PkzipClassic encryption
 //
 // Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
@@ -55,11 +54,11 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <returns>A new key value.</returns>
 		static public byte[] GenerateKeys(byte[] seed)
 		{
-			if ( seed == null ) {
+			if (seed == null) {
 				throw new ArgumentNullException(nameof(seed));
 			}
 
-			if ( seed.Length == 0 ) {
+			if (seed.Length == 0) {
 				throw new ArgumentException("Length is zero", nameof(seed));
 			}
 
@@ -68,7 +67,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 				0x23456789,
 				0x34567890
 			 };
-			
+
 			for (int i = 0; i < seed.Length; ++i) {
 				newKeys[0] = Crc32.ComputeCrc32(newKeys[0], seed[i]);
 				newKeys[1] = newKeys[1] + (byte)newKeys[0];
@@ -117,14 +116,14 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <param name="keyData">The data use to set the keys from.</param>
 		protected void SetKeys(byte[] keyData)
 		{
-			if ( keyData == null ) {
+			if (keyData == null) {
 				throw new ArgumentNullException(nameof(keyData));
 			}
-		
-			if ( keyData.Length != 12 ) {
+
+			if (keyData.Length != 12) {
 				throw new InvalidOperationException("Key length is not valid");
 			}
-			
+
 			keys = new uint[3];
 			keys[0] = (uint)((keyData[3] << 24) | (keyData[2] << 16) | (keyData[1] << 8) | keyData[0]);
 			keys[1] = (uint)((keyData[7] << 24) | (keyData[6] << 16) | (keyData[5] << 8) | keyData[4]);
@@ -151,7 +150,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			keys[1] = 0;
 			keys[2] = 0;
 		}
-		
+
 		#region Instance Fields
 		uint[] keys;
 		#endregion
@@ -212,7 +211,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public bool CanReuseTransform
 		{
-			get {
+			get
+			{
 				return true;
 			}
 		}
@@ -222,7 +222,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public int InputBlockSize
 		{
-			get {
+			get
+			{
 				return 1;
 			}
 		}
@@ -232,7 +233,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public int OutputBlockSize
 		{
-			get {
+			get
+			{
 				return 1;
 			}
 		}
@@ -242,7 +244,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public bool CanTransformMultipleBlocks
 		{
-			get {
+			get
+			{
 				return true;
 			}
 		}
@@ -318,7 +321,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public bool CanReuseTransform
 		{
-			get {
+			get
+			{
 				return true;
 			}
 		}
@@ -328,7 +332,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public int InputBlockSize
 		{
-			get {
+			get
+			{
 				return 1;
 			}
 		}
@@ -338,7 +343,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public int OutputBlockSize
 		{
-			get {
+			get
+			{
 				return 1;
 			}
 		}
@@ -348,7 +354,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public bool CanTransformMultipleBlocks
 		{
-			get {
+			get
+			{
 				return true;
 			}
 		}
@@ -378,13 +385,15 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// Get / set the applicable block size in bits.
 		/// </summary>
 		/// <remarks>The only valid block size is 8.</remarks>
-		public override int BlockSize 
+		public override int BlockSize
 		{
-			get { 
-				return 8; 
+			get
+			{
+				return 8;
 			}
 
-			set {
+			set
+			{
 				if (value != 8) {
 					throw new CryptographicException("Block size is invalid");
 				}
@@ -396,10 +405,11 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public override KeySizes[] LegalKeySizes
 		{
-			get {
+			get
+			{
 				KeySizes[] keySizes = new KeySizes[1];
 				keySizes[0] = new KeySizes(12 * 8, 12 * 8, 0);
-				return keySizes; 
+				return keySizes;
 			}
 		}
 
@@ -416,10 +426,11 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public override KeySizes[] LegalBlockSizes
 		{
-			get {
+			get
+			{
 				KeySizes[] keySizes = new KeySizes[1];
 				keySizes[0] = new KeySizes(1 * 8, 1 * 8, 0);
-				return keySizes; 
+				return keySizes;
 			}
 		}
 
@@ -428,24 +439,26 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public override byte[] Key
 		{
-			get {
-				if ( key_ == null ) {
+			get
+			{
+				if (key_ == null) {
 					GenerateKey();
 				}
-				
-				return (byte[]) key_.Clone();
+
+				return (byte[])key_.Clone();
 			}
-		
-			set {
-				if ( value == null ) {
+
+			set
+			{
+				if (value == null) {
 					throw new ArgumentNullException(nameof(value));
 				}
-				
-				if ( value.Length != 12 ) {
+
+				if (value.Length != 12) {
 					throw new CryptographicException("Key size is illegal");
 				}
-				
-				key_ = (byte[]) value.Clone();
+
+				key_ = (byte[])value.Clone();
 			}
 		}
 
@@ -486,7 +499,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			key_ = rgbKey;
 			return new PkzipClassicDecryptCryptoTransform(Key);
 		}
-		
+
 		#region Instance Fields
 		byte[] key_;
 		#endregion

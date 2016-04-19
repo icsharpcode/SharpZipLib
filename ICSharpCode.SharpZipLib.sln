@@ -7,6 +7,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZipLib", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZipLib.Tests", "ICSharpCode.SharpZipLib.Tests\ICSharpCode.SharpZipLib.Tests.csproj", "{82211166-9C45-4603-8E3A-2CA2EFFCBC26}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Configuration", "Solution Configuration", "{F1097E98-4DEB-4A0A-81EE-5CEC667EBDF0}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		Rebracer.xml = Rebracer.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
