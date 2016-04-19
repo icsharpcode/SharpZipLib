@@ -1,0 +1,162 @@
+
+       Definition of the data types used in the file format list
+
+In the file format list, several short mnemonics are used to describe
+the structure of the data stored. Here I describe the structure (and
+possible conversion) between some of these types. As some types have
+different sizes across the platforms, for most types the byte order and
+bit size is given to describe it.
+
+ASCIIZ                  A sequence of characters(->char), terminated
+                        with the special character with the value 0.
+                        Note that ASCIIZ strings as most structures on
+                        Intel machines should not be larger than
+                        64Kb due to the ancient segmentation used.
+BCD                     Binary coded decimal
+                        A decimal number is converted into a hexadecimal number
+                        which has the same digits as the decimal number.
+                        (10d becomes 10h, 21d becomes 21h)
+Bitmap                  If a value is declared as bitmapped, that means that
+                        every bit in this value might have a different meaning.
+                        The bytes are numbered from right to left, the least
+                        significant bit has the number 0. After the bit number,
+                        there are either two statements, separated by a
+                        slash("/"), which are the two meanings if the bit is
+                        set / not set, or one single statement, which is the
+                        meaning of this bit, if it is set.
+Byte                    8 bit unsigned number. Smallest unit a record
+                        consists of. All offsets are in the unit bytes.
+                        (0-255)
+Char                    Synonym for byte, most values are between 32 and
+                        255. (#0-#255)
+DWord                   32 bit signed number. Well, maybe some of the
+                        formats use a DWord which is a 32 bit unsigned
+                        number, but as files tend not to be greater than
+                        2GB, this won't be my concern. To convert
+                        between Intel and Motorola format, you have to
+                        swap bytes #2 & #3 and bytes #1 & #4.(-2Gb-+2Gb)
+Int                     Integer. Signed 16-bit number.
+                        (-32767-+32767)
+LString                 A string which is preceeded by the length. Also
+                        named "counted" string. Used by most Pascal
+                        implementations Maximum length is 255 bytes, but it can
+                        contain any char.
+Nybble                  The upper or lower four bits of a byte. A nybble
+                        is a single hex digit and can have values from
+                        0 to 15. A signed nybble can have values from
+                        -8 to 7 with bit 3 being the sign bit.
+Paragraph               A multiple of 16. A paragraph was the resolution of the
+                        Intel chip 64K segments.
+Word                    16 bit unsigned number. Note that byte order is
+                        important, wether you have a Motorola machine or
+                        an Intel one. Conversion between the two formats
+                        is simply by swapping byte #1 with byte #2.
+                        (0-65535)
+
+                    How to identify different files
+
+While searching for different file formats, I found the following programs
+helpful to gather information about different files. They all are DOS programs
+since I'm not familiar with other platforms (except Windows). Most of them
+should be available on SimTel CDs or via FTP at ftp.cdrom.com, except for my
+program TF, which is still in beta.
+
+LIST.COM        v9.0a by Vernon Buerg
+                List is a file lister which supports both text and hex-view.
+
+HIEW.EXE        v4.18 by Sen
+                Another file lister with build-in disassembler.
+
+FILE.EXE        v2.0 by Felix von Leitner
+                File is a file identification program.
+
+Q.COM           v3.01 by SemWare
+                QEdit is the editor I'm editing the list with.
+
+TF.EXE          v0.38 by me
+                The program that started it all. A "simple" file identification
+                program - no more, since it has grown too big by now.
+                Still unreleased, since it is not really extensible yet.
+
+                   The file formats list meta list ;)
+
+The file format list uses a certain format to make it readable by programs which
+convert it into the WinHelp format or create program structures out of the
+lists. This format is very similar to the format used by Ralf Brown in his PC
+interrupt list but was extended by me to accomodate for the specific needs of
+this list :
+
+Each topic in the list is delimited by a line of 45 chars, in which the
+first 8 contain the char '-'. After these, there follows one character which
+contains the type of topic. The different topics are described in the list
+itself, the char '!' denotes an information topic - like the list of chars and
+their meaning. After the topic identifier, there follows another '-' char and
+then the topic name, not containing any '-' chars. After the topic name, there
+may be some other descriptors like for Motorola byte ordering, guesswork marking
+or other purposes, see the main list for further information. The line is ended
+with at least one '-' char. Take the following prototype :
+
+--------?-TEST------------------------------
+
+OFFSET              Count TYPE   Description
+EXTENSION:
+OCCURENCES:
+PROGRAMS:
+REFERENCE:
+SEE ALSO:
+VALIDATION:
+
+Sub-topics like different records are mostly delimited by three dashes ('-').
+I suggest folding them up and making them available as a popup window.
+
+Tables have the following format :
+(see table 0000)
+for a table reference and
+(Table 0000)
+for the beginning of a table. The end of a table is undefined (yet).
+
+
+                        A primer on file formats
+
+                              Abbrevations
+Throughout the list, many abbrevations are used, some in the reference
+section. Here some are explained :
+
+c't
+The c't is a german computer magazine, which developed the Borland
+Pascal for OS/2 patch. They release source code in files called
+CTmmyy.*. Note that comments in the source code and the language in
+the issues tend to be german :-)
+
+DDJxxyy
+(Doctor Dobb's Journal)
+The DDJ is a monthly publication by M&T/US which is intended for the
+professional programmer. The four digits after the name indicate the
+month/year of the issue referred to. Most of the sourcecode published
+in the issue is available electronically on Compu$erve and other BBSes.
+The files have the name DDJyymm.
+
+PDN
+Programmer's Distribution Net
+A network dedicated to the distribution of source code useful to
+programmers. Often linked with Fido-nodes.
+
+Contributions to this list were made by :
+   Ralf Brown (The .EXE file formats from the INTERRUPT List, general layout)
+   David Dilworth (david.dilworth@sierraclub.org)
+   Daniel Dissett (ddissett@netcom.com)
+   Marcus Groeber (marcusg@ph-cip.uni-koeln.de)
+   Darrel Hankerson (hankedr@mail.auburn.edu)
+   Carl Hauser (chauser.parc@xerox.com)
+   Jouni Miettunen (jon@stekt.oulu.fi)
+   Jan Nicolai Langfeldt (janl@ifi.uio.no)
+   Mark Ouellet (Telix .FON structures)
+   Greg Roelofs (roe2@midway.uchicago.edu)
+   Robert Rothenburg Walking-Owl (wlkngowl@unix.asb.com)
+   Jesus Villena (CONVERT.EXE, a digital sample conversion program)
+   Christos Zoulas (christos@deshaw.com)
+   JAL / Nostalgia
+   David McDuffee, (75530,2626@compuserve.com)
+
+Information gleaned from other programs :
+   Formats for Word and WordPerfect (Selke's filetype)

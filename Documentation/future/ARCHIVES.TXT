@@ -1,0 +1,1346 @@
+
+
+             [[[[[[[[[  ARCHIVE FORMATS AND DATA  ]]]]]]]]]
+
+                         (C) 1989 Raymond Clay
+               Permision to freely distribute and modify
+                 is granted so long as credit is given
+               and all of the text through the disclaimer
+                        is retained and unchanged
+
+        October 31, 1989
+
+If you want to submit corrections, changes or source code (in plain ASCII),
+you can reach me via:
+
+
+        CIS          :   74730,1344
+        GEnie        :   R.CLAY1
+        AppleLink    :   Raymond6
+        StarText     :   209287       <D/FW-Texas
+
+DISCLAIMER:
+
+I make no garuntees of any kind about the accuracy or adequacey of this
+information for any purpose, nor am I responsible for the consequences of
+using this information in any manner.
+
+Oh, for a less litiginous world!
+
+
+          **************************************************
+
+
+          CONTENTS                                      PAGE
+          --------------------------------------------------
+          ARC/PAK Format ................................  2
+
+          Binary ][ Format ..............................  3
+
+          DWC Format ....................................  5
+
+          GIF Format ....................................  6
+
+          LZH Format ....................................  8
+
+          NuFX Format ...................................  9
+
+          PackIt Format ................................. 13
+
+          StuffIt ....................................... 13
+
+          ZIP Format .................................... 15
+
+          ZOO Format .................................... 19
+
+          Time Value Formats ............................ 20
+
+          Extended Files ................................ 20
+
+          Filenames ..................................... 20
+
+
+
+
+
+
+
+
+                                ARC/PAK                        Page  2
+                                =======
+
+System of Origin : IBM
+
+Original author : Thom Henderson
+
+FILE FORMAT
+-----------
+
+     file header 1
+          file 1
+     file header 2
+          file 2
+     .
+     .
+     file header n
+          file n
+EOF
+
+
+FILE HEADER
+-----------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     ARCID       DB   $1A
+01     ARCMTD      DB   00          ;Method
+02     ARCFNT      DS   12          ;filename
+0E                 DB   00
+0F     ARCNSZ      HEX  00000000    ;Compressed size
+13     ARCDAT      DW   0000        ;File date (MSDOS)
+15     ARCTIM      DW   0000        ;File time (MSDOS)
+17     ARCCRC      DW   0000
+19     ARCOSZ      HEX  00000000    ;Uncompressed size
+1D     ARCFIL      DS   ARCNSZ
+
+
+       COMPRESSION METHOD
+       ------------------
+
+       NAME        METHOD  DESCRIPTION
+       ----------- ------ --------------------------------------------
+       Stored        0     No compression used
+       Packed        1     Repeated running length encoding (RLE)
+       Squeezed      2     Huffman encoding
+       Crunched      3     LZW with 4K buffer, 12 bits codes
+       Crunched      4     First packing, then LZW 4K buffer with 12 bits
+       Crunched      5     Packing, LZW, 4K buffer, vari len (9-12 bits)
+       Squashed      6     LZW, 8K buffer, variable length (9-13 bits)
+       Crushed       7     Packing, then LZW 8K buffer, 2-13 bits (PAK 1.0)
+       Distill       8     Dynamic Huffman with 8K buffer (PAK 2.0)
+
+
+POSITIONING IN FILE
+-------------------
+
+Begining of File Data = Begining of File Header + $1D
+
+Next File Header = Begining of File Header + $1D + ARCNSZ
+       or
+                 = Begining of File Data + ARCNSZ
+
+          **************************************************
+
+
+                              BINARY ][                        Page  3
+                              =========
+
+System of Origin : Apple ][
+
+Original Author : Gary Little
+
+FILE FORMAT
+-----------
+
+     file header 1
+          file 1
+     file header 2
+          file 2
+     .
+     .
+     file header n
+          file n
+EOF
+
+
+FILE HEADER
+-----------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     B2ID1       DB   $A          ;ID bytes
+01     B2ID2       ASC  'GL'        ;authors initials - Gary Little
+03     B2ACS       DB   00          ;access code
+04     B2FTYP      DB   00          ;file type
+05     B2AUX       DB   0000        ;auxiliary type
+07     B2STYP      DB   00          ;storage type
+08     B2FSIZ      DW   0000        ;size of file in 512-byte blocks
+0A     B2MODDAT    DW   0000        ;date of modification
+0C     B2MODTIM    DW   0000        ;time of modification
+0E     B2CRDAT     DW   0000        ;date of creation
+10     B2CRTIM     DW   0000        ;time of creation
+12     B2ID3       DB   2           ;ID byte
+13                 DS   1           ;reserved
+14     B2EOF       HEX  000000      ;end-of-file (EOF) position
+17     B2FLN       DB   00          ;length of filename or partial pathname
+18     B2FNAM      DS   15          ;ASCII filename or partial pathname
+                                    ;If the filename is a partial pathname
+                                    ;it will overwrite the following
+                                    ;2 segments for native filename
+27     B2NFLN      DB   00          ;length of native filename]
+28     B2NFNAM     DS   48          ;ASCII native filename
+58                 DS   23          ;reserved, must be zero
+6F     B2GSACS     DB   00          ;GS/OS access code (high byte)
+70     B2GSFTYP    DB   00          ;GS/OS file type code (high byte)
+71     B2GSSTYP    DB   00          ;GS/OS storage type code (high byte)
+72     B2GSSIZ     DW   0000        ;GS/OS size of file in blocks (high word)
+74     B2GSEOF     DB   00          ;GS/OS EOF position (high byte)
+75     B2DSKSPC    HEX  00000000    ;disk space needed (512 byte Blocks)
+79     B2OS        DB   00          ;operating system type
+
+
+
+
+
+
+
+
+
+
+
+
+                                                               Page  4
+
+
+       OPERATING SYSTEM TYPE
+
+       VALUE  DESCRIPTION               VALUE  DESCRIPTION
+       ----- -------------------------- ----- ------------------------
+       00     ProDOS or SOS             07     Macintosh XL
+       01     DOS 3                     08     Apple CP/M
+       02     reserved                  09     reserved
+       03     DOS 3.2 or DOS 3.1        0A     MS-DOS
+       04     Apple II Pascal           0B     High Sierra(CD-ROM)
+       05     Macintosh MFS             0C     ISO 9660 (CD-ROM)
+       06     Macintosh HFS
+
+7A     B2NFTYP     DW   0000        ;native file type code
+7C     B2PHANTOM   DB   00          ;phantom file flag
+
+       PHANTOM FILE S/W DESIGNATIONS
+
+       VALUE  DESCRIPTION               VALUE  DESCRIPTION
+       ----- -------------------------- ----- ------------------------
+       00     [generic]                 04     Modem MGR
+       01     Point-to-Point            05     CommWorks
+       02     Tele-Master Comm Sys      06     MouseTalk
+       03     ProTERM
+
+7D     B2FLAGS     DB   00          ;data flags
+
+       LABEL       BIT        DESCRIPTION
+       ----------- --------- -----------------------------------------
+       B2FLAGS       7        data is compressed (SQUeezed)
+                     6        data is encrypted
+                     0        file is sparse/packed
+
+
+       NAME        METHOD  DESCRIPTION
+       ----------- ------ --------------------------------------------
+       SQUEEZED            Huffman Squeeze. The filename will have '.QQ'
+                           appended. The first 16 bytes of the file are
+                           the original filename length and filename, the
+                           next 14 bytes are identical in form and content
+                           to the Apple GetInfo results and the bytes $3 -
+                           $10 of the Binary ][ header. The rest of the
+                           file is squeezed with packing.
+
+7E     B2VERSION   DB   00          ;Binary II version number
+7F     B2NUMFOL    DB   00          ;number of files to follow
+
+
+NOTE : Many GS/OS file attributes are stored in 2 places (this is a result
+       of the differences between ProDOS 8/16 and GS/OS).
+
+POSITIONING IN FILE
+-------------------
+
+Begining of File Data = Begining of File Header + $80
+
+Next File Header = Begining of File Header + $80 + B2FSIZ
+       or
+                 = Begining of File Data + B2FSIZ
+
+          **************************************************
+
+
+                                 DWC                           Page  5
+                                 ===
+
+System of Origin : IBM
+
+FILE FORMAT
+-----------
+
+          file 1
+          file 2
+          .
+          .
+          file n
+          file header 1
+          file header 2
+          .
+          .
+          file header n
+     end header
+EOF
+
+
+FILE HEADER
+-----------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     DWCFNT      DS   12          ;filename
+0C                 DB   00
+0D     DWCOSZ      HEX  00000000    ;Uncompressed size
+11     DWCTIM      DW   0000        ;File time ala MSDOS
+13     DWCDAT      DW   0000        ;File date ala MSDOS
+15     DWZNSZ      HEX  00000000    ;Compressed size
+19     DWCFTP      HEX  00000000    ;File offset from SOF
+1D     DWCMTD      DB   00          ;Method
+1E                 DW   0000        ;???
+20     DWCCRC      DW   0000        ;CRC
+
+
+END HEADER
+----------
+
+         ORG       DWCEND-27
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00               DS     20          ;?
+14               DW     0000        ;Number of files
+16               DW     0000
+18               ASC    'DWC'       ;ID
+1B     DWCEND
+
+
+       COMPRESSION METHOD
+       ------------------
+
+       NAME        METHOD  DESCRIPTION
+       ----------- ------ --------------------------------------------
+       Stored              No compression used
+       Crunched            Packing, LZW, 4K buffer, var len (9-12 bits)
+
+          **************************************************
+
+
+
+
+                                GIF                            Page  6
+                                ---
+
+Created by Compuserve, Inc.
+
+FILE FORMAT
+-----------
+
+     GIF Header
+          Global Color Map
+               Image Descriptor 1
+                    Local Color Map
+                    Raster Data
+               Image Descriptor 2
+                    Local Color Map
+                    Raster Data
+               .
+               .
+               .
+               Image Descriptor n
+                    Local Color Map
+                    Raster Data
+     GIF Terminator
+EOF
+
+
+HEADER FORMAT
+-------------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     GIFSIG      ASC  'GIF87a'    ;Gif signature and version (87a)
+06     GIFWDTH     DW   0000        ;Screen Width - Raster width in pixels
+08     GIFHGHT     DW   0000        ;Screen Height - Raster height in pixels
+0A     GIFCOLR     DB   00          ;Colorbyte
+
+       LABEL       BIT        DESCRIPTION
+       ----------- --------- -----------------------------------------
+       GCMFLG         7       if set - Global color map follows Descriptor
+       GCMRES        6-4      # bits of color resolution + 1
+                      3       reserved
+       GCMPSIZ       2-0      # bits/pixel in image +1, range of values 1
+                              to 8 bits. This gives a range of 2 (B & W) to
+                              256 colors
+
+0B     GIFBKGRND   DB   00          ;Color index of screen background,
+                                    ;color is defined from the Global
+                                    ;color map or default map.
+       GIFEXTN                      ;Currently undefined GIF extension
+                                    ;block
+
+       OFFSET LABEL       TYP  VALUE       DESCRIPTION
+       ------ ----------- ---- ---------- ----------------------------
+       00     GIFEXTSIG   DB   $21         ;Extension Block signature
+       01     EXTCODE     DB   00          ;Extension Function Code
+       02     EXTCNT0     DB   00          ;Count of function bytes
+       03     EXTFUNC0    DS   up to 255
+       .
+       .         repeat EXTCNT0 and EXTFUNC0 as many times as required
+       .
+              EXTTERM     DB   00          ;Termination of Extension Block
+
+0C     GIFHEND     DB   00          ;end of GIF header
+
+
+
+                                                               Page  7
+
+
+GLOBAL COLOR MAP FORMAT
+-----------------------
+
+GCMNUM = 2 ^ (GCMPSIZ)
+
+GCMLEN = GCMNUM * 3
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     GCMCOLR0    HEX  000000      ;definition for color 0
+
+       OFFSET LABEL       TYP  VALUE       DESCRIPTION
+       ------ ----------- ---- ---------- ----------------------------
+       00     REDINTNS    DB   00          ;Red intensity value for this
+                                           ;color
+       01     GRNINTNS    DB   00          ;Green intensity value for
+                                           ;this color
+       02     BLUINTNS    DB   00          ;Blue intensity value for this
+                                           ;color
+
+03     GCMCOLR1    HEX  000000      ;definition for color 1
+       .
+       .
+       .
+xx     GCMCOLRn    HEX  000000      ;definition for color n
+
+
+IMAGE DESCRIPTOR
+----------------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     IMGSEP      DB   $2C         ;Image separator character
+01     IMGLFT      DW   0000        ;Start of image in pixels from the
+                                    ;left side of the screen
+03     IMGTOP      DW   0000        ;Start of image in pixels from the
+                                    ;top of the screen
+05     IMGWID      DW   0000        ;Width of the image in pixels
+07     IMGHGT      DW   0000        ;Height of the image in pixels
+09     IMGFLGS     DB   00          ;GIF flags for this image
+
+       LABEL       BIT        DESCRIPTION
+       ----------- --------- -----------------------------------------
+       MAPFLG         7       If set, use pixel and Local color map
+                              following, use pixel; otherwise use Global
+                              Color Map
+       RASTFLG        6       If clear, Image formatted in Sequential order,
+                              if set then Image in Interlaced order
+                     5-3      unused
+       IMGPSIZ       2-0      bits per pixel for this image
+
+0A     LOCOLMAP    DS   [IMGPSIZ^2]*3 ;Same format and size computation
+                                    ;as Global Color Map
+       RASTDAT                      ;Raster Data - compressed image
+       GIFTERM     DB   $3B         ;Termination of GIF data
+
+       COMPRESSION METHOD
+       ------------------
+       LZW, 4k BuffER, variable length (3-12 bits)
+
+          **************************************************
+
+
+                                LZH                            Page  8
+                                ===
+
+System of Origin : IBM
+
+FILE FORMAT
+-----------
+
+     file header 1
+          file 1
+     file header 2
+          file 2
+     .
+     .
+     file header n
+          file n
+EOF
+
+
+FILE HEADER
+-----------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     LZHHSZ      DB   0           ;Header size
+01     LZHCKS      DB   0           ;Cksum of remaining bytes
+02     LZHMTD      ASC  '-lh0-'     ;Method
+07     LZHNSZ      HEX  00000000    ;Compressed size
+0B     LZHOSZ      HEX  00000000    ;Uncompressed size
+0F     LZHTIM      DW   0000        ;File time (MSDOS)
+11     LZHDAT      DW   0000        ;File date (MSDOS)
+13     LZHATR      DW   0000        ;File attribute
+15     LZHFNL      DB   00          ;filename/path length
+16     LZHFNT      DS   LZHFNL      ;filename/path
+2B     LZHCRC      DW   0000        ;CRC-16
+
+
+       COMPRESSION METHOD
+       ------------------
+
+       NAME        METHOD  DESCRIPTION
+       ----------- ------ --------------------------------------------
+       STORED      -lh0-   No compression used
+       LZHUF       -lh1-   LZW, 4K buffer, Huffman for upper 6 bits of pos
+       LZARI       -lz4-   LZW, Arithmetic Encoding
+       LZARI       -lz5-   LZW, Arithmetic Encoding
+
+
+POSITIONING IN FILE
+-------------------
+
+Begining of File Data = Begining of Header + LZHHSZ
+
+Begining of Next File Header = Begining of File Data + LZHNSZ
+
+          **************************************************
+
+
+
+
+
+
+
+
+
+
+                           NuFX - SHRINKIT                     Page  9
+                           ===============
+
+System of Origin: Apple ][
+
+Original author: Andrew Nicholas
+
+FILE FORMAT
+-----------
+
+     Master Header
+          File 1 Header
+               Attribute Section
+               Filename Section
+               Thread Section
+                    Thread 1
+                    .             File data is contained in a thread
+                    .
+                    Thread n
+          File 2 Header
+               Attribute Section
+               Filename Section
+               Thread Section
+                    Thread 1
+                    .
+                    .
+                    Thread n
+          File 3 Header
+          .
+          .
+          .
+EOF
+
+
+MASTER HEADER
+-------------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     NUID1       HEX  4EF546E96CE5 ;Master signature spells "NuFile"
+                                    ;in alternating high and low ASCII
+06     NUCRC       DW   0000        ;CRC of bytes $08 - $2F in this block
+08     NURECS      HEX  00000000    ;Total number of files in this archive
+0C     NUCRTIM     HEX  000000      ;archive creation time and date
+0F     NUCRDAT     HEX  0000000000
+14     NUMDTIM     HEX  000000      ;time and date archive last modified
+17     NUMDDAT     HEX  0000000000
+1C                 DS   19          ;reserved
+2F                                  ;end master header
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                               Page 10
+
+TIME FORMAT
+-----------
+
+       OFFSET LABEL       TYP  VALUE       DESCRIPTION
+       ------ ----------- ---- ---------- ----------------------------
+       00     GSSEC       DB   00          ;second - 0 through 59
+       01     GSMIN       DB   00          ;minute - 0 through 59
+       02     GSHR        DB   00          ;hour - 0 through 23
+       03     GSYR        DB   00          ;current Year minus 1900
+       04     GSDAY       DB   00          ;day - 0 through 30
+       05     GSMNTH      DB   00          ;month - 0 through 11, with
+                                           ;0=January
+       06                 DB   00          ;filler byte - reserved = 00
+       07     GSWDAY      DB   00          ;weekday - 1 through 7, with
+                                           ;1=Sunday
+
+       The format of this field is identical to that described in the
+       _ReadTimeHex ($0D03) call described on page 14-14 of the
+       Apple_IIgs_Toolbox_Reference:_Volume_1.
+
+
+FILE HEADER
+-----------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     NXID1       HEX  4EF546D8    ;Header signature spells "NuFX" in
+                                    ;alternating high and low ASCII
+04     NXCRC       DW   0000        ;CRC of bytes $06 - NXATRBCNT+1
+
+
+ATTRIBUTE SECTION
+-----------------
+
+06     NXATRBCNT   DW   0000        ;length of the attribute section of
+                                    ;each header. The distance from NXID1
+                                    ;to and including NXFNL
+08     NXVERS      DW   0000        ;Minimum version needed for extraction
+0A     NXNUMTHR    HEX  00000000    ;The number of threads following NXFNAM
+0E     NXSYSID     DW   0000        ;Native file system identifier
+
+                          SYSTEM IDENTIFIERS
+
+       VALUE  DESCRIPTION               VALUE  DESCRIPTION
+       ----- -------------------------- ----- ------------------------
+       0000   File is an Archived Disk  0008   Apple CP/M
+       0001   ProDOS/SOS                0009   reserved, do not use
+       0002   DOS 3.3                   000A   MS-DOS
+       0003   DOS 3.2                   000B   High-Sierra/ISO 9660
+       0004   Apple II Pascal           000C
+       0005   Macintosh(tm) (HFS)       .     reserved
+       0006   Macintosh (MFS)           FFFF
+       0007   LISA(tm) file system
+
+
+10     NXSYSSEP    ASC  '/'         ;Native file system seperator
+                                    ;ProDOS = '/' ($2F)
+                                    ;HFS = ':' ($3A)
+                                    ;MS-DOS = '\' ($5C)
+11     NXSPARSE    DB   00          ;sparse file indicated if = $01
+12     NXACCESS    HEX  00000000    ;
+
+
+
+                                                               Page 11
+
+
+       LABEL       BIT        DESCRIPTION if set
+       ----------- --------- -----------------------------------------
+       NXACCESS     31-8      reserved, must be zero
+                      7       destroy enabled
+                      6       rename enabled
+                      5       backup needed
+                     4-3      reserved, must be zero
+                      2       file is invisible
+                      1       write enabled
+                      0       read enabled
+
+16     NXFTYP      HEX  00000000    ;file type, Disk = 0
+1A     NXEXTYP     HEX  00000000    ;extra type, ProDOS aux_type or HFS
+                                    ;creator_type, Disk: total number
+                                    ;of blocks on the device
+1E     NXSTRTYP    DW   0000        ;storage type, if a disk this should
+                                    ;contain the block size of the O/S
+
+                             STORAGE TYPE
+
+      TYPE  IF FILE SIZE IS:           O/S      BLOCK SIZE
+      ---- ------------------------- --------- ---------------
+       $1   < 512 bytes              ProDOS     512
+       $2   > 511 bytes, < 128k      DOS 3.3    256
+       $3   > 129k                   HFS        524
+       $5   extended file
+       $D   subdirectory
+
+20     NXCRTIM     HEX  000000      ;file creation time and date
+23     NXCRDAT     HEX  0000000000
+28     NXMDTIM     HEX  000000      ;time and date file last modified
+2B     NXMDDAT     HEX  0000000000
+30     NXARCTIM    HEX  000000      ;time and date file archived
+33     NXARCDAT    HEX  0000000000
+       .
+       .
+
+Any other attributes are added here. NXATRBCNT points to the NXFNL, which
+is always the last attribute.
+
+       .
+       .
+NXATRBCNT-2
+       NXFNL       DW   0000        ;filename length
+
+
+FILENAME SECTION
+----------------
+
+NXFNL+2
+       NXFILE      DS   NXFNL       ;Filename, partial pathname or disk
+                                    ;volume name. Names ported across
+                                    ;systems may have illegal characters
+                                    ;or characteristics.
+
+
+
+
+
+
+
+
+
+                                                               Page 12
+
+
+THREAD SECTION
+--------------
+
+Thread records are 16 byte records which immediately follow the filename and
+describe the types of data structures which are included with a given record.
+The number of threads is in the attribute section under NXNUMTHR.
+
+
+A thread record can be represented as follows:
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     THRCLASS    DW   0000        ;describes the class of the thread
+
+                        0000        CLS_MSG
+                        0001        CLS__CNTRL
+                        0002        CLS_DATA
+                        0003        CLS_SPRSE
+
+02     THRFRMT     DW   0000        ;format of the data within the thread
+
+                        0000        ;Uncompressed
+                        0001        ;SQueezed (SQ/USQ)
+                        0002        ;Dynamic LZW [ShrinkIt]
+                        0003
+                        .           ;RESERVED, contact the author
+                        FFFF
+
+04     THRKIND     DW   0000        ;describes data in thread
+
+       if THRCLS =      and THRKIND =   THEN THE THREAD CONTAINS:
+       ---------------- -------------- ---------------------------
+       CLS_MSG          0000            ASCII text
+                                        all others undefined
+
+       CLS_CNTRL        0000            create directory
+                                        all others undefined
+
+       CLS_DATA         0000            data_fork of file
+                        0001            disk image
+                        0002            resource_fork of file
+                                        all others undefined
+
+06                 DS   2
+08     THREOF      HEX  00000000    ;length of the uncompressed thread
+0C     THRCMPEOF   HEX  00000000    ;length of the compressed thread
+
+POSITIONING IN FILE
+-------------------
+
+Start of the thread list = (beginning of header) + NXATRBCNT + NXFNL
+
+End of the thread list = (beginning of header) + NXATRBCNT + NXFNL +
+                         (16 * NXNUMTHR)
+
+Start of a data_thread = (beginning of header) + NXATRBCNT + NXFNL +
+                         (16 * NXNUMTHR) + (THRCMPEOF of all threads
+                          in the thread list which are not data prior
+                          to finding a CLS_DATA = 0000)
+
+
+
+
+                                                               Page 13
+
+
+Start of a resource_thread = (beginning of header) + NXATRBCNT + NXFNL +
+                             (16 * NXNUMTHR) + (THRCMPEOF of all the
+                              threads in the thread list which are not
+                              resources prior to finding a
+                              CLS_DATA = 0002)
+
+Next record = (beginning of header) + NXATRBCNT + NXFNL +
+              (16 * NXNUMTHR) + (THRCMPEOF of each thread)
+
+          **************************************************
+
+
+                               PACKIT
+                               ======
+
+System of Origin : Macintosh
+
+FILE HEADER
+-----------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     PITFLN      HEX  00          ;filename length
+01     PITFNAM     DS   63          ;filename
+40     PITTYP      HEX  00000000    ;file type
+44     PITCRT      HEX  00000000    ;Creator
+48     PITFFLG     DW   0000        ;Finder flags
+4C     PITLOK      DW   0000        ;locked?
+4E     PITDSIZ     HEX  00000000    ;data fork uncompressed size
+52     PITRSIZ     HEX  00000000    ;resource fork uncompressed size
+56     PITCDSIZ    HEX  00000000    ;data fork compressed size
+5A     PITCRSIZ    HEX  00000000    ;resource fork compressed size
+5E     PITCRC      DW   0000        ;CRC
+
+          **************************************************
+
+
+                               STUFFIT
+                               =======
+
+System of Origin : Macintosh
+
+Original author : Raymond Lau
+
+FILE FORMAT
+-----------
+
+     Master Header
+          file header 1
+               file 1 resource fork
+               file 1 data fork
+          file header 2
+               file 2 resource fork
+               file 2 data fork
+          .
+          .
+          file header n
+               file n resource fork
+               file n data fork
+EOF
+
+
+
+                                                               Page 14
+
+
+MASTER HEADER
+-------------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     SITHSIG     ASC  'SIT!'      ;STUFFIT archive signature
+04     SITHNUM     DW   0000        ;number of files in archive
+06     SITHLEN     HEX  00000000    ;length of entire archive incl hdr
+0A     SITHID2     ASC  'rLau'      ;authors name - R. Lau
+0E     SITHVER     DB   00          ;version number
+0F                 DS   7           ;reserved
+
+
+FILE HEADER
+-----------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     SITFRCMP    DB   00          ;rsrc fork compression method
+01     SITFDCMP    DB   00          ;data fork compression method
+02     SITFNL      DB   00          ;file name length
+03     SITFNAM     DS   $3F         ;filename
+41     SITFTYP     DB   00000000    ;filetype
+45     SITFCR      DB   00000000    ;file creator
+49     SITFFFL     DW   0000        ;Finder flags
+4B     SITFCRD     HEX  00000000    ;creation date
+4F     SITFMDD     HEX  00000000    ;modification date
+53     SITFRLN     HEX  00000000    ;uncompressed resource fork length
+57     SITFDLN     HEX  00000000    ;uncompressed data fork length
+5B     SITFCRLN    HEX  00000000    ;compressed resource fork length
+5F     SITFCDLN    HEX  00000000    ;compressed data fork length
+61     SITFRCRC    DW   0000        ;resource fork CRC
+63     SITFDCRC    DW   0000        ;data fork CRC
+65     SITFRPAD    DB   00          ;pad bytes for encrypted files,
+66     SITFDPAD    DB   00          ;resource and data forks
+6A                 DS   4           ;reserved
+6E     SITFHCRC    DW   0000        ;CRC of file header
+
+
+       STUFFIT METHODS
+
+       NAME        METHOD  DESCRIPTION
+       ----------- ------ --------------------------------------------
+       noComp         0    uncompressed
+       rleComp        1    RLE compression
+       lzwComp        2    LZW compression, 18k buffer, 14 bit code size
+       hufComp        3    Huffman compression
+       encrypted     16    bit set if encrypted. ex: encrypted+lzwComp
+       startFolder   32    marks start of a new folder
+       endFolder     33    marks end of the last folder started
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                               Page 15
+
+
+POSITIONING IN FILE
+-------------------
+
+First File Header = SITHSIG + $15
+
+Begining of Resource Fork = SITFRCMP + $6F
+
+Begining of Data Fork = Begining of Resource Fork + SITFCRLN
+
+Next File Header = Begining of previous Data Fork + SITFCDLN
+       or
+                 = Previous File Header + $6F + SITFCRLN + SITCDLN
+
+          **************************************************
+
+
+                                ZIP
+                                ===
+
+System of Origin : IBM
+
+Original author : Phil Katz
+
+FILE FORMAT
+-----------
+
+
+Files stored in arbitrary order.  Large zipfiles can span multiple
+diskette media.
+
+          Local File Header 1
+                    file 1 extra field
+                    file 1 comment
+               file data 1
+          Local File Header 2
+                    file 2 extra field
+                    file 2 comment
+               file data 2
+          .
+          .
+          .
+          Local File Header n
+                    file n extra field
+                    file n comment
+               file data n
+     Central Directory
+               central extra field
+               central comment
+          End of Central Directory
+                    end comment
+EOF
+
+
+
+
+
+
+
+
+
+
+
+
+                                                               Page 16
+
+
+LOCAL FILE HEADER
+-----------------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     ZIPLOCSIG   HEX  04034B50    ;Local File Header Signature
+04     ZIPVER      DW   0000        ;Version needed to extract
+06     ZIPGENFLG   DW   0000        ;General purpose bit flag
+08     ZIPMTHD     DW   0000        ;Compression method
+0A     ZIPTIME     DW   0000        ;Last mod file time (MS-DOS)
+0C     ZIPDATE     DW   0000        ;Last mod file date (MS-DOS)
+0E     ZIPCRC      HEX  00000000    ;CRC-32
+12     ZIPSIZE     HEX  00000000    ;Compressed size
+16     ZIPUNCMP    HEX  00000000    ;Uncompressed size
+1A     ZIPFNLN     DW   0000        ;Filename length
+1C     ZIPXTRALN   DW   0000        ;Extra field length
+1E     ZIPNAME     DS   ZIPFNLN     ;filename
+--     ZIPXTRA     DS   ZIPXTRALN   ;extra field
+
+CENTRAL DIRECTORY STRUCTURE
+---------------------------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     ZIPCENSIG   HEX  02014B50    ;Central file header signature
+04     ZIPCVER     DB   00          ;Version made by
+05     ZIPCOS      DB   00          ;Host operating system
+06     ZIPCVXT     DB   00          ;Version needed to extract
+07     ZIPCEXOS    DB   00          ;O/S of version needed for extraction
+08     ZIPCFLG     DW   0000        ;General purpose bit flag
+0A     ZIPCMTHD    DW   0000        ;Compression method
+0C     ZIPCTIM     DW   0000        ;Last mod file time (MS-DOS)
+0E     ZIPCDAT     DW   0000        ;Last mod file date (MS-DOS)
+10     ZIPCCRC     HEX  00000000    ;CRC-32
+14     ZIPCSIZ     HEX  00000000    ;Compressed size
+18     ZIPCUNC     HEX  00000000    ;Uncompressed size
+1C     ZIPCFNL     DW   0000        ;Filename length
+1E     ZIPCXTL     DW   0000        ;Extra field length
+20     ZIPCCML     DW   0000        ;File comment length
+22     ZIPDSK      DW   0000        ;Disk number start
+24     ZIPINT      DW   0000        ;Internal file attributes
+
+       LABEL       BIT        DESCRIPTION
+       ----------- --------- -----------------------------------------
+       ZIPINT         0       if = 1, file is apparently an ASCII or
+                              text file
+                      0       if = 0, file apparently contains binary
+                              data
+                     1-7      unused in version 1.0.
+
+26     ZIPEXT      HEX  00000000    ;External file attributes, host
+                                    ;system dependent
+2A     ZIPOFST     HEX  00000000    ;Relative offset of local header
+                                    ;from the start of the first disk
+                                    ;on which this file appears
+2E     ZIPCFN      DS   ZIPCFNL     ;Filename or path - should not
+                                    ;contain a drive or device letter,
+                                    ;or a leading slash. All slashes
+                                    ;should be forward slashes '/'
+--     ZIPCXTR     DS   ZIPCXTL     ;extra field
+--     ZIPCOM      DS   ZIPCCML     ;file comment
+
+
+                                                               Page 17
+
+
+END OF CENTRAL DIR STRUCTURE
+----------------------------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     ZIPESIG     HEX  06064B50    ;End of central dir signature
+04     ZIPEDSK     DW   0000        ;Number of this disk
+06     ZIPECEN     DW   0000        ;Number of disk with start central dir
+08     ZIPENUM     DW   0000        ;Total number of entries in central dir
+                                    ;on this disk
+0A     ZIPECENN    DW   0000        ;total number entries in central dir
+0C     ZIPECSZ     HEX  00000000    ;Size of the central directory
+10     ZIPEOFST    HEX  00000000    ;Offset of start of central directory
+                                    ;with respect to the starting disk
+                                    ;number
+14     ZIPECOML    DW   0000        ;zipfile comment length
+16     ZIPECOM     DS   ZIPECOML    ;zipfile comment
+
+
+ZIP VALUES LEGEND
+-----------------
+
+       HOST O/S
+
+       VALUE  DESCRIPTION               VALUE  DESCRIPTION
+       ----- -------------------------- ----- ------------------------
+       0      MS-DOS and OS/2 (FAT)     5      Atari ST
+       1      Amiga                     6      OS/2 1.2 extended file sys
+       2      VMS                       7      Macintosh
+       3      *nix                      8 thru
+       4      VM/CMS                    255    unused
+
+
+       GENERAL PURPOSE BIT FLAG
+
+       LABEL       BIT        DESCRIPTION
+       ----------- --------- -----------------------------------------
+       ZIPGENFLG      0       If set, file is encrypted
+          or          1       If file Imploded and this bit is set, 8K
+       ZIPCFLG                sliding dictionary was used. If clear, 4K
+                              sliding dictionary was used.
+                      2       If file Imploded and this bit is set, 3
+                              Shannon-Fano trees were used. If clear, 2
+                              Shannon-Fano trees were used.
+                     3-4      unused
+                     5-7      used internaly by ZIP
+
+       Note:  Bits 1 and 2 are undefined if the compression method is
+              other than type 6 (Imploding).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                               Page 18
+
+
+       COMPRESSION METHOD
+
+       NAME        METHOD  DESCRIPTION
+       ----------- ------ --------------------------------------------
+       Stored         0    No compression used
+       Shrunk         1    LZW, 8K buffer, 9-13 bits with partial clearing
+       Reduced-1      2    Probalistic compression, L(X) = lower 7 bits
+       Reduced-2      3    Probalistic compression, L(X) = lower 6 bits
+       Reduced-3      4    Probalistic compression, L(X) = lower 5 bits
+       Reduced-4      5    Probalistic compression, L(X) = lower 4 bits
+       Imploded       6    2 Shanno-Fano trees, 4K sliding dictionary
+       Imploded       7    3 Shanno-Fano trees, 4K sliding dictionary
+       Imploded       8    2 Shanno-Fano trees, 8K sliding dictionary
+       Imploded       9    3 Shanno-Fano trees, 8K sliding dictionary
+
+
+       EXTRA FIELD
+
+       OFFSET LABEL       TYP  VALUE       DESCRIPTION
+       ------ ----------- ---- ---------- ----------------------------
+       00     EX1ID       DW   0000        ;0-31 reserved by PKWARE
+       02     EX1LN       DW   0000
+       04     EX1DAT      DS   EX1LN       ;Specific data for individual
+       .                                   ;files. Data field should begin
+       .                                   ;with a s/w specific unique ID
+       EX1LN+4
+              EXnID       DW   0000
+              EXnLN       DW   0000
+              EXnDAT      DS   EXnLN       ;entire header may not exceed 64k
+
+          **************************************************
+
+
+                                ZOO
+                                ===
+
+System of Origin : IBM
+
+Original author : Rahul Dhesi
+
+FILE FORMAT
+-----------
+
+     Master Header
+          file 1 header
+               file 1
+          file 2 header
+               file 2
+          .
+          .
+          file n header
+               file n
+EOF
+
+
+
+
+
+
+
+
+
+
+                                                               Page 19
+
+
+MASTER HEADER
+-------------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00                 DS   20
+14     ZOOSIG      HEX  A7DCFDC4    ;File signature
+18     ZOO1PTR     HEX  00000000    ;pointer to 1st header
+1C     ZOO?        HEX  00000000    ;?
+20     ZOOMVER     DB   00          ;version making archive
+21     ZOOMIN      DB   00          ;minimum version needed to extract
+
+
+FILE HEADER
+-----------
+
+OFFSET LABEL       TYP  VALUE        DESCRIPTION
+------ ----------- ---- ----------- ----------------------------------
+00     ZOOFSIG     HEX  A7DCFDC4    ;signature
+04     ZOOFTYP     DB   00          ;?
+06     ZOOFCMP     DB   00          ;Compression method
+08     ZOOFNXH     HEX  00000000    ;Nxt hdr ofst frm Start of ZOO file
+0A     ZOOFCUR     HEX  00000000    ;Offset of this hdr
+0E     ZOOFDAT     DW   0000        ;Last mod file date (MS-DOS)
+10     ZOOFTIM     DW   0000        ;Last mod file time (MS-DOS)
+12     ZOOFCRC     DW   0000        ;CRC-16
+14     ZOOFOSZ     HEX  00000000    ;Uncompressed size
+18     ZOOFNSZ     HEX  00000000    ;Compressed size
+1C     ZOOFMVER    DB   00          ;version that made this file
+1D     ZOOFMIN     DB   00          ;minimum version needed to extract
+1E     Z00FDEL     DB   00          ;1 if file deleted from archive
+1F     ZOOFCMTP    HEX  00000000    ;pointer to comment, 0 if none
+23     ZOOFCMTL    DW   0000        ;length of comment
+25     ZOOFNAM     DS   13          ;filename
+
+
+ZOO METHOD
+----------
+
+       NAME        METHOD  DESCRIPTION
+       ----------- ------ --------------------------------------------
+       Stored              No compression used
+       Crunched            Packing, LZW, 4K buffer, var len (9-12 bits)
+
+POSITIONING IN FILE
+-------------------
+
+Begining of 1st File header = Begining of File + ZOO1PTR
+       or
+                            = Begining of File + $21
+
+Begining of File Data = Begining of File Header + $31
+
+Begining of Next File = Begining of File + ZOOFNXH
+
+Begining of File Comment = Begining of File Header + ZOOFCMTP
+
+          **************************************************
+
+
+
+
+
+                                                               Page 20
+
+
+                             TIME VALUES
+                             ===========
+
+MS-DOS TIME FORMAT
+------------------
+
+       LABEL       BIT        DESCRIPTION
+       ----------- --------- -----------------------------------------
+       DATE        15-9       Year
+                    8-5       Month
+                    4-0       Day (all zeroes means no date)
+
+       TIME        15-11      Hours (military)
+                   10-5       Minutes
+                    4-0       Seconds
+
+
+ProDOS/SOS TIME FORMAT (APPLE)
+------------------------------
+
+       LABEL       BIT        DESCRIPTION
+       ----------- --------- -----------------------------------------
+       DATE        15-9       Year (0-99)
+                    8-5       Month
+                    4-0       Day
+
+       TIME        15-8       Hour (military time)
+                    7-0       Minutes
+
+          **************************************************
+
+
+                            EXTENDED FILES
+                            --------------
+
+Extended files are a storage format used by a variety of operating
+systems. The filename information points to a file that points to 2 other
+files known as the DATA FORK and the RESOURCE FORK.
+
+The resource fork contains information about, and/or for the use of, the
+data fork. In porting amongst systems the resource fork is probably of
+no use.
+
+The data fork contains the actual file.
+
+          **************************************************
+
+
+                              FILENAMES
+                              ---------
+
+File name lengths, legal characters and format vary amongst the various
+operating systems. MS-DOS allows a wider variety of characters while the
+Apple operating systems allow longer names with no set format (no
+extensions). Any program must be ready to convert a filename into the
+current operating system format as well as handle any paths (either by
+creating or ignoring them).
+
+
+
+
+
+
+                                                               Page 21
+
+
+A suggestion would be to use a more universal standard for the filenames
+of files that are likely to be ported (ie; Text, ASCII Source, GIF, ASCII
+data files, etc) while making no special effort with executable code
+(including tokenized BASIC) filenames.
+
+Such a standard might be:
+
+               a filename of no more than 13 or less than 6 characters
+               legal characters A-Z (all uppercase) the '.' and 0-9
+               periods to be used only once in a file to make an MS-DOS
+                    type extension (ie; .TXT, .DOC, etc)
+               the filename MUST start with an alphabetic character (A-Z)
+
+**********************************************************************
+
+
+Information taken from files by Alex Bamdad, Rahul Dhesi, Jim Dorsey, Don
+Elton, Colin James, Phil Katz, Raymond Lau, Gary Little, Andrew Nicholas,
+Haruhiko Okumura, Martin Peckham, Mike Sax, Tim Swihart and probably
+others.
+
