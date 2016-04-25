@@ -35,7 +35,7 @@ Imports ICSharpCode.SharpZipLib.Zip
 
 Namespace CreateZipFile
 
-	Public Class MainForm
+	Public Class CreateZipFileForm
 		Inherits System.Windows.Forms.Form
         Private label2 As System.Windows.Forms.Label
 		Private label1 As System.Windows.Forms.Label
@@ -46,8 +46,8 @@ Namespace CreateZipFile
         Private txtZipFileName As System.Windows.Forms.TextBox
 
         Public Shared Sub Main()
-            Dim fMainForm As New MainForm
-            fMainForm.ShowDialog()
+			Dim fMainForm As New CreateZipFileForm
+			fMainForm.ShowDialog()
         End Sub
 
         Public Sub New()

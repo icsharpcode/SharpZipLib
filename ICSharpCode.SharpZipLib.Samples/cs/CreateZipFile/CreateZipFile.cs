@@ -27,10 +27,9 @@
 
 using System;
 using System.IO;
-
 using ICSharpCode.SharpZipLib.Zip;
 
-class MainClass
+class CreateZipFile
 {
 
 	public static void Main(string[] args)
@@ -38,12 +37,14 @@ class MainClass
 		// Perform some simple parameter checking.  More could be done
 		// like checking the target file name is ok, disk space, and lots
 		// of other things, but for a demo this covers some obvious traps.
-		if ( args.Length < 2 ) {
+		if (args.Length < 2)
+		{
 			Console.WriteLine("Usage: CreateZipFile Path ZipFile");
 			return;
 		}
 
-		if ( !Directory.Exists(args[0]) ) {
+		if (!Directory.Exists(args[0]))
+		{
 			Console.WriteLine("Cannot find directory '{0}'", args[0]);
 			return;
 		}
@@ -56,13 +57,15 @@ class MainClass
 
 			// 'using' statements guarantee the stream is closed properly which is a big source
 			// of problems otherwise.  Its exception safe as well which is great.
-			using (ZipOutputStream s = new ZipOutputStream(File.Create(args[1]))) {
+			using (ZipOutputStream s = new ZipOutputStream(File.Create(args[1])))
+			{
 
 				s.SetLevel(9); // 0 - store only to 9 - means best compression
 
 				byte[] buffer = new byte[4096];
 
-				foreach (string file in filenames) {
+				foreach (string file in filenames)
+				{
 
 					// Using GetFileName makes the result compatible with XP
 					// as the resulting path is not absolute.
@@ -77,15 +80,17 @@ class MainClass
 					entry.DateTime = DateTime.Now;
 					s.PutNextEntry(entry);
 
-					using ( FileStream fs = File.OpenRead(file) ) {
+					using (FileStream fs = File.OpenRead(file))
+					{
 
 						// Using a fixed size buffer here makes no noticeable difference for output
 						// but keeps a lid on memory usage.
 						int sourceBytes;
-						do {
+						do
+						{
 							sourceBytes = fs.Read(buffer, 0, buffer.Length);
 							s.Write(buffer, 0, sourceBytes);
-						} while ( sourceBytes > 0 );
+						} while (sourceBytes > 0);
 					}
 				}
 
@@ -99,7 +104,7 @@ class MainClass
 				s.Close();
 			}
 		}
-		catch(Exception ex)
+		catch (Exception ex)
 		{
 			Console.WriteLine("Exception during processing {0}", ex);
 

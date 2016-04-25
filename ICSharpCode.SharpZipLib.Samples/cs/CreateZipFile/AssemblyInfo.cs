@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("CreateZipFile")]
 [assembly: AssemblyDescription("Free C# IDE")]
