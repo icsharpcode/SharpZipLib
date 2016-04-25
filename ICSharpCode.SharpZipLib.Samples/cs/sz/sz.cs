@@ -195,7 +195,7 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
         static bool IsNumeric(string rhs)
         {
             bool result;
-            if ((rhs != null) && (rhs.Length > 0)) {
+            if (!string.IsNullOrEmpty(rhs)) {
                 result = true;
                 for (int i = 0; result && (i < rhs.Length); ++i) {
                     if (!char.IsDigit(rhs[i])) {
@@ -614,7 +614,7 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
 
                 using (FileStream fileStream = File.OpenRead(fileName)) {
                     using (ZipInputStream stream = new ZipInputStream(fileStream)) {
-                        if ((password != null) && (password.Length > 0)) {
+                        if (!string.IsNullOrEmpty(password)) {
                             stream.Password = password;
                         }
 
@@ -756,7 +756,7 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
                 string [] names;
                 string pathName = Path.GetDirectoryName(spec);
 					
-                if ( (pathName == null) || (pathName.Length == 0) ) {
+                if ( string.IsNullOrEmpty(pathName)) {
                     pathName = @".\";
                 }
                 names = Directory.GetFiles(pathName, Path.GetFileName(spec));
@@ -792,7 +792,7 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
                 return "";
             }
 			
-            if (stripPrefix != null && stripPrefix.Length > 0 && name.IndexOf(stripPrefix, 0) == 0) {
+            if (!string.IsNullOrEmpty(stripPrefix)&& name.IndexOf(stripPrefix, 0) == 0) {
                 name = name.Substring(stripPrefix.Length);
             }
 		
@@ -963,7 +963,7 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
 			
             using (FileStream stream = File.Create(zipFileName)) {
                 using (outputStream = new ZipOutputStream(stream)) {
-                    if ((password != null) && (password.Length > 0)) {
+                    if (!string.IsNullOrEmpty(password)) {
                         outputStream.Password = password;
                     }
 
@@ -973,7 +973,7 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
                         string fileName = Path.GetFileName(spec);
                         string pathName = Path.GetDirectoryName(spec);
 						
-                        if (pathName == null || pathName.Length == 0) {
+                        if (string.IsNullOrEmpty(pathName)) {
                             pathName = Path.GetFullPath(".");
                             if (relativePathInfo == true) {
                                 removablePathPrefix = pathName;
@@ -1132,7 +1132,7 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
         /// </summary>
         void Extract(ArrayList fileSpecifications)
         {
-            if (targetOutputDirectory == null || targetOutputDirectory.Length == 0) {
+            if (string.IsNullOrEmpty(targetOutputDirectory)) {
                 targetOutputDirectory = @".\";
             }
 			
@@ -1142,7 +1142,7 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
                 if (spec.IndexOf('*') >= 0 || spec.IndexOf('?') >= 0) {
                     string pathName = Path.GetDirectoryName(spec);
 					
-                    if (pathName == null || pathName.Length == 0) {
+                    if (string.IsNullOrEmpty(pathName)) {
                         pathName = @".\";
                     }
                     names = Directory.GetFiles(pathName, Path.GetFileName(spec));

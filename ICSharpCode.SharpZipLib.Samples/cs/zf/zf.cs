@@ -585,7 +585,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 			{
 				string pathName = Path.GetDirectoryName(spec);
 					
-				if ( (pathName == null) || (pathName.Length == 0) ) 
+				if ( string.IsNullOrEmpty(pathName)) 
 				{
 					pathName = @".\";
 				}
@@ -862,7 +862,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		/// </summary>
 		void Extract(ArrayList fileSpecs)
 		{
-			if ( (targetOutputDirectory_ == null) || (targetOutputDirectory_.Length == 0) )
+			if ( string.IsNullOrEmpty(targetOutputDirectory_))
 			{
 				targetOutputDirectory_ = @".\";
 			}
@@ -875,7 +875,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 				{
 					string pathName = Path.GetDirectoryName(spec);
 					
-					if ( (pathName == null) || (pathName.Length == 0) ) 
+					if ( string.IsNullOrEmpty(pathName)) 
 					{
 						pathName = @".\";
 					}
@@ -1334,7 +1334,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		static bool IsNumeric(string rhs)
 		{
 			bool result;
-			if (rhs != null && rhs.Length > 0) 
+			if (!string.IsNullOrEmpty(rhs)) 
 			{
 				result = true;
 				for (int i = 0; i < rhs.Length; ++i) 

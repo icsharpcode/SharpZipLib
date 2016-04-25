@@ -279,8 +279,8 @@ public class Tar
 		else {
 			if (this.verbose) {
 				string modeString = DecodeType(entry.TarHeader.TypeFlag, entry.Name.EndsWith("/")) + DecodeMode(entry.TarHeader.Mode);
-				string userString = (entry.UserName == null || entry.UserName.Length == 0) ? entry.UserId.ToString() : entry.UserName;
-				string groupString = (entry.GroupName == null || entry.GroupName.Length == 0) ? entry.GroupId.ToString() : entry.GroupName;
+				string userString = (string.IsNullOrEmpty(entry.UserName)) ? entry.UserId.ToString() : entry.UserName;
+				string groupString = (string.IsNullOrEmpty(entry.GroupName)) ? entry.GroupId.ToString() : entry.GroupName;
 
 				Console.WriteLine(string.Format("{0} {1}/{2} {3,8} {4:yyyy-MM-dd HH:mm:ss} {5}", modeString, userString, groupString, entry.Size, entry.ModTime.ToLocalTime(), entry.Name));
 			} else {
@@ -341,7 +341,7 @@ public class Tar
 				} else if (arg.Equals("--compress")) {
 					compression = Compression.Compress;
 				} else if (arg.Equals("--blocking-factor")) {
-					if (argValue == null || argValue.Length == 0)
+					if (string.IsNullOrEmpty(argValue))
 						Console.Error.WriteLine("expected numeric blocking factor");
 					else {
 						try {
@@ -359,7 +359,7 @@ public class Tar
 				} else if (arg.Equals("--keep-old-files")) {
 					keepOldFiles = true;
 				} else if (arg.Equals("--record-size")) {
-					if (argValue == null || argValue.Length == 0) {
+					if (string.IsNullOrEmpty(argValue)) {
 						Console.Error.WriteLine("expected numeric record size");
 						bailOut = true;
 					} else {
@@ -479,7 +479,7 @@ public class Tar
 	static string[] GetFilesForSpec(string spec)
 	{
 		string dir = Path.GetDirectoryName(spec);
-		if (dir == null || dir.Length == 0)
+		if (string.IsNullOrEmpty(dir))
 			dir = Directory.GetCurrentDirectory();
 
 		return System.IO.Directory.GetFiles(dir, Path.GetFileName(spec));
