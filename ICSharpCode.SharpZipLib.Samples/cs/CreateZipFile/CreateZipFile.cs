@@ -69,7 +69,7 @@ class CreateZipFile
 
 					// Using GetFileName makes the result compatible with XP
 					// as the resulting path is not absolute.
-					ZipEntry entry = new ZipEntry(Path.GetFileName(file));
+					var entry = new ZipEntry(Path.GetFileName(file));
 
 					// Setup the entry data as required.
 

@@ -353,7 +353,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 			
 			if (fileSpecs_.Count > 0) 
 			{
-				string checkPath = (string)fileSpecs_[0];
+				var checkPath = (string)fileSpecs_[0];
 				int deviceCheck = checkPath.IndexOf(':');
 #if NET_VER_1
 				if (checkPath.IndexOfAny(Path.InvalidPathChars) >= 0
@@ -544,7 +544,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		{
 			try
 			{
-				FileInfo fileInfo = new FileInfo(fileName);
+				var fileInfo = new FileInfo(fileName);
 				
 				if (!fileInfo.Exists) 
 				{
@@ -616,7 +616,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		/// </summary>		
 		void Create(ArrayList fileSpecs)
 		{
-			string zipFileName = fileSpecs[0] as string;
+			var zipFileName = fileSpecs[0] as string;
 			if (Path.GetExtension(zipFileName).Length == 0) 
 			{
 				zipFileName = Path.ChangeExtension(zipFileName, ".zip");
@@ -649,7 +649,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 
 						zf.NameTransform = new ZipNameTransform(path);
 
-						FileSystemScanner scanner = new FileSystemScanner(WildcardToRegex(fileSpec));
+						var scanner = new FileSystemScanner(WildcardToRegex(fileSpec));
 						scanner.ProcessFile = new ProcessFileHandler(ProcessFile);
 						scanner.ProcessDirectory = new ProcessDirectoryHandler(ProcessDirectory);
 						scanner.Scan(path, recursive_);
@@ -962,7 +962,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		/// <param name="fileSpecs">The files to test.</param>
 		void Test(ArrayList fileSpecs)
 		{
-			string zipFileName = fileSpecs[0] as string;
+			var zipFileName = fileSpecs[0] as string;
 			if (Path.GetExtension(zipFileName).Length == 0) 
 			{
 				zipFileName = Path.ChangeExtension(zipFileName, ".zip");
@@ -1000,7 +1000,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		/// <param name="fileSpecs">The file specs to operate on.</param>
 		void Delete(ArrayList fileSpecs)
 		{
-			string zipFileName = fileSpecs[0] as string;
+			var zipFileName = fileSpecs[0] as string;
 			if (Path.GetExtension(zipFileName).Length == 0) 
 			{
 				zipFileName = Path.ChangeExtension(zipFileName, ".zip");
@@ -1063,7 +1063,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		/// <param name="fileSpecs">The specification for files to add.</param>
 		void Add(ArrayList fileSpecs)
 		{
-			string zipFileName = fileSpecs[0] as string;
+			var zipFileName = fileSpecs[0] as string;
 			if (Path.GetExtension(zipFileName).Length == 0) 
 			{
 				zipFileName = Path.ChangeExtension(zipFileName, ".zip");
@@ -1100,7 +1100,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 
 						zipFile.NameTransform = new ZipNameTransform(path);
 
-						FileSystemScanner scanner = new FileSystemScanner(WildcardToRegex(fileSpec));
+						var scanner = new FileSystemScanner(WildcardToRegex(fileSpec));
 						scanner.ProcessFile = new ProcessFileHandler(ProcessFile);
 						scanner.ProcessDirectory = new ProcessDirectoryHandler(ProcessDirectory);
 						scanner.Scan(path, recursive_);
@@ -1397,7 +1397,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		/// </param>
 		public static void Main(string[] args) 
 		{
-			ZipFileArchiver zf = new ZipFileArchiver();
+			var zf = new ZipFileArchiver();
 			zf.Execute(args);
 		}
 

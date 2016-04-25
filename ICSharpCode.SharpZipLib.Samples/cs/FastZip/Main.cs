@@ -47,8 +47,8 @@ namespace Samples.FastZipDemo
         static void ListZipFile(string fileName, string fileFilter, string directoryFilter)
         {
             using (ZipFile zipFile = new ZipFile(fileName)) {
-                PathFilter localFileFilter = new PathFilter(fileFilter);
-                PathFilter localDirFilter = new PathFilter(directoryFilter);
+                var localFileFilter = new PathFilter(fileFilter);
+                var localDirFilter = new PathFilter(directoryFilter);
 
                 if ( zipFile.Count == 0 ) {
                     Console.WriteLine("No entries to list");
@@ -92,7 +92,7 @@ namespace Samples.FastZipDemo
 
         void ListFileSystem(string directory, bool recurse, string fileFilter, string directoryFilter)
         {
-            FileSystemScanner scanner = new FileSystemScanner(fileFilter, directoryFilter);
+            var scanner = new FileSystemScanner(fileFilter, directoryFilter);
             scanner.ProcessDirectory += new ProcessDirectoryHandler(ListDir);
             scanner.ProcessFile += new ProcessFileHandler(ListFile);
             scanner.Scan(directory, recurse);
@@ -304,7 +304,7 @@ namespace Samples.FastZipDemo
                 }
             }
 
-            FastZip fastZip = new FastZip(events);
+            var fastZip = new FastZip(events);
             fastZip.CreateEmptyDirectories = createEmptyDirs;
             fastZip.RestoreAttributesOnExtract = restoreAttributes;
             fastZip.RestoreDateTimeOnExtract = restoreDates;
@@ -376,7 +376,7 @@ namespace Samples.FastZipDemo
         /// <param name="args">The arguments provided to this process.</param>
         public static void Main(string[] args)
         {
-            MainClass main = new MainClass();
+            var main = new MainClass();
             main.Run(args);
         }
     }

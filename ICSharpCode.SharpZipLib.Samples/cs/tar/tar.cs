@@ -142,7 +142,7 @@ public class Tar
 	/// </summary>
 	public static void Main(string[] argv)
 	{
-		Tar tarApp = new Tar();
+		var tarApp = new Tar();
 		tarApp.InstanceMain(argv);
 	}
 
@@ -555,7 +555,7 @@ public class Tar
 		const int S_IXOTH = 0x0001;
 
 
-		System.Text.StringBuilder result = new System.Text.StringBuilder();
+		var result = new System.Text.StringBuilder();
 		result.Append((mode & S_IRUSR) != 0 ? 'r' : '-');
 		result.Append((mode & S_IWUSR) != 0 ? 'w' : '-');
 		result.Append((mode & S_ISUID) != 0
