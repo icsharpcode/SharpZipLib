@@ -232,7 +232,7 @@ public class Tar
 			Console.Error.WriteLine( "no processing due to errors" );
 		} else if (operation == Operation.Create) {                        // WRITING
 			if (verbose) {
-				archive.ProgressMessageEvent += new ProgressMessageHandler(ShowTarProgressMessage);
+				archive.ProgressMessageEvent += ShowTarProgressMessage;
 			}
 
 			for ( ; argIdx < argv.Length ; ++argIdx ) {
@@ -247,12 +247,12 @@ public class Tar
 				}
 			}
 		} else if (operation == Operation.List) {                   // LISTING
-			archive.ProgressMessageEvent += new ProgressMessageHandler(ShowTarProgressMessage);
+			archive.ProgressMessageEvent += ShowTarProgressMessage;
 			archive.ListContents();
 		} else {                                                    // EXTRACTING
 			string userDir = Environment.CurrentDirectory;
 			if (verbose) {
-				archive.ProgressMessageEvent += new ProgressMessageHandler(ShowTarProgressMessage);
+				archive.ProgressMessageEvent += ShowTarProgressMessage;
 			}
 
 			if (userDir != null) {

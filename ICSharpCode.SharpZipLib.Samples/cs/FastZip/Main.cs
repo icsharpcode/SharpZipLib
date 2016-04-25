@@ -93,8 +93,8 @@ namespace Samples.FastZipDemo
         void ListFileSystem(string directory, bool recurse, string fileFilter, string directoryFilter)
         {
             var scanner = new FileSystemScanner(fileFilter, directoryFilter);
-            scanner.ProcessDirectory += new ProcessDirectoryHandler(ListDir);
-            scanner.ProcessFile += new ProcessFileHandler(ListFile);
+            scanner.ProcessDirectory += ListDir;
+            scanner.ProcessFile += ListFile;
             scanner.Scan(directory, recurse);
         }
 
