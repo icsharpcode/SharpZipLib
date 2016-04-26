@@ -1,0 +1,79 @@
+﻿<html><head><meta http-equiv="X-UA-Compatible" content="IE=edge" /><link rel="shortcut icon" href="../icons/favicon.ico" /><link rel="stylesheet" type="text/css" href="../styles/branding.css" /><link rel="stylesheet" type="text/css" href="../styles/branding-en-US.css" /><script type="text/javascript" src="../scripts/branding.js"> </script><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>ICSharpCode.SharpZipLib.Checksums Namespace</title><meta name="Language" content="en-us" /><meta name="System.Keywords" content="ICSharpCode.SharpZipLib.Checksums namespace" /><meta name="Microsoft.Help.F1" content="ICSharpCode.SharpZipLib.Checksums" /><meta name="Microsoft.Help.Id" content="N:ICSharpCode.SharpZipLib.Checksums" /><meta name="Description" content="Checksum Handling" /><meta name="Microsoft.Help.ContentType" content="Reference" /><meta name="BrandingAware" content="true" /><meta name="container" content="ICSharpCode.SharpZipLib.Checksums" /><meta name="file" content="N_ICSharpCode_SharpZipLib_Checksums" /><meta name="guid" content="N_ICSharpCode_SharpZipLib_Checksums" /><link type="text/css" rel="stylesheet" href="../styles/highlight.css" /><script type="text/javascript" src="../scripts/highlight.js"> </script><link rel="stylesheet" type="text/css" href="../styles/branding-Website.css" /><script type="text/javascript" src="../scripts/jquery-1.11.0.min.js"></script><script type="text/javascript" src="../scripts/branding-Website.js"></script></head><body onload="OnLoad('cs')"><input type="hidden" id="userDataCache" class="userDataStyle" /><div class="pageHeader" id="PageHeader">ICSharpCode.SharpZipLib Compression Library<form id="SearchForm" method="get" action="#" onsubmit="javascript:TransferToSearchPage(); return false;"><input id="SearchTextBox" type="text" maxlength="200" /><button id="SearchButton" type="submit"></button></form></div><div class="pageBody"><div class="leftNav" id="leftNav"><div id="tocNav"><div class="toclevel0" data-toclevel="0"><a class="tocCollapsed" onclick="javascript: Toggle(this);" href="#!" /><a data-tochassubtree="true" href="N_ICSharpCode_SharpZipLib.htm" title="ICSharpCode.SharpZipLib Compression Library" tocid="roottoc">ICSharpCode.SharpZipLib Compression Library</a></div><div class="toclevel1 current" data-toclevel="1" data-childrenloaded="true"><a class="tocExpanded" onclick="javascript: Toggle(this);" href="#!" /><a data-tochassubtree="true" href="N_ICSharpCode_SharpZipLib_Checksums.htm" title="ICSharpCode.SharpZipLib.Checksums" tocid="N_ICSharpCode_SharpZipLib_Checksums">ICSharpCode.SharpZipLib.Checksums</a></div><div class="toclevel2" data-toclevel="2"><a class="tocCollapsed" onclick="javascript: Toggle(this);" href="#!" /><a data-tochassubtree="true" href="T_ICSharpCode_SharpZipLib_Checksums_Adler32.htm" title="Adler32 Class" tocid="T_ICSharpCode_SharpZipLib_Checksums_Adler32">Adler32 Class</a></div><div class="toclevel2" data-toclevel="2"><a class="tocCollapsed" onclick="javascript: Toggle(this);" href="#!" /><a data-tochassubtree="true" href="T_ICSharpCode_SharpZipLib_Checksums_Crc32.htm" title="Crc32 Class" tocid="T_ICSharpCode_SharpZipLib_Checksums_Crc32">Crc32 Class</a></div><div class="toclevel2" data-toclevel="2"><a class="tocCollapsed" onclick="javascript: Toggle(this);" href="#!" /><a data-tochassubtree="true" href="T_ICSharpCode_SharpZipLib_Checksums_IChecksum.htm" title="IChecksum Interface" tocid="T_ICSharpCode_SharpZipLib_Checksums_IChecksum">IChecksum Interface</a></div><div class="toclevel2" data-toclevel="2"><a class="tocCollapsed" onclick="javascript: Toggle(this);" href="#!" /><a data-tochassubtree="true" href="T_ICSharpCode_SharpZipLib_Checksums_StrangeCRC.htm" title="StrangeCRC Class" tocid="T_ICSharpCode_SharpZipLib_Checksums_StrangeCRC">StrangeCRC Class</a></div></div><div id="tocResizableEW" onmousedown="OnMouseDown(event);"></div><div id="TocResize" class="tocResize"><img id="ResizeImageIncrease" src="../icons/TocOpen.gif" onclick="OnIncreaseToc()" alt="Click or drag to resize" title="Click or drag to resize" /><img id="ResizeImageReset" src="../icons/TocClose.gif" style="display:none" onclick="OnResetToc()" alt="Click or drag to resize" title="Click or drag to resize" /></div></div><div class="topicContent" id="TopicContent"><table class="titleTable"><tr><td class="titleColumn">ICSharpCode.SharpZipLib.Checksums Namespace</td></tr></table><span class="introStyle"></span><div class="summary">Checksum Handling</div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID0RB')" onkeypress="SectionExpandCollapse_CheckKey('ID0RB', event)" tabindex="0"><img id="ID0RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Classes</span></div><div id="ID0RBSection" class="collapsibleSection"><table id="typeList" class="members"><tr><th class="iconColumn">
+					 
+				</th><th>Class</th><th>Description</th></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" alt="Public class" title="Public class" /></td><td><a href="T_ICSharpCode_SharpZipLib_Checksums_Adler32.htm">Adler32</a></td><td><div class="summary">
+            Computes Adler32 checksum for a stream of data. An Adler32
+            checksum is not as reliable as a CRC32 checksum, but a lot faster to
+            compute.
+            
+            The specification for Adler32 may be found in RFC 1950.
+            ZLIB Compressed Data Format Specification version 3.3)
+            
+            
+            From that document:
+            
+                 "ADLER32 (Adler-32 checksum)
+                  This contains a checksum value of the uncompressed data
+                  (excluding any dictionary data) computed according to Adler-32
+                  algorithm. This algorithm is a 32-bit extension and improvement
+                  of the Fletcher algorithm, used in the ITU-T X.224 / ISO 8073
+                  standard.
+            
+                  Adler-32 is composed of two sums accumulated per byte: s1 is
+                  the sum of all bytes, s2 is the sum of all s1 values. Both sums
+                  are done modulo 65521. s1 is initialized to 1, s2 to zero.  The
+                  Adler-32 checksum is stored as s2*65536 + s1 in most-
+                  significant-byte first (network) order."
+            
+             "8.2. The Adler-32 algorithm
+            
+               The Adler-32 algorithm is much faster than the CRC32 algorithm yet
+               still provides an extremely low probability of undetected errors.
+            
+               The modulo on unsigned long accumulators can be delayed for 5552
+               bytes, so the modulo operation time is negligible.  If the bytes
+               are a, b, c, the second sum is 3a + 2b + c + 3, and so is position
+               and order sensitive, unlike the first sum, which is just a
+               checksum.  That 65521 is prime is important to avoid a possible
+               large class of two-byte errors that leave the check unchanged.
+               (The Fletcher checksum uses 255, which is not prime and which also
+               makes the Fletcher check insensitive to single byte changes 0 -
+               255.)
+            
+               The sum s1 is initialized to 1 instead of zero to make the length
+               of the sequence part of s2, so that the length does not have to be
+               checked separately. (Any sequence of zeroes has a Fletcher
+               checksum of zero.)"
+            </div></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" alt="Public class" title="Public class" /></td><td><a href="T_ICSharpCode_SharpZipLib_Checksums_Crc32.htm">Crc32</a></td><td><div class="summary">
+             Generate a table for a byte-wise 32-bit CRC calculation on the polynomial:
+             x^32+x^26+x^23+x^22+x^16+x^12+x^11+x^10+x^8+x^7+x^5+x^4+x^2+x+1.
+            
+             Polynomials over GF(2) are represented in binary, one bit per coefficient,
+             with the lowest powers in the most significant bit.  Then adding polynomials
+             is just exclusive-or, and multiplying a polynomial by x is a right shift by
+             one.  If we call the above polynomial p, and represent a byte as the
+             polynomial q, also with the lowest power in the most significant bit (so the
+             byte 0xb1 is the polynomial x^7+x^3+x+1), then the CRC is (q*x^32) mod p,
+             where a mod b means the remainder after dividing a by b.
+            
+             This calculation is done using the shift-register method of multiplying and
+             taking the remainder.  The register is initialized to zero, and for each
+             incoming bit, x^32 is added mod p to the register if the bit is a one (where
+             x^32 mod p is p+x^32 = x^26+...+1), and the register is multiplied mod p by
+             x (which is shifting right by one and adding x^32 mod p if the bit shifted
+             out is a one).  We start with the highest power (least significant bit) of
+             q and repeat for all eight bits of q.
+            
+             The table is simply the CRC of all possible eight bit values.  This is all
+             the information needed to generate CRC's on data a byte at a time for all
+             combinations of CRC register values and incoming bytes.
+             </div></td></tr><tr data="class; public"><td><img src="../icons/pubclass.gif" alt="Public class" title="Public class" /></td><td><a href="T_ICSharpCode_SharpZipLib_Checksums_StrangeCRC.htm">StrangeCRC</a></td><td><div class="summary">
+            Bzip2 checksum algorithm
+            </div></td></tr></table></div><div class="collapsibleAreaRegion"><span class="collapsibleRegionTitle" onclick="SectionExpandCollapse('ID2RB')" onkeypress="SectionExpandCollapse_CheckKey('ID2RB', event)" tabindex="0"><img id="ID2RBToggle" class="collapseToggle" src="../icons/SectionExpanded.png" />Interfaces</span></div><div id="ID2RBSection" class="collapsibleSection"><table id="typeList" class="members"><tr><th class="iconColumn">
+					 
+				</th><th>Interface</th><th>Description</th></tr><tr data="interface; public"><td><img src="../icons/pubinterface.gif" alt="Public interface" title="Public interface" /></td><td><a href="T_ICSharpCode_SharpZipLib_Checksums_IChecksum.htm">IChecksum</a></td><td><div class="summary">
+            Interface to compute a data checksum used by checked input/output streams.
+            A data checksum can be updated by one byte or with a byte array. After each
+            update the value of the current checksum can be returned by calling
+            <div class="codeSnippetContainer"><div class="codeSnippetContainerCodeContainer"><div class="codeSnippetToolBar"><div class="codeSnippetToolBarText"><a id="ID1EABABBDA_copyCode" href="#" onclick="javascript:CopyToClipboard('ID1EABABBDA');return false;" title="Copy">Copy</a></div></div><div id="ID1EABABBDA_code_Div1" class="codeSnippetContainerCode" style="display: block"><pre xml:space="preserve">getValue</pre></div></div></div><script type="text/javascript">AddLanguageTabSet("ID1EABABBDA");</script>. The complete checksum object can also be reset
+            so it can be used again with new data.
+            </div></td></tr></table></div></div></div><div id="pageFooter" class="pageFooter"> </div></body></html>
