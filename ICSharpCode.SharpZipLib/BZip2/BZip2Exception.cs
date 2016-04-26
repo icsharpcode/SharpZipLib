@@ -1,4 +1,4 @@
-// BZip2.cs
+// BZip2Exception.cs
 //
 // Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 //
@@ -34,23 +34,17 @@
 // exception statement from your version.
 
 using System;
-
-#if !NETCF_1_0 && !NETCF_2_0
 using System.Runtime.Serialization;
-#endif
 
 namespace ICSharpCode.SharpZipLib.BZip2
 {
 	/// <summary>
 	/// BZip2Exception represents exceptions specific to Bzip2 algorithm
 	/// </summary>
-#if !NETCF_1_0 && !NETCF_2_0
 	[Serializable]
-#endif	
 	public class BZip2Exception : SharpZipBaseException
 	{
 
-#if !NETCF_1_0 && !NETCF_2_0
 		/// <summary>
 		/// Deserialization constructor 
 		/// </summary>
@@ -61,14 +55,13 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		{
 		}
-#endif
 		/// <summary>
 		/// Initialise a new instance of BZip2Exception.
 		/// </summary>
 		public BZip2Exception()
 		{
 		}
-		
+
 		/// <summary>
 		/// Initialise a new instance of BZip2Exception with its message set to message.
 		/// </summary>

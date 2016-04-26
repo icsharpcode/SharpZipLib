@@ -75,7 +75,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Client hook allowing detailed information to be reported during processing
 		/// </summary>
 		public event ProgressMessageHandler ProgressMessageEvent;
-		
+
 		/// <summary>
 		/// Raises the ProgressMessage event
 		/// </summary>
@@ -83,12 +83,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="message">message for this event.  Null is no message</param>
 		protected virtual void OnProgressMessageEvent(TarEntry entry, string message)
 		{
-		    ProgressMessageHandler handler = ProgressMessageEvent;
+			ProgressMessageHandler handler = ProgressMessageEvent;
 			if (handler != null) {
 				handler(this, entry, message);
 			}
 		}
-		
+
 		#region Constructors
 		/// <summary>
 		/// Constructor for a default <see cref="TarArchive"/>.
@@ -96,34 +96,34 @@ namespace ICSharpCode.SharpZipLib.Tar
 		protected TarArchive()
 		{
 		}
-		
+
 		/// <summary>
 		/// Initalise a TarArchive for input.
 		/// </summary>
 		/// <param name="stream">The <see cref="TarInputStream"/> to use for input.</param>
 		protected TarArchive(TarInputStream stream)
 		{
-			if ( stream == null ) {
-				throw new ArgumentNullException("stream");
+			if (stream == null) {
+				throw new ArgumentNullException(nameof(stream));
 			}
-			
+
 			tarIn = stream;
 		}
-		
+
 		/// <summary>
 		/// Initialise a TarArchive for output.
 		/// </summary>
 		/// <param name="stream">The <see cref="TarOutputStream"/> to use for output.</param> 
 		protected TarArchive(TarOutputStream stream)
 		{
-			if ( stream == null ) {
-				throw new ArgumentNullException("stream");
+			if (stream == null) {
+				throw new ArgumentNullException(nameof(stream));
 			}
-			
+
 			tarOut = stream;
 		}
 		#endregion
-		
+
 		#region Static factory methods
 		/// <summary>
 		/// The InputStream based constructors create a TarArchive for the
@@ -135,22 +135,21 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>Returns a new <see cref="TarArchive"/> suitable for reading from.</returns>
 		public static TarArchive CreateInputTarArchive(Stream inputStream)
 		{
-			if ( inputStream == null ) {
-				throw new ArgumentNullException("inputStream");
+			if (inputStream == null) {
+				throw new ArgumentNullException(nameof(inputStream));
 			}
 
-			TarInputStream tarStream = inputStream as TarInputStream;
+			var tarStream = inputStream as TarInputStream;
 
-		    TarArchive result;
-			if ( tarStream != null ) {
+			TarArchive result;
+			if (tarStream != null) {
 				result = new TarArchive(tarStream);
-			}
-			else {
+			} else {
 				result = CreateInputTarArchive(inputStream, TarBuffer.DefaultBlockFactor);
 			}
-		    return result;
+			return result;
 		}
-		
+
 		/// <summary>
 		/// Create TarArchive for reading setting block factor
 		/// </summary>
@@ -159,17 +158,17 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>Returns a <see cref="TarArchive"/> suitable for reading.</returns>
 		public static TarArchive CreateInputTarArchive(Stream inputStream, int blockFactor)
 		{
-			if ( inputStream == null ) {
-				throw new ArgumentNullException("inputStream");
+			if (inputStream == null) {
+				throw new ArgumentNullException(nameof(inputStream));
 			}
 
-			if ( inputStream is TarInputStream ) {
+			if (inputStream is TarInputStream) {
 				throw new ArgumentException("TarInputStream not valid");
 			}
-			
+
 			return new TarArchive(new TarInputStream(inputStream, blockFactor));
 		}
-		
+
 		/// <summary>
 		/// Create a TarArchive for writing to, using the default blocking factor
 		/// </summary>
@@ -177,20 +176,19 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>Returns a <see cref="TarArchive"/> suitable for writing.</returns>
 		public static TarArchive CreateOutputTarArchive(Stream outputStream)
 		{
-			if ( outputStream == null ) {
-				throw new ArgumentNullException("outputStream");
+			if (outputStream == null) {
+				throw new ArgumentNullException(nameof(outputStream));
 			}
-			
-            TarOutputStream tarStream = outputStream as TarOutputStream;
 
-		    TarArchive result;
-			if ( tarStream != null ) {
+			var tarStream = outputStream as TarOutputStream;
+
+			TarArchive result;
+			if (tarStream != null) {
 				result = new TarArchive(tarStream);
-			}
-			else {
+			} else {
 				result = CreateOutputTarArchive(outputStream, TarBuffer.DefaultBlockFactor);
 			}
-		    return result;
+			return result;
 		}
 
 		/// <summary>
@@ -201,18 +199,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>Returns a <see cref="TarArchive"/> suitable for writing.</returns>
 		public static TarArchive CreateOutputTarArchive(Stream outputStream, int blockFactor)
 		{
-			if ( outputStream == null ) {
-				throw new ArgumentNullException("outputStream");
+			if (outputStream == null) {
+				throw new ArgumentNullException(nameof(outputStream));
 			}
 
-			if ( outputStream is TarOutputStream ) {
+			if (outputStream is TarOutputStream) {
 				throw new ArgumentException("TarOutputStream is not valid");
 			}
 
 			return new TarArchive(new TarOutputStream(outputStream, blockFactor));
 		}
 		#endregion
-		
+
 		/// <summary>
 		/// Set the flag that determines whether existing files are
 		/// kept, or overwritten during extraction.
@@ -222,13 +220,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </param>
 		public void SetKeepOldFiles(bool keepExistingFiles)
 		{
-			if ( isDisposed ) {
+			if (isDisposed) {
 				throw new ObjectDisposedException("TarArchive");
 			}
-			
+
 			keepOldFiles = keepExistingFiles;
 		}
-		
+
 		/// <summary>
 		/// Get/set the ascii file translation flag. If ascii file translation
 		/// is true, then the file is checked to see if it a binary file or not. 
@@ -240,24 +238,26 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public bool AsciiTranslate
 		{
-			get {
-				if ( isDisposed ) {
+			get
+			{
+				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
-			
+
 				return asciiTranslate;
 			}
-			
-			set { 
-				if ( isDisposed ) {
+
+			set
+			{
+				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
-			
-				asciiTranslate = value; 
+
+				asciiTranslate = value;
 			}
-		
+
 		}
-		
+
 		/// <summary>
 		/// Set the ascii file translation flag.
 		/// </summary>
@@ -267,10 +267,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 		[Obsolete("Use the AsciiTranslate property")]
 		public void SetAsciiTranslation(bool translateAsciiFiles)
 		{
-			if ( isDisposed ) {
+			if (isDisposed) {
 				throw new ObjectDisposedException("TarArchive");
 			}
-			
+
 			asciiTranslate = translateAsciiFiles;
 		}
 
@@ -280,47 +280,51 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public string PathPrefix
 		{
-			get { 
-				if ( isDisposed ) {
+			get
+			{
+				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
-			
+
 				return pathPrefix;
 			}
-			
-			set { 
-				if ( isDisposed ) {
+
+			set
+			{
+				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
-			
+
 				pathPrefix = value;
 			}
-		
+
 		}
-		
+
 		/// <summary>
 		/// RootPath is removed from entry names if it is found at the
 		/// beginning of the name.
 		/// </summary>
 		public string RootPath
 		{
-			get {
-				if ( isDisposed ) {
+			get
+			{
+				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
-			
+
 				return rootPath;
 			}
 
-			set {
-				if ( isDisposed ) {
+			set
+			{
+				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
 				// Convert to forward slashes for matching. Trim trailing / for correct final path
 				rootPath = value.Replace('\\', '/').TrimEnd('/');
 			}
 		}
-		
+
 		/// <summary>
 		/// Set user and group information that will be used to fill in the
 		/// tar archive's entry headers. This information is based on that available 
@@ -343,36 +347,38 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </param>
 		public void SetUserInfo(int userId, string userName, int groupId, string groupName)
 		{
-			if ( isDisposed ) {
+			if (isDisposed) {
 				throw new ObjectDisposedException("TarArchive");
 			}
-			
-			this.userId    = userId;
-			this.userName  = userName;
-			this.groupId   = groupId;
+
+			this.userId = userId;
+			this.userName = userName;
+			this.groupId = groupId;
 			this.groupName = groupName;
 			applyUserInfoOverrides = true;
 		}
-		
+
 		/// <summary>
 		/// Get or set a value indicating if overrides defined by <see cref="SetUserInfo">SetUserInfo</see> should be applied.
 		/// </summary>
 		/// <remarks>If overrides are not applied then the values as set in each header will be used.</remarks>
 		public bool ApplyUserInfoOverrides
 		{
-			get {
-				if ( isDisposed ) {
+			get
+			{
+				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
-			
+
 				return applyUserInfoOverrides;
 			}
 
-			set {
-				if ( isDisposed ) {
+			set
+			{
+				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
-			
+
 				applyUserInfoOverrides = value;
 			}
 		}
@@ -385,16 +391,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The current user id.
 		/// </returns>
-		public int UserId {
-			get {
-				if ( isDisposed ) {
+		public int UserId
+		{
+			get
+			{
+				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
-			
+
 				return userId;
 			}
 		}
-		
+
 		/// <summary>
 		/// Get the archive user name.
 		/// See <see cref="ApplyUserInfoOverrides">ApplyUserInfoOverrides</see> for detail
@@ -403,16 +411,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The current user name.
 		/// </returns>
-		public string UserName {
-			get {
-				if ( isDisposed ) {
+		public string UserName
+		{
+			get
+			{
+				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
-			
+
 				return userName;
 			}
 		}
-		
+
 		/// <summary>
 		/// Get the archive group id.
 		/// See <see cref="ApplyUserInfoOverrides">ApplyUserInfoOverrides</see> for detail
@@ -421,16 +431,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The current group id.
 		/// </returns>
-		public int GroupId {
-			get {
-				if ( isDisposed ) {
+		public int GroupId
+		{
+			get
+			{
+				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
-			
+
 				return groupId;
 			}
 		}
-		
+
 		/// <summary>
 		/// Get the archive group name.
 		/// See <see cref="ApplyUserInfoOverrides">ApplyUserInfoOverrides</see> for detail
@@ -439,16 +451,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The current group name.
 		/// </returns>
-		public string GroupName {
-			get {
-				if ( isDisposed ) {
+		public string GroupName
+		{
+			get
+			{
+				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
-			
+
 				return groupName;
 			}
 		}
-		
+
 		/// <summary>
 		/// Get the archive's record size. Tar archives are composed of
 		/// a series of RECORDS each containing a number of BLOCKS.
@@ -459,12 +473,14 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The record size this archive is using.
 		/// </returns>
-		public int RecordSize {
-			get {
-				if ( isDisposed ) {
+		public int RecordSize
+		{
+			get
+			{
+				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
-				
+
 				if (tarIn != null) {
 					return tarIn.RecordSize;
 				} else if (tarOut != null) {
@@ -473,13 +489,15 @@ namespace ICSharpCode.SharpZipLib.Tar
 				return TarBuffer.DefaultRecordSize;
 			}
 		}
-		
+
 		/// <summary>
 		/// Sets the IsStreamOwner property on the underlying stream.
 		/// Set this to false to prevent the Close of the TarArchive from closing the stream.
 		/// </summary>
-		public bool IsStreamOwner {
-			set {
+		public bool IsStreamOwner
+		{
+			set
+			{
 				if (tarIn != null) {
 					tarIn.IsStreamOwner = value;
 				} else {
@@ -496,7 +514,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			Close();
 		}
-		
+
 		/// <summary>
 		/// Perform the "list" command for the archive contents.
 		/// 
@@ -505,20 +523,20 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public void ListContents()
 		{
-			if ( isDisposed ) {
+			if (isDisposed) {
 				throw new ObjectDisposedException("TarArchive");
 			}
-			
+
 			while (true) {
 				TarEntry entry = tarIn.GetNextEntry();
-				
+
 				if (entry == null) {
 					break;
 				}
 				OnProgressMessageEvent(entry, null);
 			}
 		}
-		
+
 		/// <summary>
 		/// Perform the "extract" command and extract the contents of the archive.
 		/// </summary>
@@ -527,21 +545,21 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </param>
 		public void ExtractContents(string destinationDirectory)
 		{
-			if ( isDisposed ) {
+			if (isDisposed) {
 				throw new ObjectDisposedException("TarArchive");
 			}
-			
+
 			while (true) {
 				TarEntry entry = tarIn.GetNextEntry();
-				
+
 				if (entry == null) {
 					break;
 				}
-				
+
 				ExtractEntry(destinationDirectory, entry);
 			}
 		}
-		
+
 		/// <summary>
 		/// Extract an entry from the archive. This method assumes that the
 		/// tarIn stream has been properly set with a call to GetNextEntry().
@@ -555,27 +573,27 @@ namespace ICSharpCode.SharpZipLib.Tar
 		void ExtractEntry(string destDir, TarEntry entry)
 		{
 			OnProgressMessageEvent(entry, null);
-			
+
 			string name = entry.Name;
-			
+
 			if (Path.IsPathRooted(name)) {
 				// NOTE:
 				// for UNC names...  \\machine\share\zoom\beet.txt gives \zoom\beet.txt
 				name = name.Substring(Path.GetPathRoot(name).Length);
 			}
-			
+
 			name = name.Replace('/', Path.DirectorySeparatorChar);
-			
+
 			string destFile = Path.Combine(destDir, name);
-			
+
 			if (entry.IsDirectory) {
 				EnsureDirectoryExists(destFile);
 			} else {
 				string parentDirectory = Path.GetDirectoryName(destFile);
 				EnsureDirectoryExists(parentDirectory);
-				
+
 				bool process = true;
-				FileInfo fileInfo = new FileInfo(destFile);
+				var fileInfo = new FileInfo(destFile);
 				if (fileInfo.Exists) {
 					if (keepOldFiles) {
 						OnProgressMessageEvent(entry, "Destination file already exists");
@@ -585,29 +603,29 @@ namespace ICSharpCode.SharpZipLib.Tar
 						process = false;
 					}
 				}
-				
+
 				if (process) {
 					bool asciiTrans = false;
-					
+
 					Stream outputStream = File.Create(destFile);
 					if (this.asciiTranslate) {
 						asciiTrans = !IsBinary(destFile);
 					}
-					
+
 					StreamWriter outw = null;
 					if (asciiTrans) {
 						outw = new StreamWriter(outputStream);
 					}
-					
+
 					byte[] rdbuf = new byte[32 * 1024];
-					
+
 					while (true) {
 						int numRead = tarIn.Read(rdbuf, 0, rdbuf.Length);
-						
+
 						if (numRead <= 0) {
 							break;
 						}
-						
+
 						if (asciiTrans) {
 							for (int off = 0, b = 0; b < numRead; ++b) {
 								if (rdbuf[b] == 10) {
@@ -620,7 +638,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 							outputStream.Write(rdbuf, 0, numRead);
 						}
 					}
-					
+
 					if (asciiTrans) {
 						outw.Close();
 					} else {
@@ -645,30 +663,27 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </param>
 		public void WriteEntry(TarEntry sourceEntry, bool recurse)
 		{
-			if ( sourceEntry == null ) {
-				throw new ArgumentNullException("sourceEntry");
+			if (sourceEntry == null) {
+				throw new ArgumentNullException(nameof(sourceEntry));
 			}
-			
-			if ( isDisposed ) {
+
+			if (isDisposed) {
 				throw new ObjectDisposedException("TarArchive");
 			}
-			
-			try
-			{
-				if ( recurse ) {
+
+			try {
+				if (recurse) {
 					TarHeader.SetValueDefaults(sourceEntry.UserId, sourceEntry.UserName,
 											   sourceEntry.GroupId, sourceEntry.GroupName);
 				}
 				WriteEntryCore(sourceEntry, recurse);
-			}
-			finally
-			{
-				if ( recurse ) {
+			} finally {
+				if (recurse) {
 					TarHeader.RestoreSetValues();
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Write an entry to the archive. This method will call the putNextEntry
 		/// and then write the contents of the entry, and finally call closeEntry()
@@ -685,27 +700,27 @@ namespace ICSharpCode.SharpZipLib.Tar
 		void WriteEntryCore(TarEntry sourceEntry, bool recurse)
 		{
 			string tempFileName = null;
-			string entryFilename   = sourceEntry.File;
-			
-			TarEntry entry = (TarEntry)sourceEntry.Clone();
+			string entryFilename = sourceEntry.File;
 
-			if ( applyUserInfoOverrides ) {
+			var entry = (TarEntry)sourceEntry.Clone();
+
+			if (applyUserInfoOverrides) {
 				entry.GroupId = groupId;
 				entry.GroupName = groupName;
 				entry.UserId = userId;
 				entry.UserName = userName;
 			}
-			
+
 			OnProgressMessageEvent(entry, null);
-			
+
 			if (asciiTranslate && !entry.IsDirectory) {
 
 				if (!IsBinary(entryFilename)) {
 					tempFileName = Path.GetTempFileName();
-					
-					using (StreamReader inStream  = File.OpenText(entryFilename)) {
+
+					using (StreamReader inStream = File.OpenText(entryFilename)) {
 						using (Stream outStream = File.Create(tempFileName)) {
-						
+
 							while (true) {
 								string line = inStream.ReadLine();
 								if (line == null) {
@@ -715,34 +730,34 @@ namespace ICSharpCode.SharpZipLib.Tar
 								outStream.Write(data, 0, data.Length);
 								outStream.WriteByte((byte)'\n');
 							}
-							
+
 							outStream.Flush();
 						}
 					}
-					
+
 					entry.Size = new FileInfo(tempFileName).Length;
 					entryFilename = tempFileName;
 				}
 			}
-			
+
 			string newName = null;
-		
+
 			if (rootPath != null) {
 				if (entry.Name.StartsWith(rootPath, StringComparison.OrdinalIgnoreCase)) {
-					newName = entry.Name.Substring(rootPath.Length + 1 );
+					newName = entry.Name.Substring(rootPath.Length + 1);
 				}
 			}
-			
+
 			if (pathPrefix != null) {
 				newName = (newName == null) ? pathPrefix + "/" + entry.Name : pathPrefix + "/" + newName;
 			}
-			
+
 			if (newName != null) {
 				entry.Name = newName;
 			}
-			
+
 			tarOut.PutNextEntry(entry);
-			
+
 			if (entry.IsDirectory) {
 				if (recurse) {
 					TarEntry[] list = entry.GetDirectoryEntries();
@@ -750,60 +765,59 @@ namespace ICSharpCode.SharpZipLib.Tar
 						WriteEntryCore(list[i], recurse);
 					}
 				}
-			}
-			else {
+			} else {
 				using (Stream inputStream = File.OpenRead(entryFilename)) {
 					byte[] localBuffer = new byte[32 * 1024];
 					while (true) {
 						int numRead = inputStream.Read(localBuffer, 0, localBuffer.Length);
-						
-						if (numRead <=0) {
+
+						if (numRead <= 0) {
 							break;
 						}
-						
+
 						tarOut.Write(localBuffer, 0, numRead);
 					}
 				}
-				
-				if ( (tempFileName != null) && (tempFileName.Length > 0) ) {
+
+				if (!string.IsNullOrEmpty(tempFileName)) {
 					File.Delete(tempFileName);
 				}
-				
+
 				tarOut.CloseEntry();
 			}
 		}
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+		/// <summary>
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 
-	    /// <summary>
+		/// <summary>
 		/// Releases the unmanaged resources used by the FileStream and optionally releases the managed resources.
 		/// </summary>
 		/// <param name="disposing">true to release both managed and unmanaged resources;
 		/// false to release only unmanaged resources.</param>
 		protected virtual void Dispose(bool disposing)
 		{
-			if ( !isDisposed ) {
+			if (!isDisposed) {
 				isDisposed = true;
-				if ( disposing ) {
-					if ( tarOut != null ) {
+				if (disposing) {
+					if (tarOut != null) {
 						tarOut.Flush();
 						tarOut.Close();
 					}
-		
-					if ( tarIn != null ) {
+
+					if (tarIn != null) {
 						tarIn.Close();
 					}
 				}
 			}
-        }
-		
+		}
+
 		/// <summary>
 		/// Closes the archive and releases any associated resources.
 		/// </summary>
@@ -811,7 +825,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			Dispose(true);
 		}
-		
+
 		/// <summary>
 		/// Ensures that resources are freed and other cleanup operations are performed
 		/// when the garbage collector reclaims the <see cref="TarArchive"/>.
@@ -820,57 +834,55 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			Dispose(false);
 		}
-		
+
 		static void EnsureDirectoryExists(string directoryName)
 		{
 			if (!Directory.Exists(directoryName)) {
 				try {
 					Directory.CreateDirectory(directoryName);
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					throw new TarException("Exception creating directory '" + directoryName + "', " + e.Message, e);
 				}
 			}
 		}
-		
+
 		// TODO: TarArchive - Is there a better way to test for a text file?
 		// It no longer reads entire files into memory but is still a weak test!
 		// This assumes that byte values 0-7, 14-31 or 255 are binary
 		// and that all non text files contain one of these values
 		static bool IsBinary(string filename)
 		{
-			using (FileStream fs = File.OpenRead(filename))
-			{
+			using (FileStream fs = File.OpenRead(filename)) {
 				int sampleSize = Math.Min(4096, (int)fs.Length);
 				byte[] content = new byte[sampleSize];
-			
+
 				int bytesRead = fs.Read(content, 0, sampleSize);
-			
+
 				for (int i = 0; i < bytesRead; ++i) {
 					byte b = content[i];
-					if ( (b < 8) || ((b > 13) && (b < 32)) || (b == 255) ) {
+					if ((b < 8) || ((b > 13) && (b < 32)) || (b == 255)) {
 						return true;
 					}
 				}
 			}
 			return false;
-		}		
-		
+		}
+
 		#region Instance Fields
 		bool keepOldFiles;
 		bool asciiTranslate;
-		
-		int    userId;
+
+		int userId;
 		string userName = string.Empty;
-		int    groupId;
+		int groupId;
 		string groupName = string.Empty;
-		
+
 		string rootPath;
 		string pathPrefix;
-		
+
 		bool applyUserInfoOverrides;
-		
-		TarInputStream  tarIn;
+
+		TarInputStream tarIn;
 		TarOutputStream tarOut;
 		bool isDisposed;
 		#endregion

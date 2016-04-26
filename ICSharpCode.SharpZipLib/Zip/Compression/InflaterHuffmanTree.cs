@@ -1,4 +1,5 @@
 // InflaterHuffmanTree.cs
+//
 // Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 //
 // This file was translated from java, it was part of the GNU Classpath
@@ -39,9 +40,9 @@ using System;
 
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
-namespace ICSharpCode.SharpZipLib.Zip.Compression 
+namespace ICSharpCode.SharpZipLib.Zip.Compression
 {
-	
+
 	/// <summary>
 	/// Huffman tree used for inflation
 	/// </summary>
@@ -59,12 +60,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// Literal length tree
 		/// </summary>
 		public static InflaterHuffmanTree defLitLenTree;
-		
+
 		/// <summary>
 		/// Distance tree
 		/// </summary>
 		public static InflaterHuffmanTree defDistTree;
-		
+
 		static InflaterHuffmanTree()
 		{
 			try {
@@ -83,7 +84,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					codeLengths[i++] = 8;
 				}
 				defLitLenTree = new InflaterHuffmanTree(codeLengths);
-				
+
 				codeLengths = new byte[32];
 				i = 0;
 				while (i < 32) {
@@ -110,16 +111,16 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		void BuildTree(byte[] codeLengths)
 		{
-			int[] blCount  = new int[MAX_BITLEN + 1];
+			int[] blCount = new int[MAX_BITLEN + 1];
 			int[] nextCode = new int[MAX_BITLEN + 1];
-			
+
 			for (int i = 0; i < codeLengths.Length; i++) {
 				int bits = codeLengths[i];
 				if (bits > 0) {
 					blCount[bits]++;
 				}
 			}
-			
+
 			int code = 0;
 			int treeSize = 512;
 			for (int bits = 1; bits <= MAX_BITLEN; bits++) {
@@ -128,32 +129,32 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				if (bits >= 10) {
 					/* We need an extra table for bit lengths >= 10. */
 					int start = nextCode[bits] & 0x1ff80;
-					int end   = code & 0x1ff80;
+					int end = code & 0x1ff80;
 					treeSize += (end - start) >> (16 - bits);
 				}
 			}
-			
-/* -jr comment this out! doesnt work for dynamic trees and pkzip 2.04g
-			if (code != 65536) 
-			{
-				throw new SharpZipBaseException("Code lengths don't add up properly.");
-			}
-*/
+
+			/* -jr comment this out! doesnt work for dynamic trees and pkzip 2.04g
+						if (code != 65536) 
+						{
+							throw new SharpZipBaseException("Code lengths don't add up properly.");
+						}
+			*/
 			/* Now create and fill the extra tables from longest to shortest
 			* bit len.  This way the sub trees will be aligned.
 			*/
 			tree = new short[treeSize];
 			int treePtr = 512;
 			for (int bits = MAX_BITLEN; bits >= 10; bits--) {
-				int end   = code & 0x1ff80;
+				int end = code & 0x1ff80;
 				code -= blCount[bits] << (16 - bits);
 				int start = code & 0x1ff80;
 				for (int i = start; i < end; i += 1 << 7) {
-					tree[DeflaterHuffman.BitReverse(i)] = (short) ((-treePtr << 4) | bits);
-					treePtr += 1 << (bits-9);
+					tree[DeflaterHuffman.BitReverse(i)] = (short)((-treePtr << 4) | bits);
+					treePtr += 1 << (bits - 9);
 				}
 			}
-			
+
 			for (int i = 0; i < codeLengths.Length; i++) {
 				int bits = codeLengths[i];
 				if (bits == 0) {
@@ -163,7 +164,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				int revcode = DeflaterHuffman.BitReverse(code);
 				if (bits <= 9) {
 					do {
-						tree[revcode] = (short) ((i << 4) | bits);
+						tree[revcode] = (short)((i << 4) | bits);
 						revcode += 1 << bits;
 					} while (revcode < 512);
 				} else {
@@ -171,15 +172,15 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					int treeLen = 1 << (subTree & 15);
 					subTree = -(subTree >> 4);
 					do {
-						tree[subTree | (revcode >> 9)] = (short) ((i << 4) | bits);
+						tree[subTree | (revcode >> 9)] = (short)((i << 4) | bits);
 						revcode += 1 << bits;
 					} while (revcode < treeLen);
 				}
 				nextCode[bits] = code + (1 << (16 - bits));
 			}
-			
+
 		}
-		
+
 		/// <summary>
 		/// Reads the next symbol from input.  The symbol is encoded using the
 		/// huffman tree.

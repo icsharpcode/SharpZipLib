@@ -1,4 +1,5 @@
 // Adler32.cs - Computes Adler32 data checksum of a data stream
+//
 // Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
 //
 // This file was translated from java, it was part of the GNU Classpath
@@ -37,9 +38,9 @@
 
 using System;
 
-namespace ICSharpCode.SharpZipLib.Checksums 
+namespace ICSharpCode.SharpZipLib.Checksums
 {
-	
+
 	/// <summary>
 	/// Computes Adler32 checksum for a stream of data. An Adler32
 	/// checksum is not as reliable as a CRC32 checksum, but a lot faster to
@@ -92,16 +93,18 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		/// largest prime smaller than 65536
 		/// </summary>
 		const uint BASE = 65521;
-		
+
 		/// <summary>
 		/// Returns the Adler32 data checksum computed so far.
 		/// </summary>
-		public long Value {
-			get {
+		public long Value
+		{
+			get
+			{
 				return checksum;
 			}
 		}
-		
+
 		/// <summary>
 		/// Creates a new instance of the Adler32 class.
 		/// The checksum starts off with a value of 1.
@@ -110,7 +113,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		{
 			Reset();
 		}
-		
+
 		/// <summary>
 		/// Resets the Adler32 checksum to the initial value.
 		/// </summary>
@@ -118,7 +121,7 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		{
 			checksum = 1;
 		}
-		
+
 		/// <summary>
 		/// Updates the checksum with a byte value.
 		/// </summary>
@@ -131,13 +134,13 @@ namespace ICSharpCode.SharpZipLib.Checksums
 			// would rather not have that overhead
 			uint s1 = checksum & 0xFFFF;
 			uint s2 = checksum >> 16;
-			
+
 			s1 = (s1 + ((uint)value & 0xFF)) % BASE;
 			s2 = (s1 + s2) % BASE;
-			
+
 			checksum = (s2 << 16) + s1;
 		}
-		
+
 		/// <summary>
 		/// Updates the checksum with an array of bytes.
 		/// </summary>
@@ -146,13 +149,13 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		/// </param>
 		public void Update(byte[] buffer)
 		{
-			if ( buffer == null ) {
-				throw new ArgumentNullException("buffer");
+			if (buffer == null) {
+				throw new ArgumentNullException(nameof(buffer));
 			}
 
 			Update(buffer, 0, buffer.Length);
 		}
-		
+
 		/// <summary>
 		/// Updates the checksum with the bytes taken from the array.
 		/// </summary>
@@ -168,48 +171,29 @@ namespace ICSharpCode.SharpZipLib.Checksums
 		public void Update(byte[] buffer, int offset, int count)
 		{
 			if (buffer == null) {
-				throw new ArgumentNullException("buffer");
+				throw new ArgumentNullException(nameof(buffer));
 			}
-			
+
 			if (offset < 0) {
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("offset");
-#else
-				throw new ArgumentOutOfRangeException("offset", "cannot be negative");
-#endif				
+				throw new ArgumentOutOfRangeException(nameof(offset), "cannot be negative");
 			}
 
-			if ( count < 0 ) 
-			{
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("count");
-#else
-				throw new ArgumentOutOfRangeException("count", "cannot be negative");
-#endif				
+			if (count < 0) {
+				throw new ArgumentOutOfRangeException(nameof(count), "cannot be negative");
 			}
 
-			if (offset >= buffer.Length) 
-			{
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("offset");
-#else
-				throw new ArgumentOutOfRangeException("offset", "not a valid index into buffer");
-#endif				
+			if (offset >= buffer.Length) {
+				throw new ArgumentOutOfRangeException(nameof(offset), "not a valid index into buffer");
 			}
-			
-			if (offset + count > buffer.Length) 
-			{
-#if NETCF_1_0
-				throw new ArgumentOutOfRangeException("count");
-#else
-				throw new ArgumentOutOfRangeException("count", "exceeds buffer size");
-#endif				
+
+			if (offset + count > buffer.Length) {
+				throw new ArgumentOutOfRangeException(nameof(count), "exceeds buffer size");
 			}
 
 			//(By Per Bothner)
 			uint s1 = checksum & 0xFFFF;
 			uint s2 = checksum >> 16;
-			
+
 			while (count > 0) {
 				// We can defer the modulo operation:
 				// s1 maximally grows from 65521 to 65521 + 255 * 3800
@@ -226,10 +210,10 @@ namespace ICSharpCode.SharpZipLib.Checksums
 				s1 %= BASE;
 				s2 %= BASE;
 			}
-			
+
 			checksum = (s2 << 16) | s1;
 		}
-		
+
 		#region Instance Fields
 		uint checksum;
 		#endregion
