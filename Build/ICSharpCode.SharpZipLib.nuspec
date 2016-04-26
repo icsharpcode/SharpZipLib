@@ -1,0 +1,25 @@
+﻿<?xml version="1.0"?>
+<package>
+	<metadata>
+		<id>ICSharpCode.SharpZipLib</id>
+		<version>1.0.0</version>
+		<title>SharpZipLib</title>
+		<authors>IC#Code</authors>
+		<owners>IC#Code</owners>
+		<licenseUrl>https://visualstudiogallery.msdn.microsoft.com/site/68c1575b-e0bf-420d-a94b-1b0f4bcdcbcc/eula?licenseType=None</licenseUrl>
+		<projectUrl>http://icsharpcode.github.io/SharpZipLib/</projectUrl>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>Compression library for Zip, GZip, BZip2, LZW, and Tar written entirely in C# for the .NET platform.</description>
+		<releaseNotes>Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.0 for more information.</releaseNotes>
+		<copyright>Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team</copyright>
+		<tags>Compression Library Zip Gzip BZip2 LZW Tar</tags>
+		<dependencies>
+			<dependency id="System" version="1.0.0" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="ICSharpCode.SharpZipLib.dll" target="lib\Net45\" />
+		<file src="ICSharpCode.SharpZipLib.dll" target="lib\dnx451\" />
+		<file src="ICSharpCode.SharpZipLib.dll" target="lib\dnxcore50\" />
+	</files>
+</package>

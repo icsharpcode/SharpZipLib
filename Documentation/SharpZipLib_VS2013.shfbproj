@@ -18,7 +18,7 @@
     <HtmlHelpName>SharpZipLib</HtmlHelpName>
     <Language>en-US</Language>
     <ProjectSummary>#ziplib compression library</ProjectSummary>
-    <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, Namespace, TypeParameter</MissingTags>
+    <MissingTags>Summary, Parameter, Returns, Value, Remarks, AutoDocumentCtors, Namespace, TypeParameter, IncludeTargets, AutoDocumentDispose</MissingTags>
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, SealedProtected</VisibleItems>
     <HtmlHelp1xCompilerPath />
     <WorkingPath />
@@ -26,8 +26,8 @@
     <PresentationStyle>VS2013</PresentationStyle>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\bin\ICSharpCode.SharpZipLib.dll" />
-      <DocumentationSource sourceFile="..\bin\ICSharpCode.SharpZipLib.XML" />
-    </DocumentationSources>
+<DocumentationSource sourceFile="..\bin\ICSharpCode.SharpZipLib.XML" />
+<DocumentationSource sourceFile="..\ICSharpCode.SharpZipLib\ICSharpCode.SharpZipLib.csproj" /></DocumentationSources>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" xmlns="" />
       <NamespaceSummaryItem name="ICSharpCode.SharpZipLib" isDocumented="True" xmlns="">The root namespace for this library.</NamespaceSummaryItem>
@@ -48,6 +48,15 @@
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <CleanIntermediates>True</CleanIntermediates>
+    <HelpFileVersion>0.87.0.0</HelpFileVersion>
+    <MaximumGroupParts>2</MaximumGroupParts>
+    <NamespaceGrouping>False</NamespaceGrouping>
+    <SyntaxFilters>Standard</SyntaxFilters>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <Preliminary>False</Preliminary>
+    <NamingMethod>MemberName</NamingMethod>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->

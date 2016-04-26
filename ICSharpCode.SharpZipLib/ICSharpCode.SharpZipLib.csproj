@@ -11,44 +11,49 @@
     <ApplicationIcon />
     <WarningLevel>4</WarningLevel>
     <StartupObject />
-    <NoStdLib>False</NoStdLib>
-    <NoConfig>False</NoConfig>
+    <NoStdLib>false</NoStdLib>
+    <NoConfig>false</NoConfig>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <PreBuildEvent />
     <PostBuildEvent />
     <DocumentationFile>..\bin\ICSharpCode.SharpZipLib.xml</DocumentationFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
-    <Optimize>True</Optimize>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <Optimize>true</Optimize>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <OutputPath>..\bin\Release\</OutputPath>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <DebugType>None</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>..\bin\Release\ICSharpCode.SharpZipLib.xml</DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+    <WarningLevel>0</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <Optimize>False</Optimize>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <Optimize>false</Optimize>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <OutputPath>..\bin\Debug\</OutputPath>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DebugType>Full</DebugType>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>..\bin\Debug\ICSharpCode.SharpZipLib.xml</DocumentationFile>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
-    <RegisterForComInterop>False</RegisterForComInterop>
+    <RegisterForComInterop>false</RegisterForComInterop>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <BaseAddress>4194304</BaseAddress>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -58,12 +63,15 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>ICSharpCode.SharpZipLib.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\ICSharpCode.SharpZipLib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="BZip2\BZip2.cs" />
     <Compile Include="BZip2\BZip2Constants.cs" />
@@ -73,7 +81,9 @@
     <Compile Include="Checksums\Adler32.cs" />
     <Compile Include="Checksums\Crc32.cs" />
     <Compile Include="Checksums\IChecksum.cs" />
-    <Compile Include="Checksums\StrangeCrc.cs" />
+    <Compile Include="Checksums\BZip2Crc.cs" />
+    <Compile Include="CompressionLevel.cs" />
+    <Compile Include="CompressionMode.cs" />
     <Compile Include="Core\FileSystemScanner.cs" />
     <Compile Include="Core\INameTransform.cs" />
     <Compile Include="Core\IScanFilter.cs" />
@@ -88,6 +98,9 @@
     <Compile Include="GZip\GZipException.cs" />
     <Compile Include="GZip\GzipInputStream.cs" />
     <Compile Include="GZip\GzipOutputStream.cs" />
+    <Compile Include="Lzw\LzwConstants.cs" />
+    <Compile Include="Lzw\LzwException.cs" />
+    <Compile Include="Lzw\LzwInputStream.cs" />
     <Compile Include="SharpZipBaseException.cs" />
     <Compile Include="Tar\InvalidHeaderException.cs" />
     <Compile Include="Tar\TarArchive.cs" />
@@ -123,12 +136,22 @@
     <Compile Include="Zip\ZipInputStream.cs" />
     <Compile Include="Zip\ZipNameTransform.cs" />
     <Compile Include="Zip\ZipOutputStream.cs" />
+    <Compile Include="ZipArchiveMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Documentation\SharpZipLibCodeMap.dgml">
       <Link>SharpZipLibCodeMap.dgml</Link>
     </None>
-    <None Include="ICSharpCode.SharpZipLib.snk" />
+    <None Include="..\ICSharpCode.SharpZipLib.snk">
+      <Link>ICSharpCode.SharpZipLib.snk</Link>
+    </None>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

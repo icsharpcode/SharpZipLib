@@ -145,7 +145,7 @@ class MainClass
 	{
 		byte[] dataBuffer = new byte[4096];
 
-		ArgumentParser parser = new ArgumentParser(args);
+		var parser = new ArgumentParser(args);
 
 		switch ( parser.Command ) {
 			case Command.Compress:

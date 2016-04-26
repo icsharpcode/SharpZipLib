@@ -34,22 +34,17 @@
 // exception statement from your version.
 
 using System;
-
-#if !NETCF_1_0 && !NETCF_2_0
 using System.Runtime.Serialization;
-#endif
 
-namespace ICSharpCode.SharpZipLib.Tar {
-	
+namespace ICSharpCode.SharpZipLib.Tar
+{
+
 	/// <summary>
 	/// TarExceptions are used for exceptions specific to tar classes and code.	
 	/// </summary>
-#if !NETCF_1_0 && !NETCF_2_0
 	[Serializable]
-#endif
 	public class TarException : SharpZipBaseException
 	{
-#if !NETCF_1_0 && !NETCF_2_0
 		/// <summary>
 		/// Deserialization constructor 
 		/// </summary>
@@ -60,7 +55,6 @@ namespace ICSharpCode.SharpZipLib.Tar {
 
 		{
 		}
-#endif
 
 		/// <summary>
 		/// Initialises a new instance of the TarException class.
@@ -68,7 +62,7 @@ namespace ICSharpCode.SharpZipLib.Tar {
 		public TarException()
 		{
 		}
-		
+
 		/// <summary>
 		/// Initialises a new instance of the TarException class with a specified message.
 		/// </summary>

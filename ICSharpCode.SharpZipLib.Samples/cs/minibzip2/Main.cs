@@ -143,7 +143,7 @@ class MainClass
 	public static void Main(string[] args)
 	{
 
-		ArgumentParser parser = new ArgumentParser(args);
+		var parser = new ArgumentParser(args);
 
 		switch ( parser.Command ) {
 			case Command.Help:

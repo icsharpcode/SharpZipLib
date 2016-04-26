@@ -1,6 +1,5 @@
-using NUnit.Framework;
-
 using ICSharpCode.SharpZipLib.Core;
+using NUnit.Framework;
 
 namespace ICSharpCode.SharpZipLib.Tests.Core
 {
@@ -13,10 +12,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Core
 		{
 			string[] filters = NameFilter.SplitQuoted("");
 			Assert.AreEqual(0, filters.Length);
-			
+
 			filters = NameFilter.SplitQuoted(";;;");
 			Assert.AreEqual(4, filters.Length);
-			foreach(string filter in filters) {
+			foreach (string filter in filters) {
 				Assert.AreEqual("", filter);
 			}
 
@@ -33,22 +32,22 @@ namespace ICSharpCode.SharpZipLib.Tests.Core
 			}
 		}
 
-        [Test]
-        public void NullFilter()
-        {
-            NameFilter nf = new NameFilter(null);
-            Assert.IsTrue(nf.IsIncluded("o78i6bgv5rvu\\kj//&*"));
-        }
+		[Test]
+		public void NullFilter()
+		{
+			var nf = new NameFilter(null);
+			Assert.IsTrue(nf.IsIncluded("o78i6bgv5rvu\\kj//&*"));
+		}
 
 		[Test]
 		public void ValidFilter()
 		{
-            Assert.IsTrue(NameFilter.IsValidFilterExpression(null));
-            Assert.IsTrue(NameFilter.IsValidFilterExpression(string.Empty));
-            Assert.IsTrue(NameFilter.IsValidFilterExpression("a"));
+			Assert.IsTrue(NameFilter.IsValidFilterExpression(null));
+			Assert.IsTrue(NameFilter.IsValidFilterExpression(string.Empty));
+			Assert.IsTrue(NameFilter.IsValidFilterExpression("a"));
 
-            Assert.IsFalse(NameFilter.IsValidFilterExpression(@"\,)"));
-            Assert.IsFalse(NameFilter.IsValidFilterExpression(@"[]"));
+			Assert.IsFalse(NameFilter.IsValidFilterExpression(@"\,)"));
+			Assert.IsFalse(NameFilter.IsValidFilterExpression(@"[]"));
 		}
 	}
 }

@@ -1,4 +1,3 @@
-//
 // ZipAESStream.cs
 //
 // Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
@@ -35,13 +34,12 @@
 // exception statement from your version.
 // 
 
-#if !NET_1_1 && !NETCF_2_0
-
 using System;
 using System.IO;
 using System.Security.Cryptography;
 
-namespace ICSharpCode.SharpZipLib.Encryption {
+namespace ICSharpCode.SharpZipLib.Encryption
+{
 
 	// Based on information from http://www.winzip.com/aes_info.htm
 	// and http://www.gladman.me.uk/cryptography_technology/fileencrypt/
@@ -49,7 +47,8 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 	/// <summary>
 	/// Encrypts and decrypts AES ZIP
 	/// </summary>
-	internal class ZipAESStream : CryptoStream {
+	internal class ZipAESStream : CryptoStream
+	{
 
 		/// <summary>
 		/// Constructor
@@ -58,7 +57,8 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		/// <param name="transform">Instance of ZipAESTransform</param>
 		/// <param name="mode">Read or Write</param>
 		public ZipAESStream(Stream stream, ZipAESTransform transform, CryptoStreamMode mode)
-			: base(stream, transform, mode) {
+			: base(stream, transform, mode)
+		{
 
 			_stream = stream;
 			_transform = transform;
@@ -90,7 +90,8 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		/// Reads a sequence of bytes from the current CryptoStream into buffer,
 		/// and advances the position within the stream by the number of bytes read.
 		/// </summary>
-		public override int Read(byte[] outBuffer, int offset, int count) {
+		public override int Read(byte[] buffer, int offset, int count)
+		{
 			int nBytes = 0;
 			while (nBytes < count) {
 				// Calculate buffer quantities vs read-ahead size, and check for sufficient free space
@@ -106,7 +107,7 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 					for (int iFrom = _slideBufStartPos; iFrom < _slideBufFreePos; iFrom++, iTo++) {
 						_slideBuffer[iTo] = _slideBuffer[iFrom];
 					}
-					_slideBufFreePos -= _slideBufStartPos;		// Note the -=
+					_slideBufFreePos -= _slideBufStartPos;      // Note the -=
 					_slideBufStartPos = 0;
 				}
 				int obtained = _stream.Read(_slideBuffer, _slideBufFreePos, lengthToRead);
@@ -119,7 +120,7 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 					_transform.TransformBlock(_slideBuffer,
 											  _slideBufStartPos,
 											  CRYPTO_BLOCK_SIZE,
-											  outBuffer,
+											  buffer,
 											  offset);
 					nBytes += CRYPTO_BLOCK_SIZE;
 					offset += CRYPTO_BLOCK_SIZE;
@@ -132,15 +133,14 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 						_transform.TransformBlock(_slideBuffer,
 												  _slideBufStartPos,
 												  finalBlock,
-												  outBuffer,
+												  buffer,
 												  offset);
 
 						nBytes += finalBlock;
 						_slideBufStartPos += finalBlock;
-					}
-					else if (byteCount < AUTH_CODE_LENGTH)
-						throw new Exception("Internal error missed auth code");	// Coding bug
-					// Final block done. Check Auth code.
+					} else if (byteCount < AUTH_CODE_LENGTH)
+						throw new Exception("Internal error missed auth code"); // Coding bug
+																				// Final block done. Check Auth code.
 					byte[] calcAuthCode = _transform.GetAuthCode();
 					for (int i = 0; i < AUTH_CODE_LENGTH; i++) {
 						if (calcAuthCode[i] != _slideBuffer[_slideBufStartPos + i]) {
@@ -149,7 +149,7 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 						}
 					}
 
-					break;	// Reached the auth code
+					break;  // Reached the auth code
 				}
 			}
 			return nBytes;
@@ -161,10 +161,10 @@ namespace ICSharpCode.SharpZipLib.Encryption {
 		/// <param name="buffer">An array of bytes. This method copies count bytes from buffer to the current stream. </param>
 		/// <param name="offset">The byte offset in buffer at which to begin copying bytes to the current stream. </param>
 		/// <param name="count">The number of bytes to be written to the current stream. </param>
-		public override void Write(byte[] buffer, int offset, int count) {
+		public override void Write(byte[] buffer, int offset, int count)
+		{
 			// ZipAESStream is used for reading but not for writing. Writing uses the ZipAESTransform directly.
 			throw new NotImplementedException();
 		}
 	}
 }
-#endif

@@ -34,22 +34,16 @@
 // exception statement from your version.
 
 using System;
-
-#if !NETCF_1_0 && !NETCF_2_0
 using System.Runtime.Serialization;
-#endif
 
 namespace ICSharpCode.SharpZipLib.GZip
 {
 	/// <summary>
 	/// GZipException represents a Gzip specific exception	
 	/// </summary>
-#if !NETCF_1_0 && !NETCF_2_0
 	[Serializable]
-#endif	
 	public class GZipException : SharpZipBaseException
 	{
-#if !NETCF_1_0 && !NETCF_2_0
 		/// <summary>
 		/// Deserialization constructor 
 		/// </summary>
@@ -60,7 +54,6 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 		{
 		}
-#endif
 
 		/// <summary>
 		/// Initialise a new instance of GZipException
@@ -68,7 +61,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		public GZipException()
 		{
 		}
-		
+
 		/// <summary>
 		/// Initialise a new instance of GZipException with its message string.
 		/// </summary>
@@ -77,15 +70,15 @@ namespace ICSharpCode.SharpZipLib.GZip
 			: base(message)
 		{
 		}
-		
+
 		/// <summary>
 		/// Initialise a new instance of <see cref="GZipException"></see>.
 		/// </summary>
 		/// <param name="message">A <see cref="string"/> that describes the error.</param>
 		/// <param name="innerException">The <see cref="Exception"/> that caused this exception.</param>
 		public GZipException(string message, Exception innerException)
-			: base (message, innerException)
-		{	
+			: base(message, innerException)
+		{
 		}
 	}
 }

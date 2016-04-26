@@ -33,14 +33,12 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-// Suppress this in CF and 1.1, not needed. Static classes introduced in C# version 2.0
-#if !NETCF_2_0 && !NET_1_1
-
 using System;
 using System.IO;
 
-namespace ICSharpCode.SharpZipLib.BZip2 {
-	
+namespace ICSharpCode.SharpZipLib.BZip2
+{
+
 	/// <summary>
 	/// An example class to demonstrate compression and decompression of BZip2 streams.
 	/// </summary>
@@ -53,12 +51,12 @@ namespace ICSharpCode.SharpZipLib.BZip2 {
 		/// <param name="inStream">The readable stream containing data to decompress.</param>
 		/// <param name="outStream">The output stream to receive the decompressed data.</param>
 		/// <param name="isStreamOwner">Both streams are closed on completion if true.</param>
-		public static void Decompress(Stream inStream, Stream outStream, bool isStreamOwner) 
+		public static void Decompress(Stream inStream, Stream outStream, bool isStreamOwner)
 		{
 			if (inStream == null || outStream == null) {
 				throw new Exception("Null Stream");
 			}
-			
+
 			try {
 				using (BZip2InputStream bzipInput = new BZip2InputStream(inStream)) {
 					bzipInput.IsStreamOwner = isStreamOwner;
@@ -71,7 +69,7 @@ namespace ICSharpCode.SharpZipLib.BZip2 {
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// Compress the <paramref name="inStream">input stream</paramref> sending 
 		/// result data to <paramref name="outStream">output stream</paramref>
@@ -81,7 +79,7 @@ namespace ICSharpCode.SharpZipLib.BZip2 {
 		/// <param name="isStreamOwner">Both streams are closed on completion if true.</param>
 		/// <param name="level">Block size acts as compression level (1 to 9) with 1 giving 
 		/// the lowest compression and 9 the highest.</param>
-		public static void Compress(Stream inStream, Stream outStream, bool isStreamOwner, int level) 
+		public static void Compress(Stream inStream, Stream outStream, bool isStreamOwner, int level)
 		{
 			if (inStream == null || outStream == null) {
 				throw new Exception("Null Stream");
@@ -102,4 +100,3 @@ namespace ICSharpCode.SharpZipLib.BZip2 {
 
 	}
 }
-#endif
