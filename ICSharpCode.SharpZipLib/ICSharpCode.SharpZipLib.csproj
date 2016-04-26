@@ -94,6 +94,7 @@
     <Compile Include="Encryption\PkzipClassic.cs" />
     <Compile Include="Encryption\ZipAESStream.cs" />
     <Compile Include="Encryption\ZipAESTransform.cs" />
+    <Compile Include="GZip\GZip.cs" />
     <Compile Include="GZip\GZipConstants.cs" />
     <Compile Include="GZip\GZipException.cs" />
     <Compile Include="GZip\GzipInputStream.cs" />
