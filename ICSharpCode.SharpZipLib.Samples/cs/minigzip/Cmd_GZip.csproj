@@ -4,19 +4,20 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4C2CF0B1-FA7B-4FB6-83BA-24A9549AAB02}</ProjectGuid>
-    <RootNamespace>NewProject</RootNamespace>
-    <AssemblyName>ziplist</AssemblyName>
+    <ProjectGuid>{301EF496-ED72-4448-A98E-A60D6BF6E0AE}</ProjectGuid>
+    <RootNamespace>ICSharpCode.SharpZipLib.Samples</RootNamespace>
+    <AssemblyName>Cmd_GZip</AssemblyName>
     <OutputType>Exe</OutputType>
     <ApplicationIcon />
     <WarningLevel>4</WarningLevel>
     <NoWarn />
-    <StartupObject />
+    <StartupObject>Cmd_GZip</StartupObject>
     <NoStdLib>False</NoStdLib>
     <NoConfig>False</NoConfig>
     <RunPostBuildEvent>OnSuccessfulBuild</RunPostBuildEvent>
     <PreBuildEvent />
-    <PostBuildEvent />
+    <PostBuildEvent>copy Cmd_GZip.exe gzip.exe
+copy Cmd_GZip.exe gunzip.exe</PostBuildEvent>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -42,13 +43,18 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
-    <Optimize>True</Optimize>
+    <Optimize>false</Optimize>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <DefineConstants />
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <OutputPath>bin\</OutputPath>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
+    <ErrorReport>prompt</ErrorReport>
+    <DebugType>full</DebugType>
+    <FileAlignment>2048</FileAlignment>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -56,9 +62,14 @@
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
     <DefineConstants />
-    <OutputPath>\</OutputPath>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <OutputPath>..\bin\</OutputPath>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>..\bin\Cmd_GZip.XML</DocumentationFile>
+    <ErrorReport>prompt</ErrorReport>
+    <FileAlignment>2048</FileAlignment>
+    <DebugType>pdbonly</DebugType>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -68,7 +79,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ZipFileTest.cs" />
+    <Compile Include="..\..\..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Cmd_GZip.cs" />
+    <Compile Include="AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

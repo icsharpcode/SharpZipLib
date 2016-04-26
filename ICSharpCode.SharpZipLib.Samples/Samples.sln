@@ -37,9 +37,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateZipFile", "cs\CreateZ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastZip", "cs\FastZip\FastZip.csproj", "{61BE8DBC-149A-4564-B891-9EEA4A09ED12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "minibzip2", "cs\minibzip2\minibzip2.csproj", "{7520CE0B-F1D4-4148-8427-BB03669D7672}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cmd_BZip2", "cs\minibzip2\Cmd_BZip2.csproj", "{7520CE0B-F1D4-4148-8427-BB03669D7672}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "minigzip", "cs\minigzip\minigzip.csproj", "{301EF496-ED72-4448-A98E-A60D6BF6E0AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cmd_GZip", "cs\minigzip\Cmd_GZip.csproj", "{301EF496-ED72-4448-A98E-A60D6BF6E0AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sz", "cs\sz\sz.csproj", "{CE0CEA62-CC91-4D17-BC57-A5FCACCA6A1F}"
 EndProject
@@ -47,7 +47,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tar", "cs\tar\Tar.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zf", "cs\zf\zf.csproj", "{90E83588-261C-45A3-964F-4B707357D437}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zipfiletest", "cs\zipfiletest\zipfiletest.csproj", "{4C2CF0B1-FA7B-4FB6-83BA-24A9549AAB02}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cmd_ZipInfo", "cs\zipfiletest\Cmd_ZipInfo.csproj", "{4C2CF0B1-FA7B-4FB6-83BA-24A9549AAB02}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unzipfile", "cs\unzipfile\unzipfile.csproj", "{DE6AA83B-1EFA-41B0-85D9-49DA1B0202BC}"
 EndProject
