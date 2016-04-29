@@ -84,9 +84,7 @@ ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling.ReadAndWriteZip64NonSeekable
 ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling.Zip64Descriptor
 ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling.LengthBoundaryOk
 ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling.NameTooLong
-ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling.ReplacementChecking
 ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryFactoryHandling.CreateInMemoryValues
-ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryFactoryHandling.CreatedValues
 ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryFactoryHandling.Defaults
 ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.CanDecompress
 ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.Cloning
@@ -135,7 +133,6 @@ ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.Zip64Entries
 ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.Zip64Offset
 ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.Zip64Useage
 ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling.Basic
-ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling.FilenameCleaning
 ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling.LengthBoundaryOk
 ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling.NameTransforms
 ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling.PathalogicalNames

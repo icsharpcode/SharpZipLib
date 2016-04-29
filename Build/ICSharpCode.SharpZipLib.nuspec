@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0"?>
 <package>
 	<metadata minClientVersion="2.0">
-		<id>ICSharpCode.SharpZipLib</id>
-		<version>0.87</version>
-		<title>SharpZipLib</title>
+		<id>ICSharpCode.SharpZipLib-dogfood<</id>
+		<version>0.87-dogfood</version>
+		<title>SharpZipLib-dogfood</title>
 		<authors>IC#Code</authors>
 		<owners>IC#Code</owners>
 		<description>SharpZipLib (#ziplib, formerly NZipLib) is a compression library for Zip, GZip, BZip2, and Tar written entirely in C# for .NET. It is implemented as an assembly (installable in the GAC), and thus can easily be incorporated into other projects (in any .NET language)</description>
 		<releaseNotes>Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.0 for more information.</releaseNotes>
-		<summary>Compression library for Zip, GZip, BZip2, and Tar written entirely in C# for .NET.</summary>
+		<summary>"Dogfood" builds for testing purposes. Even *I* wouldn't put this code into production :)</summary>
 		<language>en-US</language>
 		<projectUrl>http://icsharpcode.github.io/SharpZipLib/</projectUrl>
 		<!-- iconUrl -->
