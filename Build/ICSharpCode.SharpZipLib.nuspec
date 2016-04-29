@@ -1,25 +1,36 @@
 ﻿<?xml version="1.0"?>
 <package>
-	<metadata>
+	<metadata minClientVersion="2.0">
 		<id>ICSharpCode.SharpZipLib</id>
-		<version>1.0.0</version>
+		<version>0.87</version>
 		<title>SharpZipLib</title>
 		<authors>IC#Code</authors>
 		<owners>IC#Code</owners>
-		<licenseUrl>https://visualstudiogallery.msdn.microsoft.com/site/68c1575b-e0bf-420d-a94b-1b0f4bcdcbcc/eula?licenseType=None</licenseUrl>
-		<projectUrl>http://icsharpcode.github.io/SharpZipLib/</projectUrl>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>Compression library for Zip, GZip, BZip2, LZW, and Tar written entirely in C# for the .NET platform.</description>
+		<description>SharpZipLib (#ziplib, formerly NZipLib) is a compression library for Zip, GZip, BZip2, and Tar written entirely in C# for .NET. It is implemented as an assembly (installable in the GAC), and thus can easily be incorporated into other projects (in any .NET language)</description>
 		<releaseNotes>Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.0 for more information.</releaseNotes>
+		<summary>Compression library for Zip, GZip, BZip2, and Tar written entirely in C# for .NET.</summary>
+		<language>en-US</language>
+		<projectUrl>http://icsharpcode.github.io/SharpZipLib/</projectUrl>
+		<!-- iconUrl -->
+		<licenseUrl>http://icsharpcode.github.io/SharpZipLib/#license</licenseUrl>
 		<copyright>Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team</copyright>
-		<tags>Compression Library Zip Gzip BZip2 LZW Tar</tags>
-		<dependencies>
-			<dependency id="System" version="1.0.0" />
-		</dependencies>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<!-- dependencies -->
+		<!-- references -->
+		<frameworkAssemblies>
+			<frameworkAssembly assemblyName="System" />
+		</frameworkAssemblies>
+		<tags>Compression Library Zip GZip BZip2 Tar</tags>
 	</metadata>
 	<files>
-		<file src="ICSharpCode.SharpZipLib.dll" target="lib\Net45\" />
-		<file src="ICSharpCode.SharpZipLib.dll" target="lib\dnx451\" />
-		<file src="ICSharpCode.SharpZipLib.dll" target="lib\dnxcore50\" />
+		<file src="..\bin\Release\$id$.dll" target="lib\Net45\" />
+		<file src="..\bin\Release\$id$.pdb" target="lib\Net45\" />
+		<file src="..\bin\Release\$id$.xml" target="lib\Net45\" />
+		<file src="..\bin\Release\$id$.dll" target="lib\dnx451\" />
+		<file src="..\bin\Release\$id$.pdb" target="lib\dnx451\" />
+		<file src="..\bin\Release\$id$.xml" target="lib\dnx451\" />
+		<file src="..\bin\Release\$id$.dll" target="lib\dnxcore50\" />
+		<file src="..\bin\Release\$id$.pdb" target="lib\dnxcore50\" />
+		<file src="..\bin\Release\$id$.xml" target="lib\dnxcore50\" />
 	</files>
 </package>

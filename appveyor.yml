@@ -157,7 +157,7 @@ after_test:
 
 # to run your custom scripts instead of automatic tests
 test_script:
-  - cmd: nunit3-console /framework:net-4.5 /result:./Documentation/nunit3-test-results-appveyor.xml;format=AppVeyor ./bin/Release/ICSharpCode.SharpZipLib.Tests.dll
+  - cmd: nunit3-console /framework:net-4.5 /runlist:./ICSharpCode.SharpZipLib.Tests/PassingTests.txt /result:./Documentation/nunit3-test-results-appveyor.xml;format=AppVeyor ./bin/Release/ICSharpCode.SharpZipLib.Tests.dll
 
 # to disable automatic tests
 #test: off

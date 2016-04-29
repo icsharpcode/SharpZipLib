@@ -42,14 +42,14 @@
   </tr>
 </table>
 
-SharpZipLib (\#ziplib, formerly NZipLib) is a **Zip, GZip, Tar and BZip2 library** written entirely in C\# for the .NET framework. It is implemented as an assembly (installable in the GAC), and thus can easily be incorporated into other projects (in any .NET language). The creator of SharpZipLib put it this way: "I've ported the zip library over to C\# because I needed gzip/zip compression and I didn't want to use libzip.dll or something like this. I want all in pure C\#."
-
 Introduction
 ------------
 
+SharpZipLib (\#ziplib, formerly NZipLib) is a compression library that supports Zip files using both stored and deflate compression methods, PKZIP 2.0 style and AES encryption, tar with GNU long filename extensions, GZip, zlib and raw deflate, as well as BZip2. Zip64 is supported while Deflate64 is not yet supported. It is implemented as an assembly (installable in the GAC), and thus can easily be incorporated into other projects (in any .NET language). The creator of SharpZipLib put it this way: "I've ported the zip library over to C\# because I needed gzip/zip compression and I didn't want to use libzip.dll or something like this. I want all in pure C\#."
+
 SharpZipLib was originally ported from the [GNU Classpath](http://www.gnu.org/software/classpath/) java.util.zip library for use with [SharpDevelop](http://www.icsharpcode.net/OpenSource/SD), which needed gzip/zip compression. bzip2 compression and tar archiving were added later due to popular demand.
 
-The [SharpZipLib homepage](http://icsharpcode.github.io/SharpZipLib/) has precompiled libraries available for download, [a link to the forum for support](http://community.sharpdevelop.net/forums/12/ShowForum.aspx), release history, samples and more.
+The [SharpZipLib homepage](http://icsharpcode.github.io/SharpZipLib/) has precompiled libraries available for download, [a link to the forum for support](http://community.sharpdevelop.net/forums/12/ShowForum.aspx), [release history](https://github.com/icsharpcode/SharpZipLib/wiki/Release-History), samples and more.
 
 License
 -------
