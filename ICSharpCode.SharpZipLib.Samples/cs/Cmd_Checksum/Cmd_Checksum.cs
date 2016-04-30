@@ -28,22 +28,22 @@
 using System;
 using System.IO;
 
-using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Checksums;
 
-class Cmd_ZipInfo
+class Cmd_Crc
 {
 	static void ShowHelp()
 	{
 		Console.Error.WriteLine("Compress or uncompress FILEs (by default, compress FILES in-place).");
 		Console.Error.WriteLine("Version {0} using SharpZipLib {1}",
-			typeof(Cmd_ZipInfo).Assembly.GetName().Version,
-			typeof(ZipFile).Assembly.GetName().Version);
+			typeof(Cmd_Crc).Assembly.GetName().Version,
+			typeof(IChecksum).Assembly.GetName().Version);
 		Console.Error.WriteLine("");
 		Console.Error.WriteLine("Mandatory arguments to long options are mandatory for short options too.");
 		Console.Error.WriteLine("");
-		Console.Error.WriteLine("  -d, --decompress  decompress");
-		Console.Error.WriteLine("  -h, --help        give this help");
-		Console.Error.WriteLine("  -z, --compress    compress");
+		Console.Error.WriteLine("  -a, --adler       decompress");
+		Console.Error.WriteLine("  -b, --bzip2       give this help");
+		Console.Error.WriteLine("  -c, --crc32       compress");
 		Console.Error.WriteLine("  -1, --fast        compress faster");
 		Console.Error.WriteLine("  -9, --best        compress better");
 	}
@@ -53,9 +53,10 @@ class Cmd_ZipInfo
 	{
 		Nothing,
 		Help,
-		Compress,
-		Decompress,
-		Stop,
+		Adler,
+		BZip2,
+		Crc32,
+		Stop
 	}
 
 	class ArgumentParser
@@ -64,36 +65,36 @@ class Cmd_ZipInfo
 		{
 			foreach (string argument in args) {
 				switch (argument) {
-					case "-?": // for backwards compatibility
-					case "-h":
-					case "--help":
-						SetCommand(Command.Help);
-						break;
-					case "-d":
-					case "--decompress":
-						SetCommand(Command.Decompress);
-						break;
-					case "-c": // for backwards compatibility
-					case "-z":
-					case "--compress":
-						SetCommand(Command.Compress);
-						break;
-					default:
-						if (argument[0] == '-') {
-							Console.Error.WriteLine("Unknown argument {0}", argument);
-							command_ = Command.Stop;
-						} else if (file_ == null) {
-							file_ = argument;
+				case "-?": // for backwards compatibility
+				case "-h":
+				case "--help":
+					SetCommand(Command.Help);
+					break;
+				case "--adler32":
+					SetCommand(Command.Adler);
+					break;
+				case "--bzip2":
+					SetCommand(Command.BZip2);
+					break;
+				case "--crc32":
+					SetCommand(Command.Crc32);
+					break;
+				default:
+					if (argument[0] == '-') {
+						Console.Error.WriteLine("Unknown argument {0}", argument);
+						command_ = Command.Stop;
+					} else if (file_ == null) {
+						file_ = argument;
 
-							if (!System.IO.File.Exists(file_)) {
-								Console.Error.WriteLine("File not found '{0}'", file_);
-								command_ = Command.Stop;
-							}
-						} else {
-							Console.Error.WriteLine("File has already been specified");
+						if (!System.IO.File.Exists(file_)) {
+							Console.Error.WriteLine("File not found '{0}'", file_);
 							command_ = Command.Stop;
 						}
-						break;
+					} else {
+						Console.Error.WriteLine("File has already been specified");
+						command_ = Command.Stop;
+					}
+					break;
 				}
 			}
 
@@ -101,7 +102,7 @@ class Cmd_ZipInfo
 				if (file_ == null) {
 					command_ = Command.Help;
 				} else {
-					command_ = Command.Compress;
+					command_ = Command.Crc32;
 				}
 			}
 		}
@@ -115,18 +116,20 @@ class Cmd_ZipInfo
 				command_ = command;
 			}
 		}
-		public Command Command {
-			get { return command_; }
+
+		public string Source
+		{
+			get { return file_; }
 		}
 
-		public int Level {
-			get { return level_; }
+		public Command Command
+		{
+			get { return command_; }
 		}
 
 		#region Instance Fields
 		Command command_ = Command.Nothing;
 		string file_;
-		int level_;
 		#endregion
 	}
 	#endregion
@@ -140,37 +143,40 @@ class Cmd_ZipInfo
 		}
 
 		if (!File.Exists(args[0])) {
-			Console.WriteLine("Cannot find file {0}", args[0]);
+			Console.Error.WriteLine("Cannot find file {0}", args[0]);
 			ShowHelp();
 			return 1;
 		}
 
 		var parser = new ArgumentParser(args);
 
-		using (ZipFile zFile = new ZipFile(args[0])) {
-			Console.WriteLine("Listing of : " + zFile.Name);
-			Console.WriteLine("");
-			if (false) {
-				Console.WriteLine("Raw Size    Size       Date       Time     Name");
-				Console.WriteLine("--------  --------  -----------  ------  ---------");
-				foreach (ZipEntry e in zFile) {
-					DateTime d = e.DateTime;
-					Console.WriteLine("{0, -10}{1, -10}{2}  {3}   {4}", e.Size, e.CompressedSize,
-																		d.ToString("dd MMM yyyy"), d.ToString("HH:mm"),
-																		e.Name);
-				}
-			} else {
-				Console.WriteLine("Raw Size,Size,Date,Time,Name");
-				foreach (ZipEntry e in zFile) {
-					DateTime d = e.DateTime;
-					Console.WriteLine("{0, -10}{1, -10}{2}  {3}   {4}", e.Size, e.CompressedSize,
-																		d.ToString("dd MMM yyyy"), d.ToString("HH:mm"),
-																		e.Name);
-				}
+		using (FileStream checksumStream = File.OpenRead(args[0])) {
 
+			byte[] buffer = new byte[4096];
+			int bytesRead;
+
+			switch (parser.Command) {
+			case Command.Help:
+				ShowHelp();
+				break;
+
+			case Command.Crc32:
+				var currentCrc = new Crc32();
+				while ((bytesRead = checksumStream.Read(buffer, 0, buffer.Length)) > 0) {
+					currentCrc.Update(buffer, 0, bytesRead);
+				}
+				Console.WriteLine("CRC32 for {0} is 0x{1:X2}", args[0], currentCrc.Value);
+				break;
+
+			case Command.Adler:
+				var currentAdler = new Adler32();
+				while ((bytesRead = checksumStream.Read(buffer, 0, buffer.Length)) > 0) {
+					currentAdler.Update(buffer, 0, bytesRead);
+				}
+				break;
 			}
 		}
-
 		return 0;
 	}
 }
+

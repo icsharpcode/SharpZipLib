@@ -128,12 +128,12 @@ public class Tar
 	public Tar()
 	{
 		blockingFactor = TarBuffer.DefaultBlockFactor;
-		userId   = 0;
+		userId = 0;
 
 		string sysUserName = Environment.UserName;
 		userName = ((sysUserName == null) ? "" : sysUserName);
 
-		groupId   = 0;
+		groupId = 0;
 		groupName = "None";
 	}
 
@@ -157,15 +157,14 @@ public class Tar
 
 		int argIdx = this.ProcessArguments(argv);
 
-		if (this.archiveName != null && ! this.archiveName.Equals("-")) {
+		if (this.archiveName != null && !this.archiveName.Equals("-")) {
 			if (operation == Operation.Create) {
-                string dirName = Path.GetDirectoryName(archiveName);
+				string dirName = Path.GetDirectoryName(archiveName);
 				if ((dirName.Length > 0) && !Directory.Exists(dirName)) {
 					Console.Error.WriteLine("Directory for archive doesnt exist");
 					return;
 				}
-			}
-			else {
+			} else {
 				if (File.Exists(this.archiveName) == false) {
 					Console.Error.WriteLine("File does not exist " + this.archiveName);
 					return;
@@ -173,10 +172,10 @@ public class Tar
 			}
 		}
 
-		if (operation == Operation.Create) { 		               // WRITING
+		if (operation == Operation.Create) {                       // WRITING
 			Stream outStream = Console.OpenStandardOutput();
 
-			if (this.archiveName != null && ! this.archiveName.Equals("-")) {
+			if (this.archiveName != null && !this.archiveName.Equals("-")) {
 				outStream = File.Create(archiveName);
 			}
 
@@ -192,14 +191,14 @@ public class Tar
 
 					case Compression.Bzip2:
 						outStream = new BZip2OutputStream(outStream, 9);
-					break;
+						break;
 				}
 				archive = TarArchive.CreateOutputTarArchive(outStream, this.blockingFactor);
 			}
-		} else {								// EXTRACTING OR LISTING
+		} else {                                // EXTRACTING OR LISTING
 			Stream inStream = Console.OpenStandardInput();
 
-			if (this.archiveName != null && ! this.archiveName.Equals( "-" )) {
+			if (this.archiveName != null && !this.archiveName.Equals("-")) {
 				inStream = File.OpenRead(archiveName);
 			}
 
@@ -221,7 +220,7 @@ public class Tar
 			}
 		}
 
-		if (archive != null) {						// SET ARCHIVE OPTIONS
+		if (archive != null) {                      // SET ARCHIVE OPTIONS
 			archive.SetKeepOldFiles(this.keepOldFiles);
 			archive.AsciiTranslate = this.asciiTranslate;
 
@@ -229,13 +228,13 @@ public class Tar
 		}
 
 		if (archive == null) {
-			Console.Error.WriteLine( "no processing due to errors" );
+			Console.Error.WriteLine("no processing due to errors");
 		} else if (operation == Operation.Create) {                        // WRITING
 			if (verbose) {
 				archive.ProgressMessageEvent += ShowTarProgressMessage;
 			}
 
-			for ( ; argIdx < argv.Length ; ++argIdx ) {
+			for (; argIdx < argv.Length; ++argIdx) {
 				string[] fileNames = GetFilesForSpec(argv[argIdx]);
 				if (fileNames.Length > 0) {
 					foreach (string name in fileNames) {
@@ -303,14 +302,14 @@ public class Tar
 		bool bailOut = false;
 		bool gotOP = false;
 
-		for ( ; idx < args.Length ; ++idx ) {
-			string arg = args[ idx ];
+		for (; idx < args.Length; ++idx) {
+			string arg = args[idx];
 
 			if (!arg.StartsWith("-")) {
 				break;
 			}
 
-			if (arg.StartsWith("--" )) {
+			if (arg.StartsWith("--")) {
 				int valuePos = arg.IndexOf('=');
 				string argValue = null;
 
@@ -319,10 +318,10 @@ public class Tar
 					arg = arg.Substring(0, valuePos);
 				}
 
-				if (arg.Equals( "--help")) {
+				if (arg.Equals("--help")) {
 					ShowHelp();
 					Environment.Exit(1);
-				} else if (arg.Equals( "--version")) {
+				} else if (arg.Equals("--version")) {
 					Version();
 					Environment.Exit(1);
 				} else if (arg.Equals("--extract")) {
@@ -346,7 +345,7 @@ public class Tar
 					else {
 						try {
 							this.blockingFactor = Int32.Parse(argValue);
-							if ( blockingFactor <= 0 ) {
+							if (blockingFactor <= 0) {
 								Console.Error.WriteLine("Blocking factor {0} is invalid", blockingFactor);
 								bailOut = true;
 							}
@@ -364,8 +363,7 @@ public class Tar
 						bailOut = true;
 					} else {
 						int size;
-						try
-						{
+						try {
 							size = Int32.Parse(argValue);
 							if (size % TarBuffer.BlockSize != 0) {
 								Console.Error.WriteLine("Record size must be a multiple of " + TarBuffer.BlockSize.ToString());
@@ -384,8 +382,7 @@ public class Tar
 				}
 			} else {
 				for (int cIdx = 1; cIdx < arg.Length; ++cIdx) {
-					switch (arg[cIdx])
-					{
+					switch (arg[cIdx]) {
 						case '?':
 							ShowHelp();
 							Environment.Exit(1);
@@ -439,7 +436,7 @@ public class Tar
 							break;
 
 						case 'U':
-							userId = Int32.Parse(args[ ++idx ]);
+							userId = Int32.Parse(args[++idx]);
 							break;
 
 						case 'g':
@@ -447,7 +444,7 @@ public class Tar
 							break;
 
 						case 'G':
-							groupId = Int32.Parse(args[ ++idx ]);
+							groupId = Int32.Parse(args[++idx]);
 							break;
 
 						case 'v':
@@ -488,8 +485,7 @@ public class Tar
 	static string DecodeType(int type, bool slashTerminated)
 	{
 		string result = "?";
-		switch (type)
-		{
+		switch (type) {
 			case TarHeader.LF_OLDNORM:       // -jr- TODO this decoding is incomplete, not all possible known values are decoded...
 			case TarHeader.LF_NORMAL:
 			case TarHeader.LF_LINK:
@@ -568,7 +564,7 @@ public class Tar
 				: ((mode & S_IXGRP) != 0 ? 'x' : '-'));
 		result.Append((mode & S_IROTH) != 0 ? 'r' : '-');
 		result.Append((mode & S_IWOTH) != 0 ? 'w' : '-');
-		result.Append( (mode & S_ISVTX) != 0
+		result.Append((mode & S_ISVTX) != 0
 				? ((mode & S_IXOTH) != 0 ? 't' : 'T')
 				: ((mode & S_IXOTH) != 0 ? 'x' : '-'));
 
@@ -587,16 +583,16 @@ public class Tar
 	/// </summary>
 	static void Version()
 	{
-		Console.Error.WriteLine( "tar 2.0.6.2" );
-		Console.Error.WriteLine( "" );
-		Console.Error.WriteLine( "{0}", SharpZipVersion() );
-		Console.Error.WriteLine( "Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team" );
-		Console.Error.WriteLine( "" );
-		Console.Error.WriteLine( "This program is free software licensed to you under the" );
-		Console.Error.WriteLine( "GNU General Public License. See the accompanying LICENSE" );
-		Console.Error.WriteLine( "file, or the webpage <http://www.gjt.org/doc/gpl> or," );
-		Console.Error.WriteLine( "visit www.gnu.org for more details." );
-		Console.Error.WriteLine( "" );
+		Console.Error.WriteLine("tar 2.0.6.2");
+		Console.Error.WriteLine("");
+		Console.Error.WriteLine("{0}", SharpZipVersion());
+		Console.Error.WriteLine("Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team");
+		Console.Error.WriteLine("");
+		Console.Error.WriteLine("This program is free software licensed to you under the");
+		Console.Error.WriteLine("GNU General Public License. See the accompanying LICENSE");
+		Console.Error.WriteLine("file, or the webpage <http://www.gjt.org/doc/gpl> or,");
+		Console.Error.WriteLine("visit www.gnu.org for more details.");
+		Console.Error.WriteLine("");
 	}
 
 	/// <summary>
@@ -604,46 +600,46 @@ public class Tar
 	/// </summary>
 	static private void ShowHelp()
 	{
-		Console.Error.WriteLine( "Usage: tar [option]...   [file]..." );
-		Console.Error.WriteLine( "" );
-		Console.Error.WriteLine( "Examples:" );
-		Console.Error.WriteLine( "  tar -cf archive.tar foo bar    # create archive.tar from files foo and bar" );
-		Console.Error.WriteLine( "  tar -tvf archive.tar           # List all files in archive tar verbosely" );
-		Console.Error.WriteLine( "  tar -xvf archive.tar           # Extract all files from archive.tar" );
-		Console.Error.WriteLine( "" );
+		Console.Error.WriteLine("Usage: tar [option]...   [file]...");
+		Console.Error.WriteLine("");
+		Console.Error.WriteLine("Examples:");
+		Console.Error.WriteLine("  tar -cf archive.tar foo bar    # create archive.tar from files foo and bar");
+		Console.Error.WriteLine("  tar -tvf archive.tar           # List all files in archive tar verbosely");
+		Console.Error.WriteLine("  tar -xvf archive.tar           # Extract all files from archive.tar");
+		Console.Error.WriteLine("");
 
-		Console.Error.WriteLine( "Main operation mode:" );
-		Console.Error.WriteLine( "  -t, --list                 list the contents of an archive" );
-		Console.Error.WriteLine( "  -x, --extract              extract files from an archive" );
-		Console.Error.WriteLine( "  -c, --create               create a new archive" );
-		Console.Error.WriteLine( "" );
+		Console.Error.WriteLine("Main operation mode:");
+		Console.Error.WriteLine("  -t, --list                 list the contents of an archive");
+		Console.Error.WriteLine("  -x, --extract              extract files from an archive");
+		Console.Error.WriteLine("  -c, --create               create a new archive");
+		Console.Error.WriteLine("");
 
-		Console.Error.WriteLine( "Options:" );
-		Console.Error.WriteLine( "  -f file,                   use 'file' as the tar archive" );
-		Console.Error.WriteLine( "  -e,                        Turn on ascii translation" );
-		Console.Error.WriteLine( "  -z, --gzip                 use gzip compression" );
-		Console.Error.WriteLine( "  -Z, --compress             use unix compress" );
-		Console.Error.WriteLine( "  -j, --bzip2                use bzip2 compression" );
-		Console.Error.WriteLine( "  -k, --keep-old-files       dont overwrite existing files when extracting" );
-		Console.Error.WriteLine( "  -b blks,                   set blocking factor (blks * 512 bytes per record)" );
-		Console.Error.WriteLine( "      --record-size=SIZE     SIZE bytes per record, multiple of 512");
-		Console.Error.WriteLine( "  -u name,                   set user name to 'name'" );
-		Console.Error.WriteLine( "  -U id,                     set user id to 'id'" );
-		Console.Error.WriteLine( "  -g name,                   set group name to 'name'" );
-		Console.Error.WriteLine( "  -G id,                     set group id to 'id'" );
+		Console.Error.WriteLine("Options:");
+		Console.Error.WriteLine("  -f file,                   use 'file' as the tar archive");
+		Console.Error.WriteLine("  -e,                        Turn on ascii translation");
+		Console.Error.WriteLine("  -z, --gzip                 use gzip compression");
+		Console.Error.WriteLine("  -Z, --compress             use unix compress");
+		Console.Error.WriteLine("  -j, --bzip2                use bzip2 compression");
+		Console.Error.WriteLine("  -k, --keep-old-files       dont overwrite existing files when extracting");
+		Console.Error.WriteLine("  -b blks,                   set blocking factor (blks * 512 bytes per record)");
+		Console.Error.WriteLine("      --record-size=SIZE     SIZE bytes per record, multiple of 512");
+		Console.Error.WriteLine("  -u name,                   set user name to 'name'");
+		Console.Error.WriteLine("  -U id,                     set user id to 'id'");
+		Console.Error.WriteLine("  -g name,                   set group name to 'name'");
+		Console.Error.WriteLine("  -G id,                     set group id to 'id'");
 
-		Console.Error.WriteLine( "" );
-		Console.Error.WriteLine( "Informative output:" );
-		Console.Error.WriteLine( "  -?, --help                 print this help then exit" );
-		Console.Error.WriteLine( "      --version,             print tar program version information" );
-		Console.Error.WriteLine( "  -v, --verbose              verbosely list files processed" );
-		Console.Error.WriteLine( "" );
-		Console.Error.WriteLine( "The translation option -e will translate from local line" );
-		Console.Error.WriteLine( "endings to UNIX line endings of '\\n' when writing tar" );
-		Console.Error.WriteLine( "archives, and from UNIX line endings into local line endings" );
-		Console.Error.WriteLine( "when extracting archives." );
-		Console.Error.WriteLine( "" );
-		Console.Error.WriteLine( "This tar defaults to -b " + TarBuffer.DefaultBlockFactor.ToString());
+		Console.Error.WriteLine("");
+		Console.Error.WriteLine("Informative output:");
+		Console.Error.WriteLine("  -?, --help                 print this help then exit");
+		Console.Error.WriteLine("      --version,             print tar program version information");
+		Console.Error.WriteLine("  -v, --verbose              verbosely list files processed");
+		Console.Error.WriteLine("");
+		Console.Error.WriteLine("The translation option -e will translate from local line");
+		Console.Error.WriteLine("endings to UNIX line endings of '\\n' when writing tar");
+		Console.Error.WriteLine("archives, and from UNIX line endings into local line endings");
+		Console.Error.WriteLine("when extracting archives.");
+		Console.Error.WriteLine("");
+		Console.Error.WriteLine("This tar defaults to -b " + TarBuffer.DefaultBlockFactor.ToString());
 		Environment.Exit(1);
 	}
 }
