@@ -78,10 +78,10 @@
     <Compile Include="BZip2\BZip2Exception.cs" />
     <Compile Include="BZip2\BZip2InputStream.cs" />
     <Compile Include="BZip2\BZip2OutputStream.cs" />
-    <Compile Include="Checksums\Adler32.cs" />
-    <Compile Include="Checksums\Crc32.cs" />
-    <Compile Include="Checksums\IChecksum.cs" />
-    <Compile Include="Checksums\BZip2Crc.cs" />
+    <Compile Include="Checksum\Adler32.cs" />
+    <Compile Include="Checksum\Crc32.cs" />
+    <Compile Include="Checksum\IChecksum.cs" />
+    <Compile Include="Checksum\BZip2Crc.cs" />
     <Compile Include="CompressionLevel.cs" />
     <Compile Include="CompressionMode.cs" />
     <Compile Include="Core\FileSystemScanner.cs" />

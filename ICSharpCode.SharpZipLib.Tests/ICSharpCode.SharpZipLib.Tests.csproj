@@ -88,7 +88,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Base\InflaterDeflaterTests.cs" />
     <Compile Include="BZip2\Bzip2Tests.cs" />
-    <Compile Include="Checksums\Crc32Tests.cs" />
+    <Compile Include="Checksum\Crc32Tests.cs" />
     <Compile Include="Core\Core.cs" />
     <Compile Include="GZip\GZipTests.cs" />
     <Compile Include="Lzw\LzwTests.cs" />

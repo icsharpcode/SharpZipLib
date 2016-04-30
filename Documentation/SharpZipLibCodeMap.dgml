@@ -14,7 +14,7 @@
     <Node Id="@20" Category="CodeSchema_Method" Bounds="-77.9627935618881,299.111474363973,158.9,25.96" CodeSchemaProperty_IsConstructor="True" CodeSchemaProperty_IsPublic="True" CodeSchemaProperty_IsSpecialName="True" DelayedCrossGroupLinksState="Fetched" Label="SharpZipBaseException" />
     <Node Id="@4" Category="CodeSchema_Namespace" Bounds="-117.962793561888,51.2314743639732,238.9,313.84" DelayedChildNodesState="Fetched" DelayedCrossGroupLinksState="Fetched" FetchedChildrenCount="1" Group="Expanded" Label="ICSharpCode‎.SharpZipLib" UseManualLocation="True" />
     <Node Id="@5" Category="CodeSchema_Namespace" Bounds="-42.8530733784501,-3.74793082708365,224.186666666667,25" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="ICSharpCode‎.SharpZipLib‎.BZip2" />
-    <Node Id="@6" Category="CodeSchema_Namespace" Bounds="150.916974220182,106.252070497868,253.35,25" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="ICSharpCode‎.SharpZipLib‎.Checksums" />
+    <Node Id="@6" Category="CodeSchema_Namespace" Bounds="150.916974220182,106.252070497868,253.35,25" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="ICSharpCode‎.SharpZipLib‎.Checksum" />
     <Node Id="@7" Category="CodeSchema_Namespace" Bounds="150.916958305734,51.2520702791685,218.943333333333,25" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="ICSharpCode‎.SharpZipLib‎.Core" />
     <Node Id="@8" Category="CodeSchema_Namespace" Bounds="399.860395708063,51.2520702791684,250.263333333333,25" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="ICSharpCode‎.SharpZipLib‎.Encryption" />
     <Node Id="@9" Category="CodeSchema_Namespace" Bounds="23.043182363015,-168.747931483184,219.07,25" DelayedChildNodesState="NotFetched" DelayedCrossGroupLinksState="Fetched" Group="Collapsed" Label="ICSharpCode‎.SharpZipLib‎.GZip" />
@@ -172,7 +172,7 @@
     <Alias n="3" Id="Namespace=ICSharpCode.SharpZipLib" />
     <Alias n="4" Id="(@1 @3)" />
     <Alias n="5" Id="(@1 Namespace=ICSharpCode.SharpZipLib.BZip2)" />
-    <Alias n="6" Id="(@1 Namespace=ICSharpCode.SharpZipLib.Checksums)" />
+    <Alias n="6" Id="(@1 Namespace=ICSharpCode.SharpZipLib.Checksum)" />
     <Alias n="7" Id="(@1 Namespace=ICSharpCode.SharpZipLib.Core)" />
     <Alias n="8" Id="(@1 Namespace=ICSharpCode.SharpZipLib.Encryption)" />
     <Alias n="9" Id="(@1 Namespace=ICSharpCode.SharpZipLib.GZip)" />

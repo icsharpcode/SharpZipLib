@@ -28,7 +28,7 @@
 using System;
 using System.IO;
 
-using ICSharpCode.SharpZipLib.Checksums;
+using ICSharpCode.SharpZipLib.Checksum;
 
 class Cmd_Crc
 {

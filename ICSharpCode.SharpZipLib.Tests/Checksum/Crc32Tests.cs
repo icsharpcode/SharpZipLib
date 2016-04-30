@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
-using ICSharpCode.SharpZipLib.Checksums;
+using ICSharpCode.SharpZipLib.Checksum;
 using System;
 
-namespace ICSharpCode.SharpZipLib.Checksums.Tests
+namespace ICSharpCode.SharpZipLib.Checksum.Tests
 {
 	[TestFixture, Category("CRC32")]
 	public class Crc32Tests
