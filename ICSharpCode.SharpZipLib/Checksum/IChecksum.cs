@@ -49,6 +49,11 @@ namespace ICSharpCode.SharpZipLib.Checksum
 	public interface IChecksum
 	{
 		/// <summary>
+		/// Resets the data checksum as if no update was ever called.
+		/// </summary>
+		void Reset();
+
+		/// <summary>
 		/// Returns the data checksum computed so far.
 		/// </summary>
 		long Value
@@ -57,17 +62,12 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		}
 
 		/// <summary>
-		/// Resets the data checksum as if no update was ever called.
-		/// </summary>
-		void Reset();
-
-		/// <summary>
 		/// Adds one byte to the data checksum.
 		/// </summary>
-		/// <param name = "value">
+		/// <param name = "bval">
 		/// the data value to add. The high byte of the int is ignored.
 		/// </param>
-		void Update(int value);
+		void Update(int bval);
 
 		/// <summary>
 		/// Updates the data checksum with the bytes taken from the array.

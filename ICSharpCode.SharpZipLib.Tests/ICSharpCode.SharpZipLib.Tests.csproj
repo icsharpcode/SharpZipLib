@@ -88,7 +88,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Base\InflaterDeflaterTests.cs" />
     <Compile Include="BZip2\Bzip2Tests.cs" />
-    <Compile Include="Checksum\Crc32Tests.cs" />
+    <Compile Include="Checksum\ChecksumTests.cs" />
     <Compile Include="Core\Core.cs" />
     <Compile Include="GZip\GZipTests.cs" />
     <Compile Include="Lzw\LzwTests.cs" />
@@ -100,16 +100,16 @@
     <Compile Include="Zip\ZipTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.2.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ploeh.AutoFixture, Version=3.44.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoFixture.3.44.0\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+    <Reference Include="Ploeh.AutoFixture, Version=3.45.1.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoFixture.3.45.1\lib\net40\Ploeh.AutoFixture.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ploeh.AutoFixture.NUnit3, Version=3.44.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoFixture.NUnit3.3.44.0\lib\net40\Ploeh.AutoFixture.NUnit3.dll</HintPath>
+    <Reference Include="Ploeh.AutoFixture.NUnit3, Version=3.45.1.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoFixture.NUnit3.3.45.1\lib\net40\Ploeh.AutoFixture.NUnit3.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

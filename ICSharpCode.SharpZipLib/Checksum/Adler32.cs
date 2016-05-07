@@ -89,64 +89,67 @@ namespace ICSharpCode.SharpZipLib.Checksum
 	/// <see cref="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream"/>
 	public sealed class Adler32 : IChecksum
 	{
+		#region Instance Fields
 		/// <summary>
 		/// largest prime smaller than 65536
 		/// </summary>
-		const uint BASE = 65521;
+		readonly static uint BASE = 65521;
 
 		/// <summary>
-		/// Returns the Adler32 data checksum computed so far.
+		/// The CRC data checksum so far.
 		/// </summary>
-		public long Value
-		{
-			get
-			{
-				return checksum;
-			}
-		}
+		uint checkValue;
+		#endregion
 
 		/// <summary>
-		/// Creates a new instance of the Adler32 class.
-		/// The checksum starts off with a value of 1.
-		/// </summary>
+		/// Initialise a default instance of <see cref="Adler32"></see>
+		/// </summary>	
 		public Adler32()
 		{
 			Reset();
 		}
 
 		/// <summary>
-		/// Resets the Adler32 checksum to the initial value.
+		/// Resets the Adler32 data checksum as if no update was ever called.
 		/// </summary>
 		public void Reset()
 		{
-			checksum = 1;
+			checkValue = 1;
 		}
 
 		/// <summary>
-		/// Updates the checksum with a byte value.
+		/// Returns the Adler32 data checksum computed so far.
 		/// </summary>
-		/// <param name="value">
+		public long Value {
+			get {
+				return checkValue;
+			}
+		}
+
+		/// <summary>
+		/// Updates the checksum with the byte b.
+		/// </summary>
+		/// <param name="bval">
 		/// The data value to add. The high byte of the int is ignored.
 		/// </param>
-		public void Update(int value)
+		public void Update(int bval)
 		{
 			// We could make a length 1 byte array and call update again, but I
 			// would rather not have that overhead
-			uint s1 = checksum & 0xFFFF;
-			uint s2 = checksum >> 16;
+			uint s1 = checkValue & 0xFFFF;
+			uint s2 = checkValue >> 16;
 
-			s1 = (s1 + ((uint)value & 0xFF)) % BASE;
+			s1 = (s1 + ((uint)bval & 0xFF)) % BASE;
 			s2 = (s1 + s2) % BASE;
 
-			checksum = (s2 << 16) + s1;
+			checkValue = (s2 << 16) + s1;
 		}
 
 		/// <summary>
-		/// Updates the checksum with an array of bytes.
+		/// Updates the Adler32 data checksum with the bytes taken from 
+		/// a block of data.
 		/// </summary>
-		/// <param name="buffer">
-		/// The source of the data to update with.
-		/// </param>
+		/// <param name="buffer">Contains the data to update the checksum with.</param>
 		public void Update(byte[] buffer)
 		{
 			if (buffer == null) {
@@ -157,17 +160,11 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		}
 
 		/// <summary>
-		/// Updates the checksum with the bytes taken from the array.
+		/// Update Adler32 data checksum based on a portion of a block of data
 		/// </summary>
-		/// <param name="buffer">
-		/// an array of bytes
-		/// </param>
-		/// <param name="offset">
-		/// the start of the data used for this update
-		/// </param>
-		/// <param name="count">
-		/// the number of bytes to use for this update
-		/// </param>
+		/// <param name = "buffer">Contains the data to update the CRC with.</param>
+		/// <param name = "offset">The offset into the buffer where the data starts</param>
+		/// <param name = "count">The number of data bytes to update the CRC with.</param>
 		public void Update(byte[] buffer, int offset, int count)
 		{
 			if (buffer == null) {
@@ -175,15 +172,15 @@ namespace ICSharpCode.SharpZipLib.Checksum
 			}
 
 			if (offset < 0) {
-				throw new ArgumentOutOfRangeException(nameof(offset), "cannot be negative");
-			}
-
-			if (count < 0) {
-				throw new ArgumentOutOfRangeException(nameof(count), "cannot be negative");
+				throw new ArgumentOutOfRangeException(nameof(offset), "cannot be less than zero");
 			}
 
 			if (offset >= buffer.Length) {
 				throw new ArgumentOutOfRangeException(nameof(offset), "not a valid index into buffer");
+			}
+
+			if (count < 0) {
+				throw new ArgumentOutOfRangeException(nameof(count), "cannot be less than zero");
 			}
 
 			if (offset + count > buffer.Length) {
@@ -191,8 +188,8 @@ namespace ICSharpCode.SharpZipLib.Checksum
 			}
 
 			//(By Per Bothner)
-			uint s1 = checksum & 0xFFFF;
-			uint s2 = checksum >> 16;
+			uint s1 = checkValue & 0xFFFF;
+			uint s2 = checkValue >> 16;
 
 			while (count > 0) {
 				// We can defer the modulo operation:
@@ -211,11 +208,7 @@ namespace ICSharpCode.SharpZipLib.Checksum
 				s2 %= BASE;
 			}
 
-			checksum = (s2 << 16) | s1;
+			checkValue = (s2 << 16) | s1;
 		}
-
-		#region Instance Fields
-		uint checksum;
-		#endregion
 	}
 }
