@@ -1,8 +1,4 @@
 <Playlist Version="1.0">
-	<Add Test="ICSharpCode.SharpZipLib.Checksums.Tests.Crc32Tests.ResetTest" />
-	<Add Test="ICSharpCode.SharpZipLib.Checksums.Tests.Crc32Tests.UpdateTest" />
-	<Add Test="ICSharpCode.SharpZipLib.Checksums.Tests.Crc32Tests.UpdateTest1" />
-	<Add Test="ICSharpCode.SharpZipLib.Checksums.Tests.Crc32Tests.UpdateTest2" />
 	<Add Test="ICSharpCode.SharpZipLib.Tests.BZip2.BZip2Suite.BasicRoundTrip" />
 	<Add Test="ICSharpCode.SharpZipLib.Tests.BZip2.BZip2Suite.CreateEmptyArchive" />
 	<Add Test="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.CloseDeflatorWithNestedUsing" />
@@ -11,6 +7,9 @@
 	<Add Test="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.InflateDeflateNonZlib" />
 	<Add Test="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.InflateDeflateZlib" />
 	<Add Test="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.InflatorStreamOwnership" />
+  <Add Test="ICSharpCode.SharpZipLib.Tests.Checksum.ChecksumTests.Adler_32" />
+  <Add Test="ICSharpCode.SharpZipLib.Tests.Checksum.ChecksumTests.CRC_32" />
+  <Add Test="ICSharpCode.SharpZipLib.Tests.Checksum.ChecksumTests.CRC_32_BZip2" />
 	<Add Test="ICSharpCode.SharpZipLib.Tests.Core.Core.FilterQuoting" />
 	<Add Test="ICSharpCode.SharpZipLib.Tests.Core.Core.NullFilter" />
 	<Add Test="ICSharpCode.SharpZipLib.Tests.Core.Core.ValidFilter" />

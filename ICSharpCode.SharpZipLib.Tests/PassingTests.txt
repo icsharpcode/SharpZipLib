@@ -1,7 +1,3 @@
-ICSharpCode.SharpZipLib.Checksums.Tests.Crc32Tests.ResetTest
-ICSharpCode.SharpZipLib.Checksums.Tests.Crc32Tests.UpdateTest
-ICSharpCode.SharpZipLib.Checksums.Tests.Crc32Tests.UpdateTest1
-ICSharpCode.SharpZipLib.Checksums.Tests.Crc32Tests.UpdateTest2
 ICSharpCode.SharpZipLib.Tests.BZip2.BZip2Suite.BasicRoundTrip
 ICSharpCode.SharpZipLib.Tests.BZip2.BZip2Suite.CreateEmptyArchive
 ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.CloseDeflatorWithNestedUsing
@@ -10,6 +6,9 @@ ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.DeflatorStreamOwner
 ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.InflateDeflateNonZlib
 ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.InflateDeflateZlib
 ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.InflatorStreamOwnership
+ICSharpCode.SharpZipLib.Tests.Checksum.ChecksumTests.Adler_32
+ICSharpCode.SharpZipLib.Tests.Checksum.ChecksumTests.CRC_32
+ICSharpCode.SharpZipLib.Tests.Checksum.ChecksumTests.CRC_32_BZip2
 ICSharpCode.SharpZipLib.Tests.Core.Core.FilterQuoting
 ICSharpCode.SharpZipLib.Tests.Core.Core.NullFilter
 ICSharpCode.SharpZipLib.Tests.Core.Core.ValidFilter

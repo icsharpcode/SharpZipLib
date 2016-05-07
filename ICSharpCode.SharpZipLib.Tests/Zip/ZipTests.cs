@@ -1938,15 +1938,25 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void SerializedObjectZeroLength()
 		{
+			bool exception = false;
+
 			object data = new byte[0];
 			// Thisa wont be zero length here due to serialisation.
-			byte[] zipped = ZipZeroLength(data);
-			object o = UnZipZeroLength(zipped);
+			try {
+				byte[] zipped = ZipZeroLength(data);
 
-			var returned = o as byte[];
+				object o = UnZipZeroLength(zipped);
 
-			Assert.IsNotNull(returned, "Expected a byte[]");
-			Assert.AreEqual(0, returned.Length);
+				var returned = o as byte[];
+
+				Assert.IsNotNull(returned, "Expected a byte[]");
+				Assert.AreEqual(0, returned.Length);
+
+			} catch (ArgumentOutOfRangeException) {
+				exception = true;
+			}
+
+			Assert.IsTrue(exception, "Passing an offset greater than or equal to buffer.Length should cause an ArgumentOutOfRangeException");
 		}
 
 		/// <summary>
