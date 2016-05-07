@@ -79,10 +79,6 @@ copy Cmd_BZip2.exe bunzip2.exe</PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\..\..\bin\Release\ICSharpCode.SharpZipLib.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\GlobalAssemblyInfo.cs">
@@ -103,6 +99,12 @@ copy Cmd_BZip2.exe bunzip2.exe</PostBuildEvent>
   </ItemGroup>
   <ItemGroup>
     <Content Include="readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ICSharpCode.SharpZipLib\ICSharpCode.SharpZipLib.csproj">
+      <Project>{0e7413ff-eb9e-4714-acf2-be3a6a7b2ffd}</Project>
+      <Name>ICSharpCode.SharpZipLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

@@ -5,13 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1B2FD768-E530-45B7-B14F-AE5D07B24485}</ProjectGuid>
-    <RootNamespace>CreateZipFile</RootNamespace>
+    <RootNamespace>ICSharpCode.SharpZipLib.Samples</RootNamespace>
     <AssemblyName>CreateZipFile</AssemblyName>
     <OutputType>WinExe</OutputType>
     <ApplicationIcon />
     <WarningLevel />
     <NoWarn />
-    <StartupObject>CreateZipFile.CreateZipFile.CreateZipFileForm</StartupObject>
+    <StartupObject>ICSharpCode.SharpZipLib.Samples.CreateZipFile.CreateZipFileForm</StartupObject>
     <NoStdLib />
     <NoConfig />
     <RunPostBuildEvent>OnSuccessfulBuild</RunPostBuildEvent>
@@ -68,10 +68,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\..\..\bin\Debug\ICSharpCode.SharpZipLib.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateZipFileForm.vb">
@@ -97,6 +93,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ICSharpCode.SharpZipLib\ICSharpCode.SharpZipLib.csproj">
+      <Project>{0e7413ff-eb9e-4714-acf2-be3a6a7b2ffd}</Project>
+      <Name>ICSharpCode.SharpZipLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.Targets" />
 </Project>

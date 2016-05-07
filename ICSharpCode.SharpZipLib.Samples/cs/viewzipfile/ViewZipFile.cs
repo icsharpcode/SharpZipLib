@@ -13,7 +13,7 @@ using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using ICSharpCode.SharpZipLib.GZip;
 
 
-class MainClass
+class ViewZipFileClass
 {			
 	public static void Main(string[] args)
 	{

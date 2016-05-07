@@ -30,13 +30,13 @@ using System.IO;
 
 using ICSharpCode.SharpZipLib.Checksum;
 
-class Cmd_Crc
+class Cmd_Checksum
 {
 	static void ShowHelp()
 	{
 		Console.Error.WriteLine("Compress or uncompress FILEs (by default, compress FILES in-place).");
 		Console.Error.WriteLine("Version {0} using SharpZipLib {1}",
-			typeof(Cmd_Crc).Assembly.GetName().Version,
+			typeof(Cmd_Checksum).Assembly.GetName().Version,
 			typeof(IChecksum).Assembly.GetName().Version);
 		Console.Error.WriteLine("");
 		Console.Error.WriteLine("Mandatory arguments to long options are mandatory for short options too.");
@@ -47,6 +47,11 @@ class Cmd_Crc
 		Console.Error.WriteLine("  -1, --fast        compress faster");
 		Console.Error.WriteLine("  -9, --best        compress better");
 	}
+
+	#region Instance Fields
+	private static Command command_ = Command.Nothing;
+	private static string file_;
+	#endregion
 
 	#region Command parsing
 	enum Command
@@ -65,36 +70,36 @@ class Cmd_Crc
 		{
 			foreach (string argument in args) {
 				switch (argument) {
-				case "-?": // for backwards compatibility
-				case "-h":
-				case "--help":
-					SetCommand(Command.Help);
-					break;
-				case "--adler32":
-					SetCommand(Command.Adler);
-					break;
-				case "--bzip2":
-					SetCommand(Command.BZip2);
-					break;
-				case "--crc32":
-					SetCommand(Command.Crc32);
-					break;
-				default:
-					if (argument[0] == '-') {
-						Console.Error.WriteLine("Unknown argument {0}", argument);
-						command_ = Command.Stop;
-					} else if (file_ == null) {
-						file_ = argument;
+					case "-?": // for backwards compatibility
+					case "-h":
+					case "--help":
+						SetCommand(Command.Help);
+						break;
+					case "--adler32":
+						SetCommand(Command.Adler);
+						break;
+					case "--bzip2":
+						SetCommand(Command.BZip2);
+						break;
+					case "--crc32":
+						SetCommand(Command.Crc32);
+						break;
+					default:
+						if (argument[0] == '-') {
+							Console.Error.WriteLine("Unknown argument {0}", argument);
+							command_ = Command.Stop;
+						} else if (file_ == null) {
+							file_ = argument;
 
-						if (!System.IO.File.Exists(file_)) {
-							Console.Error.WriteLine("File not found '{0}'", file_);
+							if (!System.IO.File.Exists(file_)) {
+								Console.Error.WriteLine("File not found '{0}'", file_);
+								command_ = Command.Stop;
+							}
+						} else {
+							Console.Error.WriteLine("File has already been specified");
 							command_ = Command.Stop;
 						}
-					} else {
-						Console.Error.WriteLine("File has already been specified");
-						command_ = Command.Stop;
-					}
-					break;
+						break;
 				}
 			}
 
@@ -117,23 +122,15 @@ class Cmd_Crc
 			}
 		}
 
-		public string Source
-		{
+		public string Source {
 			get { return file_; }
 		}
 
-		public Command Command
-		{
+		public Command Command {
 			get { return command_; }
 		}
-
-		#region Instance Fields
-		Command command_ = Command.Nothing;
-		string file_;
-		#endregion
 	}
 	#endregion
-
 
 	public static int Main(string[] args)
 	{
@@ -142,38 +139,47 @@ class Cmd_Crc
 			return 1;
 		}
 
-		if (!File.Exists(args[0])) {
-			Console.Error.WriteLine("Cannot find file {0}", args[0]);
+		var parser = new ArgumentParser(args);
+
+		if (!File.Exists(file_)) {
+			Console.Error.WriteLine("Cannot find file {0}", file_);
 			ShowHelp();
 			return 1;
 		}
 
-		var parser = new ArgumentParser(args);
-
-		using (FileStream checksumStream = File.OpenRead(args[0])) {
+		using (FileStream checksumStream = File.OpenRead(file_)) {
 
 			byte[] buffer = new byte[4096];
 			int bytesRead;
 
 			switch (parser.Command) {
-			case Command.Help:
-				ShowHelp();
-				break;
+				case Command.Help:
+					ShowHelp();
+					break;
 
-			case Command.Crc32:
-				var currentCrc = new Crc32();
-				while ((bytesRead = checksumStream.Read(buffer, 0, buffer.Length)) > 0) {
-					currentCrc.Update(buffer, 0, bytesRead);
-				}
-				Console.WriteLine("CRC32 for {0} is 0x{1:X2}", args[0], currentCrc.Value);
-				break;
+				case Command.Crc32:
+					var currentCrc = new Crc32();
+					while ((bytesRead = checksumStream.Read(buffer, 0, buffer.Length)) > 0) {
+						currentCrc.Update(buffer, 0, bytesRead);
+					}
+					Console.WriteLine("CRC32 for {0} is 0x{1:X8}", args[0], currentCrc.Value);
+					break;
 
-			case Command.Adler:
-				var currentAdler = new Adler32();
-				while ((bytesRead = checksumStream.Read(buffer, 0, buffer.Length)) > 0) {
-					currentAdler.Update(buffer, 0, bytesRead);
-				}
-				break;
+				case Command.BZip2:
+					var currentBZip2Crc = new BZip2Crc();
+					while ((bytesRead = checksumStream.Read(buffer, 0, buffer.Length)) > 0) {
+						currentBZip2Crc.Update(buffer, 0, bytesRead);
+					}
+					Console.WriteLine("BZip2CRC32 for {0} is 0x{1:X8}", args[0], currentBZip2Crc.Value);
+					break;
+
+				case Command.Adler:
+					var currentAdler = new Adler32();
+					while ((bytesRead = checksumStream.Read(buffer, 0, buffer.Length)) > 0) {
+						currentAdler.Update(buffer, 0, bytesRead);
+					}
+					Console.WriteLine("Adler32 for {0} is 0x{1:X8}", args[0], currentAdler.Value);
+					break;
 			}
 		}
 		return 0;

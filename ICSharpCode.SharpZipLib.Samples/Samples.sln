@@ -41,9 +41,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sz", "cs\sz\sz.csproj", "{C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zf", "cs\zf\zf.csproj", "{90E83588-261C-45A3-964F-4B707357D437}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unzipfile", "cs\unzipfile\unzipfile.csproj", "{DE6AA83B-1EFA-41B0-85D9-49DA1B0202BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnZipFile", "cs\unzipfile\UnZipFile.csproj", "{DE6AA83B-1EFA-41B0-85D9-49DA1B0202BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "viewzipfile", "cs\viewzipfile\viewzipfile.csproj", "{F356B460-0DEA-4F7D-9CD8-7475B9BEC1F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewZipFile", "cs\viewzipfile\ViewZipFile.csproj", "{F356B460-0DEA-4F7D-9CD8-7475B9BEC1F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cmd_BZip2", "cs\Cmd_BZip2\Cmd_BZip2.csproj", "{7520CE0B-F1D4-4148-8427-BB03669D7672}"
 EndProject
@@ -82,7 +82,9 @@ Global
 		{2B42AA12-DD23-4EB8-A1CD-5D0F4B772895}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B42AA12-DD23-4EB8-A1CD-5D0F4B772895}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CE304F35-FABF-4A24-AC48-5710670A82BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CE304F35-FABF-4A24-AC48-5710670A82BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE304F35-FABF-4A24-AC48-5710670A82BE}.Release|Any CPU.ActiveCfg = Release|Any CPU

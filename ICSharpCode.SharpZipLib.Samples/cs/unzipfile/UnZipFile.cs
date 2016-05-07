@@ -34,7 +34,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 
-class MainClass
+class UnZipFileClass
 {
 	public static void Main(string[] args)
 	{
