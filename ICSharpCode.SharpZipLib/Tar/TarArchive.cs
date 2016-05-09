@@ -556,6 +556,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 					break;
 				}
 
+				if (entry.TarHeader.TypeFlag == TarHeader.LF_LINK || entry.TarHeader.TypeFlag == TarHeader.LF_SYMLINK)
+					continue;
+
 				ExtractEntry(destinationDirectory, entry);
 			}
 		}
