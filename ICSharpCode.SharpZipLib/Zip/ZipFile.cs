@@ -1194,16 +1194,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// Size can be verified only if it is known in the local header.
 				// it will always be known in the central header.
 				if (((localFlags & (int)GeneralBitFlags.Descriptor) == 0) ||
-					((size > 0) || (compressedSize > 0))) {
+					((size > 0 || compressedSize > 0) && entry.Size > 0)) {
 
-					if (size != entry.Size) {
+					if ((size != 0)
+						&& (size != entry.Size)) {
 						throw new ZipException(
 							string.Format("Size mismatch between central header({0}) and local header({1})",
 								entry.Size, size));
 					}
 
-					if (compressedSize != entry.CompressedSize &&
-						compressedSize != 0xFFFFFFFF && compressedSize != -1) {
+					if ((compressedSize != 0)
+						&& (compressedSize != entry.CompressedSize && compressedSize != 0xFFFFFFFF && compressedSize != -1)) {
 						throw new ZipException(
 							string.Format("Compressed size mismatch between central header({0}) and local header({1})",
 							entry.CompressedSize, compressedSize));
@@ -3196,7 +3197,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					var decryptor = new ZipAESTransform(rawPassword_, saltBytes, blockSize, false);
 					byte[] pwdVerifyCalc = decryptor.PwdVerifier;
 					if (pwdVerifyCalc[0] != pwdVerifyRead[0] || pwdVerifyCalc[1] != pwdVerifyRead[1])
-						throw new Exception("Invalid password for AES");
+						throw new ZipException("Invalid password for AES");
 					result = new ZipAESStream(baseStream, decryptor, CryptoStreamMode.Read);
 				} else {
 					throw new ZipException("Decryption method not supported");
@@ -3673,8 +3674,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 							return 0;
 						}
 					}
-
-					baseStream_.Seek(readPos_, SeekOrigin.Begin);
+					// Protect against Stream implementations that throw away their buffer on every Seek
+					// (for example, Mono FileStream)
+					if (baseStream_.Position != readPos_) {
+						baseStream_.Seek(readPos_, SeekOrigin.Begin);
+					}
 					int readCount = baseStream_.Read(buffer, offset, count);
 					if (readCount > 0) {
 						readPos_ += readCount;

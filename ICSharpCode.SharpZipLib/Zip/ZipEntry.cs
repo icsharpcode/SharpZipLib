@@ -257,6 +257,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			compressedSize = entry.compressedSize;
 			crc = entry.crc;
 			dosTime = entry.dosTime;
+			dateTime = entry.dateTime;
 			method = entry.method;
 			comment = entry.comment;
 			versionToExtract = entry.versionToExtract;
@@ -706,16 +707,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </remarks>
 		public DateTime DateTime
 		{
-			get
-			{
-				uint sec = Math.Min(59, 2 * (dosTime & 0x1f));
-				uint min = Math.Min(59, (dosTime >> 5) & 0x3f);
-				uint hrs = Math.Min(23, (dosTime >> 11) & 0x1f);
-				uint mon = Math.Max(1, Math.Min(12, ((dosTime >> 21) & 0xf)));
-				uint year = ((dosTime >> 25) & 0x7f) + 1980;
-				int day = Math.Max(1, Math.Min(DateTime.DaysInMonth((int)year, (int)mon), (int)((dosTime >> 16) & 0x1f)));
-				return new System.DateTime((int)year, (int)mon, day, (int)hrs, (int)min, (int)sec);
-			}
+			get { return dateTime; }
 
 			set
 			{
@@ -995,11 +987,35 @@ namespace ICSharpCode.SharpZipLib.Zip
 					throw new ZipException("Extra data extended Zip64 information length is invalid");
 				}
 
-				if (localHeader || (size == uint.MaxValue)) {
+				// (localHeader ||) was deleted, because actually there is no specific difference with reading sizes between local header & central directory 
+				// https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT 
+				// ...
+				// 4.4  Explanation of fields
+				// ...
+				//	4.4.8 compressed size: (4 bytes)
+				//	4.4.9 uncompressed size: (4 bytes)
+				// 
+				//		The size of the file compressed (4.4.8) and uncompressed,
+				//		(4.4.9) respectively.  When a decryption header is present it 
+				//		will be placed in front of the file data and the value of the
+				//		compressed file size will include the bytes of the decryption
+				//		header.  If bit 3 of the general purpose bit flag is set, 
+				//		these fields are set to zero in the local header and the 
+				//		correct values are put in the data descriptor and
+				//		in the central directory.  If an archive is in ZIP64 format
+				//		and the value in this field is 0xFFFFFFFF, the size will be
+				//		in the corresponding 8 byte ZIP64 extended information 
+				//		extra field.  When encrypting the central directory, if the
+				//		local header is not in ZIP64 format and general purpose bit 
+				//		flag 13 is set indicating masking, the value stored for the 
+				//		uncompressed size in the Local Header will be zero. 
+				// 
+				// Othewise there is problem with minizip implementation
+				if (size == uint.MaxValue) {
 					size = (ulong)extraData.ReadLong();
 				}
 
-				if (localHeader || (compressedSize == uint.MaxValue)) {
+				if (compressedSize == uint.MaxValue) {
 					compressedSize = (ulong)extraData.ReadLong();
 				}
 
@@ -1017,47 +1033,39 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
-			if (extraData.Find(10)) {
-				// No room for any tags.
-				if (extraData.ValueLength < 4) {
-					throw new ZipException("NTFS Extra data invalid");
-				}
-
-				extraData.ReadInt(); // Reserved
-
-				while (extraData.UnreadCount >= 4) {
-					int ntfsTag = extraData.ReadShort();
-					int ntfsLength = extraData.ReadShort();
-					if (ntfsTag == 1) {
-						if (ntfsLength >= 24) {
-							long lastModification = extraData.ReadLong();
-							long lastAccess = extraData.ReadLong();
-							long createTime = extraData.ReadLong();
-
-							DateTime = System.DateTime.FromFileTime(lastModification);
-						}
-						break;
-					} else {
-						// An unknown NTFS tag so simply skip it.
-						extraData.Skip(ntfsLength);
-					}
-				}
-			} else if (extraData.Find(0x5455)) {
-				int length = extraData.ValueLength;
-				int flags = extraData.ReadByte();
-
-				// Can include other times but these are ignored.  Length of data should
-				// actually be 1 + 4 * no of bits in flags.
-				if (((flags & 1) != 0) && (length >= 5)) {
-					int iTime = extraData.ReadInt();
-
-					DateTime = (new System.DateTime(1970, 1, 1, 0, 0, 0).ToUniversalTime() +
-						new TimeSpan(0, 0, 0, iTime, 0)).ToLocalTime();
-				}
-			}
+			dateTime = GetDateTime(extraData);
 			if (method == CompressionMethod.WinZipAES) {
 				ProcessAESExtraData(extraData);
 			}
+		}
+
+		private DateTime GetDateTime(ZipExtraData extraData) {
+			// Check for NT timestamp
+            // NOTE: Disable by default to match behavior of InfoZIP
+#if RESPECT_NT_TIMESTAMP
+			NTTaggedData ntData = extraData.GetData<NTTaggedData>();
+			if (ntData != null)
+				return ntData.LastModificationTime;
+#endif
+
+			// Check for Unix timestamp
+			ExtendedUnixData unixData = extraData.GetData<ExtendedUnixData>();
+			if (unixData != null &&
+				// Only apply modification time, but require all other values to be present
+				// This is done to match InfoZIP's behaviour
+				((unixData.Include & ExtendedUnixData.Flags.ModificationTime) != 0) &&
+				((unixData.Include & ExtendedUnixData.Flags.AccessTime) != 0) &&
+				((unixData.Include & ExtendedUnixData.Flags.CreateTime) != 0))
+				return unixData.ModificationTime;
+
+			// Fall back to DOS time
+			uint sec = Math.Min(59, 2 * (dosTime & 0x1f));
+			uint min = Math.Min(59, (dosTime >> 5) & 0x3f);
+			uint hrs = Math.Min(23, (dosTime >> 11) & 0x1f);
+			uint mon = Math.Max(1, Math.Min(12, ((dosTime >> 21) & 0xf)));
+			uint year = ((dosTime >> 25) & 0x7f) + 1980;
+			int day = Math.Max(1, Math.Min(DateTime.DaysInMonth((int)year, (int)mon), (int)((dosTime >> 16) & 0x1f)));
+			return new DateTime((int)year, (int)mon, day, (int)hrs, (int)min, (int)sec, DateTimeKind.Utc);
 		}
 
 		// For AES the method in the entry is 99, and the real compression method is in the extradata
@@ -1257,6 +1265,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		ushort versionToExtract;                // Version required to extract (library handles <= 2.0)
 		uint crc;
 		uint dosTime;
+		DateTime dateTime;
 
 		CompressionMethod method = CompressionMethod.Deflated;
 		byte[] extra;
