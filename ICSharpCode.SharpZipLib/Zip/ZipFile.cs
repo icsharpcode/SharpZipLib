@@ -52,7 +52,7 @@ using System.Security.Cryptography;
 using ICSharpCode.SharpZipLib.Encryption;
 
 using ICSharpCode.SharpZipLib.Core;
-using ICSharpCode.SharpZipLib.Checksums;
+using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 

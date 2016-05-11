@@ -36,7 +36,7 @@
 
 using System;
 using System.Security.Cryptography;
-using ICSharpCode.SharpZipLib.Checksums;
+using ICSharpCode.SharpZipLib.Checksum;
 
 namespace ICSharpCode.SharpZipLib.Encryption
 {

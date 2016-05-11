@@ -651,7 +651,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 
 						var scanner = new FileSystemScanner(WildcardToRegex(fileSpec));
 						scanner.ProcessFile = new ProcessFileHandler(ProcessFile);
-						scanner.ProcessDirectory = new ProcessDirectoryHandler(ProcessDirectory);
+						scanner.ProcessDirectory += new EventHandler<DirectoryEventArgs>(ProcessDirectory);
 						scanner.Scan(path, recursive_);
 					}
 
@@ -1102,7 +1102,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 
 						var scanner = new FileSystemScanner(WildcardToRegex(fileSpec));
 						scanner.ProcessFile = new ProcessFileHandler(ProcessFile);
-						scanner.ProcessDirectory = new ProcessDirectoryHandler(ProcessDirectory);
+						scanner.ProcessDirectory += new EventHandler<DirectoryEventArgs>(ProcessDirectory);
 						scanner.Scan(path, recursive_);
 					}
 					zipFile.CommitUpdate();

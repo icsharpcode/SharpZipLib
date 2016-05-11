@@ -62,9 +62,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.WpfCreateZipFile.MySettings
+        Friend ReadOnly Property Settings() As Global.ICSharpCode.SharpZipLib.Samples.MySettings
             Get
-                Return Global.WpfCreateZipFile.MySettings.Default
+                Return Global.ICSharpCode.SharpZipLib.Samples.MySettings.Default
             End Get
         End Property
     End Module

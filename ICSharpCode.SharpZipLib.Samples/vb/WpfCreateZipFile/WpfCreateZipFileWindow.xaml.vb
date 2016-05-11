@@ -1,10 +1,15 @@
 ﻿Imports System.IO
 Imports ICSharpCode.SharpZipLib.Core
 Imports ICSharpCode.SharpZipLib.Zip
-Imports WPFFolderBrowser
+Imports WpfFolderBrowser
 
 
 Class WpfCreateZipFileWindow
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        ' Add any initialization after the InitializeComponent() call.
+    End Sub
 
 	Private Sub btnZipIt_Click(sender As Object, e As RoutedEventArgs) Handles btnZipIt.Click
 		Dim sourceDir As String = tbSourceDir.Text.Trim()
@@ -67,8 +72,8 @@ Class WpfCreateZipFileWindow
 	End Sub
 
 	Private Sub btnBrowseForFolder_Click(sender As Object, e As RoutedEventArgs) Handles btnBrowseForFolder.Click
-		Dim FolderBrowserDialog As WPFFolderBrowserDialog
-		FolderBrowserDialog = New WPFFolderBrowserDialog
+        Dim FolderBrowserDialog As WpfFolderBrowserDialog
+        FolderBrowserDialog = New WpfFolderBrowserDialog
 		If FolderBrowserDialog.ShowDialog() = True Then
 			tbSourceDir.Text = FolderBrowserDialog.FileName
 		End If
