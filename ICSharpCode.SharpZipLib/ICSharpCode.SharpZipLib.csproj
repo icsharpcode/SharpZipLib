@@ -37,6 +37,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
     <WarningLevel>0</WarningLevel>
+    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,6 +52,7 @@
     <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <RegisterForComInterop>false</RegisterForComInterop>
@@ -67,6 +69,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\GlobalAssemblyInfo.cs">
@@ -78,10 +81,10 @@
     <Compile Include="BZip2\BZip2Exception.cs" />
     <Compile Include="BZip2\BZip2InputStream.cs" />
     <Compile Include="BZip2\BZip2OutputStream.cs" />
-    <Compile Include="Checksums\Adler32.cs" />
-    <Compile Include="Checksums\Crc32.cs" />
-    <Compile Include="Checksums\IChecksum.cs" />
-    <Compile Include="Checksums\BZip2Crc.cs" />
+    <Compile Include="Checksum\Adler32.cs" />
+    <Compile Include="Checksum\Crc32.cs" />
+    <Compile Include="Checksum\IChecksum.cs" />
+    <Compile Include="Checksum\BZip2Crc.cs" />
     <Compile Include="CompressionLevel.cs" />
     <Compile Include="CompressionMode.cs" />
     <Compile Include="Core\FileSystemScanner.cs" />
@@ -94,6 +97,7 @@
     <Compile Include="Encryption\PkzipClassic.cs" />
     <Compile Include="Encryption\ZipAESStream.cs" />
     <Compile Include="Encryption\ZipAESTransform.cs" />
+    <Compile Include="GZip\GZip.cs" />
     <Compile Include="GZip\GZipConstants.cs" />
     <Compile Include="GZip\GZipException.cs" />
     <Compile Include="GZip\GzipInputStream.cs" />
@@ -145,6 +149,9 @@
     <None Include="..\ICSharpCode.SharpZipLib.snk">
       <Link>ICSharpCode.SharpZipLib.snk</Link>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

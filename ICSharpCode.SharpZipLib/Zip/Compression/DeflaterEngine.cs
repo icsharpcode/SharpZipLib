@@ -38,7 +38,7 @@
 
 using System;
 
-using ICSharpCode.SharpZipLib.Checksums;
+using ICSharpCode.SharpZipLib.Checksum;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression
 {
