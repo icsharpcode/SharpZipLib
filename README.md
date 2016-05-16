@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/McNeight/SharpZipLib.png?label=ready&title=Ready)](https://waffle.io/McNeight/SharpZipLib)
 # SharpZipLib
 
 [![Join the chat at https://gitter.im/icsharpcode/SharpZipLib](https://badges.gitter.im/icsharpcode/SharpZipLib.svg)](https://gitter.im/icsharpcode/SharpZipLib?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
