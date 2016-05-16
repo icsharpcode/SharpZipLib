@@ -1,44 +1,3 @@
-// ZipInputStream.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This file was translated from java, it was part of the GNU Classpath
-// Copyright (C) 2001 Free Software Foundation, Inc.
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
-// HISTORY
-//	2010-05-25	Z-1663	Fixed exception when testing local header compressed size of -1
-
 using System;
 using System.IO;
 using ICSharpCode.SharpZipLib.Checksum;
@@ -146,14 +105,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Optional password used for encryption when non-null
 		/// </summary>
 		/// <value>A password for all encrypted <see cref="ZipEntry">entries </see> in this <see cref="ZipInputStream"/></value>
-		public string Password
-		{
-			get
-			{
+		public string Password {
+			get {
 				return password;
 			}
-			set
-			{
+			set {
 				password = value;
 			}
 		}
@@ -166,10 +122,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The entry can only be decompressed if the library supports the zip features required to extract it.
 		/// See the <see cref="ZipEntry.Version">ZipEntry Version</see> property for more details.
 		/// </remarks>
-		public bool CanDecompressEntry
-		{
-			get
-			{
+		public bool CanDecompressEntry {
+			get {
 				return (entry != null) && entry.CanDecompress;
 			}
 		}
@@ -412,10 +366,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Returns 1 if there is an entry available
 		/// Otherwise returns 0.
 		/// </summary>
-		public override int Available
-		{
-			get
-			{
+		public override int Available {
+			get {
 				return entry != null ? 1 : 0;
 			}
 		}
@@ -425,10 +377,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <exception cref="ZipException">Thrown if the entry size is not known.</exception>
 		/// <exception cref="InvalidOperationException">Thrown if no entry is currently available.</exception>
-		public override long Length
-		{
-			get
-			{
+		public override long Length {
+			get {
 				if (entry != null) {
 					if (entry.Size >= 0) {
 						return entry.Size;
@@ -593,45 +543,45 @@ namespace ICSharpCode.SharpZipLib.Zip
 			bool finished = false;
 
 			switch (method) {
-			case (int)CompressionMethod.Deflated:
-				count = base.Read(buffer, offset, count);
-				if (count <= 0) {
-					if (!inf.IsFinished) {
-						throw new ZipException("Inflater not finished!");
+				case (int)CompressionMethod.Deflated:
+					count = base.Read(buffer, offset, count);
+					if (count <= 0) {
+						if (!inf.IsFinished) {
+							throw new ZipException("Inflater not finished!");
+						}
+						inputBuffer.Available = inf.RemainingInput;
+
+						// A csize of -1 is from an unpatched local header
+						if ((flags & 8) == 0 &&
+							(inf.TotalIn != csize && csize != 0xFFFFFFFF && csize != -1 || inf.TotalOut != size)) {
+							throw new ZipException("Size mismatch: " + csize + ";" + size + " <-> " + inf.TotalIn + ";" + inf.TotalOut);
+						}
+						inf.Reset();
+						finished = true;
 					}
-					inputBuffer.Available = inf.RemainingInput;
+					break;
 
-					// A csize of -1 is from an unpatched local header
-					if ((flags & 8) == 0 &&
-						(inf.TotalIn != csize && csize != 0xFFFFFFFF && csize != -1 || inf.TotalOut != size)) {
-						throw new ZipException("Size mismatch: " + csize + ";" + size + " <-> " + inf.TotalIn + ";" + inf.TotalOut);
+				case (int)CompressionMethod.Stored:
+					if ((count > csize) && (csize >= 0)) {
+						count = (int)csize;
 					}
-					inf.Reset();
-					finished = true;
-				}
-				break;
 
-			case (int)CompressionMethod.Stored:
-				if ((count > csize) && (csize >= 0)) {
-					count = (int)csize;
-				}
-
-				if (count > 0) {
-					count = inputBuffer.ReadClearTextBuffer(buffer, offset, count);
 					if (count > 0) {
-						csize -= count;
-						size -= count;
+						count = inputBuffer.ReadClearTextBuffer(buffer, offset, count);
+						if (count > 0) {
+							csize -= count;
+							size -= count;
+						}
 					}
-				}
 
-				if (csize == 0) {
-					finished = true;
-				} else {
-					if (count < 0) {
-						throw new ZipException("EOF in stored block");
+					if (csize == 0) {
+						finished = true;
+					} else {
+						if (count < 0) {
+							throw new ZipException("EOF in stored block");
+						}
 					}
-				}
-				break;
+					break;
 			}
 
 			if (count > 0) {

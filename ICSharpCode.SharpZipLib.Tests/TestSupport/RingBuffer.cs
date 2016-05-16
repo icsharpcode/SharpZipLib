@@ -271,58 +271,47 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// <summary>
 		/// Gets a value indicating wether the buffer is empty or not.
 		/// </summary>
-		public bool IsEmpty
-		{
+		public bool IsEmpty {
 			get { return count_ == 0; }
 		}
 
-		public bool IsFull
-		{
-			get
-			{
+		public bool IsFull {
+			get {
 				return (count_ == array_.Length);
 			}
 		}
 
-		public bool IsClosed
-		{
+		public bool IsClosed {
 			get { return isClosed_; }
 		}
 
 		/// <summary>
 		/// Gets the number of elements in the buffer.
 		/// </summary>
-		public int Count
-		{
-			get
-			{
+		public int Count {
+			get {
 				return count_;
 			}
 		}
 
 
-		public int Length
-		{
+		public int Length {
 			get { return array_.Length; }
 		}
 
-		public long BytesWritten
-		{
+		public long BytesWritten {
 			get { return bytesWritten_; }
 		}
 
-		public long BytesRead
-		{
+		public long BytesRead {
 			get { return bytesRead_; }
 		}
 
 		/// <summary>
 		/// Indexer - Get an element from the tail of the RingBuffer.
 		/// </summary>
-		public byte this[int index]
-		{
-			get
-			{
+		public byte this[int index] {
+			get {
 				if ((index < 0) || (index >= array_.Length)) {
 					throw new ArgumentOutOfRangeException(nameof(index));
 				}

@@ -54,43 +54,35 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			original = new byte[0];
 		}
 
-		public byte[] Original
-		{
+		public byte[] Original {
 			get { return original; }
 		}
 
-		public CompressionMethod Method
-		{
+		public CompressionMethod Method {
 			get { return method; }
 		}
 
-		public int CompressionLevel
-		{
+		public int CompressionLevel {
 			get { return compressionLevel; }
 		}
 
-		public int Size
-		{
+		public int Size {
 			get { return size; }
 		}
 
-		public string Password
-		{
+		public string Password {
 			get { return password; }
 		}
 
-		bool Random
-		{
+		bool Random {
 			get { return random; }
 		}
 
-		public long Crc
-		{
+		public long Crc {
 			get { return crc; }
 		}
 
-		public bool IsDirectory
-		{
+		public bool IsDirectory {
 			get { return isDirectory_; }
 		}
 

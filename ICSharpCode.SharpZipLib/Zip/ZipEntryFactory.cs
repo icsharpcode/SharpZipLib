@@ -1,47 +1,5 @@
-// ZipEntryFactory.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This file was translated from java, it was part of the GNU Classpath
-// Copyright (C) 2001 Free Software Foundation, Inc.
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
-// HISTORY
-//	2012-11-29	Z-1684	Added MakeFileEntry(string fileName, string entryName, bool useFileSystem)
-
 using System;
 using System.IO;
-
 using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
@@ -133,11 +91,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>
 		/// Setting this property to null will cause a default <see cref="ZipNameTransform">name transform</see> to be used.
 		/// </remarks>
-		public INameTransform NameTransform
-		{
+		public INameTransform NameTransform {
 			get { return nameTransform_; }
-			set
-			{
+			set {
 				if (value == null) {
 					nameTransform_ = new ZipNameTransform();
 				} else {
@@ -149,8 +105,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get / set the <see cref="TimeSetting"/> in use.
 		/// </summary>
-		public TimeSetting Setting
-		{
+		public TimeSetting Setting {
 			get { return timeSetting_; }
 			set { timeSetting_ = value; }
 		}
@@ -158,11 +113,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get / set the <see cref="DateTime"/> value to use when <see cref="Setting"/> is set to <see cref="TimeSetting.Fixed"/>
 		/// </summary>
-		public DateTime FixedDateTime
-		{
+		public DateTime FixedDateTime {
 			get { return fixedDateTime_; }
-			set
-			{
+			set {
 				if (value.Year < 1970) {
 					throw new ArgumentException("Value is too old to be valid", nameof(value));
 				}
@@ -174,8 +127,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// A bitmask defining the attributes to be retrieved from the actual file.
 		/// </summary>
 		/// <remarks>The default is to get all possible attributes from the actual file.</remarks>
-		public int GetAttributes
-		{
+		public int GetAttributes {
 			get { return getAttributes_; }
 			set { getAttributes_ = value; }
 		}
@@ -184,8 +136,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// A bitmask defining which attributes are to be set on.
 		/// </summary>
 		/// <remarks>By default no attributes are set on.</remarks>
-		public int SetAttributes
-		{
+		public int SetAttributes {
 			get { return setAttributes_; }
 			set { setAttributes_ = value; }
 		}
@@ -193,8 +144,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get set a value indicating wether unidoce text should be set on.
 		/// </summary>
-		public bool IsUnicodeText
-		{
+		public bool IsUnicodeText {
 			get { return isUnicodeText_; }
 			set { isUnicodeText_ = value; }
 		}
@@ -246,36 +196,36 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if ((fi != null) && fi.Exists) {
 				switch (timeSetting_) {
-				case TimeSetting.CreateTime:
-					result.DateTime = fi.CreationTime;
-					break;
+					case TimeSetting.CreateTime:
+						result.DateTime = fi.CreationTime;
+						break;
 
-				case TimeSetting.CreateTimeUtc:
-					result.DateTime = fi.CreationTimeUtc;
-					break;
+					case TimeSetting.CreateTimeUtc:
+						result.DateTime = fi.CreationTimeUtc;
+						break;
 
-				case TimeSetting.LastAccessTime:
-					result.DateTime = fi.LastAccessTime;
-					break;
+					case TimeSetting.LastAccessTime:
+						result.DateTime = fi.LastAccessTime;
+						break;
 
-				case TimeSetting.LastAccessTimeUtc:
-					result.DateTime = fi.LastAccessTimeUtc;
-					break;
+					case TimeSetting.LastAccessTimeUtc:
+						result.DateTime = fi.LastAccessTimeUtc;
+						break;
 
-				case TimeSetting.LastWriteTime:
-					result.DateTime = fi.LastWriteTime;
-					break;
+					case TimeSetting.LastWriteTime:
+						result.DateTime = fi.LastWriteTime;
+						break;
 
-				case TimeSetting.LastWriteTimeUtc:
-					result.DateTime = fi.LastWriteTimeUtc;
-					break;
+					case TimeSetting.LastWriteTimeUtc:
+						result.DateTime = fi.LastWriteTimeUtc;
+						break;
 
-				case TimeSetting.Fixed:
-					result.DateTime = fixedDateTime_;
-					break;
+					case TimeSetting.Fixed:
+						result.DateTime = fixedDateTime_;
+						break;
 
-				default:
-					throw new ZipException("Unhandled time setting in MakeFileEntry");
+					default:
+						throw new ZipException("Unhandled time setting in MakeFileEntry");
 				}
 
 				result.Size = fi.Length;
@@ -330,36 +280,36 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if ((di != null) && di.Exists) {
 				switch (timeSetting_) {
-				case TimeSetting.CreateTime:
-					result.DateTime = di.CreationTime;
-					break;
+					case TimeSetting.CreateTime:
+						result.DateTime = di.CreationTime;
+						break;
 
-				case TimeSetting.CreateTimeUtc:
-					result.DateTime = di.CreationTimeUtc;
-					break;
+					case TimeSetting.CreateTimeUtc:
+						result.DateTime = di.CreationTimeUtc;
+						break;
 
-				case TimeSetting.LastAccessTime:
-					result.DateTime = di.LastAccessTime;
-					break;
+					case TimeSetting.LastAccessTime:
+						result.DateTime = di.LastAccessTime;
+						break;
 
-				case TimeSetting.LastAccessTimeUtc:
-					result.DateTime = di.LastAccessTimeUtc;
-					break;
+					case TimeSetting.LastAccessTimeUtc:
+						result.DateTime = di.LastAccessTimeUtc;
+						break;
 
-				case TimeSetting.LastWriteTime:
-					result.DateTime = di.LastWriteTime;
-					break;
+					case TimeSetting.LastWriteTime:
+						result.DateTime = di.LastWriteTime;
+						break;
 
-				case TimeSetting.LastWriteTimeUtc:
-					result.DateTime = di.LastWriteTimeUtc;
-					break;
+					case TimeSetting.LastWriteTimeUtc:
+						result.DateTime = di.LastWriteTimeUtc;
+						break;
 
-				case TimeSetting.Fixed:
-					result.DateTime = fixedDateTime_;
-					break;
+					case TimeSetting.Fixed:
+						result.DateTime = fixedDateTime_;
+						break;
 
-				default:
-					throw new ZipException("Unhandled time setting in MakeDirectoryEntry");
+					default:
+						throw new ZipException("Unhandled time setting in MakeDirectoryEntry");
 				}
 
 				externalAttributes = ((int)di.Attributes & getAttributes_);

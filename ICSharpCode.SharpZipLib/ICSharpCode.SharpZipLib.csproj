@@ -85,8 +85,6 @@
     <Compile Include="Checksum\Crc32.cs" />
     <Compile Include="Checksum\IChecksum.cs" />
     <Compile Include="Checksum\BZip2Crc.cs" />
-    <Compile Include="CompressionLevel.cs" />
-    <Compile Include="CompressionMode.cs" />
     <Compile Include="Core\FileSystemScanner.cs" />
     <Compile Include="Core\INameTransform.cs" />
     <Compile Include="Core\IScanFilter.cs" />
@@ -140,7 +138,6 @@
     <Compile Include="Zip\ZipInputStream.cs" />
     <Compile Include="Zip\ZipNameTransform.cs" />
     <Compile Include="Zip\ZipOutputStream.cs" />
-    <Compile Include="ZipArchiveMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Documentation\SharpZipLibCodeMap.dgml">

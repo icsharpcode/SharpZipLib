@@ -55,11 +55,9 @@ The [SharpZipLib homepage](http://icsharpcode.github.io/SharpZipLib/) has precom
 License
 -------
 
-This software is released under the [GNU General Public License, version 2](http://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) with an exception which allows linking with non GPL programs. The exception to the GPL is as follows:
+This software is now released under the [MIT License](https://opensource.org/licenses/MIT)
 
->Linking this library statically or dynamically with other modules is making a combined work based on this library. Thus, the terms and conditions of the GNU General Public License cover the whole combination.
-
->As a special exception, the copyright holders of this library give you permission to link this library with independent modules to produce an executable, regardless of the license terms of these independent modules, and to copy and distribute the resulting executable under terms of your choice, provided that you also meet, for each linked independent module, the terms and conditions of the license of that module.  An independent module is a module which is not derived from or based on this library.  If you modify this library, you may extend this exception to your version of the library, but you are not obligated to do so. If you do not wish to do so, delete this exception statement from your version.
+Previous versions were released under the [GNU General Public License, version 2](http://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) with an [exception](http://www.gnu.org/software/classpath/license.html) which allowed linking with non-GPL programs. 
 
 Namespace layout
 ----------------
@@ -81,18 +79,4 @@ Credits
 
 SharpZipLib was initially developed by [Mike Krüger](http://www.icsharpcode.net/pub/relations/krueger.aspx). Past maintainers are John Reilly and David Pierson. The current maintainer is Neil McNeight.
 
-Much existing Java code helped to speed the creation of this library. Therefore credits fly out to other people.
-
-Zip/GZip implementation:
-
-A Java version of the zlib which was originally created by the [Free Software Foundation (FSF)](http://www.fsf.org). So all credits should go to the FSF and the authors who have worked on this piece of code.
-
-Without the zlib authors the Java zlib wouldn't be possible:
-[Jean-loup Gailly](http://gailly.net/), [Mark Adler](http://en.wikipedia.org/wiki/Mark_Adler), and contributors of zlib.
-
-[Julian R Seward](julian@bzip.org) for the bzip2 implementation, and the Java port by [Keiron Liddle](keiron@aftexsw.com) of Aftex Software.
-
-Credits for the tar implementation fly out to :
-[Timothy Gerard Endres](time@gjt.org)
-
-Special thanks to [Christoph Wille](http://www.icsharpcode.net/pub/relations/wille.aspx) for beta testing, suggestions, the setup of the web site, and for his tireless efforts at cat herding.
+And thanks to all the people that contributed features, bug fixes and issue reports.

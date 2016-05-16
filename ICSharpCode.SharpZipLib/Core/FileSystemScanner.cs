@@ -1,39 +1,3 @@
-// FileSystemScanner.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
-
 using System;
 
 namespace ICSharpCode.SharpZipLib.Core
@@ -58,16 +22,14 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// The file or directory name for this event.
 		/// </summary>
-		public string Name
-		{
+		public string Name {
 			get { return name_; }
 		}
 
 		/// <summary>
 		/// Get set a value indicating if scanning should continue or not.
 		/// </summary>
-		public bool ContinueRunning
-		{
+		public bool ContinueRunning {
 			get { return continueRunning_; }
 			set { continueRunning_ = value; }
 		}
@@ -101,16 +63,14 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// The name for this event if known.
 		/// </summary>
-		public string Name
-		{
+		public string Name {
 			get { return name_; }
 		}
 
 		/// <summary>
 		/// Get set a value indicating wether scanning should continue or not.
 		/// </summary>
-		public bool ContinueRunning
-		{
+		public bool ContinueRunning {
 			get { return continueRunning_; }
 			set { continueRunning_ = value; }
 		}
@@ -119,10 +79,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Get a percentage representing how much of the <see cref="Target"></see> has been processed
 		/// </summary>
 		/// <value>0.0 to 100.0 percent; 0 if target is not known.</value>
-		public float PercentComplete
-		{
-			get
-			{
+		public float PercentComplete {
+			get {
 				float result;
 				if (target_ <= 0) {
 					result = 0;
@@ -136,8 +94,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// The number of bytes processed so far
 		/// </summary>
-		public long Processed
-		{
+		public long Processed {
 			get { return processed_; }
 		}
 
@@ -145,8 +102,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// The number of bytes to process.
 		/// </summary>
 		/// <remarks>Target may be 0 or negative if the value isnt known.</remarks>
-		public long Target
-		{
+		public long Target {
 			get { return target_; }
 		}
 
@@ -179,8 +135,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Get a value indicating if the directory contains any matching files or not.
 		/// </summary>
-		public bool HasMatchingFiles
-		{
+		public bool HasMatchingFiles {
 			get { return hasMatchingFiles_; }
 		}
 
@@ -213,24 +168,21 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// The applicable name.
 		/// </summary>
-		public string Name
-		{
+		public string Name {
 			get { return name_; }
 		}
 
 		/// <summary>
 		/// The applicable exception.
 		/// </summary>
-		public Exception Exception
-		{
+		public Exception Exception {
 			get { return exception_; }
 		}
 
 		/// <summary>
 		/// Get / set a value indicating wether scanning should continue.
 		/// </summary>
-		public bool ContinueRunning
-		{
+		public bool ContinueRunning {
 			get { return continueRunning_; }
 			set { continueRunning_ = value; }
 		}

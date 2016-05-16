@@ -1,43 +1,4 @@
-// Inflater.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This file was translated from java, it was part of the GNU Classpath
-// Copyright (C) 2001 Free Software Foundation, Inc.
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
 using System;
-
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
@@ -307,81 +268,81 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			while (free >= 258) {
 				int symbol;
 				switch (mode) {
-				case DECODE_HUFFMAN:
-					// This is the inner loop so it is optimized a bit
-					while (((symbol = litlenTree.GetSymbol(input)) & ~0xff) == 0) {
-						outputWindow.Write(symbol);
-						if (--free < 258) {
-							return true;
+					case DECODE_HUFFMAN:
+						// This is the inner loop so it is optimized a bit
+						while (((symbol = litlenTree.GetSymbol(input)) & ~0xff) == 0) {
+							outputWindow.Write(symbol);
+							if (--free < 258) {
+								return true;
+							}
 						}
-					}
 
-					if (symbol < 257) {
+						if (symbol < 257) {
+							if (symbol < 0) {
+								return false;
+							} else {
+								// symbol == 256: end of block
+								distTree = null;
+								litlenTree = null;
+								mode = DECODE_BLOCKS;
+								return true;
+							}
+						}
+
+						try {
+							repLength = CPLENS[symbol - 257];
+							neededBits = CPLEXT[symbol - 257];
+						} catch (Exception) {
+							throw new SharpZipBaseException("Illegal rep length code");
+						}
+						goto case DECODE_HUFFMAN_LENBITS; // fall through
+
+					case DECODE_HUFFMAN_LENBITS:
+						if (neededBits > 0) {
+							mode = DECODE_HUFFMAN_LENBITS;
+							int i = input.PeekBits(neededBits);
+							if (i < 0) {
+								return false;
+							}
+							input.DropBits(neededBits);
+							repLength += i;
+						}
+						mode = DECODE_HUFFMAN_DIST;
+						goto case DECODE_HUFFMAN_DIST; // fall through
+
+					case DECODE_HUFFMAN_DIST:
+						symbol = distTree.GetSymbol(input);
 						if (symbol < 0) {
 							return false;
-						} else {
-							// symbol == 256: end of block
-							distTree = null;
-							litlenTree = null;
-							mode = DECODE_BLOCKS;
-							return true;
 						}
-					}
 
-					try {
-						repLength = CPLENS[symbol - 257];
-						neededBits = CPLEXT[symbol - 257];
-					} catch (Exception) {
-						throw new SharpZipBaseException("Illegal rep length code");
-					}
-					goto case DECODE_HUFFMAN_LENBITS; // fall through
-
-				case DECODE_HUFFMAN_LENBITS:
-					if (neededBits > 0) {
-						mode = DECODE_HUFFMAN_LENBITS;
-						int i = input.PeekBits(neededBits);
-						if (i < 0) {
-							return false;
+						try {
+							repDist = CPDIST[symbol];
+							neededBits = CPDEXT[symbol];
+						} catch (Exception) {
+							throw new SharpZipBaseException("Illegal rep dist code");
 						}
-						input.DropBits(neededBits);
-						repLength += i;
-					}
-					mode = DECODE_HUFFMAN_DIST;
-					goto case DECODE_HUFFMAN_DIST; // fall through
 
-				case DECODE_HUFFMAN_DIST:
-					symbol = distTree.GetSymbol(input);
-					if (symbol < 0) {
-						return false;
-					}
+						goto case DECODE_HUFFMAN_DISTBITS; // fall through
 
-					try {
-						repDist = CPDIST[symbol];
-						neededBits = CPDEXT[symbol];
-					} catch (Exception) {
-						throw new SharpZipBaseException("Illegal rep dist code");
-					}
-
-					goto case DECODE_HUFFMAN_DISTBITS; // fall through
-
-				case DECODE_HUFFMAN_DISTBITS:
-					if (neededBits > 0) {
-						mode = DECODE_HUFFMAN_DISTBITS;
-						int i = input.PeekBits(neededBits);
-						if (i < 0) {
-							return false;
+					case DECODE_HUFFMAN_DISTBITS:
+						if (neededBits > 0) {
+							mode = DECODE_HUFFMAN_DISTBITS;
+							int i = input.PeekBits(neededBits);
+							if (i < 0) {
+								return false;
+							}
+							input.DropBits(neededBits);
+							repDist += i;
 						}
-						input.DropBits(neededBits);
-						repDist += i;
-					}
 
-					outputWindow.Repeat(repLength, repDist);
-					free -= repLength;
-					mode = DECODE_HUFFMAN;
-					break;
+						outputWindow.Repeat(repLength, repDist);
+						free -= repLength;
+						mode = DECODE_HUFFMAN;
+						break;
 
-				default:
-					throw new SharpZipBaseException("Inflater unknown mode");
+					default:
+						throw new SharpZipBaseException("Inflater unknown mode");
 				}
 			}
 			return true;
@@ -428,107 +389,107 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		private bool Decode()
 		{
 			switch (mode) {
-			case DECODE_HEADER:
-				return DecodeHeader();
+				case DECODE_HEADER:
+					return DecodeHeader();
 
-			case DECODE_DICT:
-				return DecodeDict();
+				case DECODE_DICT:
+					return DecodeDict();
 
-			case DECODE_CHKSUM:
-				return DecodeChksum();
+				case DECODE_CHKSUM:
+					return DecodeChksum();
 
-			case DECODE_BLOCKS:
-				if (isLastBlock) {
-					if (noHeader) {
-						mode = FINISHED;
-						return false;
-					} else {
-						input.SkipToByteBoundary();
-						neededBits = 32;
-						mode = DECODE_CHKSUM;
-						return true;
+				case DECODE_BLOCKS:
+					if (isLastBlock) {
+						if (noHeader) {
+							mode = FINISHED;
+							return false;
+						} else {
+							input.SkipToByteBoundary();
+							neededBits = 32;
+							mode = DECODE_CHKSUM;
+							return true;
+						}
 					}
-				}
 
-				int type = input.PeekBits(3);
-				if (type < 0) {
-					return false;
-				}
-				input.DropBits(3);
+					int type = input.PeekBits(3);
+					if (type < 0) {
+						return false;
+					}
+					input.DropBits(3);
 
-				isLastBlock |= (type & 1) != 0;
-				switch (type >> 1) {
-				case DeflaterConstants.STORED_BLOCK:
-					input.SkipToByteBoundary();
-					mode = DECODE_STORED_LEN1;
-					break;
-				case DeflaterConstants.STATIC_TREES:
-					litlenTree = InflaterHuffmanTree.defLitLenTree;
-					distTree = InflaterHuffmanTree.defDistTree;
+					isLastBlock |= (type & 1) != 0;
+					switch (type >> 1) {
+						case DeflaterConstants.STORED_BLOCK:
+							input.SkipToByteBoundary();
+							mode = DECODE_STORED_LEN1;
+							break;
+						case DeflaterConstants.STATIC_TREES:
+							litlenTree = InflaterHuffmanTree.defLitLenTree;
+							distTree = InflaterHuffmanTree.defDistTree;
+							mode = DECODE_HUFFMAN;
+							break;
+						case DeflaterConstants.DYN_TREES:
+							dynHeader = new InflaterDynHeader();
+							mode = DECODE_DYN_HEADER;
+							break;
+						default:
+							throw new SharpZipBaseException("Unknown block type " + type);
+					}
+					return true;
+
+				case DECODE_STORED_LEN1: {
+						if ((uncomprLen = input.PeekBits(16)) < 0) {
+							return false;
+						}
+						input.DropBits(16);
+						mode = DECODE_STORED_LEN2;
+					}
+					goto case DECODE_STORED_LEN2; // fall through
+
+				case DECODE_STORED_LEN2: {
+						int nlen = input.PeekBits(16);
+						if (nlen < 0) {
+							return false;
+						}
+						input.DropBits(16);
+						if (nlen != (uncomprLen ^ 0xffff)) {
+							throw new SharpZipBaseException("broken uncompressed block");
+						}
+						mode = DECODE_STORED;
+					}
+					goto case DECODE_STORED; // fall through
+
+				case DECODE_STORED: {
+						int more = outputWindow.CopyStored(input, uncomprLen);
+						uncomprLen -= more;
+						if (uncomprLen == 0) {
+							mode = DECODE_BLOCKS;
+							return true;
+						}
+						return !input.IsNeedingInput;
+					}
+
+				case DECODE_DYN_HEADER:
+					if (!dynHeader.Decode(input)) {
+						return false;
+					}
+
+					litlenTree = dynHeader.BuildLitLenTree();
+					distTree = dynHeader.BuildDistTree();
 					mode = DECODE_HUFFMAN;
-					break;
-				case DeflaterConstants.DYN_TREES:
-					dynHeader = new InflaterDynHeader();
-					mode = DECODE_DYN_HEADER;
-					break;
-				default:
-					throw new SharpZipBaseException("Unknown block type " + type);
-				}
-				return true;
+					goto case DECODE_HUFFMAN; // fall through
 
-			case DECODE_STORED_LEN1: {
-					if ((uncomprLen = input.PeekBits(16)) < 0) {
-						return false;
-					}
-					input.DropBits(16);
-					mode = DECODE_STORED_LEN2;
-				}
-				goto case DECODE_STORED_LEN2; // fall through
+				case DECODE_HUFFMAN:
+				case DECODE_HUFFMAN_LENBITS:
+				case DECODE_HUFFMAN_DIST:
+				case DECODE_HUFFMAN_DISTBITS:
+					return DecodeHuffman();
 
-			case DECODE_STORED_LEN2: {
-					int nlen = input.PeekBits(16);
-					if (nlen < 0) {
-						return false;
-					}
-					input.DropBits(16);
-					if (nlen != (uncomprLen ^ 0xffff)) {
-						throw new SharpZipBaseException("broken uncompressed block");
-					}
-					mode = DECODE_STORED;
-				}
-				goto case DECODE_STORED; // fall through
-
-			case DECODE_STORED: {
-					int more = outputWindow.CopyStored(input, uncomprLen);
-					uncomprLen -= more;
-					if (uncomprLen == 0) {
-						mode = DECODE_BLOCKS;
-						return true;
-					}
-					return !input.IsNeedingInput;
-				}
-
-			case DECODE_DYN_HEADER:
-				if (!dynHeader.Decode(input)) {
+				case FINISHED:
 					return false;
-				}
 
-				litlenTree = dynHeader.BuildLitLenTree();
-				distTree = dynHeader.BuildDistTree();
-				mode = DECODE_HUFFMAN;
-				goto case DECODE_HUFFMAN; // fall through
-
-			case DECODE_HUFFMAN:
-			case DECODE_HUFFMAN_LENBITS:
-			case DECODE_HUFFMAN_DIST:
-			case DECODE_HUFFMAN_DISTBITS:
-				return DecodeHuffman();
-
-			case FINISHED:
-				return false;
-
-			default:
-				throw new SharpZipBaseException("Inflater.Decode unknown mode");
+				default:
+					throw new SharpZipBaseException("Inflater.Decode unknown mode");
 			}
 		}
 
@@ -745,10 +706,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// You should then call setInput(). 
 		/// NOTE: This method also returns true when the stream is finished.
 		/// </summary>
-		public bool IsNeedingInput
-		{
-			get
-			{
+		public bool IsNeedingInput {
+			get {
 				return input.IsNeedingInput;
 			}
 		}
@@ -756,10 +715,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Returns true, if a preset dictionary is needed to inflate the input.
 		/// </summary>
-		public bool IsNeedingDictionary
-		{
-			get
-			{
+		public bool IsNeedingDictionary {
+			get {
 				return mode == DECODE_DICT && neededBits == 0;
 			}
 		}
@@ -768,10 +725,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// Returns true, if the inflater has finished.  This means, that no
 		/// input is needed and no output can be produced.
 		/// </summary>
-		public bool IsFinished
-		{
-			get
-			{
+		public bool IsFinished {
+			get {
 				return mode == FINISHED && outputWindow.GetAvailable() == 0;
 			}
 		}
@@ -785,10 +740,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <returns>
 		/// the adler checksum.
 		/// </returns>
-		public int Adler
-		{
-			get
-			{
+		public int Adler {
+			get {
 				return IsNeedingDictionary ? readAdler : (int)adler.Value;
 			}
 		}
@@ -799,10 +752,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <returns>
 		/// the total number of output bytes.
 		/// </returns>
-		public long TotalOut
-		{
-			get
-			{
+		public long TotalOut {
+			get {
 				return totalOut;
 			}
 		}
@@ -813,10 +764,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <returns>
 		/// The total number of bytes of processed input bytes.
 		/// </returns>
-		public long TotalIn
-		{
-			get
-			{
+		public long TotalIn {
+			get {
 				return totalIn - (long)RemainingInput;
 			}
 		}
@@ -829,11 +778,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <returns>
 		/// The number of bytes of the input which have not been processed.
 		/// </returns>
-		public int RemainingInput
-		{
+		public int RemainingInput {
 			// TODO: This should be a long?
-			get
-			{
+			get {
 				return input.AvailableBytes;
 			}
 		}

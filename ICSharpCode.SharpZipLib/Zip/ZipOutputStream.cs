@@ -1,50 +1,6 @@
-// ZipOutputStream.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This file was translated from java, it was part of the GNU Classpath
-// Copyright (C) 2001 Free Software Foundation, Inc.
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
-// HISTORY
-//	22-12-2009	Z-1649	Added AES support
-//	22-02-2010	Z-1648	Zero byte entries would create invalid zip files
-//	27-07-2012	Z-1724	Compressed size was incorrect in local header when CRC and Size are known
-
 using System;
 using System.IO;
 using System.Collections;
-
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
@@ -123,10 +79,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Gets a flag value of true if the central header has been added for this archive; false if it has not been added.
 		/// </summary>
 		/// <remarks>No further entries can be added once this has been done.</remarks>
-		public bool IsFinished
-		{
-			get
-			{
+		public bool IsFinished {
+			get {
 				return entries == null;
 			}
 		}
@@ -181,8 +135,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// If backwards compatability is an issue be careful when adding <see cref="ZipEntry.Size">entries</see> to an archive.
 		/// Setting this property to off is workable but less desirable as in those circumstances adding a file
 		/// larger then 4GB will fail.</remarks>
-		public UseZip64 UseZip64
-		{
+		public UseZip64 UseZip64 {
 			get { return useZip64_; }
 			set { useZip64_ = value; }
 		}
@@ -636,17 +589,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 			size += count;
 
 			switch (curMethod) {
-			case CompressionMethod.Deflated:
-				base.Write(buffer, offset, count);
-				break;
+				case CompressionMethod.Deflated:
+					base.Write(buffer, offset, count);
+					break;
 
-			case CompressionMethod.Stored:
-				if (Password != null) {
-					CopyAndEncrypt(buffer, offset, count);
-				} else {
-					baseOutputStream_.Write(buffer, offset, count);
-				}
-				break;
+				case CompressionMethod.Stored:
+					if (Password != null) {
+						CopyAndEncrypt(buffer, offset, count);
+					} else {
+						baseOutputStream_.Write(buffer, offset, count);
+					}
+					break;
 			}
 		}
 
