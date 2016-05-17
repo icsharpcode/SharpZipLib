@@ -1,7 +1,4 @@
-[![Stories in Ready](https://badge.waffle.io/McNeight/SharpZipLib.png?label=ready&title=Ready)](https://waffle.io/McNeight/SharpZipLib)
-# SharpZipLib
-
-[![Join the chat at https://gitter.im/icsharpcode/SharpZipLib](https://badges.gitter.im/icsharpcode/SharpZipLib.svg)](https://gitter.im/icsharpcode/SharpZipLib?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# SharpZipLib [![Join the chat at https://gitter.im/icsharpcode/SharpZipLib](https://badges.gitter.im/icsharpcode/SharpZipLib.svg)](https://gitter.im/icsharpcode/SharpZipLib?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Stories in Ready](https://badge.waffle.io/icsharpcode/SharpZipLib.svg?label=ready&title=Ready)](http://waffle.io/icsharpcode/SharpZipLib) [![Coverage Status](https://coveralls.io/repos/github/McNeight/SharpZipLib/badge.svg?branch=master)](https://coveralls.io/github/McNeight/SharpZipLib?branch=master)
 
 <table>
   <tr>
@@ -28,10 +25,11 @@
     <td>Mono 4.2.3</td>
   </tr>
   <tr>
-    <td style="text-align:center" rowspan="3">Bitrise (Soon)</td>
+    <td style="text-align:center" rowspan="3">Bitrise</td>
     <td>OSX</td>
     <td>Xamarin.iOS</td>
-    <td style="text-align:center" rowspan="3"></td>
+    <td style="text-align:center" rowspan="3">
+    <a href="https://www.bitrise.io/app/e085f985c0c29473"><img src="https://www.bitrise.io/app/e085f985c0c29473.svg?token=TKMy51lbK4ZU0N2lQi5WNg&branch=master" alt="Bitrise Build Status" /></a></td>
   </tr>
   <tr>
     <td>OSX</td>
@@ -55,9 +53,9 @@ The [SharpZipLib homepage](http://icsharpcode.github.io/SharpZipLib/) has precom
 License
 -------
 
-This software is now released under the [MIT License](https://opensource.org/licenses/MIT)
+This software is now released under the [MIT License](https://opensource.org/licenses/MIT). Please see [issue #103](https://github.com/icsharpcode/SharpZipLib/issues/103) for more information on the relicensing effort.
 
-Previous versions were released under the [GNU General Public License, version 2](http://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) with an [exception](http://www.gnu.org/software/classpath/license.html) which allowed linking with non-GPL programs. 
+Previous versions were released under the [GNU General Public License, version 2](http://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) with an [exception](http://www.gnu.org/software/classpath/license.html) which allowed linking with non-GPL programs.
 
 Namespace layout
 ----------------
@@ -69,6 +67,7 @@ Namespace layout
 |Core utilities / interfaces|ICSharpCode.SharpZipLib.Core.\*|
 |Encryption implementation|ICSharpCode.SharpZipLib.Encryption.\*|
 |GZip implementation|ICSharpCode.SharpZipLib.GZip.\*|
+|LZW implementation|ICSharpCode.SharpZipLib.Lzw.\*|
 |Tar implementation|ICSharpCode.SharpZipLib.Tar.\*|
 |ZIP implementation|ICSharpCode.SharpZipLib.Zip.\*|
 |Inflater/Deflater|ICSharpCode.SharpZipLib.Zip.Compression.\*|
@@ -80,3 +79,7 @@ Credits
 SharpZipLib was initially developed by [Mike Krüger](http://www.icsharpcode.net/pub/relations/krueger.aspx). Past maintainers are John Reilly and David Pierson. The current maintainer is Neil McNeight.
 
 And thanks to all the people that contributed features, bug fixes and issue reports.
+
+Metrics
+-------
+[![Throughput Graph](https://graphs.waffle.io/icsharpcode/SharpZipLib/throughput.svg)](https://waffle.io/icsharpcode/SharpZipLib/metrics/throughput)

@@ -110,6 +110,9 @@ build:
   # MSBuild verbosity level
   verbosity: normal
 
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: B/NQfoRYUnKLGS5KJSJrGBvcYD0Jv+coudjJMY2jf+gqvqDWral9CDmv2i0WovY7
 # scripts to run before build
 before_build:
 - cmd: nuget restore ICSharpCode.SharpZipLib.sln
@@ -154,6 +157,7 @@ before_test:
 # scripts to run after tests
 after_test:
   - cmd: nuget pack Build\ICSharpCode.SharpZipLib.nuspec -BasePath Build -OutputDirectory bin\Release
+  - cmd: packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[*]*" -target:"packages\NUnit.ConsoleRunner.3.2.1\tools\nunit3-console.exe" -targetargs:"/domain:single ICSharpCode.SharpZipLib.Tests/bin/Release/ICSharpCode.SharpZipLib.Tests.dll" -output:coverage.xml
 
 # to run your custom scripts instead of automatic tests
 test_script:
