@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace ICSharpCode.SharpZipLib.Tar
 {
 	/// <summary>
-	/// TarExceptions are used for exceptions specific to tar classes and code.	
+	/// TarException represents exceptions specific to Tar classes and code.
 	/// </summary>
 	[Serializable]
 	public class TarException : SharpZipBaseException
@@ -16,33 +16,32 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
 		protected TarException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
-
 		{
 		}
 
 		/// <summary>
-		/// Initialises a new instance of the TarException class.
+		/// Initialise a new instance of <see cref="TarException" />.
 		/// </summary>
 		public TarException()
 		{
 		}
 
 		/// <summary>
-		/// Initialises a new instance of the TarException class with a specified message.
+		/// Initialise a new instance of <see cref="TarException" /> with its message string.
 		/// </summary>
-		/// <param name="message">The message that describes the error.</param>
+		/// <param name="message">A <see cref="string"/> that describes the error.</param>
 		public TarException(string message)
 			: base(message)
 		{
 		}
 
 		/// <summary>
-		/// 
+		/// Initialise a new instance of <see cref="TarException" />.
 		/// </summary>
-		/// <param name="message">A message describing the error.</param>
-		/// <param name="exception">The exception that is the cause of the current exception.</param>
-		public TarException(string message, Exception exception)
-			: base(message, exception)
+		/// <param name="message">A <see cref="string"/> that describes the error.</param>
+		/// <param name="innerException">The <see cref="Exception"/> that caused this exception.</param>
+		public TarException(string message, Exception innerException)
+			: base(message, innerException)
 		{
 		}
 	}
