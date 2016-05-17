@@ -23,14 +23,14 @@
 		<tags>Compression Library Zip GZip BZip2 Tar</tags>
 	</metadata>
 	<files>
-		<file src="..\bin\Release\ICSharpCode.SharpZipLib.dll" target="lib\Net45\" />
-		<file src="..\bin\Release\ICSharpCode.SharpZipLib.pdb" target="lib\Net45\" />
-		<file src="..\bin\Release\ICSharpCode.SharpZipLib.xml" target="lib\Net45\" />
-		<file src="..\bin\Release\ICSharpCode.SharpZipLib.dll" target="lib\dnx451\" />
-		<file src="..\bin\Release\ICSharpCode.SharpZipLib.pdb" target="lib\dnx451\" />
-		<file src="..\bin\Release\ICSharpCode.SharpZipLib.xml" target="lib\dnx451\" />
-		<file src="..\bin\Release\ICSharpCode.SharpZipLib.dll" target="lib\dnxcore50\" />
-		<file src="..\bin\Release\ICSharpCode.SharpZipLib.pdb" target="lib\dnxcore50\" />
-		<file src="..\bin\Release\ICSharpCode.SharpZipLib.xml" target="lib\dnxcore50\" />
+		<file src="ICSharpCode.SharpZipLib.dll" target="lib\Net45\" />
+		<file src="ICSharpCode.SharpZipLib.pdb" target="lib\Net45\" />
+		<file src="ICSharpCode.SharpZipLib.xml" target="lib\Net45\" />
+		<file src="ICSharpCode.SharpZipLib.dll" target="lib\dnx451\" />
+		<file src="ICSharpCode.SharpZipLib.pdb" target="lib\dnx451\" />
+		<file src="ICSharpCode.SharpZipLib.xml" target="lib\dnx451\" />
+		<file src="ICSharpCode.SharpZipLib.dll" target="lib\dnxcore50\" />
+		<file src="ICSharpCode.SharpZipLib.pdb" target="lib\dnxcore50\" />
+		<file src="ICSharpCode.SharpZipLib.xml" target="lib\dnxcore50\" />
 	</files>
 </package>
