@@ -70,10 +70,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SampleAssemblyInfo.vb">
+      <Link>SampleAssemblyInfo.vb</Link>
+    </Compile>
     <Compile Include="CreateZipFileForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AssemblyInfo.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
     <EmbeddedResource Include="CreateZipFile.MainForm.resources" />
     <EmbeddedResource Include="CreateZipFileForm.resx">
       <SubType>Designer</SubType>
@@ -84,9 +87,7 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="My Project\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
