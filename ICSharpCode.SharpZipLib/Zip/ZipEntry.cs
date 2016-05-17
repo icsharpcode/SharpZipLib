@@ -1,53 +1,8 @@
-// ZipEntry.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This file was translated from java, it was part of the GNU Classpath
-// Copyright (C) 2001 Free Software Foundation, Inc.
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
-// HISTORY
-//	2009-12-22	Z-1649	Added AES support
-//	2010-02-02	DavidP	Changed NTFS Extra Data min length to 4
-//	2012-06-03	Z-1744	Use only the low order byte of "Version Needed to Extract"
-//	2012-07-18	Z-1676	Translate to forward slashes and remove drive from name in constructor
-
 using System;
 using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
-
 	/// <summary>
 	/// Defines known values for the <see cref="HostSystemID"/> property.
 	/// </summary>
@@ -281,10 +236,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get a value indicating wether the entry has a CRC value available.
 		/// </summary>
-		public bool HasCrc
-		{
-			get
-			{
+		public bool HasCrc {
+			get {
 				return (known & Known.Crc) != 0;
 			}
 		}
@@ -294,14 +247,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// A simple helper routine to aid interpretation of <see cref="Flags">flags</see>
 		/// </summary>
 		/// <remarks>This is an assistant that interprets the <see cref="Flags">flags</see> property.</remarks>
-		public bool IsCrypted
-		{
-			get
-			{
+		public bool IsCrypted {
+			get {
 				return (flags & 1) != 0;
 			}
-			set
-			{
+			set {
 				if (value) {
 					flags |= 1;
 				} else {
@@ -315,14 +265,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// encoded in <a href="http://www.unicode.org">unicode UTF8</a>.
 		/// </summary>
 		/// <remarks>This is an assistant that interprets the <see cref="Flags">flags</see> property.</remarks>
-		public bool IsUnicodeText
-		{
-			get
-			{
+		public bool IsUnicodeText {
+			get {
 				return (flags & (int)GeneralBitFlags.UnicodeText) != 0;
 			}
-			set
-			{
+			set {
 				if (value) {
 					flags |= (int)GeneralBitFlags.UnicodeText;
 				} else {
@@ -334,15 +281,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Value used during password checking for PKZIP 2.0 / 'classic' encryption.
 		/// </summary>
-		internal byte CryptoCheckValue
-		{
-			get
-			{
+		internal byte CryptoCheckValue {
+			get {
 				return cryptoCheckValue_;
 			}
 
-			set
-			{
+			set {
 				cryptoCheckValue_ = value;
 			}
 		}
@@ -378,14 +322,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </remarks>
 		/// <seealso cref="IsUnicodeText"></seealso>
 		/// <seealso cref="IsCrypted"></seealso>
-		public int Flags
-		{
-			get
-			{
+		public int Flags {
+			get {
 				return flags;
 			}
-			set
-			{
+			set {
 				flags = value;
 			}
 		}
@@ -394,14 +335,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get/Set index of this entry in Zip file
 		/// </summary>
 		/// <remarks>This is only valid when the entry is part of a <see cref="ZipFile"></see></remarks>
-		public long ZipFileIndex
-		{
-			get
-			{
+		public long ZipFileIndex {
+			get {
 				return zipFileIndex;
 			}
-			set
-			{
+			set {
 				zipFileIndex = value;
 			}
 		}
@@ -409,14 +347,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get/set offset for use in central header
 		/// </summary>
-		public long Offset
-		{
-			get
-			{
+		public long Offset {
+			get {
 				return offset;
 			}
-			set
-			{
+			set {
 				offset = value;
 			}
 		}
@@ -426,10 +361,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The values of this are operating system dependant see
 		/// <see cref="HostSystem">HostSystem</see> for details
 		/// </summary>
-		public int ExternalFileAttributes
-		{
-			get
-			{
+		public int ExternalFileAttributes {
+			get {
 				if ((known & Known.ExternalAttributes) == 0) {
 					return -1;
 				} else {
@@ -437,8 +370,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
-			set
-			{
+			set {
 				externalFileAttributes = value;
 				known |= Known.ExternalAttributes;
 			}
@@ -449,10 +381,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The value / 10 indicates the major version number, and 
 		/// the value mod 10 is the minor version number
 		/// </summary>
-		public int VersionMadeBy
-		{
-			get
-			{
+		public int VersionMadeBy {
+			get {
 				return (versionMadeBy & 0xff);
 			}
 		}
@@ -460,10 +390,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get a value indicating this entry is for a DOS/Windows system.
 		/// </summary>
-		public bool IsDOSEntry
-		{
-			get
-			{
+		public bool IsDOSEntry {
+			get {
 				return ((HostSystem == (int)HostSystemID.Msdos) ||
 					(HostSystem == (int)HostSystemID.WindowsNT));
 			}
@@ -525,15 +453,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <item>remainder - unused</item>
 		/// </list>
 		/// </remarks>
-		public int HostSystem
-		{
-			get
-			{
+		public int HostSystem {
+			get {
 				return (versionMadeBy >> 8) & 0xff;
 			}
 
-			set
-			{
+			set {
 				versionMadeBy &= 0xff;
 				versionMadeBy |= (ushort)((value & 0xff) << 8);
 			}
@@ -569,10 +494,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// 6.3 - File is encrypted using Twofish<br/>
 		/// </remarks>
 		/// <seealso cref="CanDecompress"></seealso>
-		public int Version
-		{
-			get
-			{
+		public int Version {
+			get {
 				// Return recorded version if known.
 				if (versionToExtract != 0) {
 					return versionToExtract & 0x00ff;               // Only lower order byte. High order is O/S file system.
@@ -601,10 +524,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <remarks>This is based on the <see cref="Version"></see> and 
 		/// wether the <see cref="IsCompressionMethodSupported()">compression method</see> is supported.</remarks>
-		public bool CanDecompress
-		{
-			get
-			{
+		public bool CanDecompress {
+			get {
 				return (Version <= ZipConstants.VersionMadeBy) &&
 					((Version == 10) ||
 					(Version == 11) ||
@@ -637,10 +558,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// to store the full entry values.
 		/// </summary>
 		/// <value>A <see cref="bool"/> value of true if a local header requires Zip64 extensions; false if not.</value>
-		public bool LocalHeaderRequiresZip64
-		{
-			get
-			{
+		public bool LocalHeaderRequiresZip64 {
+			get {
 				bool result = forceZip64_;
 
 				if (!result) {
@@ -664,10 +583,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get a value indicating wether the central directory entry requires Zip64 extensions to be stored.
 		/// </summary>
-		public bool CentralHeaderRequiresZip64
-		{
-			get
-			{
+		public bool CentralHeaderRequiresZip64 {
+			get {
 				return LocalHeaderRequiresZip64 || (offset >= uint.MaxValue);
 			}
 		}
@@ -678,10 +595,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>
 		/// The MS-DOS date format can only represent dates between 1/1/1980 and 12/31/2107.
 		/// </remarks>
-		public long DosTime
-		{
-			get
-			{
+		public long DosTime {
+			get {
 				if ((known & Known.Time) == 0) {
 					return 0;
 				} else {
@@ -689,8 +604,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
-			set
-			{
+			set {
 				unchecked {
 					dosTime = (uint)value;
 				}
@@ -709,8 +623,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			get { return dateTime; }
 
-			set
-			{
+			set {
 				var year = (uint)value.Year;
 				var month = (uint)value.Month;
 				var day = (uint)value.Day;
@@ -752,10 +665,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Dos device names like C: should also be removed.
 		/// See the <see cref="ZipNameTransform"/> class, or <see cref="CleanName(string)"/>
 		///</remarks>
-		public string Name
-		{
-			get
-			{
+		public string Name {
+			get {
 				return name;
 			}
 		}
@@ -768,14 +679,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </returns>
 		/// <remarks>Setting the size before adding an entry to an archive can help
 		/// avoid compatability problems with some archivers which dont understand Zip64 extensions.</remarks>
-		public long Size
-		{
-			get
-			{
+		public long Size {
+			get {
 				return (known & Known.Size) != 0 ? (long)size : -1L;
 			}
-			set
-			{
+			set {
 				this.size = (ulong)value;
 				this.known |= Known.Size;
 			}
@@ -787,14 +695,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// The compressed entry size or -1 if unknown.
 		/// </returns>
-		public long CompressedSize
-		{
-			get
-			{
+		public long CompressedSize {
+			get {
 				return (known & Known.CompressedSize) != 0 ? (long)compressedSize : -1L;
 			}
-			set
-			{
+			set {
 				this.compressedSize = (ulong)value;
 				this.known |= Known.CompressedSize;
 			}
@@ -809,14 +714,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// The crc value or -1 if unknown.
 		/// </returns>
-		public long Crc
-		{
-			get
-			{
+		public long Crc {
+			get {
 				return (known & Known.Crc) != 0 ? crc & 0xffffffffL : -1L;
 			}
-			set
-			{
+			set {
 				if (((ulong)crc & 0xffffffff00000000L) != 0) {
 					throw new ArgumentOutOfRangeException(nameof(value));
 				}
@@ -833,15 +735,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </returns>
 		/// <see cref="ICSharpCode.SharpZipLib.Zip.CompressionMethod.Deflated"/>
 		/// <see cref="ICSharpCode.SharpZipLib.Zip.CompressionMethod.Stored"/>
-		public CompressionMethod CompressionMethod
-		{
-			get
-			{
+		public CompressionMethod CompressionMethod {
+			get {
 				return method;
 			}
 
-			set
-			{
+			set {
 				if (!IsCompressionMethodSupported(value)) {
 					throw new NotSupportedException("Compression method not supported");
 				}
@@ -854,10 +753,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Returns same value as CompressionMethod except when AES encrypting, which
 		/// places 99 in the method and places the real method in the extra data.
 		/// </summary>
-		internal CompressionMethod CompressionMethodForHeader
-		{
-			get
-			{
+		internal CompressionMethod CompressionMethodForHeader {
+			get {
 				return (AESKeySize > 0) ? CompressionMethod.WinZipAES : method;
 			}
 		}
@@ -871,18 +768,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// Extra data or null if not set.
 		/// </returns>
-		public byte[] ExtraData
-		{
+		public byte[] ExtraData {
 
-			get
-			{
+			get {
 				// TODO: This is slightly safer but less efficient.  Think about wether it should change.
 				//				return (byte[]) extra.Clone();
 				return extra;
 			}
 
-			set
-			{
+			set {
 				if (value == null) {
 					extra = null;
 				} else {
@@ -901,26 +795,35 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// For AES encrypted files returns or sets the number of bits of encryption (128, 192 or 256).
 		/// When setting, only 0 (off), 128 or 256 is supported.
 		/// </summary>
-		public int AESKeySize
-		{
-			get
-			{
+		public int AESKeySize {
+			get {
 				// the strength (1 or 3) is in the entry header
 				switch (_aesEncryptionStrength) {
-				case 0: return 0;   // Not AES
-				case 1: return 128;
-				case 2: return 192; // Not used by WinZip
-				case 3: return 256;
-				default: throw new ZipException("Invalid AESEncryptionStrength " + _aesEncryptionStrength);
+					case 0:
+						return 0;   // Not AES
+					case 1:
+						return 128;
+					case 2:
+						return 192; // Not used by WinZip
+					case 3:
+						return 256;
+					default:
+						throw new ZipException("Invalid AESEncryptionStrength " + _aesEncryptionStrength);
 				}
 			}
-			set
-			{
+			set {
 				switch (value) {
-				case 0: _aesEncryptionStrength = 0; break;
-				case 128: _aesEncryptionStrength = 1; break;
-				case 256: _aesEncryptionStrength = 3; break;
-				default: throw new ZipException("AESKeySize must be 0, 128 or 256: " + value);
+					case 0:
+						_aesEncryptionStrength = 0;
+						break;
+					case 128:
+						_aesEncryptionStrength = 1;
+						break;
+					case 256:
+						_aesEncryptionStrength = 3;
+						break;
+					default:
+						throw new ZipException("AESKeySize must be 0, 128 or 256: " + value);
 				}
 			}
 		}
@@ -929,10 +832,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// AES Encryption strength for storage in extra data in entry header.
 		/// 1 is 128 bit, 2 is 192 bit, 3 is 256 bit.
 		/// </summary>
-		internal byte AESEncryptionStrength
-		{
-			get
-			{
+		internal byte AESEncryptionStrength {
+			get {
 				return (byte)_aesEncryptionStrength;
 			}
 		}
@@ -940,10 +841,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Returns the length of the salt, in bytes 
 		/// </summary>
-		internal int AESSaltLen
-		{
-			get
-			{
+		internal int AESSaltLen {
+			get {
 				// Key size -> Salt length: 128 bits = 8 bytes, 192 bits = 12 bytes, 256 bits = 16 bytes.
 				return AESKeySize / 16;
 			}
@@ -952,10 +851,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Number of extra bytes required to hold the AES Header fields (Salt, Pwd verify, AuthCode)
 		/// </summary>
-		internal int AESOverheadSize
-		{
-			get
-			{
+		internal int AESOverheadSize {
+			get {
 				// File format:
 				//   Bytes		Content
 				// Variable		Salt value
@@ -1107,14 +1004,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// A comment is only available for entries when read via the <see cref="ZipFile"/> class.
 		/// The <see cref="ZipInputStream"/> class doesnt have the comment data available.
 		/// </remarks>
-		public string Comment
-		{
-			get
-			{
+		public string Comment {
+			get {
 				return comment;
 			}
-			set
-			{
+			set {
 				// This test is strictly incorrect as the length is in characters
 				// while the storage limit is in bytes.
 				// While the test is partially correct in that a comment of this length or greater 
@@ -1140,10 +1034,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Currently only dos/windows attributes are tested in this manner.
 		/// The trailing slash convention should always be followed.
 		/// </remarks>
-		public bool IsDirectory
-		{
-			get
-			{
+		public bool IsDirectory {
+			get {
 				int nameLength = name.Length;
 				bool result =
 					((nameLength > 0) &&
@@ -1161,10 +1053,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// This only takes account of DOS/Windows attributes.  Other operating systems are ignored.
 		/// For linux and others the result may be incorrect.
 		/// </remarks>
-		public bool IsFile
-		{
-			get
-			{
+		public bool IsFile {
+			get {
 				return !IsDirectory && !HasDosAttributes(8);
 			}
 		}

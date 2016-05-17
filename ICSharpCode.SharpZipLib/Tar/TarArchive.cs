@@ -1,42 +1,3 @@
-// TarArchive.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-//
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
-// HISTORY
-//	2010-01-28			Added IsStreamOwner
-//	2012-06-07	Z-1675	RootPath was case and slash direction sensitive; trailing slash caused failure
-
 using System;
 using System.IO;
 using System.Text;
@@ -236,10 +197,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// '\n', which is the defacto standard for a TAR archive. This makes
 		/// text files compatible with UNIX.
 		/// </summary>
-		public bool AsciiTranslate
-		{
-			get
-			{
+		public bool AsciiTranslate {
+			get {
 				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
@@ -247,8 +206,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				return asciiTranslate;
 			}
 
-			set
-			{
+			set {
 				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
@@ -278,10 +236,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// PathPrefix is added to entry names as they are written if the value is not null.
 		/// A slash character is appended after PathPrefix 
 		/// </summary>
-		public string PathPrefix
-		{
-			get
-			{
+		public string PathPrefix {
+			get {
 				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
@@ -289,8 +245,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				return pathPrefix;
 			}
 
-			set
-			{
+			set {
 				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
@@ -304,10 +259,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// RootPath is removed from entry names if it is found at the
 		/// beginning of the name.
 		/// </summary>
-		public string RootPath
-		{
-			get
-			{
+		public string RootPath {
+			get {
 				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
@@ -315,8 +268,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				return rootPath;
 			}
 
-			set
-			{
+			set {
 				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
@@ -362,10 +314,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Get or set a value indicating if overrides defined by <see cref="SetUserInfo">SetUserInfo</see> should be applied.
 		/// </summary>
 		/// <remarks>If overrides are not applied then the values as set in each header will be used.</remarks>
-		public bool ApplyUserInfoOverrides
-		{
-			get
-			{
+		public bool ApplyUserInfoOverrides {
+			get {
 				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
@@ -373,8 +323,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				return applyUserInfoOverrides;
 			}
 
-			set
-			{
+			set {
 				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
@@ -391,10 +340,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The current user id.
 		/// </returns>
-		public int UserId
-		{
-			get
-			{
+		public int UserId {
+			get {
 				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
@@ -411,10 +358,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The current user name.
 		/// </returns>
-		public string UserName
-		{
-			get
-			{
+		public string UserName {
+			get {
 				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
@@ -431,10 +376,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The current group id.
 		/// </returns>
-		public int GroupId
-		{
-			get
-			{
+		public int GroupId {
+			get {
 				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
@@ -451,10 +394,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The current group name.
 		/// </returns>
-		public string GroupName
-		{
-			get
-			{
+		public string GroupName {
+			get {
 				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
@@ -473,10 +414,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The record size this archive is using.
 		/// </returns>
-		public int RecordSize
-		{
-			get
-			{
+		public int RecordSize {
+			get {
 				if (isDisposed) {
 					throw new ObjectDisposedException("TarArchive");
 				}
@@ -494,10 +433,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Sets the IsStreamOwner property on the underlying stream.
 		/// Set this to false to prevent the Close of the TarArchive from closing the stream.
 		/// </summary>
-		public bool IsStreamOwner
-		{
-			set
-			{
+		public bool IsStreamOwner {
+			set {
 				if (tarIn != null) {
 					tarIn.IsStreamOwner = value;
 				} else {
@@ -891,20 +828,3 @@ namespace ICSharpCode.SharpZipLib.Tar
 		#endregion
 	}
 }
-
-
-/* The original Java file had this header:
-	** Authored by Timothy Gerard Endres
-	** <mailto:time@gjt.org>  <http://www.trustice.com>
-	**
-	** This work has been placed into the public domain.
-	** You may use this work in any way and for any purpose you wish.
-	**
-	** THIS SOFTWARE IS PROVIDED AS-IS WITHOUT WARRANTY OF ANY KIND,
-	** NOT EVEN THE IMPLIED WARRANTY OF MERCHANTABILITY. THE AUTHOR
-	** OF THIS SOFTWARE, ASSUMES _NO_ RESPONSIBILITY FOR ANY
-	** CONSEQUENCE RESULTING FROM THE USE, MODIFICATION, OR
-	** REDISTRIBUTION OF THIS SOFTWARE.
-	**
-	*/
-

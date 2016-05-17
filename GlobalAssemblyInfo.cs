@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyCompany("ICSharpCode")]
 [assembly: AssemblyProduct("SharpZipLib (#ziplib)")]
-[assembly: AssemblyCopyright("Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team")]
+[assembly: AssemblyCopyright("Copyright © 2000-2016 SharpZipLib Contributors")]
 [assembly: AssemblyTrademark("")]
 
 #if DEBUG
@@ -38,11 +38,11 @@ using System.Runtime.InteropServices;
 // Revision: the number of two second intervals since midnight in local time; i.e. 31308 =  17:23:36 local time.
 
 // Specifies the version of the assembly being attributed.
-[assembly: AssemblyVersion("0.87.*")]
+[assembly: AssemblyVersion("1.0.*")]
 
 // Instructs a compiler to use a specific version number for the Win32 file version resource.
 // The Win32 file version is not required to be the same as the assembly's version number.
-[assembly: AssemblyFileVersion("0.87")]
+[assembly: AssemblyFileVersion("1.0")]
 
 // Defines additional version information for an assembly manifest.
-[assembly: AssemblyInformationalVersion("0.87 Cleanup Build")]
+[assembly: AssemblyInformationalVersion("1.0")]

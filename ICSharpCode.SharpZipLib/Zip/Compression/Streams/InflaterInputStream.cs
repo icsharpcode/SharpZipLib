@@ -1,51 +1,9 @@
-// InflaterInputStream.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This file was translated from java, it was part of the GNU Classpath
-// Copyright (C) 2001 Free Software Foundation, Inc.
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
-// HISTORY
-//	11-08-2009	GeoffHart	T9121	Added Multi-member gzip support
-
 using System;
 using System.IO;
 using System.Security.Cryptography;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 {
-
 	/// <summary>
 	/// An input buffer customised for use by <see cref="InflaterInputStream"/>
 	/// </summary>
@@ -83,10 +41,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Get the length of bytes bytes in the <see cref="RawData"/>
 		/// </summary>
-		public int RawLength
-		{
-			get
-			{
+		public int RawLength {
+			get {
 				return rawLength;
 			}
 		}
@@ -95,10 +51,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Get the contents of the raw data buffer.
 		/// </summary>
 		/// <remarks>This may contain encrypted data.</remarks>
-		public byte[] RawData
-		{
-			get
-			{
+		public byte[] RawData {
+			get {
 				return rawData;
 			}
 		}
@@ -106,10 +60,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Get the number of useable bytes in <see cref="ClearText"/>
 		/// </summary>
-		public int ClearTextLength
-		{
-			get
-			{
+		public int ClearTextLength {
+			get {
 				return clearTextLength;
 			}
 		}
@@ -117,10 +69,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Get the contents of the clear text buffer.
 		/// </summary>
-		public byte[] ClearText
-		{
-			get
-			{
+		public byte[] ClearText {
+			get {
 				return clearText;
 			}
 		}
@@ -128,8 +78,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Get/set the number of bytes available
 		/// </summary>
-		public int Available
-		{
+		public int Available {
 			get { return available; }
 			set { available = value; }
 		}
@@ -295,10 +244,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Get/set the <see cref="ICryptoTransform"/> to apply to any data.
 		/// </summary>
 		/// <remarks>Set this value to null to have no transform applied.</remarks>
-		public ICryptoTransform CryptoTransform
-		{
-			set
-			{
+		public ICryptoTransform CryptoTransform {
+			set {
 				cryptoTransform = value;
 				if (cryptoTransform != null) {
 					if (rawData == clearText) {
@@ -414,8 +361,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <remarks>
 		/// The default value is true.
 		/// </remarks>
-		public bool IsStreamOwner
-		{
+		public bool IsStreamOwner {
 			get { return isStreamOwner; }
 			set { isStreamOwner = value; }
 		}
@@ -478,10 +424,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Returns 0 once the end of the stream (EOF) has been reached.
 		/// Otherwise returns 1.
 		/// </summary>
-		public virtual int Available
-		{
-			get
-			{
+		public virtual int Available {
+			get {
 				return inf.IsFinished ? 0 : 1;
 			}
 		}
@@ -508,10 +452,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports reading
 		/// </summary>
-		public override bool CanRead
-		{
-			get
-			{
+		public override bool CanRead {
+			get {
 				return baseInputStream.CanRead;
 			}
 		}
@@ -519,10 +461,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Gets a value of false indicating seeking is not supported for this stream.
 		/// </summary>
-		public override bool CanSeek
-		{
-			get
-			{
+		public override bool CanSeek {
+			get {
 				return false;
 			}
 		}
@@ -530,10 +470,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Gets a value of false indicating that this stream is not writeable.
 		/// </summary>
-		public override bool CanWrite
-		{
-			get
-			{
+		public override bool CanWrite {
+			get {
 				return false;
 			}
 		}
@@ -541,10 +479,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// A value representing the length of the stream in bytes.
 		/// </summary>
-		public override long Length
-		{
-			get
-			{
+		public override long Length {
+			get {
 				return inputBuffer.RawLength;
 			}
 		}
@@ -554,14 +490,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Throws a NotSupportedException when attempting to set the position
 		/// </summary>
 		/// <exception cref="NotSupportedException">Attempting to set the position</exception>
-		public override long Position
-		{
-			get
-			{
+		public override long Position {
+			get {
 				return baseInputStream.Position;
 			}
-			set
-			{
+			set {
 				throw new NotSupportedException("InflaterInputStream Position not supported");
 			}
 		}

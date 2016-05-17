@@ -1,9 +1,9 @@
 ﻿using System.IO;
-using ICSharpCode.SharpZipLib.LZW;
+using ICSharpCode.SharpZipLib.Lzw;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
 
-namespace ICSharpCode.SharpZipLib.Tests.LZW
+namespace ICSharpCode.SharpZipLib.Tests.Lzw
 {
 
 	[TestFixture]

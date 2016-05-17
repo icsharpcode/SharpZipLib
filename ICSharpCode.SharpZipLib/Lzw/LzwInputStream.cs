@@ -1,44 +1,8 @@
-﻿// LzwInputStream.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
-using System;
+﻿using System;
 using System.IO;
 
-namespace ICSharpCode.SharpZipLib.LZW
+namespace ICSharpCode.SharpZipLib.Lzw
 {
-
 	/// <summary>
 	/// This filter stream is used to decompress a LZW format stream.
 	/// Specifically, a stream that uses the LZC compression method.
@@ -86,8 +50,7 @@ namespace ICSharpCode.SharpZipLib.LZW
 		/// <remarks>
 		/// The default value is true.
 		/// </remarks>
-		public bool IsStreamOwner
-		{
+		public bool IsStreamOwner {
 			get { return isStreamOwner; }
 			set { isStreamOwner = value; }
 		}
@@ -130,9 +93,11 @@ namespace ICSharpCode.SharpZipLib.LZW
 		/// <returns>The number of bytes read. Zero signals the end of stream</returns>
 		public override int Read(byte[] buffer, int offset, int count)
 		{
-			if (!headerParsed) ParseHeader();
+			if (!headerParsed)
+				ParseHeader();
 
-			if (eof) return 0;
+			if (eof)
+				return 0;
 
 			int start = offset;
 
@@ -171,7 +136,8 @@ namespace ICSharpCode.SharpZipLib.LZW
 
 
 			// loop, filling local buffer until enough data has been decompressed
-			MainLoop: do {
+			MainLoop:
+			do {
 				if (end < EXTRA) {
 					Fill();
 				}
@@ -224,7 +190,8 @@ namespace ICSharpCode.SharpZipLib.LZW
 
 					// handle first iteration
 					if (lOldCode == -1) {
-						if (code >= 256) throw new LzwException("corrupt input: " + code + " > 255");
+						if (code >= 256)
+							throw new LzwException("corrupt input: " + code + " > 255");
 
 						lFinChar = (byte)(lOldCode = code);
 						buffer[offset++] = lFinChar;
@@ -407,10 +374,8 @@ namespace ICSharpCode.SharpZipLib.LZW
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports reading
 		/// </summary>
-		public override bool CanRead
-		{
-			get
-			{
+		public override bool CanRead {
+			get {
 				return baseInputStream.CanRead;
 			}
 		}
@@ -418,10 +383,8 @@ namespace ICSharpCode.SharpZipLib.LZW
 		/// <summary>
 		/// Gets a value of false indicating seeking is not supported for this stream.
 		/// </summary>
-		public override bool CanSeek
-		{
-			get
-			{
+		public override bool CanSeek {
+			get {
 				return false;
 			}
 		}
@@ -429,10 +392,8 @@ namespace ICSharpCode.SharpZipLib.LZW
 		/// <summary>
 		/// Gets a value of false indicating that this stream is not writeable.
 		/// </summary>
-		public override bool CanWrite
-		{
-			get
-			{
+		public override bool CanWrite {
+			get {
 				return false;
 			}
 		}
@@ -440,10 +401,8 @@ namespace ICSharpCode.SharpZipLib.LZW
 		/// <summary>
 		/// A value representing the length of the stream in bytes.
 		/// </summary>
-		public override long Length
-		{
-			get
-			{
+		public override long Length {
+			get {
 				return got;
 			}
 		}
@@ -453,14 +412,11 @@ namespace ICSharpCode.SharpZipLib.LZW
 		/// Throws a NotSupportedException when attempting to set the position
 		/// </summary>
 		/// <exception cref="NotSupportedException">Attempting to set the position</exception>
-		public override long Position
-		{
-			get
-			{
+		public override long Position {
+			get {
 				return baseInputStream.Position;
 			}
-			set
-			{
+			set {
 				throw new NotSupportedException("InflaterInputStream Position not supported");
 			}
 		}

@@ -1,46 +1,9 @@
-// BZip2InputStream.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
 using System;
 using System.IO;
-
 using ICSharpCode.SharpZipLib.Checksum;
 
 namespace ICSharpCode.SharpZipLib.BZip2
 {
-
 	/// <summary>
 	/// An input stream that decompresses files in the BZip2 format 
 	/// </summary>
@@ -81,8 +44,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// Get/set flag indicating ownership of underlying stream.
 		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
 		/// </summary>
-		public bool IsStreamOwner
-		{
+		public bool IsStreamOwner {
 			get { return isStreamOwner; }
 			set { isStreamOwner = value; }
 		}
@@ -92,10 +54,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Gets a value indicating if the stream supports reading
 		/// </summary>
-		public override bool CanRead
-		{
-			get
-			{
+		public override bool CanRead {
+			get {
 				return baseStream.CanRead;
 			}
 		}
@@ -103,10 +63,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports seeking.
 		/// </summary>
-		public override bool CanSeek
-		{
-			get
-			{
+		public override bool CanSeek {
+			get {
 				return baseStream.CanSeek;
 			}
 		}
@@ -115,10 +73,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// Gets a value indicating whether the current stream supports writing.
 		/// This property always returns false
 		/// </summary>
-		public override bool CanWrite
-		{
-			get
-			{
+		public override bool CanWrite {
+			get {
 				return false;
 			}
 		}
@@ -126,10 +82,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Gets the length in bytes of the stream.
 		/// </summary>
-		public override long Length
-		{
-			get
-			{
+		public override long Length {
+			get {
 				return baseStream.Length;
 			}
 		}
@@ -139,14 +93,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// Setting the position is not supported and will throw a NotSupportException
 		/// </summary>
 		/// <exception cref="NotSupportedException">Any attempt to set the position</exception>
-		public override long Position
-		{
-			get
-			{
+		public override long Position {
+			get {
 				return baseStream.Position;
 			}
-			set
-			{
+			set {
 				throw new NotSupportedException("BZip2InputStream position cannot be set");
 			}
 		}
@@ -255,22 +206,22 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 			int retChar = currentChar;
 			switch (currentState) {
-			case RAND_PART_B_STATE:
-				SetupRandPartB();
-				break;
-			case RAND_PART_C_STATE:
-				SetupRandPartC();
-				break;
-			case NO_RAND_PART_B_STATE:
-				SetupNoRandPartB();
-				break;
-			case NO_RAND_PART_C_STATE:
-				SetupNoRandPartC();
-				break;
-			case START_BLOCK_STATE:
-			case NO_RAND_PART_A_STATE:
-			case RAND_PART_A_STATE:
-				break;
+				case RAND_PART_B_STATE:
+					SetupRandPartB();
+					break;
+				case RAND_PART_C_STATE:
+					SetupRandPartC();
+					break;
+				case NO_RAND_PART_B_STATE:
+					SetupNoRandPartB();
+					break;
+				case NO_RAND_PART_C_STATE:
+					SetupNoRandPartC();
+					break;
+				case START_BLOCK_STATE:
+				case NO_RAND_PART_A_STATE:
+				case RAND_PART_A_STATE:
+					break;
 			}
 			return retChar;
 		}
@@ -956,43 +907,3 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		#endregion
 	}
 }
-/* This file was derived from a file containing this license:
- * 
- * This file is a part of bzip2 and/or libbzip2, a program and
- * library for lossless, block-sorting data compression.
- * 
- * Copyright (C) 1996-1998 Julian R Seward.  All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 
- * 1. Redistributions of source code must retain the above copyright
- * notice, this list of conditions and the following disclaimer.
- * 
- * 2. The origin of this software must not be misrepresented; you must 
- * not claim that you wrote the original software.  If you use this 
- * software in a product, an acknowledgment in the product 
- * documentation would be appreciated but is not required.
- * 
- * 3. Altered source versions must be plainly marked as such, and must
- * not be misrepresented as being the original software.
- * 
- * 4. The name of the author may not be used to endorse or promote 
- * products derived from this software without specific prior written 
- * permission.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
- * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
- * Java version ported by Keiron Liddle, Aftex Software <keiron@aftexsw.com> 1999-2001
- */

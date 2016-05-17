@@ -1,84 +1,43 @@
-// TarHeader.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
-// HISTORY
-//	27-07-2012	Z-1647	Added handling of Tar formats for files over 8GB such as Posix and Pax
-
-/* The tar format and its POSIX successor PAX have a long history which makes for compatability
-   issues when creating and reading files.
-
-   This is further complicated by a large number of programs with variations on formats
-   One common issue is the handling of names longer than 100 characters.
-   GNU style long names are currently supported.
-
-This is the ustar (Posix 1003.1) header.
-
-struct header 
-{
-	char t_name[100];          //   0 Filename
-	char t_mode[8];            // 100 Permissions
-	char t_uid[8];             // 108 Numerical User ID
-	char t_gid[8];             // 116 Numerical Group ID
-	char t_size[12];           // 124 Filesize
-	char t_mtime[12];          // 136 st_mtime
-	char t_chksum[8];          // 148 Checksum
-	char t_typeflag;           // 156 Type of File
-	char t_linkname[100];      // 157 Target of Links
-	char t_magic[6];           // 257 "ustar" or other...
-	char t_version[2];         // 263 Version fixed to 00
-	char t_uname[32];          // 265 User Name
-	char t_gname[32];          // 297 Group Name
-	char t_devmajor[8];        // 329 Major for devices
-	char t_devminor[8];        // 337 Minor for devices
-	char t_prefix[155];        // 345 Prefix for t_name
-	char t_mfill[12];          // 500 Filler up to 512
-};
-
-*/
-
 using System;
 using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tar
 {
-
-
 	/// <summary>
 	/// This class encapsulates the Tar Entry Header used in Tar Archives.
 	/// The class also holds a number of tar constants, used mostly in headers.
 	/// </summary>
+	/// <remarks>
+	///    The tar format and its POSIX successor PAX have a long history which makes for compatability
+	///    issues when creating and reading files.
+	///
+	///    This is further complicated by a large number of programs with variations on formats
+	///    One common issue is the handling of names longer than 100 characters.
+	///    GNU style long names are currently supported.
+	///
+	/// This is the ustar (Posix 1003.1) header.
+	///
+	/// struct header 
+	/// {
+	/// 	char t_name[100];          //   0 Filename
+	/// 	char t_mode[8];            // 100 Permissions
+	/// 	char t_uid[8];             // 108 Numerical User ID
+	/// 	char t_gid[8];             // 116 Numerical Group ID
+	/// 	char t_size[12];           // 124 Filesize
+	/// 	char t_mtime[12];          // 136 st_mtime
+	/// 	char t_chksum[8];          // 148 Checksum
+	/// 	char t_typeflag;           // 156 Type of File
+	/// 	char t_linkname[100];      // 157 Target of Links
+	/// 	char t_magic[6];           // 257 "ustar" or other...
+	/// 	char t_version[2];         // 263 Version fixed to 00
+	/// 	char t_uname[32];          // 265 User Name
+	/// 	char t_gname[32];          // 297 Group Name
+	/// 	char t_devmajor[8];        // 329 Major for devices
+	/// 	char t_devminor[8];        // 337 Minor for devices
+	/// 	char t_prefix[155];        // 345 Prefix for t_name
+	/// 	char t_mfill[12];          // 500 Filler up to 512
+	/// };
+	/// </remarks>
 	public class TarHeader : ICloneable
 	{
 		#region Constants
@@ -306,11 +265,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Get/set the name for this tar entry.
 		/// </summary>
 		/// <exception cref="ArgumentNullException">Thrown when attempting to set the property to null.</exception>
-		public string Name
-		{
+		public string Name {
 			get { return name; }
-			set
-			{
+			set {
 				if (value == null) {
 					throw new ArgumentNullException(nameof(value));
 				}
@@ -331,8 +288,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/set the entry's Unix style permission mode.
 		/// </summary>
-		public int Mode
-		{
+		public int Mode {
 			get { return mode; }
 			set { mode = value; }
 		}
@@ -345,8 +301,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// This is only directly relevant to unix systems.
 		/// The default is zero.
 		/// </remarks>
-		public int UserId
-		{
+		public int UserId {
 			get { return userId; }
 			set { userId = value; }
 		}
@@ -359,8 +314,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// This is only directly relevant to linux/unix systems.
 		/// The default value is zero.
 		/// </remarks>
-		public int GroupId
-		{
+		public int GroupId {
 			get { return groupId; }
 			set { groupId = value; }
 		}
@@ -370,11 +324,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Get/set the entry's size.
 		/// </summary>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when setting the size to less than zero.</exception>
-		public long Size
-		{
+		public long Size {
 			get { return size; }
-			set
-			{
+			set {
 				if (value < 0) {
 					throw new ArgumentOutOfRangeException(nameof(value), "Cannot be less than zero");
 				}
@@ -390,11 +342,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// The modification time is only accurate to within a second.
 		/// </remarks>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when setting the date time to less than 1/1/1970.</exception>
-		public DateTime ModTime
-		{
+		public DateTime ModTime {
 			get { return modTime; }
-			set
-			{
+			set {
 				if (value < dateTime1970) {
 					throw new ArgumentOutOfRangeException(nameof(value), "ModTime cannot be before Jan 1st 1970");
 				}
@@ -406,8 +356,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get the entry's checksum.  This is only valid/updated after writing or reading an entry.
 		/// </summary>
-		public int Checksum
-		{
+		public int Checksum {
 			get { return checksum; }
 		}
 
@@ -415,8 +364,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get value of true if the header checksum is valid, false otherwise.
 		/// </summary>
-		public bool IsChecksumValid
-		{
+		public bool IsChecksumValid {
 			get { return isChecksumValid; }
 		}
 
@@ -424,8 +372,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/set the entry's type flag.
 		/// </summary>
-		public byte TypeFlag
-		{
+		public byte TypeFlag {
 			get { return typeFlag; }
 			set { typeFlag = value; }
 		}
@@ -435,11 +382,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// The entry's link name.
 		/// </summary>
 		/// <exception cref="ArgumentNullException">Thrown when attempting to set LinkName to null.</exception>
-		public string LinkName
-		{
+		public string LinkName {
 			get { return linkName; }
-			set
-			{
+			set {
 				if (value == null) {
 					throw new ArgumentNullException(nameof(value));
 				}
@@ -452,11 +397,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Get/set the entry's magic tag.
 		/// </summary>
 		/// <exception cref="ArgumentNullException">Thrown when attempting to set Magic to null.</exception>
-		public string Magic
-		{
+		public string Magic {
 			get { return magic; }
-			set
-			{
+			set {
 				if (value == null) {
 					throw new ArgumentNullException(nameof(value));
 				}
@@ -469,15 +412,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// The entry's version.
 		/// </summary>
 		/// <exception cref="ArgumentNullException">Thrown when attempting to set Version to null.</exception>
-		public string Version
-		{
-			get
-			{
+		public string Version {
+			get {
 				return version;
 			}
 
-			set
-			{
+			set {
 				if (value == null) {
 					throw new ArgumentNullException(nameof(value));
 				}
@@ -489,11 +429,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// The entry's user name.
 		/// </summary>
-		public string UserName
-		{
+		public string UserName {
 			get { return userName; }
-			set
-			{
+			set {
 				if (value != null) {
 					userName = value.Substring(0, Math.Min(UNAMELEN, value.Length));
 				} else {
@@ -513,11 +451,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <remarks>
 		/// This is only directly relevant to unix systems.
 		/// </remarks>
-		public string GroupName
-		{
+		public string GroupName {
 			get { return groupName; }
-			set
-			{
+			set {
 				if (value == null) {
 					groupName = "None";
 				} else {
@@ -530,8 +466,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/set the entry's major device number.
 		/// </summary>
-		public int DevMajor
-		{
+		public int DevMajor {
 			get { return devMajor; }
 			set { devMajor = value; }
 		}
@@ -540,8 +475,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/set the entry's minor device number.
 		/// </summary>
-		public int DevMinor
-		{
+		public int DevMinor {
 			get { return devMinor; }
 			set { devMinor = value; }
 		}
@@ -1141,19 +1075,3 @@ namespace ICSharpCode.SharpZipLib.Tar
 		#endregion
 	}
 }
-
-/* The original Java file had this header:
- * 
-** Authored by Timothy Gerard Endres
-** <mailto:time@gjt.org>  <http://www.trustice.com>
-** 
-** This work has been placed into the public domain.
-** You may use this work in any way and for any purpose you wish.
-**
-** THIS SOFTWARE IS PROVIDED AS-IS WITHOUT WARRANTY OF ANY KIND,
-** NOT EVEN THE IMPLIED WARRANTY OF MERCHANTABILITY. THE AUTHOR
-** OF THIS SOFTWARE, ASSUMES _NO_ RESPONSIBILITY FOR ANY
-** CONSEQUENCE RESULTING FROM THE USE, MODIFICATION, OR
-** REDISTRIBUTION OF THIS SOFTWARE. 
-** 
-*/

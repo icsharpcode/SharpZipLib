@@ -1,39 +1,3 @@
-// PkzipClassic encryption
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-//
-
 using System;
 using System.Security.Cryptography;
 using ICSharpCode.SharpZipLib.Checksum;
@@ -209,10 +173,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Gets a value indicating whether the current transform can be reused.
 		/// </summary>
-		public bool CanReuseTransform
-		{
-			get
-			{
+		public bool CanReuseTransform {
+			get {
 				return true;
 			}
 		}
@@ -220,10 +182,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Gets the size of the input data blocks in bytes.
 		/// </summary>
-		public int InputBlockSize
-		{
-			get
-			{
+		public int InputBlockSize {
+			get {
 				return 1;
 			}
 		}
@@ -231,10 +191,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Gets the size of the output data blocks in bytes.
 		/// </summary>
-		public int OutputBlockSize
-		{
-			get
-			{
+		public int OutputBlockSize {
+			get {
 				return 1;
 			}
 		}
@@ -242,10 +200,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Gets a value indicating whether multiple blocks can be transformed.
 		/// </summary>
-		public bool CanTransformMultipleBlocks
-		{
-			get
-			{
+		public bool CanTransformMultipleBlocks {
+			get {
 				return true;
 			}
 		}
@@ -319,10 +275,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Gets a value indicating whether the current transform can be reused.
 		/// </summary>
-		public bool CanReuseTransform
-		{
-			get
-			{
+		public bool CanReuseTransform {
+			get {
 				return true;
 			}
 		}
@@ -330,10 +284,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Gets the size of the input data blocks in bytes.
 		/// </summary>
-		public int InputBlockSize
-		{
-			get
-			{
+		public int InputBlockSize {
+			get {
 				return 1;
 			}
 		}
@@ -341,10 +293,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Gets the size of the output data blocks in bytes.
 		/// </summary>
-		public int OutputBlockSize
-		{
-			get
-			{
+		public int OutputBlockSize {
+			get {
 				return 1;
 			}
 		}
@@ -352,10 +302,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Gets a value indicating whether multiple blocks can be transformed.
 		/// </summary>
-		public bool CanTransformMultipleBlocks
-		{
-			get
-			{
+		public bool CanTransformMultipleBlocks {
+			get {
 				return true;
 			}
 		}
@@ -385,15 +333,12 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// Get / set the applicable block size in bits.
 		/// </summary>
 		/// <remarks>The only valid block size is 8.</remarks>
-		public override int BlockSize
-		{
-			get
-			{
+		public override int BlockSize {
+			get {
 				return 8;
 			}
 
-			set
-			{
+			set {
 				if (value != 8) {
 					throw new CryptographicException("Block size is invalid");
 				}
@@ -403,10 +348,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Get an array of legal <see cref="KeySizes">key sizes.</see>
 		/// </summary>
-		public override KeySizes[] LegalKeySizes
-		{
-			get
-			{
+		public override KeySizes[] LegalKeySizes {
+			get {
 				KeySizes[] keySizes = new KeySizes[1];
 				keySizes[0] = new KeySizes(12 * 8, 12 * 8, 0);
 				return keySizes;
@@ -424,10 +367,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Get an array of legal <see cref="KeySizes">block sizes</see>.
 		/// </summary>
-		public override KeySizes[] LegalBlockSizes
-		{
-			get
-			{
+		public override KeySizes[] LegalBlockSizes {
+			get {
 				KeySizes[] keySizes = new KeySizes[1];
 				keySizes[0] = new KeySizes(1 * 8, 1 * 8, 0);
 				return keySizes;
@@ -437,10 +378,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Get / set the key value applicable.
 		/// </summary>
-		public override byte[] Key
-		{
-			get
-			{
+		public override byte[] Key {
+			get {
 				if (key_ == null) {
 					GenerateKey();
 				}
@@ -448,8 +387,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 				return (byte[])key_.Clone();
 			}
 
-			set
-			{
+			set {
 				if (value == null) {
 					throw new ArgumentNullException(nameof(value));
 				}

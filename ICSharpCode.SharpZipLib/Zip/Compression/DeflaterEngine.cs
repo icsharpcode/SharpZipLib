@@ -1,48 +1,8 @@
-// DeflaterEngine.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This file was translated from java, it was part of the GNU Classpath
-// Copyright (C) 2001 Free Software Foundation, Inc.
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
 using System;
-
 using ICSharpCode.SharpZipLib.Checksum;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression
 {
-
 	/// <summary>
 	/// Strategies for deflater
 	/// </summary>
@@ -136,17 +96,17 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				}
 #endif
 				switch (compressionFunction) {
-				case DeflaterConstants.DEFLATE_STORED:
-					progress = DeflateStored(canFlush, finish);
-					break;
-				case DeflaterConstants.DEFLATE_FAST:
-					progress = DeflateFast(canFlush, finish);
-					break;
-				case DeflaterConstants.DEFLATE_SLOW:
-					progress = DeflateSlow(canFlush, finish);
-					break;
-				default:
-					throw new InvalidOperationException("unknown compressionFunction");
+					case DeflaterConstants.DEFLATE_STORED:
+						progress = DeflateStored(canFlush, finish);
+						break;
+					case DeflaterConstants.DEFLATE_FAST:
+						progress = DeflateFast(canFlush, finish);
+						break;
+					case DeflaterConstants.DEFLATE_SLOW:
+						progress = DeflateSlow(canFlush, finish);
+						break;
+					default:
+						throw new InvalidOperationException("unknown compressionFunction");
 				}
 			} while (pending.IsFlushed && progress); // repeat while we have no pending output and progress was made
 			return progress;
@@ -269,10 +229,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Get current value of Adler checksum
 		/// </summary>		
-		public int Adler
-		{
-			get
-			{
+		public int Adler {
+			get {
 				return unchecked((int)adler.Value);
 			}
 		}
@@ -280,10 +238,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Total data processed
 		/// </summary>		
-		public long TotalIn
-		{
-			get
-			{
+		public long TotalIn {
+			get {
 				return totalIn;
 			}
 		}
@@ -291,14 +247,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Get/set the <see cref="DeflateStrategy">deflate strategy</see>
 		/// </summary>		
-		public DeflateStrategy Strategy
-		{
-			get
-			{
+		public DeflateStrategy Strategy {
+			get {
 				return strategy;
 			}
-			set
-			{
+			set {
 				strategy = value;
 			}
 		}
@@ -327,34 +280,34 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				}
 #endif
 				switch (compressionFunction) {
-				case DeflaterConstants.DEFLATE_STORED:
-					if (strstart > blockStart) {
-						huffman.FlushStoredBlock(window, blockStart,
-							strstart - blockStart, false);
-						blockStart = strstart;
-					}
-					UpdateHash();
-					break;
+					case DeflaterConstants.DEFLATE_STORED:
+						if (strstart > blockStart) {
+							huffman.FlushStoredBlock(window, blockStart,
+								strstart - blockStart, false);
+							blockStart = strstart;
+						}
+						UpdateHash();
+						break;
 
-				case DeflaterConstants.DEFLATE_FAST:
-					if (strstart > blockStart) {
-						huffman.FlushBlock(window, blockStart, strstart - blockStart,
-							false);
-						blockStart = strstart;
-					}
-					break;
+					case DeflaterConstants.DEFLATE_FAST:
+						if (strstart > blockStart) {
+							huffman.FlushBlock(window, blockStart, strstart - blockStart,
+								false);
+							blockStart = strstart;
+						}
+						break;
 
-				case DeflaterConstants.DEFLATE_SLOW:
-					if (prevAvailable) {
-						huffman.TallyLit(window[strstart - 1] & 0xff);
-					}
-					if (strstart > blockStart) {
-						huffman.FlushBlock(window, blockStart, strstart - blockStart, false);
-						blockStart = strstart;
-					}
-					prevAvailable = false;
-					matchLen = DeflaterConstants.MIN_MATCH - 1;
-					break;
+					case DeflaterConstants.DEFLATE_SLOW:
+						if (prevAvailable) {
+							huffman.TallyLit(window[strstart - 1] & 0xff);
+						}
+						if (strstart > blockStart) {
+							huffman.FlushBlock(window, blockStart, strstart - blockStart, false);
+							blockStart = strstart;
+						}
+						prevAvailable = false;
+						matchLen = DeflaterConstants.MIN_MATCH - 1;
+						break;
 				}
 				compressionFunction = DeflaterConstants.COMPR_FUNC[level];
 			}

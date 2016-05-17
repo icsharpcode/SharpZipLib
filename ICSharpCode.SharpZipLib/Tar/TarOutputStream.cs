@@ -1,47 +1,8 @@
-// TarOutputStream.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
-// HISTORY
-//	2012-06-04	Z-1419	Last char of file name was dropped if path length > 100
-
 using System;
 using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tar
 {
-
 	/// <summary>
 	/// The TarOutputStream writes a UNIX tar archive as an OutputStream.
 	/// Methods are provided to put entries, and then write their contents
@@ -83,8 +44,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Get/set flag indicating ownership of the underlying stream.
 		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
 		/// </summary>
-		public bool IsStreamOwner
-		{
+		public bool IsStreamOwner {
 			get { return buffer.IsStreamOwner; }
 			set { buffer.IsStreamOwner = value; }
 		}
@@ -92,10 +52,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// true if the stream supports reading; otherwise, false.
 		/// </summary>
-		public override bool CanRead
-		{
-			get
-			{
+		public override bool CanRead {
+			get {
 				return outputStream.CanRead;
 			}
 		}
@@ -103,10 +61,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// true if the stream supports seeking; otherwise, false.
 		/// </summary>
-		public override bool CanSeek
-		{
-			get
-			{
+		public override bool CanSeek {
+			get {
 				return outputStream.CanSeek;
 			}
 		}
@@ -114,10 +70,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// true if stream supports writing; otherwise, false.
 		/// </summary>
-		public override bool CanWrite
-		{
-			get
-			{
+		public override bool CanWrite {
+			get {
 				return outputStream.CanWrite;
 			}
 		}
@@ -125,10 +79,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// length of stream in bytes
 		/// </summary>
-		public override long Length
-		{
-			get
-			{
+		public override long Length {
+			get {
 				return outputStream.Length;
 			}
 		}
@@ -136,14 +88,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// gets or sets the position within the current stream.
 		/// </summary>
-		public override long Position
-		{
-			get
-			{
+		public override long Position {
+			get {
 				return outputStream.Position;
 			}
-			set
-			{
+			set {
 				outputStream.Position = value;
 			}
 		}
@@ -230,8 +179,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get the record size being used by this stream's TarBuffer.
 		/// </summary>
-		public int RecordSize
-		{
+		public int RecordSize {
 			get { return buffer.RecordSize; }
 		}
 
@@ -250,8 +198,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get a value indicating wether an entry is open, requiring more data to be written.
 		/// </summary>
-		bool IsEntryOpen
-		{
+		bool IsEntryOpen {
 			get { return (currBytes < currSize); }
 
 		}
@@ -493,18 +440,3 @@ namespace ICSharpCode.SharpZipLib.Tar
 		#endregion
 	}
 }
-
-/* The original Java file had this header:
-	** Authored by Timothy Gerard Endres
-	** <mailto:time@gjt.org>  <http://www.trustice.com>
-	**
-	** This work has been placed into the public domain.
-	** You may use this work in any way and for any purpose you wish.
-	**
-	** THIS SOFTWARE IS PROVIDED AS-IS WITHOUT WARRANTY OF ANY KIND,
-	** NOT EVEN THE IMPLIED WARRANTY OF MERCHANTABILITY. THE AUTHOR
-	** OF THIS SOFTWARE, ASSUMES _NO_ RESPONSIBILITY FOR ANY
-	** CONSEQUENCE RESULTING FROM THE USE, MODIFICATION, OR
-	** REDISTRIBUTION OF THIS SOFTWARE.
-	**
-	*/

@@ -57,7 +57,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Checksum
 			exceptionTesting(underTestCrc32);
 		}
 
-		private void exceptionTesting(IChecksum crcUnderTest) {
+		private void exceptionTesting(IChecksum crcUnderTest)
+		{
 
 			bool exception = false;
 

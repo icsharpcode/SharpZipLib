@@ -1,56 +1,10 @@
-// ZipFile.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This file was translated from java, it was part of the GNU Classpath
-// Copyright (C) 2001 Free Software Foundation, Inc.
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
-// HISTORY
-//	2009-12-22	Z-1649	Added AES support
-//	2010-03-02	Z-1650	Fixed updating ODT archives in memory. Exposed exceptions in updating.
-//	2010-05-25	Z-1663	Fixed exception when testing local header compressed size of -1
-//	2012-11-29	Z-1684	Fixed ZipFile.Add(string fileName, string entryName) losing the file TimeStamp
-
 using System;
 using System.Collections;
 using System.IO;
 using System.Text;
 using System.Globalization;
-
 using System.Security.Cryptography;
 using ICSharpCode.SharpZipLib.Encryption;
-
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
@@ -90,16 +44,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Gets the name of the file for which keys are required.
 		/// </summary>
-		public string FileName
-		{
+		public string FileName {
 			get { return fileName; }
 		}
 
 		/// <summary>
 		/// Gets or sets the key value
 		/// </summary>
-		public byte[] Key
-		{
+		public byte[] Key {
 			get { return key; }
 			set { key = value; }
 		}
@@ -187,48 +139,42 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the current <see cref="TestOperation"/> in progress.
 		/// </summary>
-		public TestOperation Operation
-		{
+		public TestOperation Operation {
 			get { return operation_; }
 		}
 
 		/// <summary>
 		/// Get the <see cref="ZipFile"/> this status is applicable to.
 		/// </summary>
-		public ZipFile File
-		{
+		public ZipFile File {
 			get { return file_; }
 		}
 
 		/// <summary>
 		/// Get the current/last entry tested.
 		/// </summary>
-		public ZipEntry Entry
-		{
+		public ZipEntry Entry {
 			get { return entry_; }
 		}
 
 		/// <summary>
 		/// Get the number of errors detected so far.
 		/// </summary>
-		public int ErrorCount
-		{
+		public int ErrorCount {
 			get { return errorCount_; }
 		}
 
 		/// <summary>
 		/// Get the number of bytes tested so far for the current entry.
 		/// </summary>
-		public long BytesTested
-		{
+		public long BytesTested {
 			get { return bytesTested_; }
 		}
 
 		/// <summary>
 		/// Get a value indicating wether the last entry test was valid.
 		/// </summary>
-		public bool EntryValid
-		{
+		public bool EntryValid {
 			get { return entryValid_; }
 		}
 		#endregion
@@ -370,8 +316,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get/set the encryption key value.
 		/// </summary>
-		byte[] Key
-		{
+		byte[] Key {
 			get { return key; }
 			set { key = value; }
 		}
@@ -380,10 +325,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Password to be used for encrypting/decrypting files.
 		/// </summary>
 		/// <remarks>Set to null if no password is required.</remarks>
-		public string Password
-		{
-			set
-			{
+		public string Password {
+			set {
 				if (string.IsNullOrEmpty(value)) {
 					key = null;
 				} else {
@@ -396,8 +339,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get a value indicating wether encryption keys are currently available.
 		/// </summary>
-		bool HaveKeys
-		{
+		bool HaveKeys {
 			get { return key != null; }
 		}
 		#endregion
@@ -601,8 +543,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>
 		/// The default value is true in all cases.
 		/// </remarks>
-		public bool IsStreamOwner
-		{
+		public bool IsStreamOwner {
 			get { return isStreamOwner; }
 			set { isStreamOwner = value; }
 		}
@@ -611,8 +552,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get a value indicating wether
 		/// this archive is embedded in another file or not.
 		/// </summary>
-		public bool IsEmbeddedArchive
-		{
+		public bool IsEmbeddedArchive {
 			// Not strictly correct in all circumstances currently
 			get { return offsetOfFirstEntry > 0; }
 		}
@@ -620,24 +560,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get a value indicating that this archive is a new one.
 		/// </summary>
-		public bool IsNewArchive
-		{
+		public bool IsNewArchive {
 			get { return isNewArchive_; }
 		}
 
 		/// <summary>
 		/// Gets the comment for the zip file.
 		/// </summary>
-		public string ZipFileComment
-		{
+		public string ZipFileComment {
 			get { return comment_; }
 		}
 
 		/// <summary>
 		/// Gets the name of this zip file.
 		/// </summary>
-		public string Name
-		{
+		public string Name {
 			get { return name_; }
 		}
 
@@ -648,10 +585,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The Zip file has been closed.
 		/// </exception>
 		[Obsolete("Use the Count property instead")]
-		public int Size
-		{
-			get
-			{
+		public int Size {
+			get {
 				return entries_.Length;
 			}
 		}
@@ -659,10 +594,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the number of entries contained in this <see cref="ZipFile"/>.
 		/// </summary>
-		public long Count
-		{
-			get
-			{
+		public long Count {
+			get {
 				return entries_.Length;
 			}
 		}
@@ -671,10 +604,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Indexer property for ZipEntries
 		/// </summary>
 		[System.Runtime.CompilerServices.IndexerNameAttribute("EntryByIndex")]
-		public ZipEntry this[int index]
-		{
-			get
-			{
+		public ZipEntry this[int index] {
+			get {
 				return (ZipEntry)entries_[index].Clone();
 			}
 		}
@@ -814,17 +745,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			switch (method) {
-			case CompressionMethod.Stored:
-				// read as is.
-				break;
+				case CompressionMethod.Stored:
+					// read as is.
+					break;
 
-			case CompressionMethod.Deflated:
-				// No need to worry about ownership and closing as underlying stream close does nothing.
-				result = new InflaterInputStream(result, new Inflater(true));
-				break;
+				case CompressionMethod.Deflated:
+					// No need to worry about ownership and closing as underlying stream close does nothing.
+					result = new InflaterInputStream(result, new Inflater(true));
+					break;
 
-			default:
-				throw new ZipException("Unsupported compression method " + method);
+				default:
+					throw new ZipException("Unsupported compression method " + method);
 			}
 
 			return result;
@@ -1236,15 +1167,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get / set the <see cref="INameTransform"/> to apply to names when updating.
 		/// </summary>
-		public INameTransform NameTransform
-		{
-			get
-			{
+		public INameTransform NameTransform {
+			get {
 				return updateEntryFactory_.NameTransform;
 			}
 
-			set
-			{
+			set {
 				updateEntryFactory_.NameTransform = value;
 			}
 		}
@@ -1253,15 +1181,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get/set the <see cref="IEntryFactory"/> used to generate <see cref="ZipEntry"/> values
 		/// during updates.
 		/// </summary>
-		public IEntryFactory EntryFactory
-		{
-			get
-			{
+		public IEntryFactory EntryFactory {
+			get {
 				return updateEntryFactory_;
 			}
 
-			set
-			{
+			set {
 				if (value == null) {
 					updateEntryFactory_ = new ZipEntryFactory();
 				} else {
@@ -1273,11 +1198,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get /set the buffer size to be used when updating this zip file.
 		/// </summary>
-		public int BufferSize
-		{
+		public int BufferSize {
 			get { return bufferSize_; }
-			set
-			{
+			set {
 				if (value < 1024) {
 					throw new ArgumentOutOfRangeException(nameof(value), "cannot be below 1024");
 				}
@@ -1292,16 +1215,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get a value indicating an update has <see cref="BeginUpdate()">been started</see>.
 		/// </summary>
-		public bool IsUpdating
-		{
+		public bool IsUpdating {
 			get { return updates_ != null; }
 		}
 
 		/// <summary>
 		/// Get / set a value indicating how Zip64 Extension usage is determined when adding entries.
 		/// </summary>
-		public UseZip64 UseZip64
-		{
+		public UseZip64 UseZip64 {
 			get { return useZip64_; }
 			set { useZip64_ = value; }
 		}
@@ -1853,19 +1774,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				switch (useZip64_) {
-				case UseZip64.Dynamic:
-					if (entry.Size < 0) {
+					case UseZip64.Dynamic:
+						if (entry.Size < 0) {
+							entry.ForceZip64();
+						}
+						break;
+
+					case UseZip64.On:
 						entry.ForceZip64();
-					}
-					break;
+						break;
 
-				case UseZip64.On:
-					entry.ForceZip64();
-					break;
-
-				case UseZip64.Off:
-					// Do nothing.  The entry itself may be using Zip64 independantly.
-					break;
+					case UseZip64.Off:
+						// Do nothing.  The entry itself may be using Zip64 independantly.
+						break;
 				}
 			}
 
@@ -2310,18 +2231,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			switch (entry.CompressionMethod) {
-			case CompressionMethod.Stored:
-				result = new UncompressedStream(result);
-				break;
+				case CompressionMethod.Stored:
+					result = new UncompressedStream(result);
+					break;
 
-			case CompressionMethod.Deflated:
-				var dos = new DeflaterOutputStream(result, new Deflater(9, true));
-				dos.IsStreamOwner = false;
-				result = dos;
-				break;
+				case CompressionMethod.Deflated:
+					var dos = new DeflaterOutputStream(result, new Deflater(9, true));
+					dos.IsStreamOwner = false;
+					result = dos;
+					break;
 
-			default:
-				throw new ZipException("Unknown compression method " + entry.CompressionMethod);
+				default:
+					throw new ZipException("Unknown compression method " + entry.CompressionMethod);
 			}
 			return result;
 		}
@@ -2616,30 +2537,30 @@ namespace ICSharpCode.SharpZipLib.Zip
 				foreach (ZipUpdate update in updates_) {
 					if (update != null) {
 						switch (update.Command) {
-						case UpdateCommand.Copy:
-							if (directUpdate) {
-								CopyEntryDirect(workFile, update, ref destinationPosition);
-							} else {
-								CopyEntry(workFile, update);
-							}
-							break;
+							case UpdateCommand.Copy:
+								if (directUpdate) {
+									CopyEntryDirect(workFile, update, ref destinationPosition);
+								} else {
+									CopyEntry(workFile, update);
+								}
+								break;
 
-						case UpdateCommand.Modify:
-							// TODO: Direct modifying of an entry will take some legwork.
-							ModifyEntry(workFile, update);
-							break;
+							case UpdateCommand.Modify:
+								// TODO: Direct modifying of an entry will take some legwork.
+								ModifyEntry(workFile, update);
+								break;
 
-						case UpdateCommand.Add:
-							if (!IsNewArchive && directUpdate) {
-								workFile.baseStream_.Position = destinationPosition;
-							}
+							case UpdateCommand.Add:
+								if (!IsNewArchive && directUpdate) {
+									workFile.baseStream_.Position = destinationPosition;
+								}
 
-							AddEntry(workFile, update);
+								AddEntry(workFile, update);
 
-							if (directUpdate) {
-								destinationPosition = workFile.baseStream_.Position;
-							}
-							break;
+								if (directUpdate) {
+									destinationPosition = workFile.baseStream_.Position;
+								}
+								break;
 						}
 					}
 				}
@@ -2791,18 +2712,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// Get the <see cref="ZipEntry"/> for this update.
 			/// </summary>
 			/// <remarks>This is the source or original entry.</remarks>
-			public ZipEntry Entry
-			{
+			public ZipEntry Entry {
 				get { return entry_; }
 			}
 
 			/// <summary>
 			/// Get the <see cref="ZipEntry"/> that will be written to the updated/new file.
 			/// </summary>
-			public ZipEntry OutEntry
-			{
-				get
-				{
+			public ZipEntry OutEntry {
+				get {
 					if (outEntry_ == null) {
 						outEntry_ = (ZipEntry)entry_.Clone();
 					}
@@ -2814,24 +2732,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <summary>
 			/// Get the command for this update.
 			/// </summary>
-			public UpdateCommand Command
-			{
+			public UpdateCommand Command {
 				get { return command_; }
 			}
 
 			/// <summary>
 			/// Get the filename if any for this update.  Null if none exists.
 			/// </summary>
-			public string Filename
-			{
+			public string Filename {
 				get { return filename_; }
 			}
 
 			/// <summary>
 			/// Get/set the location of the size patch for this update.
 			/// </summary>
-			public long SizePatchOffset
-			{
+			public long SizePatchOffset {
 				get { return sizePatchOffset_; }
 				set { sizePatchOffset_ = value; }
 			}
@@ -2839,8 +2754,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <summary>
 			/// Get /set the location of the crc patch for this update.
 			/// </summary>
-			public long CrcPatchOffset
-			{
+			public long CrcPatchOffset {
 				get { return crcPatchOffset_; }
 				set { crcPatchOffset_ = value; }
 			}
@@ -2849,8 +2763,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// Get/set the size calculated by offset.
 			/// Specifically, the difference between this and next entry's starting offset.
 			/// </summary>
-			public long OffsetBasedSize
-			{
+			public long OffsetBasedSize {
 				get { return _offsetBasedSize; }
 				set { _offsetBasedSize = value; }
 			}
@@ -3317,18 +3230,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// Get a value indicating the original source of data for this instance.
 			/// True if the source was a string; false if the source was binary data.
 			/// </summary>
-			public bool IsSourceString
-			{
+			public bool IsSourceString {
 				get { return isSourceString_; }
 			}
 
 			/// <summary>
 			/// Get the length of the comment when represented as raw bytes.
 			/// </summary>
-			public int RawLength
-			{
-				get
-				{
+			public int RawLength {
+				get {
 					MakeBytesAvailable();
 					return rawComment_.Length;
 				}
@@ -3337,10 +3247,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <summary>
 			/// Get the comment in its 'raw' form as plain bytes.
 			/// </summary>
-			public byte[] RawComment
-			{
-				get
-				{
+			public byte[] RawComment {
+				get {
 					MakeBytesAvailable();
 					return (byte[])rawComment_.Clone();
 				}
@@ -3403,10 +3311,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			#endregion
 			#region IEnumerator Members
-			public object Current
-			{
-				get
-				{
+			public object Current {
+				get {
 					return array[index];
 				}
 			}
@@ -3452,10 +3358,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <summary>
 			/// Gets a value indicating whether the current stream supports reading.
 			/// </summary>
-			public override bool CanRead
-			{
-				get
-				{
+			public override bool CanRead {
+				get {
 					return false;
 				}
 			}
@@ -3471,10 +3375,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <summary>
 			/// Gets a value indicating whether the current stream supports writing.
 			/// </summary>
-			public override bool CanWrite
-			{
-				get
-				{
+			public override bool CanWrite {
+				get {
 					return baseStream_.CanWrite;
 				}
 			}
@@ -3482,10 +3384,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <summary>
 			/// Gets a value indicating whether the current stream supports seeking.
 			/// </summary>
-			public override bool CanSeek
-			{
-				get
-				{
+			public override bool CanSeek {
+				get {
 					return false;
 				}
 			}
@@ -3493,10 +3393,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <summary>
 			/// Get the length in bytes of the stream.
 			/// </summary>
-			public override long Length
-			{
-				get
-				{
+			public override long Length {
+				get {
 					return 0;
 				}
 			}
@@ -3504,14 +3402,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <summary>
 			/// Gets or sets the position within the current stream.
 			/// </summary>
-			public override long Position
-			{
-				get
-				{
+			public override long Position {
+				get {
 					return baseStream_.Position;
 				}
-				set
-				{
+				set {
 					throw new NotImplementedException();
 				}
 			}
@@ -3732,17 +3627,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 				long newPos = readPos_;
 
 				switch (origin) {
-				case SeekOrigin.Begin:
-					newPos = start_ + offset;
-					break;
+					case SeekOrigin.Begin:
+						newPos = start_ + offset;
+						break;
 
-				case SeekOrigin.Current:
-					newPos = readPos_ + offset;
-					break;
+					case SeekOrigin.Current:
+						newPos = readPos_ + offset;
+						break;
 
-				case SeekOrigin.End:
-					newPos = end_ + offset;
-					break;
+					case SeekOrigin.End:
+						newPos = end_ + offset;
+						break;
 				}
 
 				if (newPos < start_) {
@@ -3773,11 +3668,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
 			/// <exception cref="T:System.NotSupportedException">The stream does not support seeking. </exception>
 			/// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
-			public override long Position
-			{
+			public override long Position {
 				get { return readPos_ - start_; }
-				set
-				{
+				set {
 					long newPos = start_ + value;
 
 					if (newPos < start_) {
@@ -3798,8 +3691,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <returns>A long value representing the length of the stream in bytes.</returns>
 			/// <exception cref="T:System.NotSupportedException">A class derived from Stream does not support seeking. </exception>
 			/// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
-			public override long Length
-			{
+			public override long Length {
 				get { return length_; }
 			}
 
@@ -3808,8 +3700,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// </summary>
 			/// <value>false</value>
 			/// <returns>true if the stream supports writing; otherwise, false.</returns>
-			public override bool CanWrite
-			{
+			public override bool CanWrite {
 				get { return false; }
 			}
 
@@ -3818,8 +3709,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// </summary>
 			/// <value>true</value>
 			/// <returns>true if the stream supports seeking; otherwise, false.</returns>
-			public override bool CanSeek
-			{
+			public override bool CanSeek {
 				get { return true; }
 			}
 
@@ -3828,8 +3718,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// </summary>
 			/// <value>true.</value>
 			/// <returns>true if the stream supports reading; otherwise, false.</returns>
-			public override bool CanRead
-			{
+			public override bool CanRead {
 				get { return true; }
 			}
 
@@ -3838,8 +3727,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// </summary>
 			/// <value></value>
 			/// <returns>A value that determines whether the current stream can time out.</returns>
-			public override bool CanTimeout
-			{
+			public override bool CanTimeout {
 				get { return baseStream_.CanTimeout; }
 			}
 			#region Instance Fields
@@ -4051,10 +3939,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Gets the update mode applicable.
 		/// </summary>
 		/// <value>The update mode.</value>
-		public FileUpdateMode UpdateMode
-		{
-			get
-			{
+		public FileUpdateMode UpdateMode {
+			get {
 				return updateMode_;
 			}
 		}
@@ -4282,8 +4168,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the stream returned by <see cref="ConvertTemporaryToFinal"/> if this was in fact called.
 		/// </summary>
-		public MemoryStream FinalStream
-		{
+		public MemoryStream FinalStream {
 			get { return finalStream_; }
 		}
 

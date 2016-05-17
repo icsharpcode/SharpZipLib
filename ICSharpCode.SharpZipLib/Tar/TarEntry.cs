@@ -1,38 +1,3 @@
-// TarEntry.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
 using System;
 using System.IO;
 
@@ -197,10 +162,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// This entry's TarHeader.
 		/// </returns>
-		public TarHeader TarHeader
-		{
-			get
-			{
+		public TarHeader TarHeader {
+			get {
 				return header;
 			}
 		}
@@ -208,14 +171,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/Set this entry's name.
 		/// </summary>
-		public string Name
-		{
-			get
-			{
+		public string Name {
+			get {
 				return header.Name;
 			}
-			set
-			{
+			set {
 				header.Name = value;
 			}
 		}
@@ -223,14 +183,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/set this entry's user id.
 		/// </summary>
-		public int UserId
-		{
-			get
-			{
+		public int UserId {
+			get {
 				return header.UserId;
 			}
-			set
-			{
+			set {
 				header.UserId = value;
 			}
 		}
@@ -238,14 +195,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/set this entry's group id.
 		/// </summary>
-		public int GroupId
-		{
-			get
-			{
+		public int GroupId {
+			get {
 				return header.GroupId;
 			}
-			set
-			{
+			set {
 				header.GroupId = value;
 			}
 		}
@@ -253,14 +207,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/set this entry's user name.
 		/// </summary>
-		public string UserName
-		{
-			get
-			{
+		public string UserName {
+			get {
 				return header.UserName;
 			}
-			set
-			{
+			set {
 				header.UserName = value;
 			}
 		}
@@ -268,14 +219,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/set this entry's group name.
 		/// </summary>
-		public string GroupName
-		{
-			get
-			{
+		public string GroupName {
+			get {
 				return header.GroupName;
 			}
-			set
-			{
+			set {
 				header.GroupName = value;
 			}
 		}
@@ -313,14 +261,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/Set the modification time for this entry
 		/// </summary>
-		public DateTime ModTime
-		{
-			get
-			{
+		public DateTime ModTime {
+			get {
 				return header.ModTime;
 			}
-			set
-			{
+			set {
 				header.ModTime = value;
 			}
 		}
@@ -331,10 +276,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// This entry's file.
 		/// </returns>
-		public string File
-		{
-			get
-			{
+		public string File {
+			get {
 				return file;
 			}
 		}
@@ -342,14 +285,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/set this entry's recorded file size.
 		/// </summary>
-		public long Size
-		{
-			get
-			{
+		public long Size {
+			get {
 				return header.Size;
 			}
-			set
-			{
+			set {
 				header.Size = value;
 			}
 		}
@@ -360,10 +300,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// True if this entry is a directory.
 		/// </returns>
-		public bool IsDirectory
-		{
-			get
-			{
+		public bool IsDirectory {
+			get {
 				if (file != null) {
 					return Directory.Exists(file);
 				}
@@ -556,21 +494,3 @@ namespace ICSharpCode.SharpZipLib.Tar
 		#endregion
 	}
 }
-
-
-
-/* The original Java file had this header:
-	*
-	** Authored by Timothy Gerard Endres
-	** <mailto:time@gjt.org>  <http://www.trustice.com>
-	**
-	** This work has been placed into the public domain.
-	** You may use this work in any way and for any purpose you wish.
-	**
-	** THIS SOFTWARE IS PROVIDED AS-IS WITHOUT WARRANTY OF ANY KIND,
-	** NOT EVEN THE IMPLIED WARRANTY OF MERCHANTABILITY. THE AUTHOR
-	** OF THIS SOFTWARE, ASSUMES _NO_ RESPONSIBILITY FOR ANY
-	** CONSEQUENCE RESULTING FROM THE USE, MODIFICATION, OR
-	** REDISTRIBUTION OF THIS SOFTWARE.
-	**
-	*/

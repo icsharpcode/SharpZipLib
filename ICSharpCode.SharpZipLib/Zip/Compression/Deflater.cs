@@ -1,46 +1,7 @@
-// Deflater.cs
-//
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-//
-// This file was translated from java, it was part of the GNU Classpath
-// Copyright (C) 2001 Free Software Foundation, Inc.
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-//
-// Linking this library statically or dynamically with other modules is
-// making a combined work based on this library.  Thus, the terms and
-// conditions of the GNU General Public License cover the whole
-// combination.
-// 
-// As a special exception, the copyright holders of this library give you
-// permission to link this library with independent modules to produce an
-// executable, regardless of the license terms of these independent
-// modules, and to copy and distribute the resulting executable under
-// terms of your choice, provided that you also meet, for each linked
-// independent module, the terms and conditions of the license of that
-// module.  An independent module is a module which is not derived from
-// or based on this library.  If you modify this library, you may extend
-// this exception to your version of the library, but you are not
-// obligated to do so.  If you do not wish to do so, delete this
-// exception statement from your version.
-
 using System;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression
 {
-
 	/// <summary>
 	/// This is the Deflater class.  The deflater class compresses input
 	/// with the deflate algorithm described in RFC 1951.  It has several
@@ -200,10 +161,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Gets the current adler checksum of the data that was processed so far.
 		/// </summary>
-		public int Adler
-		{
-			get
-			{
+		public int Adler {
+			get {
 				return engine.Adler;
 			}
 		}
@@ -211,10 +170,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Gets the number of input bytes processed so far.
 		/// </summary>
-		public long TotalIn
-		{
-			get
-			{
+		public long TotalIn {
+			get {
 				return engine.TotalIn;
 			}
 		}
@@ -222,10 +179,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Gets the number of output bytes so far.
 		/// </summary>
-		public long TotalOut
-		{
-			get
-			{
+		public long TotalOut {
+			get {
 				return totalOut;
 			}
 		}
@@ -256,10 +211,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// Returns true if the stream was finished and no more output bytes
 		/// are available.
 		/// </summary>
-		public bool IsFinished
-		{
-			get
-			{
+		public bool IsFinished {
+			get {
 				return (state == FINISHED_STATE) && pending.IsFlushed;
 			}
 		}
@@ -270,10 +223,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// NOTE: This method can also return true when the stream
 		/// was finished.
 		/// </summary>
-		public bool IsNeedingInput
-		{
-			get
-			{
+		public bool IsNeedingInput {
+			get {
 				return engine.NeedsInput();
 			}
 		}
@@ -453,37 +404,37 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 				if (!engine.Deflate((state & IS_FLUSHING) != 0, (state & IS_FINISHING) != 0)) {
 					switch (state) {
-					case BUSY_STATE:
-						// We need more input now
-						return origLength - length;
-					case FLUSHING_STATE:
-						if (level != NO_COMPRESSION) {
-							/* We have to supply some lookahead.  8 bit lookahead
-							 * is needed by the zlib inflater, and we must fill
-							 * the next byte, so that all bits are flushed.
-							 */
-							int neededbits = 8 + ((-pending.BitCount) & 7);
-							while (neededbits > 0) {
-								/* write a static tree block consisting solely of
-								 * an EOF:
+						case BUSY_STATE:
+							// We need more input now
+							return origLength - length;
+						case FLUSHING_STATE:
+							if (level != NO_COMPRESSION) {
+								/* We have to supply some lookahead.  8 bit lookahead
+								 * is needed by the zlib inflater, and we must fill
+								 * the next byte, so that all bits are flushed.
 								 */
-								pending.WriteBits(2, 10);
-								neededbits -= 10;
+								int neededbits = 8 + ((-pending.BitCount) & 7);
+								while (neededbits > 0) {
+									/* write a static tree block consisting solely of
+									 * an EOF:
+									 */
+									pending.WriteBits(2, 10);
+									neededbits -= 10;
+								}
 							}
-						}
-						state = BUSY_STATE;
-						break;
-					case FINISHING_STATE:
-						pending.AlignToByte();
+							state = BUSY_STATE;
+							break;
+						case FINISHING_STATE:
+							pending.AlignToByte();
 
-						// Compressed data is complete.  Write footer information if required.
-						if (!noZlibHeaderOrFooter) {
-							int adler = engine.Adler;
-							pending.WriteShortMSB(adler >> 16);
-							pending.WriteShortMSB(adler & 0xffff);
-						}
-						state = FINISHED_STATE;
-						break;
+							// Compressed data is complete.  Write footer information if required.
+							if (!noZlibHeaderOrFooter) {
+								int adler = engine.Adler;
+								pending.WriteShortMSB(adler >> 16);
+								pending.WriteShortMSB(adler & 0xffff);
+							}
+							state = FINISHED_STATE;
+							break;
 					}
 				}
 			}
