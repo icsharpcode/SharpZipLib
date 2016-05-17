@@ -17,9 +17,7 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<!-- dependencies -->
 		<!-- references -->
-		<frameworkAssemblies>
-			<frameworkAssembly assemblyName="System" />
-		</frameworkAssemblies>
+		<!-- frameworkAssemblies -->
 		<tags>Compression Library Zip GZip BZip2 Tar</tags>
 	</metadata>
 	<files>
