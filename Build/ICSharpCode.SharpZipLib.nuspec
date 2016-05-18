@@ -2,7 +2,7 @@
 <package>
 	<metadata minClientVersion="2.0">
 		<id>ICSharpCode.SharpZipLib-dogfood</id>
-		<version>0.87-dogfood</version>
+		<version>1.0-dogfood</version>
 		<title>SharpZipLib-dogfood</title>
 		<authors>IC#Code</authors>
 		<owners>IC#Code</owners>
@@ -13,12 +13,12 @@
 		<projectUrl>http://icsharpcode.github.io/SharpZipLib/</projectUrl>
 		<!-- iconUrl -->
 		<licenseUrl>http://icsharpcode.github.io/SharpZipLib/#license</licenseUrl>
-		<copyright>Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team</copyright>
+		<copyright>Copyright © 2000-2016 SharpZipLib Contributors</copyright>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<!-- dependencies -->
 		<!-- references -->
 		<!-- frameworkAssemblies -->
-		<tags>Compression Library Zip GZip BZip2 Tar</tags>
+		<tags>Compression Library Zip GZip BZip2 LZW Tar</tags>
 	</metadata>
 	<files>
 		<file src="ICSharpCode.SharpZipLib.dll" target="lib\Net45\" />

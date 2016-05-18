@@ -156,13 +156,13 @@ before_test:
 
 # scripts to run after tests
 after_test:
+  - cmd: Build\run-opencover.cmd
+  - cmd: packages\coveralls.io.1.3.4\tools\coveralls.net.exe --opencover Documentation\opencover-results-release.xml
   - cmd: nuget pack Build\ICSharpCode.SharpZipLib.nuspec -BasePath bin\Release\ -OutputDirectory bin\Release\
-  - cmd: packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -filter:"+[*]*" -target:"packages\NUnit.ConsoleRunner.3.2.1\tools\nunit3-console.exe" -targetargs:"--domain=Single ICSharpCode.SharpZipLib.Tests/bin/Release/ICSharpCode.SharpZipLib.Tests.dll --testlist=./ICSharpCode.SharpZipLib.Tests/PassingTests.txt" -output:coverage.xml
-  - cmd: packages\coveralls.io.1.3.4\tools\coveralls.net.exe --opencover coverage.xml
 
 # to run your custom scripts instead of automatic tests
 test_script:
-  - cmd: nunit3-console --framework=net-4.5 --labels=All --testlist=./ICSharpCode.SharpZipLib.Tests/PassingTests.txt --result=./bin/Release/nunit3-test-results-appveyor.xml;format=AppVeyor ./bin/Release/ICSharpCode.SharpZipLib.Tests.dll
+  - cmd: nunit3-console --framework=net-4.5 --labels=All --testlist=ICSharpCode.SharpZipLib.Tests\PassingTests.txt --result=Documentation\nunit3-test-results-appveyor.xml;format=AppVeyor bin\Release\ICSharpCode.SharpZipLib.Tests.dll
 
 # to disable automatic tests
 #test: off
@@ -178,7 +178,7 @@ artifacts:
   name: BuildRelease
 - path: bin\**\*.nupkg
   name: NuGet
-- path: bin\Release\nunit3-test-results-appveyor.xml
+- path: Documentation\**\*.xml
   name: TestResults
 
 #---------------------------------#
