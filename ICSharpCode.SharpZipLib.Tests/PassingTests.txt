@@ -81,10 +81,13 @@ ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling.ReadAndWriteZip64NonSeekable
 ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling.Zip64Descriptor
 ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling.LengthBoundaryOk
 ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling.NameTooLong
+ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryFactoryHandling.CreateInMemoryValues
 ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryFactoryHandling.Defaults
 ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.CanDecompress
 ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.Cloning
 ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.Copying
+ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.DateAndTime
+ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.DateTimeSetsDosTime
 ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.NullEntryComment
 ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.NullNameInConstructor
 ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling.BasicOperations
