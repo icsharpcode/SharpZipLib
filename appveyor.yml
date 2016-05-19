@@ -101,18 +101,22 @@ configuration: Release
 #  ios: true
 
 build:
-  parallel: true
-  project: ICSharpCode.SharpZipLib.sln
-  publish_nuget: true
-  publish_nuget_symbols: true
-  include_nuget_references: true
+#  parallel: true
+#  project: ICSharpCode.SharpZipLib.sln
+#  publish_nuget: true
+#  publish_nuget_symbols: true
+#  include_nuget_references: true
 
   # MSBuild verbosity level
-  verbosity: normal
+#  verbosity: normal
 
 environment:
   COVERALLS_REPO_TOKEN:
     secure: B/NQfoRYUnKLGS5KJSJrGBvcYD0Jv+coudjJMY2jf+gqvqDWral9CDmv2i0WovY7
+  COVERITY_TOKEN:
+    secure: n9NA/kasTqxUc8UBfQ2cBlZcDyFJvko1gcMzVTDvZq8=
+  COVERITY_EMAIL:
+    secure: j/N0ZmnUZYKnS2nGocKyNsXoKQBfWTBOg+VI4q7yMn4=
 # scripts to run before build
 before_build:
 - cmd: nuget restore ICSharpCode.SharpZipLib.sln
@@ -125,6 +129,7 @@ after_build:
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
+- ps: Build\run-appveyor-build.ps1
 
 # to disable automatic builds
 #build: off
@@ -202,6 +207,7 @@ deploy:
 - provider: NuGet
   api_key:
     secure: z+iy8Iv5qqQghGrATRbx2I921HCHD7x7/xIrmkGGauMgpA/d1DBoOVUNNCHLE9Dj
+  skip_symbols: false
   artifact: NuGet
 
 #---------------------------------#
