@@ -163,7 +163,7 @@ before_test:
 after_test:
   - cmd: Build\run-opencover.cmd
   - cmd: packages\coveralls.io.1.3.4\tools\coveralls.net.exe --opencover Documentation\opencover-results-release.xml
-  - cmd: nuget pack Build\ICSharpCode.SharpZipLib.nuspec -BasePath bin\Release\ -OutputDirectory bin\Release\ -Version {version}
+  - cmd: nuget pack Build\ICSharpCode.SharpZipLib.nuspec -BasePath bin\Release\ -OutputDirectory bin\Release\ -Version %APPVEYOR_BUILD_VERSION%
 
 # to run your custom scripts instead of automatic tests
 test_script:
