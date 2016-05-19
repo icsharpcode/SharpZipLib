@@ -183,8 +183,10 @@ artifacts:
   name: BuildRelease
 - path: bin\**\*.nupkg
   name: NuGet
-- path: Documentation\**\*.xml
+- path: Documentation\*.xml
   name: TestResults
+- path: Documentation\coverity.zip
+  name: Coverity
 
 #---------------------------------#
 #     deployment configuration    #
@@ -203,7 +205,7 @@ deploy:
   prerelease: true
   on:
     branch: master                 # release from master branch only
-    appveyor_repo_tag: true        # deploy on tag push only
+#    appveyor_repo_tag: true        # deploy on tag push only
 - provider: NuGet
   skip_symbols: false
   symbol_server: https://ci.appveyor.com/nuget/mcneight-93sw9hg8ve02/api/v2/package
