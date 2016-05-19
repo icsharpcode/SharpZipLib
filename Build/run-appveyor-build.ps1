@@ -5,6 +5,7 @@ $buildArgs = @(
               "ICSharpCode.SharpZipLib.sln"
               "/l:C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll",
               "/m",
+              "/p:UseSharedCompilation=false",
               "/p:Configuration=Release",
               "/p:Platform=Any CPU");
 
