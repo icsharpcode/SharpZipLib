@@ -2,7 +2,7 @@
 <package>
 	<metadata minClientVersion="2.0">
 		<id>ICSharpCode.SharpZipLib-dogfood</id>
-		<version>1.0-dogfood</version>
+		<!-- version --><!-- passed in with -Version %APPVEYOR_BUILD_VERSION% -->
 		<title>SharpZipLib-dogfood</title>
 		<authors>IC#Code</authors>
 		<owners>IC#Code</owners>

@@ -1,4 +1,4 @@
-$publishCoverityExe = ".\packages\PublishCoverity.0.11.0\tools\PublishCoverity.exe";
+$publishCoverityExe = $env:APPVEYOR_BUILD_FOLDER + "\packages\PublishCoverity.0.11.0\tools\PublishCoverity.exe";
 # Define build command.
 $buildCmd = "C:\Program Files (x86)\MSBuild\14.0\bin\msbuild.exe";
 $buildArgs = @(

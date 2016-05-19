@@ -163,7 +163,7 @@ before_test:
 after_test:
   - cmd: Build\run-opencover.cmd
   - cmd: packages\coveralls.io.1.3.4\tools\coveralls.net.exe --opencover Documentation\opencover-results-release.xml
-  - cmd: nuget pack Build\ICSharpCode.SharpZipLib.nuspec -BasePath bin\Release\ -OutputDirectory bin\Release\
+  - cmd: nuget pack Build\ICSharpCode.SharpZipLib.nuspec -BasePath bin\Release\ -OutputDirectory bin\Release\ -Version $(appveyor_build_version)
 
 # to run your custom scripts instead of automatic tests
 test_script:
@@ -205,9 +205,10 @@ deploy:
     branch: master                 # release from master branch only
     appveyor_repo_tag: true        # deploy on tag push only
 - provider: NuGet
+  skip_symbols: false
+  symbol_server: https://ci.appveyor.com/nuget/mcneight-93sw9hg8ve02/api/v2/package
   api_key:
     secure: z+iy8Iv5qqQghGrATRbx2I921HCHD7x7/xIrmkGGauMgpA/d1DBoOVUNNCHLE9Dj
-  skip_symbols: false
   artifact: NuGet
 
 #---------------------------------#
