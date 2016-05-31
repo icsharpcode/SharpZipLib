@@ -47,6 +47,12 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// This is tracked per-block as the file is parsed.
 		/// </summary>
 		bool readGZIPHeader;
+
+        /// <summary>
+        /// Flag to indicate if at least one block in a stream with concatenated blocks was read successfully.
+        /// This allows us to exit gracefully if downstream data is not in gzip format.
+        /// </summary>
+        bool completedLastBlock;
 		#endregion
 
 		#region Constructors
@@ -100,12 +106,23 @@ namespace ICSharpCode.SharpZipLib.GZip
 				// If we haven't read the header for this block, read it
 				if (!readGZIPHeader) {
 
-					// Try to read header. If there is no header (0 bytes available), this is EOF. If there is
-					// an incomplete header, this will throw an exception.
-					if (!ReadHeader()) {
-						return 0;
-					}
-				}
+                    // Try to read header. If there is no header (0 bytes available), this is EOF. If there is
+                    // an incomplete header, this will throw an exception.
+                    try
+                    {
+                        if (!ReadHeader())
+                        {
+                            return 0;
+                        }
+                    }
+                    catch (Exception ex) when (completedLastBlock && (ex is GZipException || ex is EndOfStreamException))
+                    {
+                        // if we completed the last block (i.e. we're in a stream that has multiple blocks concatenated
+                        // we want to return gracefully from any header parsing exceptions since sometimes there may
+                        // be trailing garbage on a stream
+                        return 0;
+                    }
+                }
 
 				// Try to read compressed data
 				int bytesRead = base.Read(buffer, offset, count);
@@ -151,14 +168,14 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 			headCRC.Update(magic);
 			if (magic != (GZipConstants.GZIP_MAGIC >> 8)) {
-				throw new GZipException("Error GZIP header, first magic byte doesn't match");
+                throw new GZipException("Error GZIP header, first magic byte doesn't match");
 			}
 
 			//magic = baseInputStream.ReadByte();
 			magic = inputBuffer.ReadLeByte();
 
 			if (magic < 0) {
-				throw new EndOfStreamException("EOS reading GZIP header");
+                throw new EndOfStreamException("EOS reading GZIP header");
 			}
 
 			if (magic != (GZipConstants.GZIP_MAGIC & 0xFF)) {
@@ -324,6 +341,9 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 			// Mark header read as false so if another header exists, we'll continue reading through the file
 			readGZIPHeader = false;
+
+            // Indicate that we succeeded on at least one block so we can exit gracefully if there is trailing garbage downstream
+            completedLastBlock = true;
 		}
 		#endregion
 	}
