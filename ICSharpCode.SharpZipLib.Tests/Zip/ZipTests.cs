@@ -2734,7 +2734,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		[Test]
 		[Category("Zip")]
-		//[ExpectedException(typeof(FileNotFoundException))]
 		public void ExtractExceptions()
 		{
 			var fastZip = new FastZip();
@@ -2743,7 +2742,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			string addFile = Path.Combine(tempFilePath, "test.zip");
 			try {
-				fastZip.ExtractZip(addFile, @"z:\doesnt exist", null);
+				Assert.Throws<FileNotFoundException>(() => fastZip.ExtractZip(addFile, @"z:\doesnt exist", null));
 			} finally {
 				File.Delete(addFile);
 			}
