@@ -225,9 +225,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public const byte LF_GNU_VOLHDR = (byte)'V';
 
 		/// <summary>
-		/// The magic tag representing a POSIX tar archive.  (includes trailing NULL)
+		/// The magic tag representing a POSIX tar archive.  (would be written with a trailing NULL)
 		/// </summary>
-		public const string TMAGIC = "ustar ";
+		public const string TMAGIC = "ustar";
 
 		/// <summary>
 		/// The magic tag representing an old GNU tar archive where version is included in magic and overwrites it
@@ -899,9 +899,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
-			for (int i = 0; i < length && nameOffset + i < toAdd.Length; ++i) {
+			int i;
+			for (i = 0; i < length && nameOffset + i < toAdd.Length; ++i) {
 				buffer[bufferOffset + i] = (byte)toAdd[nameOffset + i];
 			}
+			// If length is beyond the toAdd string length (which is OK by the prev loop condition), eg if a field has fixed length and the string is shorter, make sure all of the extra chars are written as NULLs, so that the reader func would ignore them and get back the original string
+			for (; i < length; ++i)
+				buffer[bufferOffset + i] = 0;
 			return bufferOffset + length;
 		}
 
