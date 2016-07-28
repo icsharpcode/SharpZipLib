@@ -1127,7 +1127,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			TestDirectory(wnt, "d", "d");
 			TestDirectory(wnt, "absolute/file2", @"absolute\file2");
 
-			string BaseDir1 = Path.Combine("C:", "Dir");
+			string BaseDir1 = Path.Combine("C:\\", "Dir");
 			wnt.BaseDirectory = BaseDir1;
 
 			TestDirectory(wnt, "talofa", Path.Combine(BaseDir1, "talofa"));
