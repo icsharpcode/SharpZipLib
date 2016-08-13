@@ -1127,7 +1127,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			TestDirectory(wnt, "d", "d");
 			TestDirectory(wnt, "absolute/file2", @"absolute\file2");
 
-			string BaseDir1 = Path.Combine("C:", "Dir");
+			string BaseDir1 = Path.Combine("C:\\", "Dir");
 			wnt.BaseDirectory = BaseDir1;
 
 			TestDirectory(wnt, "talofa", Path.Combine(BaseDir1, "talofa"));
@@ -1350,7 +1350,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// </summary>
 		[Test]
 		[Category("Zip")]
-		//[ExpectedException(typeof(ZipException))]
 		public void InvalidPasswordSeekable()
 		{
 			byte[] originalData = null;
@@ -1367,13 +1366,16 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			ZipEntry entry2 = inStream.GetNextEntry();
 
-			while (true) {
-				int numRead = inStream.Read(buf2, pos, buf2.Length);
-				if (numRead <= 0) {
-					break;
+			Assert.Throws<ZipException>(() => 
+			{
+				while (true) {
+					int numRead = inStream.Read(buf2, pos, buf2.Length);
+					if (numRead <= 0) {
+						break;
+					}
+					pos += numRead;
 				}
-				pos += numRead;
-			}
+			});
 		}
 
 		/// <summary>
@@ -1413,7 +1415,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// </summary>
 		[Test]
 		[Category("Zip")]
-		//[ExpectedException(typeof(ZipException))]
 		public void InvalidPasswordNonSeekable()
 		{
 			byte[] originalData = null;
@@ -1430,13 +1431,16 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			ZipEntry entry2 = inStream.GetNextEntry();
 
-			while (true) {
-				int numRead = inStream.Read(buf2, pos, buf2.Length);
-				if (numRead <= 0) {
-					break;
+			Assert.Throws<ZipException>(() => 
+			{
+				while (true) {
+					int numRead = inStream.Read(buf2, pos, buf2.Length);
+					if (numRead <= 0) {
+						break;
+					}
+					pos += numRead;
 				}
-				pos += numRead;
-			}
+			});
 		}
 
 		/// <summary>
@@ -2680,19 +2684,21 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		[Test]
 		[Category("Zip")]
-		//[ExpectedException(typeof(DirectoryNotFoundException))]
 		public void CreateExceptions()
 		{
 			var fastZip = new FastZip();
 			string tempFilePath = GetTempFilePath();
 			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
 
-			string addFile = Path.Combine(tempFilePath, "test.zip");
-			try {
-				fastZip.CreateZip(addFile, @"z:\doesnt exist", false, null);
-			} finally {
-				File.Delete(addFile);
-			}
+			Assert.Throws<DirectoryNotFoundException>(() => 
+			{
+				string addFile = Path.Combine(tempFilePath, "test.zip");
+				try {
+					fastZip.CreateZip(addFile, @"z:\doesnt exist", false, null);
+				} finally {
+					File.Delete(addFile);
+				}
+			});
 		}
 
 		[Test]
@@ -2728,7 +2734,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		[Test]
 		[Category("Zip")]
-		//[ExpectedException(typeof(FileNotFoundException))]
 		public void ExtractExceptions()
 		{
 			var fastZip = new FastZip();
@@ -2737,7 +2742,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			string addFile = Path.Combine(tempFilePath, "test.zip");
 			try {
-				fastZip.ExtractZip(addFile, @"z:\doesnt exist", null);
+				Assert.Throws<FileNotFoundException>(() => fastZip.ExtractZip(addFile, @"z:\doesnt exist", null));
 			} finally {
 				File.Delete(addFile);
 			}

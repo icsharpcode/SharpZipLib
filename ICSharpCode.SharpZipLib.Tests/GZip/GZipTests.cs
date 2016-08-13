@@ -100,13 +100,18 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 		{
 			var gzi = new GZipInputStream(new MemoryStream());
 			bool exception = false;
-			try {
-				gzi.ReadByte();
-			} catch {
+			int retval = int.MinValue;
+			try
+			{
+				retval = gzi.ReadByte();
+			}
+			catch
+			{
 				exception = true;
 			}
 
-			Assert.IsTrue(exception, "reading from an empty stream should cause an exception");
+			Assert.IsFalse(exception, "reading from an empty stream should not cause an exception");
+			Assert.That(retval, Is.EqualTo(-1), "should yield -1 byte value");
 		}
 
 		[Test]

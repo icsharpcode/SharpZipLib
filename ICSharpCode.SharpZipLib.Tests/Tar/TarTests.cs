@@ -283,7 +283,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			h2.LinkName = h1.LinkName;
 			Assert.IsTrue(h1.Equals(h2));
 
-			h1.Magic = "ustar";
+			h1.Magic = "other";
 			Assert.IsFalse(h1.Equals(h2));
 			h2.Magic = h1.Magic;
 			Assert.IsTrue(h1.Equals(h2));

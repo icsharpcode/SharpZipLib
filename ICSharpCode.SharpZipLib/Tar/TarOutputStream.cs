@@ -238,9 +238,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 				int nameCharIndex = 0;
 
-				while (nameCharIndex < entry.TarHeader.Name.Length) {
+				while (nameCharIndex < entry.TarHeader.Name.Length + 1 /* we've allocated one for the null char, now we must make sure it gets written out */) {
 					Array.Clear(blockBuffer, 0, blockBuffer.Length);
-					TarHeader.GetAsciiBytes(entry.TarHeader.Name, nameCharIndex, this.blockBuffer, 0, TarBuffer.BlockSize);
+					TarHeader.GetAsciiBytes(entry.TarHeader.Name, nameCharIndex, this.blockBuffer, 0, TarBuffer.BlockSize); // This func handles OK the extra char out of string length
 					nameCharIndex += TarBuffer.BlockSize;
 					buffer.WriteBlock(blockBuffer);
 				}

@@ -158,7 +158,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int index = name.IndexOf(string.Format("{0}{0}", Path.DirectorySeparatorChar), StringComparison.Ordinal);
 			while (index >= 0) {
 				name = name.Remove(index, 1);
-				index = name.IndexOf(Path.DirectorySeparatorChar);
+				index = name.IndexOf(string.Format("{0}{0}", Path.DirectorySeparatorChar), StringComparison.Ordinal);
 			}
 
 			// Convert any invalid characters using the replacement one.
