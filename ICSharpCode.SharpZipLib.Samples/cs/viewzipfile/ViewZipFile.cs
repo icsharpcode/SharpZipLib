@@ -1,16 +1,7 @@
-// project created on 10.11.2001 at 13:09
 using System;
-using System.Text;
-using System.Collections;
 using System.IO;
-using System.Diagnostics;
-using System.Runtime.Serialization.Formatters.Binary;
-
-using ICSharpCode.SharpZipLib.BZip2;
+using System.Text;
 using ICSharpCode.SharpZipLib.Zip;
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using ICSharpCode.SharpZipLib.GZip;
 
 
 class ViewZipFileClass

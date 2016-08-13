@@ -1,9 +1,6 @@
-﻿Imports System
-Imports System.Reflection
-Imports System.Runtime.InteropServices
-Imports System.Globalization
+﻿Imports System.Reflection
 Imports System.Resources
-Imports System.Windows
+Imports System.Runtime.InteropServices
 
 ' General Information about an assembly is controlled through the following 
 ' set of attributes. Change these attribute values to modify the information
@@ -12,12 +9,7 @@ Imports System.Windows
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("WpfCreateZipFile")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("WpfCreateZipFile")>
-<Assembly: AssemblyCopyright("Copyright ©  2016")>
-<Assembly: AssemblyTrademark("")>
-<Assembly: ComVisible(false)>
+<Assembly: AssemblyDescription("SharpZipLib Sample Project")>
 
 'In order to begin building localizable applications, set 
 '<UICulture>CultureYouAreCodingWith</UICulture> in your .vbproj file
@@ -26,7 +18,7 @@ Imports System.Windows
 'NeutralResourceLanguage attribute below.  Update the "en-US" in the line
 'below to match the UICulture setting in the project file.
 
-'<Assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)> 
+<Assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)>
 
 
 'The ThemeInfo attribute describes where any theme specific and generic resource dictionaries can be found.
@@ -43,17 +35,3 @@ Imports System.Windows
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
 <Assembly: Guid("29d0e881-c6d8-4e56-933e-a954fceeda91")>
-
-' Version information for an assembly consists of the following four values:
-'
-'      Major Version
-'      Minor Version 
-'      Build Number
-'      Revision
-'
-' You can specify all the values or you can default the Build and Revision Numbers 
-' by using the '*' as shown below:
-' <Assembly: AssemblyVersion("1.0.*")> 
-
-<Assembly: AssemblyVersion("1.0.0.0")>
-<Assembly: AssemblyFileVersion("1.0.0.0")>

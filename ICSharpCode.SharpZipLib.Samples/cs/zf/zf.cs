@@ -3,7 +3,7 @@
 // zf - A command line archiver using the ZipFile class from SharpZipLib
 // for compression
 //
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
+// Copyright © 2000-2016 SharpZipLib Contributors
 //
 //------------------------------------------------------------------------------
 // Version History

@@ -4,10 +4,10 @@ using NUnit.Framework;
 namespace ICSharpCode.SharpZipLib.Tests.Core
 {
 	[TestFixture]
-	public class Core
+	public class CoreTestSuite
 	{
-
 		[Test]
+		[Category("Core")]
 		public void FilterQuoting()
 		{
 			string[] filters = NameFilter.SplitQuoted("");
@@ -33,6 +33,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Core
 		}
 
 		[Test]
+		[Category("Core")]
 		public void NullFilter()
 		{
 			var nf = new NameFilter(null);
@@ -40,6 +41,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Core
 		}
 
 		[Test]
+		[Category("Core")]
 		public void ValidFilter()
 		{
 			Assert.IsTrue(NameFilter.IsValidFilterExpression(null));

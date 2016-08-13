@@ -7,15 +7,13 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("")> 
-<Assembly: AssemblyCopyright("Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team")> 
-<Assembly: AssemblyTrademark("")> 
+<Assembly: AssemblyCompany("ICSharpCode")>
+<Assembly: AssemblyProduct("SharpZipLib (#ziplib)")>
+<Assembly: AssemblyCopyright("Copyright © 2000-2016 SharpZipLib Contributors")>
+<Assembly: AssemblyTrademark("")>
+<Assembly: ComVisible(False)>
 
-'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("B1F6EDEE-BB2F-4696-81FD-047789430B68")> 
+<Assembly: AssemblyConfiguration("")>
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -26,5 +24,7 @@ Imports System.Runtime.InteropServices
 '
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
+' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.0.*")> 
+<Assembly: AssemblyVersion("1.0.*")>
+<Assembly: AssemblyFileVersion("1.0")>

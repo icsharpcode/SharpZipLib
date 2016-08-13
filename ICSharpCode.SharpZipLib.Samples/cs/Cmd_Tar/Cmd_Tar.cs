@@ -1,30 +1,3 @@
-// SharpZipLib samples
-// Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without modification, are
-// permitted provided that the following conditions are met:
-//
-// - Redistributions of source code must retain the above copyright notice, this list
-//   of conditions and the following disclaimer.
-//
-// - Redistributions in binary form must reproduce the above copyright notice, this list
-//   of conditions and the following disclaimer in the documentation and/or other materials
-//   provided with the distribution.
-//
-// - Neither the name of the SharpDevelop team nor the names of its contributors may be used to
-//   endorse or promote products derived from this software without specific prior written
-//   permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &AS IS& AND ANY EXPRESS
-// OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-// AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
-// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
-// IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
-// OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 using System;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
@@ -40,7 +13,7 @@ using ICSharpCode.SharpZipLib.Tar;
 /// GNU long filename extensions are supported, POSIX extensions are not yet supported...
 /// See the help (-? or --help) for option details.
 /// </summary>
-public class Tar
+public class Cmd_Tar
 {
 	/// <summary>
 	/// The compresion to use when creating archives.
@@ -122,10 +95,10 @@ public class Tar
 	#endregion
 
 	/// <summary>
-	/// Initialise default instance of <see cref="Tar"/>.
+	/// Initialise default instance of <see cref="Cmd_Tar"/>.
 	/// Sets up the default userName with the system 'UserName' property.
 	/// </summary>
-	public Tar()
+	public Cmd_Tar()
 	{
 		blockingFactor = TarBuffer.DefaultBlockFactor;
 		userId = 0;
@@ -142,7 +115,7 @@ public class Tar
 	/// </summary>
 	public static void Main(string[] argv)
 	{
-		var tarApp = new Tar();
+		var tarApp = new Cmd_Tar();
 		tarApp.InstanceMain(argv);
 	}
 
@@ -586,13 +559,7 @@ public class Tar
 		Console.Error.WriteLine("tar 2.0.6.2");
 		Console.Error.WriteLine("");
 		Console.Error.WriteLine("{0}", SharpZipVersion());
-		Console.Error.WriteLine("Copyright © 2000-2016 AlphaSierraPapa for the SharpZipLib Team");
-		Console.Error.WriteLine("");
-		Console.Error.WriteLine("This program is free software licensed to you under the");
-		Console.Error.WriteLine("GNU General Public License. See the accompanying LICENSE");
-		Console.Error.WriteLine("file, or the webpage <http://www.gjt.org/doc/gpl> or,");
-		Console.Error.WriteLine("visit www.gnu.org for more details.");
-		Console.Error.WriteLine("");
+		Console.Error.WriteLine("Copyright © 2000-2016 SharpZipLib Contributors");
 	}
 
 	/// <summary>
@@ -643,18 +610,3 @@ public class Tar
 		Environment.Exit(1);
 	}
 }
-
-/*
-** Authored by Timothy Gerard Endres
-** <mailto:time@gjt.org>  <http://www.trustice.com>
-**
-** This work has been placed into the public domain.
-** You may use this work in any way and for any purpose you wish.
-**
-** THIS SOFTWARE IS PROVIDED AS-IS WITHOUT WARRANTY OF ANY KIND,
-** NOT EVEN THE IMPLIED WARRANTY OF MERCHANTABILITY. THE AUTHOR
-** OF THIS SOFTWARE, ASSUMES _NO_ RESPONSIBILITY FOR ANY
-** CONSEQUENCE RESULTING FROM THE USE, MODIFICATION, OR
-** REDISTRIBUTION OF THIS SOFTWARE.
-**
-*/

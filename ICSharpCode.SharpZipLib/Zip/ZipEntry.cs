@@ -212,7 +212,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			compressedSize = entry.compressedSize;
 			crc = entry.crc;
 			dosTime = entry.dosTime;
-			dateTime = entry.dateTime;
 			method = entry.method;
 			comment = entry.comment;
 			versionToExtract = entry.versionToExtract;
@@ -621,7 +620,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </remarks>
 		public DateTime DateTime
 		{
-			get { return dateTime; }
+			get
+			{
+				uint sec = Math.Min(59, 2 * (dosTime & 0x1f));
+				uint min = Math.Min(59, (dosTime >> 5) & 0x3f);
+				uint hrs = Math.Min(23, (dosTime >> 11) & 0x1f);
+				uint mon = Math.Max(1, Math.Min(12, ((dosTime >> 21) & 0xf)));
+				uint year = ((dosTime >> 25) & 0x7f) + 1980;
+				int day = Math.Max(1, Math.Min(DateTime.DaysInMonth((int)year, (int)mon), (int)((dosTime >> 16) & 0x1f)));
+				return new System.DateTime((int)year, (int)mon, day, (int)hrs, (int)min, (int)sec);
+			}
 
 			set {
 				var year = (uint)value.Year;
@@ -930,7 +938,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
-			dateTime = GetDateTime(extraData);
+			DateTime = GetDateTime(extraData);
 			if (method == CompressionMethod.WinZipAES) {
 				ProcessAESExtraData(extraData);
 			}
@@ -1155,7 +1163,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		ushort versionToExtract;                // Version required to extract (library handles <= 2.0)
 		uint crc;
 		uint dosTime;
-		DateTime dateTime;
 
 		CompressionMethod method = CompressionMethod.Deflated;
 		byte[] extra;

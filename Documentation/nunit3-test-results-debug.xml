@@ -1,0 +1,894 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-run id="2" testcasecount="151" result="Failed" total="151" passed="139" failed="11" inconclusive="0" skipped="1" asserts="3354643" engine-version="3.2.1.0" clr-version="4.0.30319.42000" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:37Z" duration="30.635235">
+  <command-line><![CDATA["packages\NUnit.ConsoleRunner.3.2.1\tools\nunit3-console.exe" bin\Debug\ICSharpCode.SharpZipLib.Tests.dll /framework:net-4.5 /result:Documentation\nunit3-test-results-debug.xml]]></command-line>
+  <test-suite type="Assembly" id="0-1168" name="ICSharpCode.SharpZipLib.Tests.dll" fullname="M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\bin\Debug\ICSharpCode.SharpZipLib.Tests.dll" runstate="Runnable" testcasecount="151" result="Failed" site="Child" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:37Z" duration="30.391920" total="151" passed="139" failed="11" inconclusive="0" skipped="1" asserts="3354643">
+    <environment framework-version="3.2.1.0" clr-version="4.0.30319.42000" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master" machine-name="A5421837" user="mcneightne" user-domain="NW" culture="en-US" uiculture="en-US" os-architecture="x64" />
+    <settings>
+      <setting name="RuntimeFramework" value="net-4.5" />
+      <setting name="WorkDirectory" value="M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master" />
+      <setting name="ImageRuntimeVersion" value="4.0.30319" />
+      <setting name="ImageTargetFrameworkName" value=".NETFramework,Version=v4.5" />
+      <setting name="ImageRequiresX86" value="False" />
+      <setting name="ImageRequiresDefaultAppDomainAssemblyResolver" value="False" />
+      <setting name="NumberOfTestWorkers" value="4" />
+    </settings>
+    <properties>
+      <property name="_PID" value="15112" />
+      <property name="_APPDOMAIN" value="test-domain-" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="TestSuite" id="0-1169" name="ICSharpCode" fullname="ICSharpCode" runstate="Runnable" testcasecount="151" result="Failed" site="Child" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:37Z" duration="30.377467" total="151" passed="139" failed="11" inconclusive="0" skipped="1" asserts="3354643">
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestSuite" id="0-1170" name="SharpZipLib" fullname="ICSharpCode.SharpZipLib" runstate="Runnable" testcasecount="151" result="Failed" site="Child" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:37Z" duration="30.377343" total="151" passed="139" failed="11" inconclusive="0" skipped="1" asserts="3354643">
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="0-1171" name="Tests" fullname="ICSharpCode.SharpZipLib.Tests" runstate="Runnable" testcasecount="151" result="Failed" site="Child" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:37Z" duration="30.377332" total="151" passed="139" failed="11" inconclusive="0" skipped="1" asserts="3354643">
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestSuite" id="0-1180" name="Base" fullname="ICSharpCode.SharpZipLib.Tests.Base" runstate="Runnable" testcasecount="6" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.475998" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="20">
+            <test-suite type="TestFixture" id="0-1161" name="InflaterDeflaterTestSuite" fullname="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite" classname="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite" runstate="Runnable" testcasecount="6" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.473188" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="20">
+              <test-case id="0-1164" name="CloseDeflatorWithNestedUsing" fullname="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.CloseDeflatorWithNestedUsing" methodname="CloseDeflatorWithNestedUsing" classname="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite" runstate="Runnable" seed="1795143534" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.051663" asserts="1">
+                <properties>
+                  <property name="Category" value="Base" />
+                </properties>
+              </test-case>
+              <test-case id="0-1167" name="CloseInflatorWithNestedUsing" fullname="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.CloseInflatorWithNestedUsing" methodname="CloseInflatorWithNestedUsing" classname="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite" runstate="Runnable" seed="1330191420" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.052738" asserts="3">
+                <properties>
+                  <property name="Category" value="Base" />
+                </properties>
+              </test-case>
+              <test-case id="0-1165" name="DeflatorStreamOwnership" fullname="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.DeflatorStreamOwnership" methodname="DeflatorStreamOwnership" classname="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite" runstate="Runnable" seed="1726040950" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.005022" asserts="8">
+                <properties>
+                  <property name="Category" value="Base" />
+                </properties>
+              </test-case>
+              <test-case id="0-1163" name="InflateDeflateNonZlib" fullname="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.InflateDeflateNonZlib" methodname="InflateDeflateNonZlib" classname="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite" runstate="Runnable" seed="2115386962" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.178237" asserts="0">
+                <properties>
+                  <property name="Category" value="Base" />
+                </properties>
+              </test-case>
+              <test-case id="0-1162" name="InflateDeflateZlib" fullname="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.InflateDeflateZlib" methodname="InflateDeflateZlib" classname="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite" runstate="Runnable" seed="323399992" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.170672" asserts="0">
+                <properties>
+                  <property name="Category" value="Base" />
+                </properties>
+              </test-case>
+              <test-case id="0-1166" name="InflatorStreamOwnership" fullname="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite.InflatorStreamOwnership" methodname="InflatorStreamOwnership" classname="ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite" runstate="Runnable" seed="1096279514" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.000760" asserts="8">
+                <properties>
+                  <property name="Category" value="Base" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="0-1179" name="BZip2" fullname="ICSharpCode.SharpZipLib.Tests.BZip2" runstate="Runnable" testcasecount="2" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.546573" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="10001">
+            <test-suite type="TestFixture" id="0-1158" name="BZip2Suite" fullname="ICSharpCode.SharpZipLib.Tests.BZip2.BZip2Suite" classname="ICSharpCode.SharpZipLib.Tests.BZip2.BZip2Suite" runstate="Runnable" testcasecount="2" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.072313" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="10001">
+              <test-case id="0-1159" name="BasicRoundTrip" fullname="ICSharpCode.SharpZipLib.Tests.BZip2.BZip2Suite.BasicRoundTrip" methodname="BasicRoundTrip" classname="ICSharpCode.SharpZipLib.Tests.BZip2.BZip2Suite" runstate="Runnable" seed="2131904274" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.071123" asserts="10000">
+                <properties>
+                  <property name="Category" value="BZip2" />
+                </properties>
+              </test-case>
+              <test-case id="0-1160" name="CreateEmptyArchive" fullname="ICSharpCode.SharpZipLib.Tests.BZip2.BZip2Suite.CreateEmptyArchive" methodname="CreateEmptyArchive" classname="ICSharpCode.SharpZipLib.Tests.BZip2.BZip2Suite" runstate="Runnable" seed="1470639904" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.000812" asserts="1">
+                <properties>
+                  <property name="Category" value="BZip2" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="0-1178" name="Checksum" fullname="ICSharpCode.SharpZipLib.Tests.Checksum" runstate="Runnable" testcasecount="3" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.597640" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="27">
+            <test-suite type="TestFixture" id="0-1154" name="ChecksumTests" fullname="ICSharpCode.SharpZipLib.Tests.Checksum.ChecksumTests" classname="ICSharpCode.SharpZipLib.Tests.Checksum.ChecksumTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.051081" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="27">
+              <properties>
+                <property name="Category" value="Checksum" />
+              </properties>
+              <test-case id="0-1155" name="Adler_32" fullname="ICSharpCode.SharpZipLib.Tests.Checksum.ChecksumTests.Adler_32" methodname="Adler_32" classname="ICSharpCode.SharpZipLib.Tests.Checksum.ChecksumTests" runstate="Runnable" seed="1652550531" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.044397" asserts="9" />
+              <test-case id="0-1157" name="CRC_32" fullname="ICSharpCode.SharpZipLib.Tests.Checksum.ChecksumTests.CRC_32" methodname="CRC_32" classname="ICSharpCode.SharpZipLib.Tests.Checksum.ChecksumTests" runstate="Runnable" seed="2020911056" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.003055" asserts="9" />
+              <test-case id="0-1156" name="CRC_32_BZip2" fullname="ICSharpCode.SharpZipLib.Tests.Checksum.ChecksumTests.CRC_32_BZip2" methodname="CRC_32_BZip2" classname="ICSharpCode.SharpZipLib.Tests.Checksum.ChecksumTests" runstate="Runnable" seed="31152226" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.001920" asserts="9" />
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="0-1177" name="Core" fullname="ICSharpCode.SharpZipLib.Tests.Core" runstate="Runnable" testcasecount="3" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.616905" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="24">
+            <test-suite type="TestFixture" id="0-1150" name="Core" fullname="ICSharpCode.SharpZipLib.Tests.Core.Core" classname="ICSharpCode.SharpZipLib.Tests.Core.Core" runstate="Runnable" testcasecount="3" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.019273" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="24">
+              <test-case id="0-1151" name="FilterQuoting" fullname="ICSharpCode.SharpZipLib.Tests.Core.Core.FilterQuoting" methodname="FilterQuoting" classname="ICSharpCode.SharpZipLib.Tests.Core.Core" runstate="Runnable" seed="1791506930" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.002452" asserts="18" />
+              <test-case id="0-1152" name="NullFilter" fullname="ICSharpCode.SharpZipLib.Tests.Core.Core.NullFilter" methodname="NullFilter" classname="ICSharpCode.SharpZipLib.Tests.Core.Core" runstate="Runnable" seed="66721262" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.001791" asserts="1" />
+              <test-case id="0-1153" name="ValidFilter" fullname="ICSharpCode.SharpZipLib.Tests.Core.Core.ValidFilter" methodname="ValidFilter" classname="ICSharpCode.SharpZipLib.Tests.Core.Core" runstate="Runnable" seed="1857477344" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.014310" asserts="5" />
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="0-1176" name="GZip" fullname="ICSharpCode.SharpZipLib.Tests.GZip" runstate="Runnable" testcasecount="10" result="Failed" site="Child" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:08Z" duration="0.841255" total="10" passed="9" failed="1" inconclusive="0" skipped="0" asserts="100026">
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="0-1139" name="GZipTestSuite" fullname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite" classname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite" runstate="Runnable" testcasecount="10" result="Failed" site="Child" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:08Z" duration="0.224360" total="10" passed="9" failed="1" inconclusive="0" skipped="0" asserts="100026">
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="0-1141" name="DelayedHeaderWriteNoData" fullname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite.DelayedHeaderWriteNoData" methodname="DelayedHeaderWriteNoData" classname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite" runstate="Runnable" seed="1476699450" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.008109" asserts="3">
+                <properties>
+                  <property name="Category" value="GZip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1142" name="DelayedHeaderWriteWithData" fullname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite.DelayedHeaderWriteWithData" methodname="DelayedHeaderWriteWithData" classname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite" runstate="Runnable" seed="959455822" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.001692" asserts="4">
+                <properties>
+                  <property name="Category" value="GZip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1147" name="DoubleClose" fullname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite.DoubleClose" methodname="DoubleClose" classname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite" runstate="Runnable" seed="2106480669" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.001183" asserts="0" />
+              <test-case id="0-1146" name="DoubleFooter" fullname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite.DoubleFooter" methodname="DoubleFooter" classname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite" runstate="Runnable" seed="2116386846" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.000858" asserts="1" />
+              <test-case id="0-1145" name="InputStreamOwnership" fullname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite.InputStreamOwnership" methodname="InputStreamOwnership" classname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite" runstate="Runnable" seed="1024950644" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.000968" asserts="8">
+                <properties>
+                  <property name="Category" value="GZip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1144" name="OutputStreamOwnership" fullname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite.OutputStreamOwnership" methodname="OutputStreamOwnership" classname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite" runstate="Runnable" seed="1626364199" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:07Z" duration="0.001283" asserts="8">
+                <properties>
+                  <property name="Category" value="GZip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1140" name="TestGZip" fullname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite.TestGZip" methodname="TestGZip" classname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite" runstate="Runnable" seed="1087171945" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:08Z" duration="0.167719" asserts="100001">
+                <properties>
+                  <property name="Category" value="GZip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1149" name="WriteAfterClose" fullname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite.WriteAfterClose" methodname="WriteAfterClose" classname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite" runstate="Runnable" seed="1099126687" result="Passed" start-time="2016-05-12 21:09:08Z" end-time="2016-05-12 21:09:08Z" duration="0.001563" asserts="0" />
+              <test-case id="0-1148" name="WriteAfterFinish" fullname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite.WriteAfterFinish" methodname="WriteAfterFinish" classname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite" runstate="Runnable" seed="1846305574" result="Passed" start-time="2016-05-12 21:09:08Z" end-time="2016-05-12 21:09:08Z" duration="0.000811" asserts="0" />
+              <test-case id="0-1143" name="ZeroLengthInputStream" fullname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite.ZeroLengthInputStream" methodname="ZeroLengthInputStream" classname="ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite" runstate="Runnable" seed="243821016" result="Failed" start-time="2016-05-12 21:09:08Z" end-time="2016-05-12 21:09:08Z" duration="0.038323" asserts="1">
+                <properties>
+                  <property name="Category" value="GZip" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  reading from an empty stream should cause an exception
+  Expected: True
+  But was:  False
+]]></message>
+                  <stack-trace><![CDATA[at ICSharpCode.SharpZipLib.Tests.GZip.GZipTestSuite.ZeroLengthInputStream() in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\GZip\GZipTests.cs:line 109
+]]></stack-trace>
+                </failure>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="0-1175" name="Lzw" fullname="ICSharpCode.SharpZipLib.Tests.Lzw" runstate="Runnable" testcasecount="2" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:08Z" duration="0.859631" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="9">
+            <test-suite type="TestFixture" id="0-1136" name="LzwTestSuite" fullname="ICSharpCode.SharpZipLib.Tests.Lzw.LzwTestSuite" classname="ICSharpCode.SharpZipLib.Tests.Lzw.LzwTestSuite" runstate="Runnable" testcasecount="2" result="Passed" start-time="2016-05-12 21:09:08Z" end-time="2016-05-12 21:09:08Z" duration="0.016982" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="9">
+              <test-case id="0-1138" name="InputStreamOwnership" fullname="ICSharpCode.SharpZipLib.Tests.Lzw.LzwTestSuite.InputStreamOwnership" methodname="InputStreamOwnership" classname="ICSharpCode.SharpZipLib.Tests.Lzw.LzwTestSuite" runstate="Runnable" seed="1288942819" result="Passed" start-time="2016-05-12 21:09:08Z" end-time="2016-05-12 21:09:08Z" duration="0.001406" asserts="8">
+                <properties>
+                  <property name="Category" value="LZW" />
+                </properties>
+              </test-case>
+              <test-case id="0-1137" name="ZeroLengthInputStream" fullname="ICSharpCode.SharpZipLib.Tests.Lzw.LzwTestSuite.ZeroLengthInputStream" methodname="ZeroLengthInputStream" classname="ICSharpCode.SharpZipLib.Tests.Lzw.LzwTestSuite" runstate="Runnable" seed="934493138" result="Passed" start-time="2016-05-12 21:09:08Z" end-time="2016-05-12 21:09:08Z" duration="0.005881" asserts="1">
+                <properties>
+                  <property name="Category" value="LZW" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="0-1174" name="Tar" fullname="ICSharpCode.SharpZipLib.Tests.Tar" runstate="Runnable" testcasecount="17" result="Failed" site="Child" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:11Z" duration="4.326585" total="17" passed="16" failed="1" inconclusive="0" skipped="0" asserts="1005275">
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="0-1118" name="TarTestSuite" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" testcasecount="17" result="Failed" site="Child" start-time="2016-05-12 21:09:08Z" end-time="2016-05-12 21:09:11Z" duration="3.466965" total="17" passed="16" failed="1" inconclusive="0" skipped="0" asserts="1005275">
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="0-1120" name="BlockFactorHandling" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.BlockFactorHandling" methodname="BlockFactorHandling" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="1437994036" result="Passed" start-time="2016-05-12 21:09:08Z" end-time="2016-05-12 21:09:11Z" duration="3.284668" asserts="999550">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1124" name="Checksum" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.Checksum" methodname="Checksum" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="492254403" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.007964" asserts="2">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1133" name="CloningAndUniqueness" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.CloningAndUniqueness" methodname="CloningAndUniqueness" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="1377306018" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.005323" asserts="12">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1119" name="EmptyTar" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.EmptyTar" methodname="EmptyTar" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="1334648632" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.003475" asserts="3">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1123" name="HeaderEquality" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.HeaderEquality" methodname="HeaderEquality" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="287226356" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.002851" asserts="29">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1135" name="InputStreamOwnership" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.InputStreamOwnership" methodname="InputStreamOwnership" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="652223916" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.000698" asserts="8">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1131" name="InvalidLinkName" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.InvalidLinkName" methodname="InvalidLinkName" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="33473029" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.006376" asserts="1">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1130" name="InvalidMagic" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.InvalidMagic" methodname="InvalidMagic" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="712069570" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.000675" asserts="1">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1126" name="InvalidModTime" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.InvalidModTime" methodname="InvalidModTime" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="919930039" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.001820" asserts="1">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1128" name="InvalidName" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.InvalidName" methodname="InvalidName" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="2134653193" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.000602" asserts="1">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1127" name="InvalidSize" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.InvalidSize" methodname="InvalidSize" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="940031914" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.001410" asserts="1">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1132" name="InvalidVersionName" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.InvalidVersionName" methodname="InvalidVersionName" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="1187069427" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.000579" asserts="1">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1122" name="LongNames" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.LongNames" methodname="LongNames" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="1100392106" result="Failed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.100902" asserts="517">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Name match failure
+  Expected string length 513 but was 512. Strings differ at index 512.
+  Expected: "...                                                           A "
+  But was:  "...                                                           A"
+  --------------------------------------------------------------------------^
+]]></message>
+                  <stack-trace><![CDATA[at ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.TryLongName(String name) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\Tar\TarTests.cs:line 190
+at ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.LongNames() in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\Tar\TarTests.cs:line 230
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="0-1134" name="OutputStreamOwnership" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.OutputStreamOwnership" methodname="OutputStreamOwnership" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="743667821" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.001078" asserts="8">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1121" name="TrailerContainsNulls" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.TrailerContainsNulls" methodname="TrailerContainsNulls" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="219182617" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.015121" asserts="5132">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1129" name="UserAndGroupNames" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.UserAndGroupNames" methodname="UserAndGroupNames" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="1763423092" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.001887" asserts="3">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+              <test-case id="0-1125" name="ValuesPreserved" fullname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite.ValuesPreserved" methodname="ValuesPreserved" classname="ICSharpCode.SharpZipLib.Tests.Tar.TarTestSuite" runstate="Runnable" seed="1212345117" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.001942" asserts="5">
+                <properties>
+                  <property name="Category" value="Tar" />
+                </properties>
+              </test-case>
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="0-1173" name="TestSupport" fullname="ICSharpCode.SharpZipLib.Tests.TestSupport" runstate="Runnable" testcasecount="3" result="Passed" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:23Z" duration="15.853767" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="16533">
+            <test-suite type="TestFixture" id="0-1114" name="ExerciseBuffer" fullname="ICSharpCode.SharpZipLib.Tests.TestSupport.ExerciseBuffer" classname="ICSharpCode.SharpZipLib.Tests.TestSupport.ExerciseBuffer" runstate="Runnable" testcasecount="3" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:23Z" duration="11.527192" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="16533">
+              <test-case id="0-1115" name="Basic" fullname="ICSharpCode.SharpZipLib.Tests.TestSupport.ExerciseBuffer.Basic" methodname="Basic" classname="ICSharpCode.SharpZipLib.Tests.TestSupport.ExerciseBuffer" runstate="Runnable" seed="1261353161" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.003108" asserts="142" />
+              <test-case id="0-1116" name="Buffered" fullname="ICSharpCode.SharpZipLib.Tests.TestSupport.ExerciseBuffer.Buffered" methodname="Buffered" classname="ICSharpCode.SharpZipLib.Tests.TestSupport.ExerciseBuffer" runstate="Runnable" seed="116123812" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:11Z" duration="0.001382" asserts="5" />
+              <test-case id="0-1117" name="Threaded" fullname="ICSharpCode.SharpZipLib.Tests.TestSupport.ExerciseBuffer.Threaded" methodname="Threaded" classname="ICSharpCode.SharpZipLib.Tests.TestSupport.ExerciseBuffer" runstate="Runnable" seed="1268701488" result="Passed" start-time="2016-05-12 21:09:11Z" end-time="2016-05-12 21:09:23Z" duration="11.522252" asserts="16386" />
+            </test-suite>
+          </test-suite>
+          <test-suite type="TestSuite" id="0-1172" name="Zip" fullname="ICSharpCode.SharpZipLib.Tests.Zip" runstate="Runnable" testcasecount="105" result="Failed" site="Child" start-time="2016-05-12 21:09:07Z" end-time="2016-05-12 21:09:37Z" duration="30.375366" total="105" passed="95" failed="9" inconclusive="0" skipped="1" asserts="2222728">
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-suite type="TestFixture" id="0-1071" name="FastZipHandling" fullname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling" classname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2016-05-12 21:09:23Z" end-time="2016-05-12 21:09:31Z" duration="8.375111" total="8" passed="5" failed="3" inconclusive="0" skipped="0" asserts="25">
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="0-1072" name="Basics" fullname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling.Basics" methodname="Basics" classname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling" runstate="Runnable" seed="1571040523" result="Passed" start-time="2016-05-12 21:09:23Z" end-time="2016-05-12 21:09:29Z" duration="6.132748" asserts="5">
+                <properties>
+                  <property name="Category" value="Zip" />
+                  <property name="Category" value="CreatesTempFile" />
+                </properties>
+              </test-case>
+              <test-case id="0-1075" name="CreateExceptions" fullname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling.CreateExceptions" methodname="CreateExceptions" classname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling" runstate="Runnable" seed="476203195" result="Failed" label="Error" start-time="2016-05-12 21:09:29Z" end-time="2016-05-12 21:09:29Z" duration="0.063136" asserts="1">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.IO.DirectoryNotFoundException : Could not find a part of the path 'z:\doesnt exist'.]]></message>
+                  <stack-trace><![CDATA[   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileSystemEnumerableIterator`1.CommonInit()
+   at System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   at System.IO.Directory.GetFiles(String path)
+   at ICSharpCode.SharpZipLib.Core.FileSystemScanner.ScanDir(String directory, Boolean recurse) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Core\FileSystemScanner.cs:line 439
+   at ICSharpCode.SharpZipLib.Core.FileSystemScanner.Scan(String directory, Boolean recurse) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Core\FileSystemScanner.cs:line 400
+   at ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(Stream outputStream, String sourceDirectory, Boolean recurse, String fileFilter, String directoryFilter) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Zip\FastZip.cs:line 346
+   at ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(String zipFileName, String sourceDirectory, Boolean recurse, String fileFilter) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Zip\FastZip.cs:line 306
+   at ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling.CreateExceptions() in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\Zip\ZipTests.cs:line 2692]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="0-1074" name="Encryption" fullname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling.Encryption" methodname="Encryption" classname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling" runstate="Runnable" seed="2062903232" result="Passed" start-time="2016-05-12 21:09:29Z" end-time="2016-05-12 21:09:29Z" duration="0.489215" asserts="6">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1073" name="ExtractEmptyDirectories" fullname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling.ExtractEmptyDirectories" methodname="ExtractEmptyDirectories" classname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling" runstate="Runnable" seed="1308498576" result="Passed" start-time="2016-05-12 21:09:29Z" end-time="2016-05-12 21:09:29Z" duration="0.115212" asserts="2">
+                <properties>
+                  <property name="Category" value="Zip" />
+                  <property name="Category" value="CreatesTempFile" />
+                </properties>
+              </test-case>
+              <test-case id="0-1077" name="ExtractExceptions" fullname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling.ExtractExceptions" methodname="ExtractExceptions" classname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling" runstate="Runnable" seed="1491537975" result="Failed" label="Error" start-time="2016-05-12 21:09:29Z" end-time="2016-05-12 21:09:29Z" duration="0.025579" asserts="1">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.IO.FileNotFoundException : Could not find file 'C:\Users\mcneightne\AppData\Local\Temp\test.zip'.]]></message>
+                  <stack-trace><![CDATA[   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at System.IO.File.Open(String path, FileMode mode, FileAccess access, FileShare share)
+   at ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(String zipFileName, String targetDirectory, Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate, String fileFilter, String directoryFilter, Boolean restoreDateTime) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Zip\FastZip.cs:line 378
+   at ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(String zipFileName, String targetDirectory, String fileFilter) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Zip\FastZip.cs:line 361
+   at ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling.ExtractExceptions() in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\Zip\ZipTests.cs:line 2740]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="0-1079" name="NonAsciiPasswords" fullname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling.NonAsciiPasswords" methodname="NonAsciiPasswords" classname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling" runstate="Runnable" seed="478638395" result="Passed" start-time="2016-05-12 21:09:29Z" end-time="2016-05-12 21:09:30Z" duration="0.498616" asserts="6">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1078" name="ReadingOfLockedDataFiles" fullname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling.ReadingOfLockedDataFiles" methodname="ReadingOfLockedDataFiles" classname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling" runstate="Runnable" seed="903364204" result="Failed" label="Error" start-time="2016-05-12 21:09:30Z" end-time="2016-05-12 21:09:30Z" duration="0.551061" asserts="1">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+                <failure>
+                  <message><![CDATA[System.IO.IOException : The process cannot access the file 'C:\Users\mcneightne\AppData\Local\Temp\a.dat' because it is being used by another process.]]></message>
+                  <stack-trace><![CDATA[   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at System.IO.File.Open(String path, FileMode mode, FileAccess access, FileShare share)
+   at ICSharpCode.SharpZipLib.Zip.FastZip.ProcessFile(Object sender, ScanEventArgs e) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Zip\FastZip.cs:line 477
+   at ICSharpCode.SharpZipLib.Core.FileSystemScanner.OnProcessFile(String file) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Core\FileSystemScanner.cs:line 356
+   at ICSharpCode.SharpZipLib.Core.FileSystemScanner.ScanDir(String directory, Boolean recurse) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Core\FileSystemScanner.cs:line 439
+   at ICSharpCode.SharpZipLib.Core.FileSystemScanner.Scan(String directory, Boolean recurse) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Core\FileSystemScanner.cs:line 400
+   at ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(Stream outputStream, String sourceDirectory, Boolean recurse, String fileFilter, String directoryFilter) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Zip\FastZip.cs:line 346
+   at ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling.ReadingOfLockedDataFiles() in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\Zip\ZipTests.cs:line 2764]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="0-1076" name="UnicodeText" fullname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling.UnicodeText" methodname="UnicodeText" classname="ICSharpCode.SharpZipLib.Tests.Zip.FastZipHandling" runstate="Runnable" seed="2118107076" result="Passed" start-time="2016-05-12 21:09:30Z" end-time="2016-05-12 21:09:31Z" duration="0.497620" asserts="3">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="0-1032" name="GeneralHandling" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" testcasecount="27" result="Failed" site="Child" start-time="2016-05-12 21:09:31Z" end-time="2016-05-12 21:09:35Z" duration="3.883179" total="27" passed="25" failed="2" inconclusive="0" skipped="0" asserts="2201652">
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="0-1037" name="AddEntryAfterFinish" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.AddEntryAfterFinish" methodname="AddEntryAfterFinish" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="670081083" result="Passed" start-time="2016-05-12 21:09:31Z" end-time="2016-05-12 21:09:31Z" duration="0.001315" asserts="1">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1040" name="BasicDeflated" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.BasicDeflated" methodname="BasicDeflated" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="1258373135" result="Passed" start-time="2016-05-12 21:09:31Z" end-time="2016-05-12 21:09:32Z" duration="0.790320" asserts="500020">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1046" name="BasicDeflatedEncrypted" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.BasicDeflatedEncrypted" methodname="BasicDeflatedEncrypted" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="1059289972" result="Passed" start-time="2016-05-12 21:09:32Z" end-time="2016-05-12 21:09:33Z" duration="1.029792" asserts="501580">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1047" name="BasicDeflatedEncryptedNonSeekable" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.BasicDeflatedEncryptedNonSeekable" methodname="BasicDeflatedEncryptedNonSeekable" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="2123137215" result="Passed" start-time="2016-05-12 21:09:33Z" end-time="2016-05-12 21:09:34Z" duration="0.851666" asserts="500010">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1041" name="BasicDeflatedNonSeekable" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.BasicDeflatedNonSeekable" methodname="BasicDeflatedNonSeekable" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="1342089395" result="Passed" start-time="2016-05-12 21:09:34Z" end-time="2016-05-12 21:09:34Z" duration="0.774028" asserts="500010">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1042" name="BasicStored" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.BasicStored" methodname="BasicStored" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="1045312845" result="Passed" start-time="2016-05-12 21:09:34Z" end-time="2016-05-12 21:09:34Z" duration="0.070543" asserts="50002">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1050" name="BasicStoredEncrypted" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.BasicStoredEncrypted" methodname="BasicStoredEncrypted" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="1911442281" result="Passed" start-time="2016-05-12 21:09:34Z" end-time="2016-05-12 21:09:35Z" duration="0.104026" asserts="50001">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1051" name="BasicStoredEncryptedNonSeekable" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.BasicStoredEncryptedNonSeekable" methodname="BasicStoredEncryptedNonSeekable" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="1710867645" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.079901" asserts="50001">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1043" name="BasicStoredNonSeekable" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.BasicStoredNonSeekable" methodname="BasicStoredNonSeekable" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="542683330" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.078054" asserts="50001">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1039" name="CloseOnlyHandled" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.CloseOnlyHandled" methodname="CloseOnlyHandled" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="1362768032" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001724" asserts="1">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1035" name="ExerciseGetNextEntry" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.ExerciseGetNextEntry" methodname="ExerciseGetNextEntry" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="2134314168" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.010217" asserts="0">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1036" name="InvalidPasswordNonSeekable" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.InvalidPasswordNonSeekable" methodname="InvalidPasswordNonSeekable" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="262958866" result="Failed" label="Error" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.004016" asserts="0">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+                <failure>
+                  <message><![CDATA[ICSharpCode.SharpZipLib.Zip.ZipException : Invalid password]]></message>
+                  <stack-trace><![CDATA[   at ICSharpCode.SharpZipLib.Zip.ZipInputStream.InitialRead(Byte[] destination, Int32 offset, Int32 count) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Zip\ZipInputStream.cs:line 463
+   at ICSharpCode.SharpZipLib.Zip.ZipInputStream.Read(Byte[] buffer, Int32 offset, Int32 count) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Zip\ZipInputStream.cs:line 511
+   at ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.InvalidPasswordNonSeekable() in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\Zip\ZipTests.cs:line 1434]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="0-1034" name="InvalidPasswordSeekable" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.InvalidPasswordSeekable" methodname="InvalidPasswordSeekable" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="672876239" result="Failed" label="Error" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.002835" asserts="0">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+                <failure>
+                  <message><![CDATA[ICSharpCode.SharpZipLib.Zip.ZipException : Invalid password]]></message>
+                  <stack-trace><![CDATA[   at ICSharpCode.SharpZipLib.Zip.ZipInputStream.InitialRead(Byte[] destination, Int32 offset, Int32 count) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Zip\ZipInputStream.cs:line 463
+   at ICSharpCode.SharpZipLib.Zip.ZipInputStream.Read(Byte[] buffer, Int32 offset, Int32 count) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib\Zip\ZipInputStream.cs:line 511
+   at ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.InvalidPasswordSeekable() in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\Zip\ZipTests.cs:line 1371]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="0-1049" name="MixedEncryptedAndPlain" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.MixedEncryptedAndPlain" methodname="MixedEncryptedAndPlain" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="1740451291" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.002719" asserts="0">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1057" name="NameConversion" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.NameConversion" methodname="NameConversion" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="944794627" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.000598" asserts="2">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1054" name="PartialStreamClosing" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.PartialStreamClosing" methodname="PartialStreamClosing" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="1660007179" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.008621" asserts="1">
+                <properties>
+                  <property name="Category" value="Zip" />
+                  <property name="Category" value="CreatesTempFile" />
+                </properties>
+              </test-case>
+              <test-case id="0-1059" name="PasswordCheckingWithDateInExtraData" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.PasswordCheckingWithDateInExtraData" methodname="PasswordCheckingWithDateInExtraData" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="530669797" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.002849" asserts="3">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1056" name="SerializedObject" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.SerializedObject" methodname="SerializedObject" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="1938394425" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.031785" asserts="2">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1055" name="SerializedObjectZeroLength" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.SerializedObjectZeroLength" methodname="SerializedObjectZeroLength" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="705103592" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.000923" asserts="1">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1038" name="SetCommentOversize" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.SetCommentOversize" methodname="SetCommentOversize" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="1460000646" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.002010" asserts="1">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1048" name="SkipEncryptedEntriesWithoutSettingPassword" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.SkipEncryptedEntriesWithoutSettingPassword" methodname="SkipEncryptedEntriesWithoutSettingPassword" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="2141596860" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001811" asserts="0">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1052" name="StoredNonSeekableConvertToDeflate" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.StoredNonSeekableConvertToDeflate" methodname="StoredNonSeekableConvertToDeflate" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="1840835382" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001899" asserts="3">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1044" name="StoredNonSeekableKnownSizeNoCrc" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.StoredNonSeekableKnownSizeNoCrc" methodname="StoredNonSeekableKnownSizeNoCrc" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="778681024" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.003082" asserts="3">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1045" name="StoredNonSeekableKnownSizeNoCrcEncrypted" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.StoredNonSeekableKnownSizeNoCrcEncrypted" methodname="StoredNonSeekableKnownSizeNoCrcEncrypted" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="1000007207" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.006381" asserts="3">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1053" name="Stream_UnicodeEntries" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.Stream_UnicodeEntries" methodname="Stream_UnicodeEntries" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="965637894" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001128" asserts="2">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1058" name="UnicodeNameConversion" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.UnicodeNameConversion" methodname="UnicodeNameConversion" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="1900842268" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.014233" asserts="3">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1033" name="UnsupportedCompressionMethod" fullname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling.UnsupportedCompressionMethod" methodname="UnsupportedCompressionMethod" classname="ICSharpCode.SharpZipLib.Tests.Zip.GeneralHandling" runstate="Runnable" seed="92483327" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001865" asserts="1">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="0-1008" name="StreamHandling" fullname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling" classname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling" runstate="Runnable" testcasecount="9" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.017241" total="9" passed="9" failed="0" inconclusive="0" skipped="0" asserts="24">
+              <test-case id="0-1017" name="BaseClosedAfterFailure" fullname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling.BaseClosedAfterFailure" methodname="BaseClosedAfterFailure" classname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling" runstate="Runnable" seed="787650010" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001283" asserts="5" />
+              <test-case id="0-1015" name="BaseClosedWhenOwner" fullname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling.BaseClosedWhenOwner" methodname="BaseClosedWhenOwner" classname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling" runstate="Runnable" seed="1542415269" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.000780" asserts="3" />
+              <test-case id="0-1016" name="BaseNotClosedWhenNotOwner" fullname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling.BaseNotClosedWhenNotOwner" methodname="BaseNotClosedWhenNotOwner" classname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling" runstate="Runnable" seed="596653663" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001287" asserts="3" />
+              <test-case id="0-1014" name="CreateAndReadEmptyZip" fullname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling.CreateAndReadEmptyZip" methodname="CreateAndReadEmptyZip" classname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling" runstate="Runnable" seed="1580158007" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.000915" asserts="0">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1013" name="EmptyZipEntries" fullname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling.EmptyZipEntries" methodname="EmptyZipEntries" classname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling" runstate="Runnable" seed="1838194091" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.004371" asserts="1">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1012" name="EntryWithNoDataAndZip64" fullname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling.EntryWithNoDataAndZip64" methodname="EntryWithNoDataAndZip64" classname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling" runstate="Runnable" seed="1554169190" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001180" asserts="1">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1009" name="ParameterHandling" fullname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling.ParameterHandling" methodname="ParameterHandling" classname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling" runstate="Runnable" seed="211985103" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.002029" asserts="8">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1011" name="ReadAndWriteZip64NonSeekable" fullname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling.ReadAndWriteZip64NonSeekable" methodname="ReadAndWriteZip64NonSeekable" classname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling" runstate="Runnable" seed="173340171" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001773" asserts="1">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1010" name="Zip64Descriptor" fullname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling.Zip64Descriptor" methodname="Zip64Descriptor" classname="ICSharpCode.SharpZipLib.Tests.Zip.StreamHandling" runstate="Runnable" seed="961503095" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001515" asserts="2">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="0-1018" name="WindowsNameTransformHandling" fullname="ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling" classname="ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling" runstate="Runnable" testcasecount="6" result="Failed" site="Child" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.023838" total="6" passed="3" failed="3" inconclusive="0" skipped="0" asserts="9">
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="0-1024" name="BasicDirectories" fullname="ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling.BasicDirectories" methodname="BasicDirectories" classname="ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling" runstate="Runnable" seed="129833087" result="Failed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.002225" asserts="4">
+                <failure>
+                  <message><![CDATA[  Should be equal
+  Expected string length 12 but was 13. Strings differ at index 2.
+  Expected: "C:Dir\\talofa"
+  But was:  "C:\\Dir\\talofa"
+  -------------^
+]]></message>
+                  <stack-trace><![CDATA[at ICSharpCode.SharpZipLib.Tests.Zip.TransformBase.TestDirectory(INameTransform t, String original, String expected) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\Zip\ZipTests.cs:line 1030
+at ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling.BasicDirectories() in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\Zip\ZipTests.cs:line 1133
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="0-1019" name="BasicFiles" fullname="ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling.BasicFiles" methodname="BasicFiles" classname="ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling" runstate="Runnable" seed="657609446" result="Failed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001754" asserts="3">
+                <failure>
+                  <message><![CDATA[  Should be equal
+  Expected string length 6 but was 5. Strings differ at index 4.
+  Expected: "base\\t"
+  But was:  "baset"
+  ---------------^
+]]></message>
+                  <stack-trace><![CDATA[at ICSharpCode.SharpZipLib.Tests.Zip.TransformBase.TestFile(INameTransform t, String original, String expected) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\Zip\ZipTests.cs:line 1024
+at ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling.BasicFiles() in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\Zip\ZipTests.cs:line 1045
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="0-1022" name="LengthBoundaryOk" fullname="ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling.LengthBoundaryOk" methodname="LengthBoundaryOk" classname="ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling" runstate="Runnable" seed="1835946489" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.000489" asserts="0" />
+              <test-case id="0-1021" name="NameTooLong" fullname="ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling.NameTooLong" methodname="NameTooLong" classname="ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling" runstate="Runnable" seed="1960734727" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.000308" asserts="0" />
+              <test-case id="0-1020" name="Replacement" fullname="ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling.Replacement" methodname="Replacement" classname="ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling" runstate="Runnable" seed="866290569" result="Failed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.017012" asserts="2">
+                <failure>
+                  <message><![CDATA[  Should be equal
+  Expected string length 3 but was 2. Strings differ at index 1.
+  Expected: "c\\_"
+  But was:  "c_"
+  ------------^
+]]></message>
+                  <stack-trace><![CDATA[at ICSharpCode.SharpZipLib.Tests.Zip.TransformBase.TestFile(INameTransform t, String original, String expected) in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\Zip\ZipTests.cs:line 1024
+at ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling.Replacement() in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\Zip\ZipTests.cs:line 1057
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="0-1023" name="ReplacementChecking" fullname="ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling.ReplacementChecking" methodname="ReplacementChecking" classname="ICSharpCode.SharpZipLib.Tests.Zip.WindowsNameTransformHandling" runstate="Runnable" seed="107278582" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.000882" asserts="0" />
+            </test-suite>
+            <test-suite type="TestFixture" id="0-1110" name="ZipEntryFactoryHandling" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryFactoryHandling" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryFactoryHandling" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.020247" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="35">
+              <failure>
+                <message><![CDATA[One or more child tests had errors]]></message>
+              </failure>
+              <test-case id="0-1113" name="CreatedValues" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryFactoryHandling.CreatedValues" methodname="CreatedValues" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryFactoryHandling" runstate="Runnable" seed="923203722" result="Failed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.011820" asserts="11">
+                <properties>
+                  <property name="Category" value="Zip" />
+                  <property name="Category" value="CreatesTempFile" />
+                </properties>
+                <failure>
+                  <message><![CDATA[  Directory access time failure
+  Expected: 1980-01-01 01:00:00.000
+  But was:  2016-05-12 14:09:34.000
+]]></message>
+                  <stack-trace><![CDATA[at ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryFactoryHandling.CreatedValues() in M:\Documents\Visual Studio 2015\Projects\icsharpcode\SZL_master\ICSharpCode.SharpZipLib.Tests\Zip\ZipTests.cs:line 4000
+]]></stack-trace>
+                </failure>
+              </test-case>
+              <test-case id="0-1112" name="CreateInMemoryValues" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryFactoryHandling.CreateInMemoryValues" methodname="CreateInMemoryValues" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryFactoryHandling" runstate="Runnable" seed="192086313" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.002007" asserts="7">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1111" name="Defaults" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryFactoryHandling.Defaults" methodname="Defaults" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryFactoryHandling" runstate="Runnable" seed="2007854938" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.005797" asserts="17">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="0-1000" name="ZipEntryHandling" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling" runstate="Runnable" testcasecount="7" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.012155" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="59">
+              <test-case id="0-1007" name="CanDecompress" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.CanDecompress" methodname="CanDecompress" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling" runstate="Runnable" seed="421480137" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001088" asserts="3" />
+              <test-case id="0-1002" name="Cloning" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.Cloning" methodname="Cloning" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling" runstate="Runnable" seed="1630670862" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.006707" asserts="29">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1001" name="Copying" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.Copying" methodname="Copying" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling" runstate="Runnable" seed="798259755" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.000832" asserts="20">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1005" name="DateAndTime" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.DateAndTime" methodname="DateAndTime" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling" runstate="Runnable" seed="813987263" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.000715" asserts="4">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1006" name="DateTimeSetsDosTime" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.DateTimeSetsDosTime" methodname="DateTimeSetsDosTime" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling" runstate="Runnable" seed="1896201078" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.000661" asserts="2">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1003" name="NullEntryComment" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.NullEntryComment" methodname="NullEntryComment" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling" runstate="Runnable" seed="993609143" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.000240" asserts="0">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1004" name="NullNameInConstructor" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling.NullNameInConstructor" methodname="NullNameInConstructor" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipEntryHandling" runstate="Runnable" seed="277322916" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.000656" asserts="1">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="0-1060" name="ZipExtraDataHandling" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling" runstate="Runnable" testcasecount="10" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.030571" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="200">
+              <test-case id="0-1064" name="BasicOperations" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling.BasicOperations" methodname="BasicOperations" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling" runstate="Runnable" seed="2039331907" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.007074" asserts="121">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1063" name="Deleting" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling.Deleting" methodname="Deleting" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling" runstate="Runnable" seed="1764279123" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.002791" asserts="13">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1062" name="ExceedSize" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling.ExceedSize" methodname="ExceedSize" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling" runstate="Runnable" seed="585524494" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001206" asserts="7">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1061" name="IsDataUnique" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling.IsDataUnique" methodname="IsDataUnique" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling" runstate="Runnable" seed="656871444" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001155" asserts="2">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1068" name="ReadOverrunInt" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling.ReadOverrunInt" methodname="ReadOverrunInt" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling" runstate="Runnable" seed="295864532" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001077" asserts="7">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1067" name="ReadOverrunLong" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling.ReadOverrunLong" methodname="ReadOverrunLong" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling" runstate="Runnable" seed="1104228481" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001223" asserts="7">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1069" name="ReadOverrunShort" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling.ReadOverrunShort" methodname="ReadOverrunShort" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling" runstate="Runnable" seed="762190417" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001678" asserts="7">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1066" name="Skipping" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling.Skipping" methodname="Skipping" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling" runstate="Runnable" seed="1897826774" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.003613" asserts="18">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1070" name="TaggedDataHandling" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling.TaggedDataHandling" methodname="TaggedDataHandling" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling" runstate="Runnable" seed="1655145412" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.007090" asserts="6">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1065" name="UnreadCountValid" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling.UnreadCountValid" methodname="UnreadCountValid" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipExtraDataHandling" runstate="Runnable" seed="728133356" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.000662" asserts="12">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="0-1080" name="ZipFileHandling" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" testcasecount="29" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:37Z" duration="2.153663" total="29" passed="28" failed="0" inconclusive="0" skipped="1" asserts="20706">
+              <test-case id="0-1090" name="AddAndDeleteEntries" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.AddAndDeleteEntries" methodname="AddAndDeleteEntries" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="629868400" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.055860" asserts="6">
+                <properties>
+                  <property name="Category" value="Zip" />
+                  <property name="Category" value="CreatesTempFile" />
+                </properties>
+              </test-case>
+              <test-case id="0-1089" name="AddAndDeleteEntriesMemory" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.AddAndDeleteEntriesMemory" methodname="AddAndDeleteEntriesMemory" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="228093075" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.049074" asserts="93">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1088" name="AddEncryptedEntriesToExistingArchive" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.AddEncryptedEntriesToExistingArchive" methodname="AddEncryptedEntriesToExistingArchive" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1083105777" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.003671" asserts="6">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1093" name="AddToEmptyArchive" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.AddToEmptyArchive" methodname="AddToEmptyArchive" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="282987431" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.019994" asserts="6">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1099" name="ArchiveTesting" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.ArchiveTesting" methodname="ArchiveTesting" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="535561917" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001843" asserts="2">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1086" name="BasicEncryption" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.BasicEncryption" methodname="BasicEncryption" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="2020617701" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.002008" asserts="3">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1087" name="BasicEncryptionToDisk" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.BasicEncryptionToDisk" methodname="BasicEncryptionToDisk" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="2088267430" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.007417" asserts="4">
+                <properties>
+                  <property name="Category" value="Zip" />
+                  <property name="Category" value="CreatesTempFile" />
+                </properties>
+              </test-case>
+              <test-case id="0-1094" name="CreateEmptyArchive" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.CreateEmptyArchive" methodname="CreateEmptyArchive" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1792045883" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.005117" asserts="3">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1103" name="Crypto_AddEncryptedEntryToExistingArchiveDirect" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.Crypto_AddEncryptedEntryToExistingArchiveDirect" methodname="Crypto_AddEncryptedEntryToExistingArchiveDirect" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1301663048" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.002780" asserts="5">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1102" name="Crypto_AddEncryptedEntryToExistingArchiveSafe" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.Crypto_AddEncryptedEntryToExistingArchiveSafe" methodname="Crypto_AddEncryptedEntryToExistingArchiveSafe" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1469164916" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001966" asserts="5">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1083" name="EmbeddedArchive" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.EmbeddedArchive" methodname="EmbeddedArchive" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1020023379" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.001957" asserts="3">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1096" name="FindEntriesInArchiveExtraData" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.FindEntriesInArchiveExtraData" methodname="FindEntriesInArchiveExtraData" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1997157995" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:35Z" duration="0.219767" asserts="2">
+                <properties>
+                  <property name="Category" value="Zip" />
+                  <property name="Category" value="CreatesTempFile" />
+                </properties>
+              </test-case>
+              <test-case id="0-1095" name="FindEntriesInArchiveWithLongComment" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.FindEntriesInArchiveWithLongComment" methodname="FindEntriesInArchiveWithLongComment" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1534322096" result="Passed" start-time="2016-05-12 21:09:35Z" end-time="2016-05-12 21:09:36Z" duration="0.216453" asserts="3">
+                <properties>
+                  <property name="Category" value="Zip" />
+                  <property name="Category" value="CreatesTempFile" />
+                </properties>
+              </test-case>
+              <test-case id="0-1097" name="FindEntry" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.FindEntry" methodname="FindEntry" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="2134456905" result="Passed" start-time="2016-05-12 21:09:36Z" end-time="2016-05-12 21:09:36Z" duration="0.008857" asserts="11">
+                <properties>
+                  <property name="Category" value="Zip" />
+                  <property name="Category" value="CreatesTempFile" />
+                </properties>
+              </test-case>
+              <test-case id="0-1098" name="HandlesNoEntries" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.HandlesNoEntries" methodname="HandlesNoEntries" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="909119458" result="Passed" start-time="2016-05-12 21:09:36Z" end-time="2016-05-12 21:09:36Z" duration="0.012852" asserts="2">
+                <properties>
+                  <property name="Category" value="Zip" />
+                  <property name="Category" value="CreatesTempFile" />
+                </properties>
+              </test-case>
+              <test-case id="0-1107" name="NameFactory" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.NameFactory" methodname="NameFactory" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1798318179" result="Passed" start-time="2016-05-12 21:09:36Z" end-time="2016-05-12 21:09:36Z" duration="0.006098" asserts="11">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1108" name="NestedArchive" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.NestedArchive" methodname="NestedArchive" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="455917762" result="Passed" start-time="2016-05-12 21:09:36Z" end-time="2016-05-12 21:09:36Z" duration="0.002916" asserts="4">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1081" name="NullStreamDetected" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.NullStreamDetected" methodname="NullStreamDetected" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1687223532" result="Passed" start-time="2016-05-12 21:09:36Z" end-time="2016-05-12 21:09:36Z" duration="0.001457" asserts="2">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1091" name="RoundTrip" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.RoundTrip" methodname="RoundTrip" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1111520286" result="Passed" start-time="2016-05-12 21:09:36Z" end-time="2016-05-12 21:09:36Z" duration="0.025059" asserts="10251">
+                <properties>
+                  <property name="Category" value="Zip" />
+                  <property name="Category" value="CreatesTempFile" />
+                </properties>
+              </test-case>
+              <test-case id="0-1092" name="RoundTripInMemory" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.RoundTripInMemory" methodname="RoundTripInMemory" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1160803186" result="Passed" start-time="2016-05-12 21:09:36Z" end-time="2016-05-12 21:09:36Z" duration="0.027048" asserts="10250">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1100" name="TestDirectoryEntry" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.TestDirectoryEntry" methodname="TestDirectoryEntry" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1045345926" result="Passed" start-time="2016-05-12 21:09:36Z" end-time="2016-05-12 21:09:36Z" duration="0.001773" asserts="2">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1101" name="TestEncryptedDirectoryEntry" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.TestEncryptedDirectoryEntry" methodname="TestEncryptedDirectoryEntry" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1646585529" result="Passed" start-time="2016-05-12 21:09:36Z" end-time="2016-05-12 21:09:36Z" duration="0.002356" asserts="2">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1104" name="UnicodeNames" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.UnicodeNames" methodname="UnicodeNames" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="745563653" result="Passed" start-time="2016-05-12 21:09:36Z" end-time="2016-05-12 21:09:36Z" duration="0.002339" asserts="5">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1109" name="UnreferencedZipFileClosingPartialStream" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.UnreferencedZipFileClosingPartialStream" methodname="UnreferencedZipFileClosingPartialStream" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1078887077" result="Passed" start-time="2016-05-12 21:09:36Z" end-time="2016-05-12 21:09:36Z" duration="0.023972" asserts="0" />
+              <test-case id="0-1105" name="UpdateCommentOnlyInMemory" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.UpdateCommentOnlyInMemory" methodname="UpdateCommentOnlyInMemory" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="667442009" result="Passed" start-time="2016-05-12 21:09:36Z" end-time="2016-05-12 21:09:36Z" duration="0.004507" asserts="6">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1106" name="UpdateCommentOnlyOnDisk" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.UpdateCommentOnlyOnDisk" methodname="UpdateCommentOnlyOnDisk" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1880366520" result="Passed" start-time="2016-05-12 21:09:36Z" end-time="2016-05-12 21:09:36Z" duration="0.050119" asserts="13">
+                <properties>
+                  <property name="Category" value="Zip" />
+                  <property name="Category" value="CreatesTempFile" />
+                </properties>
+              </test-case>
+              <test-case id="0-1082" name="Zip64Entries" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.Zip64Entries" methodname="Zip64Entries" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1557035111" result="Passed" start-time="2016-05-12 21:09:36Z" end-time="2016-05-12 21:09:37Z" duration="1.375752" asserts="3">
+                <properties>
+                  <property name="Category" value="Zip" />
+                  <property name="Category" value="CreatesTempFile" />
+                </properties>
+              </test-case>
+              <test-case id="0-1085" name="Zip64Offset" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.Zip64Offset" methodname="Zip64Offset" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Explicit" seed="186895933" result="Skipped" label="Explicit" start-time="2016-05-12 21:09:37Z" end-time="2016-05-12 21:09:37Z" duration="0.001382" asserts="0">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1084" name="Zip64Useage" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling.Zip64Useage" methodname="Zip64Useage" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipFileHandling" runstate="Runnable" seed="1487584112" result="Passed" start-time="2016-05-12 21:09:37Z" end-time="2016-05-12 21:09:37Z" duration="0.002104" asserts="3">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+            </test-suite>
+            <test-suite type="TestFixture" id="0-1025" name="ZipNameTransformHandling" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling" runstate="Runnable" testcasecount="6" result="Passed" start-time="2016-05-12 21:09:37Z" end-time="2016-05-12 21:09:37Z" duration="0.005528" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="18">
+              <test-case id="0-1026" name="Basic" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling.Basic" methodname="Basic" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling" runstate="Runnable" seed="502868772" result="Passed" start-time="2016-05-12 21:09:37Z" end-time="2016-05-12 21:09:37Z" duration="0.000372" asserts="8">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1030" name="FilenameCleaning" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling.FilenameCleaning" methodname="FilenameCleaning" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling" runstate="Runnable" seed="1567116626" result="Passed" start-time="2016-05-12 21:09:37Z" end-time="2016-05-12 21:09:37Z" duration="0.000417" asserts="4">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1028" name="LengthBoundaryOk" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling.LengthBoundaryOk" methodname="LengthBoundaryOk" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling" runstate="Runnable" seed="105033491" result="Passed" start-time="2016-05-12 21:09:37Z" end-time="2016-05-12 21:09:37Z" duration="0.001256" asserts="0" />
+              <test-case id="0-1029" name="NameTransforms" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling.NameTransforms" methodname="NameTransforms" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling" runstate="Runnable" seed="980176457" result="Passed" start-time="2016-05-12 21:09:37Z" end-time="2016-05-12 21:09:37Z" duration="0.000583" asserts="4">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1031" name="PathalogicalNames" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling.PathalogicalNames" methodname="PathalogicalNames" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling" runstate="Runnable" seed="1687081151" result="Passed" start-time="2016-05-12 21:09:37Z" end-time="2016-05-12 21:09:37Z" duration="0.000563" asserts="2">
+                <properties>
+                  <property name="Category" value="Zip" />
+                </properties>
+              </test-case>
+              <test-case id="0-1027" name="TooLong" fullname="ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling.TooLong" methodname="TooLong" classname="ICSharpCode.SharpZipLib.Tests.Zip.ZipNameTransformHandling" runstate="Runnable" seed="1924427483" result="Passed" start-time="2016-05-12 21:09:37Z" end-time="2016-05-12 21:09:37Z" duration="0.001120" asserts="0" />
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

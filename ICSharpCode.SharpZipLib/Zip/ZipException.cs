@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace ICSharpCode.SharpZipLib.Zip
 {
 	/// <summary>
-	/// Represents exception conditions specific to Zip archive handling
+	/// ZipException represents exceptions specific to Zip classes and code.
 	/// </summary>
 	[Serializable]
 	public class ZipException : SharpZipBaseException
@@ -20,28 +20,28 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the ZipException class.
+		/// Initialise a new instance of <see cref="ZipException" />.
 		/// </summary>
 		public ZipException()
 		{
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the ZipException class with a specified error message.
+		/// Initialise a new instance of <see cref="ZipException" /> with its message string.
 		/// </summary>
-		/// <param name="message">The error message that explains the reason for the exception.</param>
+		/// <param name="message">A <see cref="string"/> that describes the error.</param>
 		public ZipException(string message)
 			: base(message)
 		{
 		}
 
 		/// <summary>
-		/// Initialise a new instance of ZipException.
+		/// Initialise a new instance of <see cref="ZipException" />.
 		/// </summary>
-		/// <param name="message">A message describing the error.</param>
-		/// <param name="exception">The exception that is the cause of the current exception.</param>
-		public ZipException(string message, Exception exception)
-			: base(message, exception)
+		/// <param name="message">A <see cref="string"/> that describes the error.</param>
+		/// <param name="innerException">The <see cref="Exception"/> that caused this exception.</param>
+		public ZipException(string message, Exception innerException)
+			: base(message, innerException)
 		{
 		}
 	}

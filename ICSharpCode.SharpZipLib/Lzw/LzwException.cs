@@ -4,12 +4,11 @@ using System.Runtime.Serialization;
 namespace ICSharpCode.SharpZipLib.Lzw
 {
 	/// <summary>
-	/// LzwException represents a LZW specific exception
+	/// LzwException represents exceptions specific to LZW classes and code.
 	/// </summary>
 	[Serializable]
 	public class LzwException : SharpZipBaseException
 	{
-
 		/// <summary>
 		/// Deserialization constructor 
 		/// </summary>
@@ -21,14 +20,14 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		}
 
 		/// <summary>
-		/// Initialise a new instance of LzwException
+		/// Initialise a new instance of <see cref="LzwException" />.
 		/// </summary>
 		public LzwException()
 		{
 		}
 
 		/// <summary>
-		/// Initialise a new instance of LzwException with its message string.
+		/// Initialise a new instance of <see cref="LzwException" /> with its message string.
 		/// </summary>
 		/// <param name="message">A <see cref="string"/> that describes the error.</param>
 		public LzwException(string message)
@@ -37,7 +36,7 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		}
 
 		/// <summary>
-		/// Initialise a new instance of <see cref="LzwException"></see>.
+		/// Initialise a new instance of <see cref="LzwException" />.
 		/// </summary>
 		/// <param name="message">A <see cref="string"/> that describes the error.</param>
 		/// <param name="innerException">The <see cref="Exception"/> that caused this exception.</param>

@@ -89,7 +89,7 @@
     <Compile Include="Base\InflaterDeflaterTests.cs" />
     <Compile Include="BZip2\Bzip2Tests.cs" />
     <Compile Include="Checksum\ChecksumTests.cs" />
-    <Compile Include="Core\Core.cs" />
+    <Compile Include="Core\CoreTests.cs" />
     <Compile Include="GZip\GZipTests.cs" />
     <Compile Include="Lzw\LzwTests.cs" />
     <Compile Include="Tar\TarTests.cs" />
