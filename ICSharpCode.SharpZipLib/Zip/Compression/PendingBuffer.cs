@@ -245,6 +245,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// </returns>
 		public byte[] ToByteArray()
 		{
+			AlignToByte();
+			
 			byte[] result = new byte[end - start];
 			System.Array.Copy(buffer_, start, result, 0, result.Length);
 			start = 0;
