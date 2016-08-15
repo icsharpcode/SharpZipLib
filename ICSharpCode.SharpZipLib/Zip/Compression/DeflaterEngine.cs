@@ -328,7 +328,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			/* If there is not enough lookahead, but still some input left,
 			 * read in the input
 			 */
-			while (lookahead < DeflaterConstants.MIN_LOOKAHEAD && inputOff < inputEnd) {
+			if (lookahead < DeflaterConstants.MIN_LOOKAHEAD && inputOff < inputEnd) {
 				int more = 2 * DeflaterConstants.WSIZE - lookahead - strstart;
 
 				if (more > inputEnd - inputOff) {
