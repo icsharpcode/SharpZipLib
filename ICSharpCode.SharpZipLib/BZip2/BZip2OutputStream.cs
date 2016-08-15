@@ -94,7 +94,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// Get/set flag indicating ownership of underlying stream.
 		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
 		/// </summary>
-		public bool IsStreamOwner {
+		public bool IsStreamOwner
+		{
 			get { return isStreamOwner; }
 			set { isStreamOwner = value; }
 		}
@@ -104,8 +105,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports reading
 		/// </summary>
-		public override bool CanRead {
-			get {
+		public override bool CanRead
+		{
+			get
+			{
 				return false;
 			}
 		}
@@ -113,8 +116,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports seeking
 		/// </summary>
-		public override bool CanSeek {
-			get {
+		public override bool CanSeek
+		{
+			get
+			{
 				return false;
 			}
 		}
@@ -122,8 +127,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports writing
 		/// </summary>
-		public override bool CanWrite {
-			get {
+		public override bool CanWrite
+		{
+			get
+			{
 				return baseStream.CanWrite;
 			}
 		}
@@ -131,8 +138,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Gets the length in bytes of the stream
 		/// </summary>
-		public override long Length {
-			get {
+		public override long Length
+		{
+			get
+			{
 				return baseStream.Length;
 			}
 		}
@@ -140,11 +149,14 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Gets or sets the current position of this stream.
 		/// </summary>
-		public override long Position {
-			get {
+		public override long Position
+		{
+			get
+			{
 				return baseStream.Position;
 			}
-			set {
+			set
+			{
 				throw new NotSupportedException("BZip2OutputStream position cannot be set");
 			}
 		}
@@ -282,37 +294,37 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				}
 
 				switch (runLength) {
-					case 1:
-						last++;
-						block[last + 1] = (byte)currentChar;
-						break;
-					case 2:
-						last++;
-						block[last + 1] = (byte)currentChar;
-						last++;
-						block[last + 1] = (byte)currentChar;
-						break;
-					case 3:
-						last++;
-						block[last + 1] = (byte)currentChar;
-						last++;
-						block[last + 1] = (byte)currentChar;
-						last++;
-						block[last + 1] = (byte)currentChar;
-						break;
-					default:
-						inUse[runLength - 4] = true;
-						last++;
-						block[last + 1] = (byte)currentChar;
-						last++;
-						block[last + 1] = (byte)currentChar;
-						last++;
-						block[last + 1] = (byte)currentChar;
-						last++;
-						block[last + 1] = (byte)currentChar;
-						last++;
-						block[last + 1] = (byte)(runLength - 4);
-						break;
+				case 1:
+					last++;
+					block[last + 1] = (byte)currentChar;
+					break;
+				case 2:
+					last++;
+					block[last + 1] = (byte)currentChar;
+					last++;
+					block[last + 1] = (byte)currentChar;
+					break;
+				case 3:
+					last++;
+					block[last + 1] = (byte)currentChar;
+					last++;
+					block[last + 1] = (byte)currentChar;
+					last++;
+					block[last + 1] = (byte)currentChar;
+					break;
+				default:
+					inUse[runLength - 4] = true;
+					last++;
+					block[last + 1] = (byte)currentChar;
+					last++;
+					block[last + 1] = (byte)currentChar;
+					last++;
+					block[last + 1] = (byte)currentChar;
+					last++;
+					block[last + 1] = (byte)currentChar;
+					last++;
+					block[last + 1] = (byte)(runLength - 4);
+					break;
 				}
 			} else {
 				EndBlock();
@@ -324,7 +336,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Get the number of bytes written to the output.
 		/// </summary>
-		public int BytesWritten {
+		public int BytesWritten
+		{
 			get { return bytesOut; }
 		}
 
@@ -335,25 +348,28 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		override protected void Dispose(bool disposing)
 		{
 			try {
-				base.Dispose(disposing);
-				if (!disposed_) {
-					disposed_ = true;
+				try {
+					base.Dispose(disposing);
+					if (!disposed_) {
+						disposed_ = true;
 
-					if (runLength > 0) {
-						WriteRun();
-					}
+						if (runLength > 0) {
+							WriteRun();
+						}
 
-					currentChar = -1;
-					EndBlock();
-					EndCompression();
-					Flush();
-				}
-			} finally {
-				if (disposing) {
-					if (IsStreamOwner) {
-						baseStream.Close();
+						currentChar = -1;
+						EndBlock();
+						EndCompression();
+						Flush();
+					}
+				} finally {
+					if (disposing) {
+						if (IsStreamOwner) {
+							baseStream.Close();
+						}
 					}
 				}
+			} catch {
 			}
 		}
 
@@ -1495,16 +1511,16 @@ namespace ICSharpCode.SharpZipLib.BZip2
 						zPend--;
 						while (true) {
 							switch (zPend % 2) {
-								case 0:
-									szptr[wr] = (short)BZip2Constants.RunA;
-									wr++;
-									mtfFreq[BZip2Constants.RunA]++;
-									break;
-								case 1:
-									szptr[wr] = (short)BZip2Constants.RunB;
-									wr++;
-									mtfFreq[BZip2Constants.RunB]++;
-									break;
+							case 0:
+								szptr[wr] = (short)BZip2Constants.RunA;
+								wr++;
+								mtfFreq[BZip2Constants.RunA]++;
+								break;
+							case 1:
+								szptr[wr] = (short)BZip2Constants.RunB;
+								wr++;
+								mtfFreq[BZip2Constants.RunB]++;
+								break;
 							}
 							if (zPend < 2) {
 								break;
@@ -1523,16 +1539,16 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				zPend--;
 				while (true) {
 					switch (zPend % 2) {
-						case 0:
-							szptr[wr] = (short)BZip2Constants.RunA;
-							wr++;
-							mtfFreq[BZip2Constants.RunA]++;
-							break;
-						case 1:
-							szptr[wr] = (short)BZip2Constants.RunB;
-							wr++;
-							mtfFreq[BZip2Constants.RunB]++;
-							break;
+					case 0:
+						szptr[wr] = (short)BZip2Constants.RunA;
+						wr++;
+						mtfFreq[BZip2Constants.RunA]++;
+						break;
+					case 1:
+						szptr[wr] = (short)BZip2Constants.RunB;
+						wr++;
+						mtfFreq[BZip2Constants.RunB]++;
+						break;
 					}
 					if (zPend < 2) {
 						break;
