@@ -6,19 +6,8 @@ namespace ICSharpCode.SharpZipLib.Lzw
 	/// <summary>
 	/// LzwException represents exceptions specific to LZW classes and code.
 	/// </summary>
-	[Serializable]
 	public class LzwException : SharpZipBaseException
 	{
-		/// <summary>
-		/// Deserialization constructor 
-		/// </summary>
-		/// <param name="info"><see cref="SerializationInfo"/> for this constructor</param>
-		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
-		protected LzwException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
-
 		/// <summary>
 		/// Initialise a new instance of <see cref="LzwException" />.
 		/// </summary>

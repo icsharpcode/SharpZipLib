@@ -524,12 +524,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 				WriteFinalRecord();
 
 				if (isStreamOwner_) {
-					outputStream.Close();
+					outputStream.Dispose();
 				}
 				outputStream = null;
 			} else if (inputStream != null) {
 				if (isStreamOwner_) {
-					inputStream.Close();
+					inputStream.Dispose();
 				}
 				inputStream = null;
 			}

@@ -150,15 +150,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>
 		/// The underlying stream is closed only if <see cref="IsStreamOwner"/> is true.
 		/// </remarks>
-		override public void Close()
+		protected override void Dispose(bool disposing)
 		{
 			Stream toClose = stream_;
 			stream_ = null;
 			if (isOwner_ && (toClose != null)) {
 				isOwner_ = false;
-				toClose.Close();
+				toClose.Dispose();
 			}
 		}
+
 		#endregion
 
 		// Write the local file header

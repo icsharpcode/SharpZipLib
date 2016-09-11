@@ -24,7 +24,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		private byte[] _encryptBuffer;
 		private int _encrPos;
 		private byte[] _pwdVerifier;
-		private HMACSHA1 _hmacsha1;
+		private IncrementalHash _hmacsha1;
 		private bool _finalised;
 
 		private bool _writeMode;
@@ -52,7 +52,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 
 			// Performs the equivalent of derive_key in Dr Brian Gladman's pwd2key.c
 			var pdb = new Rfc2898DeriveBytes(key, saltBytes, KEY_ROUNDS);
-			var rm = new RijndaelManaged();
+            var rm = Aes.Create();
 			rm.Mode = CipherMode.ECB;           // No feedback from cipher for CTR mode
 			_counterNonce = new byte[_blockSize];
 			byte[] byteKey1 = pdb.GetBytes(_blockSize);
@@ -60,7 +60,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			_encryptor = rm.CreateEncryptor(byteKey1, byteKey2);
 			_pwdVerifier = pdb.GetBytes(PWD_VER_LENGTH);
 			//
-			_hmacsha1 = new HMACSHA1(byteKey2);
+			_hmacsha1 = IncrementalHash.CreateHMAC(HashAlgorithmName.SHA1, byteKey2);
 			_writeMode = writeMode;
 		}
 
@@ -73,7 +73,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			// Pass the data stream to the hash algorithm for generating the Auth Code.
 			// This does not change the inputBuffer. Do this before decryption for read mode.
 			if (!_writeMode) {
-				_hmacsha1.TransformBlock(inputBuffer, inputOffset, inputCount, inputBuffer, inputOffset);
+				_hmacsha1.AppendData(inputBuffer, inputOffset, inputCount);
 			}
 			// Encrypt with AES in CTR mode. Regards to Dr Brian Gladman for this.
 			int ix = 0;
@@ -94,7 +94,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			}
 			if (_writeMode) {
 				// This does not change the buffer. 
-				_hmacsha1.TransformBlock(outputBuffer, outputOffset, inputCount, outputBuffer, outputOffset);
+				_hmacsha1.AppendData(outputBuffer, outputOffset, inputCount);
 			}
 			return inputCount;
 		}
@@ -113,13 +113,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public byte[] GetAuthCode()
 		{
-			// We usually don't get advance notice of final block. Hash requres a TransformFinal.
-			if (!_finalised) {
-				byte[] dummy = new byte[0];
-				_hmacsha1.TransformFinalBlock(dummy, 0, 0);
-				_finalised = true;
-			}
-			return _hmacsha1.Hash;
+			return _hmacsha1.GetHashAndReset();
 		}
 
 		#region ICryptoTransform Members

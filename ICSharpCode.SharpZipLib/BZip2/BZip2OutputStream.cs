@@ -259,16 +259,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 		}
 
-		/// <summary>
-		/// End the current block and end compression.
-		/// Close the stream and free any resources
-		/// </summary>
-		public override void Close()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
 		#endregion
 		void MakeMaps()
 		{
@@ -365,7 +355,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				} finally {
 					if (disposing) {
 						if (IsStreamOwner) {
-							baseStream.Close();
+							baseStream.Dispose();
 						}
 					}
 				}

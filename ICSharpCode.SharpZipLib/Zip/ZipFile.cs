@@ -646,7 +646,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// TODO: This will be slow as the next ice age for huge archives!
 			for (int i = 0; i < entries_.Length; i++) {
-				if (string.Compare(name, entries_[i].Name, ignoreCase, CultureInfo.InvariantCulture) == 0) {
+				if (string.Compare(name, entries_[i].Name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) == 0) {
 					return i;
 				}
 			}
@@ -2409,7 +2409,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				updateFile = new ZipHelperStream(copyStream);
 				updateFile.IsStreamOwner = true;
 
-				baseStream_.Close();
+				baseStream_.Dispose();
 				baseStream_ = null;
 			} else {
 				if (archiveStorage_.UpdateMode == FileUpdateMode.Direct) {
@@ -2423,7 +2423,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					baseStream_ = archiveStorage_.OpenForDirectUpdate(baseStream_);
 					updateFile = new ZipHelperStream(baseStream_);
 				} else {
-					baseStream_.Close();
+					baseStream_.Dispose();
 					baseStream_ = null;
 					updateFile = new ZipHelperStream(Name);
 				}
@@ -2620,7 +2620,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				isNewArchive_ = false;
 				ReadEntries();
 			} else {
-				baseStream_.Close();
+				baseStream_.Dispose();
 				Reopen(archiveStorage_.ConvertTemporaryToFinal());
 			}
 		}
@@ -2810,7 +2810,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				if (IsStreamOwner && (baseStream_ != null)) {
 					lock (baseStream_) {
-						baseStream_.Close();
+						baseStream_.Dispose();
 					}
 				}
 
@@ -3347,13 +3347,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			#endregion
 
-			/// <summary>
-			/// Close this stream instance.
-			/// </summary>
-			public override void Close()
-			{
-				// Do nothing
-			}
 
 			/// <summary>
 			/// Gets a value indicating whether the current stream supports reading.
@@ -3532,17 +3525,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 					baseStream_.Seek(readPos_++, SeekOrigin.Begin);
 					return baseStream_.ReadByte();
 				}
-			}
-
-			/// <summary>
-			/// Close this <see cref="PartialInputStream">partial input stream</see>.
-			/// </summary>
-			/// <remarks>
-			/// The underlying stream is not closed.  Close the parent ZipFile class to do that.
-			/// </remarks>
-			public override void Close()
-			{
-				// Do nothing at all!
 			}
 
 			/// <summary>
@@ -4021,7 +4003,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			bool newFileCreated = false;
 
 			try {
-				temporaryStream_.Close();
+				temporaryStream_.Dispose();
 				File.Move(fileName_, moveTempName);
 				File.Move(temporaryName_, fileName_);
 				newFileCreated = true;
@@ -4050,7 +4032,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns a temporary output <see cref="Stream"/> that is a copy of the input.</returns>
 		public override Stream MakeTemporaryCopy(Stream stream)
 		{
-			stream.Close();
+			stream.Dispose();
 
 			temporaryName_ = GetTempFileName(fileName_, true);
 			File.Copy(fileName_, temporaryName_, true);
@@ -4072,7 +4054,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			Stream result;
 			if ((stream == null) || !stream.CanWrite) {
 				if (stream != null) {
-					stream.Close();
+					stream.Dispose();
 				}
 
 				result = new FileStream(fileName_,
@@ -4091,7 +4073,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public override void Dispose()
 		{
 			if (temporaryStream_ != null) {
-				temporaryStream_.Close();
+				temporaryStream_.Dispose();
 			}
 		}
 
@@ -4232,7 +4214,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					stream.Position = 0;
 					StreamUtils.Copy(stream, result, new byte[4096]);
 
-					stream.Close();
+					stream.Dispose();
 				}
 			} else {
 				result = stream;
@@ -4247,7 +4229,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public override void Dispose()
 		{
 			if (temporaryStream_ != null) {
-				temporaryStream_.Close();
+				temporaryStream_.Dispose();
 			}
 		}
 

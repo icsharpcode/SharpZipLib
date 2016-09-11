@@ -7,21 +7,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 	/// This exception is used to indicate that there is a problem
 	/// with a TAR archive header.
 	/// </summary>
-	[Serializable]
 	public class InvalidHeaderException : TarException
 	{
-
-		/// <summary>
-		/// Deserialization constructor 
-		/// </summary>
-		/// <param name="information"><see cref="SerializationInfo"/> for this constructor</param>
-		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
-		protected InvalidHeaderException(SerializationInfo information, StreamingContext context)
-			: base(information, context)
-
-		{
-		}
-
 		/// <summary>
 		/// Initialise a new instance of the InvalidHeaderException class.
 		/// </summary>

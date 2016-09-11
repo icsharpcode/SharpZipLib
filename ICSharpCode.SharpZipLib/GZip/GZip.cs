@@ -29,7 +29,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			} finally {
 				if (isStreamOwner) {
 					// inStream is closed by the GZipInputStream if stream owner
-					outStream.Close();
+					outStream.Dispose();
 				}
 			}
 		}
@@ -57,7 +57,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			} finally {
 				if (isStreamOwner) {
 					// outStream is closed by the GZipOutputStream if stream owner
-					inStream.Close();
+					inStream.Dispose();
 				}
 			}
 		}

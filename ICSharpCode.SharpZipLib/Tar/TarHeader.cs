@@ -38,7 +38,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 	/// 	char t_mfill[12];          // 500 Filler up to 512
 	/// };
 	/// </remarks>
-	public class TarHeader : ICloneable
+	public class TarHeader
 	{
 		#region Constants
 		/// <summary>
@@ -435,7 +435,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				if (value != null) {
 					userName = value.Substring(0, Math.Min(UNAMELEN, value.Length));
 				} else {
-					string currentUser = Environment.UserName;
+					string currentUser = "user";
 					if (currentUser.Length > UNAMELEN) {
 						currentUser = currentUser.Substring(0, UNAMELEN);
 					}
@@ -489,7 +489,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>A new <see cref="Object"/> that is a copy of the current instance.</returns>
 		public object Clone()
 		{
-			return MemberwiseClone();
+			return this.MemberwiseClone();
 		}
 		#endregion
 

@@ -6,19 +6,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 	/// <summary>
 	/// BZip2Exception represents exceptions specific to BZip2 classes and code.
 	/// </summary>
-	[Serializable]
 	public class BZip2Exception : SharpZipBaseException
 	{
-		/// <summary>
-		/// Deserialization constructor 
-		/// </summary>
-		/// <param name="info"><see cref="SerializationInfo"/> for this constructor</param>
-		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
-		protected BZip2Exception(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
-
 		/// <summary>
 		/// Initialise a new instance of <see cref="BZip2Exception" />.
 		/// </summary>
