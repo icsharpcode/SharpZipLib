@@ -231,10 +231,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				method = CompressionMethod.Stored;
 				headerInfoAvailable = true;
 			} else {
-				headerInfoAvailable = (entry.Size >= 0) && entry.HasCrc && entry.CompressedSize >= 0;
+				headerInfoAvailable = false;
 
 				// Switch to deflation if storing isnt possible.
 				if (method == CompressionMethod.Stored) {
+					headerInfoAvailable = (entry.Size >= 0) && entry.HasCrc && entry.CompressedSize >= 0;
 					if (!headerInfoAvailable) {
 						if (!CanPatchEntries) {
 							// Can't patch entries so storing is not possible.
