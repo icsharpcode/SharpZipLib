@@ -152,6 +152,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if (entry != null) {
 				CloseEntry();
+				if (inputBuffer.Available <= 0){
+                    return null;
+                }
 			}
 
 			int header = inputBuffer.ReadLeInt();
