@@ -418,99 +418,132 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// </summary>
 		/// <param name="curMatch"></param>
 		/// <returns>True if a match greater than the minimum length is found</returns>
-		bool FindLongestMatch(int curMatch)
+		bool FindLongestMatch( int curMatch )
 		{
-			int chainLength = this.max_chain;
-			int niceLength = this.niceLength;
-			short[] prev = this.prev;
-			int scan = this.strstart;
-			int match;
-			int best_end = this.strstart + matchLen;
-			int best_len = Math.Max(matchLen, DeflaterConstants.MIN_MATCH - 1);
+        int match;
+        int scan = strstart;
+        // scanMax is the highest position that we can look at
+        int scanMax = scan + Math.Min( DeflaterConstants.MAX_MATCH, lookahead ) - 1;
+        int limit = Math.Max( scan - DeflaterConstants.MAX_DIST, 0 );
 
-			int limit = Math.Max(strstart - DeflaterConstants.MAX_DIST, 0);
+        byte[] window = this.window;
+        short[] prev = this.prev;
+        int chainLength = this.max_chain;
+        int niceLength = Math.Min( this.niceLength, lookahead );
 
-			int strend = strstart + DeflaterConstants.MAX_MATCH - 1;
-			byte scan_end1 = window[best_end - 1];
-			byte scan_end = window[best_end];
+          matchLen = Math.Max( matchLen, DeflaterConstants.MIN_MATCH - 1 );
 
-			// Do not waste too much time if we already have a good match:
-			if (best_len >= this.goodLength) {
-				chainLength >>= 2;
-			}
+          if (scan + matchLen > scanMax) return false;
 
-			/* Do not look for matches beyond the end of the input. This is necessary
-			* to make deflate deterministic.
-			*/
-			if (niceLength > lookahead) {
-				niceLength = lookahead;
-			}
+        byte scan_end1 = window[scan + matchLen - 1];
+        byte scan_end = window[scan + matchLen];
 
-#if DebugDeflation
+          // Do not waste too much time if we already have a good match:
+          if (matchLen >= this.goodLength) chainLength >>= 2;
 
-			if (DeflaterConstants.DEBUGGING && (strstart > 2 * DeflaterConstants.WSIZE - DeflaterConstants.MIN_LOOKAHEAD))
-			{
-				throw new InvalidOperationException("need lookahead");
-			}
-#endif
+          do
+          {
+            match = curMatch;
+            scan = strstart;
 
-			do {
+            if (window[match + matchLen] != scan_end
+             || window[match + matchLen - 1] != scan_end1
+             || window[match] != window[scan]
+             || window[++match] != window[++scan])
+            {
+              continue;
+            }
 
-#if DebugDeflation
+            // scan is set to strstart+1 and the comparison passed, so
+            // scanMax - scan is the maximum number of bytes we can compare.
+            // below we compare 8 bytes at a time, so first we compare
+            // (scanMax - scan) % 8 bytes, so the remainder is a multiple of 8
 
-				if (DeflaterConstants.DEBUGGING && (curMatch >= strstart) )
-				{
-					throw new InvalidOperationException("no future");
-				}
-#endif
-				if (window[curMatch + best_len] != scan_end ||
-					window[curMatch + best_len - 1] != scan_end1 ||
-					window[curMatch] != window[scan] ||
-					window[curMatch + 1] != window[scan + 1]) {
-					continue;
-				}
+            switch( (scanMax - scan) % 8 )
+            {
+            case 1: if (window[++scan] == window[++match]) break;
+              break;
+            case 2: if (window[++scan] == window[++match]
+              && window[++scan] == window[++match]) break;
+              break;
+            case 3: if (window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]) break;
+              break;
+            case 4: if (window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]) break;
+              break;
+            case 5: if (window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]) break;
+              break;
+            case 6: if (window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]) break;
+              break;
+            case 7: if (window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]
+              && window[++scan] == window[++match]) break;
+              break;
+            }
 
-				match = curMatch + 2;
-				scan += 2;
+            if (window[scan] == window[match])
+            {
+            /* We check for insufficient lookahead only every 8th comparison;
+             * the 256th check will be made at strstart + 258 unless lookahead is
+             * exhausted first.
+             */
+              do
+              {
+                if (scan == scanMax)
+                {
+                  ++scan;     // advance to first position not matched
+                  ++match;
 
-				/* We check for insufficient lookahead only every 8th comparison;
-				* the 256th check will be made at strstart + 258.
-				*/
-				while (
-					window[++scan] == window[++match] &&
-					window[++scan] == window[++match] &&
-					window[++scan] == window[++match] &&
-					window[++scan] == window[++match] &&
-					window[++scan] == window[++match] &&
-					window[++scan] == window[++match] &&
-					window[++scan] == window[++match] &&
-					window[++scan] == window[++match] &&
-					(scan < strend)) {
-					// Do nothing
-				}
+                  break;
+                }
+              }
+              while (window[++scan] == window[++match]
+                  && window[++scan] == window[++match]
+                  && window[++scan] == window[++match]
+                  && window[++scan] == window[++match]
+                  && window[++scan] == window[++match]
+                  && window[++scan] == window[++match]
+                  && window[++scan] == window[++match]
+                  && window[++scan] == window[++match]);
+            }
 
-				if (scan > best_end) {
-#if DebugDeflation
-					if (DeflaterConstants.DEBUGGING && (ins_h == 0) )
-						Console.Error.WriteLine("Found match: " + curMatch + "-" + (scan - strstart));
-#endif
-					matchStart = curMatch;
-					best_end = scan;
-					best_len = scan - strstart;
+            if (scan - strstart > matchLen)
+            {
+              #if DebugDeflation
+              if (DeflaterConstants.DEBUGGING && (ins_h == 0) )
+              Console.Error.WriteLine("Found match: " + curMatch + "-" + (scan - strstart));
+              #endif
 
-					if (best_len >= niceLength) {
-						break;
-					}
+              matchStart = curMatch;
+              matchLen = scan - strstart;
 
-					scan_end1 = window[best_end - 1];
-					scan_end = window[best_end];
-				}
-				scan = strstart;
-			} while ((curMatch = (prev[curMatch & DeflaterConstants.WMASK] & 0xffff)) > limit && --chainLength != 0);
+              if (matchLen >= niceLength)
+                break;
+          
+              scan_end1 = window[scan - 1];
+              scan_end = window[scan];
+            }
+          } while ((curMatch = (prev[curMatch & DeflaterConstants.WMASK] & 0xffff)) > limit && 0 != --chainLength );
 
-			matchLen = Math.Min(best_len, lookahead);
-			return matchLen >= DeflaterConstants.MIN_MATCH;
-		}
+          return matchLen >= DeflaterConstants.MIN_MATCH;
+        }
 
 		bool DeflateStored(bool flush, bool finish)
 		{
