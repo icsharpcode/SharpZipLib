@@ -97,10 +97,33 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 		}
 
-		/// <summary>
-		/// Flushes the baseInputStream
-		/// </summary>
-		public override void Flush()
+        /// <summary>
+        /// Gets or sets the position within the stream of the next byte
+        /// that will be read by Read(), accounting for the internal
+        /// buffering that makes the Position property useless.
+        /// </summary>
+        public long RealPosition
+        {
+            get
+            {
+                long pos = (tarBuffer.CurrentRecord) * tarBuffer.RecordSize +
+                    (tarBuffer.CurrentBlock - 1) * TarBuffer.BlockSize;
+                if (readBuffer != null)
+                {
+                    pos += (TarBuffer.BlockSize - readBuffer.Length);
+                }
+                else
+                {
+                    pos += TarBuffer.BlockSize;
+                }
+                return pos;
+            }
+        }
+
+        /// <summary>
+        /// Flushes the baseInputStream
+        /// </summary>
+        public override void Flush()
 		{
 			inputStream.Flush();
 		}
