@@ -316,14 +316,17 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </param>
 		public void Skip(long skipCount)
 		{
-			// TODO: REVIEW efficiency of TarInputStream.Skip
-			// This is horribly inefficient, but it ensures that we
-			// properly skip over bytes via the TarBuffer...
-			//
-			byte[] skipBuf = new byte[8 * 1024];
+            int blocksToSkip = (int)(skipCount / TarBuffer.BlockSize);
+            tarBuffer.SkipBlocks(blocksToSkip);
+            readBuffer = null;
+            long newSkipCount = skipCount % TarBuffer.BlockSize;
+            entryOffset += skipCount - newSkipCount;
 
-			for (long num = skipCount; num > 0;) {
-				int toRead = num > skipBuf.Length ? skipBuf.Length : (int)num;
+            byte[] skipBuf = new byte[8 * 1024];
+
+            for (long num = newSkipCount; num > 0;)
+            {
+                int toRead = num > skipBuf.Length ? skipBuf.Length : (int)num;
 				int numRead = Read(skipBuf, 0, toRead);
 
 				if (numRead == -1) {

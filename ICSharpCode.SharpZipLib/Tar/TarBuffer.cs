@@ -145,7 +145,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			var tarBuffer = new TarBuffer();
 			tarBuffer.inputStream = inputStream;
-			tarBuffer.outputStream = null;
+            if (inputStream.CanSeek)
+            {
+                tarBuffer.inputStreamLength = inputStream.Length;
+            }
+            tarBuffer.outputStream = null;
 			tarBuffer.Initialize(blockFactor);
 
 			return tarBuffer;
@@ -353,12 +357,61 @@ namespace ICSharpCode.SharpZipLib.Tar
 			return true;
 		}
 
-		/// <summary>
-		/// Get the current block number, within the current record, zero based.
-		/// </summary>
-		/// <remarks>Block numbers are zero based values</remarks>
-		/// <seealso cref="RecordSize"/>
-		public int CurrentBlock {
+        /// <summary>
+        /// Skip a record from data stream.
+        /// </summary>
+        /// <returns>
+        /// false if End-Of-File, else true.
+        /// </returns>
+        public bool SkipRecord()
+        {
+            if (inputStream == null)
+            {
+                throw new TarException("no input stream stream defined");
+            }
+            if (!inputStream.CanSeek)
+            {
+                return ReadRecord();
+            }
+            long newPosition = inputStream.Seek(RecordSize, SeekOrigin.Current);
+            currentBlockIndex = 0;
+            currentRecordIndex++;
+            return newPosition <= inputStreamLength;
+        }
+
+        /// <summary>
+        /// Efficiently skips the specified number of blocks, making sure the
+        /// record of the last block will be properly read, and updates the
+        /// bookkeeping variables accordingly.
+        /// </summary>
+        /// <param name="blocks">The number of blocks to skip.</param>
+        public void SkipBlocks(int blocks)
+        {
+            if (inputStream == null)
+            {
+                throw new TarException("no input stream defined");
+            }
+            int lastRecord = (currentBlockIndex + blocks) / BlockFactor;
+            bool readRecord = (lastRecord > 0);
+            int recordsToSkip = lastRecord - 1;
+            int newBlockIndex = (currentBlockIndex + blocks) % BlockFactor;
+            for (int i = 0; i < recordsToSkip; i++)
+            {
+                SkipRecord();
+            }
+            if (readRecord)
+            {
+                ReadRecord();
+            }
+            currentBlockIndex = newBlockIndex;
+        }
+
+        /// <summary>
+        /// Get the current block number, within the current record, zero based.
+        /// </summary>
+        /// <remarks>Block numbers are zero based values</remarks>
+        /// <seealso cref="RecordSize"/>
+        public int CurrentBlock {
 			get { return currentBlockIndex; }
 		}
 
@@ -539,7 +592,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		Stream inputStream;
 		Stream outputStream;
 
-		byte[] recordBuffer;
+        long inputStreamLength = 0;
+
+        byte[] recordBuffer;
 		int currentBlockIndex;
 		int currentRecordIndex;
 
