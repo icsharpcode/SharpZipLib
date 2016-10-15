@@ -98,7 +98,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 
         /// <summary>
-        /// Gets or sets the position within the stream of the next byte
+        /// Gets the position within the stream of the next byte
         /// that will be read by Read(), accounting for the internal
         /// buffering that makes the Position property useless.
         /// </summary>
