@@ -250,22 +250,35 @@ namespace ICSharpCode.SharpZipLib.Tar
 			return totalRead;
 		}
 
-		/// <summary>
-		/// Closes this stream. Calls the TarBuffer's close() method.
-		/// The underlying stream is closed by the TarBuffer.
-		/// </summary>
-		public override void Close()
+#if NET45
+        /// <summary>
+        /// Closes this stream. Calls the TarBuffer's close() method.
+        /// The underlying stream is closed by the TarBuffer.
+        /// </summary>
+        public override void Close()
 		{
 			tarBuffer.Close();
 		}
+#endif
 
-		#endregion
-
-		/// <summary>
-		/// Set the entry factory for this instance.
+#if NETSTANDARD1_3
+        /// <summary>
+		/// Closes this stream. Calls the TarBuffer's close() method.
+		/// The underlying stream is closed by the TarBuffer.
 		/// </summary>
-		/// <param name="factory">The factory for creating new entries</param>
-		public void SetEntryFactory(IEntryFactory factory)
+		protected override void Dispose(bool disposing)
+        {
+            tarBuffer.Close();
+        }
+#endif
+
+        #endregion
+
+        /// <summary>
+        /// Set the entry factory for this instance.
+        /// </summary>
+        /// <param name="factory">The factory for creating new entries</param>
+        public void SetEntryFactory(IEntryFactory factory)
 		{
 			entryFactory = factory;
 		}
@@ -581,7 +594,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 		}
 
-		#region Instance Fields
+#region Instance Fields
 		/// <summary>
 		/// Flag set when last block has been read
 		/// </summary>
@@ -621,6 +634,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Stream used as the source of input data.
 		/// </summary>
 		readonly Stream inputStream;
-		#endregion
+#endregion
 	}
 }

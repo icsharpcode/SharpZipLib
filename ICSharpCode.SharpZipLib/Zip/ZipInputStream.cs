@@ -161,9 +161,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 				header == ZipConstants.CentralHeaderDigitalSignature ||
 				header == ZipConstants.ArchiveExtraDataSignature ||
 				header == ZipConstants.Zip64CentralFileHeaderSignature) {
-				// No more individual entries exist
-				Close();
-				return null;
+                // No more individual entries exist
+#if NET45
+                Close();
+#endif
+#if NETSTANDARD1_3
+                Dispose();
+#endif
+                return null;
 			}
 
 			// -jr- 07-Dec-2003 Ignore spanning temporary signatures if found
@@ -595,16 +600,25 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return count;
 		}
 
-		/// <summary>
-		/// Closes the zip input stream
-		/// </summary>
-		public override void Close()
+        /// <summary>
+        /// Closes the zip input stream
+        /// </summary>
+#if NET45
+        public override void Close()
+#endif
+#if NETSTANDARD1_3
+        protected override void Dispose(bool disposing)
+#endif
 		{
 			internalReader = new ReadDataHandler(ReadingNotAvailable);
 			crc = null;
 			entry = null;
-
-			base.Close();
-		}
+#if NET45
+            base.Close();
+#endif
+#if NETSTANDARD1_3
+            base.Dispose();
+#endif
+        }
 	}
 }

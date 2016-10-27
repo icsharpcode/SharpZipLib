@@ -1,23 +1,31 @@
 using System;
+#if NET45
 using System.Runtime.Serialization;
+#endif
 
 namespace ICSharpCode.SharpZipLib.Tar
 {
-	/// <summary>
-	/// TarException represents exceptions specific to Tar classes and code.
-	/// </summary>
-	[Serializable]
+    /// <summary>
+    /// TarException represents exceptions specific to Tar classes and code.
+    /// </summary>
+
+#if NET45
+    [Serializable]
+#endif
 	public class TarException : SharpZipBaseException
 	{
-		/// <summary>
-		/// Deserialization constructor 
-		/// </summary>
-		/// <param name="info"><see cref="SerializationInfo"/> for this constructor</param>
-		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
-		protected TarException(SerializationInfo info, StreamingContext context)
+
+#if NET45
+        /// <summary>
+        /// Deserialization constructor 
+        /// </summary>
+        /// <param name="info"><see cref="SerializationInfo"/> for this constructor</param>
+        /// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
+        protected TarException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 		}
+#endif
 
 		/// <summary>
 		/// Initialise a new instance of <see cref="TarException" />.

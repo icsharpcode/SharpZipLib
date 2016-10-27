@@ -428,19 +428,23 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// So replace it with some fallback, e.g. 437 which is the default cpcp in a console in a default Windows installation.
 		/// </remarks>
 		static int defaultCodePage =
-			// these values cause ArgumentException in subsequent calls to Encoding::GetEncoding()
-			((Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 1) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 2) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 3) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 42))
-			? 437 // The default OEM encoding in a console in a default Windows installation, as a fallback.
-			: Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage;
-
-		/// <summary>
-		/// Default encoding used for string conversion.  0 gives the default system OEM code page.
-		/// Dont use unicode encodings if you want to be Zip compatible!
-		/// Using the default code page isnt the full solution neccessarily
-		/// there are many variable factors, codepage 850 is often a good choice for
-		/// European users, however be careful about compatability.
-		/// </summary>
-		public static int DefaultCodePage {
+             // these values cause ArgumentException in subsequent calls to Encoding::GetEncoding()
+#if NET45
+            ((Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 1) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 2) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 3) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 42)) ?
+#endif
+             437 // The default OEM encoding in a console in a default Windows installation, as a fallback.
+#if NET45
+			: Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage
+#endif
+            ;
+        /// <summary>
+        /// Default encoding used for string conversion.  0 gives the default system OEM code page.
+        /// Dont use unicode encodings if you want to be Zip compatible!
+        /// Using the default code page isnt the full solution neccessarily
+        /// there are many variable factors, codepage 850 is often a good choice for
+        /// European users, however be careful about compatability.
+        /// </summary>
+        public static int DefaultCodePage {
 			get {
 				return defaultCodePage;
 			}

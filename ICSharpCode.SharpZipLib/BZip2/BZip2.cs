@@ -28,10 +28,14 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				}
 			} finally {
 				if (isStreamOwner) {
-					// inStream is closed by the BZip2InputStream if stream owner
-					outStream.Close();
-				}
-			}
+                    // inStream is closed by the BZip2InputStream if stream owner
+#if NET45
+                    outStream.Close();
+#elif NETSTANDARD1_3
+                    outStream.Dispose();
+#endif
+                }
+            }
 		}
 
 		/// <summary>
@@ -56,8 +60,12 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				}
 			} finally {
 				if (isStreamOwner) {
-					// outStream is closed by the BZip2OutputStream if stream owner
-					inStream.Close();
+                    // outStream is closed by the BZip2OutputStream if stream owner
+#if NET45
+                    inStream.Close();
+#elif NETSTANDARD1_3
+				    inStream.Dispose();
+#endif
 				}
 			}
 		}

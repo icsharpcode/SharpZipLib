@@ -1,26 +1,33 @@
 using System;
+#if NET45
 using System.Runtime.Serialization;
+#endif
 
 namespace ICSharpCode.SharpZipLib.Tar
 {
-	/// <summary>
-	/// This exception is used to indicate that there is a problem
-	/// with a TAR archive header.
-	/// </summary>
-	[Serializable]
+    /// <summary>
+    /// This exception is used to indicate that there is a problem
+    /// with a TAR archive header.
+    /// </summary>
+#if NET45
+    [Serializable]
+#endif
 	public class InvalidHeaderException : TarException
 	{
 
-		/// <summary>
-		/// Deserialization constructor 
-		/// </summary>
-		/// <param name="information"><see cref="SerializationInfo"/> for this constructor</param>
-		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
-		protected InvalidHeaderException(SerializationInfo information, StreamingContext context)
+#if NET45
+        /// <summary>
+        /// Deserialization constructor 
+        /// </summary>
+        /// <param name="information"><see cref="SerializationInfo"/> for this constructor</param>
+        /// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
+        protected InvalidHeaderException(SerializationInfo information, StreamingContext context)
 			: base(information, context)
 
 		{
 		}
+
+#endif
 
 		/// <summary>
 		/// Initialise a new instance of the InvalidHeaderException class.

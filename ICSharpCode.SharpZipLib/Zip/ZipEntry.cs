@@ -103,7 +103,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// <br/>
 	/// <br/>Author of the original java version : Jochen Hoenicke
 	/// </summary>
-	public class ZipEntry : ICloneable
+	public class ZipEntry
+#if NET45
+        : ICloneable
+#endif
 	{
 		[Flags]
 		enum Known : byte
@@ -116,7 +119,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			ExternalAttributes = 0x10,
 		}
 
-		#region Constructors
+#region Constructors
 		/// <summary>
 		/// Creates a zip entry with the given name.
 		/// </summary>
@@ -230,7 +233,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
-		#endregion
+#endregion
 
 		/// <summary>
 		/// Get a value indicating wether the entry has a CRC value available.
@@ -1076,7 +1079,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return IsCompressionMethodSupported(CompressionMethod);
 		}
 
-		#region ICloneable Members
+#region ICloneable Members
 		/// <summary>
 		/// Creates a copy of this zip entry.
 		/// </summary>
@@ -1094,7 +1097,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 
-		#endregion
+#endregion
 
 		/// <summary>
 		/// Gets a string representation of this ZipEntry.
@@ -1150,7 +1153,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return name;
 		}
 
-		#region Instance Fields
+#region Instance Fields
 		Known known;
 		int externalFileAttributes = -1;     // contains external attributes (O/S dependant)
 
@@ -1177,6 +1180,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		byte cryptoCheckValue_;
 		int _aesVer;                            // Version number (2 = AE-2 ?). Assigned but not used.
 		int _aesEncryptionStrength;             // Encryption strength 1 = 128 2 = 192 3 = 256
-		#endregion
+#endregion
 	}
 }

@@ -524,18 +524,26 @@ namespace ICSharpCode.SharpZipLib.Tar
 				WriteFinalRecord();
 
 				if (isStreamOwner_) {
-					outputStream.Close();
-				}
+#if NET45
+                    outputStream.Close();
+#elif NETSTANDARD1_3
+                    outputStream.Dispose();
+#endif
+                }
 				outputStream = null;
 			} else if (inputStream != null) {
 				if (isStreamOwner_) {
-					inputStream.Close();
+#if NET45
+                    inputStream.Close();
+#elif NETSTANDARD1_3
+				    inputStream.Dispose();
+#endif
 				}
 				inputStream = null;
 			}
 		}
 
-		#region Instance Fields
+#region Instance Fields
 		Stream inputStream;
 		Stream outputStream;
 
@@ -546,6 +554,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 		int recordSize = DefaultRecordSize;
 		int blockFactor = DefaultBlockFactor;
 		bool isStreamOwner_ = true;
-		#endregion
+#endregion
 	}
 }

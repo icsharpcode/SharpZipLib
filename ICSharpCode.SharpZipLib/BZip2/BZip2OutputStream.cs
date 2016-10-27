@@ -259,17 +259,19 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 		}
 
-		/// <summary>
-		/// End the current block and end compression.
-		/// Close the stream and free any resources
-		/// </summary>
+        /// <summary>
+        /// End the current block and end compression.
+        /// Close the stream and free any resources
+        /// </summary>
+#if NET45
 		public override void Close()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
+#endif
 
-		#endregion
+#endregion
 		void MakeMaps()
 		{
 			nInUse = 0;
@@ -365,7 +367,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				} finally {
 					if (disposing) {
 						if (IsStreamOwner) {
-							baseStream.Close();
+#if NET45
+                            baseStream.Close();
+#endif
 						}
 					}
 				}
@@ -1741,7 +1745,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			public int dd;
 		}
 
-		#region Instance Fields
+#region Instance Fields
 		bool isStreamOwner = true;
 
 		/*--
@@ -1804,6 +1808,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		int allowableBlockSize;
 		Stream baseStream;
 		bool disposed_;
-		#endregion
+#endregion
 	}
 }

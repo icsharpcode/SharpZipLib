@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    
+  },
+
+  "frameworks": {
+    "net45": {
+      "dependencies": {
+      }
+    },
+    "netstandard1.3": {
+      "buildOptions": {
+        "define": [ "PCL" ]
+      },
+      "dependencies": {
+        "System.Linq": "4.1.0",
+        "System.Runtime.Extensions": "4.1.0",
+        "System.Runtime.Numerics": "4.0.1",
+        "System.IO": "4.1.0",
+        "System.IO.FileSystem": "4.0.1",
+        "System.Runtime": "4.1.0",
+        "System.Runtime.Serialization.Primitives": "4.1.1",
+        "System.Text.RegularExpressions": "4.1.0",
+        "System.Collections": "4.0.11",
+        "System.Security.Cryptography.Primitives": "4.0.0",
+        "System.Security.Cryptography.Algorithms": "4.2.0",
+        "System.Collections.NonGeneric": "4.0.1",
+        "System.Threading": "4.0.11",
+        "System.Threading.Thread": "4.0.0"
+      }
+    }
+  }
+}

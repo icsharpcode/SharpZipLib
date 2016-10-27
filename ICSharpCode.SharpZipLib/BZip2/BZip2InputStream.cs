@@ -185,20 +185,33 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			return count;
 		}
 
-		/// <summary>
-		/// Closes the stream, releasing any associated resources.
-		/// </summary>
-		public override void Close()
+#if NET45
+        /// <summary>
+        /// Closes the stream, releasing any associated resources.
+        /// </summary>
+        public override void Close()
 		{
 			if (IsStreamOwner && (baseStream != null)) {
 				baseStream.Close();
 			}
 		}
-		/// <summary>
-		/// Read a byte from stream advancing position
-		/// </summary>
-		/// <returns>byte read or -1 on end of stream</returns>
-		public override int ReadByte()
+#endif
+
+#if NETSTANDARD1_3
+
+	    protected override void Dispose(bool disposing)
+	    {
+            if (IsStreamOwner && (baseStream != null))
+            {
+                baseStream.Dispose();
+            }
+        }
+#endif
+        /// <summary>
+        /// Read a byte from stream advancing position
+        /// </summary>
+        /// <returns>byte read or -1 on end of stream</returns>
+        public override int ReadByte()
 		{
 			if (streamEnd) {
 				return -1; // ok
@@ -226,7 +239,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			return retChar;
 		}
 
-		#endregion
+#endregion
 
 		void MakeMaps()
 		{
@@ -839,7 +852,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 		}
 
-		#region Instance Fields
+#region Instance Fields
 		/*--
 		index of the last char in the block, so
 		the block size == last + 1.
@@ -904,6 +917,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		int i2, j2;
 		byte z;
 		bool isStreamOwner = true;
-		#endregion
+#endregion
 	}
 }

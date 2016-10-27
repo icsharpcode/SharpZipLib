@@ -38,9 +38,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 	/// 	char t_mfill[12];          // 500 Filler up to 512
 	/// };
 	/// </remarks>
-	public class TarHeader : ICloneable
+	public class TarHeader
+#if NET45
+        : ICloneable
+#endif
 	{
-		#region Constants
+#region Constants
 		/// <summary>
 		/// The length of the name field in a header buffer.
 		/// </summary>
@@ -236,9 +239,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 		const long timeConversionFactor = 10000000L;           // 1 tick == 100 nanoseconds
 		readonly static DateTime dateTime1970 = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-		#endregion
+#endregion
 
-		#region Constructors
+#region Constructors
 
 		/// <summary>
 		/// Initialise a default TarHeader instance
@@ -258,9 +261,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 			Size = 0;
 		}
 
-		#endregion
+#endregion
 
-		#region Properties
+#region Properties
 		/// <summary>
 		/// Get/set the name for this tar entry.
 		/// </summary>
@@ -435,11 +438,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 				if (value != null) {
 					userName = value.Substring(0, Math.Min(UNAMELEN, value.Length));
 				} else {
-					string currentUser = Environment.UserName;
+#if NET45
+                    string currentUser = Environment.UserName;
 					if (currentUser.Length > UNAMELEN) {
 						currentUser = currentUser.Substring(0, UNAMELEN);
 					}
 					userName = currentUser;
+#endif
 				}
 			}
 		}
@@ -480,9 +485,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 			set { devMinor = value; }
 		}
 
-		#endregion
+#endregion
 
-		#region ICloneable Members
+#region ICloneable Members
 		/// <summary>
 		/// Create a new <see cref="TarHeader"/> that is a copy of the current instance.
 		/// </summary>
@@ -491,7 +496,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			return MemberwiseClone();
 		}
-		#endregion
+#endregion
 
 		/// <summary>
 		/// Parse TarHeader information from a header buffer.
@@ -1046,7 +1051,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			return result;
 		}
 
-		#region Instance Fields
+#region Instance Fields
 		string name;
 		int mode;
 		int userId;
@@ -1063,9 +1068,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		string groupName;
 		int devMajor;
 		int devMinor;
-		#endregion
+#endregion
 
-		#region Class Fields
+#region Class Fields
 		// Values used during recursive operations.
 		static internal int userIdAsSet;
 		static internal int groupIdAsSet;
@@ -1076,6 +1081,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 		static internal int defaultGroupId;
 		static internal string defaultGroupName = "None";
 		static internal string defaultUser;
-		#endregion
+#endregion
 	}
 }

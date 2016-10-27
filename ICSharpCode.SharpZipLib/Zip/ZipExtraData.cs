@@ -878,19 +878,23 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public void Dispose()
 		{
 			if (_newEntry != null) {
-				_newEntry.Close();
+#if NET45
+                _newEntry.Close();
+#elif NETSTANDARD1_3
+			    _newEntry.Dispose();
+#endif
 			}
 		}
 
-		#endregion
+#endregion
 
-		#region Instance Fields
+#region Instance Fields
 		int _index;
 		int _readValueStart;
 		int _readValueLength;
 
 		MemoryStream _newEntry;
 		byte[] _data;
-		#endregion
+#endregion
 	}
 }

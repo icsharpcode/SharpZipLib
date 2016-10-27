@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -29,8 +30,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		public NameFilter(string filter)
 		{
 			filter_ = filter;
-			inclusions_ = new ArrayList();
-			exclusions_ = new ArrayList();
+			inclusions_ = new List<Regex>();
+			exclusions_ = new List<Regex>();
 			Compile();
 		}
 		#endregion
@@ -96,7 +97,7 @@ namespace ICSharpCode.SharpZipLib.Core
 			char escape = '\\';
 			char[] separators = { ';' };
 
-			var result = new ArrayList();
+			var result = new List<string>();
 
 			if (!string.IsNullOrEmpty(original)) {
 				int endIndex = -1;
@@ -127,7 +128,7 @@ namespace ICSharpCode.SharpZipLib.Core
 				}
 			}
 
-			return (string[])result.ToArray(typeof(string));
+			return result.ToArray();
 		}
 
 		/// <summary>
@@ -228,8 +229,8 @@ namespace ICSharpCode.SharpZipLib.Core
 
 		#region Instance Fields
 		string filter_;
-		ArrayList inclusions_;
-		ArrayList exclusions_;
+		List<Regex> inclusions_;
+		List<Regex> exclusions_;
 		#endregion
 	}
 }

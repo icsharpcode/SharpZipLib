@@ -1,23 +1,29 @@
 using System;
+#if NET45
 using System.Runtime.Serialization;
+#endif
 
 namespace ICSharpCode.SharpZipLib.BZip2
 {
-	/// <summary>
-	/// BZip2Exception represents exceptions specific to BZip2 classes and code.
-	/// </summary>
+    /// <summary>
+    /// BZip2Exception represents exceptions specific to BZip2 classes and code.
+    /// </summary>
+#if NET45
 	[Serializable]
+#endif
 	public class BZip2Exception : SharpZipBaseException
 	{
-		/// <summary>
-		/// Deserialization constructor 
-		/// </summary>
-		/// <param name="info"><see cref="SerializationInfo"/> for this constructor</param>
-		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
-		protected BZip2Exception(SerializationInfo info, StreamingContext context)
+#if NET45
+        /// <summary>
+        /// Deserialization constructor 
+        /// </summary>
+        /// <param name="info"><see cref="SerializationInfo"/> for this constructor</param>
+        /// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
+        protected BZip2Exception(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 		}
+#endif
 
 		/// <summary>
 		/// Initialise a new instance of <see cref="BZip2Exception" />.

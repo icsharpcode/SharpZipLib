@@ -580,10 +580,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 					}
 
 					if (asciiTrans) {
-						outw.Close();
-					} else {
-						outputStream.Close();
-					}
+#if NET45
+                        outw.Close();
+#elif NETSTANDARD1_3
+                        outw.Dispose();
+#endif
+                    } else {
+#if NET45
+                        outputStream.Close();
+#elif NETSTANDARD1_3
+                        outputStream.Dispose();
+#endif
+                    }
 				}
 			}
 		}
@@ -748,13 +756,21 @@ namespace ICSharpCode.SharpZipLib.Tar
 				if (disposing) {
 					if (tarOut != null) {
 						tarOut.Flush();
-						tarOut.Close();
-					}
+#if NET45
+                        tarOut.Close();
+#elif NETSTANDARD1_3
+                        tarOut.Dispose();
+#endif
+                    }
 
-					if (tarIn != null) {
-						tarIn.Close();
-					}
-				}
+                    if (tarIn != null) {
+#if NET45
+                        tarIn.Close();
+#elif NETSTANDARD1_3
+                        tarIn.Dispose();
+#endif
+                    }
+                }
 			}
 		}
 
@@ -808,7 +824,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			return false;
 		}
 
-		#region Instance Fields
+#region Instance Fields
 		bool keepOldFiles;
 		bool asciiTranslate;
 
@@ -825,6 +841,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 		TarInputStream tarIn;
 		TarOutputStream tarOut;
 		bool isDisposed;
-		#endregion
+#endregion
 	}
 }

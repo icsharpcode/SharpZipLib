@@ -30,7 +30,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 	/// defaults and the File is set to null.</p>
 	/// <see cref="TarHeader"/>
 	/// </summary>
-	public class TarEntry : ICloneable
+	public class TarEntry// : ICloneable
 	{
 		#region Constructors
 		/// <summary>
@@ -340,8 +340,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 			string name = file;
 
 			// 23-Jan-2004 GnuTar allows device names in path where the name is not local to the current directory
-			if (name.IndexOf(Environment.CurrentDirectory, StringComparison.Ordinal) == 0) {
-				name = name.Substring(Environment.CurrentDirectory.Length);
+			if (name.IndexOf(Directory.GetCurrentDirectory(), StringComparison.Ordinal) == 0) {
+				name = name.Substring(Directory.GetCurrentDirectory().Length);
 			}
 
 			/*

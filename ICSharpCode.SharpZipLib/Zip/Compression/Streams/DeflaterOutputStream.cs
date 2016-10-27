@@ -207,18 +207,25 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			salt = new byte[entry.AESSaltLen];
 			// Salt needs to be cryptographically random, and unique per file
-			if (_aesRnd == null)
+		    if (_aesRnd == null)
+		    {
+#if NET45
 				_aesRnd = new RNGCryptoServiceProvider();
-			_aesRnd.GetBytes(salt);
+#endif
+#if NETSTANDARD1_3
+                _aesRnd = RandomNumberGenerator.Create();
+#endif
+		    }
+		    _aesRnd.GetBytes(salt);
 			int blockSize = entry.AESKeySize / 8;   // bits to bytes
 
 			cryptoTransform_ = new ZipAESTransform(rawPassword, salt, blockSize, true);
 			pwdVerifier = ((ZipAESTransform)cryptoTransform_).PwdVerifier;
 		}
 
-		#endregion
+#endregion
 
-		#region Deflation Support
+#region Deflation Support
 		/// <summary>
 		/// Deflates everything in the input buffers.  This will call
 		/// <code>def.deflate()</code> until all bytes from the input buffers
@@ -243,9 +250,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				throw new SharpZipBaseException("DeflaterOutputStream can't deflate all input?");
 			}
 		}
-		#endregion
+#endregion
 
-		#region Stream Overrides
+#region Stream Overrides
 		/// <summary>
 		/// Gets value indicating stream can be read from
 		/// </summary>
@@ -340,37 +347,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			throw new NotSupportedException("DeflaterOutputStream Read not supported");
 		}
-
-		/// <summary>
-		/// Asynchronous reads are not supported a NotSupportedException is always thrown
-		/// </summary>
-		/// <param name="buffer">The buffer to read into.</param>
-		/// <param name="offset">The offset to start storing data at.</param>
-		/// <param name="count">The number of bytes to read</param>
-		/// <param name="callback">The async callback to use.</param>
-		/// <param name="state">The state to use.</param>
-		/// <returns>Returns an <see cref="IAsyncResult"/></returns>
-		/// <exception cref="NotSupportedException">Any access</exception>
-		public override IAsyncResult BeginRead(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
-		{
-			throw new NotSupportedException("DeflaterOutputStream BeginRead not currently supported");
-		}
-
-		/// <summary>
-		/// Asynchronous writes arent supported, a NotSupportedException is always thrown
-		/// </summary>
-		/// <param name="buffer">The buffer to write.</param>
-		/// <param name="offset">The offset to begin writing at.</param>
-		/// <param name="count">The number of bytes to write.</param>
-		/// <param name="callback">The <see cref="AsyncCallback"/> to use.</param>
-		/// <param name="state">The state object.</param>
-		/// <returns>Returns an IAsyncResult.</returns>
-		/// <exception cref="NotSupportedException">Any access</exception>
-		public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
-		{
-			throw new NotSupportedException("BeginWrite is not supported");
-		}
-
+        
 		/// <summary>
 		/// Flushes the stream by calling <see cref="DeflaterOutputStream.Flush">Flush</see> on the deflater and then
 		/// on the underlying stream.  This ensures that all bytes are flushed.
@@ -382,13 +359,23 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			baseOutputStream_.Flush();
 		}
 
-		/// <summary>
-		/// Calls <see cref="Finish"/> and closes the underlying
-		/// stream when <see cref="IsStreamOwner"></see> is true.
-		/// </summary>
-		public override void Close()
+#if NET45
+        /// <summary>
+        /// Calls <see cref="Finish"/> and closes the underlying
+        /// stream when <see cref="IsStreamOwner"></see> is true.
+        /// </summary>
+        public override void Close()
 		{
-			if (!isClosed_) {
+#endif
+#if NETSTANDARD1_3
+        /// <summary>
+        /// Calls <see cref="Finish"/> and closes the underlying
+        /// stream when <see cref="IsStreamOwner"></see> is true.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+#endif
+            if (!isClosed_) {
 				isClosed_ = true;
 
 				try {
@@ -400,13 +387,18 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					}
 				} finally {
 					if (isStreamOwner_) {
+#if NET45
 						baseOutputStream_.Close();
+#endif
+#if NETSTANDARD1_3
+					    baseOutputStream_.Dispose();
+#endif
 					}
-				}
+                }
 			}
 		}
 
-		private void GetAuthCodeIfAES()
+        private void GetAuthCodeIfAES()
 		{
 			if (cryptoTransform_ is ZipAESTransform) {
 				AESAuthCode = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
@@ -443,9 +435,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			deflater_.SetInput(buffer, offset, count);
 			Deflate();
 		}
-		#endregion
+#endregion
 
-		#region Instance Fields
+#region Instance Fields
 		/// <summary>
 		/// This buffer is used temporarily to retrieve the bytes from the
 		/// deflater and write them to the underlying output stream.
@@ -465,12 +457,17 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		bool isClosed_;
 
 		bool isStreamOwner_ = true;
-		#endregion
+#endregion
 
-		#region Static Fields
+#region Static Fields
 
-		// Static to help ensure that multiple files within a zip will get different random salt
-		private static RNGCryptoServiceProvider _aesRnd;
-		#endregion
-	}
+#if NET45
+        // Static to help ensure that multiple files within a zip will get different random salt
+        private static RNGCryptoServiceProvider _aesRnd;
+#endif
+#if NETSTANDARD1_3
+        private static RandomNumberGenerator _aesRnd;
+#endif
+#endregion
+    }
 }

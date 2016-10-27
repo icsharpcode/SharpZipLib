@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Globalization;
@@ -646,7 +647,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// TODO: This will be slow as the next ice age for huge archives!
 			for (int i = 0; i < entries_.Length; i++) {
-				if (string.Compare(name, entries_[i].Name, ignoreCase, CultureInfo.InvariantCulture) == 0) {
+				if (string.Compare(name, entries_[i].Name, StringComparison.OrdinalIgnoreCase) == 0) {
 					return i;
 				}
 			}
@@ -2409,8 +2410,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 				updateFile = new ZipHelperStream(copyStream);
 				updateFile.IsStreamOwner = true;
 
-				baseStream_.Close();
-				baseStream_ = null;
+#if NET45
+                baseStream_.Close();
+#endif
+#if NETSTANDARD1_3
+			    baseStream_.Dispose();
+#endif
+                baseStream_ = null;
 			} else {
 				if (archiveStorage_.UpdateMode == FileUpdateMode.Direct) {
 					// TODO: archiveStorage wasnt originally intended for this use.
@@ -2423,7 +2429,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 					baseStream_ = archiveStorage_.OpenForDirectUpdate(baseStream_);
 					updateFile = new ZipHelperStream(baseStream_);
 				} else {
-					baseStream_.Close();
+#if NET45
+                baseStream_.Close();
+#endif
+#if NETSTANDARD1_3
+			    baseStream_.Dispose();
+#endif
 					baseStream_ = null;
 					updateFile = new ZipHelperStream(Name);
 				}
@@ -2620,8 +2631,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 				isNewArchive_ = false;
 				ReadEntries();
 			} else {
-				baseStream_.Close();
-				Reopen(archiveStorage_.ConvertTemporaryToFinal());
+#if NET45
+                baseStream_.Close();
+#endif
+#if NETSTANDARD1_3
+                baseStream_.Dispose();
+#endif
+                Reopen(archiveStorage_.ConvertTemporaryToFinal());
 			}
 		}
 
@@ -2632,15 +2648,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
-		#endregion
+#endregion
 
-		#region ZipUpdate class
+#region ZipUpdate class
 		/// <summary>
 		/// Represents a pending update to a Zip file.
 		/// </summary>
 		class ZipUpdate
 		{
-			#region Constructors
+#region Constructors
 			public ZipUpdate(string fileName, ZipEntry entry)
 			{
 				command_ = UpdateCommand.Add;
@@ -2706,7 +2722,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				// Do nothing.
 			}
-			#endregion
+#endregion
 
 			/// <summary>
 			/// Get the <see cref="ZipEntry"/> for this update.
@@ -2778,7 +2794,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return result;
 			}
 
-			#region Instance Fields
+#region Instance Fields
 			ZipEntry entry_;
 			ZipEntry outEntry_;
 			UpdateCommand command_;
@@ -2787,20 +2803,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 			long sizePatchOffset_ = -1;
 			long crcPatchOffset_ = -1;
 			long _offsetBasedSize = -1;
-			#endregion
+#endregion
 		}
 
-		#endregion
-		#endregion
+#endregion
+#endregion
 
-		#region Disposing
+#region Disposing
 
-		#region IDisposable Members
+#region IDisposable Members
 		void IDisposable.Dispose()
 		{
 			Close();
 		}
-		#endregion
+#endregion
 
 		void DisposeInternal(bool disposing)
 		{
@@ -2810,9 +2826,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				if (IsStreamOwner && (baseStream_ != null)) {
 					lock (baseStream_) {
-						baseStream_.Close();
-					}
-				}
+#if NET45
+                baseStream_.Close();
+#endif
+#if NETSTANDARD1_3
+                        baseStream_.Dispose();
+#endif
+                    }
+                }
 
 				PostUpdateCleanup();
 			}
@@ -2828,10 +2849,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 			DisposeInternal(disposing);
 		}
 
-		#endregion
+#endregion
 
-		#region Internal routines
-		#region Reading
+#region Internal routines
+#region Reading
 		/// <summary>
 		/// Read an unsigned short in little endian byte order.
 		/// </summary>
@@ -2877,7 +2898,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return ReadLEUint() | ((ulong)ReadLEUint() << 32);
 		}
 
-		#endregion
+#endregion
 		// NOTE this returns the offset of the first byte after the signature.
 		long LocateBlockWithSignature(int signature, long endLocation, int minimumBlockSize, int maximumVariableData)
 		{
@@ -3164,9 +3185,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			stream.Write(cryptBuffer, 0, cryptBuffer.Length);
 		}
 
-		#endregion
+#endregion
 
-		#region Instance Fields
+#region Instance Fields
 		bool isDisposed_;
 		string name_;
 		string comment_;
@@ -3184,7 +3205,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		// Hint: Set always ZipEntry size before they are added to an archive and this setting isnt needed.
 		UseZip64 useZip64_ = UseZip64.Dynamic;
 
-		#region Zip Update Instance Fields
+#region Zip Update Instance Fields
 		ArrayList updates_;
 		long updateCount_; // Count is managed manually as updates_ can contain nulls!
 		Hashtable updateIndex_;
@@ -3196,16 +3217,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		ZipString newComment_;
 		bool commentEdited_;
 		IEntryFactory updateEntryFactory_ = new ZipEntryFactory();
-		#endregion
-		#endregion
+#endregion
+#endregion
 
-		#region Support Classes
+#region Support Classes
 		/// <summary>
 		/// Represents a string from a <see cref="ZipFile"/> which is stored as an array of bytes.
 		/// </summary>
 		class ZipString
 		{
-			#region Constructors
+#region Constructors
 			/// <summary>
 			/// Initialise a <see cref="ZipString"/> with a string.
 			/// </summary>
@@ -3224,7 +3245,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				rawComment_ = rawString;
 			}
-			#endregion
+#endregion
 
 			/// <summary>
 			/// Get a value indicating the original source of data for this instance.
@@ -3291,11 +3312,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return zipString.comment_;
 			}
 
-			#region Instance Fields
+#region Instance Fields
 			string comment_;
 			byte[] rawComment_;
 			bool isSourceString_;
-			#endregion
+#endregion
 		}
 
 		/// <summary>
@@ -3303,14 +3324,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		class ZipEntryEnumerator : IEnumerator
 		{
-			#region Constructors
+#region Constructors
 			public ZipEntryEnumerator(ZipEntry[] entries)
 			{
 				array = entries;
 			}
 
-			#endregion
-			#region IEnumerator Members
+#endregion
+#region IEnumerator Members
 			public object Current {
 				get {
 					return array[index];
@@ -3326,11 +3347,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				return (++index < array.Length);
 			}
-			#endregion
-			#region Instance Fields
+#endregion
+#region Instance Fields
 			ZipEntry[] array;
 			int index = -1;
-			#endregion
+#endregion
 		}
 
 		/// <summary>
@@ -3339,21 +3360,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		class UncompressedStream : Stream
 		{
-			#region Constructors
+#region Constructors
 			public UncompressedStream(Stream baseStream)
 			{
 				baseStream_ = baseStream;
 			}
 
-			#endregion
-
-			/// <summary>
-			/// Close this stream instance.
-			/// </summary>
-			public override void Close()
-			{
-				// Do nothing
-			}
+#endregion
 
 			/// <summary>
 			/// Gets a value indicating whether the current stream supports reading.
@@ -3477,9 +3490,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			readonly
 
-			#region Instance Fields
+#region Instance Fields
 			Stream baseStream_;
-			#endregion
+#endregion
 		}
 
 		/// <summary>
@@ -3488,7 +3501,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		class PartialInputStream : Stream
 		{
-			#region Constructors
+#region Constructors
 			/// <summary>
 			/// Initialise a new instance of the <see cref="PartialInputStream"/> class.
 			/// </summary>
@@ -3515,7 +3528,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				readPos_ = start;
 				end_ = start + length;
 			}
-			#endregion
+#endregion
 
 			/// <summary>
 			/// Read a byte from this stream.
@@ -3532,17 +3545,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 					baseStream_.Seek(readPos_++, SeekOrigin.Begin);
 					return baseStream_.ReadByte();
 				}
-			}
-
-			/// <summary>
-			/// Close this <see cref="PartialInputStream">partial input stream</see>.
-			/// </summary>
-			/// <remarks>
-			/// The underlying stream is not closed.  Close the parent ZipFile class to do that.
-			/// </remarks>
-			public override void Close()
-			{
-				// Do nothing at all!
 			}
 
 			/// <summary>
@@ -3730,21 +3732,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 			public override bool CanTimeout {
 				get { return baseStream_.CanTimeout; }
 			}
-			#region Instance Fields
+#region Instance Fields
 			ZipFile zipFile_;
 			Stream baseStream_;
 			long start_;
 			long length_;
 			long readPos_;
 			long end_;
-			#endregion
+#endregion
 		}
-		#endregion
+#endregion
 	}
 
-	#endregion
+#endregion
 
-	#region DataSources
+#region DataSources
 	/// <summary>
 	/// Provides a static way to obtain a source of data for an entry.
 	/// </summary>
@@ -3788,7 +3790,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			fileName_ = fileName;
 		}
 
-		#region IDataSource Members
+#region IDataSource Members
 
 		/// <summary>
 		/// Get a <see cref="Stream"/> providing data.
@@ -3801,10 +3803,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		readonly
 
-		#endregion
-		#region Instance Fields
+#endregion
+#region Instance Fields
 		string fileName_;
-		#endregion
+#endregion
 	}
 
 
@@ -3814,7 +3816,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	public class DynamicDiskDataSource : IDynamicDataSource
 	{
 
-		#region IDataSource Members
+#region IDataSource Members
 		/// <summary>
 		/// Get a <see cref="Stream"/> providing data for an entry.
 		/// </summary>
@@ -3832,12 +3834,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 
-		#endregion
+#endregion
 	}
 
-	#endregion
+#endregion
 
-	#region Archive Storage
+#region Archive Storage
 	/// <summary>
 	/// Defines facilities for data storage when updating Zip Archives.
 	/// </summary>
@@ -3888,7 +3890,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	abstract public class BaseArchiveStorage : IArchiveStorage
 	{
-		#region Constructors
+#region Constructors
 		/// <summary>
 		/// Initializes a new instance of the <see cref="BaseArchiveStorage"/> class.
 		/// </summary>
@@ -3897,9 +3899,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			updateMode_ = updateMode;
 		}
-		#endregion
+#endregion
 
-		#region IArchiveStorage Members
+#region IArchiveStorage Members
 
 		/// <summary>
 		/// Gets a temporary output <see cref="Stream"/>
@@ -3945,11 +3947,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
-		#endregion
+#endregion
 
-		#region Instance Fields
+#region Instance Fields
 		FileUpdateMode updateMode_;
-		#endregion
+#endregion
 	}
 
 	/// <summary>
@@ -3957,7 +3959,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	public class DiskArchiveStorage : BaseArchiveStorage
 	{
-		#region Constructors
+#region Constructors
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DiskArchiveStorage"/> class.
 		/// </summary>
@@ -3981,9 +3983,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			: this(file, FileUpdateMode.Safe)
 		{
 		}
-		#endregion
+#endregion
 
-		#region IArchiveStorage Members
+#region IArchiveStorage Members
 
 		/// <summary>
 		/// Gets a temporary output <see cref="Stream"/> for performing updates on.
@@ -4021,8 +4023,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 			bool newFileCreated = false;
 
 			try {
-				temporaryStream_.Close();
-				File.Move(fileName_, moveTempName);
+#if NET45
+                temporaryStream_.Close();
+#endif
+#if NETSTANDARD1_3
+                temporaryStream_.Dispose();
+#endif
+                File.Move(fileName_, moveTempName);
 				File.Move(temporaryName_, fileName_);
 				newFileCreated = true;
 				File.Delete(moveTempName);
@@ -4050,9 +4057,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns a temporary output <see cref="Stream"/> that is a copy of the input.</returns>
 		public override Stream MakeTemporaryCopy(Stream stream)
 		{
-			stream.Close();
+#if NET45
+                stream.Close();
+#endif
+#if NETSTANDARD1_3
+            stream.Dispose();
+#endif
 
-			temporaryName_ = GetTempFileName(fileName_, true);
+            temporaryName_ = GetTempFileName(fileName_, true);
 			File.Copy(fileName_, temporaryName_, true);
 
 			temporaryStream_ = new FileStream(temporaryName_,
@@ -4072,8 +4084,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 			Stream result;
 			if ((stream == null) || !stream.CanWrite) {
 				if (stream != null) {
-					stream.Close();
-				}
+#if NET45
+                    stream.Close();
+#endif
+
+#if NETSTANDARD1_3
+                    stream.Dispose();
+#endif
+                }
 
 				result = new FileStream(fileName_,
 						FileMode.Open,
@@ -4091,13 +4109,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public override void Dispose()
 		{
 			if (temporaryStream_ != null) {
-				temporaryStream_.Close();
-			}
-		}
+#if NET45
+                temporaryStream_.Close();
+#endif
 
-		#endregion
+#if NETSTANDARD1_3
+                temporaryStream_.Dispose();
+#endif
+            }
+        }
 
-		#region Internal routines
+#endregion
+
+#region Internal routines
 		static string GetTempFileName(string original, bool makeTempFile)
 		{
 			string result = null;
@@ -4129,13 +4153,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			return result;
 		}
-		#endregion
+#endregion
 
-		#region Instance Fields
+#region Instance Fields
 		Stream temporaryStream_;
 		string fileName_;
 		string temporaryName_;
-		#endregion
+#endregion
 	}
 
 	/// <summary>
@@ -4143,7 +4167,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	public class MemoryArchiveStorage : BaseArchiveStorage
 	{
-		#region Constructors
+#region Constructors
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MemoryArchiveStorage"/> class.
 		/// </summary>
@@ -4162,9 +4186,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 		}
 
-		#endregion
+#endregion
 
-		#region Properties
+#region Properties
 		/// <summary>
 		/// Get the stream returned by <see cref="ConvertTemporaryToFinal"/> if this was in fact called.
 		/// </summary>
@@ -4172,9 +4196,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get { return finalStream_; }
 		}
 
-		#endregion
+#endregion
 
-		#region IArchiveStorage Members
+#region IArchiveStorage Members
 
 		/// <summary>
 		/// Gets the temporary output <see cref="Stream"/>
@@ -4232,9 +4256,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 					stream.Position = 0;
 					StreamUtils.Copy(stream, result, new byte[4096]);
 
-					stream.Close();
-				}
-			} else {
+#if NET45
+                    stream.Close();
+#endif
+#if NETSTANDARD1_3
+                    stream.Dispose();
+#endif
+                }
+            } else {
 				result = stream;
 			}
 
@@ -4247,17 +4276,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public override void Dispose()
 		{
 			if (temporaryStream_ != null) {
-				temporaryStream_.Close();
+#if NET45
+                temporaryStream_.Close();
+#endif
+#if NETSTANDARD1_3
+                temporaryStream_.Dispose();
+#endif
 			}
 		}
 
-		#endregion
+#endregion
 
-		#region Instance Fields
+#region Instance Fields
 		MemoryStream temporaryStream_;
 		MemoryStream finalStream_;
-		#endregion
+#endregion
 	}
 
-	#endregion
+#endregion
 }

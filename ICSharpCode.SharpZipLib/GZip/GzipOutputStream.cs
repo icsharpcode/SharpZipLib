@@ -127,26 +127,37 @@ namespace ICSharpCode.SharpZipLib.GZip
 			base.Write(buffer, offset, count);
 		}
 
-		/// <summary>
-		/// Writes remaining compressed output data to the output stream
-		/// and closes it.
-		/// </summary>
-		public override void Close()
-		{
+        /// <summary>
+        /// Writes remaining compressed output data to the output stream
+        /// and closes it.
+        /// </summary>
+#if NET45
+        public override void Close()
+#endif
+#if NETSTANDARD1_3
+        protected override void Dispose(bool disposing)        
+#endif
+        {
 			try {
-				Finish();
+
+                Finish();
 			} finally {
 				if (state_ != OutputState.Closed) {
 					state_ = OutputState.Closed;
 					if (IsStreamOwner) {
+#if NET45
 						baseOutputStream_.Close();
-					}
+#endif
+#if NETSTANDARD1_3
+                        baseOutputStream_.Dispose();
+#endif
+                    }
 				}
 			}
 		}
-		#endregion
+#endregion
 
-		#region DeflaterOutputStream overrides
+#region DeflaterOutputStream overrides
 		/// <summary>
 		/// Finish compression and write any footer information required to stream
 		/// </summary>
@@ -179,9 +190,9 @@ namespace ICSharpCode.SharpZipLib.GZip
 				baseOutputStream_.Write(gzipFooter, 0, gzipFooter.Length);
 			}
 		}
-		#endregion
+#endregion
 
-		#region Support Routines
+#region Support Routines
 		void WriteHeader()
 		{
 			if (state_ == OutputState.Header) {
@@ -211,6 +222,6 @@ namespace ICSharpCode.SharpZipLib.GZip
 				baseOutputStream_.Write(gzipHeader, 0, gzipHeader.Length);
 			}
 		}
-		#endregion
+#endregion
 	}
 }

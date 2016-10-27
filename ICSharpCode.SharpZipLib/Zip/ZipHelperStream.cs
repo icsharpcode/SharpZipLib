@@ -144,13 +144,27 @@ namespace ICSharpCode.SharpZipLib.Zip
 			stream_.Write(buffer, offset, count);
 		}
 
-		/// <summary>
-		/// Close the stream.
-		/// </summary>
-		/// <remarks>
-		/// The underlying stream is closed only if <see cref="IsStreamOwner"/> is true.
-		/// </remarks>
-		override public void Close()
+#if NETSTANDARD1_1
+        protected override void Dispose(bool disposing)
+        {
+            Stream toDispose = stream_;
+            stream_ = null;
+            if (isOwner_ && (toDispose != null))
+            {
+                isOwner_ = false;
+                toDispose.Dispose();
+            }
+        }
+#endif
+
+#if NET45
+        /// <summary>
+        /// Close the stream.
+        /// </summary>
+        /// <remarks>
+        /// The underlying stream is closed only if <see cref="IsStreamOwner"/> is true.
+        /// </remarks>
+        override public void Close()
 		{
 			Stream toClose = stream_;
 			stream_ = null;
@@ -159,11 +173,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 				toClose.Close();
 			}
 		}
-		#endregion
+#endif
+        #endregion
 
-		// Write the local file header
-		// TODO: ZipHelperStream.WriteLocalHeader is not yet used and needs checking for ZipFile and ZipOuptutStream usage
-		void WriteLocalHeader(ZipEntry entry, EntryPatchData patchData)
+        // Write the local file header
+        // TODO: ZipHelperStream.WriteLocalHeader is not yet used and needs checking for ZipFile and ZipOuptutStream usage
+        void WriteLocalHeader(ZipEntry entry, EntryPatchData patchData)
 		{
 			CompressionMethod method = entry.CompressionMethod;
 			bool headerInfoAvailable = true; // How to get this?

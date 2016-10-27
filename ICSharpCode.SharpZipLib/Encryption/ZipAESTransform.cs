@@ -24,8 +24,12 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		private byte[] _encryptBuffer;
 		private int _encrPos;
 		private byte[] _pwdVerifier;
-		private HMACSHA1 _hmacsha1;
-		private bool _finalised;
+#if NET45
+        private HMACSHA1 _hmacsha1;
+#elif NETSTANDARD1_3
+	    private IncrementalHash _hmacsha1;
+#endif
+        private bool _finalised;
 
 		private bool _writeMode;
 
@@ -52,16 +56,26 @@ namespace ICSharpCode.SharpZipLib.Encryption
 
 			// Performs the equivalent of derive_key in Dr Brian Gladman's pwd2key.c
 			var pdb = new Rfc2898DeriveBytes(key, saltBytes, KEY_ROUNDS);
-			var rm = new RijndaelManaged();
-			rm.Mode = CipherMode.ECB;           // No feedback from cipher for CTR mode
+#if NET45
+            var rm = new RijndaelManaged();
+#elif NETSTANDARD1_3
+		    var rm = Aes.Create();
+#endif
+            rm.Mode = CipherMode.ECB;           // No feedback from cipher for CTR mode
 			_counterNonce = new byte[_blockSize];
 			byte[] byteKey1 = pdb.GetBytes(_blockSize);
 			byte[] byteKey2 = pdb.GetBytes(_blockSize);
 			_encryptor = rm.CreateEncryptor(byteKey1, byteKey2);
 			_pwdVerifier = pdb.GetBytes(PWD_VER_LENGTH);
-			//
-			_hmacsha1 = new HMACSHA1(byteKey2);
-			_writeMode = writeMode;
+            //
+#if NET45
+            _hmacsha1 = new HMACSHA1(byteKey2);
+#elif NETSTANDARD1_3
+		    _hmacsha1 = IncrementalHash.CreateHMAC(HashAlgorithmName.SHA1, byteKey2);
+#endif
+
+
+            _writeMode = writeMode;
 		}
 
 		/// <summary>
@@ -73,8 +87,12 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			// Pass the data stream to the hash algorithm for generating the Auth Code.
 			// This does not change the inputBuffer. Do this before decryption for read mode.
 			if (!_writeMode) {
-				_hmacsha1.TransformBlock(inputBuffer, inputOffset, inputCount, inputBuffer, inputOffset);
-			}
+#if NET45
+                _hmacsha1.TransformBlock(inputBuffer, inputOffset, inputCount, inputBuffer, inputOffset);
+#elif NETSTANDARD1_3
+                _hmacsha1.AppendData(inputBuffer);
+#endif
+            }
 			// Encrypt with AES in CTR mode. Regards to Dr Brian Gladman for this.
 			int ix = 0;
 			while (ix < inputCount) {
@@ -93,10 +111,14 @@ namespace ICSharpCode.SharpZipLib.Encryption
 				ix++;
 			}
 			if (_writeMode) {
-				// This does not change the buffer. 
-				_hmacsha1.TransformBlock(outputBuffer, outputOffset, inputCount, outputBuffer, outputOffset);
-			}
-			return inputCount;
+                // This does not change the buffer. 
+#if NET45
+                _hmacsha1.TransformBlock(outputBuffer, outputOffset, inputCount, outputBuffer, outputOffset);
+#elif NETSTANDARD1_3
+                _hmacsha1.AppendData(outputBuffer);
+#endif
+            }
+            return inputCount;
 		}
 
 		/// <summary>
@@ -116,13 +138,21 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			// We usually don't get advance notice of final block. Hash requres a TransformFinal.
 			if (!_finalised) {
 				byte[] dummy = new byte[0];
-				_hmacsha1.TransformFinalBlock(dummy, 0, 0);
-				_finalised = true;
+#if NET45
+                _hmacsha1.TransformFinalBlock(dummy, 0, 0);
+#elif NETSTANDARD1_3
+                _hmacsha1.AppendData(dummy);
+#endif
+                _finalised = true;
 			}
-			return _hmacsha1.Hash;
+#if NET45
+            return _hmacsha1.Hash;
+#elif NETSTANDARD1_3
+		    return _hmacsha1.GetHashAndReset();
+#endif
 		}
 
-		#region ICryptoTransform Members
+#region ICryptoTransform Members
 
 		/// <summary>
 		/// Not implemented.
@@ -177,7 +207,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			_encryptor.Dispose();
 		}
 
-		#endregion
+#endregion
 
 	}
 }

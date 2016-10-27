@@ -162,12 +162,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 			WriteEofBlock();
 		}
 
-		/// <summary>
-		/// Ends the TAR archive and closes the underlying OutputStream.
-		/// </summary>
-		/// <remarks>This means that Finish() is called followed by calling the
-		/// TarBuffer's Close().</remarks>
-		public override void Close()
+#if NET45
+        /// <summary>
+        /// Ends the TAR archive and closes the underlying OutputStream.
+        /// </summary>
+        /// <remarks>This means that Finish() is called followed by calling the
+        /// TarBuffer's Close().</remarks>
+        public override void Close()
 		{
 			if (!isClosed) {
 				isClosed = true;
@@ -175,11 +176,29 @@ namespace ICSharpCode.SharpZipLib.Tar
 				buffer.Close();
 			}
 		}
+#endif
 
-		/// <summary>
-		/// Get the record size being used by this stream's TarBuffer.
-		/// </summary>
-		public int RecordSize {
+#if NETSTANDARD1_3
+        /// <summary>
+        /// Ends the TAR archive and closes the underlying OutputStream.
+        /// </summary>
+        /// <remarks>This means that Finish() is called followed by calling the
+        /// TarBuffer's Close().</remarks>
+        protected override void Dispose(bool disposing)
+        {
+            if (!isClosed)
+            {
+                isClosed = true;
+                Finish();
+                buffer.Close();
+            }
+        }
+#endif
+
+        /// <summary>
+        /// Get the record size being used by this stream's TarBuffer.
+        /// </summary>
+        public int RecordSize {
 			get { return buffer.RecordSize; }
 		}
 
@@ -397,7 +416,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			buffer.WriteBlock(blockBuffer);
 		}
 
-		#region Instance Fields
+#region Instance Fields
 		/// <summary>
 		/// bytes written for this entry so far
 		/// </summary>
@@ -437,6 +456,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// the destination stream for the archive contents
 		/// </summary>
 		protected Stream outputStream;
-		#endregion
+#endregion
 	}
 }

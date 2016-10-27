@@ -556,32 +556,27 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			throw new NotSupportedException("InflaterInputStream WriteByte not supported");
 		}
 
-		/// <summary>
-		/// Entry point to begin an asynchronous write.  Always throws a NotSupportedException.
-		/// </summary>
-		/// <param name="buffer">The buffer to write data from</param>
-		/// <param name="offset">Offset of first byte to write</param>
-		/// <param name="count">The maximum number of bytes to write</param>
-		/// <param name="callback">The method to be called when the asynchronous write operation is completed</param>
-		/// <param name="state">A user-provided object that distinguishes this particular asynchronous write request from other requests</param>
-		/// <returns>An <see cref="System.IAsyncResult">IAsyncResult</see> that references the asynchronous write</returns>
-		/// <exception cref="NotSupportedException">Any access</exception>
-		public override IAsyncResult BeginWrite(byte[] buffer, int offset, int count, AsyncCallback callback, object state)
-		{
-			throw new NotSupportedException("InflaterInputStream BeginWrite not supported");
-		}
-
-		/// <summary>
-		/// Closes the input stream.  When <see cref="IsStreamOwner"></see>
-		/// is true the underlying stream is also closed.
-		/// </summary>
-		public override void Close()
-		{
+        /// <summary>
+        /// Closes the input stream.  When <see cref="IsStreamOwner"></see>
+        /// is true the underlying stream is also closed.
+        /// </summary>
+#if NET45
+        public override void Close()
+#endif
+#if NETSTANDARD1_3
+        protected override void Dispose(bool disposing)
+#endif
+        {
 			if (!isClosed) {
 				isClosed = true;
 				if (isStreamOwner) {
+#if NET45
 					baseInputStream.Close();
-				}
+#endif
+#if NETSTANDARD1_3
+                    baseInputStream.Dispose();
+#endif
+                }
 			}
 		}
 
@@ -625,9 +620,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 			return count - remainingBytes;
 		}
-		#endregion
+#endregion
 
-		#region Instance Fields
+#region Instance Fields
 		/// <summary>
 		/// Decompressor for this stream
 		/// </summary>
@@ -658,6 +653,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// When closing if this flag is true the underlying stream is closed.
 		/// </summary>
 		bool isStreamOwner = true;
-		#endregion
+#endregion
 	}
 }

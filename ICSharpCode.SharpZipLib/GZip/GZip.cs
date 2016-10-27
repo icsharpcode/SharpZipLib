@@ -28,9 +28,13 @@ namespace ICSharpCode.SharpZipLib.GZip
 				}
 			} finally {
 				if (isStreamOwner) {
-					// inStream is closed by the GZipInputStream if stream owner
-					outStream.Close();
-				}
+                    // inStream is closed by the GZipInputStream if stream owner
+#if NET45
+                    outStream.Close();
+#elif NETSTANDARD1_3
+                    outStream.Dispose();
+#endif
+                }
 			}
 		}
 
@@ -56,10 +60,14 @@ namespace ICSharpCode.SharpZipLib.GZip
 				}
 			} finally {
 				if (isStreamOwner) {
-					// outStream is closed by the GZipOutputStream if stream owner
-					inStream.Close();
-				}
-			}
+                    // outStream is closed by the GZipOutputStream if stream owner
+#if NET45
+                    inStream.Close();
+#elif NETSTANDARD1_3
+                    inStream.Dispose();
+#endif
+                }
+            }
 		}
 
 	}
