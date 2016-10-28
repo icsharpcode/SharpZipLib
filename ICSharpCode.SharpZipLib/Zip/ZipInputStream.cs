@@ -616,9 +616,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 #if NET45
             base.Close();
 #endif
-#if NETSTANDARD1_3
-            base.Dispose();
-#endif
         }
 	}
 }

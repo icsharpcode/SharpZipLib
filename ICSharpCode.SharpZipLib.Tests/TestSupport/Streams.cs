@@ -52,7 +52,15 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		protected override void Dispose(bool disposing)
 		{
 			isDisposed_ = true;
-			base.Dispose(disposing);
+#if NETCOREAPP1_0
+            if (isClosed_)
+            {
+                throw new InvalidOperationException("Already closed");
+            }
+
+            isClosed_ = true;
+#endif
+            base.Dispose(disposing);
 		}
 
 #if NET451
@@ -70,11 +78,11 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		}
 #endif
 
-		/// <summary>
-		/// Gets a value indicating whether this instance is closed.
-		/// </summary>
-		/// <value><c>true</c> if this instance is closed; otherwise, <c>false</c>.</value>
-		public bool IsClosed {
+        /// <summary>
+        /// Gets a value indicating whether this instance is closed.
+        /// </summary>
+        /// <value><c>true</c> if this instance is closed; otherwise, <c>false</c>.</value>
+        public bool IsClosed {
 			get { return isClosed_; }
 		}
 

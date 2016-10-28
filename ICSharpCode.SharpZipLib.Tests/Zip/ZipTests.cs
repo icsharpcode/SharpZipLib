@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 #if NET451
@@ -2002,9 +2003,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// will request reads of zero length...
 		/// </summary>
 		[Test]
-		[Category("Zip")]
+#if NETCOREAPP1_0
+        [Ignore("Requires a BinaryFormatter, not currently in .NET Core")]
+#endif
+        [Category("Zip")]
 		public void SerializedObjectZeroLength()
 		{
+#if NET451
 			bool exception = false;
 
 			object data = new byte[0];
@@ -2024,16 +2029,21 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 
 			Assert.IsTrue(exception, "Passing an offset greater than or equal to buffer.Length should cause an ArgumentOutOfRangeException");
+#endif
 		}
 
 		/// <summary>
 		/// Test for handling of serialized reference and value objects.
 		/// </summary>
 		[Test]
-		[Category("Zip")]
+#if NETCOREAPP1_0
+        [Ignore("Requires a BinaryFormatter, not currently in .NET Core")]
+#endif
+        [Category("Zip")]
 		public void SerializedObject()
 		{
-			var sampleDateTime = new DateTime(1853, 8, 26);
+#if NET451
+            var sampleDateTime = new DateTime(1853, 8, 26);
 			var data = (object)sampleDateTime;
 			byte[] zipped = ZipZeroLength(data);
 			object rawObject = UnZipZeroLength(zipped);
@@ -2050,79 +2060,64 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			var returnedString = rawObject as string;
 
 			Assert.AreEqual(sampleString, returnedString);
+#endif
 		}
 
-		byte[] ZipZeroLength(object data)
-		{
 #if NET451
-			var formatter = new BinaryFormatter();
-#elif NETCOREAPP1_0
-            var formatter = new JsonSerializer();
+        byte[] ZipZeroLength(object data)
+		{
 
-#endif
+			var formatter = new BinaryFormatter();
+
 		    byte[] result = null;
             using (var memStream = new MemoryStream())
             using (ZipOutputStream zipStream = new ZipOutputStream(memStream))
-#if NETCOREAPP1_0
-            using (var streamWriter = new StreamWriter(zipStream))
-#endif
+
             {
                 zipStream.PutNextEntry(new ZipEntry("data"));
-#if NET451
+
                 formatter.Serialize(zipStream, data);
-#elif NETCOREAPP1_0
-                formatter.Serialize(streamWriter, data);
-#endif
+
                 zipStream.CloseEntry();
-#if NET451
+
                 zipStream.Close();
-#endif
+
 
                 result = memStream.ToArray();
-#if NET451
+
                 memStream.Close();
-#endif
+
 
                 return result;
             }            
 		}
+#endif
 
-		object UnZipZeroLength(byte[] zipped)
+#if NET451
+        object UnZipZeroLength(byte[] zipped)
 		{
 			if (zipped == null) {
 				return null;
 			}
 
 			object result = null;
-#if NET451
-			var formatter = new BinaryFormatter();
-#elif NETCOREAPP1_0
-            var formatter = new JsonSerializer();
 
-#endif
+			var formatter = new BinaryFormatter();
+
             using (var memStream = new MemoryStream(zipped))
             using (ZipInputStream zipStream = new ZipInputStream(memStream))
-#if NETCOREAPP1_0
-            using (var streamReader = new StreamReader(zipStream))
-#endif
             {
 
                 ZipEntry zipEntry = zipStream.GetNextEntry();
                 if (zipEntry != null)
                 {
-#if NET451
+
                     result = formatter.Deserialize(zipStream);
-#elif NETCOREAPP1_0
-                    result = formatter.Deserialize(new JsonTextReader(streamReader));
-#endif
+
                 }
-#if NET451
+
                 zipStream.Close();
                 memStream.Close();
-#elif NETCOREAPP1_0
-                zipStream.Dispose();
-                memStream.Dispose();
-#endif
 
                 return result;
             }
@@ -2130,6 +2125,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
             
 		}
+#endif
 
 		void CheckNameConversion(string toCheck)
 		{
@@ -2151,7 +2147,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void UnicodeNameConversion()
 		{
-			ZipConstants.DefaultCodePage = 850;
+			ZipConstants.DefaultCodePage = Encoding.ASCII.CodePage;
 			string sample = "Hello world";
 
 			byte[] rawData = Encoding.ASCII.GetBytes(sample);

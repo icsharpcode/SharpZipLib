@@ -651,7 +651,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 #if NET45
                 if (string.Compare(name, entries_[i].Name, ignoreCase, CultureInfo.InvariantCulture) == 0) {
 #elif NETSTANDARD1_3
-                if(string.Compare(name, entries_[i].Name, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture)) { 
+                if(string.Compare(name, entries_[i].Name, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture) == 0) { 
 #endif
                     return i;
 				}

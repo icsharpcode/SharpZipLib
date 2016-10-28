@@ -431,10 +431,10 @@ namespace ICSharpCode.SharpZipLib.Zip
              // these values cause ArgumentException in subsequent calls to Encoding::GetEncoding()
 #if NET45
             ((Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 1) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 2) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 3) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 42)) ?
-#endif
              437 // The default OEM encoding in a console in a default Windows installation, as a fallback.
-#if NET45
 			: Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage
+#elif NETSTANDARD1_3
+            Encoding.UTF8.CodePage
 #endif
             ;
         /// <summary>
