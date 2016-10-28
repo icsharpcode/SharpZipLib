@@ -1,19 +1,23 @@
 using System;
 using System.IO;
 using System.Reflection;
+#if NET451
 using System.Runtime.Serialization.Formatters.Binary;
+#endif
 using System.Security;
 using System.Text;
-using System.Threading;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
+#if NETCOREAPP1_0
+using Newtonsoft.Json;
+#endif
 using NUnit.Framework;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
-	#region Local Support Classes
+#region Local Support Classes
 	class RuntimeInfo
 	{
 		public RuntimeInfo(CompressionMethod method, int compressionLevel,
@@ -86,7 +90,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			get { return isDirectory_; }
 		}
 
-		#region Instance Fields
+#region Instance Fields
 		readonly byte[] original;
 		readonly CompressionMethod method;
 		int compressionLevel;
@@ -95,12 +99,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		bool random;
 		bool isDirectory_;
 		long crc = -1;
-		#endregion
+#endregion
 	}
 
 	class MemoryDataSource : IStaticDataSource
 	{
-		#region Constructors
+#region Constructors
 		/// <summary>
 		/// Initialise a new instance.
 		/// </summary>
@@ -109,9 +113,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			data_ = data;
 		}
-		#endregion
+#endregion
 
-		#region IDataSource Members
+#region IDataSource Members
 
 		/// <summary>
 		/// Get a Stream for this <see cref="IStaticDataSource"/>
@@ -121,11 +125,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			return new MemoryStream(data_);
 		}
-		#endregion
+#endregion
 
-		#region Instance Fields
+#region Instance Fields
 		readonly byte[] data_;
-		#endregion
+#endregion
 	}
 
 	class StringMemoryDataSource : MemoryDataSource
@@ -135,9 +139,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 		}
 	}
-	#endregion
+#endregion
 
-	#region ZipBase
+#region ZipBase
 	public class ZipBase
 	{
 		static protected string GetTempFilePath()
@@ -279,7 +283,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
-		#region MakeZipFile
+#region MakeZipFile
 		protected void MakeZipFile(Stream storage, bool isOwner, string[] names, int size, string comment)
 		{
 			using (ZipOutputStream zOut = new ZipOutputStream(storage)) {
@@ -289,7 +293,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					zOut.PutNextEntry(new ZipEntry(names[i]));
 					AddKnownDataToEntry(zOut, size);
 				}
-				zOut.Close();
+#if NET451
+                zOut.Close();
+#elif NETCOREAPP1_0
+                zOut.Dispose();
+#endif
 			}
 		}
 
@@ -302,14 +310,22 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 						zOut.PutNextEntry(new ZipEntry(names[i]));
 						AddKnownDataToEntry(zOut, size);
 					}
+#if NET451
 					zOut.Close();
-				}
+#elif NETCOREAPP1_0
+                    zOut.Dispose();
+#endif
+                }
+#if NET451
 				fs.Close();
-			}
-		}
-		#endregion
+#elif NETCOREAPP1_0
+                fs.Dispose();
+#endif
+            }
+        }
+#endregion
 
-		#region MakeZipFile Entries
+#region MakeZipFile Entries
 		protected void MakeZipFile(string name, string entryNamePrefix, int entries, int size, string comment)
 		{
 			using (FileStream fs = File.Create(name))
@@ -335,7 +351,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
-		#endregion
+#endregion
 
 		protected static void CheckKnownEntry(Stream inStream, int expectedCount)
 		{
@@ -377,7 +393,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 	}
 
-	#endregion
+#endregion
 
 	class TestHelper
 	{
@@ -704,9 +720,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			outStream.IsStreamOwner = false;
 			outStream.PutNextEntry(new ZipEntry("StripedMarlin"));
 			outStream.WriteByte(89);
-			outStream.Close();
+#if NET451
+            outStream.Close();
+#elif NETCOREAPP1_0
+            outStream.Dispose();
+#endif
 
-			Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
+            Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
 
 			msw = new MemoryStreamWithoutSeek();
 			outStream = new ZipOutputStream(msw);
@@ -715,9 +735,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			outStream.IsStreamOwner = false;
 			outStream.PutNextEntry(new ZipEntry("StripedMarlin"));
 			outStream.WriteByte(89);
+#if NET451
 			outStream.Close();
+#elif NETCOREAPP1_0
+            outStream.Dispose();
+#endif
 
-			Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
+            Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
 		}
 
 		[Test]
@@ -734,11 +758,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				outStream.PutNextEntry(new ZipEntry("StripedMarlin2"));
 				outStream.WriteByte(89);
-
+#if NET451
 				outStream.Close();
-			}
+#elif NETCOREAPP1_0
+                outStream.Dispose();
+#endif
+            }
 
-			Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
+            Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
 
 			msw.Position = 0;
 
@@ -771,9 +798,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			outStream.PutNextEntry(ze);
 			outStream.CloseEntry();
 			outStream.Finish();
+#if NET451
 			outStream.Close();
+#elif NETCOREAPP1_0
+            outStream.Dispose();
+#endif
 
-			Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
+            Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
 		}
 		/// <summary>
 		/// Empty zip entries can be created and read?
@@ -808,8 +839,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					extractCount += numRead;
 				}
 			}
+#if NET451
 			inStream.Close();
-			Assert.AreEqual(extractCount, 0, "No data should be read from empty entries");
+#elif NETCOREAPP1_0
+            inStream.Dispose();
+#endif
+            Assert.AreEqual(extractCount, 0, "No data should be read from empty entries");
 		}
 
 		/// <summary>
@@ -883,8 +918,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 						stream.Write(new byte[32], 0, 32);
 					} finally {
 						Assert.IsFalse(ms.IsClosed, "Stream should still not be closed.");
+#if NET451
 						stream.Close();
-						Assert.Fail("Exception not thrown");
+#elif NETCOREAPP1_0
+                        stream.Dispose();
+#endif
+                        Assert.Fail("Exception not thrown");
 					}
 				}
 			} catch {
@@ -981,10 +1020,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			readBytes = inStream_.Read(buffer, 0, 1);
 			Assert.AreEqual(0, readBytes, "Stream should be empty");
 			Assert.AreEqual(0, window_.Length, "Window should be closed");
-			inStream_.Close();
-		}
+#if NET451
+            inStream_.Close();
+#elif NETCOREAPP1_0
+            inStream_.Dispose();
+#endif
+        }
 
-		void WriteTargetBytes()
+        void WriteTargetBytes()
 		{
 			const int Size = 8192;
 
@@ -1005,10 +1048,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			outStream_.PutNextEntry(new ZipEntry("CantSeek"));
 			WriteTargetBytes();
+#if NET451
 			outStream_.Close();
-		}
+#elif NETCOREAPP1_0
+            outStream_.Dispose();
+#endif
+        }
 
-		WindowedStream window_;
+        WindowedStream window_;
 		ZipOutputStream outStream_;
 		ZipInputStream inStream_;
 		long readTarget_;
@@ -1486,9 +1533,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			var ms = new MemoryStream();
 			var s = new ZipOutputStream(ms);
 			s.PutNextEntry(new ZipEntry("dummyfile.tst"));
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			Assert.IsTrue(s.IsFinished, "Output stream should be finished");
+            Assert.IsTrue(s.IsFinished, "Output stream should be finished");
 		}
 
 		/// <summary>
@@ -1671,11 +1722,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			while (inStream.GetNextEntry() != null) {
 			}
-
+#if NET451
 			inStream.Close();
-		}
+#elif NETCOREAPP1_0
+            inStream.Dispose();
+#endif
+        }
 
-		[Test]
+        [Test]
 		[Category("Zip")]
 		public void MixedEncryptedAndPlain()
 		{
@@ -1707,9 +1761,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 						extractCount -= numRead;
 					}
 				}
+#if NET451
 				inStream.Close();
-			}
-		}
+#elif NETCOREAPP1_0
+                inStream.Dispose();
+#endif
+            }
+        }
 
 		/// <summary>
 		/// Basic stored file test, with encryption.
@@ -1757,38 +1815,41 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			outStream.PutNextEntry(entry);
 			Assert.AreEqual(8, outStream.GetLevel(), "Compression level invalid");
 			AddRandomDataToEntry(outStream, 100);
-
+#if NET451
 			outStream.Close();
-		}
+#elif NETCOREAPP1_0
+            outStream.Dispose();
+#endif
+        }
 
-		/// <summary>
-		/// Check that adding more than the 2.0 limit for entry numbers is detected and handled
-		/// </summary>
-		//[Test]
-		//[Category("Zip")]
-		//[Category("Long Running")]
-		//public void Stream_64KPlusOneEntries()
-		//{
-		//	const int target = 65537;
-		//	MemoryStream ms = new MemoryStream();
-		//	using (ZipOutputStream s = new ZipOutputStream(ms)) {
+        /// <summary>
+        /// Check that adding more than the 2.0 limit for entry numbers is detected and handled
+        /// </summary>
+        //[Test]
+        //[Category("Zip")]
+        //[Category("Long Running")]
+        //public void Stream_64KPlusOneEntries()
+        //{
+        //	const int target = 65537;
+        //	MemoryStream ms = new MemoryStream();
+        //	using (ZipOutputStream s = new ZipOutputStream(ms)) {
 
-		//		for (int i = 0; i < target; ++i) {
-		//			s.PutNextEntry(new ZipEntry("dummyfile.tst"));
-		//		}
+        //		for (int i = 0; i < target; ++i) {
+        //			s.PutNextEntry(new ZipEntry("dummyfile.tst"));
+        //		}
 
-		//		s.Finish();
-		//		ms.Seek(0, SeekOrigin.Begin);
-		//		using (ZipFile zipFile = new ZipFile(ms)) {
-		//			Assert.AreEqual(target, zipFile.Count, "Incorrect number of entries stored");
-		//		}
-		//	}
-		//}
+        //		s.Finish();
+        //		ms.Seek(0, SeekOrigin.Begin);
+        //		using (ZipFile zipFile = new ZipFile(ms)) {
+        //			Assert.AreEqual(target, zipFile.Count, "Incorrect number of entries stored");
+        //		}
+        //	}
+        //}
 
-		/// <summary>
-		/// Check that Unicode filename support works.
-		/// </summary>
-		[Test]
+        /// <summary>
+        /// Check that Unicode filename support works.
+        /// </summary>
+        [Test]
 		[Category("Zip")]
 		public void Stream_UnicodeEntries()
 		{
@@ -1826,9 +1887,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				using (ZipFile zipFile = new ZipFile(tempFile)) {
 					Stream stream = zipFile.GetInputStream(0);
-					stream.Close();
 
-					stream = zipFile.GetInputStream(1);
+#if NET451
+	    			stream.Close();
+#elif NETCOREAPP1_0
+                    stream.Dispose();
+#endif
+
+                    stream = zipFile.GetInputStream(1);
 					zipFile.Close();
 				}
 				File.Delete(tempFile);
@@ -1915,10 +1981,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 							zOut.Write(data, 0, blockSize);
 						}
 					}
+#if NET451
 					zOut.Close();
 					fs.Close();
+#elif NETCOREAPP1_0
+                    zOut.Dispose();
+                    fs.Dispose();
+#endif
 
-					TestLargeZip(tempFile, TargetFiles);
+                    TestLargeZip(tempFile, TargetFiles);
 				}
 			} finally {
 				Console.WriteLine("Starting at {0}", DateTime.Now);
@@ -1983,20 +2054,37 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		byte[] ZipZeroLength(object data)
 		{
+#if NET451
 			var formatter = new BinaryFormatter();
-			var memStream = new MemoryStream();
+#elif NETCOREAPP1_0
+            var formatter = new JsonSerializer();
 
-			using (ZipOutputStream zipStream = new ZipOutputStream(memStream)) {
-				zipStream.PutNextEntry(new ZipEntry("data"));
-				formatter.Serialize(zipStream, data);
-				zipStream.CloseEntry();
-				zipStream.Close();
-			}
+#endif
+		    byte[] result = null;
+            using (var memStream = new MemoryStream())
+            using (ZipOutputStream zipStream = new ZipOutputStream(memStream))
+#if NETCOREAPP1_0
+            using (var streamWriter = new StreamWriter(zipStream))
+#endif
+            {
+                zipStream.PutNextEntry(new ZipEntry("data"));
+#if NET451
+                formatter.Serialize(zipStream, data);
+#elif NETCOREAPP1_0
+                formatter.Serialize(streamWriter, data);
+#endif
+                zipStream.CloseEntry();
+#if NET451
+                zipStream.Close();
+#endif
 
-			byte[] result = memStream.ToArray();
-			memStream.Close();
+                result = memStream.ToArray();
+#if NET451
+                memStream.Close();
+#endif
 
-			return result;
+                return result;
+            }            
 		}
 
 		object UnZipZeroLength(byte[] zipped)
@@ -2006,18 +2094,41 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 
 			object result = null;
+#if NET451
 			var formatter = new BinaryFormatter();
-			var memStream = new MemoryStream(zipped);
-			using (ZipInputStream zipStream = new ZipInputStream(memStream)) {
-				ZipEntry zipEntry = zipStream.GetNextEntry();
-				if (zipEntry != null) {
-					result = formatter.Deserialize(zipStream);
-				}
-				zipStream.Close();
-			}
-			memStream.Close();
+#elif NETCOREAPP1_0
+            var formatter = new JsonSerializer();
 
-			return result;
+#endif
+            using (var memStream = new MemoryStream(zipped))
+            using (ZipInputStream zipStream = new ZipInputStream(memStream))
+#if NETCOREAPP1_0
+            using (var streamReader = new StreamReader(zipStream))
+#endif
+            {
+
+                ZipEntry zipEntry = zipStream.GetNextEntry();
+                if (zipEntry != null)
+                {
+#if NET451
+                    result = formatter.Deserialize(zipStream);
+#elif NETCOREAPP1_0
+                    result = formatter.Deserialize(new JsonTextReader(streamReader));
+#endif
+                }
+#if NET451
+                zipStream.Close();
+                memStream.Close();
+#elif NETCOREAPP1_0
+                zipStream.Dispose();
+                memStream.Dispose();
+#endif
+
+                return result;
+            }
+
+
+            
 		}
 
 		void CheckNameConversion(string toCheck)
@@ -3368,9 +3479,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			MakeZipFile(tempStream, false, "", 1, 1, longComment);
 
 			tempStream.WriteByte(85);
-			tempStream.Close();
+#if NET451
+            tempStream.Close();
+#elif NETCOREAPP1_0
+            tempStream.Dispose();
+#endif
 
-			bool fails = false;
+            bool fails = false;
 			try {
 				using (ZipFile zipFile = new ZipFile(tempFile)) {
 					foreach (ZipEntry e in zipFile) {
@@ -3484,9 +3599,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			var outStream = new ZipOutputStream(s);
 			outStream.IsStreamOwner = false;
 			outStream.PutNextEntry(new ZipEntry("YeOldeDirectory/"));
-			outStream.Close();
+#if NET451
+            outStream.Close();
+#elif NETCOREAPP1_0
+            outStream.Dispose();
+#endif
 
-			var ms2 = new MemoryStream(s.ToArray());
+            var ms2 = new MemoryStream(s.ToArray());
 			using (ZipFile zf = new ZipFile(ms2)) {
 				Assert.IsTrue(zf.TestArchive(true));
 			}
@@ -3507,9 +3626,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			outStream.IsStreamOwner = false;
 			outStream.PutNextEntry(new ZipEntry("YeUnreadableDirectory/"));
-			outStream.Close();
+#if NET451
+            outStream.Close();
+#elif NETCOREAPP1_0
+            outStream.Dispose();
+#endif
 
-			var ms2 = new MemoryStream(s.ToArray());
+            var ms2 = new MemoryStream(s.ToArray());
 			using (ZipFile zf = new ZipFile(ms2)) {
 				Assert.IsTrue(zf.TestArchive(true));
 			}

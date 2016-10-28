@@ -646,9 +646,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			// TODO: This will be slow as the next ice age for huge archives!
-			for (int i = 0; i < entries_.Length; i++) {
-				if (string.Compare(name, entries_[i].Name, StringComparison.OrdinalIgnoreCase) == 0) {
-					return i;
+			for (int i = 0; i < entries_.Length; i++)
+			{			    
+#if NET45
+                if (string.Compare(name, entries_[i].Name, ignoreCase, CultureInfo.InvariantCulture) == 0) {
+#elif NETSTANDARD1_3
+                if(string.Compare(name, entries_[i].Name, ignoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture)) { 
+#endif
+                    return i;
 				}
 			}
 			return -1;
@@ -762,9 +767,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 
-		#endregion
+#endregion
 
-		#region Archive Testing
+#region Archive Testing
 		/// <summary>
 		/// Test an archive for integrity/validity
 		/// </summary>
@@ -1148,9 +1153,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
-		#endregion
+#endregion
 
-		#region Updating
+#region Updating
 
 		const int DefaultBufferSize = 4096;
 
@@ -1164,7 +1169,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			Add,        // Add a new file to the archive.
 		}
 
-		#region Properties
+#region Properties
 		/// <summary>
 		/// Get / set the <see cref="INameTransform"/> to apply to names when updating.
 		/// </summary>
@@ -1228,9 +1233,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { useZip64_ = value; }
 		}
 
-		#endregion
+#endregion
 
-		#region Immediate updating
+#region Immediate updating
 		//		TBD: Direct form of updating
 		// 
 		//		public void Update(IEntryMatcher deleteMatcher)
@@ -1240,9 +1245,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		//		public void Update(IScanner addScanner)
 		//		{
 		//		}
-		#endregion
+#endregion
 
-		#region Deferred Updating
+#region Deferred Updating
 		/// <summary>
 		/// Begin updating this <see cref="ZipFile"/> archive.
 		/// </summary>
@@ -1397,9 +1402,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			commentEdited_ = true;
 		}
 
-		#endregion
+#endregion
 
-		#region Adding Entries
+#region Adding Entries
 
 		void AddUpdate(ZipUpdate update)
 		{
@@ -1620,9 +1625,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			AddUpdate(new ZipUpdate(UpdateCommand.Add, dirEntry));
 		}
 
-		#endregion
+#endregion
 
-		#region Modifying Entries
+#region Modifying Entries
 		/* Modify not yet ready for public consumption.
 		   Direct modification of an entry should not overwrite original data before its read.
 		   Safe mode is trivial in this sense.
@@ -1641,9 +1646,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 					updates_.Add(new ZipUpdate(original, updated));
 				}
 		*/
-		#endregion
+#endregion
 
-		#region Deleting Entries
+#region Deleting Entries
 		/// <summary>
 		/// Delete an entry by name
 		/// </summary>
@@ -1692,11 +1697,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
-		#endregion
+#endregion
 
-		#region Update Support
+#region Update Support
 
-		#region Writing Values/Headers
+#region Writing Values/Headers
 		void WriteLEShort(int value)
 		{
 			baseStream_.WriteByte((byte)(value & 0xff));
@@ -1979,7 +1984,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			return ZipConstants.CentralHeaderBaseSize + name.Length + centralExtraData.Length + rawComment.Length;
 		}
-		#endregion
+#endregion
 
 		void PostUpdateCleanup()
 		{

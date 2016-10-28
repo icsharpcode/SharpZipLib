@@ -75,7 +75,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		public void WriteByte(byte value)
 		{
 			if (isClosed_) {
-				throw new ApplicationException("Buffer is closed");
+				throw new Exception("Buffer is closed");
 			}
 
 #if SimpleSynch
@@ -115,7 +115,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		public void Write(byte[] buffer, int index, int count)
 		{
 			if (isClosed_) {
-				throw new ApplicationException("Buffer is closed");
+				throw new Exception("Buffer is closed");
 			}
 
 			while (count > 0) {

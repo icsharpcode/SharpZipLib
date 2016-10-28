@@ -27,8 +27,12 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 			rnd.NextBytes(buf);
 
 			outStream.Write(buf, 0, buf.Length);
+#if NET451
 			outStream.Close();
-			ms = new MemoryStream(ms.GetBuffer());
+#elif NETCOREAPP1_0
+            outStream.Dispose();
+#endif
+			ms = new MemoryStream(ms.ToArray());
 			ms.Seek(0, SeekOrigin.Begin);
 
 			using (BZip2InputStream inStream = new BZip2InputStream(ms)) {
@@ -57,8 +61,12 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 		{
 			var ms = new MemoryStream();
 			var outStream = new BZip2OutputStream(ms);
+#if NET451
 			outStream.Close();
-			ms = new MemoryStream(ms.GetBuffer());
+#elif NETCOREAPP1_0
+            outStream.Dispose();
+#endif
+            ms = new MemoryStream(ms.ToArray());
 
 			ms.Seek(0, SeekOrigin.Begin);
 
@@ -146,10 +154,14 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 			readBytes = inStream_.Read(buffer, 0, 1);
 			Assert.AreEqual(0, readBytes, "Stream should be empty");
 			Assert.AreEqual(0, window_.Length, "Window should be closed");
+#if NET451
 			inStream_.Close();
-		}
+#elif NETCOREAPP1_0
+            inStream_.Dispose();
+#endif
+        }
 
-		void WriteTargetBytes()
+        void WriteTargetBytes()
 		{
 			const int Size = 8192;
 
@@ -169,7 +181,11 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 		void Writer()
 		{
 			WriteTargetBytes();
+#if NET451
 			outStream_.Close();
-		}
-	}
+#elif NETCOREAPP1_0
+            outStream_.Dispose();
+#endif
+        }
+    }
 }

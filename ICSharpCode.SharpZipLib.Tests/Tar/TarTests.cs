@@ -33,11 +33,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 				recordSize = tarOut.RecordSize;
 			}
 
-			Assert.IsTrue(ms.GetBuffer().Length > 0, "Archive size must be > zero");
-			Assert.AreEqual(ms.GetBuffer().Length % recordSize, 0, "Archive size must be a multiple of record size");
+            var msBuffer = ms.ToArray();
+            Assert.IsTrue(msBuffer.Length > 0, "Archive size must be > zero");
+			Assert.AreEqual(msBuffer.Length % recordSize, 0, "Archive size must be a multiple of record size");
 
 			var ms2 = new MemoryStream();
-			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+			ms2.Write(msBuffer, 0, msBuffer.Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 
 			using (TarArchive tarIn = TarArchive.CreateInputTarArchive(ms2)) {
@@ -181,7 +182,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			}
 
 			var ms2 = new MemoryStream();
-			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+		    var msBuffer = ms.ToArray();
+			ms2.Write(msBuffer, 0, msBuffer.Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 
 			using (TarInputStream tarIn = new TarInputStream(ms2)) {
@@ -331,7 +333,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			}
 
 			var ms2 = new MemoryStream();
-			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+		    var msBuffer = ms.ToArray();
+			ms2.Write(msBuffer, 0, msBuffer.Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 			TarEntry nextEntry;
 
@@ -341,7 +344,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			}
 
 			var ms3 = new MemoryStream();
-			ms3.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+		    var ms2Buffer = ms2.ToArray();
+			ms3.Write(ms2Buffer, 0, ms2Buffer.Length);
 			ms3.Seek(0, SeekOrigin.Begin);
 			ms3.Write(new byte[] { 34 }, 0, 1);
 			ms3.Seek(0, SeekOrigin.Begin);
@@ -383,7 +387,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			}
 
 			var ms2 = new MemoryStream();
-			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
+		    var msBuffer = ms.ToArray();
+			ms2.Write(msBuffer, 0, msBuffer.Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 
 			using (TarInputStream tarIn = new TarInputStream(ms2)) {
@@ -567,9 +572,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
 
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
+            Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
 			Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
 
 			memStream = new TrackedMemoryStream();
@@ -579,9 +588,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
 
 			s.IsStreamOwner = false;
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
+            Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
 			Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
 		}
 
@@ -595,9 +608,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
 
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
+            Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
 			Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
 
 			memStream = new TrackedMemoryStream();
@@ -607,9 +624,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
 
 			s.IsStreamOwner = false;
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
+            Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
 			Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
 		}
 	}

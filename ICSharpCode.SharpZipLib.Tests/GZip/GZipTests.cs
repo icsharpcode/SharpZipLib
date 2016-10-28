@@ -124,9 +124,13 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
 
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
+            Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
 			Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
 
 			memStream = new TrackedMemoryStream();
@@ -136,9 +140,13 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
 
 			s.IsStreamOwner = false;
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
+            Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
 			Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
 		}
 
@@ -152,9 +160,13 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
 
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
+            Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
 			Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
 
 			memStream = new TrackedMemoryStream();
@@ -164,9 +176,13 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
 
 			s.IsStreamOwner = false;
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
+            Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
 			Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
 
 		}
@@ -178,8 +194,12 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			var s = new GZipOutputStream(memStream);
 			s.Finish();
 			Int64 length = memStream.Length;
+#if NET451
 			s.Close();
-			Assert.AreEqual(length, memStream.ToArray().Length);
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
+            Assert.AreEqual(length, memStream.ToArray().Length);
 		}
 
 		[Test]
@@ -188,14 +208,26 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			var memStream = new TrackedMemoryStream();
 			var s = new GZipOutputStream(memStream);
 			s.Finish();
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			memStream = new TrackedMemoryStream();
+            memStream = new TrackedMemoryStream();
 			using (GZipOutputStream no2 = new GZipOutputStream(memStream)) {
-				s.Close();
-			}
-		}
+#if NET451
+			    s.Close();
+#elif NETCOREAPP1_0
+                s.Dispose();
+#endif
+            }
+        }
 
 		[Test]
 		public void WriteAfterFinish()
@@ -216,9 +248,14 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 		{
 			var memStream = new TrackedMemoryStream();
 			var s = new GZipOutputStream(memStream);
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			try {
+            try
+            {
 				s.WriteByte(7);
 				Assert.Fail("Write should fail");
 			} catch {
@@ -338,10 +375,14 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			readBytes = inStream_.Read(buffer, 0, 1);
 			Assert.AreEqual(0, readBytes, "Stream should be empty");
 			Assert.AreEqual(0, window_.Length, "Window should be closed");
+#if NET451
 			inStream_.Close();
-		}
+#elif NETCOREAPP1_0
+            inStream_.Dispose();
+#endif
+        }
 
-		void Writer()
+        void Writer()
 		{
 			const int Size = 8192;
 
@@ -356,10 +397,14 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 				outStream_.Write(buffer, 0, thisTime);
 				writeTarget_ -= thisTime;
 			}
+#if NET451
 			outStream_.Close();
-		}
+#elif NETCOREAPP1_0
+            outStream_.Dispose();
+#endif
+        }
 
-		WindowedStream window_;
+        WindowedStream window_;
 		GZipOutputStream outStream_;
 		GZipInputStream inStream_;
 		long readTarget_;

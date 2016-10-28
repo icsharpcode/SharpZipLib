@@ -189,9 +189,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
 
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
+            Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
 			Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
 
 			memStream = new TrackedMemoryStream();
@@ -201,9 +205,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
 
 			s.IsStreamOwner = false;
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
+            Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
 			Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
 
 		}
@@ -218,9 +226,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
 
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
+            Assert.IsTrue(memStream.IsClosed, "Should be closed after parent owner close");
 			Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
 
 			memStream = new TrackedMemoryStream();
@@ -230,9 +242,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
 
 			s.IsStreamOwner = false;
+#if NET451
 			s.Close();
+#elif NETCOREAPP1_0
+            s.Dispose();
+#endif
 
-			Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
+            Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
 			Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
 
 		}

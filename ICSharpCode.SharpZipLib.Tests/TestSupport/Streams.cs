@@ -55,10 +55,11 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			base.Dispose(disposing);
 		}
 
-		/// <summary>
-		/// Closes the current stream and releases any resources (such as sockets and file handles) associated with the current stream.
-		/// </summary>
-		public override void Close()
+#if NET451
+        /// <summary>
+        /// Closes the current stream and releases any resources (such as sockets and file handles) associated with the current stream.
+        /// </summary>
+        public override void Close()
 		{
 			if (isClosed_) {
 				throw new InvalidOperationException("Already closed");
@@ -67,6 +68,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			isClosed_ = true;
 			base.Close();
 		}
+#endif
 
 		/// <summary>
 		/// Gets a value indicating whether this instance is closed.
@@ -86,11 +88,11 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			get { return isDisposed_; }
 		}
 
-		#region Instance Fields
+#region Instance Fields
 		bool isDisposed_;
 
 		bool isClosed_;
-		#endregion
+#endregion
 	}
 
 	/// <summary>
@@ -422,6 +424,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			get { return ringBuffer_.IsClosed; }
 		}
 
+#if NET451
 		/// <summary>
 		/// Closes the current stream and releases any resources (such as sockets and file handles) associated with the current stream.
 		/// </summary>
@@ -429,6 +432,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		{
 			ringBuffer_.Close();
 		}
+#endif
 
 		/// <summary>
 		/// Gets the bytes written.
@@ -448,9 +452,9 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		readonly
 
-		#region Instance Fields
+#region Instance Fields
 		ReadWriteRingBuffer ringBuffer_;
 
-		#endregion
+#endregion
 	}
 }
