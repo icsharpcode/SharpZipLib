@@ -1,6 +1,14 @@
 {
   "version": "1.0.0-*",
+  "title": "ICSharpCode.SharpZipLib.Tests",
+  "description": "NUnit test suite for SharpZipLib",
+  "copyright": "Copyright © 2000-2016 SharpZipLib Contributors",
+
   "testRunner": "nunit",
+
+  "buildOptions": {
+    "keyFile": "../ICSharpCode.SharpZipLib.snk"
+  },
 
   "dependencies": {
     "dotnet-test-nunit": "3.4.0-beta-2",

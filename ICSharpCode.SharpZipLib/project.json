@@ -1,8 +1,35 @@
 {
+  "name":  "SharpZipLib", 
   "version": "1.0.0-*",
+  "title": "SharpZipLib",
+  "description": "A free C# compression library",
+  "copyright": "Copyright © 2000-2016 SharpZipLib Contributors",
 
-  "dependencies": {
-    
+  "buildOptions": {
+    "keyFile": "../ICSharpCode.SharpZipLib.snk",
+    "xmlDoc": true
+  },
+
+  "configurations": {
+    "Debug": {
+      "buildOptions": {
+        "define": [ "DEBUG", "TRACE" ]
+      }
+    },
+    "Release": {
+      "buildOptions": {
+        "define": [ "RELEASE", "TRACE" ],
+        "optimize": true
+      }
+    }
+  },
+
+  "packOptions": {
+    "summary": "#ziplib (SharpZipLib, formerly NZipLib) is a Zip, GZip, Tar and BZip2 library written entirely in C# for the .NET platform. It is implemented as an assembly (installable in the GAC), and thus can easily be incorporated into other projects (in any .NET language).",
+    "description": "#ziplib (SharpZipLib, formerly NZipLib) is a Zip, GZip, Tar and BZip2 library written entirely in C# for the .NET platform. It is implemented as an assembly (installable in the GAC), and thus can easily be incorporated into other projects (in any .NET language).",
+    "owners": [ "http://www.icsharpcode.net/" ],
+    "projectUrl": "http://www.icsharpcode.net/OpenSource/SharpZipLib/Default.aspx",
+    "requireLicenseAcceptance": false
   },
 
   "frameworks": {
