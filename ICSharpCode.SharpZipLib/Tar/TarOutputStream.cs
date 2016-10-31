@@ -162,38 +162,23 @@ namespace ICSharpCode.SharpZipLib.Tar
 			WriteEofBlock();
 		}
 
-#if NET45
         /// <summary>
         /// Ends the TAR archive and closes the underlying OutputStream.
         /// </summary>
         /// <remarks>This means that Finish() is called followed by calling the
         /// TarBuffer's Close().</remarks>
+#if NET45
         public override void Close()
-		{
+#elif NETSTANDARD1_3
+        protected override void Dispose(bool disposing)
+#endif
+        {
 			if (!isClosed) {
 				isClosed = true;
 				Finish();
 				buffer.Close();
 			}
 		}
-#endif
-
-#if NETSTANDARD1_3
-        /// <summary>
-        /// Ends the TAR archive and closes the underlying OutputStream.
-        /// </summary>
-        /// <remarks>This means that Finish() is called followed by calling the
-        /// TarBuffer's Close().</remarks>
-        protected override void Dispose(bool disposing)
-        {
-            if (!isClosed)
-            {
-                isClosed = true;
-                Finish();
-                buffer.Close();
-            }
-        }
-#endif
 
         /// <summary>
         /// Get the record size being used by this stream's TarBuffer.

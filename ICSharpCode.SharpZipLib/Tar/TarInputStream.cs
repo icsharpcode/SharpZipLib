@@ -256,21 +256,12 @@ namespace ICSharpCode.SharpZipLib.Tar
         /// The underlying stream is closed by the TarBuffer.
         /// </summary>
         public override void Close()
-		{
+#elif NETSTANDARD1_3
+        protected override void Dispose(bool disposing)
+#endif
+        {
 			tarBuffer.Close();
 		}
-#endif
-
-#if NETSTANDARD1_3
-        /// <summary>
-		/// Closes this stream. Calls the TarBuffer's close() method.
-		/// The underlying stream is closed by the TarBuffer.
-		/// </summary>
-		protected override void Dispose(bool disposing)
-        {
-            tarBuffer.Close();
-        }
-#endif
 
         #endregion
 

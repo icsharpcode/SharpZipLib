@@ -366,8 +366,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
         /// </summary>
         public override void Close()
 		{
-#endif
-#if NETSTANDARD1_3
+#elif NETSTANDARD1_3
         /// <summary>
         /// Calls <see cref="Finish"/> and closes the underlying
         /// stream when <see cref="IsStreamOwner"></see> is true.
@@ -389,8 +388,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					if (isStreamOwner_) {
 #if NET45
 						baseOutputStream_.Close();
-#endif
-#if NETSTANDARD1_3
+#elif NETSTANDARD1_3
 					    baseOutputStream_.Dispose();
 #endif
 					}

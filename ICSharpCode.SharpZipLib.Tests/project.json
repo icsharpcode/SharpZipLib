@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0",
   "title": "ICSharpCode.SharpZipLib.Tests",
   "description": "NUnit test suite for SharpZipLib",
   "copyright": "Copyright © 2000-2016 SharpZipLib Contributors",

@@ -605,8 +605,7 @@ namespace ICSharpCode.SharpZipLib.Zip
         /// </summary>
 #if NET45
         public override void Close()
-#endif
-#if NETSTANDARD1_3
+#elif NETSTANDARD1_3
         protected override void Dispose(bool disposing)
 #endif
 		{

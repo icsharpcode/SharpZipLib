@@ -185,28 +185,25 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			return count;
 		}
 
-#if NET45
         /// <summary>
         /// Closes the stream, releasing any associated resources.
         /// </summary>
+#if NET45
         public override void Close()
-		{
-			if (IsStreamOwner && (baseStream != null)) {
-				baseStream.Close();
-			}
-		}
+#elif NETSTANDARD1_3
+        protected override void Dispose(bool disposing)
 #endif
-
-#if NETSTANDARD1_3
-
-	    protected override void Dispose(bool disposing)
-	    {
-            if (IsStreamOwner && (baseStream != null))
-            {
+        {
+            if (IsStreamOwner && (baseStream != null)) {
+#if NET45            
+                baseStream.Close();
+#elif NETSTANDARD1_3
                 baseStream.Dispose();
-            }
-        }
 #endif
+            }
+		}
+
+
         /// <summary>
         /// Read a byte from stream advancing position
         /// </summary>

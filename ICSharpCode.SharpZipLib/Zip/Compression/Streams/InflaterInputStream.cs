@@ -562,8 +562,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
         /// </summary>
 #if NET45
         public override void Close()
-#endif
-#if NETSTANDARD1_3
+#elif NETSTANDARD1_3
         protected override void Dispose(bool disposing)
 #endif
         {
@@ -572,8 +571,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				if (isStreamOwner) {
 #if NET45
 					baseInputStream.Close();
-#endif
-#if NETSTANDARD1_3
+#elif NETSTANDARD1_3
                     baseInputStream.Dispose();
 #endif
                 }

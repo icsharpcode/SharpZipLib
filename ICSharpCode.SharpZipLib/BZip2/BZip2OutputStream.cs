@@ -370,7 +370,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 #if NET45
                             baseStream.Close();
 #endif
-						}
+                        }
 					}
 				}
 			} catch {

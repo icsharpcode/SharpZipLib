@@ -2417,8 +2417,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 #if NET45
                 baseStream_.Close();
-#endif
-#if NETSTANDARD1_3
+#elif NETSTANDARD1_3
 			    baseStream_.Dispose();
 #endif
                 baseStream_ = null;
@@ -2435,10 +2434,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 					updateFile = new ZipHelperStream(baseStream_);
 				} else {
 #if NET45
-                baseStream_.Close();
-#endif
-#if NETSTANDARD1_3
-			    baseStream_.Dispose();
+                    baseStream_.Close();
+#elif NETSTANDARD1_3
+			        baseStream_.Dispose();
 #endif
 					baseStream_ = null;
 					updateFile = new ZipHelperStream(Name);
@@ -2638,8 +2636,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			} else {
 #if NET45
                 baseStream_.Close();
-#endif
-#if NETSTANDARD1_3
+#elif NETSTANDARD1_3
                 baseStream_.Dispose();
 #endif
                 Reopen(archiveStorage_.ConvertTemporaryToFinal());
@@ -2832,9 +2829,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if (IsStreamOwner && (baseStream_ != null)) {
 					lock (baseStream_) {
 #if NET45
-                baseStream_.Close();
-#endif
-#if NETSTANDARD1_3
+                        baseStream_.Close();
+#elif NETSTANDARD1_3
                         baseStream_.Dispose();
 #endif
                     }
@@ -4030,8 +4026,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			try {
 #if NET45
                 temporaryStream_.Close();
-#endif
-#if NETSTANDARD1_3
+#elif NETSTANDARD1_3
                 temporaryStream_.Dispose();
 #endif
                 File.Move(fileName_, moveTempName);
@@ -4063,9 +4058,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public override Stream MakeTemporaryCopy(Stream stream)
 		{
 #if NET45
-                stream.Close();
-#endif
-#if NETSTANDARD1_3
+            stream.Close();
+#elif NETSTANDARD1_3
             stream.Dispose();
 #endif
 
@@ -4091,9 +4085,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if (stream != null) {
 #if NET45
                     stream.Close();
-#endif
-
-#if NETSTANDARD1_3
+#elif NETSTANDARD1_3
                     stream.Dispose();
 #endif
                 }
@@ -4116,9 +4108,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (temporaryStream_ != null) {
 #if NET45
                 temporaryStream_.Close();
-#endif
-
-#if NETSTANDARD1_3
+#elif NETSTANDARD1_3
                 temporaryStream_.Dispose();
 #endif
             }
@@ -4263,8 +4253,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 #if NET45
                     stream.Close();
-#endif
-#if NETSTANDARD1_3
+#elif NETSTANDARD1_3
                     stream.Dispose();
 #endif
                 }
@@ -4283,8 +4272,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (temporaryStream_ != null) {
 #if NET45
                 temporaryStream_.Close();
-#endif
-#if NETSTANDARD1_3
+#elif NETSTANDARD1_3
                 temporaryStream_.Dispose();
 #endif
 			}
