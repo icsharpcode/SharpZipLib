@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Text;
 using System.Threading;
 
@@ -427,11 +428,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Given this value, <see cref="Encoding.GetEncoding(int)"/> throws an <see cref="ArgumentException"/>.
 		/// So replace it with some fallback, e.g. 437 which is the default cpcp in a console in a default Windows installation.
 		/// </remarks>
-		static int defaultCodePage =
-			// these values cause ArgumentException in subsequent calls to Encoding::GetEncoding()
-			((Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 1) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 2) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 3) || (Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage == 42))
-			? 437 // The default OEM encoding in a console in a default Windows installation, as a fallback.
-			: Thread.CurrentThread.CurrentCulture.TextInfo.OEMCodePage;
+		static int defaultCodePage = -1;
 
 		/// <summary>
 		/// Default encoding used for string conversion.  0 gives the default system OEM code page.
@@ -442,6 +439,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public static int DefaultCodePage {
 			get {
+				const int FALLBACK_CODE_PAGE = 437;
+				if (defaultCodePage == -1)
+				{
+					try
+					{
+						var codePage = Encoding.GetEncoding(0).CodePage;
+						defaultCodePage = (codePage == 1 || codePage == 2 || codePage == 3 || codePage == 42) ? FALLBACK_CODE_PAGE : codePage;
+					}
+					catch {
+						defaultCodePage = FALLBACK_CODE_PAGE;
+					}
+				}
 				return defaultCodePage;
 			}
 			set {

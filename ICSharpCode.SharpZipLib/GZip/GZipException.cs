@@ -6,19 +6,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 	/// <summary>
 	/// GZipException represents exceptions specific to GZip classes and code.
 	/// </summary>
-	[Serializable]
 	public class GZipException : SharpZipBaseException
 	{
-		/// <summary>
-		/// Deserialization constructor 
-		/// </summary>
-		/// <param name="info"><see cref="SerializationInfo"/> for this constructor</param>
-		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
-		protected GZipException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
-
 		/// <summary>
 		/// Initialise a new instance of <see cref="GZipException" />.
 		/// </summary>

@@ -6,18 +6,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 	/// <summary>
 	/// TarException represents exceptions specific to Tar classes and code.
 	/// </summary>
-	[Serializable]
 	public class TarException : SharpZipBaseException
 	{
-		/// <summary>
-		/// Deserialization constructor 
-		/// </summary>
-		/// <param name="info"><see cref="SerializationInfo"/> for this constructor</param>
-		/// <param name="context"><see cref="StreamingContext"/> for this constructor</param>
-		protected TarException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
 
 		/// <summary>
 		/// Initialise a new instance of <see cref="TarException" />.

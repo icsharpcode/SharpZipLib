@@ -167,7 +167,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <remarks>This means that Finish() is called followed by calling the
 		/// TarBuffer's Close().</remarks>
-		public override void Close()
+		protected override void Dispose(bool disposing)
 		{
 			if (!isClosed) {
 				isClosed = true;

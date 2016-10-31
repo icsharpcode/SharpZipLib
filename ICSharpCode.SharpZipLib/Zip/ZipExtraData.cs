@@ -878,7 +878,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public void Dispose()
 		{
 			if (_newEntry != null) {
-				_newEntry.Close();
+				_newEntry.Dispose();
 			}
 		}
 

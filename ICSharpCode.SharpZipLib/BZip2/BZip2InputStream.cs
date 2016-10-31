@@ -188,10 +188,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Closes the stream, releasing any associated resources.
 		/// </summary>
-		public override void Close()
+		protected override void Dispose(bool disposing)
 		{
-			if (IsStreamOwner && (baseStream != null)) {
-				baseStream.Close();
+			if (disposing && IsStreamOwner && (baseStream != null)) {
+				baseStream.Dispose();
 			}
 		}
 		/// <summary>

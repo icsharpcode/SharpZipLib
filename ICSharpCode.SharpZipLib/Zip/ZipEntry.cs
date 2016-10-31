@@ -103,7 +103,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// <br/>
 	/// <br/>Author of the original java version : Jochen Hoenicke
 	/// </summary>
-	public class ZipEntry : ICloneable
+	public class ZipEntry
 	{
 		[Flags]
 		enum Known : byte
