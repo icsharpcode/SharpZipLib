@@ -9,6 +9,7 @@ using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using ICSharpCode.SharpZipLib.Zip.Compression;
+using System.Collections.Generic;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -1273,11 +1274,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// NOTE: the baseStream_ may not currently support writing or seeking.
 
-			updateIndex_ = new Hashtable();
+			updateIndex_ = new Dictionary<string, int>();
 
-			updates_ = new ArrayList(entries_.Length);
+			updates_ = new List<ZipUpdate>(entries_.Length);
 			foreach (ZipEntry entry in entries_) {
-				int index = updates_.Add(new ZipUpdate(entry));
+				int index = updates_.Count;
+				updates_.Add(new ZipUpdate(entry));
 				updateIndex_.Add(entry.Name, index);
 			}
 
@@ -1414,7 +1416,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// Direct replacement is faster than delete and add.
 				updates_[index] = update;
 			} else {
-				index = updates_.Add(update);
+				index = updates_.Count;
+				updates_.Add(update);
 				updateCount_ += 1;
 				updateIndex_.Add(update.Entry.Name, index);
 			}
@@ -2457,7 +2460,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Class used to sort updates.
 		/// </summary>
-		class UpdateComparer : IComparer
+		class UpdateComparer : IComparer<ZipUpdate>
 		{
 			/// <summary>
 			/// Compares two objects and returns a value indicating whether one is 
@@ -2466,13 +2469,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <param name="x">First object to compare</param>
 			/// <param name="y">Second object to compare.</param>
 			/// <returns>Compare result.</returns>
-			public int Compare(
-				object x,
-				object y)
+			public int Compare(ZipUpdate zx, ZipUpdate zy)
 			{
-				var zx = x as ZipUpdate;
-				var zy = y as ZipUpdate;
-
 				int result;
 
 				if (zx == null) {
@@ -3185,9 +3183,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		UseZip64 useZip64_ = UseZip64.Dynamic;
 
 		#region Zip Update Instance Fields
-		ArrayList updates_;
+		List<ZipUpdate> updates_;
 		long updateCount_; // Count is managed manually as updates_ can contain nulls!
-		Hashtable updateIndex_;
+		Dictionary<string, int> updateIndex_;
 		IArchiveStorage archiveStorage_;
 		IDynamicDataSource updateDataSource_;
 		bool contentsEdited_;

@@ -293,7 +293,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			h2.Version = h1.Version;
 			Assert.IsTrue(h1.Equals(h2));
 
-			h1.UserName = "user";
+			h1.UserName = "nuser";
 			Assert.IsFalse(h1.Equals(h2));
 			h2.UserName = h1.UserName;
 			Assert.IsTrue(h1.Equals(h2));

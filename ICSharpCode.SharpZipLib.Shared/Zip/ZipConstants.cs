@@ -422,35 +422,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion
 
 		/// <remarks>
-		/// Get OEM codepage from NetFX, which parses the NLP file with culture info table etc etc.
-		/// But sometimes it yields the special value of 1 which is nicknamed <c>CodePageNoOEM</c> in <see cref="Encoding"/> sources (might also mean <c>CP_OEMCP</c>, but Encoding puts it so).
-		/// This was observed on Ukranian and Hindu systems.
-		/// Given this value, <see cref="Encoding.GetEncoding(int)"/> throws an <see cref="ArgumentException"/>.
-		/// So replace it with some fallback, e.g. 437 which is the default cpcp in a console in a default Windows installation.
+		/// The original Zip specification (https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT) states 
+		/// that file names should only be encoded with IBM Code Page 437 or UTF-8. 
+		/// In practice, most zip apps use OEM or system encoding (typically cp437 on Windows). 
+		/// Let's be good citizens and default to UTF-8 http://utf8everywhere.org/
 		/// </remarks>
-		static int defaultCodePage = -1;
+		static int defaultCodePage = Encoding.UTF8.CodePage;
 
 		/// <summary>
 		/// Default encoding used for string conversion.  0 gives the default system OEM code page.
-		/// Dont use unicode encodings if you want to be Zip compatible!
 		/// Using the default code page isnt the full solution neccessarily
 		/// there are many variable factors, codepage 850 is often a good choice for
 		/// European users, however be careful about compatability.
 		/// </summary>
 		public static int DefaultCodePage {
 			get {
-				const int FALLBACK_CODE_PAGE = 437;
-				if (defaultCodePage == -1)
-				{
-					try
-					{
-						var codePage = Encoding.GetEncoding(0).CodePage;
-						defaultCodePage = (codePage == 1 || codePage == 2 || codePage == 3 || codePage == 42) ? FALLBACK_CODE_PAGE : codePage;
-					}
-					catch {
-						defaultCodePage = FALLBACK_CODE_PAGE;
-					}
-				}
 				return defaultCodePage;
 			}
 			set {
