@@ -8,6 +8,32 @@ namespace ICSharpCode.SharpZipLib.Encryption
 	/// </summary>
 	internal class ZipAESTransform : ICryptoTransform
 	{
+
+#if NET45
+		class IncrementalHash : HMACSHA1
+		{
+			bool _finalised;
+			public IncrementalHash(byte[] key) : base(key) { }
+			public static IncrementalHash CreateHMAC(string n, byte[] key) => new IncrementalHash(key);
+			public void AppendData(byte[] buffer, int offset, int count) => TransformBlock(buffer, offset, count, buffer, offset);
+			public byte[] GetHashAndReset()
+			{
+				if (!_finalised)
+				{
+					byte[] dummy = new byte[0];
+					TransformFinalBlock(dummy, 0, 0);
+					_finalised = true;
+				}
+				return Hash;
+			}
+		}
+
+		static class HashAlgorithmName
+		{
+			public static string SHA1 = null;
+		}
+#endif
+
 		private const int PWD_VER_LENGTH = 2;
 
 		// WinZip use iteration count of 1000 for PBKDF2 key generation
@@ -25,7 +51,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		private int _encrPos;
 		private byte[] _pwdVerifier;
 		private IncrementalHash _hmacsha1;
-		private bool _finalised;
+		private byte[] _authCode = null;
 
 		private bool _writeMode;
 
@@ -113,10 +139,14 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public byte[] GetAuthCode()
 		{
-			return _hmacsha1.GetHashAndReset();
+			if (_authCode == null)
+			{
+				_authCode = _hmacsha1.GetHashAndReset();
+			}
+			return _authCode;
 		}
 
-		#region ICryptoTransform Members
+#region ICryptoTransform Members
 
 		/// <summary>
 		/// Not implemented.
@@ -171,7 +201,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			_encryptor.Dispose();
 		}
 
-		#endregion
+#endregion
 
 	}
 }
