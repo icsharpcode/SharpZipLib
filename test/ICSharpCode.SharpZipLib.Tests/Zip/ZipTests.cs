@@ -2040,6 +2040,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void UnicodeNameConversion()
 		{
+			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
 			ZipConstants.DefaultCodePage = 850;
 			string sample = "Hello world";
 
