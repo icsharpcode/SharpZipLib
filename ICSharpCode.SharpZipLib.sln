@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZipLib.Tests", "ICSharpCode.SharpZipLib.Tests\ICSharpCode.SharpZipLib.Tests.csproj", "{82211166-9C45-4603-8E3A-2CA2EFFCBC26}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Configuration", "Solution Configuration", "{F1097E98-4DEB-4A0A-81EE-5CEC667EBDF0}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -13,9 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Configuration", "S
 		Rebracer.xml = Rebracer.xml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZipLib", "ICSharpCode.SharpZipLib.NET45\ICSharpCode.SharpZipLib.csproj", "{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICSharpCode.SharpZipLib", "src\ICSharpCode.SharpZipLib\ICSharpCode.SharpZipLib.csproj", "{C53BEB8A-0989-43A7-B3EC-F7028749FA71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZipLib.NetStandard", "ICSharpCode.SharpZipLib.NETStandard\ICSharpCode.SharpZipLib.NetStandard.csproj", "{BF51C1EA-5CED-4A08-A57D-FDF2E425DB70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICSharpCode.SharpZipLib.Tests", "test\ICSharpCode.SharpZipLib.Tests\ICSharpCode.SharpZipLib.Tests.csproj", "{82211166-9C45-4603-8E3A-2CA2EFFCBC26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZipLib.TestBootstrapper", "test\ICSharpCode.SharpZipLib.TestBootstrapper\ICSharpCode.SharpZipLib.TestBootstrapper.csproj", "{535D7365-C5B1-4253-9233-D72D972CA851}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,18 +23,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C53BEB8A-0989-43A7-B3EC-F7028749FA71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C53BEB8A-0989-43A7-B3EC-F7028749FA71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C53BEB8A-0989-43A7-B3EC-F7028749FA71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C53BEB8A-0989-43A7-B3EC-F7028749FA71}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82211166-9C45-4603-8E3A-2CA2EFFCBC26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{82211166-9C45-4603-8E3A-2CA2EFFCBC26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82211166-9C45-4603-8E3A-2CA2EFFCBC26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82211166-9C45-4603-8E3A-2CA2EFFCBC26}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BF51C1EA-5CED-4A08-A57D-FDF2E425DB70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BF51C1EA-5CED-4A08-A57D-FDF2E425DB70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BF51C1EA-5CED-4A08-A57D-FDF2E425DB70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BF51C1EA-5CED-4A08-A57D-FDF2E425DB70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{535D7365-C5B1-4253-9233-D72D972CA851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{535D7365-C5B1-4253-9233-D72D972CA851}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{535D7365-C5B1-4253-9233-D72D972CA851}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{535D7365-C5B1-4253-9233-D72D972CA851}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
