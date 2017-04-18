@@ -50,6 +50,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// </summary>
 		protected Crc32 crc = new Crc32();
 		OutputState state_ = OutputState.Header;
+	    private string _fileName;
 		#endregion
 
 		#region Constructors
@@ -104,6 +105,27 @@ namespace ICSharpCode.SharpZipLib.GZip
 		{
 			return deflater_.GetLevel();
 		}
+
+		//AFONSO DUTRA
+		/// <summary>
+		/// Set a file name internal gzip
+		/// </summary>
+		/// <param name="filename">name of file zipped</param>
+	    public void SetFileName(string filename)
+	    {
+	        _fileName = filename;
+	    }
+
+		/// <summary>
+		/// Get the currnet file name of internal gzip
+		/// </summary>
+		/// <returns>Get the currnet file name of internal gzip</returns>
+	    public string GetFileName()
+	    {
+	        return _fileName;
+
+	    }
+		//AFONSO DUTRA
 		#endregion
 
 		#region Stream overrides
@@ -196,7 +218,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 					(byte) Deflater.DEFLATED,
 
 					// The flags (not set)
-					0,
+					//0,
+					(byte) (!string.IsNullOrEmpty(_fileName) ?  GZipConstants.FNAME : 0), //AFONSO: File Name
 
 					// The modification time
 					(byte) mod_time, (byte) (mod_time >> 8),
@@ -208,7 +231,18 @@ namespace ICSharpCode.SharpZipLib.GZip
 					// The OS type (unknown)
 					(byte) 255
 				};
+
 				baseOutputStream_.Write(gzipHeader, 0, gzipHeader.Length);
+
+				//AFONSO DUTRA
+				if (!string.IsNullOrEmpty(_fileName))
+			    {
+			        var fileNameBytes = System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(_fileName);
+			        Array.Resize<byte>(ref fileNameBytes, fileNameBytes.Length + 1);
+			        fileNameBytes[fileNameBytes.Length - 1] = 0;
+			        baseOutputStream_.Write(fileNameBytes, 0, fileNameBytes.Length);
+			    }
+				//AFONSO DUTRA
 			}
 		}
 		#endregion
