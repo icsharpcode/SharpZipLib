@@ -181,9 +181,13 @@ namespace ICSharpCode.SharpZipLib.Checksum
 				throw new ArgumentOutOfRangeException(nameof(count), "exceeds buffer size");
 			}
 
-			for (int i = 0; i < count; ++i) {
-				Update(buffer[offset++]);
-			}
-		}
+            uint crc = checkValue;
+            for (int i = 0; i < count; ++i)
+            {
+                byte b = buffer[offset++];
+                crc = crcTable[(crc ^ b) & 0xFF] ^ (crc >> 8);
+            }
+            checkValue = crc;
+        }
 	}
 }
