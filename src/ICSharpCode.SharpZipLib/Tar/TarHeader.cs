@@ -814,9 +814,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 
 			int i;
-			
-			for (i = 0 ; i < length && nameOffset + i < name.Length; ++i) {
-				buffer[bufferOffset + i] = (byte)name[nameOffset + i];
+
+			byte[] nameBytes = Encoding.UTF8.GetBytes(name);
+
+			for (i = 0; i < length && nameOffset + i < nameBytes.Length; ++i)
+			{
+				buffer[bufferOffset + i] = nameBytes[nameOffset + i];
 			}
 
 			for (; i < length; ++i) {
