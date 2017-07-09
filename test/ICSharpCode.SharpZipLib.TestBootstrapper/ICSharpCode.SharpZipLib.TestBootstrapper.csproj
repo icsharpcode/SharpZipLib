@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.7.1" />
     <PackageReference Include="dotnet-test-nunit" Version="3.4.0-beta-3" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0-alpha1" />
     <PackageReference Include="NUnitLite" Version="3.7.2" />
   </ItemGroup>
 
