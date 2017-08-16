@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Core;
@@ -2721,7 +2722,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			try {
 				var target = new MemoryStream();
-				zippy.CreateZip(target, tempFilePath, false, tempName1, null);
+				zippy.CreateZip(target, tempFilePath, false, Regex.Escape(tempName1), null);
 
 				var archive = new MemoryStream(target.ToArray());
 
