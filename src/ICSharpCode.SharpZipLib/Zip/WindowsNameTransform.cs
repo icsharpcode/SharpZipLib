@@ -11,6 +11,30 @@ namespace ICSharpCode.SharpZipLib.Zip
 	public class WindowsNameTransform : INameTransform
 	{
 		/// <summary>
+		///  The maximum windows path name permitted.
+		/// </summary>
+		/// <remarks>This may not valid for all windows systems - CE?, etc but I cant find the equivalent in the CLR.</remarks>
+		const int MaxPath = 260;
+
+		string _baseDirectory;
+		bool _trimIncomingPaths;
+		char _replacementChar = '_';
+
+		/// <summary>
+		/// In this case we need Windows' invalid path characters.
+		/// Path.GetInvalidPathChars() only returns a subset invalid on all platforms.
+		/// </summary>
+		static readonly char[] InvalidEntryChars = new char[] {
+			'"', '<', '>', '|', '\0', '\u0001', '\u0002', '\u0003', '\u0004', '\u0005',
+			'\u0006', '\a', '\b', '\t', '\n', '\v', '\f', '\r', '\u000e', '\u000f',
+			'\u0010', '\u0011', '\u0012', '\u0013', '\u0014', '\u0015', '\u0016',
+			'\u0017', '\u0018', '\u0019', '\u001a', '\u001b', '\u001c', '\u001d',
+			'\u001e', '\u001f',
+			// extra characters for masks, etc.
+			'*', '?', ':'
+		};
+
+		/// <summary>
 		/// Initialises a new instance of <see cref="WindowsNameTransform"/>
 		/// </summary>
 		/// <param name="baseDirectory"></param>
@@ -114,23 +138,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Initialise static class information.
-		/// </summary>
-		static WindowsNameTransform()
-		{
-			char[] invalidPathChars;
-
-			invalidPathChars = Path.GetInvalidPathChars();
-			int howMany = invalidPathChars.Length + 3;
-
-			InvalidEntryChars = new char[howMany];
-			Array.Copy(invalidPathChars, 0, InvalidEntryChars, 0, invalidPathChars.Length);
-			InvalidEntryChars[howMany - 1] = '*';
-			InvalidEntryChars[howMany - 2] = '?';
-			InvalidEntryChars[howMany - 3] = ':';
-		}
-
-		/// <summary>
 		/// Force a name to be valid by replacing invalid characters with a fixed value
 		/// </summary>
 		/// <param name="name">The name to make valid</param>
@@ -206,21 +213,5 @@ namespace ICSharpCode.SharpZipLib.Zip
 				_replacementChar = value;
 			}
 		}
-
-		/// <summary>
-		///  The maximum windows path name permitted.
-		/// </summary>
-		/// <remarks>This may not valid for all windows systems - CE?, etc but I cant find the equivalent in the CLR.</remarks>
-		const int MaxPath = 260;
-
-		#region Instance Fields
-		string _baseDirectory;
-		bool _trimIncomingPaths;
-		char _replacementChar = '_';
-		#endregion
-
-		#region Class Fields
-		static readonly char[] InvalidEntryChars;
-		#endregion
 	}
 }
