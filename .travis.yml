@@ -10,7 +10,7 @@ install:
 script:
   - xbuild /p:Configuration=Debug ICSharpCode.SharpZipLib.sln
   - xbuild /p:Configuration=Release ICSharpCode.SharpZipLib.sln
-  - mono ./packages/NUnit.ConsoleRunner.3.2.1/tools/nunit3-console.exe --framework=mono-4.0 --labels=All --testlist=./ICSharpCode.SharpZipLib.Tests/PassingTests.txt --result=./Documentation/nunit3-test-results-travis.xml ./bin/Release/ICSharpCode.SharpZipLib.Tests.dll
+  - mono ./packages/NUnit.ConsoleRunner.3.2.1/tools/nunit3-console.exe --framework=mono-4.0 --labels=All --result=./Documentation/nunit3-test-results-travis.xml ./bin/Release/ICSharpCode.SharpZipLib.Tests.dll
 after_script:
   - nuget pack Build/ICSharpCode.SharpZipLib.nuspec -BasePath Build -OutputDirectory bin/Release
 cache:
