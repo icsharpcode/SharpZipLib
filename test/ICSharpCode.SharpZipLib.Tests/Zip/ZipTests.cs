@@ -2753,6 +2753,21 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		[Test]
 		[Category("Zip")]
+		[Ignore("see comments below")]
+		/*
+		 * This test is somewhat strange:
+		 * a) It tries to simulate a locked file by opening it on the same thread using FileShare.
+		 *    However the FileShare value is not meant for cross-process file locking, but only to
+		 *    allow other threads in the same process to access the same file.
+		 *    This is not the intended behavior, you would need a second process locking the file
+		 *    when running this test.
+		 * b) It would require to change the file operation in FastZip.ProcessFile to use FileShare.ReadWrite
+		 *    but doing so would make FastZip work with locked files (that are potentially written to by others)
+		 *    and silently ignoring any locks. HOWEVER: This can lead to corrupt/incomplete files, which is why it
+		 *    should not be the default behavior.
+		 *    
+		 * Therefore I would remove this test.
+		 **/
 		public void ReadingOfLockedDataFiles()
 		{
 			const string tempName1 = "a.dat";
