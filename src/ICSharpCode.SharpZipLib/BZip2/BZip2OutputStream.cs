@@ -41,7 +41,69 @@ namespace ICSharpCode.SharpZipLib.BZip2
 											  };
 		#endregion
 
-		#region Constructors
+		#region Instance Fields
+		/*--
+		index of the last char in the block, so
+		the block size == last + 1.
+		--*/
+		int last;
+
+		/*--
+		index in zptr[] of original string after sorting.
+		--*/
+		int origPtr;
+
+		/*--
+		always: in the range 0 .. 9.
+		The current block size is 100000 * this number.
+		--*/
+		int blockSize100k;
+
+		bool blockRandomised;
+
+		int bytesOut;
+		int bsBuff;
+		int bsLive;
+		IChecksum mCrc = new BZip2Crc();
+
+		bool[] inUse = new bool[256];
+		int nInUse;
+
+		char[] seqToUnseq = new char[256];
+		char[] unseqToSeq = new char[256];
+
+		char[] selector = new char[BZip2Constants.MaximumSelectors];
+		char[] selectorMtf = new char[BZip2Constants.MaximumSelectors];
+
+		byte[] block;
+		int[] quadrant;
+		int[] zptr;
+		short[] szptr;
+		int[] ftab;
+
+		int nMTF;
+
+		int[] mtfFreq = new int[BZip2Constants.MaximumAlphaSize];
+
+		/*
+		* Used when sorting.  If too many long comparisons
+		* happen, we stop sorting, randomise the block
+		* slightly, and try again.
+		*/
+		int workFactor;
+		int workDone;
+		int workLimit;
+		bool firstAttempt;
+		int nBlocksRandomised;
+
+		int currentChar = -1;
+		int runLength;
+		uint blockCRC, combinedCRC;
+		int allowableBlockSize;
+		Stream baseStream;
+		bool disposed_;
+		#endregion
+
 		/// <summary>
 		/// Construct a default output stream with maximum block size
 		/// </summary>
@@ -77,9 +139,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			Initialize();
 			InitBlock();
 		}
-		#endregion
 
-		#region Destructor
 		/// <summary>
 		/// Ensures that resources are freed and other cleanup operations 
 		/// are performed when the garbage collector reclaims the BZip2OutputStream.
@@ -88,20 +148,14 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		{
 			Dispose(false);
 		}
-		#endregion
 
 		/// <summary>
-		/// Get/set flag indicating ownership of underlying stream.
-		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
+		/// Gets or sets a flag indicating ownership of underlying stream.
+		/// When the flag is true <see cref="Stream.Dispose()" /> will close the underlying stream also.
 		/// </summary>
-		public bool IsStreamOwner
-		{
-			get { return isStreamOwner; }
-			set { isStreamOwner = value; }
-		}
+		/// <remarks>The default value is true.</remarks>
+		public bool IsStreamOwner { get; set; } = true;
 
-
-		#region Stream overrides
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports reading
 		/// </summary>
@@ -259,7 +313,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 		}
 
-		#endregion
 		void MakeMaps()
 		{
 			nInUse = 0;
@@ -1730,70 +1783,5 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			public int hh;
 			public int dd;
 		}
-
-		#region Instance Fields
-		bool isStreamOwner = true;
-
-		/*--
-		index of the last char in the block, so
-		the block size == last + 1.
-		--*/
-		int last;
-
-		/*--
-		index in zptr[] of original string after sorting.
-		--*/
-		int origPtr;
-
-		/*--
-		always: in the range 0 .. 9.
-		The current block size is 100000 * this number.
-		--*/
-		int blockSize100k;
-
-		bool blockRandomised;
-
-		int bytesOut;
-		int bsBuff;
-		int bsLive;
-		IChecksum mCrc = new BZip2Crc();
-
-		bool[] inUse = new bool[256];
-		int nInUse;
-
-		char[] seqToUnseq = new char[256];
-		char[] unseqToSeq = new char[256];
-
-		char[] selector = new char[BZip2Constants.MaximumSelectors];
-		char[] selectorMtf = new char[BZip2Constants.MaximumSelectors];
-
-		byte[] block;
-		int[] quadrant;
-		int[] zptr;
-		short[] szptr;
-		int[] ftab;
-
-		int nMTF;
-
-		int[] mtfFreq = new int[BZip2Constants.MaximumAlphaSize];
-
-		/*
-		* Used when sorting.  If too many long comparisons
-		* happen, we stop sorting, randomise the block
-		* slightly, and try again.
-		*/
-		int workFactor;
-		int workDone;
-		int workLimit;
-		bool firstAttempt;
-		int nBlocksRandomised;
-
-		int currentChar = -1;
-		int runLength;
-		uint blockCRC, combinedCRC;
-		int allowableBlockSize;
-		Stream baseStream;
-		bool disposed_;
-		#endregion
 	}
 }

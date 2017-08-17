@@ -12,12 +12,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 	/// </summary>
 	public class PendingBuffer
 	{
-		readonly
 		#region Instance Fields
 		/// <summary>
 		/// Internal work buffer
 		/// </summary>
-		byte[] buffer_;
+		readonly byte[] buffer;
 
 		int start;
 		int end;
@@ -42,7 +41,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// </param>
 		public PendingBuffer(int bufferSize)
 		{
-			buffer_ = new byte[bufferSize];
+			buffer = new byte[bufferSize];
 		}
 
 		#endregion
@@ -69,7 +68,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				throw new SharpZipBaseException("Debug check: start != 0");
 			}
 #endif
-			buffer_[end++] = unchecked((byte)value);
+			buffer[end++] = unchecked((byte)value);
 		}
 
 		/// <summary>
@@ -86,8 +85,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				throw new SharpZipBaseException("Debug check: start != 0");
 			}
 #endif
-			buffer_[end++] = unchecked((byte)value);
-			buffer_[end++] = unchecked((byte)(value >> 8));
+			buffer[end++] = unchecked((byte)value);
+			buffer[end++] = unchecked((byte)(value >> 8));
 		}
 
 		/// <summary>
@@ -102,10 +101,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				throw new SharpZipBaseException("Debug check: start != 0");
 			}
 #endif
-			buffer_[end++] = unchecked((byte)value);
-			buffer_[end++] = unchecked((byte)(value >> 8));
-			buffer_[end++] = unchecked((byte)(value >> 16));
-			buffer_[end++] = unchecked((byte)(value >> 24));
+			buffer[end++] = unchecked((byte)value);
+			buffer[end++] = unchecked((byte)(value >> 8));
+			buffer[end++] = unchecked((byte)(value >> 16));
+			buffer[end++] = unchecked((byte)(value >> 24));
 		}
 
 		/// <summary>
@@ -122,7 +121,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				throw new SharpZipBaseException("Debug check: start != 0");
 			}
 #endif
-			System.Array.Copy(block, offset, buffer_, end, length);
+			System.Array.Copy(block, offset, buffer, end, length);
 			end += length;
 		}
 
@@ -147,9 +146,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			}
 #endif
 			if (bitCount > 0) {
-				buffer_[end++] = unchecked((byte)bits);
+				buffer[end++] = unchecked((byte)bits);
 				if (bitCount > 8) {
-					buffer_[end++] = unchecked((byte)(bits >> 8));
+					buffer[end++] = unchecked((byte)(bits >> 8));
 				}
 			}
 			bits = 0;
@@ -176,8 +175,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			bits |= (uint)(b << bitCount);
 			bitCount += count;
 			if (bitCount >= 16) {
-				buffer_[end++] = unchecked((byte)bits);
-				buffer_[end++] = unchecked((byte)(bits >> 8));
+				buffer[end++] = unchecked((byte)bits);
+				buffer[end++] = unchecked((byte)(bits >> 8));
 				bits >>= 16;
 				bitCount -= 16;
 			}
@@ -195,8 +194,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				throw new SharpZipBaseException("Debug check: start != 0");
 			}
 #endif
-			buffer_[end++] = unchecked((byte)(s >> 8));
-			buffer_[end++] = unchecked((byte)s);
+			buffer[end++] = unchecked((byte)(s >> 8));
+			buffer[end++] = unchecked((byte)s);
 		}
 
 		/// <summary>
@@ -219,18 +218,18 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		public int Flush(byte[] output, int offset, int length)
 		{
 			if (bitCount >= 8) {
-				buffer_[end++] = unchecked((byte)bits);
+				buffer[end++] = unchecked((byte)bits);
 				bits >>= 8;
 				bitCount -= 8;
 			}
 
 			if (length > end - start) {
 				length = end - start;
-				System.Array.Copy(buffer_, start, output, offset, length);
+				System.Array.Copy(buffer, start, output, offset, length);
 				start = 0;
 				end = 0;
 			} else {
-				System.Array.Copy(buffer_, start, output, offset, length);
+				System.Array.Copy(buffer, start, output, offset, length);
 				start += length;
 			}
 			return length;
@@ -248,7 +247,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			AlignToByte();
 			
 			byte[] result = new byte[end - start];
-			System.Array.Copy(buffer_, start, result, 0, result.Length);
+			System.Array.Copy(buffer, start, result, 0, result.Length);
 			start = 0;
 			end = 0;
 			return result;

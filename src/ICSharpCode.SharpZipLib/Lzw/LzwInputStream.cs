@@ -44,16 +44,11 @@ namespace ICSharpCode.SharpZipLib.Lzw
 	public class LzwInputStream : Stream
 	{
 		/// <summary>
-		/// Get/set flag indicating ownership of underlying stream.
-		/// When the flag is true <see cref="Close"/> will close the underlying stream also.
+		/// Gets or sets a flag indicating ownership of underlying stream.
+		/// When the flag is true <see cref="Stream.Dispose()" /> will close the underlying stream also.
 		/// </summary>
-		/// <remarks>
-		/// The default value is true.
-		/// </remarks>
-		public bool IsStreamOwner {
-			get { return isStreamOwner; }
-			set { isStreamOwner = value; }
-		}
+		/// <remarks>The default value is true.</remarks>
+		public bool IsStreamOwner { get; set; } = true;
 
 		/// <summary>
 		/// Creates a LzwInputStream
@@ -485,7 +480,7 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		{
 			if (!isClosed) {
 				isClosed = true;
-				if (isStreamOwner) {
+				if (IsStreamOwner) {
 					baseInputStream.Dispose();
 				}
 			}
@@ -496,12 +491,6 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		#region Instance Fields
 
 		Stream baseInputStream;
-
-		/// <summary>
-		/// Flag indicating wether this instance is designated the stream owner.
-		/// When closing if this flag is true the underlying stream is closed.
-		/// </summary>
-		bool isStreamOwner = true;
 
 		/// <summary>
 		/// Flag indicating wether this instance has been closed or not.

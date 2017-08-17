@@ -41,9 +41,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 		#endregion
 
 		/// <summary>
-		/// Get/set flag indicating ownership of the underlying stream.
-		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
+		/// Gets or sets a flag indicating ownership of underlying stream.
+		/// When the flag is true <see cref="Stream.Dispose()" /> will close the underlying stream also.
 		/// </summary>
+		/// <remarks>The default value is true.</remarks>
 		public bool IsStreamOwner {
 			get { return buffer.IsStreamOwner; }
 			set { buffer.IsStreamOwner = value; }

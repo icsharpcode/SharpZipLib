@@ -2469,25 +2469,25 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <param name="x">First object to compare</param>
 			/// <param name="y">Second object to compare.</param>
 			/// <returns>Compare result.</returns>
-			public int Compare(ZipUpdate zx, ZipUpdate zy)
+			public int Compare(ZipUpdate x, ZipUpdate y)
 			{
 				int result;
 
-				if (zx == null) {
-					if (zy == null) {
+				if (x == null) {
+					if (y == null) {
 						result = 0;
 					} else {
 						result = -1;
 					}
-				} else if (zy == null) {
+				} else if (y == null) {
 					result = 1;
 				} else {
-					int xCmdValue = ((zx.Command == UpdateCommand.Copy) || (zx.Command == UpdateCommand.Modify)) ? 0 : 1;
-					int yCmdValue = ((zy.Command == UpdateCommand.Copy) || (zy.Command == UpdateCommand.Modify)) ? 0 : 1;
+					int xCmdValue = ((x.Command == UpdateCommand.Copy) || (x.Command == UpdateCommand.Modify)) ? 0 : 1;
+					int yCmdValue = ((y.Command == UpdateCommand.Copy) || (y.Command == UpdateCommand.Modify)) ? 0 : 1;
 
 					result = xCmdValue - yCmdValue;
 					if (result == 0) {
-						long offsetDiff = zx.Entry.Offset - zy.Entry.Offset;
+						long offsetDiff = x.Entry.Offset - y.Entry.Offset;
 						if (offsetDiff < 0) {
 							result = -1;
 						} else if (offsetDiff == 0) {

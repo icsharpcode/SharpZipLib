@@ -18,7 +18,73 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		const int NO_RAND_PART_B_STATE = 6;
 		const int NO_RAND_PART_C_STATE = 7;
 		#endregion
-		#region Constructors
+
+		#region Instance Fields
+		/*--
+		index of the last char in the block, so
+		the block size == last + 1.
+		--*/
+		int last;
+
+		/*--
+		index in zptr[] of original string after sorting.
+		--*/
+		int origPtr;
+
+		/*--
+		always: in the range 0 .. 9.
+		The current block size is 100000 * this number.
+		--*/
+		int blockSize100k;
+
+		bool blockRandomised;
+
+		int bsBuff;
+		int bsLive;
+		IChecksum mCrc = new BZip2Crc();
+
+		bool[] inUse = new bool[256];
+		int nInUse;
+
+		byte[] seqToUnseq = new byte[256];
+		byte[] unseqToSeq = new byte[256];
+
+		byte[] selector = new byte[BZip2Constants.MaximumSelectors];
+		byte[] selectorMtf = new byte[BZip2Constants.MaximumSelectors];
+
+		int[] tt;
+		byte[] ll8;
+
+		/*--
+		freq table collected to save a pass over the data
+		during decompression.
+		--*/
+		int[] unzftab = new int[256];
+
+		int[][] limit = new int[BZip2Constants.GroupCount][];
+		int[][] baseArray = new int[BZip2Constants.GroupCount][];
+		int[][] perm = new int[BZip2Constants.GroupCount][];
+		int[] minLens = new int[BZip2Constants.GroupCount];
+
+		Stream baseStream;
+		bool streamEnd;
+
+		int currentChar = -1;
+
+		int currentState = START_BLOCK_STATE;
+
+		int storedBlockCRC, storedCombinedCRC;
+		int computedBlockCRC;
+		uint computedCombinedCRC;
+
+		int count, chPrev, ch2;
+		int tPos;
+		int rNToGo;
+		int rTPos;
+		int i2, j2;
+		byte z;
+		#endregion
+
 		/// <summary>
 		/// Construct instance for reading from stream
 		/// </summary>
@@ -38,17 +104,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			SetupBlock();
 		}
 
-		#endregion
-
 		/// <summary>
 		/// Get/set flag indicating ownership of underlying stream.
-		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
+		/// When the flag is true <see cref="Stream.Dispose()" /> will close the underlying stream also.
 		/// </summary>
-		public bool IsStreamOwner {
-			get { return isStreamOwner; }
-			set { isStreamOwner = value; }
-		}
-
+		public bool IsStreamOwner { get; set; } = true;
 
 		#region Stream Overrides
 		/// <summary>
@@ -838,72 +898,5 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				baseArray[i] = ((limit[i - 1] + 1) << 1) - baseArray[i];
 			}
 		}
-
-		#region Instance Fields
-		/*--
-		index of the last char in the block, so
-		the block size == last + 1.
-		--*/
-		int last;
-
-		/*--
-		index in zptr[] of original string after sorting.
-		--*/
-		int origPtr;
-
-		/*--
-		always: in the range 0 .. 9.
-		The current block size is 100000 * this number.
-		--*/
-		int blockSize100k;
-
-		bool blockRandomised;
-
-		int bsBuff;
-		int bsLive;
-		IChecksum mCrc = new BZip2Crc();
-
-		bool[] inUse = new bool[256];
-		int nInUse;
-
-		byte[] seqToUnseq = new byte[256];
-		byte[] unseqToSeq = new byte[256];
-
-		byte[] selector = new byte[BZip2Constants.MaximumSelectors];
-		byte[] selectorMtf = new byte[BZip2Constants.MaximumSelectors];
-
-		int[] tt;
-		byte[] ll8;
-
-		/*--
-		freq table collected to save a pass over the data
-		during decompression.
-		--*/
-		int[] unzftab = new int[256];
-
-		int[][] limit = new int[BZip2Constants.GroupCount][];
-		int[][] baseArray = new int[BZip2Constants.GroupCount][];
-		int[][] perm = new int[BZip2Constants.GroupCount][];
-		int[] minLens = new int[BZip2Constants.GroupCount];
-
-		Stream baseStream;
-		bool streamEnd;
-
-		int currentChar = -1;
-
-		int currentState = START_BLOCK_STATE;
-
-		int storedBlockCRC, storedCombinedCRC;
-		int computedBlockCRC;
-		uint computedCombinedCRC;
-
-		int count, chPrev, ch2;
-		int tPos;
-		int rNToGo;
-		int rTPos;
-		int i2, j2;
-		byte z;
-		bool isStreamOwner = true;
-		#endregion
 	}
 }

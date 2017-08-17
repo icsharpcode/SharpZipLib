@@ -124,13 +124,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 
 		/// <summary>
-		/// Get/set flag indicating ownership of the underlying stream.
-		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
+		/// Gets or sets a flag indicating ownership of underlying stream.
+		/// When the flag is true <see cref="Stream.Dispose()" /> will close the underlying stream also.
 		/// </summary>
-		public bool IsStreamOwner {
-			get { return isStreamOwner_; }
-			set { isStreamOwner_ = value; }
-		}
+		/// <remarks>The default value is true.</remarks>
+		public bool IsStreamOwner { get; set; } = true;
 
 		///	<summary>
 		/// Allows client to determine if an entry can be patched after its added
@@ -369,7 +367,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 						cryptoTransform_ = null;
 					}
 				} finally {
-					if (isStreamOwner_) {
+					if (IsStreamOwner) {
 						baseOutputStream_.Dispose();
 					}
 				}
@@ -433,8 +431,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		protected Stream baseOutputStream_;
 
 		bool isClosed_;
-
-		bool isStreamOwner_ = true;
 		#endregion
 
 		#region Static Fields

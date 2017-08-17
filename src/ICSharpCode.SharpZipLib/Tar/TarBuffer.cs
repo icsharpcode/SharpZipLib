@@ -363,13 +363,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 
 		/// <summary>
-		/// Get/set flag indicating ownership of the underlying stream.
-		/// When the flag is true <see cref="Close"></see> will close the underlying stream also.
+		/// Gets or sets a flag indicating ownership of underlying stream.
+		/// When the flag is true <see cref="Close" /> will close the underlying stream also.
 		/// </summary>
-		public bool IsStreamOwner {
-			get { return isStreamOwner_; }
-			set { isStreamOwner_ = value; }
-		}
+		/// <remarks>The default value is true.</remarks>
+		public bool IsStreamOwner { get; set; } = true;
 
 		/// <summary>
 		/// Get the current block number, within the current record, zero based.
@@ -523,12 +521,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 			if (outputStream != null) {
 				WriteFinalRecord();
 
-				if (isStreamOwner_) {
+				if (IsStreamOwner) {
 					outputStream.Dispose();
 				}
 				outputStream = null;
 			} else if (inputStream != null) {
-				if (isStreamOwner_) {
+				if (IsStreamOwner) {
 					inputStream.Dispose();
 				}
 				inputStream = null;
@@ -545,7 +543,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 		int recordSize = DefaultRecordSize;
 		int blockFactor = DefaultBlockFactor;
-		bool isStreamOwner_ = true;
 		#endregion
 	}
 }
