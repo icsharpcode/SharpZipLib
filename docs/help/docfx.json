@@ -3,8 +3,9 @@
     {
       "src": [
         {
+		  "cwd":  "../../src/",
           "files": [
-            "src/**.csproj"
+            "ICSharpCode.SharpZipLib/**.csproj"
           ],
           "exclude": [
             "**/obj/**",
