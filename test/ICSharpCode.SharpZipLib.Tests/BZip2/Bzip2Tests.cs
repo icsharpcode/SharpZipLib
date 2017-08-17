@@ -3,6 +3,7 @@ using System.IO;
 using ICSharpCode.SharpZipLib.BZip2;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
+using System.Threading;
 
 namespace ICSharpCode.SharpZipLib.Tests.BZip2
 {
@@ -77,45 +78,44 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 			}
 		}
 
-		readonly BZip2OutputStream outStream_;
+		BZip2OutputStream outStream_;
 		BZip2InputStream inStream_;
 		WindowedStream window_;
 		long readTarget_;
 		long writeTarget_;
 
-		// TODO: Fix this
-		//[Test]
-		//[Category("BZip2")]
-		//public void Performance()
-		//{
-		//	window_ = new WindowedStream(0x150000);
+		[Test]
+		[Category("BZip2")]
+		[Ignore("TODO : Fix this")]
+		public void Performance()
+		{
+			window_ = new WindowedStream(0x150000);
 
-		//	outStream_ = new BZip2OutputStream(window_, 1);
+			outStream_ = new BZip2OutputStream(window_, 1);
 
-		//	const long Target = 0x10000000;
-		//	readTarget_ = writeTarget_ = Target;
+			const long Target = 0x10000000;
+			readTarget_ = writeTarget_ = Target;
 
-		//	Thread reader = new Thread(Reader);
-		//	reader.Name = "Reader";
+			Thread reader = new Thread(Reader);
+			reader.Name = "Reader";
 
-		//	Thread writer = new Thread(Writer);
-		//	writer.Name = "Writer";
+			Thread writer = new Thread(Writer);
+			writer.Name = "Writer";
 
-		//	DateTime startTime = DateTime.Now;
-		//	writer.Start();
+			DateTime startTime = DateTime.Now;
+			writer.Start();
 
-		//          inStream_ = new BZip2InputStream(window_);
+			inStream_ = new BZip2InputStream(window_);
 
-		//          reader.Start();
+			reader.Start();
 
-		//	Assert.IsTrue(writer.Join(TimeSpan.FromMinutes(5.0D)));
-		//	Assert.IsTrue(reader.Join(TimeSpan.FromMinutes(5.0D)));
+			Assert.IsTrue(writer.Join(TimeSpan.FromMinutes(5.0D)));
+			Assert.IsTrue(reader.Join(TimeSpan.FromMinutes(5.0D)));
 
-		//	DateTime endTime = DateTime.Now;
-		//	TimeSpan span = endTime - startTime;
-		//	Console.WriteLine("Time {0} throughput {1} KB/Sec", span, (Target / 1024) / span.TotalSeconds);
-
-		//}
+			DateTime endTime = DateTime.Now;
+			TimeSpan span = endTime - startTime;
+			Console.WriteLine("Time {0} throughput {1} KB/Sec", span, (Target / 1024) / span.TotalSeconds);
+		}
 
 		void Reader()
 		{

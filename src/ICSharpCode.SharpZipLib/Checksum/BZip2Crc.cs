@@ -32,8 +32,8 @@ namespace ICSharpCode.SharpZipLib.Checksum
 	public sealed class BZip2Crc : IChecksum
 	{
 		#region Instance Fields
-		readonly static uint crcInit = 0xFFFFFFFF;
-		readonly static uint crcXor = 0x00000000;
+		const uint crcInit = 0xFFFFFFFF;
+		//const uint crcXor = 0x00000000;
 
 		readonly static uint[] crcTable = {
 			0X00000000, 0X04C11DB7, 0X09823B6E, 0X0D4326D9,
