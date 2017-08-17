@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip.Compression;
+using static ICSharpCode.SharpZipLib.Zip.Compression.Deflater;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -170,6 +172,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// </summary>
 			Always
 		}
+
 		#endregion
 
 		#region Constructors
@@ -263,13 +266,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get/set a value indicating wether file attributes should
+		/// Get/set a value indicating whether file attributes should
 		/// be restored during extract operations
 		/// </summary>
 		public bool RestoreAttributesOnExtract {
 			get { return restoreAttributesOnExtract_; }
 			set { restoreAttributesOnExtract_ = value; }
 		}
+
+        /// <summary>
+        /// Get/set the Compression Level that will be used
+        /// when creating the zip
+        /// </summary>
+        public Deflater.CompressionLevel CompressionLevel{
+            get { return compressionLevel_; }
+            set { compressionLevel_ = value; }
+        }
 		#endregion
 
 		#region Delegates
@@ -321,6 +333,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			sourceDirectory_ = sourceDirectory;
 
 			using (outputStream_ = new ZipOutputStream(outputStream)) {
+
+                outputStream_.SetLevel((int)CompressionLevel);
 
 				if (password_ != null) {
 					outputStream_.Password = password_;
@@ -640,8 +654,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		IEntryFactory entryFactory_ = new ZipEntryFactory();
 		INameTransform extractNameTransform_;
 		UseZip64 useZip64_ = UseZip64.Dynamic;
+        CompressionLevel compressionLevel_ = CompressionLevel.DEFAULT_COMPRESSION;
 
-		string password_;
+        string password_;
 
 		#endregion
 	}
