@@ -82,7 +82,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 				Assert.IsNotNull(tarData, "Data written is null");
 
 				// Blocks = Header + Data Blocks + Zero block + Record trailer
-				int usedBlocks = 1 + (factor * FillFactor) + 1;
+				int usedBlocks = 1 + (factor * FillFactor) + 2;
 				int totalBlocks = usedBlocks + (factor - 1);
 				totalBlocks /= factor;
 				totalBlocks *= factor;
@@ -146,7 +146,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 				Assert.IsNotNull(tarData, "Data written is null");
 
 				// Blocks = Header + Data Blocks + Zero block + Record trailer
-				int usedBlocks = 1 + iteration + 1;
+				int usedBlocks = 1 + iteration + 2;
 				int totalBlocks = usedBlocks + (TestBlockFactor - 1);
 				totalBlocks /= TestBlockFactor;
 				totalBlocks *= TestBlockFactor;

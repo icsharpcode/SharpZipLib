@@ -390,11 +390,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 		/// <summary>
 		/// Write an EOF (end of archive) block to the tar archive.
-		/// An EOF block consists of all zeros.
+		/// The	end of the archive is indicated	by two blocks consisting entirely of zero bytes.
 		/// </summary>
 		void WriteEofBlock()
 		{
 			Array.Clear(blockBuffer, 0, blockBuffer.Length);
+			buffer.WriteBlock(blockBuffer);
 			buffer.WriteBlock(blockBuffer);
 		}
 
