@@ -66,7 +66,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		int[][] perm = new int[BZip2Constants.GroupCount][];
 		int[] minLens = new int[BZip2Constants.GroupCount];
 
-		Stream baseStream;
+		readonly Stream baseStream;
 		bool streamEnd;
 
 		int currentChar = -1;
@@ -91,6 +91,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <param name="stream">Data source</param>
 		public BZip2InputStream(Stream stream)
 		{
+			if (stream == null)
+				throw new ArgumentNullException(nameof(stream));
 			// init arrays
 			for (int i = 0; i < BZip2Constants.GroupCount; ++i) {
 				limit[i] = new int[BZip2Constants.MaximumAlphaSize];
@@ -98,7 +100,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				perm[i] = new int[BZip2Constants.MaximumAlphaSize];
 			}
 
-			BsSetStream(stream);
+			baseStream = stream;
+			bsLive = 0;
+			bsBuff = 0;
 			Initialize();
 			InitBlock();
 			SetupBlock();
@@ -149,10 +153,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		}
 
 		/// <summary>
-		/// Gets or sets the streams position.
-		/// Setting the position is not supported and will throw a NotSupportException
+		/// Gets the current position of the stream.
+		/// Setting the position is not supported and will throw a NotSupportException.
 		/// </summary>
-		/// <exception cref="NotSupportedException">Any attempt to set the position</exception>
+		/// <exception cref="NotSupportedException">Any attempt to set the position.</exception>
 		public override long Position {
 			get {
 				return baseStream.Position;
@@ -167,9 +171,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		public override void Flush()
 		{
-			if (baseStream != null) {
-				baseStream.Flush();
-			}
+			baseStream.Flush();
 		}
 
 		/// <summary>
@@ -250,7 +252,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && IsStreamOwner && (baseStream != null)) {
+			if (disposing && IsStreamOwner) {
 				baseStream.Dispose();
 			}
 		}
@@ -369,13 +371,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 
 			streamEnd = true;
-		}
-
-		void BsSetStream(Stream stream)
-		{
-			baseStream = stream;
-			bsLive = 0;
-			bsBuff = 0;
 		}
 
 		void FillBuffer()

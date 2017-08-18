@@ -100,7 +100,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		int runLength;
 		uint blockCRC, combinedCRC;
 		int allowableBlockSize;
-		Stream baseStream;
+		readonly Stream baseStream;
 		bool disposed_;
 		#endregion
 
@@ -124,7 +124,13 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </remarks>
 		public BZip2OutputStream(Stream stream, int blockSize)
 		{
-			BsSetStream(stream);
+			if (stream == null)
+				throw new ArgumentNullException(nameof(stream));
+
+			baseStream = stream;
+			bsLive = 0;
+			bsBuff = 0;
+			bytesOut = 0;
 
 			workFactor = 50;
 			if (blockSize > 9) {
@@ -526,14 +532,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 
 			BsFinishedWithStream();
-		}
-
-		void BsSetStream(Stream stream)
-		{
-			baseStream = stream;
-			bsLive = 0;
-			bsBuff = 0;
-			bytesOut = 0;
 		}
 
 		void BsFinishedWithStream()
