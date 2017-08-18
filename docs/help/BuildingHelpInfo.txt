@@ -1,0 +1,19 @@
+# Basics
+
+You need DocFx:
+
+https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html#2-use-docfx-as-a-command-line-tool
+
+You have to run it using the "Developer Command Prompt for VS 2017"
+
+
+# Building
+
+In this folder, run "docfx metadata" to build the API documentation (/api folder)
+
+In this folder, run "serve.bat" to build & serve the documenation for local testing
+
+
+# Publishing
+
+The _site folder is to be copied to gh-pages branch for publishing
