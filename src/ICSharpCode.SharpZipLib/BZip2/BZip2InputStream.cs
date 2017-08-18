@@ -125,7 +125,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		public override bool CanSeek {
 			get {
-				return baseStream.CanSeek;
+				return false;
 			}
 		}
 
