@@ -1,0 +1,1101 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class TarEntry
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class TarEntry
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.22.3.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry">
+  
+  
+  <h1 id="ICSharpCode_SharpZipLib_Tar_TarEntry" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry" class="text-break">Class TarEntry
+  </h1>
+  <div class="markdown level0 summary"><p>This class represents an entry in a Tar archive. It consists
+of the entry&apos;s header, as well as the entry&apos;s File. Entries
+can be instantiated in one of three ways, depending on how
+they are to be used.
+<p>
+TarEntries that are created from the header bytes read from
+an archive are instantiated with the TarEntry( byte[] )
+constructor. These entries will be used when extracting from
+or listing the contents of an archive. These entries have their
+header filled in using the header bytes. They also set the File
+to null, since they reference an archive entry not a file.</p>
+<p>
+TarEntries that are created from files that are to be written
+into an archive are instantiated with the CreateEntryFromFile(string)
+pseudo constructor. These entries have their header filled in using
+the File&apos;s information. They also keep a reference to the File
+for convenience when writing entries.</p>
+<p>
+Finally, TarEntries can be constructed from nothing but a name.
+This allows the programmer to construct the entry by hand, for
+instance when only an InputStream is available for writing to
+the archive, and the header information is constructed from
+other information. In this case the header fields are set to
+defaults and the File is set to null.</p>
+<a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarEntry.html#ICSharpCode_SharpZipLib_Tar_TarEntry_TarHeader">TarHeader</a></p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">TarEntry</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Tar.html">ICSharpCode.SharpZipLib.Tar</a></h6>
+  <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
+  <h5 id="ICSharpCode_SharpZipLib_Tar_TarEntry_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class TarEntry</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry__ctor_ICSharpCode_SharpZipLib_Tar_TarHeader_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.%23ctor(ICSharpCode.SharpZipLib.Tar.TarHeader)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L61">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry__ctor_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry__ctor_ICSharpCode_SharpZipLib_Tar_TarHeader_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.#ctor(ICSharpCode.SharpZipLib.Tar.TarHeader)">TarEntry(TarHeader)</h4>
+  <div class="markdown level1 summary"><p>Construct a TarEntry using the <code data-dev-comment-type="paramref">header</code> provided</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TarEntry(TarHeader header)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarHeader.html">TarHeader</a></td>
+        <td><span class="parametername">header</span></td>
+        <td><p>Header details for entry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry__ctor_System_Byte___.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.%23ctor(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L51">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry__ctor_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry__ctor_System_Byte___" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.#ctor(System.Byte[])">TarEntry(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Construct an entry from an archive&apos;s header bytes. File is set
+to null.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TarEntry(byte[] headerBuffer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">headerBuffer</span></td>
+        <td><p>The header bytes from a tar archive entry.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_File.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.File%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L279">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_File_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.File*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_File" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.File">File</h4>
+  <div class="markdown level1 summary"><p>Get this entry&apos;s file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string File { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>This entry&apos;s file.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_GroupId.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.GroupId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L198">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_GroupId_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.GroupId*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_GroupId" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.GroupId">GroupId</h4>
+  <div class="markdown level1 summary"><p>Get/set this entry&apos;s group id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GroupId { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_GroupName.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.GroupName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L222">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_GroupName_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.GroupName*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_GroupName" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.GroupName">GroupName</h4>
+  <div class="markdown level1 summary"><p>Get/set this entry&apos;s group name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GroupName { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_IsDirectory.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.IsDirectory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L303">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_IsDirectory_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.IsDirectory*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_IsDirectory" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.IsDirectory">IsDirectory</h4>
+  <div class="markdown level1 summary"><p>Return true if this entry represents a directory, false otherwise</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDirectory { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>True if this entry is a directory.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_ModTime.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.ModTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L264">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_ModTime_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.ModTime*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_ModTime" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.ModTime">ModTime</h4>
+  <div class="markdown level1 summary"><p>Get/Set the modification time for this entry</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTime ModTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.DateTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_Name.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L174">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_Name_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.Name*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_Name" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.Name">Name</h4>
+  <div class="markdown level1 summary"><p>Get/Set this entry&apos;s name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_Size.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.Size%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L288">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_Size_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.Size*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_Size" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.Size">Size</h4>
+  <div class="markdown level1 summary"><p>Get/set this entry&apos;s recorded file size.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Size { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_TarHeader.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.TarHeader%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L165">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_TarHeader_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.TarHeader*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_TarHeader" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.TarHeader">TarHeader</h4>
+  <div class="markdown level1 summary"><p>Get this entry&apos;s header.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TarHeader TarHeader { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarHeader.html">TarHeader</a></td>
+        <td><p>This entry&apos;s TarHeader.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_UserId.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.UserId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L186">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_UserId_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.UserId*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_UserId" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.UserId">UserId</h4>
+  <div class="markdown level1 summary"><p>Get/set this entry&apos;s user id.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int UserId { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_UserName.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.UserName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L210">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_UserName_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.UserName*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_UserName" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.UserName">UserName</h4>
+  <div class="markdown level1 summary"><p>Get/set this entry&apos;s user name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string UserName { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_AdjustEntryName_System_Byte___System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName(System.Byte%5B%5D%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L440">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_AdjustEntryName_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_AdjustEntryName_System_Byte___System_String_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName(System.Byte[],System.String)">AdjustEntryName(Byte[], String)</h4>
+  <div class="markdown level1 summary"><p>Convenience method that will modify an entry&apos;s name directly
+in place in an entry header buffer byte array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AdjustEntryName(byte[] buffer, string newName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer containing the entry header to modify.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">newName</span></td>
+        <td><p>The new name to place into the header buffer.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_Clone.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L76">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_Clone_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.Clone*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_Clone" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.Clone">Clone()</h4>
+  <div class="markdown level1 summary"><p>Clone this tar entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object Clone()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>Returns a clone of this entry.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_CreateEntryFromFile_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.CreateEntryFromFile(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L105">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_CreateEntryFromFile_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.CreateEntryFromFile*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_CreateEntryFromFile_System_String_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.CreateEntryFromFile(System.String)">CreateEntryFromFile(String)</h4>
+  <div class="markdown level1 summary"><p>Construct an entry for a file. File is set to file, and the
+header is constructed from information from the file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TarEntry CreateEntryFromFile(string fileName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">fileName</span></td>
+        <td><p>The file name that the entry represents.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarEntry.html">TarEntry</a></td>
+        <td><p>Returns the newly created <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarEntry.html">TarEntry</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_CreateTarEntry_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.CreateTarEntry(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L92">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_CreateTarEntry_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.CreateTarEntry*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_CreateTarEntry_System_String_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.CreateTarEntry(System.String)">CreateTarEntry(String)</h4>
+  <div class="markdown level1 summary"><p>Construct an entry with only a <code data-dev-comment-type="paramref">name</code>.
+This allows the programmer to construct the entry&apos;s header &quot;by hand&quot;. </p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TarEntry CreateTarEntry(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to use for the entry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarEntry.html">TarEntry</a></td>
+        <td><p>Returns the newly created <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarEntry.html">TarEntry</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_Equals_System_Object_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L120">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_Equals_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.Equals*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_Equals_System_Object_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.Equals(System.Object)">Equals(Object)</h4>
+  <div class="markdown level1 summary"><p>Determine if the two entries are equal. Equality is determined
+by the header names being equal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td><p>The <span class="xref">System.Object</span> to compare with the current Object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>True if the entries are equal; false if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.Equals(System.Object)</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_GetDirectoryEntries.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.GetDirectoryEntries%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L403">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_GetDirectoryEntries_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.GetDirectoryEntries*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_GetDirectoryEntries" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.GetDirectoryEntries">GetDirectoryEntries()</h4>
+  <div class="markdown level1 summary"><p>Get entries for all files present in this entries directory.
+If this entry doesnt represent a directory zero entries are returned.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TarEntry[] GetDirectoryEntries()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarEntry.html">TarEntry</a>[]</td>
+        <td><p>An array of TarEntry&apos;s for this entry&apos;s children.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_GetFileTarHeader_ICSharpCode_SharpZipLib_Tar_TarHeader_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.GetFileTarHeader(ICSharpCode.SharpZipLib.Tar.TarHeader%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L327">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_GetFileTarHeader_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.GetFileTarHeader*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_GetFileTarHeader_ICSharpCode_SharpZipLib_Tar_TarHeader_System_String_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.GetFileTarHeader(ICSharpCode.SharpZipLib.Tar.TarHeader,System.String)">GetFileTarHeader(TarHeader, String)</h4>
+  <div class="markdown level1 summary"><p>Fill in a TarHeader with information from a File.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void GetFileTarHeader(TarHeader header, string file)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarHeader.html">TarHeader</a></td>
+        <td><span class="parametername">header</span></td>
+        <td><p>The TarHeader to fill in.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">file</span></td>
+        <td><p>The file from which to get the header information.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_GetHashCode.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L134">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_GetHashCode_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.GetHashCode*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_GetHashCode" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.GetHashCode">GetHashCode()</h4>
+  <div class="markdown level1 summary"><p>Derive a Hash value for the current <span class="xref">System.Object</span></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>A Hash code for the current <span class="xref">System.Object</span></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.GetHashCode()</span></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_IsDescendent_ICSharpCode_SharpZipLib_Tar_TarEntry_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.IsDescendent(ICSharpCode.SharpZipLib.Tar.TarEntry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L150">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_IsDescendent_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.IsDescendent*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_IsDescendent_ICSharpCode_SharpZipLib_Tar_TarEntry_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.IsDescendent(ICSharpCode.SharpZipLib.Tar.TarEntry)">IsDescendent(TarEntry)</h4>
+  <div class="markdown level1 summary"><p>Determine if the given entry is a descendant of this entry.
+Descendancy is determined by the name of the descendant
+starting with this entry&apos;s name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDescendent(TarEntry toTest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarEntry.html">TarEntry</a></td>
+        <td><span class="parametername">toTest</span></td>
+        <td><p>Entry to be checked as a descendent of this.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>True if entry is a descendant of this.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_NameTarHeader_ICSharpCode_SharpZipLib_Tar_TarHeader_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.NameTarHeader(ICSharpCode.SharpZipLib.Tar.TarHeader%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L454">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_NameTarHeader_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.NameTarHeader*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_NameTarHeader_ICSharpCode_SharpZipLib_Tar_TarHeader_System_String_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.NameTarHeader(ICSharpCode.SharpZipLib.Tar.TarHeader,System.String)">NameTarHeader(TarHeader, String)</h4>
+  <div class="markdown level1 summary"><p>Fill in a TarHeader given only the entry&apos;s name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void NameTarHeader(TarHeader header, string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarHeader.html">TarHeader</a></td>
+        <td><span class="parametername">header</span></td>
+        <td><p>The TarHeader to fill in.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The tar entry name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_SetIds_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.SetIds(System.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L240">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_SetIds_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.SetIds*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_SetIds_System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.SetIds(System.Int32,System.Int32)">SetIds(Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Convenience method to set this entry&apos;s group and user ids.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetIds(int userId, int groupId)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">userId</span></td>
+        <td><p>This entry&apos;s new user id.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">groupId</span></td>
+        <td><p>This entry&apos;s new group id.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_SetNames_System_String_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.SetNames(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L255">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_SetNames_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.SetNames*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_SetNames_System_String_System_String_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.SetNames(System.String,System.String)">SetNames(String, String)</h4>
+  <div class="markdown level1 summary"><p>Convenience method to set this entry&apos;s group and user names.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetNames(string userName, string groupName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">userName</span></td>
+        <td><p>This entry&apos;s new user name.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">groupName</span></td>
+        <td><p>This entry&apos;s new group name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_WriteEntryHeader_System_Byte___.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L425">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_WriteEntryHeader_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_WriteEntryHeader_System_Byte___" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader(System.Byte[])">WriteEntryHeader(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Write an entry&apos;s header information to a header buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteEntryHeader(byte[] outBuffer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">outBuffer</span></td>
+        <td><p>The tar entry header buffer to fill in.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L33" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2017 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

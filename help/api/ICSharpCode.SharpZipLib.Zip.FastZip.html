@@ -1,0 +1,839 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class FastZip
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class FastZip
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.22.3.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip">
+  
+  
+  <h1 id="ICSharpCode_SharpZipLib_Zip_FastZip" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip" class="text-break">Class FastZip
+  </h1>
+  <div class="markdown level0 summary"><p>FastZip provides facilities for creating and extracting zip files.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">FastZip</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.html">ICSharpCode.SharpZipLib.Zip</a></h6>
+  <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_FastZip_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class FastZip</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip__ctor.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L182">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip__ctor" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.#ctor">FastZip()</h4>
+  <div class="markdown level1 summary"><p>Initialise a default instance of <a class="xref" href="ICSharpCode.SharpZipLib.Zip.FastZip.html">FastZip</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastZip()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip__ctor_ICSharpCode_SharpZipLib_Zip_FastZipEvents_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.%23ctor(ICSharpCode.SharpZipLib.Zip.FastZipEvents)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L190">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip__ctor_ICSharpCode_SharpZipLib_Zip_FastZipEvents_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.#ctor(ICSharpCode.SharpZipLib.Zip.FastZipEvents)">FastZip(FastZipEvents)</h4>
+  <div class="markdown level1 summary"><p>Initialise a new instance of <a class="xref" href="ICSharpCode.SharpZipLib.Zip.FastZip.html">FastZip</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FastZip(FastZipEvents events)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.FastZipEvents.html">FastZipEvents</a></td>
+        <td><span class="parametername">events</span></td>
+        <td><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Zip.FastZipEvents.html">FastZipEvents</a> to use during operations.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip_CompressionLevel.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.CompressionLevel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L281">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip_CompressionLevel_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.CompressionLevel*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip_CompressionLevel" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.CompressionLevel">CompressionLevel</h4>
+  <div class="markdown level1 summary"><p>Get/set the Compression Level that will be used
+when creating the zip</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Deflater.CompressionLevel CompressionLevel { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Deflater.CompressionLevel.html">Deflater.CompressionLevel</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip_CreateEmptyDirectories.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.CreateEmptyDirectories%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L200">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip_CreateEmptyDirectories_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.CreateEmptyDirectories*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip_CreateEmptyDirectories" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.CreateEmptyDirectories">CreateEmptyDirectories</h4>
+  <div class="markdown level1 summary"><p>Get/set a value indicating wether empty directories should be created.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CreateEmptyDirectories { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip_EntryFactory.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.EntryFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L227">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip_EntryFactory_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.EntryFactory*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip_EntryFactory" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.EntryFactory">EntryFactory</h4>
+  <div class="markdown level1 summary"><p>Get or set the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.IEntryFactory.html">IEntryFactory</a> active when creating Zip files.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEntryFactory EntryFactory { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.IEntryFactory.html">IEntryFactory</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip_NameTransform.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.NameTransform%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L217">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip_NameTransform_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.NameTransform*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip_NameTransform" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.NameTransform">NameTransform</h4>
+  <div class="markdown level1 summary"><p>Get or set the <a class="xref" href="ICSharpCode.SharpZipLib.Core.INameTransform.html">INameTransform</a> active when creating Zip files.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public INameTransform NameTransform { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Core.INameTransform.html">INameTransform</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_FastZip_NameTransform_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip_EntryFactory">EntryFactory</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip_Password.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.Password%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L208">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip_Password_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.Password*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip_Password" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.Password">Password</h4>
+  <div class="markdown level1 summary"><p>Get / set the password value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Password { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip_RestoreAttributesOnExtract.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.RestoreAttributesOnExtract%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L272">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip_RestoreAttributesOnExtract_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.RestoreAttributesOnExtract*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip_RestoreAttributesOnExtract" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.RestoreAttributesOnExtract">RestoreAttributesOnExtract</h4>
+  <div class="markdown level1 summary"><p>Get/set a value indicating whether file attributes should
+be restored during extract operations</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RestoreAttributesOnExtract { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip_RestoreDateTimeOnExtract.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.RestoreDateTimeOnExtract%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L259">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip_RestoreDateTimeOnExtract_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.RestoreDateTimeOnExtract*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip_RestoreDateTimeOnExtract" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.RestoreDateTimeOnExtract">RestoreDateTimeOnExtract</h4>
+  <div class="markdown level1 summary"><p>Get/set a value indicating wether file dates and times should 
+be restored when extracting files from an archive.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool RestoreDateTimeOnExtract { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_FastZip_RestoreDateTimeOnExtract_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The default value is false.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip_UseZip64.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.UseZip64%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L249">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip_UseZip64_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.UseZip64*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip_UseZip64" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.UseZip64">UseZip64</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the setting for <a class="xref" href="ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip_UseZip64">UseZip64</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UseZip64 UseZip64 { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.UseZip64.html">UseZip64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_FastZip_UseZip64_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The default value is dynamic which is not backwards compatible with old
+programs and can cause problems with XP&apos;s built in compression which cant
+read Zip64 archives. However it does avoid the situation were a large file
+is added and cannot be completed correctly.
+NOTE: Setting the size for entries before they are added is the best solution!
+By default the EntryFactory used by FastZip will set fhe file size.</p>
+</div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_System_IO_Stream_System_String_System_Boolean_System_String_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(System.IO.Stream%2CSystem.String%2CSystem.Boolean%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L330">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_System_IO_Stream_System_String_System_Boolean_System_String_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(System.IO.Stream,System.String,System.Boolean,System.String,System.String)">CreateZip(Stream, String, Boolean, String, String)</h4>
+  <div class="markdown level1 summary"><p>Create a zip archive sending output to the <code data-dev-comment-type="paramref">outputStream</code> passed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, string fileFilter, string directoryFilter)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">outputStream</span></td>
+        <td><p>The stream to write archive data to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">sourceDirectory</span></td>
+        <td><p>The directory to source files from.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">recurse</span></td>
+        <td><p>True to recurse directories, false for no recursion.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">fileFilter</span></td>
+        <td><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Core.PathFilter.html">PathFilter</a> to apply.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">directoryFilter</span></td>
+        <td><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Core.PathFilter.html">PathFilter</a> to apply.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_System_IO_Stream_System_String_System_Boolean_System_String_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The <code data-dev-comment-type="paramref">outputStream</code> is closed after creation.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_System_String_System_String_System_Boolean_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(System.String%2CSystem.String%2CSystem.Boolean%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L316">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_System_String_System_String_System_Boolean_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(System.String,System.String,System.Boolean,System.String)">CreateZip(String, String, Boolean, String)</h4>
+  <div class="markdown level1 summary"><p>Create a zip file/archive.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateZip(string zipFileName, string sourceDirectory, bool recurse, string fileFilter)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">zipFileName</span></td>
+        <td><p>The name of the zip file to create.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">sourceDirectory</span></td>
+        <td><p>The directory to obtain files and directories from.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">recurse</span></td>
+        <td><p>True to recurse directories, false for no recursion.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">fileFilter</span></td>
+        <td><p>The file filter to apply.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_System_String_System_String_System_Boolean_System_String_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(System.String%2CSystem.String%2CSystem.Boolean%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L303">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_System_String_System_String_System_Boolean_System_String_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(System.String,System.String,System.Boolean,System.String,System.String)">CreateZip(String, String, Boolean, String, String)</h4>
+  <div class="markdown level1 summary"><p>Create a zip file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CreateZip(string zipFileName, string sourceDirectory, bool recurse, string fileFilter, string directoryFilter)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">zipFileName</span></td>
+        <td><p>The name of the zip file to create.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">sourceDirectory</span></td>
+        <td><p>The directory to source files from.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">recurse</span></td>
+        <td><p>True to recurse directories, false for no recursion.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">fileFilter</span></td>
+        <td><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Core.PathFilter.html">PathFilter</a> to apply.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">directoryFilter</span></td>
+        <td><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Core.PathFilter.html">PathFilter</a> to apply.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip_ExtractZip_System_IO_Stream_System_String_ICSharpCode_SharpZipLib_Zip_FastZip_Overwrite_ICSharpCode_SharpZipLib_Zip_FastZip_ConfirmOverwriteDelegate_System_String_System_String_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(System.IO.Stream%2CSystem.String%2CICSharpCode.SharpZipLib.Zip.FastZip.Overwrite%2CICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate%2CSystem.String%2CSystem.String%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L407">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip_ExtractZip_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip_ExtractZip_System_IO_Stream_System_String_ICSharpCode_SharpZipLib_Zip_FastZip_Overwrite_ICSharpCode_SharpZipLib_Zip_FastZip_ConfirmOverwriteDelegate_System_String_System_String_System_Boolean_System_Boolean_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(System.IO.Stream,System.String,ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite,ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate,System.String,System.String,System.Boolean,System.Boolean)">ExtractZip(Stream, String, FastZip.Overwrite, FastZip.ConfirmOverwriteDelegate, String, String, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Extract the contents of a zip file held in a stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ExtractZip(Stream inputStream, string targetDirectory, FastZip.Overwrite overwrite, FastZip.ConfirmOverwriteDelegate confirmDelegate, string fileFilter, string directoryFilter, bool restoreDateTime, bool isStreamOwner)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">inputStream</span></td>
+        <td><p>The seekable input stream containing the zip to extract from.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">targetDirectory</span></td>
+        <td><p>The directory to save extracted information in.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite.html">FastZip.Overwrite</a></td>
+        <td><span class="parametername">overwrite</span></td>
+        <td><p>The style of <a class="xref" href="ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite.html">FastZip.Overwrite</a> to apply.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate.html">FastZip.ConfirmOverwriteDelegate</a></td>
+        <td><span class="parametername">confirmDelegate</span></td>
+        <td><p>A delegate to invoke when confirming overwriting.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">fileFilter</span></td>
+        <td><p>A filter to apply to files.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">directoryFilter</span></td>
+        <td><p>A filter to apply to directories.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">restoreDateTime</span></td>
+        <td><p>Flag indicating whether to restore the date and time for extracted files.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">isStreamOwner</span></td>
+        <td><p>Flag indicating whether the inputStream will be closed by this method.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip_ExtractZip_System_String_System_String_ICSharpCode_SharpZipLib_Zip_FastZip_Overwrite_ICSharpCode_SharpZipLib_Zip_FastZip_ConfirmOverwriteDelegate_System_String_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(System.String%2CSystem.String%2CICSharpCode.SharpZipLib.Zip.FastZip.Overwrite%2CICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate%2CSystem.String%2CSystem.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L388">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip_ExtractZip_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip_ExtractZip_System_String_System_String_ICSharpCode_SharpZipLib_Zip_FastZip_Overwrite_ICSharpCode_SharpZipLib_Zip_FastZip_ConfirmOverwriteDelegate_System_String_System_String_System_Boolean_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(System.String,System.String,ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite,ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate,System.String,System.String,System.Boolean)">ExtractZip(String, String, FastZip.Overwrite, FastZip.ConfirmOverwriteDelegate, String, String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Extract the contents of a zip file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ExtractZip(string zipFileName, string targetDirectory, FastZip.Overwrite overwrite, FastZip.ConfirmOverwriteDelegate confirmDelegate, string fileFilter, string directoryFilter, bool restoreDateTime)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">zipFileName</span></td>
+        <td><p>The zip file to extract from.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">targetDirectory</span></td>
+        <td><p>The directory to save extracted information in.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite.html">FastZip.Overwrite</a></td>
+        <td><span class="parametername">overwrite</span></td>
+        <td><p>The style of <a class="xref" href="ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite.html">FastZip.Overwrite</a> to apply.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate.html">FastZip.ConfirmOverwriteDelegate</a></td>
+        <td><span class="parametername">confirmDelegate</span></td>
+        <td><p>A delegate to invoke when confirming overwriting.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">fileFilter</span></td>
+        <td><p>A filter to apply to files.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">directoryFilter</span></td>
+        <td><p>A filter to apply to directories.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">restoreDateTime</span></td>
+        <td><p>Flag indicating whether to restore the date and time for extracted files.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip_ExtractZip_System_String_System_String_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(System.String%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L373">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_FastZip_ExtractZip_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_FastZip_ExtractZip_System_String_System_String_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(System.String,System.String,System.String)">ExtractZip(String, String, String)</h4>
+  <div class="markdown level1 summary"><p>Extract the contents of a zip file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ExtractZip(string zipFileName, string targetDirectory, string fileFilter)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">zipFileName</span></td>
+        <td><p>The zip file to extract from.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">targetDirectory</span></td>
+        <td><p>The directory to save extracted information in.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">fileFilter</span></td>
+        <td><p>A filter to apply to files.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_FastZip.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.FastZip%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/FastZip.cs/#L154" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2017 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,375 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class BZip2Crc
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class BZip2Crc
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.22.3.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Checksum.BZip2Crc">
+  
+  
+  <h1 id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc" data-uid="ICSharpCode.SharpZipLib.Checksum.BZip2Crc" class="text-break">Class BZip2Crc
+  </h1>
+  <div class="markdown level0 summary"><p>CRC-32 with unreversed data and reversed output</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">BZip2Crc</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Checksum.html">ICSharpCode.SharpZipLib.Checksum</a></h6>
+  <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
+  <h5 id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class BZip2Crc : IChecksum</code></pre>
+  </div>
+  <h5 id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Generate a table for a byte-wise 32-bit CRC calculation on the polynomial:
+x^32+x^26+x^23+x^22+x^16+x^12+x^11+x^10+x^8+x^7+x^5+x^4+x^2+x^1+x^0.</p>
+<p>Polynomials over GF(2) are represented in binary, one bit per coefficient,
+with the lowest powers in the most significant bit.  Then adding polynomials
+is just exclusive-or, and multiplying a polynomial by x is a right shift by
+one.  If we call the above polynomial p, and represent a byte as the
+polynomial q, also with the lowest power in the most significant bit (so the
+byte 0xb1 is the polynomial x^7+x^3+x+1), then the CRC is (q*x^32) mod p,
+where a mod b means the remainder after dividing a by b.</p>
+<p>This calculation is done using the shift-register method of multiplying and
+taking the remainder.  The register is initialized to zero, and for each
+incoming bit, x^32 is added mod p to the register if the bit is a one (where
+x^32 mod p is p+x^32 = x^26+...+1), and the register is multiplied mod p by
+x (which is shifting right by one and adding x^32 mod p if the bit shifted
+out is a one).  We start with the highest power (least significant bit) of
+q and repeat for all eight bits of q.</p>
+<p>The table is simply the CRC of all possible eight bit values.  This is all
+the information needed to generate CRC&apos;s on data a byte at a time for all
+combinations of CRC register values and incoming bytes.</p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Checksum_BZip2Crc__ctor.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Checksum.BZip2Crc.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Checksum/BZip2Crc.cs/#L114">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc__ctor_" data-uid="ICSharpCode.SharpZipLib.Checksum.BZip2Crc.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc__ctor" data-uid="ICSharpCode.SharpZipLib.Checksum.BZip2Crc.#ctor">BZip2Crc()</h4>
+  <div class="markdown level1 summary"><p>Initialise a default instance of <a class="xref" href="ICSharpCode.SharpZipLib.Checksum.BZip2Crc.html">BZip2Crc</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BZip2Crc()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Value.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Value%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Checksum/BZip2Crc.cs/#L131">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Value_" data-uid="ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Value*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Value" data-uid="ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Value">Value</h4>
+  <div class="markdown level1 summary"><p>Returns the CRC data checksum computed so far.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Value { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="implements">Implements</h5>
+      <div><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.IChecksum.html#ICSharpCode_SharpZipLib_Checksum_IChecksum_Value">IChecksum.Value</a></div>
+  <h5 id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Value_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Reversed Out = true</p>
+</div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Reset.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Reset%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Checksum/BZip2Crc.cs/#L122">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Reset_" data-uid="ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Reset*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Reset" data-uid="ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Reset">Reset()</h4>
+  <div class="markdown level1 summary"><p>Resets the CRC data checksum as if no update was ever called.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Reset()</code></pre>
+  </div>
+  <h5 class="implements">Implements</h5>
+      <div><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.IChecksum.html#ICSharpCode_SharpZipLib_Checksum_IChecksum_Reset">IChecksum.Reset()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Update_System_Byte___.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Checksum/BZip2Crc.cs/#L158">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Update_" data-uid="ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Update_System_Byte___" data-uid="ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(System.Byte[])">Update(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Updates the CRC data checksum with the bytes taken from 
+a block of data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Update(byte[] buffer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>Contains the data to update the CRC with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="implements">Implements</h5>
+      <div><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.IChecksum.html#ICSharpCode_SharpZipLib_Checksum_IChecksum_Update_System_Byte___">IChecksum.Update(Byte[])</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Update_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Checksum/BZip2Crc.cs/#L173">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Update_" data-uid="ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Update_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(System.Byte[],System.Int32,System.Int32)">Update(Byte[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Update CRC data checksum based on a portion of a block of data</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Update(byte[] buffer, int offset, int count)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>Contains the data to update the CRC with.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The offset into the buffer where the data starts</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">count</span></td>
+        <td><p>The number of data bytes to update the CRC with.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="implements">Implements</h5>
+      <div><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.IChecksum.html#ICSharpCode_SharpZipLib_Checksum_IChecksum_Update_System_Byte___System_Int32_System_Int32_">IChecksum.Update(Byte[], Int32, Int32)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Update_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Checksum/BZip2Crc.cs/#L148">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Update_" data-uid="ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Update_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(System.Int32)">Update(Int32)</h4>
+  <div class="markdown level1 summary"><p>Updates the checksum with the int bval.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Update(int bval)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">bval</span></td>
+        <td><p>the byte is taken as the lower 8 bits of bval</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="implements">Implements</h5>
+      <div><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.IChecksum.html#ICSharpCode_SharpZipLib_Checksum_IChecksum_Update_System_Int32_">IChecksum.Update(Int32)</a></div>
+  <h5 id="ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Update_System_Int32__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Reversed Data = false</p>
+</div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Checksum_BZip2Crc.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Checksum.BZip2Crc%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Checksum/BZip2Crc.cs/#L32" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2017 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

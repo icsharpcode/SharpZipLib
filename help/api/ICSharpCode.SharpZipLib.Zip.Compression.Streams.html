@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.22.3.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams">
+  
+  <h1 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams" class="text-break">Namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html">DeflaterOutputStream</a></h4>
+      <section><p>A special stream deflating or compressing the bytes that are
+written to it.  It uses a Deflater to perform actual deflating.<br>
+Authors of the original java version : Tom Tromey, Jochen Hoenicke </p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.html">InflaterInputBuffer</a></h4>
+      <section><p>An input buffer customised for use by <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html">InflaterInputStream</a></p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html">InflaterInputStream</a></h4>
+      <section><p>This filter stream is used to decompress data compressed using the &quot;deflate&quot;
+format. The &quot;deflate&quot; format is described in RFC 1951.</p>
+<p>This stream may form the basis for other decompression filters, such
+as the <a class="xref" href="ICSharpCode.SharpZipLib.GZip.GZipInputStream.html">GZipInputStream</a>.</p>
+<p>Author of the original java version : John Leuner.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.OutputWindow.html">OutputWindow</a></h4>
+      <section><p>Contains the output from the Inflation process.
+We need to have a window so that we can refer backwards into the output stream
+to repeat stuff.<br>
+Author of the original java version : John Leuner</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator.html">StreamManipulator</a></h4>
+      <section><p>This class allows us to retrieve a specified number of bits from
+the input buffer, as well as copy big byte blocks.</p>
+<p>It uses an int buffer to store up to 31 bits for direct
+manipulation.  This guarantees that we can get at least 16 bits,
+but we only need at most 15, so this is all safe.</p>
+<p>There are some optimizations in this class, for example, you must
+never peek more than 8 bits more than needed, and you must first
+peek bits before you may drop them.  This is not a general purpose
+class but optimized for the behaviour of the Inflater.</p>
+<p>authors of the original java version : John Leuner, Jochen Hoenicke</p>
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2017 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,460 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class GZipInputStream
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class GZipInputStream
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.22.3.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.GZip.GZipInputStream">
+  
+  
+  <h1 id="ICSharpCode_SharpZipLib_GZip_GZipInputStream" data-uid="ICSharpCode.SharpZipLib.GZip.GZipInputStream" class="text-break">Class GZipInputStream
+  </h1>
+  <div class="markdown level0 summary"><p>This filter stream is used to decompress a &quot;GZIP&quot; format stream.
+The &quot;GZIP&quot; format is described baseInputStream RFC 1952.</p>
+<p>author of the original java version : John Leuner</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">System.IO.Stream</span></div>
+    <div class="level2"><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html">InflaterInputStream</a></div>
+    <div class="level3"><span class="xref">GZipInputStream</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_IsStreamOwner">InflaterInputStream.IsStreamOwner</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Skip_System_Int64_">InflaterInputStream.Skip(Int64)</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_StopDecrypting">InflaterInputStream.StopDecrypting()</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Available">InflaterInputStream.Available</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Fill">InflaterInputStream.Fill()</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_CanRead">InflaterInputStream.CanRead</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_CanSeek">InflaterInputStream.CanSeek</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_CanWrite">InflaterInputStream.CanWrite</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Length">InflaterInputStream.Length</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Position">InflaterInputStream.Position</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Flush">InflaterInputStream.Flush()</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Seek_System_Int64_System_IO_SeekOrigin_">InflaterInputStream.Seek(Int64, SeekOrigin)</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_SetLength_System_Int64_">InflaterInputStream.SetLength(Int64)</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Write_System_Byte___System_Int32_System_Int32_">InflaterInputStream.Write(Byte[], Int32, Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_WriteByte_System_Byte_">InflaterInputStream.WriteByte(Byte)</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Dispose_System_Boolean_">InflaterInputStream.Dispose(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_inf">InflaterInputStream.inf</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_inputBuffer">InflaterInputStream.inputBuffer</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_csize">InflaterInputStream.csize</a>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Null</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.FlushAsync()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.FlushAsync(System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadByte()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CanTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.GZip.html">ICSharpCode.SharpZipLib.GZip</a></h6>
+  <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
+  <h5 id="ICSharpCode_SharpZipLib_GZip_GZipInputStream_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class GZipInputStream : InflaterInputStream, IDisposable</code></pre>
+  </div>
+  <h5 id="ICSharpCode_SharpZipLib_GZip_GZipInputStream_examples"><strong>Examples</strong></h5>
+  <p>This sample shows how to unzip a gzipped file</p>
+<pre><code>using System;
+using System.IO;
+
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.GZip;
+
+class MainClass
+{
+    public static void Main(string[] args)
+    {
+        using (Stream inStream = new GZipInputStream(File.OpenRead(args[0])))
+        using (FileStream outStream = File.Create(Path.GetFileNameWithoutExtension(args[0]))) {
+            byte[] buffer = new byte[4096];
+            StreamUtils.Copy(inStream, outStream, buffer);
+        }
+    }
+}   </code></pre>
+
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_GZip_GZipInputStream__ctor_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.GZip.GZipInputStream.%23ctor(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/GZip/GzipInputStream.cs/#L65">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_GZip_GZipInputStream__ctor_" data-uid="ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_GZip_GZipInputStream__ctor_System_IO_Stream_" data-uid="ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor(System.IO.Stream)">GZipInputStream(Stream)</h4>
+  <div class="markdown level1 summary"><p>Creates a GZipInputStream with the default buffer size</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GZipInputStream(Stream baseInputStream)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">baseInputStream</span></td>
+        <td><p>The stream to read compressed data from (baseInputStream GZIP format)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_GZip_GZipInputStream__ctor_System_IO_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.GZip.GZipInputStream.%23ctor(System.IO.Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/GZip/GzipInputStream.cs/#L79">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_GZip_GZipInputStream__ctor_" data-uid="ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_GZip_GZipInputStream__ctor_System_IO_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor(System.IO.Stream,System.Int32)">GZipInputStream(Stream, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a GZIPInputStream with the specified buffer size</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GZipInputStream(Stream baseInputStream, int size)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">baseInputStream</span></td>
+        <td><p>The stream to read compressed data from (baseInputStream GZIP format)</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">size</span></td>
+        <td><p>Size of the buffer to use</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_GZip_GZipInputStream_crc.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.GZip.GZipInputStream.crc%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/GZip/GzipInputStream.cs/#L43">View Source</a>
+  </span>
+  <h4 id="ICSharpCode_SharpZipLib_GZip_GZipInputStream_crc" data-uid="ICSharpCode.SharpZipLib.GZip.GZipInputStream.crc">crc</h4>
+  <div class="markdown level1 summary"><p>CRC-32 value for uncompressed data</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Crc32 crc</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.Crc32.html">Crc32</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_GZip_GZipInputStream_Read_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.GZip.GZipInputStream.Read(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/GZip/GzipInputStream.cs/#L99">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_GZip_GZipInputStream_Read_" data-uid="ICSharpCode.SharpZipLib.GZip.GZipInputStream.Read*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_GZip_GZipInputStream_Read_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.GZip.GZipInputStream.Read(System.Byte[],System.Int32,System.Int32)">Read(Byte[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Reads uncompressed data into an array of bytes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int Read(byte[] buffer, int offset, int count)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer to read uncompressed data into</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The offset indicating where the data should be placed</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">count</span></td>
+        <td><p>The number of uncompressed bytes to be read</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>Returns the number of bytes actually read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Read_System_Byte___System_Int32_System_Int32_">InflaterInputStream.Read(Byte[], Int32, Int32)</a></div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_GZip_GZipInputStream.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.GZip.GZipInputStream%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/GZip/GzipInputStream.cs/#L37" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2017 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

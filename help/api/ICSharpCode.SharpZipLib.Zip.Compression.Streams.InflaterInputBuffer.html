@@ -1,0 +1,784 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class InflaterInputBuffer
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class InflaterInputBuffer
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.22.3.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer">
+  
+  
+  <h1 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer" class="text-break">Class InflaterInputBuffer
+  </h1>
+  <div class="markdown level0 summary"><p>An input buffer customised for use by <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html">InflaterInputStream</a></p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">InflaterInputBuffer</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.html">ICSharpCode.SharpZipLib.Zip.Compression.Streams</a></h6>
+  <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class InflaterInputBuffer</code></pre>
+  </div>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>The buffer supports decryption of incoming data.</p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer__ctor_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.%23ctor(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L20">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer__ctor_System_IO_Stream_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.#ctor(System.IO.Stream)">InflaterInputBuffer(Stream)</h4>
+  <div class="markdown level1 summary"><p>Initialise a new instance of <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.html">InflaterInputBuffer</a> with a default buffer size</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InflaterInputBuffer(Stream stream)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>The stream to buffer.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer__ctor_System_IO_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.%23ctor(System.IO.Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L30">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer__ctor_System_IO_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.#ctor(System.IO.Stream,System.Int32)">InflaterInputBuffer(Stream, Int32)</h4>
+  <div class="markdown level1 summary"><p>Initialise a new instance of <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.html">InflaterInputBuffer</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public InflaterInputBuffer(Stream stream, int bufferSize)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>The stream to buffer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">bufferSize</span></td>
+        <td><p>The size to use for the buffer</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer__ctor_System_IO_Stream_System_Int32__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A minimum buffer size of 1KB is permitted.  Lower sizes are treated as 1KB.</p>
+</div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_Available.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.Available%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L81">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_Available_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.Available*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_Available" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.Available">Available</h4>
+  <div class="markdown level1 summary"><p>Get/set the number of bytes available</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Available { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ClearText.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ClearText%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L72">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ClearText_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ClearText*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ClearText" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ClearText">ClearText</h4>
+  <div class="markdown level1 summary"><p>Get the contents of the clear text buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] ClearText { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ClearTextLength.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ClearTextLength%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L63">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ClearTextLength_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ClearTextLength*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ClearTextLength" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ClearTextLength">ClearTextLength</h4>
+  <div class="markdown level1 summary"><p>Get the number of useable bytes in <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ClearText">ClearText</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ClearTextLength { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_CryptoTransform.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.CryptoTransform%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L247">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_CryptoTransform_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.CryptoTransform*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_CryptoTransform" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.CryptoTransform">CryptoTransform</h4>
+  <div class="markdown level1 summary"><p>Get/set the <span class="xref">System.Security.Cryptography.ICryptoTransform</span> to apply to any data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ICryptoTransform CryptoTransform { set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Security.Cryptography.ICryptoTransform</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_CryptoTransform_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Set this value to null to have no transform applied.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_RawData.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.RawData%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L54">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_RawData_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.RawData*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_RawData" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.RawData">RawData</h4>
+  <div class="markdown level1 summary"><p>Get the contents of the raw data buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] RawData { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_RawData_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This may contain encrypted data.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_RawLength.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.RawLength%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L44">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_RawLength_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.RawLength*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_RawLength" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.RawLength">RawLength</h4>
+  <div class="markdown level1 summary"><p>Get the length of bytes bytes in the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_RawData">RawData</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int RawLength { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_Fill.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.Fill%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L101">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_Fill_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.Fill*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_Fill" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.Fill">Fill()</h4>
+  <div class="markdown level1 summary"><p>Fill the buffer from the underlying input stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Fill()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadClearTextBuffer_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadClearTextBuffer(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L173">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadClearTextBuffer_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadClearTextBuffer*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadClearTextBuffer_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadClearTextBuffer(System.Byte[],System.Int32,System.Int32)">ReadClearTextBuffer(Byte[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Read clear text data from the input stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ReadClearTextBuffer(byte[] outBuffer, int offset, int length)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">outBuffer</span></td>
+        <td><p>The buffer to add data to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The offset to start adding data at.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">length</span></td>
+        <td><p>The number of bytes to read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>Returns the number of bytes actually read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadLeByte.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadLeByte%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L203">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadLeByte_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadLeByte*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadLeByte" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadLeByte">ReadLeByte()</h4>
+  <div class="markdown level1 summary"><p>Read a <span class="xref">System.Byte</span> from the input stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ReadLeByte()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>Returns the byte read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadLeInt.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadLeInt%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L229">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadLeInt_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadLeInt*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadLeInt" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadLeInt">ReadLeInt()</h4>
+  <div class="markdown level1 summary"><p>Read an <span class="xref">System.Int32</span> in little endian byte order.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ReadLeInt()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>The int value read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadLeLong.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadLeLong%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L238">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadLeLong_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadLeLong*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadLeLong" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadLeLong">ReadLeLong()</h4>
+  <div class="markdown level1 summary"><p>Read a <span class="xref">System.Int64</span> in little endian byte order.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long ReadLeLong()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><p>The long value read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadLeShort.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadLeShort%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L220">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadLeShort_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadLeShort*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadLeShort" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadLeShort">ReadLeShort()</h4>
+  <div class="markdown level1 summary"><p>Read an <span class="xref">System.Int16</span> in little endian byte order.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ReadLeShort()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>The short value read case to an int.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadRawBuffer_System_Byte___.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadRawBuffer(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L129">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadRawBuffer_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadRawBuffer*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadRawBuffer_System_Byte___" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadRawBuffer(System.Byte[])">ReadRawBuffer(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Read a buffer directly from the input stream</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ReadRawBuffer(byte[] buffer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer to fill</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>Returns the number of bytes read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadRawBuffer_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadRawBuffer(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L141">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadRawBuffer_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadRawBuffer*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_ReadRawBuffer_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.ReadRawBuffer(System.Byte[],System.Int32,System.Int32)">ReadRawBuffer(Byte[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Read a buffer directly from the input stream</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ReadRawBuffer(byte[] outBuffer, int offset, int length)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">outBuffer</span></td>
+        <td><p>The buffer to read into</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The offset to start reading data into.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">length</span></td>
+        <td><p>The number of bytes to read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>Returns the number of bytes read.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_SetInflaterInput_ICSharpCode_SharpZipLib_Zip_Compression_Inflater_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.SetInflaterInput(ICSharpCode.SharpZipLib.Zip.Compression.Inflater)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L90">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_SetInflaterInput_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.SetInflaterInput*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer_SetInflaterInput_ICSharpCode_SharpZipLib_Zip_Compression_Inflater_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.SetInflaterInput(ICSharpCode.SharpZipLib.Zip.Compression.Inflater)">SetInflaterInput(Inflater)</h4>
+  <div class="markdown level1 summary"><p>Call <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.html#ICSharpCode_SharpZipLib_Zip_Compression_Inflater_SetInput_System_Byte___System_Int32_System_Int32_">SetInput(Byte[], Int32, Int32)</a> passing the current clear text buffer contents.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetInflaterInput(Inflater inflater)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.html">Inflater</a></td>
+        <td><span class="parametername">inflater</span></td>
+        <td><p>The inflater to set input for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Streams/InflaterInputStream.cs/#L13" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2017 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

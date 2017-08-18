@@ -1,0 +1,1513 @@
+{
+  "homepages": [],
+  "source_base_path": "D:/GitWorkspace/SharpZipLib/docs/help",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2.html",
+          "hash": "EyDRL5FhaHvZThOicUFdWg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2Exception.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2Exception.html",
+          "hash": "t+cz/65q3oFkDw5N2iMrCg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.html",
+          "hash": "yBH9hFuyXy3/GWj4idYT9A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.html",
+          "hash": "BAwLlDvYDmIJOyVvciCoMA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.BZip2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.html",
+          "hash": "tGlrBHAmN9CCRUGYpyQ/ng=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Checksum.Adler32.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.Adler32.html",
+          "hash": "jL2sMC3rEp1s16/j+62ytg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Checksum.BZip2Crc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.BZip2Crc.html",
+          "hash": "zeZFOF+q6NsF+60wU1MyLA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Checksum.Crc32.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.Crc32.html",
+          "hash": "7vVJor2kIn8T7esHnF0XeA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Checksum.IChecksum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.IChecksum.html",
+          "hash": "d1NMfSeL7sCGSPsLaBvA/A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Checksum.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.html",
+          "hash": "RteKQO/GmIki2aovDY0yUw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.CompletedFileHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.CompletedFileHandler.html",
+          "hash": "ru3KQFphV9YBk33b6tu+gQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.DirectoryEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.DirectoryEventArgs.html",
+          "hash": "9MbLHCM9m43wtvZsrg+GJw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.DirectoryFailureHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.DirectoryFailureHandler.html",
+          "hash": "sQiiztH5yLczdJIt6sRtzw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.html",
+          "hash": "V3YmqdFLBBbAd5qcTCTgKA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.FileFailureHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.FileFailureHandler.html",
+          "hash": "8/UXRjqWL9gPMwiDLtyO0g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.FileSystemScanner.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.FileSystemScanner.html",
+          "hash": "qGMZQql3K5xTGUM82nDJ7w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.INameTransform.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.INameTransform.html",
+          "hash": "/V14HdRXLzzChdaG8O0gFA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.IScanFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.IScanFilter.html",
+          "hash": "Pbo+1GhjZ+Qf3VFduguAeA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.NameAndSizeFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.NameAndSizeFilter.html",
+          "hash": "BM4+pd6oXldJyYGh5b4NUw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.NameFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.NameFilter.html",
+          "hash": "6rupMS9A87O8rf9qlVlYSA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.PathFilter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.PathFilter.html",
+          "hash": "Y9T0IdkXq+lNsWyLJ5wUbw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.ProcessFileHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.ProcessFileHandler.html",
+          "hash": "mHj5dCJMbU+jsuD4cJ9+Dg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.ProgressEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.ProgressEventArgs.html",
+          "hash": "OdGWxcZXzq/3Qp6CkcKEEQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.ProgressHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.ProgressHandler.html",
+          "hash": "fPbUXEqYoRZUQ1IpL2BwIQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.ScanEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.ScanEventArgs.html",
+          "hash": "Fv9ajSE6BpBZjp6+wQCqTQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs.html",
+          "hash": "Eswbdm1GNgh2X/uWNnTl8A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.StreamUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.StreamUtils.html",
+          "hash": "0FdvfSKWqjoBaLVt4FDbPg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.WindowsPathUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.WindowsPathUtils.html",
+          "hash": "Y9ScopP+Dh1IqmgyVbKDFQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.html",
+          "hash": "smAoVrpuE/p72L7YIG6M0Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Encryption.PkzipClassic.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Encryption.PkzipClassic.html",
+          "hash": "NKBl37MvrAtxg53qPyXfNQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Encryption.PkzipClassicManaged.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Encryption.PkzipClassicManaged.html",
+          "hash": "Ijw+7ndOMTaGcsATDOtvqA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Encryption.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Encryption.html",
+          "hash": "54gDWO9I+D5gnEv9IjU30w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZip.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZip.html",
+          "hash": "w9DJ4jpvHnqhcMematYv6Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipConstants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipConstants.html",
+          "hash": "ijhnReCDo/vfvnJvAiHp0A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipException.html",
+          "hash": "/WGwT7zuNo22/kfm9tVwUQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipInputStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipInputStream.html",
+          "hash": "HDVif3wQhuU03dtFWgFIFg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html",
+          "hash": "IMS/jx2Zny92wPb+JR/ylg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.GZip.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.GZip.html",
+          "hash": "+Vuc3asB1DFZbbXa6RfazA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Lzw.LzwConstants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Lzw.LzwConstants.html",
+          "hash": "xxReYw4glajlZHrza+38Qw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Lzw.LzwException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Lzw.LzwException.html",
+          "hash": "HJGjkda1wBXZ15DyEdcdiw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Lzw.LzwInputStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Lzw.LzwInputStream.html",
+          "hash": "78w/74M/vDPOpk9AkpZe9g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Lzw.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Lzw.html",
+          "hash": "kQUmX+5Mzc9Qb+1CqMJ1xQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.SharpZipBaseException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.SharpZipBaseException.html",
+          "hash": "Fb+RzMRH9gAd62RM7tpEXg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.html",
+          "hash": "MawG9/EAgvJT2JB5/7MowQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Tar.ProgressMessageHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Tar.ProgressMessageHandler.html",
+          "hash": "gGkGTJfZXw2jknQKpN1pyg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarArchive.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarArchive.html",
+          "hash": "OCDfkXyp5ShPct3efYpdvg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarBuffer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarBuffer.html",
+          "hash": "JqxLD9+m5o9iYkmOMBklIQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarEntry.html",
+          "hash": "AZnbmwx8822IIA7q0PrBzQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarException.html",
+          "hash": "pQIN0o+OVhK3DZwRQ7IkHQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarHeader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarHeader.html",
+          "hash": "imaai3wi06raFz/CNxljGw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.html",
+          "hash": "+LF20nJl2iWam2veug2UGw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarInputStream.IEntryFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarInputStream.IEntryFactory.html",
+          "hash": "CJsFd/BOPbJiaaDww6+15A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarInputStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarInputStream.html",
+          "hash": "I5FIMR5eHUq7SFHXJKsQxw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.html",
+          "hash": "LJNRRH/t/JQPrlxzm7SHkw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Tar.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Tar.html",
+          "hash": "WloViKbBPuUeucnxUF4Qag=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.html",
+          "hash": "ZTooMe1tmELe44azVtmW5w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflateStrategy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflateStrategy.html",
+          "hash": "qH2ZoOC/7goaLbwDUK8QXA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Deflater.CompressionLevel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Deflater.CompressionLevel.html",
+          "hash": "U6ufVZcNYI5DxMcLpu1wGA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Deflater.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Deflater.html",
+          "hash": "FxWFhDP2FaUQ19bw94402A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterConstants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterConstants.html",
+          "hash": "HQpR1DA3J/3SpL/vfsQmYQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.html",
+          "hash": "B4Qx1LTeQb72tj6c+4w2IA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterHuffman.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterHuffman.html",
+          "hash": "SNm0cr/s8gabqKqEB9ePkw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending.html",
+          "hash": "5O7O9jkwx38MhTmvzuiWjA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Inflater.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Inflater.html",
+          "hash": "DIdNjJOMjWVSnQAZwkm7xA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.html",
+          "hash": "GgCSCqR6vEKznoR/qj8mkg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.html",
+          "hash": "6t71qkzUz50jpvIGO4WWxA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html",
+          "hash": "4WO5jqwir5v7LLcoLIKIPQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.html",
+          "hash": "iGA9YEmhcF7CUJWVEA0/cQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html",
+          "hash": "v0kt3oYcKo8qwXnGMypJog=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.OutputWindow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.OutputWindow.html",
+          "hash": "Js8WhccQbni91/nTXFHCgg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator.html",
+          "hash": "X75S0KZHyOox0nqI/lhM/Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.html",
+          "hash": "3hIZogATmOITwjb2sHiUVw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.html",
+          "hash": "+tt5Dj7RndKo6pTSXsFBHg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.CompressionMethod.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.CompressionMethod.html",
+          "hash": "E4+qYKOdNRZpZjJRxRyxFw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.DescriptorData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.DescriptorData.html",
+          "hash": "fL5jr9s/zF5AgEiVM0Aexw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.html",
+          "hash": "taWV4dr6tAT7+ZFmCY/kiw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.DynamicDiskDataSource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.DynamicDiskDataSource.html",
+          "hash": "1IWlHtT2VxO+jSDaSPYn1w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.EncryptionAlgorithm.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.EncryptionAlgorithm.html",
+          "hash": "Rv4nBCq1+ogGxVLRLw/Xlg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.Flags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.Flags.html",
+          "hash": "aZ3dqgeStg3BjCAryYvG3w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.html",
+          "hash": "RD5ZWsDbUOQ/IlrJ53HJXQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate.html",
+          "hash": "d04ASTtOs+DfAHkD7EDoTQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite.html",
+          "hash": "0wb2BKA0SwikVwm2m0YIJQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZip.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZip.html",
+          "hash": "J3VmBPA/zRGF/YD5ihpIUA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZipEvents.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZipEvents.html",
+          "hash": "3Ae8p8iTb9IYZ8BkuuJ5Ug=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.FileUpdateMode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FileUpdateMode.html",
+          "hash": "NgwPjH7SZ6lByDqNXYvb4g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.GeneralBitFlags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.GeneralBitFlags.html",
+          "hash": "mOiLf3sahDHsHMzpWeuvNA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.HostSystemID.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.HostSystemID.html",
+          "hash": "rVWkozK0rZolDwaXXC9MDQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.IArchiveStorage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.IArchiveStorage.html",
+          "hash": "IPcBxyzmrSHPhNPLiHPRXg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.IDynamicDataSource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.IDynamicDataSource.html",
+          "hash": "spOzEJDgl3vPEXZEcSNqSQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.IEntryFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.IEntryFactory.html",
+          "hash": "oVl3j4d+vXHtxqQ4hbus/g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.IStaticDataSource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.IStaticDataSource.html",
+          "hash": "xrSffbFD1Td0o4oQQLF7bg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ITaggedData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ITaggedData.html",
+          "hash": "RiLzYPg8IHV74RVK2bSNoQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.KeysRequiredEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.KeysRequiredEventArgs.html",
+          "hash": "rLjSawGo+fx9Rs5z91p31Q=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.html",
+          "hash": "2U8QDBmOGKV28vsPFqgkDw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.NTTaggedData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.NTTaggedData.html",
+          "hash": "4ybFgk6dzarWcea/iIxAkg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.RawTaggedData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.RawTaggedData.html",
+          "hash": "Y47B62Oidm0QmTpgZN7caQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource.html",
+          "hash": "XtOohf7u3njS1E3S4Q3yIw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.TestOperation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.TestOperation.html",
+          "hash": "wBzKcBhhHO15W0rbDtB7Jw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.TestStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.TestStatus.html",
+          "hash": "rnPi67u6t+eWOOpjDtb9Dw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.TestStrategy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.TestStrategy.html",
+          "hash": "x5hkggmTI05peoH6/f2XYw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.UseZip64.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.UseZip64.html",
+          "hash": "TVGrtMtCj8siX9VhAT3Qpg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.WindowsNameTransform.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.WindowsNameTransform.html",
+          "hash": "ajDXjb84ZgkPOeUK7s99ZQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipConstants.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipConstants.html",
+          "hash": "9u8yhnB31JcRkyggPvqajw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEntry.html",
+          "hash": "N4anvxZe/5I53dZmBzrsCw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting.html",
+          "hash": "0Jdc//OPWfuM3D7drx0t3w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.html",
+          "hash": "etYYTXND6sEXuvtVQvYCuA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipException.html",
+          "hash": "SseZlFbMVcm/e9OIowcrLA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipExtraData.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipExtraData.html",
+          "hash": "QZ6eWiBwzbU/Ssot0UYrFQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipFile.KeysRequiredEventHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipFile.KeysRequiredEventHandler.html",
+          "hash": "Gg2f5UJ1VyHAgOF1PWIfkA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipFile.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipFile.html",
+          "hash": "IlwP6GI7xuYv4mVj52alSQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipInputStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipInputStream.html",
+          "hash": "PDXD6R4bxnBCd73jYfkBew=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipNameTransform.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipNameTransform.html",
+          "hash": "0SpgvLAGN1dRt71Ue38rfw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html",
+          "hash": "iKZXWrClJl5M0mLE3nZO5g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipTestResultHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipTestResultHandler.html",
+          "hash": "yrMxNxRV/CvX7Jb3Rc8M7g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.html",
+          "hash": "Zf0zHbz0rS6doZng7kiSJw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.html",
+          "hash": "p6etMU/RJfGPbGVT3kXEnw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "NcpIp8AjyKTnfjF3JlqGQg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "evJeVYz58BtgYGb27SzOIg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html",
+          "hash": "eWI9fw06YMP85wO4y+5XJQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html",
+          "hash": "MthxFYC+doDRUguh/vpudA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "j4TDz5kFLDSqGTZLMswofQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "3mzO2XU3vGs/pY6w/BFtNw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": true,
+        "incrementalPhase": "build"
+      },
+      "processors": {
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        },
+        "RestApiDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor RestApiDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build"
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build"
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
+        "incrementalPhase": "postProcessing"
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {}
+}

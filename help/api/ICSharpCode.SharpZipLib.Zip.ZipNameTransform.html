@@ -1,0 +1,474 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ZipNameTransform
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ZipNameTransform
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.22.3.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform">
+  
+  
+  <h1 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform" class="text-break">Class ZipNameTransform
+  </h1>
+  <div class="markdown level0 summary"><p>ZipNameTransform transforms names as per the Zip file naming convention.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">ZipNameTransform</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.html">ICSharpCode.SharpZipLib.Zip</a></h6>
+  <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ZipNameTransform : INameTransform</code></pre>
+  </div>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>The use of absolute names is supported although its use is not valid 
+according to Zip naming conventions, and should not be used if maximum compatability is desired.</p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform__ctor.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L19">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform__ctor" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.#ctor">ZipNameTransform()</h4>
+  <div class="markdown level1 summary"><p>Initialize a new instance of <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.html">ZipNameTransform</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ZipNameTransform()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform__ctor_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L27">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform__ctor_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.#ctor(System.String)">ZipNameTransform(String)</h4>
+  <div class="markdown level1 summary"><p>Initialize a new instance of <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.html">ZipNameTransform</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ZipNameTransform(string trimPrefix)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">trimPrefix</span></td>
+        <td><p>The string to trim from the front of paths if found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TrimPrefix.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TrimPrefix%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L119">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TrimPrefix_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TrimPrefix*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TrimPrefix" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TrimPrefix">TrimPrefix</h4>
+  <div class="markdown level1 summary"><p>Get/set the path prefix to be trimmed from paths if present.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string TrimPrefix { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TrimPrefix_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The prefix is trimmed before any conversion from
+a windows path is done.</p>
+</div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform_IsValidName_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform.IsValidName(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L201">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_IsValidName_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.IsValidName*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_IsValidName_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.IsValidName(System.String)">IsValidName(String)</h4>
+  <div class="markdown level1 summary"><p>Test a name to see if it is a valid name for a zip entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsValidName(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to test.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Returns true if the name is a valid zip name; false otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_IsValidName_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Zip path names are actually in unix format,
+and should only contain relative paths if a path is present.
+This means that the path stored should not contain a drive or
+device letter, or a leading slash.  All slashes should forward slashes &apos;/&apos;.
+An empty name is valid where the input comes from standard input.
+A null name is not considered valid.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform_IsValidName_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform.IsValidName(System.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L172">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_IsValidName_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.IsValidName*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_IsValidName_System_String_System_Boolean_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.IsValidName(System.String,System.Boolean)">IsValidName(String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Test a name to see if it is a valid name for a zip entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsValidName(string name, bool relaxed)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to test.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">relaxed</span></td>
+        <td><p>If true checking is relaxed about windows file names and absolute paths.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Returns true if the name is a valid zip name; false otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_IsValidName_System_String_System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Zip path names are actually in Unix format, and should only contain relative paths.
+This means that any path stored should not contain a drive or
+device letter, or a leading slash.  All slashes should forward slashes &apos;/&apos;.
+An empty name is valid for a file where the input comes from standard input.
+A null name is not considered valid.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TransformDirectory_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TransformDirectory(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L61">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TransformDirectory_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TransformDirectory*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TransformDirectory_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TransformDirectory(System.String)">TransformDirectory(String)</h4>
+  <div class="markdown level1 summary"><p>Transform a windows directory name according to the Zip file naming conventions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string TransformDirectory(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The directory name to transform.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The transformed name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="implements">Implements</h5>
+      <div><a class="xref" href="ICSharpCode.SharpZipLib.Core.INameTransform.html#ICSharpCode_SharpZipLib_Core_INameTransform_TransformDirectory_System_String_">INameTransform.TransformDirectory(String)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TransformFile_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TransformFile(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L79">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TransformFile_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TransformFile*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TransformFile_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TransformFile(System.String)">TransformFile(String)</h4>
+  <div class="markdown level1 summary"><p>Transform a windows file name according to the Zip file naming conventions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string TransformFile(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The file name to transform.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The transformed name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="implements">Implements</h5>
+      <div><a class="xref" href="ICSharpCode.SharpZipLib.Core.INameTransform.html#ICSharpCode_SharpZipLib_Core_INameTransform_TransformFile_System_String_">INameTransform.TransformFile(String)</a></div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L13" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2017 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
