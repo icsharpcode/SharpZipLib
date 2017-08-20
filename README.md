@@ -39,6 +39,3 @@ SharpZipLib was initially developed by [Mike Krüger](http://www.icsharpcode.net
 
 And thanks to all the people that contributed features, bug fixes and issue reports.
 
-Metrics
--------
-[![Throughput Graph](https://graphs.waffle.io/icsharpcode/SharpZipLib/throughput.svg)](https://waffle.io/icsharpcode/SharpZipLib/metrics/throughput)
