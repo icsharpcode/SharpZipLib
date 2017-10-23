@@ -23,5 +23,12 @@ Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.0 for more 
     <DocumentationFile>bin\Release\netstandard1.3\ICSharpCode.SharpZipLib.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
+    <DocumentationFile>bin\Debug\net45\ICSharpCode.SharpZipLib.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
+    <DocumentationFile>bin\Release\net45\ICSharpCode.SharpZipLib.xml</DocumentationFile>
+  </PropertyGroup>
 
 </Project>
