@@ -585,7 +585,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			if (count > 0) {
-				crc.Update(buffer, offset, count);
+				crc.Update(new ArraySegment<byte>(buffer, offset, count));
 			}
 
 			if (finished) {

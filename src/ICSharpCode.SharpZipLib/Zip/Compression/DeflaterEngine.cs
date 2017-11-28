@@ -174,7 +174,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				throw new InvalidOperationException("strstart not 1");
 			}
 #endif
-			adler.Update(buffer, offset, length);
+			adler.Update(new ArraySegment<byte>(buffer, offset, length));
 			if (length < DeflaterConstants.MIN_MATCH) {
 				return;
 			}
@@ -336,7 +336,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				}
 
 				System.Array.Copy(inputBuf, inputOff, window, strstart + lookahead, more);
-				adler.Update(inputBuf, inputOff, more);
+				adler.Update(new ArraySegment<byte>(inputBuf, inputOff, more));
 
 				inputOff += more;
 				totalIn += more;

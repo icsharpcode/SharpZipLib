@@ -586,7 +586,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentException("Invalid offset/count combination");
 			}
 
-			crc.Update(buffer, offset, count);
+			crc.Update(new ArraySegment<byte>(buffer, offset, count));
 			size += count;
 
 			switch (curMethod) {

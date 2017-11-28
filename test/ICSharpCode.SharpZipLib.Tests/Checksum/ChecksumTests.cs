@@ -72,7 +72,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Checksum
 			// reset exception
 			exception = false;
 			try {
-				crcUnderTest.Update(null, 0, 0);
+				crcUnderTest.Update(new ArraySegment<byte>(null, 0, 0));
 			} catch (ArgumentNullException) {
 				exception = true;
 			}
@@ -81,7 +81,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Checksum
 			// reset exception
 			exception = false;
 			try {
-				crcUnderTest.Update(check, -1, 9);
+				crcUnderTest.Update(new ArraySegment<byte>(check, -1, 9));
 			} catch (ArgumentOutOfRangeException) {
 				exception = true;
 			}
@@ -90,16 +90,16 @@ namespace ICSharpCode.SharpZipLib.Tests.Checksum
 			// reset exception
 			exception = false;
 			try {
-				crcUnderTest.Update(check, 9, 0);
-			} catch (ArgumentOutOfRangeException) {
+				crcUnderTest.Update(new ArraySegment<byte>(check, 10, 0));
+			} catch (ArgumentException) {
 				exception = true;
 			}
-			Assert.IsTrue(exception, "Passing an offset greater than or equal to buffer.Length should cause an ArgumentOutOfRangeException");
+			Assert.IsTrue(exception, "Passing an offset greater than buffer.Length should cause an ArgumentException");
 
 			// reset exception
 			exception = false;
 			try {
-				crcUnderTest.Update(check, 0, -1);
+				crcUnderTest.Update(new ArraySegment<byte>(check, 0, -1));
 			} catch (ArgumentOutOfRangeException) {
 				exception = true;
 			}
@@ -108,11 +108,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Checksum
 			// reset exception
 			exception = false;
 			try {
-				crcUnderTest.Update(check, 0, 10);
-			} catch (ArgumentOutOfRangeException) {
+				crcUnderTest.Update(new ArraySegment<byte>(check, 0, 10));
+			} catch (ArgumentException) {
 				exception = true;
 			}
-			Assert.IsTrue(exception, "Passing a count + offset greater than buffer.Length should cause an ArgumentOutOfRangeException");
+			Assert.IsTrue(exception, "Passing a count + offset greater than buffer.Length should cause an ArgumentException");
 		}
 	}
 }
