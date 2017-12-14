@@ -1518,6 +1518,34 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 
 		/// <summary>
+		/// Add a file to the archive.
+		/// </summary>
+		/// <param name="fileName">The name of the file to add.</param>
+		/// <param name="entryName">The name to use for the <see cref="ZipEntry"/> on the Zip file created.</param>
+		/// <param name="entryDateTime">The DateTime to use for the <see cref="ZipEntry"/> on the Zip file created.</param>
+		/// <exception cref="ArgumentNullException">Argument supplied is null.</exception>
+		public void Add(string fileName, string entryName, DateTime entryDateTime)
+		{
+			if (fileName == null)
+			{
+				throw new ArgumentNullException(nameof(fileName));
+			}
+
+			if (entryName == null)
+			{
+				throw new ArgumentNullException(nameof(entryName));
+			}
+
+			CheckUpdating();
+			contentsEdited_ = true;
+
+			ZipEntry entry = EntryFactory.MakeFileEntry(entryName);
+			entry.DateTime = entryDateTime;
+			AddUpdate(new ZipUpdate(fileName, entry));
+		}
+
+
+		/// <summary>
 		/// Add a file entry with data.
 		/// </summary>
 		/// <param name="dataSource">The source of the data for this entry.</param>
