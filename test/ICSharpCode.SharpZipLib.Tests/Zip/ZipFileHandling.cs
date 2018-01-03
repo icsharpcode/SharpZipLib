@@ -795,12 +795,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				var names = new string[]
 				{
 					"\u030A\u03B0",     // Greek
-                    "\u0680\u0685"      // Arabic
-                };
+					"\u0680\u0685"      // Arabic
+				};
 
 				foreach (string name in names) {
 					f.Add(new StringMemoryDataSource("Hello world"), name,
-						  CompressionMethod.Deflated, true);
+					      CompressionMethod.Deflated, true);
 				}
 				f.CommitUpdate();
 				Assert.IsTrue(f.TestArchive(true));
@@ -936,12 +936,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				var names = new string[]
 				{
 					"\u030A\u03B0",     // Greek
-                    "\u0680\u0685"      // Arabic
-                };
+					"\u0680\u0685"      // Arabic
+				};
 
 				foreach (string name in names) {
 					f.Add(new StringMemoryDataSource("Hello world"), name,
-						  CompressionMethod.Deflated, true);
+					      CompressionMethod.Deflated, true);
 				}
 				f.CommitUpdate();
 				Assert.IsTrue(f.TestArchive(true));

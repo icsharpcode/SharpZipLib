@@ -614,7 +614,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			try {
 				if (recurse) {
 					TarHeader.SetValueDefaults(sourceEntry.UserId, sourceEntry.UserName,
-											   sourceEntry.GroupId, sourceEntry.GroupName);
+					                           sourceEntry.GroupId, sourceEntry.GroupName);
 				}
 				WriteEntryCore(sourceEntry, recurse);
 			} finally {

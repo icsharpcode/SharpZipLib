@@ -29,16 +29,16 @@ namespace ICSharpCode.SharpZipLib.Lzw
 	/// {
 	/// 	public static void Main(string[] args)
 	/// 	{
-	///			using (Stream inStream = new LzwInputStream(File.OpenRead(args[0])))
-	///			using (FileStream outStream = File.Create(Path.GetFileNameWithoutExtension(args[0]))) {
-	///				byte[] buffer = new byte[4096];
-	///				StreamUtils.Copy(inStream, outStream, buffer);
-	///                         // OR
-	///                         inStream.Read(buffer, 0, buffer.Length);
-	///                         // now do something with the buffer
+	/// 		using (Stream inStream = new LzwInputStream(File.OpenRead(args[0])))
+	/// 		using (FileStream outStream = File.Create(Path.GetFileNameWithoutExtension(args[0]))) {
+	/// 			byte[] buffer = new byte[4096];
+	/// 			StreamUtils.Copy(inStream, outStream, buffer);
+	/// 			// OR
+	/// 			inStream.Read(buffer, 0, buffer.Length);
+	/// 			// now do something with the buffer
 	/// 		}
 	/// 	}
-	/// }	
+	/// }
 	/// </code>
 	/// </example>
 	public class LzwInputStream : Stream
@@ -97,8 +97,8 @@ namespace ICSharpCode.SharpZipLib.Lzw
 			int start = offset;
 
 			/* Using local copies of various variables speeds things up by as
-	         * much as 30% in Java! Performance not tested in C#.
-	         */
+			 * much as 30% in Java! Performance not tested in C#.
+			 */
 			int[] lTabPrefix = tabPrefix;
 			byte[] lTabSuffix = tabSuffix;
 			byte[] lStack = stack;

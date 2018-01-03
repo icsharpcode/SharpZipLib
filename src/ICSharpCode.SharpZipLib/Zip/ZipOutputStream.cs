@@ -43,12 +43,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// 				s.PutNextEntry(entry);
 	///
 	/// 				using (FileStream fs = File.OpenRead(file)) {
-	///						StreamUtils.Copy(fs, s, buffer);
+	/// 					StreamUtils.Copy(fs, s, buffer);
 	/// 				}
 	/// 			}
 	/// 		}
 	/// 	}
-	/// }	
+	/// }
 	/// </code>
 	/// </example>
 	public class ZipOutputStream : DeflaterOutputStream
@@ -242,8 +242,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 							method = CompressionMethod.Deflated;
 							compressionLevel = 0;
 						}
-					} else // entry.size must be > 0
-					  {
+					} else { // entry.size must be > 0
 						entry.CompressedSize = entry.Size;
 						headerInfoAvailable = entry.HasCrc;
 					}

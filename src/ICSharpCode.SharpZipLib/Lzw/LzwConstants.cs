@@ -16,11 +16,11 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		public const int MAX_BITS = 16;
 
 		/* 3rd header byte:
-         * bit 0..4 Number of compression bits
-         * bit 5    Extended header
-         * bit 6    Free
-         * bit 7    Block mode
-         */
+		 * bit 0..4 Number of compression bits
+		 * bit 5    Extended header
+		 * bit 6    Free
+		 * bit 7    Block mode
+		 */
 
 		/// <summary>
 		/// Mask for 'number of compression bits'

@@ -442,10 +442,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 						SkipToNextEntry();
 						headerBuf = this.tarBuffer.ReadBlock();
 					} else if (header.TypeFlag != TarHeader.LF_NORMAL &&
-							   header.TypeFlag != TarHeader.LF_OLDNORM &&
-							   header.TypeFlag != TarHeader.LF_LINK &&
-							   header.TypeFlag != TarHeader.LF_SYMLINK &&
-							   header.TypeFlag != TarHeader.LF_DIR) {
+					           header.TypeFlag != TarHeader.LF_OLDNORM &&
+					           header.TypeFlag != TarHeader.LF_LINK &&
+					           header.TypeFlag != TarHeader.LF_SYMLINK &&
+					           header.TypeFlag != TarHeader.LF_DIR) {
 						// Ignore things we dont understand completely for now
 						SkipToNextEntry();
 						headerBuf = tarBuffer.ReadBlock();
@@ -576,7 +576,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			/// <summary>
 			/// Create an entry based on details in <paramref name="headerBuffer">header</paramref>
-			/// </summary>			
+			/// </summary>
 			/// <param name="headerBuffer">The buffer containing entry details.</param>
 			/// <returns>A new <see cref="TarEntry"/></returns>
 			public TarEntry CreateEntry(byte[] headerBuffer)
@@ -603,7 +603,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 		/// <summary>
 		/// Buffer used with calls to <code>Read()</code>
-		/// </summary>		
+		/// </summary>
 		protected byte[] readBuffer;
 
 		/// <summary>

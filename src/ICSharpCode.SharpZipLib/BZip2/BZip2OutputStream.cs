@@ -35,10 +35,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		usually small, typically <= 20.
 		--*/
 		readonly int[] increments = {
-												  1, 4, 13, 40, 121, 364, 1093, 3280,
-												  9841, 29524, 88573, 265720,
-												  797161, 2391484
-											  };
+		                             	1, 4, 13, 40, 121, 364, 1093, 3280,
+		                             	9841, 29524, 88573, 265720,
+		                             	797161, 2391484
+		                            };
 		#endregion
 
 		#region Instance Fields
@@ -424,7 +424,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		/// <summary>
 		/// Flush output buffers
-		/// </summary>		
+		/// </summary>
 		public override void Flush()
 		{
 			baseStream.Flush();
@@ -1016,8 +1016,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				}
 
 				med = Med3(block[zptr[lo] + d + 1],
-						   block[zptr[hi] + d + 1],
-						   block[zptr[(lo + hi) >> 1] + d + 1]);
+				           block[zptr[hi] + d + 1],
+				           block[zptr[(lo + hi) >> 1] + d + 1]);
 
 				unLo = ltLo = lo;
 				unHi = gtHi = hi;

@@ -12,7 +12,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	public class ZipEntryHandling : ZipBase
 	{
 		byte[] MakeLocalHeader(string asciiName, short versionToExtract, short flags, short method,
-							  int dostime, int crc, int compressedSize, int size)
+		                       int dostime, int crc, int compressedSize, int size)
 		{
 			using (TrackedMemoryStream ms = new TrackedMemoryStream()) {
 				ms.WriteByte((byte)'P');
@@ -37,10 +37,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		ZipEntry MakeEntry(string asciiName, short versionToExtract, short flags, short method,
-							  int dostime, int crc, int compressedSize, int size)
+		                  int dostime, int crc, int compressedSize, int size)
 		{
 			byte[] data = MakeLocalHeader(asciiName, versionToExtract, flags, method,
-										  dostime, crc, compressedSize, size);
+			                             dostime, crc, compressedSize, size);
 
 			var zis = new ZipInputStream(new MemoryStream(data));
 

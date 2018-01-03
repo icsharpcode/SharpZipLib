@@ -130,7 +130,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <remarks>The default value is true.</remarks>
 		public bool IsStreamOwner { get; set; } = true;
 
-		///	<summary>
+		/// <summary>
 		/// Allows client to determine if an entry can be patched after its added
 		/// </summary>
 		public bool CanPatchEntries {

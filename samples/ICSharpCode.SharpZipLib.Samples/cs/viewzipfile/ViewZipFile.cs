@@ -5,7 +5,7 @@ using ICSharpCode.SharpZipLib.Zip;
 
 
 class ViewZipFileClass
-{			
+{
 	public static void Main(string[] args)
 	{
 		// Perform simple parameter checking.

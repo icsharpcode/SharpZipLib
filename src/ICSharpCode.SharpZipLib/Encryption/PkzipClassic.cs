@@ -96,7 +96,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 
 		/// <summary>
 		/// Update encryption keys 
-		/// </summary>		
+		/// </summary>
 		protected void UpdateKeys(byte ch)
 		{
 			keys[0] = Crc32.ComputeCrc32(keys[0], ch);

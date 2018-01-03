@@ -421,7 +421,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// by PKZIP for DOS version 2.04g then this value will be zero.  Otherwise the value
 		/// will be non-zero and identify the host system on which the attributes are compatible.
 		/// </summary>
-		/// 		
+		/// 
 		/// <remarks>
 		/// The values for this as defined in the Zip File format and by others are shown below.  The values are somewhat
 		/// misleading in some cases as they are not all used as shown.  You should consult the relevant documentation
@@ -465,7 +465,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		/// <summary>
 		/// Get minimum Zip feature version required to extract this entry
-		/// </summary>		
+		/// </summary
 		/// <remarks>
 		/// Minimum features are defined as:<br/>
 		/// 1.0 - Default value<br/>
@@ -862,11 +862,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		internal int AESOverheadSize {
 			get {
 				// File format:
-				//   Bytes		Content
-				// Variable		Salt value
-				//     2		Password verification value
-				// Variable		Encrypted file data
-				//    10		Authentication code
+				//   Bytes      Content
+				// Variable     Salt value
+				//     2        Password verification value
+				// Variable     Encrypted file data
+				//    10        Authentication code
 				return 12 + AESSaltLen;
 			}
 		}
@@ -946,7 +946,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private DateTime GetDateTime(ZipExtraData extraData) {
 			// Check for NT timestamp
-            // NOTE: Disable by default to match behavior of InfoZIP
+			// NOTE: Disable by default to match behavior of InfoZIP
 #if RESPECT_NT_TIMESTAMP
 			NTTaggedData ntData = extraData.GetData<NTTaggedData>();
 			if (ntData != null)

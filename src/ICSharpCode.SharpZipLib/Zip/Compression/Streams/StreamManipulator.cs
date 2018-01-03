@@ -35,7 +35,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					return -1; // ok
 				}
 				buffer_ |= (uint)((window_[windowStart_++] & 0xff |
-								 (window_[windowStart_++] & 0xff) << 8) << bitsInBuffer_);
+				                 (window_[windowStart_++] & 0xff) << 8) << bitsInBuffer_);
 				bitsInBuffer_ += 16;
 			}
 			return (int)(buffer_ & ((1 << bitCount) - 1));

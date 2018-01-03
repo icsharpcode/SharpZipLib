@@ -36,18 +36,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// 			byte[] data = new byte[2048];
 	/// 			
 	/// 			while ((theEntry = s.GetNextEntry()) != null) {
-	///                 if ( entry.IsFile ) {
-	/// 				    Console.Write("Show contents (y/n) ?");
-	/// 				    if (Console.ReadLine() == "y") {
-	/// 				    	while (true) {
-	/// 				    		size = s.Read(data, 0, data.Length);
-	/// 				    		if (size > 0) {
-	/// 				    			Console.Write(new ASCIIEncoding().GetString(data, 0, size));
-	/// 				    		} else {
-	/// 				    			break;
-	/// 				    		}
-	/// 				    	}
-	/// 				    }
+	/// 				if ( entry.IsFile ) {
+	/// 					Console.Write("Show contents (y/n) ?");
+	/// 					if (Console.ReadLine() == "y") {
+	/// 						while (true) {
+	/// 							size = s.Read(data, 0, data.Length);
+	/// 							if (size > 0) {
+	/// 								Console.Write(new ASCIIEncoding().GetString(data, 0, size));
+	/// 							} else {
+	/// 								break;
+	/// 							}
+	/// 						}
+	/// 					}
 	/// 				}
 	/// 			}
 	/// 		}

@@ -32,7 +32,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 						}
 						lnum += 257;
 						input.DropBits(5);
-						//  	    System.err.println("LNUM: "+lnum);
+						//System.err.println("LNUM: "+lnum);
 						mode = DNUM;
 						goto case DNUM; // fall through
 					case DNUM:
@@ -42,7 +42,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 						}
 						dnum++;
 						input.DropBits(5);
-						//  	    System.err.println("DNUM: "+dnum);
+						//System.err.println("DNUM: "+dnum);
 						num = lnum + dnum;
 						litdistLens = new byte[num];
 						mode = BLNUM;
@@ -56,7 +56,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 						input.DropBits(4);
 						blLens = new byte[19];
 						ptr = 0;
-						//  	    System.err.println("BLNUM: "+blnum);
+						//System.err.println("BLNUM: "+blnum);
 						mode = BLLENS;
 						goto case BLLENS; // fall through
 					case BLLENS:
@@ -80,7 +80,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 							while (((symbol = blTree.GetSymbol(input)) & ~15) == 0) {
 								/* Normal case: symbol in [0..15] */
 
-								//  		  System.err.println("litdistLens["+ptr+"]: "+symbol);
+								//System.err.println("litdistLens["+ptr+"]: "+symbol);
 								litdistLens[ptr++] = lastLen = (byte)symbol;
 
 								if (ptr == num) {
@@ -97,7 +97,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 							/* otherwise repeat code */
 							if (symbol >= 17) {
 								/* repeat zero */
-								//  		  System.err.println("repeating zero");
+								//System.err.println("repeating zero");
 								lastLen = 0;
 							} else {
 								if (ptr == 0) {
@@ -116,7 +116,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 							}
 							input.DropBits(bits);
 							count += repMin[repSymbol];
-							//  	      System.err.println("litdistLens repeated: "+count);
+							//System.err.println("litdistLens repeated: "+count);
 
 							if (ptr + count > num) {
 								throw new SharpZipBaseException();

@@ -153,7 +153,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		/// <summary>
 		/// Determines if more <see cref="SetInput">input</see> is needed.
-		/// </summary>		
+		/// </summary>
 		/// <returns>Return true if input is needed via <see cref="SetInput">SetInput</see></returns>
 		public bool NeedsInput()
 		{
@@ -198,7 +198,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		/// <summary>
 		/// Reset internal state
-		/// </summary>		
+		/// </summary>
 		public void Reset()
 		{
 			huffman.Reset();
@@ -220,7 +220,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		/// <summary>
 		/// Reset Adler checksum
-		/// </summary>		
+		/// </summary>
 		public void ResetAdler()
 		{
 			adler.Reset();
@@ -228,7 +228,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		/// <summary>
 		/// Get current value of Adler checksum
-		/// </summary>		
+		/// </summary>
 		public int Adler {
 			get {
 				return unchecked((int)adler.Value);
@@ -237,7 +237,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		/// <summary>
 		/// Total data processed
-		/// </summary>		
+		/// </summary>
 		public long TotalIn {
 			get {
 				return totalIn;
@@ -246,7 +246,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		/// <summary>
 		/// Get/set the <see cref="DeflateStrategy">deflate strategy</see>
-		/// </summary>		
+		/// </summary>
 		public DeflateStrategy Strategy {
 			get {
 				return strategy;
@@ -275,8 +275,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 #if DebugDeflation
 				if (DeflaterConstants.DEBUGGING) {
-				   Console.WriteLine("Change from " + compressionFunction + " to "
-										  + DeflaterConstants.COMPR_FUNC[level]);
+					Console.WriteLine("Change from " + compressionFunction + " to "
+					                  + DeflaterConstants.COMPR_FUNC[level]);
 				}
 #endif
 				switch (compressionFunction) {
@@ -372,12 +372,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			if (DeflaterConstants.DEBUGGING) 
 			{
 				if (hash != (((window[strstart] << (2*HASH_SHIFT)) ^ 
-								  (window[strstart + 1] << HASH_SHIFT) ^ 
-								  (window[strstart + 2])) & HASH_MASK)) {
+				              (window[strstart + 1] << HASH_SHIFT) ^ 
+				              (window[strstart + 2])) & HASH_MASK)) {
 						throw new SharpZipBaseException("hash inconsistent: " + hash + "/"
-												+window[strstart] + ","
-												+window[strstart + 1] + ","
-												+window[strstart + 2] + "," + HASH_SHIFT);
+						                                + window[strstart] + ","
+						                                + window[strstart + 1] + ","
+						                                + window[strstart + 2] + "," + HASH_SHIFT);
 					}
 			}
 #endif
@@ -420,130 +420,132 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <returns>True if a match greater than the minimum length is found</returns>
 		bool FindLongestMatch( int curMatch )
 		{
-        int match;
-        int scan = strstart;
-        // scanMax is the highest position that we can look at
-        int scanMax = scan + Math.Min( DeflaterConstants.MAX_MATCH, lookahead ) - 1;
-        int limit = Math.Max( scan - DeflaterConstants.MAX_DIST, 0 );
+			int match;
+			int scan = strstart;
+			// scanMax is the highest position that we can look at
+			int scanMax = scan + Math.Min( DeflaterConstants.MAX_MATCH, lookahead ) - 1;
+			int limit = Math.Max( scan - DeflaterConstants.MAX_DIST, 0 );
 
-        byte[] window = this.window;
-        short[] prev = this.prev;
-        int chainLength = this.max_chain;
-        int niceLength = Math.Min( this.niceLength, lookahead );
+			byte[] window = this.window;
+			short[] prev = this.prev;
+			int chainLength = this.max_chain;
+			int niceLength = Math.Min( this.niceLength, lookahead );
 
-          matchLen = Math.Max( matchLen, DeflaterConstants.MIN_MATCH - 1 );
+			matchLen = Math.Max( matchLen, DeflaterConstants.MIN_MATCH - 1 );
 
-          if (scan + matchLen > scanMax) return false;
+			if (scan + matchLen > scanMax)
+				return false;
 
-        byte scan_end1 = window[scan + matchLen - 1];
-        byte scan_end = window[scan + matchLen];
+			byte scan_end1 = window[scan + matchLen - 1];
+			byte scan_end = window[scan + matchLen];
 
-          // Do not waste too much time if we already have a good match:
-          if (matchLen >= this.goodLength) chainLength >>= 2;
+			// Do not waste too much time if we already have a good match:
+			if (matchLen >= this.goodLength)
+				chainLength >>= 2;
 
-          do
-          {
-            match = curMatch;
-            scan = strstart;
+			do
+			{
+				match = curMatch;
+				scan = strstart;
 
-            if (window[match + matchLen] != scan_end
-             || window[match + matchLen - 1] != scan_end1
-             || window[match] != window[scan]
-             || window[++match] != window[++scan])
-            {
-              continue;
-            }
+				if (window[match + matchLen] != scan_end
+				 || window[match + matchLen - 1] != scan_end1
+				 || window[match] != window[scan]
+				 || window[++match] != window[++scan])
+				{
+				  continue;
+				}
 
-            // scan is set to strstart+1 and the comparison passed, so
-            // scanMax - scan is the maximum number of bytes we can compare.
-            // below we compare 8 bytes at a time, so first we compare
-            // (scanMax - scan) % 8 bytes, so the remainder is a multiple of 8
+				// scan is set to strstart+1 and the comparison passed, so
+				// scanMax - scan is the maximum number of bytes we can compare.
+				// below we compare 8 bytes at a time, so first we compare
+				// (scanMax - scan) % 8 bytes, so the remainder is a multiple of 8
 
-            switch( (scanMax - scan) % 8 )
-            {
-            case 1: if (window[++scan] == window[++match]) break;
-              break;
-            case 2: if (window[++scan] == window[++match]
-              && window[++scan] == window[++match]) break;
-              break;
-            case 3: if (window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]) break;
-              break;
-            case 4: if (window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]) break;
-              break;
-            case 5: if (window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]) break;
-              break;
-            case 6: if (window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]) break;
-              break;
-            case 7: if (window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]
-              && window[++scan] == window[++match]) break;
-              break;
-            }
+				switch( (scanMax - scan) % 8 )
+				{
+				case 1: if (window[++scan] == window[++match]) break;
+					break;
+				case 2: if (window[++scan] == window[++match]
+				           && window[++scan] == window[++match]) break;
+					break;
+				case 3: if (window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]) break;
+					break;
+				case 4: if (window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]) break;
+					break;
+				case 5: if (window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]) break;
+					break;
+				case 6: if (window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]) break;
+					break;
+				case 7: if (window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]
+				           && window[++scan] == window[++match]) break;
+					break;
+				}
 
-            if (window[scan] == window[match])
-            {
-            /* We check for insufficient lookahead only every 8th comparison;
-             * the 256th check will be made at strstart + 258 unless lookahead is
-             * exhausted first.
-             */
-              do
-              {
-                if (scan == scanMax)
-                {
-                  ++scan;     // advance to first position not matched
-                  ++match;
+				if (window[scan] == window[match])
+				{
+				/* We check for insufficient lookahead only every 8th comparison;
+				 * the 256th check will be made at strstart + 258 unless lookahead is
+				 * exhausted first.
+				 */
+					do
+					{
+						if (scan == scanMax)
+						{
+							++scan;     // advance to first position not matched
+							++match;
 
-                  break;
-                }
-              }
-              while (window[++scan] == window[++match]
-                  && window[++scan] == window[++match]
-                  && window[++scan] == window[++match]
-                  && window[++scan] == window[++match]
-                  && window[++scan] == window[++match]
-                  && window[++scan] == window[++match]
-                  && window[++scan] == window[++match]
-                  && window[++scan] == window[++match]);
-            }
+							break;
+						}
+					}
+					while (window[++scan] == window[++match]
+					       && window[++scan] == window[++match]
+					       && window[++scan] == window[++match]
+					       && window[++scan] == window[++match]
+					       && window[++scan] == window[++match]
+					       && window[++scan] == window[++match]
+					       && window[++scan] == window[++match]
+					       && window[++scan] == window[++match]);
+				}
 
-            if (scan - strstart > matchLen)
-            {
-              #if DebugDeflation
-              if (DeflaterConstants.DEBUGGING && (ins_h == 0) )
-              Console.Error.WriteLine("Found match: " + curMatch + "-" + (scan - strstart));
-              #endif
+				if (scan - strstart > matchLen)
+				{
+#if DebugDeflation
+					if (DeflaterConstants.DEBUGGING && (ins_h == 0) )
+						Console.Error.WriteLine("Found match: " + curMatch + "-" + (scan - strstart));
+#endif
 
-              matchStart = curMatch;
-              matchLen = scan - strstart;
+					matchStart = curMatch;
+					matchLen = scan - strstart;
 
-              if (matchLen >= niceLength)
-                break;
-          
-              scan_end1 = window[scan - 1];
-              scan_end = window[scan];
-            }
-          } while ((curMatch = (prev[curMatch & DeflaterConstants.WMASK] & 0xffff)) > limit && 0 != --chainLength );
+					if (matchLen >= niceLength)
+						break;
 
-          return matchLen >= DeflaterConstants.MIN_MATCH;
-        }
+					scan_end1 = window[scan - 1];
+					scan_end = window[scan];
+				}
+			} while ((curMatch = (prev[curMatch & DeflaterConstants.WMASK] & 0xffff)) > limit && 0 != --chainLength );
+
+			return matchLen >= DeflaterConstants.MIN_MATCH;
+		}
 
 		bool DeflateStored(bool flush, bool finish)
 		{
@@ -716,7 +718,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					{
 					   for (int i = 0 ; i < matchLen; i++) {
 						  if (window[strstart-1+i] != window[prevMatch + i])
-							 throw new SharpZipBaseException();
+								hrow new SharpZipBaseException();
 						}
 					}
 #endif

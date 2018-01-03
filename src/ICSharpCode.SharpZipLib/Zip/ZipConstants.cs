@@ -451,7 +451,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		/// <summary>
 		/// Convert a portion of a byte array to a string.
-		/// </summary>		
+		/// </summary>
 		/// <param name="data">
 		/// Data to convert to string
 		/// </param>

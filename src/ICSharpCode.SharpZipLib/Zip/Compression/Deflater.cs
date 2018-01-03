@@ -77,45 +77,45 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// There is no need to use this constant at all.
 		/// </summary>
 		public const int DEFLATED = 8;
-        #endregion
-        #region Public Enum
+		#endregion
+		#region Public Enum
 
-        /// <summary>
-        /// Compression Level as an enum for safer use
-        /// </summary>
-        public enum CompressionLevel
-        {
-            /// <summary>
-            /// The best and slowest compression level.  This tries to find very
-            /// long and distant string repetitions.
-            /// </summary>
-            BEST_COMPRESSION = Deflater.BEST_COMPRESSION,
+		/// <summary>
+		/// Compression Level as an enum for safer use
+		/// </summary>
+		public enum CompressionLevel
+		{
+			/// <summary>
+			/// The best and slowest compression level.  This tries to find very
+			/// long and distant string repetitions.
+			/// </summary>
+			BEST_COMPRESSION = Deflater.BEST_COMPRESSION,
 
-            /// <summary>
-            /// The worst but fastest compression level.
-            /// </summary>
-            BEST_SPEED = Deflater.BEST_SPEED,
+			/// <summary>
+			/// The worst but fastest compression level.
+			/// </summary>
+			BEST_SPEED = Deflater.BEST_SPEED,
 
-            /// <summary>
-            /// The default compression level.
-            /// </summary>
-            DEFAULT_COMPRESSION = Deflater.DEFAULT_COMPRESSION,
+			/// <summary>
+			/// The default compression level.
+			/// </summary>
+			DEFAULT_COMPRESSION = Deflater.DEFAULT_COMPRESSION,
 
-            /// <summary>
-            /// This level won't compress at all but output uncompressed blocks.
-            /// </summary>
-            NO_COMPRESSION = Deflater.NO_COMPRESSION,
+			/// <summary>
+			/// This level won't compress at all but output uncompressed blocks.
+			/// </summary>
+			NO_COMPRESSION = Deflater.NO_COMPRESSION,
 
-            /// <summary>
-            /// The compression method.  This is the only method supported so far.
-            /// There is no need to use this constant at all.
-            /// </summary>
-            DEFLATED = Deflater.DEFLATED
-        }
+			/// <summary>
+			/// The compression method.  This is the only method supported so far.
+			/// There is no need to use this constant at all.
+			/// </summary>
+			DEFLATED = Deflater.DEFLATED
+		}
 
-        #endregion
-        #region Local Constants
-        private const int IS_SETDICT = 0x01;
+		#endregion
+		#region Local Constants
+		private const int IS_SETDICT = 0x01;
 		private const int IS_FLUSHING = 0x04;
 		private const int IS_FINISHING = 0x08;
 

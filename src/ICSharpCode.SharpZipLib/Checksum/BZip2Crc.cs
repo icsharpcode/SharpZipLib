@@ -110,7 +110,7 @@ namespace ICSharpCode.SharpZipLib.Checksum
 
 		/// <summary>
 		/// Initialise a default instance of <see cref="BZip2Crc"></see>
-		/// </summary>	
+		/// </summary>
 		public BZip2Crc()
 		{
 			Reset();

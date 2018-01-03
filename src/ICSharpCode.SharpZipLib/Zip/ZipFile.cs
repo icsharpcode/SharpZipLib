@@ -2902,7 +2902,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// This should be compatible with both SFX and ZIP files but has only been tested for Zip files
 			// If a SFX file has the Zip data attached as a resource and there are other resources occuring later then
 			// this could be invalid.
-			// Could also speed this up by reading memory in larger blocks.			
+			// Could also speed this up by reading memory in larger blocks.
 
 			if (baseStream_.CanSeek == false) {
 				throw new ZipException("ZipFile stream must be seekable");

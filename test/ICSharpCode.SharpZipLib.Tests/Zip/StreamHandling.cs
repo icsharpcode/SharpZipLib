@@ -285,7 +285,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Console.WriteLine("Time {0} throughput {1} KB/Sec", span, (target / 1024.0) / span.TotalSeconds);
 		}
 
-	    [Test]
+		[Test]
 		[Category("Zip")]
 		[Category("Long Running")]
 		[Ignore("TODO : Fix this")]

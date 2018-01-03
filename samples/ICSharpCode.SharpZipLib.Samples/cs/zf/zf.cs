@@ -59,9 +59,9 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 
 		#region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZipFileArchiver"/> class.
-        /// </summary>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ZipFileArchiver"/> class.
+		/// </summary>
 		public ZipFileArchiver()
 		{
 			// Do nothing.
@@ -77,7 +77,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		/// in any order and are case insensitive.  Arguments for options are signalled with an '='
 		/// as in -demo=argument, sometimes the '=' can be omitted as well secretly.
 		/// Grouping of single character options is supported.
-		/// </summary>		
+		/// </summary>
 		/// <returns>
 		/// true if arguments are valid such that processing should continue
 		/// </returns>
@@ -156,9 +156,9 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 											operation_ = Operation.Test;
 											break;
 	
-                                        case "-dryrun":
-									        dryRun_ = true;
-									        break;
+										case "-dryrun":
+											dryRun_ = true;
+											break;
 
 										case "-env":
 											ShowEnvironment();
@@ -364,7 +364,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 					|| ((deviceCheck >= 0) && (deviceCheck != 1))) 
 				{
 					Console.WriteLine("There are invalid characters in the specified zip file name");
-					result = false;					
+					result = false;
 				}
 			}
 			return result && (fileSpecs_.Count > 0);
@@ -399,7 +399,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		
 		/// <summary>
 		/// Display version information
-		/// </summary>		
+		/// </summary>
 		void ShowVersion() 
 		{
 			seenHelp_ = true;
@@ -439,7 +439,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 			Console.Out.WriteLine("--add                      Add files to archive");
 			Console.Out.WriteLine("--create                   Create new archive");
 			Console.Out.WriteLine("--data                     Test archive data");
-            Console.Out.WriteLine("--delete                   Delete files from archive");
+			Console.Out.WriteLine("--delete                   Delete files from archive");
 			Console.Out.WriteLine("--encoding=codepage|name   Set code page for encoding by name or number");
 			Console.Out.WriteLine("--extract{=dir}            Extract archive contents to dir(default .)");
 			Console.Out.WriteLine("--help                     Show this help");
@@ -459,7 +459,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 			Console.Out.WriteLine("-o+                        Overwrite files without prompting");
 			Console.Out.WriteLine("-o-                        Never overwrite files");
 			Console.Out.WriteLine("-q                         Quiet mode");
-			*/			
+			*/
 			Console.Out.WriteLine("");
 		}
 		
@@ -613,7 +613,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 
 		/// <summary>
 		/// Create archives based on specifications passed and internal state
-		/// </summary>		
+		/// </summary>
 		void Create(ArrayList fileSpecs)
 		{
 			var zipFileName = fileSpecs[0] as string;
@@ -677,128 +677,128 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		/// <returns>True if operation is successful; false otherwise.</returns>
 		bool ExtractFile(Stream inputStream, ZipEntry theEntry, string targetDir)
 		{
-            if (inputStream == null)
-            {
-                throw new ArgumentNullException("inputStream");
-            }
+			if (inputStream == null)
+			{
+				throw new ArgumentNullException("inputStream");
+			}
 
-		    if (theEntry == null)
-            {
-                throw new ArgumentNullException("theEntry");
-            }
+			if (theEntry == null)
+			{
+				throw new ArgumentNullException("theEntry");
+			}
 
-            if (!theEntry.IsFile)
-            {
-                throw new ArgumentException("Not a file", "theEntry");
-            }
+			if (!theEntry.IsFile)
+			{
+				throw new ArgumentException("Not a file", "theEntry");
+			}
 
-		    if (targetDir == null)
-            {
-                throw new ArgumentNullException("targetDir");
-            }
+			if (targetDir == null)
+			{
+				throw new ArgumentNullException("targetDir");
+			}
 
-		    // try and sort out the correct place to save this entry
+			// try and sort out the correct place to save this entry
 
-		    bool result = true;
-            bool process = theEntry.Name.Length > 0;
+			bool result = true;
+			bool process = theEntry.Name.Length > 0;
 
-            if (!process)
-            {
-                // A fuller program would generate or prompt for a filename here...
-                if (!silent_)
-                {
-                    Console.WriteLine("Ignoring empty name");
-                }
+			if (!process)
+			{
+				// A fuller program would generate or prompt for a filename here...
+				if (!silent_)
+				{
+					Console.WriteLine("Ignoring empty name");
+				}
 
-                return false;
-            }
+				return false;
+			}
 
-		    string entryFileName;
+			string entryFileName;
 
-            if (Path.IsPathRooted(theEntry.Name))
-            {
-                string workName = Path.GetPathRoot(theEntry.Name);
-                workName = theEntry.Name.Substring(workName.Length);
-                entryFileName = Path.Combine(Path.GetDirectoryName(workName), Path.GetFileName(theEntry.Name));
-            }
-            else
-            {
-                entryFileName = theEntry.Name;
-            }
+			if (Path.IsPathRooted(theEntry.Name))
+			{
+				string workName = Path.GetPathRoot(theEntry.Name);
+				workName = theEntry.Name.Substring(workName.Length);
+				entryFileName = Path.Combine(Path.GetDirectoryName(workName), Path.GetFileName(theEntry.Name));
+			}
+			else
+			{
+				entryFileName = theEntry.Name;
+			}
 
-            string targetName = Path.Combine(targetDir, entryFileName);
-            string fullDirectoryName = Path.GetDirectoryName(Path.GetFullPath(targetName));
+			string targetName = Path.Combine(targetDir, entryFileName);
+			string fullDirectoryName = Path.GetDirectoryName(Path.GetFullPath(targetName));
 
 #if TEST
 			Console.WriteLine("Decompress targetfile name " + entryFileName);
 			Console.WriteLine("Decompress targetpath " + fullDirectoryName);
 #endif
 
-            // Could be an option or parameter to allow failure or try creation
-            if (process)
-            {
-                if (Directory.Exists(fullDirectoryName) == false)
-                {
-                    try
-                    {
-                        Directory.CreateDirectory(fullDirectoryName);
-                    }
-                    catch (Exception ex)
-                    {
-                        if (!silent_)
-                        {
-                            Console.Write("Exception creating directory '{0}' - {1}", fullDirectoryName, ex.Message);
-                        }
+			// Could be an option or parameter to allow failure or try creation
+			if (process)
+			{
+				if (Directory.Exists(fullDirectoryName) == false)
+				{
+					try
+					{
+						Directory.CreateDirectory(fullDirectoryName);
+					}
+					catch (Exception ex)
+					{
+						if (!silent_)
+						{
+							Console.Write("Exception creating directory '{0}' - {1}", fullDirectoryName, ex.Message);
+						}
 
-                        result = false;
-                        process = false;
-                    }
-                }
-                else if (overwriteFiles == Overwrite.Prompt)
-                {
-                    if (File.Exists(targetName))
-                    {
-                        Console.Write("File " + targetName + " already exists.  Overwrite? ");
+						result = false;
+						process = false;
+					}
+				}
+				else if (overwriteFiles == Overwrite.Prompt)
+				{
+					if (File.Exists(targetName))
+					{
+						Console.Write("File " + targetName + " already exists.  Overwrite? ");
 
-                        string readValue;
-                        try
-                        {
-                            readValue = Console.ReadLine();
-                        }
-                        catch
-                        {
-                            readValue = null;
-                        }
+						string readValue;
+						try
+						{
+							readValue = Console.ReadLine();
+						}
+						catch
+						{
+							readValue = null;
+						}
 
-                        if ((readValue == null) || (readValue.ToLower() != "y"))
-                        {
-                            process = false;
-                        }
-                    }
-                }
-            }
+						if ((readValue == null) || (readValue.ToLower() != "y"))
+						{
+							process = false;
+						}
+					}
+				}
+			}
 
-		    if (process)
+			if (process)
 			{
 				if ( !silent_ )
 				{
 					Console.Write("{0}", targetName);
 				}
 
-                if (!dryRun_)
-                {
-                    using (FileStream outputStream = File.Create(targetName))
-                    {
-                        StreamUtils.Copy(inputStream, outputStream, GetBuffer());
-                    }
+				if (!dryRun_)
+				{
+					using (FileStream outputStream = File.Create(targetName))
+					{
+						StreamUtils.Copy(inputStream, outputStream, GetBuffer());
+					}
 
-                    if (restoreDateTime_)
-                    {
-                        File.SetLastWriteTime(targetName, theEntry.DateTime);
-                    }
-                }
+					if (restoreDateTime_)
+					{
+						File.SetLastWriteTime(targetName, theEntry.DateTime);
+					}
+				}
 
-			    if ( !silent_ )
+				if ( !silent_ )
 				{
 					Console.WriteLine(" OK");
 				}
@@ -823,23 +823,23 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 					zf.Password = password_;
 					foreach ( ZipEntry entry in zf )
 					{
-                        if (entry.IsFile)
-                        {
-                            if (!ExtractFile(zf.GetInputStream(entry), entry, targetDir))
-                            {
-                                if (!silent_)
-                                {
-                                    Console.WriteLine("Extraction failed {0}", entry.Name);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (!silent_)
-                            {
-                                Console.WriteLine("Skipping {0}", entry.Name);
-                            }
-                        }
+						if (entry.IsFile)
+						{
+							if (!ExtractFile(zf.GetInputStream(entry), entry, targetDir))
+							{
+								if (!silent_)
+								{
+									Console.WriteLine("Extraction failed {0}", entry.Name);
+								}
+							}
+						}
+						else
+						{
+							if (!silent_)
+							{
+								Console.WriteLine("Skipping {0}", entry.Name);
+							}
+						}
 					}
 					
 					if ( !silent_ )
@@ -887,7 +887,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 				}
 
 				foreach (string fileName in names) 
-				{				
+				{
 					if (File.Exists(fileName) == false) 
 					{
 						Console.Error.WriteLine("No such file exists {0}", fileName);
@@ -1120,7 +1120,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 
 		/// <summary>
 		/// Parse command line arguments and 'execute' them.
-		/// </summary>		
+		/// </summary>
 		void Execute(string[] args) 
 		{
 			if (SetArgs(args)) 
@@ -1415,7 +1415,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		/// </summary>
 		ArrayList fileSpecs_ = new ArrayList();
 
-	    /// <summary>
+		/// <summary>
 		/// Create entries for directories with no files
 		/// </summary>
 		bool addEmptyDirectoryEntries_;
@@ -1460,10 +1460,10 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 		/// </summary>
 		bool testData_;
 
-        /// <summary>
-        /// Dont extract or compress just display what would be done - testing
-        /// </summary>
-	    private bool dryRun_;
+		/// <summary>
+		/// Dont extract or compress just display what would be done - testing
+		/// </summary>
+		private bool dryRun_;
 
 		/// <summary>
 		/// The currently active <see cref="ZipFile"/>.

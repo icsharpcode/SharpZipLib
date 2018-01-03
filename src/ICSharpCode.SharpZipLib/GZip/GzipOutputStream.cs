@@ -31,7 +31,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 	/// 			}
 	/// 		}
 	/// 	}
-	/// }	
+	/// }
 	/// </code>
 	/// </example>
 	public class GZipOutputStream : DeflaterOutputStream

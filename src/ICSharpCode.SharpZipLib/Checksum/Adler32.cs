@@ -64,7 +64,7 @@ namespace ICSharpCode.SharpZipLib.Checksum
 
 		/// <summary>
 		/// Initialise a default instance of <see cref="Adler32"></see>
-		/// </summary>	
+		/// </summary>
 		public Adler32()
 		{
 			Reset();

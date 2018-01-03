@@ -82,10 +82,10 @@ namespace ICSharpCode.SharpZipLib.Encryption
 				if (byteCount >= _blockAndAuth) {
 					// At least a 16 byte block and an auth code remains.
 					_transform.TransformBlock(_slideBuffer,
-											  _slideBufStartPos,
-											  CRYPTO_BLOCK_SIZE,
-											  buffer,
-											  offset);
+					                          _slideBufStartPos,
+					                          CRYPTO_BLOCK_SIZE,
+					                          buffer,
+					                          offset);
 					nBytes += CRYPTO_BLOCK_SIZE;
 					offset += CRYPTO_BLOCK_SIZE;
 					_slideBufStartPos += CRYPTO_BLOCK_SIZE;
@@ -95,10 +95,10 @@ namespace ICSharpCode.SharpZipLib.Encryption
 						// At least one byte of data plus auth code
 						int finalBlock = byteCount - AUTH_CODE_LENGTH;
 						_transform.TransformBlock(_slideBuffer,
-												  _slideBufStartPos,
-												  finalBlock,
-												  buffer,
-												  offset);
+						                          _slideBufStartPos,
+						                          finalBlock,
+						                          buffer,
+						                          offset);
 
 						nBytes += finalBlock;
 						_slideBufStartPos += finalBlock;

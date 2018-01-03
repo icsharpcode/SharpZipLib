@@ -226,57 +226,57 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			}
 		}
 
-        /// <summary>
-        /// Verify that if a decompression was successful for at least one block we're exiting gracefully.
-        /// </summary>
-        [Test]
-        public void TrailingGarbage()
-        {
-            /* ARRANGE */
+		/// <summary>
+		/// Verify that if a decompression was successful for at least one block we're exiting gracefully.
+		/// </summary>
+		[Test]
+		public void TrailingGarbage()
+		{
+			/* ARRANGE */
 			var ms = new MemoryStream();
 			var outStream = new GZipOutputStream(ms);
 
-            // input buffer to be compressed
+			// input buffer to be compressed
 			byte[] buf = new byte[100000];
 			var rnd = new Random();
 			rnd.NextBytes(buf);
 
-            // compress input buffer
+			// compress input buffer
 			outStream.Write(buf, 0, buf.Length);
 			outStream.Flush();
 			outStream.Finish();
 
-            // generate random trailing garbage and add to the compressed stream
-            byte[] garbage = new byte[4096];
-            rnd.NextBytes(garbage);
-            ms.Write(garbage, 0, garbage.Length);
+			// generate random trailing garbage and add to the compressed stream
+			byte[] garbage = new byte[4096];
+			rnd.NextBytes(garbage);
+			ms.Write(garbage, 0, garbage.Length);
 
-            // rewind the concatenated stream
+			// rewind the concatenated stream
 			ms.Seek(0, SeekOrigin.Begin);
 
 
-            /* ACT */
-            // decompress concatenated stream
+			/* ACT */
+			// decompress concatenated stream
 			var inStream = new GZipInputStream(ms);
 			byte[] buf2 = new byte[buf.Length];
 			int currentIndex = 0;
 			int count = buf2.Length;
-            while (true) {
-                int numRead = inStream.Read(buf2, currentIndex, count);
-                if (numRead <= 0) {
-                    break;
-                }
-                currentIndex += numRead;
-                count -= numRead;
-            }
+			while (true) {
+				int numRead = inStream.Read(buf2, currentIndex, count);
+				if (numRead <= 0) {
+					break;
+				}
+				currentIndex += numRead;
+				count -= numRead;
+			}
 
 
-            /* ASSERT */
+			/* ASSERT */
 			Assert.AreEqual(0, count);
 			for (int i = 0; i < buf.Length; ++i) {
 				Assert.AreEqual(buf2[i], buf[i]);
 			}
-        }
+		}
 
 		[Test]
 		[Category("GZip")]

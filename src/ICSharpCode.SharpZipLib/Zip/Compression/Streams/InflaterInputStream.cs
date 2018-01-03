@@ -409,7 +409,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		/// <summary>
 		/// Clear any cryptographic state.
-		/// </summary>		
+		/// </summary>
 		protected void StopDecrypting()
 		{
 			inputBuffer.CryptoTransform = null;
@@ -477,7 +477,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		public override long Length {
 			get {
 				//return inputBuffer.RawLength;
-                throw new NotSupportedException("InflaterInputStream Length is not supported");
+				throw new NotSupportedException("InflaterInputStream Length is not supported");
 			}
 		}
 

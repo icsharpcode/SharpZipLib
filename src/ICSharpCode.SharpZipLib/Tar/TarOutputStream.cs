@@ -145,7 +145,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 		/// <summary>
 		/// All buffered data is written to destination
-		/// </summary>		
+		/// </summary>
 		public override void Flush()
 		{
 			outputStream.Flush();
@@ -390,7 +390,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 		/// <summary>
 		/// Write an EOF (end of archive) block to the tar archive.
-		/// The	end of the archive is indicated	by two blocks consisting entirely of zero bytes.
+		/// The end of the archive is indicated by two blocks consisting entirely of zero bytes.
 		/// </summary>
 		void WriteEofBlock()
 		{
@@ -407,7 +407,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 		/// <summary>
 		/// current 'Assembly' buffer length
-		/// </summary>		
+		/// </summary>
 		int assemblyBufferLength;
 
 		/// <summary>

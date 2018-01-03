@@ -274,14 +274,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { restoreAttributesOnExtract_ = value; }
 		}
 
-        /// <summary>
-        /// Get/set the Compression Level that will be used
-        /// when creating the zip
-        /// </summary>
-        public Deflater.CompressionLevel CompressionLevel{
-            get { return compressionLevel_; }
-            set { compressionLevel_ = value; }
-        }
+		/// <summary>
+		/// Get/set the Compression Level that will be used
+		/// when creating the zip
+		/// </summary>
+		public Deflater.CompressionLevel CompressionLevel{
+			get { return compressionLevel_; }
+			set { compressionLevel_ = value; }
+		}
 		#endregion
 
 		#region Delegates
@@ -334,7 +334,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			using (outputStream_ = new ZipOutputStream(outputStream)) {
 
-                outputStream_.SetLevel((int)CompressionLevel);
+				outputStream_.SetLevel((int)CompressionLevel);
 
 				if (password_ != null) {
 					outputStream_.Password = password_;
@@ -386,8 +386,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="directoryFilter">A filter to apply to directories.</param>
 		/// <param name="restoreDateTime">Flag indicating whether to restore the date and time for extracted files.</param>
 		public void ExtractZip(string zipFileName, string targetDirectory,
-							   Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate,
-							   string fileFilter, string directoryFilter, bool restoreDateTime)
+		                       Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate,
+		                       string fileFilter, string directoryFilter, bool restoreDateTime)
 		{
 			Stream inputStream = File.Open(zipFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
 			ExtractZip(inputStream, targetDirectory, overwrite, confirmDelegate, fileFilter, directoryFilter, restoreDateTime, true);
@@ -405,9 +405,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="restoreDateTime">Flag indicating whether to restore the date and time for extracted files.</param>
 		/// <param name="isStreamOwner">Flag indicating whether the inputStream will be closed by this method.</param>
 		public void ExtractZip(Stream inputStream, string targetDirectory,
-					   Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate,
-					   string fileFilter, string directoryFilter, bool restoreDateTime,
-					   bool isStreamOwner)
+		                      Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate,
+		                      string fileFilter, string directoryFilter, bool restoreDateTime,
+		                      bool isStreamOwner)
 		{
 			if ((overwrite == Overwrite.Prompt) && (confirmDelegate == null)) {
 				throw new ArgumentNullException(nameof(confirmDelegate));
@@ -654,9 +654,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		IEntryFactory entryFactory_ = new ZipEntryFactory();
 		INameTransform extractNameTransform_;
 		UseZip64 useZip64_ = UseZip64.Dynamic;
-        CompressionLevel compressionLevel_ = CompressionLevel.DEFAULT_COMPRESSION;
+		CompressionLevel compressionLevel_ = CompressionLevel.DEFAULT_COMPRESSION;
 
-        string password_;
+		string password_;
 
 		#endregion
 	}
