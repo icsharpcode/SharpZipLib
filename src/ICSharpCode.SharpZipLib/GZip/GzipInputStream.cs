@@ -102,7 +102,6 @@ namespace ICSharpCode.SharpZipLib.GZip
 			// A compressed block could potentially be empty, so we need to loop until we reach EOF or
 			// we find data.
 			while (true) {
-
 				// If we haven't read the header for this block, read it
 				if (!readGZIPHeader) {
 
@@ -133,6 +132,9 @@ namespace ICSharpCode.SharpZipLib.GZip
 				// If this is the end of stream, read the footer
 				if (inf.IsFinished) {
 					ReadFooter();
+				} else if (inf.RemainingInput == 0) {
+					// If the stream is not finished but we have no more data to read, don't keep looping forever
+					throw new GZipException("Unexpected EOF");
 				}
 
 				if (bytesRead > 0) {
