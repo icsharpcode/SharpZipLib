@@ -1,24 +1,21 @@
-package org.itadaki.bzip2;
+using System;
+using System.IO;
 
-import java.io.IOException;
-
-/**
- * Indicates that a data format error was encountered while attempting to decode bzip2 data
- */
-public class BZip2Exception extends IOException {
+namespace ICSharpCode.SharpZipLib.BZip2
+{
 
 	/**
-	 * Serial version UID
+	 * Indicates that a data format error was encountered while attempting to decode bzip2 data
 	 */
-	private static final long serialVersionUID = -8931219115669559570L;
+	public class BZip2Exception: Exception
+	{
 
-	/**
-	 * @param reason The exception's reason string
-	 */
-	public BZip2Exception (String reason) {
-
-		super (reason);
+		/**
+		 * @param reason The exception's reason string
+		 */
+		public BZip2Exception(string message) : base(message)
+		{
+		}
 
 	}
-
 }
