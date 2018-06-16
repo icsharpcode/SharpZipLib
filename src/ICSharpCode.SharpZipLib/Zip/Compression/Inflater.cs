@@ -273,8 +273,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 						while (((symbol = litlenTree.GetSymbol(input)) & ~0xff) == 0) {
 							outputWindow.Write(symbol);
 							if (--free < 258) {
-								// If this happens we will be stuck in an infinite loop.
-								throw new SharpZipBaseException("Literal symbol count exceeds window size, input file may be corrupt.");
+								return true;
 							}
 						}
 
