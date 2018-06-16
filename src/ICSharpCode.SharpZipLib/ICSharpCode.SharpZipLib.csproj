@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.3;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2;net45</TargetFrameworks>
     <PackageId>SharpZipLib </PackageId>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>ICSharpCode.SharpZipLib.snk</AssemblyOriginatorKeyFile>
@@ -15,12 +15,12 @@ Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.0 for more 
     <PackageProjectUrl>https://github.com/icsharpcode/SharpZipLib</PackageProjectUrl> 
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.3|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.3\ICSharpCode.SharpZipLib.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2\ICSharpCode.SharpZipLib.xml</DocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.3|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.3\ICSharpCode.SharpZipLib.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2\ICSharpCode.SharpZipLib.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
