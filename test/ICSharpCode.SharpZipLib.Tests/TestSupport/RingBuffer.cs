@@ -21,7 +21,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// Create a new RingBuffer with a specified size.
 		/// </summary>
 		/// <param name="size">The size of the ring buffer to create.</param>
-		public ReadWriteRingBuffer(int size)
+		public ReadWriteRingBuffer(int size, CancellationToken? token = null)
 		{
 			if (size <= 0) {
 				throw new ArgumentOutOfRangeException(nameof(size));
@@ -29,6 +29,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 			array_ = new byte[size];
 			lockObject_ = new object();
+			token_ = token;
 
 #if SimpleSynch
 			waitSpan_ = TimeSpan.FromMilliseconds(1);
@@ -81,6 +82,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 #if SimpleSynch
 			while (IsFull) {
 				Thread.Sleep(waitSpan_);
+				token_?.ThrowIfCancellationRequested();
 			}
 #else
 			notFullEvent_.WaitOne();
@@ -122,6 +124,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 #if SimpleSynch
 				while (IsFull) {
 					Thread.Sleep(waitSpan_);
+					token_?.ThrowIfCancellationRequested();
 				}
 #else
 				notFullEvent_.WaitOne();
@@ -177,6 +180,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 #if SimpleSynch
 			while (!isClosed_ && IsEmpty) {
 				Thread.Sleep(waitSpan_);
+				token_?.ThrowIfCancellationRequested();
 			}
 #else
 			notEmptyEvent_.WaitOne();
@@ -217,6 +221,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 #if SimpleSynch
 				while (!isClosed_ && IsEmpty) {
 					Thread.Sleep(waitSpan_);
+					token_?.ThrowIfCancellationRequested();
 				}
 #else
 				notEmptyEvent_.WaitOne();
@@ -354,7 +359,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		long bytesRead_;
 
 		object lockObject_;
-
+		private CancellationToken? token_;
 		TimeSpan waitSpan_;
 
 #if !SimpleSynch
