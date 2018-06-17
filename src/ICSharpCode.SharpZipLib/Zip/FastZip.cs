@@ -385,12 +385,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="fileFilter">A filter to apply to files.</param>
 		/// <param name="directoryFilter">A filter to apply to directories.</param>
 		/// <param name="restoreDateTime">Flag indicating whether to restore the date and time for extracted files.</param>
+		/// <param name="allowParentTraversal">Allow parent directory traversal in file paths (e.g. ../file)</param>
 		public void ExtractZip(string zipFileName, string targetDirectory,
 							   Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate,
-							   string fileFilter, string directoryFilter, bool restoreDateTime)
+							   string fileFilter, string directoryFilter, bool restoreDateTime, bool allowParentTraversal = false)
 		{
 			Stream inputStream = File.Open(zipFileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-			ExtractZip(inputStream, targetDirectory, overwrite, confirmDelegate, fileFilter, directoryFilter, restoreDateTime, true);
+			ExtractZip(inputStream, targetDirectory, overwrite, confirmDelegate, fileFilter, directoryFilter, restoreDateTime, true, allowParentTraversal);
 		}
 
 		/// <summary>
@@ -404,10 +405,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="directoryFilter">A filter to apply to directories.</param>
 		/// <param name="restoreDateTime">Flag indicating whether to restore the date and time for extracted files.</param>
 		/// <param name="isStreamOwner">Flag indicating whether the inputStream will be closed by this method.</param>
+		/// <param name="allowParentTraversal">Allow parent directory traversal in file paths (e.g. ../file)</param>
 		public void ExtractZip(Stream inputStream, string targetDirectory,
 					   Overwrite overwrite, ConfirmOverwriteDelegate confirmDelegate,
 					   string fileFilter, string directoryFilter, bool restoreDateTime,
-					   bool isStreamOwner)
+					   bool isStreamOwner, bool allowParentTraversal = false)
 		{
 			if ((overwrite == Overwrite.Prompt) && (confirmDelegate == null)) {
 				throw new ArgumentNullException(nameof(confirmDelegate));
@@ -416,7 +418,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			continueRunning_ = true;
 			overwrite_ = overwrite;
 			confirmDelegate_ = confirmDelegate;
-			extractNameTransform_ = new WindowsNameTransform(targetDirectory);
+			extractNameTransform_ = new WindowsNameTransform(targetDirectory, allowParentTraversal);
 
 			fileFilter_ = new NameFilter(fileFilter);
 			directoryFilter_ = new NameFilter(directoryFilter);
