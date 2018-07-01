@@ -15,19 +15,27 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <param name="inStream">The readable stream containing data to decompress.</param>
 		/// <param name="outStream">The output stream to receive the decompressed data.</param>
 		/// <param name="isStreamOwner">Both streams are closed on completion if true.</param>
+		/// <exception cref="ArgumentNullException">Input or output stream is null</exception>
 		public static void Decompress(Stream inStream, Stream outStream, bool isStreamOwner)
 		{
-			if (inStream == null || outStream == null) {
-				throw new Exception("Null Stream");
-			}
+			if (inStream == null)
+				throw new ArgumentNullException(nameof(inStream), "Input stream is null");
 
-			try {
-				using (GZipInputStream bzipInput = new GZipInputStream(inStream)) {
-					bzipInput.IsStreamOwner = isStreamOwner;
-					Core.StreamUtils.Copy(bzipInput, outStream, new byte[4096]);
+			if (outStream == null)
+				throw new ArgumentNullException(nameof(outStream), "Output stream is null");
+
+			try
+			{
+				using (GZipInputStream gzipInput = new GZipInputStream(inStream))
+				{
+					gzipInput.IsStreamOwner = isStreamOwner;
+					Core.StreamUtils.Copy(gzipInput, outStream, new byte[4096]);
 				}
-			} finally {
-				if (isStreamOwner) {
+			}
+			finally
+			{
+				if (isStreamOwner)
+				{
 					// inStream is closed by the GZipInputStream if stream owner
 					outStream.Dispose();
 				}
@@ -41,21 +49,31 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <param name="inStream">The readable stream to compress.</param>
 		/// <param name="outStream">The output stream to receive the compressed data.</param>
 		/// <param name="isStreamOwner">Both streams are closed on completion if true.</param>
-		/// <param name="level">Block size acts as compression level (1 to 9) with 1 giving 
-		/// the lowest compression and 9 the highest.</param>
-		public static void Compress(Stream inStream, Stream outStream, bool isStreamOwner, int level)
+		/// <param name="bufferSize">Deflate buffer size, minimum 512</param>
+		/// <exception cref="ArgumentNullException">Input or output stream is null</exception>
+		/// <exception cref="ArgumentOutOfRangeException">Buffer Size is smaller than 512</exception>
+		public static void Compress(Stream inStream, Stream outStream, bool isStreamOwner, int bufferSize = 512)
 		{
-			if (inStream == null || outStream == null) {
-				throw new Exception("Null Stream");
-			}
+			if (inStream == null)
+				throw new ArgumentNullException(nameof(inStream), "Input stream is null");
 
-			try {
-				using (GZipOutputStream bzipOutput = new GZipOutputStream(outStream, level)) {
-					bzipOutput.IsStreamOwner = isStreamOwner;
-					Core.StreamUtils.Copy(inStream, bzipOutput, new byte[4096]);
+			if(outStream == null)
+				throw new ArgumentNullException(nameof(outStream), "Output stream is null");
+
+			if (bufferSize < 512)
+				throw new ArgumentOutOfRangeException(nameof(bufferSize), "Deflate buffer size must be >= 512");
+
+			try
+			{
+				using (GZipOutputStream gzipOutput = new GZipOutputStream(outStream, bufferSize))
+				{
+					gzipOutput.IsStreamOwner = isStreamOwner;
+					Core.StreamUtils.Copy(inStream, gzipOutput, new byte[bufferSize]);
 				}
-			} finally {
-				if (isStreamOwner) {
+			}
+			finally {
+				if (isStreamOwner)
+				{
 					// outStream is closed by the GZipOutputStream if stream owner
 					inStream.Dispose();
 				}
