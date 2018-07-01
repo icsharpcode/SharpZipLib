@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text.RegularExpressions;
 using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
@@ -269,5 +270,78 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				File.Delete(tempName1);
 			}
 		}
+
+
+		[Test]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void LimitExtractPath()
+		{
+			string tempPath = GetTempFilePath();
+			Assert.IsNotNull(tempPath, "No permission to execute this test?");
+
+			var uniqueName = "SharpZipLib.Test_" + DateTime.Now.Ticks.ToString("x");
+
+			tempPath = Path.Combine(tempPath, uniqueName);
+			var extractPath = Path.Combine(tempPath, "output");
+
+			const string contentFile = "content.txt";
+
+			var contentFilePathBad = Path.Combine("..", contentFile);
+			var extractFilePathBad = Path.Combine(tempPath, contentFile);
+			var archiveFileBad = Path.Combine(tempPath, "test-good.zip");
+
+			var contentFilePathGood = Path.Combine("childDir", contentFile);
+			var extractFilePathGood = Path.Combine(extractPath, contentFilePathGood);
+			var archiveFileGood = Path.Combine(tempPath, "test-bad.zip");
+
+			try
+			{
+				Directory.CreateDirectory(extractPath);
+
+				// Create test input
+				void CreateTestFile(string archiveFile, string contentPath)
+				{
+					using (var zf = ZipFile.Create(archiveFile))
+					{
+						zf.BeginUpdate();
+						zf.Add(new StringMemoryDataSource($"Content of {archiveFile}"), contentPath);
+						zf.CommitUpdate();
+					}
+				}
+
+				CreateTestFile(archiveFileGood, contentFilePathGood);
+				CreateTestFile(archiveFileBad, contentFilePathBad);
+
+				Assert.IsTrue(File.Exists(archiveFileGood), "Good test archive was not created");
+				Assert.IsTrue(File.Exists(archiveFileBad), "Bad test archive was not created");
+
+				var fastZip = new FastZip();
+
+				Assert.DoesNotThrow(() => {
+					fastZip.ExtractZip(archiveFileGood, extractPath, "");
+				}, "Threw exception on good file name");
+
+				Assert.IsTrue(File.Exists(extractFilePathGood), "Good output file not created");
+
+				Assert.Throws<SharpZipLib.Core.InvalidNameException>(() => {
+					fastZip.ExtractZip(archiveFileBad, extractPath, "");
+				}, "No exception was thrown for bad file name");
+
+				Assert.IsFalse(File.Exists(extractFilePathBad), "Bad output file created");
+
+				Assert.DoesNotThrow(() => {
+					fastZip.ExtractZip(archiveFileBad, extractPath, FastZip.Overwrite.Never, null, "", "", true, true);
+				}, "Threw exception on bad file name when traversal explicitly allowed");
+
+				Assert.IsTrue(File.Exists(extractFilePathBad), "Bad output file not created when traversal explicitly allowed");
+
+			}
+			finally
+			{
+				Directory.Delete(tempPath, true);
+			}
+		}
+
 	}
 }
