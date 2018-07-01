@@ -251,3 +251,4 @@ paket-files/
 .idea/
 *.sln.iml
 /test/ICSharpCode.SharpZipLib.TestBootstrapper/Properties/launchSettings.json
+_testRunner/
