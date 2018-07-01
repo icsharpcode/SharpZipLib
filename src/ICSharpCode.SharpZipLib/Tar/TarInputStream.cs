@@ -434,7 +434,30 @@ namespace ICSharpCode.SharpZipLib.Tar
 						SkipToNextEntry();
 						headerBuf = this.tarBuffer.ReadBlock();
 					} else if (header.TypeFlag == TarHeader.LF_XHDR) {  // POSIX extended header
-																		// Ignore things we dont understand completely for now
+
+						byte[] nameBuffer = new byte[TarBuffer.BlockSize];
+						long numToRead = this.entrySize;
+
+						var xhr = new TarExtendedHeaderReader();
+
+						while (numToRead > 0)
+						{
+							int numRead = this.Read(nameBuffer, 0, (numToRead > nameBuffer.Length ? nameBuffer.Length : (int)numToRead));
+
+							if (numRead == -1)
+							{
+								throw new InvalidHeaderException("Failed to read long name entry");
+							}
+
+							xhr.Read(nameBuffer, numRead);
+							numToRead -= numRead;
+						}
+
+						if (xhr.Headers.TryGetValue("path", out string name))
+						{
+							longName = new StringBuilder(name);
+						}
+
 						SkipToNextEntry();
 						headerBuf = this.tarBuffer.ReadBlock();
 					} else if (header.TypeFlag == TarHeader.LF_GNU_VOLHDR) {
