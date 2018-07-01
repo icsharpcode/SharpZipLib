@@ -9,8 +9,8 @@ namespace ICSharpCode.SharpZipLib.TestBootstrapper
     {
 		static void Main(string[] args)
 		{
-			new AutoRun(typeof(ICSharpCode.SharpZipLib.Tests.Base.InflaterDeflaterTestSuite).GetTypeInfo().Assembly)
-			.Execute(args, new ExtendedTextWrapper(Console.Out), Console.In);
+			new AutoRun(typeof(Tests.Base.InflaterDeflaterTestSuite).GetTypeInfo().Assembly)
+			.Execute(args);
 		}
 
     }

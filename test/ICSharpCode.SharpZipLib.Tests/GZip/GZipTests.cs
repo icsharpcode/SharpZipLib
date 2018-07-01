@@ -4,6 +4,7 @@ using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
 using System.Threading;
+using System.Diagnostics;
 
 namespace ICSharpCode.SharpZipLib.Tests.GZip
 {
@@ -280,90 +281,32 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 
 		[Test]
 		[Category("GZip")]
+		[Category("Performance")]
 		[Category("Long Running")]
-		[Ignore("TODO : Fix this")]
-		public void BigStream()
+		[Explicit("Long Running")]
+		public void WriteThroughput()
 		{
-			window_ = new WindowedStream(0x3ffff);
-			outStream_ = new GZipOutputStream(window_);
-			inStream_ = new GZipInputStream(window_);
+			PerformanceTesting.TestWrite(
+				size: TestDataSize.Large,
+				output: w => new GZipOutputStream(w)
+			);
 
-			long target = 0x10000000;
-			readTarget_ = writeTarget_ = target;
-
-			Thread reader = new Thread(Reader);
-			reader.Name = "Reader";
-			reader.Start();
-
-			Thread writer = new Thread(Writer);
-			writer.Name = "Writer";
-
-			DateTime startTime = DateTime.Now;
-			writer.Start();
-
-			writer.Join();
-			reader.Join();
-
-			DateTime endTime = DateTime.Now;
-
-			TimeSpan span = endTime - startTime;
-			Console.WriteLine("Time {0}  processes {1} KB/Sec", span, (target / 1024) / span.TotalSeconds);
 		}
 
-		void Reader()
+		[Test]
+		[Category("GZip")]
+		[Category("Performance")]
+		[Explicit("Long Running")]
+		public void ReadWriteThroughput()
 		{
-			const int Size = 8192;
-			int readBytes = 1;
-			byte[] buffer = new byte[Size];
+			PerformanceTesting.TestReadWrite(
+				size: TestDataSize.Large,
+				input: w => new GZipInputStream(w),
+				output: w => new GZipOutputStream(w)
+			);
 
-			long passifierLevel = readTarget_ - 0x10000000;
-
-			while ((readTarget_ > 0) && (readBytes > 0)) {
-				int count = Size;
-				if (count > readTarget_) {
-					count = (int)readTarget_;
-				}
-
-				readBytes = inStream_.Read(buffer, 0, count);
-				readTarget_ -= readBytes;
-
-				if (readTarget_ <= passifierLevel) {
-					Console.WriteLine("Reader {0} bytes remaining", readTarget_);
-					passifierLevel = readTarget_ - 0x10000000;
-				}
-			}
-
-			Assert.IsTrue(window_.IsClosed, "Window should be closed");
-
-			// This shouldnt read any data but should read the footer
-			readBytes = inStream_.Read(buffer, 0, 1);
-			Assert.AreEqual(0, readBytes, "Stream should be empty");
-			Assert.AreEqual(0, window_.Length, "Window should be closed");
-			inStream_.Close();
 		}
 
-		void Writer()
-		{
-			const int Size = 8192;
 
-			byte[] buffer = new byte[Size];
-
-			while (writeTarget_ > 0) {
-				int thisTime = Size;
-				if (thisTime > writeTarget_) {
-					thisTime = (int)writeTarget_;
-				}
-
-				outStream_.Write(buffer, 0, thisTime);
-				writeTarget_ -= thisTime;
-			}
-			outStream_.Close();
-		}
-
-		WindowedStream window_;
-		GZipOutputStream outStream_;
-		GZipInputStream inStream_;
-		long readTarget_;
-		long writeTarget_;
 	}
 }

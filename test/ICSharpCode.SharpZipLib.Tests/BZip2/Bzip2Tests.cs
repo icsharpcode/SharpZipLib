@@ -4,6 +4,7 @@ using ICSharpCode.SharpZipLib.BZip2;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
 using System.Threading;
+using System.Diagnostics;
 
 namespace ICSharpCode.SharpZipLib.Tests.BZip2
 {
@@ -86,90 +87,29 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 
 		[Test]
 		[Category("BZip2")]
-		[Ignore("TODO : Fix this")]
-		public void Performance()
+		[Category("Performance")]
+		[Explicit("Long-running")]
+		public void WriteThroughput()
 		{
-			window_ = new WindowedStream(0x150000);
-
-			outStream_ = new BZip2OutputStream(window_, 1);
-
-			const long Target = 0x10000000;
-			readTarget_ = writeTarget_ = Target;
-
-			Thread reader = new Thread(Reader);
-			reader.Name = "Reader";
-
-			Thread writer = new Thread(Writer);
-			writer.Name = "Writer";
-
-			DateTime startTime = DateTime.Now;
-			writer.Start();
-
-			inStream_ = new BZip2InputStream(window_);
-
-			reader.Start();
-
-			Assert.IsTrue(writer.Join(TimeSpan.FromMinutes(5.0D)));
-			Assert.IsTrue(reader.Join(TimeSpan.FromMinutes(5.0D)));
-
-			DateTime endTime = DateTime.Now;
-			TimeSpan span = endTime - startTime;
-			Console.WriteLine("Time {0} throughput {1} KB/Sec", span, (Target / 1024) / span.TotalSeconds);
+			PerformanceTesting.TestWrite(
+				size: TestDataSize.Small,
+				output: w => new BZip2OutputStream(w)
+			);
 		}
 
-		void Reader()
+		[Test]
+		[Category("BZip2")]
+		[Category("Performance")]
+		[Explicit("Long-running")]
+		public void ReadWriteThroughput()
 		{
-			const int Size = 8192;
-			int readBytes = 1;
-			byte[] buffer = new byte[Size];
-
-			long passifierLevel = readTarget_ - 0x10000000;
-
-			while ((readTarget_ > 0) && (readBytes > 0)) {
-				int count = Size;
-				if (count > readTarget_) {
-					count = (int)readTarget_;
-				}
-
-				readBytes = inStream_.Read(buffer, 0, count);
-				readTarget_ -= readBytes;
-
-				if (readTarget_ <= passifierLevel) {
-					Console.WriteLine("Reader {0} bytes remaining", readTarget_);
-					passifierLevel = readTarget_ - 0x10000000;
-				}
-			}
-
-			Assert.IsTrue(window_.IsClosed, "Window should be closed");
-
-			// This shouldnt read any data but should read the footer
-			readBytes = inStream_.Read(buffer, 0, 1);
-			Assert.AreEqual(0, readBytes, "Stream should be empty");
-			Assert.AreEqual(0, window_.Length, "Window should be closed");
-			inStream_.Close();
+			PerformanceTesting.TestReadWrite(
+				size: TestDataSize.Small,
+				input: w => new BZip2InputStream(w),
+				output: w => new BZip2OutputStream(w)
+			);
 		}
 
-		void WriteTargetBytes()
-		{
-			const int Size = 8192;
 
-			byte[] buffer = new byte[Size];
-
-			while (writeTarget_ > 0) {
-				int thisTime = Size;
-				if (thisTime > writeTarget_) {
-					thisTime = (int)writeTarget_;
-				}
-
-				outStream_.Write(buffer, 0, thisTime);
-				writeTarget_ -= thisTime;
-			}
-		}
-
-		void Writer()
-		{
-			WriteTargetBytes();
-			outStream_.Close();
-		}
 	}
 }

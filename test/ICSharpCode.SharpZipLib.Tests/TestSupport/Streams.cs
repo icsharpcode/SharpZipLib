@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
@@ -260,37 +261,33 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// Initializes a new instance of the <see cref="WindowedStream"/> class.
 		/// </summary>
 		/// <param name="size">The size.</param>
-		public WindowedStream(int size)
+		public WindowedStream(int size, CancellationToken? token = null)
 		{
-			ringBuffer_ = new ReadWriteRingBuffer(size);
+			ringBuffer = new ReadWriteRingBuffer(size, token);
 		}
 
 		/// <summary>
 		/// When overridden in a derived class, gets a value indicating whether the current stream supports reading.
 		/// </summary>
 		/// <value></value>
-		/// <returns>true if the stream supports reading; otherwise, false.</returns>
-		public override bool CanRead {
-			get { return true; }
-		}
+		/// <returns>true if the stream is not closed.</returns>
+		/// <remarks>If the stream is closed, this property returns false.</remarks>
+		public override bool CanRead => !ringBuffer.IsClosed;
 
 		/// <summary>
-		/// When overridden in a derived class, gets a value indicating whether the current stream supports seeking.
+		/// Gets a value indicating whether the current stream supports seeking.
 		/// </summary>
 		/// <value></value>
-		/// <returns>true if the stream supports seeking; otherwise, false.</returns>
-		public override bool CanSeek {
-			get { return false; }
-		}
+		/// <returns>false</returns>
+		public override bool CanSeek => false;
 
 		/// <summary>
 		/// When overridden in a derived class, gets a value indicating whether the current stream supports writing.
 		/// </summary>
 		/// <value></value>
-		/// <returns>true if the stream supports writing; otherwise, false.</returns>
-		public override bool CanWrite {
-			get { return true; }
-		}
+		/// <returns>true if the stream is not closed.</returns>
+		/// <remarks>If the stream is closed, this property returns false.</remarks>
+		public override bool CanWrite => !ringBuffer.IsClosed;
 
 		/// <summary>
 		/// When overridden in a derived class, clears all buffers for this stream and causes any buffered data to be written to the underlying device.
@@ -309,8 +306,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// <exception cref="T:System.NotSupportedException">A class derived from Stream does not support seeking. </exception>
 		/// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
 		public override long Length {
-			// A bit of a HAK as its not true in the stream sense.
-			get { return ringBuffer_.Count; }
+			get => throw new NotSupportedException();
 		}
 
 		/// <summary>
@@ -322,12 +318,8 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// <exception cref="T:System.NotSupportedException">The stream does not support seeking. </exception>
 		/// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
 		public override long Position {
-			get {
-				throw new Exception("The method or operation is not implemented.");
-			}
-			set {
-				throw new Exception("The method or operation is not implemented.");
-			}
+			get => throw new NotSupportedException();
+			set => throw new NotSupportedException();
 		}
 
 		/// <summary>
@@ -351,7 +343,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		{
 			int bytesRead = 0;
 			while (count > 0) {
-				int value = ringBuffer_.ReadByte();
+				int value = ringBuffer.ReadByte();
 				if (value >= 0) {
 					buffer[offset] = (byte)(value & 0xff);
 					offset++;
@@ -366,35 +358,23 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		}
 
 		/// <summary>
-		/// When overridden in a derived class, sets the position within the current stream.
+		/// Not supported, throws <see cref="T:System.NotSupportedException"/>.
 		/// </summary>
 		/// <param name="offset">A byte offset relative to the <paramref name="origin"/> parameter.</param>
 		/// <param name="origin">A value of type <see cref="T:System.IO.SeekOrigin"/> indicating the reference point used to obtain the new position.</param>
-		/// <returns>
-		/// The new position within the current stream.
-		/// </returns>
-		/// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
+		/// <returns></returns>
 		/// <exception cref="T:System.NotSupportedException">The stream does not support seeking, such as if the stream is constructed from a pipe or console output. </exception>
-		/// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
-		public override long Seek(long offset, SeekOrigin origin)
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
+		public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
 
 		/// <summary>
-		/// When overridden in a derived class, sets the length of the current stream.
+		/// Not supported, throws <see cref="T:System.NotSupportedException"/>.
 		/// </summary>
 		/// <param name="value">The desired length of the current stream in bytes.</param>
-		/// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
 		/// <exception cref="T:System.NotSupportedException">The stream does not support both writing and seeking, such as if the stream is constructed from a pipe or console output. </exception>
-		/// <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
-		public override void SetLength(long value)
-		{
-			throw new Exception("The method or operation is not implemented.");
-		}
+		public override void SetLength(long value) => throw new NotSupportedException();
 
 		/// <summary>
-		/// When overridden in a derived class, writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.
+		/// Writes a sequence of bytes to the current stream and advances the current position within this stream by the number of bytes written.
 		/// </summary>
 		/// <param name="buffer">An array of bytes. This method copies <paramref name="count"/> bytes from <paramref name="buffer"/> to the current stream.</param>
 		/// <param name="offset">The zero-based byte offset in <paramref name="buffer"/> at which to begin copying bytes to the current stream.</param>
@@ -410,7 +390,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		public override void Write(byte[] buffer, int offset, int count)
 		{
 			for (int i = 0; i < count; ++i) {
-				ringBuffer_.WriteByte(buffer[offset + i]);
+				ringBuffer.WriteByte(buffer[offset + i]);
 			}
 		}
 
@@ -419,37 +399,34 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// </summary>
 		/// <value><c>true</c> if this instance is closed; otherwise, <c>false</c>.</value>
 		public bool IsClosed {
-			get { return ringBuffer_.IsClosed; }
+			get { return ringBuffer.IsClosed; }
 		}
 
-		/// <summary>
-		/// Closes the current stream and releases any resources (such as sockets and file handles) associated with the current stream.
-		/// </summary>
-		public override void Close()
+		/// <summary>Releases the unmanaged resources used by the <see cref="Stream"></see> and optionally releases the managed resources.</summary>
+		/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+		protected override void Dispose(bool disposing)
 		{
-			ringBuffer_.Close();
+			if(disposing && !ringBuffer.IsClosed)
+			{
+				ringBuffer.Close();
+			}
+			base.Dispose(disposing);
 		}
 
 		/// <summary>
 		/// Gets the bytes written.
 		/// </summary>
 		/// <value>The bytes written.</value>
-		public long BytesWritten {
-			get { return ringBuffer_.BytesWritten; }
-		}
+		public long BytesWritten => ringBuffer.BytesWritten;
 
 		/// <summary>
 		/// Gets the bytes read.
 		/// </summary>
 		/// <value>The bytes read.</value>
-		public long BytesRead {
-			get { return ringBuffer_.BytesRead; }
-		}
-
-		readonly
+		public long BytesRead => ringBuffer.BytesRead;
 
 		#region Instance Fields
-		ReadWriteRingBuffer ringBuffer_;
+		private readonly ReadWriteRingBuffer ringBuffer;
 
 		#endregion
 	}

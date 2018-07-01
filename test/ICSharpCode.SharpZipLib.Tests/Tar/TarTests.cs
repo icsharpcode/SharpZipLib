@@ -612,5 +612,65 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
 			Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
 		}
+
+		[Test]
+		[Category("Tar")]
+		[Category("Performance")]
+		[Explicit("Long Running")]
+		public void WriteThroughput()
+		{
+			const string EntryName = "LargeTarEntry";
+
+			PerformanceTesting.TestWrite(TestDataSize.Large, bs =>
+			{
+				var tos = new TarOutputStream(bs);
+				tos.PutNextEntry(new TarEntry(new TarHeader()
+				{
+					Name = EntryName,
+					Size = (int)TestDataSize.Large,
+				}));
+				return tos;
+			},
+			stream =>
+			{
+				((TarOutputStream)stream).CloseEntry();
+			});
+		}
+
+		[Test]
+		[Category("Tar")]
+		[Category("Performance")]
+		[Explicit("Long Running")]
+		public void SingleLargeEntry()
+		{
+			const string EntryName = "LargeTarEntry";
+			const TestDataSize dataSize = TestDataSize.Large;
+
+			PerformanceTesting.TestReadWrite(
+				size: dataSize,
+				input: bs =>
+				{
+					var tis = new TarInputStream(bs);
+					var entry = tis.GetNextEntry();
+
+					Assert.AreEqual(entry.Name, EntryName);
+					return tis;
+				},
+				output: bs =>
+				{
+					var tos = new TarOutputStream(bs);
+					tos.PutNextEntry(new TarEntry(new TarHeader()
+					{
+						Name = EntryName,
+						Size = (int)dataSize,
+					}));
+					return tos;
+				},
+				outputClose: stream =>
+				{
+					((TarOutputStream)stream).CloseEntry();
+				}
+			);
+		}
 	}
 }
