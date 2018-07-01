@@ -3,6 +3,8 @@ using System.IO;
 
 namespace ICSharpCode.SharpZipLib.GZip
 {
+	using static Zip.Compression.Deflater;
+
 	/// <summary>
 	/// An example class to demonstrate compression and decompression of GZip streams.
 	/// </summary>
@@ -50,9 +52,11 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <param name="outStream">The output stream to receive the compressed data.</param>
 		/// <param name="isStreamOwner">Both streams are closed on completion if true.</param>
 		/// <param name="bufferSize">Deflate buffer size, minimum 512</param>
+		/// <param name="level">Deflate compression level, 0-9</param>
 		/// <exception cref="ArgumentNullException">Input or output stream is null</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Buffer Size is smaller than 512</exception>
-		public static void Compress(Stream inStream, Stream outStream, bool isStreamOwner, int bufferSize = 512)
+		/// <exception cref="ArgumentOutOfRangeException">Compression level outside 0-9</exception>
+		public static void Compress(Stream inStream, Stream outStream, bool isStreamOwner, int bufferSize = 512, int level = 6)
 		{
 			if (inStream == null)
 				throw new ArgumentNullException(nameof(inStream), "Input stream is null");
@@ -63,15 +67,20 @@ namespace ICSharpCode.SharpZipLib.GZip
 			if (bufferSize < 512)
 				throw new ArgumentOutOfRangeException(nameof(bufferSize), "Deflate buffer size must be >= 512");
 
+			if (level<NO_COMPRESSION || level> BEST_COMPRESSION)
+				throw new ArgumentOutOfRangeException(nameof(level), "Compression level must be 0-9");
+
 			try
 			{
 				using (GZipOutputStream gzipOutput = new GZipOutputStream(outStream, bufferSize))
 				{
+					gzipOutput.SetLevel(level);
 					gzipOutput.IsStreamOwner = isStreamOwner;
 					Core.StreamUtils.Copy(inStream, gzipOutput, new byte[bufferSize]);
 				}
 			}
-			finally {
+			finally
+			{
 				if (isStreamOwner)
 				{
 					// outStream is closed by the GZipOutputStream if stream owner
