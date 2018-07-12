@@ -1,3 +1,5 @@
+using System;
+
 namespace ICSharpCode.SharpZipLib.Checksum
 {
 	/// <summary>
@@ -40,15 +42,9 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		/// <summary>
 		/// Adds the byte array to the data checksum.
 		/// </summary>
-		/// <param name = "buffer">
-		/// The buffer which contains the data
+		/// <param name = "segment">
+		/// The chunk of data to add
 		/// </param>
-		/// <param name = "offset">
-		/// The offset in the buffer where the data starts
-		/// </param>
-		/// <param name = "count">
-		/// the number of data bytes to add.
-		/// </param>
-		void Update(byte[] buffer, int offset, int count);
+		void Update(ArraySegment<byte> segment);
 	}
 }

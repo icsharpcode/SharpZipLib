@@ -546,7 +546,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				throw new InvalidOperationException("Dictionary is not needed");
 			}
 
-			adler.Update(buffer, index, count);
+			adler.Update(new ArraySegment<byte>(buffer, index, count));
 
 			if ((int)adler.Value != readAdler) {
 				throw new SharpZipBaseException("Wrong adler checksum");
@@ -687,7 +687,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					*/
 					int more = outputWindow.CopyOutput(buffer, offset, count);
 					if (more > 0) {
-						adler.Update(buffer, offset, more);
+						adler.Update(new ArraySegment<byte>(buffer, offset, more));
 						offset += more;
 						bytesCopied += more;
 						totalOut += (long)more;

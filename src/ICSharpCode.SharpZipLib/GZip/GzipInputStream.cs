@@ -127,7 +127,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 				// Try to read compressed data
 				int bytesRead = base.Read(buffer, offset, count);
 				if (bytesRead > 0) {
-					crc.Update(buffer, offset, bytesRead);
+					crc.Update(new ArraySegment<byte>(buffer, offset, bytesRead));
 				}
 
 				// If this is the end of stream, read the footer

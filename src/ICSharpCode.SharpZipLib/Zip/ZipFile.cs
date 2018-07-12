@@ -837,7 +837,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 							long totalBytes = 0;
 							int bytesRead;
 							while ((bytesRead = entryStream.Read(buffer, 0, buffer.Length)) > 0) {
-								crc.Update(buffer, 0, bytesRead);
+								crc.Update(new ArraySegment<byte>(buffer, 0, bytesRead));
 
 								if (resultHandler != null) {
 									totalBytes += bytesRead;
@@ -2069,7 +2069,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				bytesRead = source.Read(buffer, 0, readSize);
 				if (bytesRead > 0) {
 					if (updateCrc) {
-						crc.Update(buffer, 0, bytesRead);
+						crc.Update(new ArraySegment<byte>(buffer, 0, bytesRead));
 					}
 					destination.Write(buffer, 0, bytesRead);
 					bytesToCopy -= bytesRead;
@@ -2149,7 +2149,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				bytesRead = stream.Read(buffer, 0, readSize);
 				if (bytesRead > 0) {
 					if (updateCrc) {
-						crc.Update(buffer, 0, bytesRead);
+						crc.Update(new ArraySegment<byte>(buffer, 0, bytesRead));
 					}
 					stream.Position = destinationPosition;
 					stream.Write(buffer, 0, bytesRead);

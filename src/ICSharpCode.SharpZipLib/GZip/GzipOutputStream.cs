@@ -123,7 +123,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 				throw new InvalidOperationException("Write not permitted in current state");
 			}
 
-			crc.Update(buffer, offset, count);
+			crc.Update(new ArraySegment<byte>(buffer, offset, count));
 			base.Write(buffer, offset, count);
 		}
 

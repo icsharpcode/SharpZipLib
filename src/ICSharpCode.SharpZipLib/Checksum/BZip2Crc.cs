@@ -161,39 +161,20 @@ namespace ICSharpCode.SharpZipLib.Checksum
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
-			Update(buffer, 0, buffer.Length);
+			Update(new ArraySegment<byte>(buffer, 0, buffer.Length));
 		}
 
 		/// <summary>
 		/// Update CRC data checksum based on a portion of a block of data
 		/// </summary>
-		/// <param name = "buffer">Contains the data to update the CRC with.</param>
-		/// <param name = "offset">The offset into the buffer where the data starts</param>
-		/// <param name = "count">The number of data bytes to update the CRC with.</param>
-		public void Update(byte[] buffer, int offset, int count)
+		/// <param name = "segment">
+		/// The chunk of data to add
+		/// </param>
+		public void Update(ArraySegment<byte> segment)
 		{
-			if (buffer == null) {
-				throw new ArgumentNullException(nameof(buffer));
-			}
-
-			if (offset < 0) {
-				throw new ArgumentOutOfRangeException(nameof(offset), "cannot be less than zero");
-			}
-
-			if (offset >= buffer.Length) {
-				throw new ArgumentOutOfRangeException(nameof(offset), "not a valid index into buffer");
-			}
-
-			if (count < 0) {
-				throw new ArgumentOutOfRangeException(nameof(count), "cannot be less than zero");
-			}
-
-			if (offset + count > buffer.Length) {
-				throw new ArgumentOutOfRangeException(nameof(count), "exceeds buffer size");
-			}
-
-			for (int i = 0; i < count; ++i) {
-				Update(buffer[offset++]);
+			foreach (byte b in segment)
+			{
+				Update(b);
 			}
 		}
 	}

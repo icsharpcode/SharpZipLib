@@ -33,7 +33,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			if (getCrc) {
 				var crc32 = new Crc32();
-				crc32.Update(original, 0, size);
+				crc32.Update(new ArraySegment<byte>(original, 0, size));
 				crc = crc32.Value;
 			}
 		}
