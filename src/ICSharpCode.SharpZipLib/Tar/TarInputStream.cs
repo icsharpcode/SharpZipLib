@@ -390,10 +390,21 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			byte[] headerBuf = tarBuffer.ReadBlock();
 
-			if (headerBuf == null) {
+			if (headerBuf == null)
+			{
 				hasHitEOF = true;
-			} else
-				hasHitEOF |= TarBuffer.IsEndOfArchiveBlock(headerBuf);
+			}
+			else if (TarBuffer.IsEndOfArchiveBlock(headerBuf))
+			{
+				hasHitEOF = true;
+
+				// Read the second zero-filled block
+				tarBuffer.ReadBlock();
+			}
+			else
+			{
+				hasHitEOF = false;
+			}
 
 			if (hasHitEOF) {
 				currentEntry = null;
