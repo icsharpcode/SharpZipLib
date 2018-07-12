@@ -600,7 +600,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				if (inf.IsNeedingInput) {
 					Fill();
 				} else if (bytesRead == 0) {
-					throw new ZipException("Dont know what to do");
+					throw new ZipException("Invalid input data");
 				}
 			}
 			return count - remainingBytes;
