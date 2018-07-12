@@ -290,7 +290,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="centralDirOffset">The offset of the dentral directory.</param>
 		public void WriteZip64EndOfCentralDirectory(long noOfEntries, long sizeEntries, long centralDirOffset)
 		{
-			long centralSignatureOffset = stream_.Position;
+			long centralSignatureOffset = centralDirOffset + sizeEntries;
 			WriteLEInt(ZipConstants.Zip64CentralFileHeaderSignature);
 			WriteLELong(44);    // Size of this record (total size of remaining fields in header or full size - 12)
 			WriteLEShort(ZipConstants.VersionMadeBy);   // Version made by
