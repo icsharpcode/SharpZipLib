@@ -80,7 +80,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 		#region Public API
 		/// <summary>
-		/// Sets the active compression level (1-9).  The new level will be activated
+		/// Sets the active compression level (0-9).  The new level will be activated
 		/// immediately.
 		/// </summary>
 		/// <param name="level">The compression level to set.</param>
@@ -90,9 +90,9 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <see cref="Deflater"/>
 		public void SetLevel(int level)
 		{
-			if (level < Deflater.BEST_SPEED) {
-				throw new ArgumentOutOfRangeException(nameof(level));
-			}
+			if (level < Deflater.NO_COMPRESSION || level > Deflater.BEST_COMPRESSION)
+				throw new ArgumentOutOfRangeException(nameof(level), "Compression level must be 0-9");
+
 			deflater_.SetLevel(level);
 		}
 
