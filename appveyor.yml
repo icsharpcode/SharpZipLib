@@ -12,7 +12,7 @@ dotnet_csproj:
   file_version: 1.0.0.999
   informational_version: $(VERSION)
 install:
-- ps: >-
+- ps: |-
     $commit = $(git rev-parse --short HEAD)
 
     $masterBranches = @("master");
@@ -52,7 +52,7 @@ build:
   publish_nuget_symbols: true
   verbosity: normal
 test_script:
-- ps: >-
+- ps: |-
     $proj = ".\test\ICSharpCode.SharpZipLib.TestBootstrapper\ICSharpCode.SharpZipLib.TestBootstrapper.csproj";
     $resxml = ".\docs\nunit3-test-results-debug.xml";
 
