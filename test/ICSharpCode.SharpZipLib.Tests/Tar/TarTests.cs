@@ -667,6 +667,47 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 
 		[Test]
 		[Category("Tar")]
+		public void EndBlockHandling()
+		{
+			int dummySize = 70145;
+
+			long outCount, inCount;
+
+			using (var ms = new MemoryStream())
+			{
+				using (var tarOut = TarArchive.CreateOutputTarArchive(ms))
+				using (var dummyFile = Utils.GetDummyFile(dummySize))
+				{
+					tarOut.IsStreamOwner = false;
+					tarOut.WriteEntry(TarEntry.CreateEntryFromFile(dummyFile.Filename), false);
+				}
+
+				outCount = ms.Position;
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var tarIn = TarArchive.CreateInputTarArchive(ms))
+				using (var tempDir = new Utils.TempDir())
+				{
+					tarIn.IsStreamOwner = false;
+					tarIn.ExtractContents(tempDir.Fullpath);
+
+					foreach (var file in Directory.GetFiles(tempDir.Fullpath, "*", SearchOption.AllDirectories))
+					{
+						Console.WriteLine($"Extracted \"{file}\"");
+					}
+				}
+
+				inCount = ms.Position;
+
+				Console.WriteLine($"Output count: {outCount}");
+				Console.WriteLine($"Input count: {inCount}");
+
+				Assert.AreEqual(inCount, outCount, "Bytes read and bytes written should be equal");
+			}
+		}
+
+		[Test]
+		[Category("Tar")]
 		[Category("Performance")]
 		[Explicit("Long Running")]
 		public void WriteThroughput()
