@@ -1,0 +1,73 @@
+version: '{build}'
+image: Visual Studio 2017
+configuration:
+- Debug
+- Release
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: $(VERSION)
+  package_version: $(VERSION)
+  assembly_version: 1.0.0.999
+  file_version: 1.0.0.999
+  informational_version: $(VERSION)
+install:
+- ps: |-
+    $commit = $(git rev-parse --short HEAD)
+
+    $masterBranches = @("master");
+
+    if ($masterBranches -contains $env:APPVEYOR_REPO_BRANCH) {
+    	$branch = "";
+    } else {
+    	$branch = "-$env:APPVEYOR_REPO_BRANCH";
+    }
+
+    if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
+    	$suffix = "-pr$env:APPVEYOR_PULL_REQUEST_NUMBER";
+    } else {
+    	$suffix = "";
+    }
+
+    $build = "_${env:APPVEYOR_BUILD_NUMBER}"
+
+    $version = "1.0-git$commit";
+
+    $av_version = "$version$branch$suffix$build";
+    $env:APPVEYOR_BUILD_VERSION=$av_version;
+    $env:VERSION=$version;
+
+    write-host -n "new version: ";
+    write-host -f green $av_version;
+
+    appveyor UpdateBuild -Version $av_version
+nuget:
+  project_feed: true
+  disable_publish_on_pr: true
+before_build:
+- ps: nuget restore ICSharpCode.SharpZipLib.sln
+build:
+  project: ICSharpCode.SharpZipLib.sln
+  publish_nuget: true
+  publish_nuget_symbols: true
+  verbosity: normal
+test_script:
+- ps: |-
+    $proj = ".\test\ICSharpCode.SharpZipLib.TestBootstrapper\ICSharpCode.SharpZipLib.TestBootstrapper.csproj";
+    $resxml = ".\docs\nunit3-test-results-debug.xml";
+
+    # Nuget 3 Console runner:
+    #$tester = "nunit3-console .\test\ICSharpCode.SharpZipLib.Tests\bin\$($env:CONFIGURATION)\netcoreapp2.0\ICSharpCode.SharpZipLib.Tests.dll"
+
+    # Bootstrapper:
+    $tester = "dotnet run -f netcoreapp2 -p $proj -c $env:CONFIGURATION";
+    iex "$tester --explore=tests.xml";
+
+    [xml]$xml = Get-Content("tests.xml");
+    $assembly = select-xml "/test-suite[@type='Assembly']" $xml | select -f 1 -exp Node;
+    $testcases = select-xml "//test-case" $xml | % { Add-AppveyorTest -Name $_.Node.fullname -Framework NUnit -Filename $assembly.name };
+
+    iex "$tester --result=$resxml";
+    
+    $wc = New-Object 'System.Net.WebClient';
+    $wc.UploadFile("https://ci.appveyor.com/api/testresults/nunit3/$($env:APPVEYOR_JOB_ID)", (Resolve-Path $resxml));
