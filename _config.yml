@@ -1,0 +1,8 @@
+title: SharpZipLib
+description: "#ziplib is a Zip, GZip, Tar and BZip2 library written entirely in C# for the .NET platform."
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-tactile
+
+gems:
+  - jekyll-mentions
