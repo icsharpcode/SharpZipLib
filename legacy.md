@@ -1,4 +1,7 @@
-# SharpZipLib Legacy
+---
+title: SharpZipLib Legacy
+show_downloads: false
+---
 
 ## Download
 
