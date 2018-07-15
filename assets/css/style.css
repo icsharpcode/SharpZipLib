@@ -1,0 +1,6 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+body a { color: #516d86 }
