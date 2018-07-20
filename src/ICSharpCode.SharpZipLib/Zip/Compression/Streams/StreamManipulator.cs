@@ -42,16 +42,38 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 
 		/// <summary>
-		/// Grabs the next n bits from the input and throws if <paramref name="allowZero"/> is false and the result is 0.
+		/// Tries to grab the next <paramref name="bitCount"/> bits from the input and 
+		/// sets <paramref name="output"/> to the value, adding <paramref name="outputOffset"/>.
 		/// </summary>
-		public int GrabBits(int bitCount, bool allowZero = false)
+		/// <returns>true if enough bits could be read, otherwise false</returns>
+		public bool TryGetBits(int bitCount, ref int output, int outputOffset = 0)
 		{
-			var val = PeekBits(bitCount);
-			if (!allowZero && val == 0)
-				throw new SharpZipBaseException(bitCount + "-bit value cannot be zero");
+			var bits = PeekBits(bitCount);
+			if (bits < 0)
+			{
+				return false;
+			}
+			output = bits + outputOffset;
 			DropBits(bitCount);
-			return val;
-		} 
+			return true;
+		}
+
+		/// <summary>
+		/// Tries to grab the next <paramref name="bitCount"/> bits from the input and 
+		/// sets <paramref name="output"/> to the value, adding <paramref name="outputOffset"/>.
+		/// </summary>
+		/// <returns>true if enough bits could be read, otherwise false</returns>
+		public bool TryGetBits(int bitCount, ref byte[] array, int index)
+		{
+			var bits = PeekBits(bitCount);
+			if (bits < 0)
+			{
+				return false;
+			}
+			array[index] = (byte)bits;
+			DropBits(bitCount);
+			return true;
+		}
 
 		/// <summary>
 		/// Drops the next n bits from the input.  You should have called PeekBits

@@ -429,7 +429,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 							mode = DECODE_HUFFMAN;
 							break;
 						case DeflaterConstants.DYN_TREES:
-							dynHeader = new InflaterDynHeader();
+							dynHeader = new InflaterDynHeader(input);
 							mode = DECODE_DYN_HEADER;
 							break;
 						default:
@@ -470,12 +470,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					}
 
 				case DECODE_DYN_HEADER:
-					if (!dynHeader.Decode(input)) {
+					if (!dynHeader.AttemptRead()) {
 						return false;
 					}
 
-					litlenTree = dynHeader.BuildLitLenTree();
-					distTree = dynHeader.BuildDistTree();
+					litlenTree = dynHeader.LiteralLengthTree;
+					distTree = dynHeader.DistanceTree;
 					mode = DECODE_HUFFMAN;
 					goto case DECODE_HUFFMAN; // fall through
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression
@@ -63,18 +64,18 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <param name = "codeLengths">
 		/// the array of code lengths
 		/// </param>
-		public InflaterHuffmanTree(byte[] codeLengths)
+		public InflaterHuffmanTree(IList<byte> codeLengths)
 		{
 			BuildTree(codeLengths);
 		}
 		#endregion
 
-		void BuildTree(byte[] codeLengths)
+		void BuildTree(IList<byte> codeLengths)
 		{
 			int[] blCount = new int[MAX_BITLEN + 1];
 			int[] nextCode = new int[MAX_BITLEN + 1];
 
-			for (int i = 0; i < codeLengths.Length; i++) {
+			for (int i = 0; i < codeLengths.Count; i++) {
 				int bits = codeLengths[i];
 				if (bits > 0) {
 					blCount[bits]++;
@@ -115,7 +116,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				}
 			}
 
-			for (int i = 0; i < codeLengths.Length; i++) {
+			for (int i = 0; i < codeLengths.Count; i++) {
 				int bits = codeLengths[i];
 				if (bits == 0) {
 					continue;
@@ -154,36 +155,49 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		public int GetSymbol(StreamManipulator input)
 		{
 			int lookahead, symbol;
-			if ((lookahead = input.PeekBits(9)) >= 0) {
-				if ((symbol = tree[lookahead]) >= 0) {
+			if ((lookahead = input.PeekBits(9)) >= 0)
+			{
+				if ((symbol = tree[lookahead]) >= 0)
+				{
 					input.DropBits(symbol & 15);
 					return symbol >> 4;
 				}
 				int subtree = -(symbol >> 4);
 				int bitlen = symbol & 15;
-				if ((lookahead = input.PeekBits(bitlen)) >= 0) {
+				if ((lookahead = input.PeekBits(bitlen)) >= 0)
+				{
 					symbol = tree[subtree | (lookahead >> 9)];
 					input.DropBits(symbol & 15);
 					return symbol >> 4;
-				} else {
+				}
+				else
+				{
 					int bits = input.AvailableBits;
 					lookahead = input.PeekBits(bits);
 					symbol = tree[subtree | (lookahead >> 9)];
-					if ((symbol & 15) <= bits) {
+					if ((symbol & 15) <= bits)
+					{
 						input.DropBits(symbol & 15);
 						return symbol >> 4;
-					} else {
+					}
+					else
+					{
 						return -1;
 					}
 				}
-			} else {
+			}
+			else // Less than 9 bits
+			{
 				int bits = input.AvailableBits;
 				lookahead = input.PeekBits(bits);
 				symbol = tree[lookahead];
-				if (symbol >= 0 && (symbol & 15) <= bits) {
+				if (symbol >= 0 && (symbol & 15) <= bits)
+				{
 					input.DropBits(symbol & 15);
 					return symbol >> 4;
-				} else {
+				}
+				else
+				{
 					return -1;
 				}
 			}
