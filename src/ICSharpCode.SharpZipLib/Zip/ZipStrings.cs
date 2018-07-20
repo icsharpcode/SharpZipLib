@@ -8,6 +8,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	public static class ZipStrings
 	{
+
+		static ZipStrings()
+		{
+			try
+			{
+				var codePage = Encoding.GetEncoding(0).CodePage;
+				SystemDefaultCodePage = (codePage == 1 || codePage == 2 || codePage == 3 || codePage == 42) ? FallbackCodePage : codePage;
+			}
+			catch
+			{
+				SystemDefaultCodePage = FallbackCodePage;
+			}
+		}
+
 		/// <summary>Default code page backing field</summary>
 		/// <remarks>
 		/// The original Zip specification (https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT) states 
@@ -46,9 +60,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private const int FallbackCodePage = 437;
 
 		/// <summary>
-		/// Get wether the default codepage is set to UTF-8. Setting this property to false will attempt to
-		/// set the default codepage to the default code page of the operating system ,or failing that, to
+		/// Attempt to get the operating system default codepage, or failing that, to
 		/// the fallback code page IBM 437.
+		/// </summary>
+		public static int SystemDefaultCodePage { get; }
+
+		/// <summary>
+		/// Get wether the default codepage is set to UTF-8. Setting this property to false will
+		/// set the <see cref="DefaultCodePage"/> to <see cref="SystemDefaultCodePage"/>
 		/// </summary>
 		/// <remarks>
 		/// /// Get OEM codepage from NetFX, which parses the NLP file with culture info table etc etc.
@@ -71,21 +90,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					try
-					{
-						var codePage = Encoding.GetEncoding(0).CodePage;
-						defaultCodePage = (codePage == 1 || codePage == 2 || codePage == 3 || codePage == 42) ? FallbackCodePage : codePage;
-					}
-					catch
-					{
-						defaultCodePage = FallbackCodePage;
-					}
+					defaultCodePage = SystemDefaultCodePage;
 				}
 			}
 		}
 
 		/// <summary>
-		/// Convert a portion of a byte array to a string.
+		/// Convert a portion of a byte array to a string using <see cref="DefaultCodePage"/>
 		/// </summary>		
 		/// <param name="data">
 		/// Data to convert to string
@@ -96,18 +107,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// data[0]..data[count - 1] converted to a string
 		/// </returns>
-		public static string ConvertToString(byte[] data, int count)
-		{
-			if (data == null)
-			{
-				return string.Empty;
-			}
-
-			return Encoding.GetEncoding(DefaultCodePage).GetString(data, 0, count);
-		}
+		public static string ConvertToString(byte[] data, int count) 
+			=> data == null
+			? string.Empty
+			: Encoding.GetEncoding(DefaultCodePage).GetString(data, 0, count);
 
 		/// <summary>
-		/// Convert a byte array to string
+		/// Convert a byte array to a string using <see cref="DefaultCodePage"/>
 		/// </summary>
 		/// <param name="data">
 		/// Byte array to convert
@@ -116,16 +122,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <paramref name="data">data</paramref>converted to a string
 		/// </returns>
 		public static string ConvertToString(byte[] data)
-		{
-			if (data == null)
-			{
-				return string.Empty;
-			}
-			return ConvertToString(data, data.Length);
-		}
+			=> ConvertToString(data, data.Length);
+
+		private static Encoding EncodingFromFlag(int flags)
+			=> ((flags & (int)GeneralBitFlags.UnicodeText) != 0)
+				? Encoding.UTF8
+				: Encoding.GetEncoding(SystemDefaultCodePage);
 
 		/// <summary>
-		/// Convert a byte array to string
+		/// Convert a byte array to a string  using <see cref="DefaultCodePage"/>
 		/// </summary>
 		/// <param name="flags">The applicable general purpose bits flags</param>
 		/// <param name="data">
@@ -136,24 +141,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <paramref name="data">data</paramref>converted to a string
 		/// </returns>
 		public static string ConvertToStringExt(int flags, byte[] data, int count)
-		{
-			if (data == null)
-			{
-				return string.Empty;
-			}
-
-			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0)
-			{
-				return Encoding.UTF8.GetString(data, 0, count);
-			}
-			else
-			{
-				return ConvertToString(data, count);
-			}
-		}
+			=> (data == null)
+				? string.Empty
+				: EncodingFromFlag(flags).GetString(data, 0, count);
 
 		/// <summary>
-		/// Convert a byte array to string
+		/// Convert a byte array to a string using <see cref="DefaultCodePage"/>
 		/// </summary>
 		/// <param name="data">
 		/// Byte array to convert
@@ -163,41 +156,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <paramref name="data">data</paramref>converted to a string
 		/// </returns>
 		public static string ConvertToStringExt(int flags, byte[] data)
-		{
-			if (data == null)
-			{
-				return string.Empty;
-			}
-
-			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0)
-			{
-				return Encoding.UTF8.GetString(data, 0, data.Length);
-			}
-			else
-			{
-				return ConvertToString(data, data.Length);
-			}
-		}
+			=> ConvertToStringExt(flags, data, data.Length);
 
 		/// <summary>
-		/// Convert a string to a byte array
+		/// Convert a string to a byte array using <see cref="DefaultCodePage"/>
 		/// </summary>
 		/// <param name="str">
 		/// String to convert to an array
 		/// </param>
 		/// <returns>Converted array</returns>
 		public static byte[] ConvertToArray(string str)
-		{
-			if (str == null)
-			{
-				return new byte[0];
-			}
-
-			return Encoding.GetEncoding(DefaultCodePage).GetBytes(str);
-		}
+			=> str == null
+			? new byte[0]
+			: Encoding.GetEncoding(DefaultCodePage).GetBytes(str);
 
 		/// <summary>
-		/// Convert a string to a byte array
+		/// Convert a string to a byte array using <see cref="DefaultCodePage"/>
 		/// </summary>
 		/// <param name="flags">The applicable <see cref="GeneralBitFlags">general purpose bits flags</see></param>
 		/// <param name="str">
@@ -205,20 +179,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </param>
 		/// <returns>Converted array</returns>
 		public static byte[] ConvertToArray(int flags, string str)
-		{
-			if (str == null)
-			{
-				return new byte[0];
-			}
-
-			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0)
-			{
-				return Encoding.UTF8.GetBytes(str);
-			}
-			else
-			{
-				return ConvertToArray(str);
-			}
-		}
+			=> (string.IsNullOrEmpty(str))
+				? new byte[0]
+				: EncodingFromFlag(flags).GetBytes(str);
 	}
 }
