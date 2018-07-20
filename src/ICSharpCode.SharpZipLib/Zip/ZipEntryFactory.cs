@@ -59,27 +59,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public ZipEntryFactory()
 		{
 			nameTransform_ = new ZipNameTransform();
+			isUnicodeText_ = ZipStrings.UseUnicode;
 		}
 
 		/// <summary>
 		/// Initialise a new instance of <see cref="ZipEntryFactory"/> using the specified <see cref="TimeSetting"/>
 		/// </summary>
 		/// <param name="timeSetting">The <see cref="TimeSetting">time setting</see> to use when creating <see cref="ZipEntry">Zip entries</see>.</param>
-		public ZipEntryFactory(TimeSetting timeSetting)
+		public ZipEntryFactory(TimeSetting timeSetting): this()
 		{
 			timeSetting_ = timeSetting;
-			nameTransform_ = new ZipNameTransform();
 		}
 
 		/// <summary>
 		/// Initialise a new instance of <see cref="ZipEntryFactory"/> using the specified <see cref="DateTime"/>
 		/// </summary>
 		/// <param name="time">The time to set all <see cref="ZipEntry.DateTime"/> values to.</param>
-		public ZipEntryFactory(DateTime time)
+		public ZipEntryFactory(DateTime time): this()
 		{
 			timeSetting_ = TimeSetting.Fixed;
 			FixedDateTime = time;
-			nameTransform_ = new ZipNameTransform();
 		}
 
 		#endregion
