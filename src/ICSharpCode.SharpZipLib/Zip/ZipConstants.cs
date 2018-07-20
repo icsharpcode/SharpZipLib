@@ -434,5 +434,36 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set => ZipStrings.DefaultCodePage = value;
 		}
 
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToString(byte[], int)"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToString instead")]
+		public static string ConvertToString(byte[] data, int count)
+			=> ZipStrings.ConvertToString(data, count);
+
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToString(byte[])"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToString instead")]
+		public static string ConvertToString(byte[] data)
+			=> ZipStrings.ConvertToString(data);
+
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToStringExt(int, byte[], int)"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToStringExt instead")]
+		public static string ConvertToStringExt(int flags, byte[] data, int count)
+			=> ZipStrings.ConvertToStringExt(flags, data, count);
+
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToStringExt(int, byte[])"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToStringExt instead")]
+		public static string ConvertToStringExt(int flags, byte[] data)
+			=> ZipStrings.ConvertToStringExt(flags, data);
+
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToArray(string)"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToArray instead")]
+		public static byte[] ConvertToArray(string str)
+			=> ZipStrings.ConvertToArray(str);
+
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToArray(int, string)"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToArray instead")]
+		public static byte[] ConvertToArray(int flags, string str)
+			=> ZipStrings.ConvertToArray(flags, str);
+
+
 	}
 }

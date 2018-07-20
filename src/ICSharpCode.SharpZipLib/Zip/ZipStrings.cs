@@ -1,8 +1,14 @@
-﻿namespace ICSharpCode.SharpZipLib.Zip
+﻿using System;
+using System.Text;
+
+namespace ICSharpCode.SharpZipLib.Zip
 {
+	/// <summary>
+	/// This static class contains functions for encoding and decoding zip file strings
+	/// </summary>
 	public static class ZipStrings
 	{
-
+		/// <summary>Default code page backing field</summary>
 		/// <remarks>
 		/// The original Zip specification (https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT) states 
 		/// that file names should only be encoded with IBM Code Page 437 or UTF-8. 
