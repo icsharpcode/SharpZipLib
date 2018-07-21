@@ -784,33 +784,49 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		[Test]
 		[Category("Zip")]
+		[Category("Unicode")]
 		public void UnicodeNames()
 		{
-			var memStream = new MemoryStream();
-			using (ZipFile f = new ZipFile(memStream)) {
-				f.IsStreamOwner = false;
-
-				f.BeginUpdate(new MemoryArchiveStorage());
-
-				var names = new string[]
+			using (var memStream = new MemoryStream())
+			{
+				using (ZipFile f = new ZipFile(memStream))
 				{
-					"\u030A\u03B0",     // Greek
-                    "\u0680\u0685"      // Arabic
-                };
+					f.IsStreamOwner = false;
 
-				foreach (string name in names) {
-					f.Add(new StringMemoryDataSource("Hello world"), name,
-						  CompressionMethod.Deflated, true);
+					f.BeginUpdate(new MemoryArchiveStorage());
+					foreach ((string language, string name, _) in StringTesting.GetTestSamples())
+					{
+						f.Add(new StringMemoryDataSource(language), name,
+							  CompressionMethod.Deflated, true);
+					}
+					f.CommitUpdate();
+
+					Assert.IsTrue(f.TestArchive(true));
+
 				}
-				f.CommitUpdate();
-				Assert.IsTrue(f.TestArchive(true));
+				memStream.Seek(0, SeekOrigin.Begin);
+				using (var zf = new ZipFile(memStream))
+				{
+					foreach (string name in StringTesting.Filenames)
+					{
+						//int index = zf.FindEntry(name, true);
+						var content = "";
+						var index = zf.FindEntry(name, true);
+						var entry = zf[index];
 
-				foreach (string name in names) {
-					int index = f.FindEntry(name, true);
+						using (var entryStream = zf.GetInputStream(entry))
+						using(var sr= new StreamReader(entryStream))
+						{
+							content = sr.ReadToEnd();
+						}
 
-					Assert.IsTrue(index >= 0);
-					ZipEntry found = f[index];
-					Assert.AreEqual(name, found.Name);
+							//var content = 
+
+							Console.WriteLine($"Entry #{index}: {name}, Content: {content}");
+
+						Assert.IsTrue(index >= 0);
+						Assert.AreEqual(name, entry.Name);
+					}
 				}
 			}
 		}

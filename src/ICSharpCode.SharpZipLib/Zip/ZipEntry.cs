@@ -191,6 +191,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 			this.versionMadeBy = (ushort)madeByInfo;
 			this.versionToExtract = (ushort)versionRequiredToExtract;
 			this.method = method;
+
+			IsUnicodeText = ZipStrings.UseUnicode;
 		}
 
 		/// <summary>

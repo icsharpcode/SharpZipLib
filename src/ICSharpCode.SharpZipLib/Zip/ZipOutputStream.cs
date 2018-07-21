@@ -98,7 +98,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public void SetComment(string comment)
 		{
 			// TODO: Its not yet clear how to handle unicode comments here.
-			byte[] commentBytes = ZipConstants.ConvertToArray(comment);
+			byte[] commentBytes = ZipStrings.ConvertToArray(comment);
 			if (commentBytes.Length > 0xffff) {
 				throw new ArgumentOutOfRangeException(nameof(comment));
 			}
@@ -320,7 +320,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
-			byte[] name = ZipConstants.ConvertToArray(entry.Flags, entry.Name);
+			byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
 
 			if (name.Length > 0xFFFF) {
 				throw new ZipException("Entry name too long.");
@@ -669,7 +669,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					WriteLeInt((int)entry.Size);
 				}
 
-				byte[] name = ZipConstants.ConvertToArray(entry.Flags, entry.Name);
+				byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
 
 				if (name.Length > 0xffff) {
 					throw new ZipException("Name too long.");
@@ -705,7 +705,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				byte[] entryComment =
 					(entry.Comment != null) ?
-					ZipConstants.ConvertToArray(entry.Flags, entry.Comment) :
+					ZipStrings.ConvertToArray(entry.Flags, entry.Comment) :
 					new byte[0];
 
 				if (entryComment.Length > 0xffff) {

@@ -805,8 +805,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		void CheckNameConversion(string toCheck)
 		{
-			byte[] intermediate = ZipConstants.ConvertToArray(toCheck);
-			string final = ZipConstants.ConvertToString(intermediate);
+			byte[] intermediate = ZipStrings.ConvertToArray(toCheck);
+			string final = ZipStrings.ConvertToString(intermediate);
 
 			Assert.AreEqual(toCheck, final, "Expected identical result");
 		}
@@ -830,17 +830,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			byte[] rawData = Encoding.ASCII.GetBytes(sample);
 
-			string converted = ZipConstants.ConvertToStringExt(0, rawData);
+			string converted = ZipStrings.ConvertToStringExt(0, rawData);
 			Assert.AreEqual(sample, converted);
 
-			converted = ZipConstants.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
+			converted = ZipStrings.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
 			Assert.AreEqual(sample, converted);
 
 			// This time use some greek characters
 			sample = "\u03A5\u03d5\u03a3";
 			rawData = Encoding.UTF8.GetBytes(sample);
 
-			converted = ZipConstants.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
+			converted = ZipStrings.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
 			Assert.AreEqual(sample, converted);
 		}
 

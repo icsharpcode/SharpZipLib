@@ -202,7 +202,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// <summary>
 	/// This class contains constants used for Zip format files
 	/// </summary>
-	public sealed class ZipConstants
+	public static class ZipConstants
 	{
 		#region Versions
 		/// <summary>
@@ -421,166 +421,49 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public const int ENDSIG = 'P' | ('K' << 8) | (5 << 16) | (6 << 24);
 		#endregion
 
-		/// <remarks>
-		/// The original Zip specification (https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT) states 
-		/// that file names should only be encoded with IBM Code Page 437 or UTF-8. 
-		/// In practice, most zip apps use OEM or system encoding (typically cp437 on Windows). 
-		/// Let's be good citizens and default to UTF-8 http://utf8everywhere.org/
-		/// </remarks>
-		static int defaultCodePage = Encoding.UTF8.CodePage;
-
 		/// <summary>
 		/// Default encoding used for string conversion.  0 gives the default system OEM code page.
 		/// Using the default code page isnt the full solution neccessarily
 		/// there are many variable factors, codepage 850 is often a good choice for
 		/// European users, however be careful about compatability.
 		/// </summary>
-		public static int DefaultCodePage {
-			get {
-				return defaultCodePage;
-			}
-			set {
-				if ((value < 0) || (value > 65535) ||
-					(value == 1) || (value == 2) || (value == 3) || (value == 42)) {
-					throw new ArgumentOutOfRangeException(nameof(value));
-				}
-
-				defaultCodePage = value;
-			}
+		[Obsolete("Use ZipStrings instead")]
+		public static int DefaultCodePage
+		{
+			get => ZipStrings.CodePage;
+			set => ZipStrings.CodePage = value;
 		}
 
-		/// <summary>
-		/// Convert a portion of a byte array to a string.
-		/// </summary>		
-		/// <param name="data">
-		/// Data to convert to string
-		/// </param>
-		/// <param name="count">
-		/// Number of bytes to convert starting from index 0
-		/// </param>
-		/// <returns>
-		/// data[0]..data[count - 1] converted to a string
-		/// </returns>
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToString(byte[], int)"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToString instead")]
 		public static string ConvertToString(byte[] data, int count)
-		{
-			if (data == null) {
-				return string.Empty;
-			}
+			=> ZipStrings.ConvertToString(data, count);
 
-			return Encoding.GetEncoding(DefaultCodePage).GetString(data, 0, count);
-		}
-
-		/// <summary>
-		/// Convert a byte array to string
-		/// </summary>
-		/// <param name="data">
-		/// Byte array to convert
-		/// </param>
-		/// <returns>
-		/// <paramref name="data">data</paramref>converted to a string
-		/// </returns>
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToString(byte[])"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToString instead")]
 		public static string ConvertToString(byte[] data)
-		{
-			if (data == null) {
-				return string.Empty;
-			}
-			return ConvertToString(data, data.Length);
-		}
+			=> ZipStrings.ConvertToString(data);
 
-		/// <summary>
-		/// Convert a byte array to string
-		/// </summary>
-		/// <param name="flags">The applicable general purpose bits flags</param>
-		/// <param name="data">
-		/// Byte array to convert
-		/// </param>
-		/// <param name="count">The number of bytes to convert.</param>
-		/// <returns>
-		/// <paramref name="data">data</paramref>converted to a string
-		/// </returns>
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToStringExt(int, byte[], int)"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToStringExt instead")]
 		public static string ConvertToStringExt(int flags, byte[] data, int count)
-		{
-			if (data == null) {
-				return string.Empty;
-			}
+			=> ZipStrings.ConvertToStringExt(flags, data, count);
 
-			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0) {
-				return Encoding.UTF8.GetString(data, 0, count);
-			} else {
-				return ConvertToString(data, count);
-			}
-		}
-
-		/// <summary>
-		/// Convert a byte array to string
-		/// </summary>
-		/// <param name="data">
-		/// Byte array to convert
-		/// </param>
-		/// <param name="flags">The applicable general purpose bits flags</param>
-		/// <returns>
-		/// <paramref name="data">data</paramref>converted to a string
-		/// </returns>
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToStringExt(int, byte[])"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToStringExt instead")]
 		public static string ConvertToStringExt(int flags, byte[] data)
-		{
-			if (data == null) {
-				return string.Empty;
-			}
+			=> ZipStrings.ConvertToStringExt(flags, data);
 
-			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0) {
-				return Encoding.UTF8.GetString(data, 0, data.Length);
-			} else {
-				return ConvertToString(data, data.Length);
-			}
-		}
-
-		/// <summary>
-		/// Convert a string to a byte array
-		/// </summary>
-		/// <param name="str">
-		/// String to convert to an array
-		/// </param>
-		/// <returns>Converted array</returns>
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToArray(string)"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToArray instead")]
 		public static byte[] ConvertToArray(string str)
-		{
-			if (str == null) {
-				return new byte[0];
-			}
+			=> ZipStrings.ConvertToArray(str);
 
-			return Encoding.GetEncoding(DefaultCodePage).GetBytes(str);
-		}
-
-		/// <summary>
-		/// Convert a string to a byte array
-		/// </summary>
-		/// <param name="flags">The applicable <see cref="GeneralBitFlags">general purpose bits flags</see></param>
-		/// <param name="str">
-		/// String to convert to an array
-		/// </param>
-		/// <returns>Converted array</returns>
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToArray(int, string)"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToArray instead")]
 		public static byte[] ConvertToArray(int flags, string str)
-		{
-			if (str == null) {
-				return new byte[0];
-			}
-
-			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0) {
-				return Encoding.UTF8.GetBytes(str);
-			} else {
-				return ConvertToArray(str);
-			}
-		}
+			=> ZipStrings.ConvertToArray(flags, str);
 
 
-		/// <summary>
-		/// Initialise default instance of <see cref="ZipConstants">ZipConstants</see>
-		/// </summary>
-		/// <remarks>
-		/// Private to prevent instances being created.
-		/// </remarks>
-		ZipConstants()
-		{
-			// Do nothing
-		}
 	}
 }
