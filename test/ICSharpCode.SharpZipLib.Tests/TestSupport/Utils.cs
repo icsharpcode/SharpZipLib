@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using NUnit.Framework;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
@@ -27,21 +28,29 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			}
 		}
 
-		public static TempFile GetDummyFile(int size = -1)
+		public static void WriteDummyData(string fileName, int size = -1)
 		{
-			var tempFile = new TempFile();
 			if (size < 0)
 			{
-				File.WriteAllText(tempFile.Filename, DateTime.UtcNow.Ticks.ToString("x16"));
+				File.WriteAllText(fileName, DateTime.UtcNow.Ticks.ToString("x16"));
 			}
 			else if (size > 0)
 			{
 				var bytes = Array.CreateInstance(typeof(byte), size) as byte[];
 				random.NextBytes(bytes);
-				File.WriteAllBytes(tempFile.Filename, bytes);
+				File.WriteAllBytes(fileName, bytes);
 			}
+		}
+
+		public static TempFile GetDummyFile(int size = -1)
+		{
+			var tempFile = new TempFile();
+			WriteDummyData(tempFile.Filename, size);
 			return tempFile;
 		}
+
+		public static string GetDummyFileName()
+			=> $"{random.Next():x8}{random.Next():x8}{random.Next():x8}";
 
 		public class TempFile : IDisposable
 		{
@@ -113,6 +122,16 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 			public void Dispose()
 				=> Dispose(true);
+
+			internal string CreateDummyFile(int size = -1)
+				=> CreateDummyFile(GetDummyFileName(), size);
+
+			internal string CreateDummyFile(string name, int size = -1)
+			{
+				var fileName = Path.Combine(Fullpath, name);
+				WriteDummyData(fileName, size);
+				return fileName;
+			}
 
 			#endregion
 
