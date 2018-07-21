@@ -61,9 +61,9 @@ write-host -f magenta $env:AS_VERSION;
 
 write-host -n "Pre-release: "
 if($preRelease) {
-    write-host -f green "No";
-} else {
     write-host -f yellow $preRelease;
+} else {
+    write-host -f green "No";
 }
 
 write-host -n "Release: "
