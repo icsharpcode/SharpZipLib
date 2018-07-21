@@ -54,10 +54,10 @@ $env:AS_VERSION=$as_version;
 $env:VERSION=$version;
 
 write-host -n "Version: "
-write-host -f white $version;
+write-host -f magenta $version;
 
 write-host -n "Assembly version: "
-write-host -f white $env:AS_VERSION;
+write-host -f magenta $env:AS_VERSION;
 
 write-host -n "Pre-release: "
 if($preRelease) {
@@ -72,9 +72,9 @@ if($isRelease) {
 } else {
     write-host -f yellow "No";
     write-host -n "Branch: ";
-    write-host -f white $env:APPVEYOR_REPO_BRANCH;
+    write-host -f magenta $env:APPVEYOR_REPO_BRANCH;
     write-host -n "Changes: ";
-    write-host -f white $changes;
+    write-host -f magenta $changes;
 }
 
 write-host -n "AppVeyor build version: ";

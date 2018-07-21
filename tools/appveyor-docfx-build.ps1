@@ -1,12 +1,12 @@
 if(-Not $env:APPVEYOR_PULL_REQUEST_TITLE -and $env:CONFIGURATION -eq "Release")
 {
-    cd docs\help
+    pushd docs\help
     # & docfx metadata
     & docfx docfx.json
     if ($lastexitcode -ne 0){
       throw [System.Exception] "docfx build failed with exit code $lastexitcode."
     }
-    
+    popd
 <#  
     ## Useful for automatically updating gh pages:
     
