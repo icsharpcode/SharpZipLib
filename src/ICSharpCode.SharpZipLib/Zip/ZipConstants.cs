@@ -430,8 +430,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		[Obsolete("Use ZipStrings instead")]
 		public static int DefaultCodePage
 		{
-			get => ZipStrings.DefaultCodePage;
-			set => ZipStrings.DefaultCodePage = value;
+			get => ZipStrings.CodePage;
+			set => ZipStrings.CodePage = value;
 		}
 
 		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToString(byte[], int)"/></summary>

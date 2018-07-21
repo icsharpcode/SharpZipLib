@@ -22,27 +22,25 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
-		/// <summary>Default code page backing field</summary>
+		/// <summary>Code page backing field</summary>
 		/// <remarks>
 		/// The original Zip specification (https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT) states 
 		/// that file names should only be encoded with IBM Code Page 437 or UTF-8. 
 		/// In practice, most zip apps use OEM or system encoding (typically cp437 on Windows). 
 		/// Let's be good citizens and default to UTF-8 http://utf8everywhere.org/
 		/// </remarks>
-		static int defaultCodePage = Encoding.UTF8.CodePage;
+		private static int codePage = Encoding.UTF8.CodePage;
 
 
 		/// <summary>
-		/// Default encoding used for string conversion.  0 gives the default system OEM code page.
-		/// Using the default code page isnt the full solution neccessarily
-		/// there are many variable factors, codepage 850 is often a good choice for
-		/// European users, however be careful about compatability.
+		/// Encoding used for string conversion. Setting this to 65001 (UTF-8) will
+		/// also set the Language encoding flag to indicate UTF-8 encoded file names.
 		/// </summary>
-		public static int DefaultCodePage
+		public static int CodePage
 		{
 			get
 			{
-				return defaultCodePage;
+				return codePage;
 			}
 			set
 			{
@@ -52,7 +50,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					throw new ArgumentOutOfRangeException(nameof(value));
 				}
 
-				defaultCodePage = value;
+				codePage = value;
 			}
 		}
 
@@ -67,7 +65,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		/// <summary>
 		/// Get wether the default codepage is set to UTF-8. Setting this property to false will
-		/// set the <see cref="DefaultCodePage"/> to <see cref="SystemDefaultCodePage"/>
+		/// set the <see cref="CodePage"/> to <see cref="SystemDefaultCodePage"/>
 		/// </summary>
 		/// <remarks>
 		/// /// Get OEM codepage from NetFX, which parses the NLP file with culture info table etc etc.
@@ -80,23 +78,23 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			get
 			{
-				return defaultCodePage == Encoding.UTF8.CodePage;
+				return codePage == Encoding.UTF8.CodePage;
 			}
 			set
 			{
 				if (value)
 				{
-					defaultCodePage = Encoding.UTF8.CodePage;
+					codePage = Encoding.UTF8.CodePage;
 				}
 				else
 				{
-					defaultCodePage = SystemDefaultCodePage;
+					codePage = SystemDefaultCodePage;
 				}
 			}
 		}
 
 		/// <summary>
-		/// Convert a portion of a byte array to a string using <see cref="DefaultCodePage"/>
+		/// Convert a portion of a byte array to a string using <see cref="CodePage"/>
 		/// </summary>		
 		/// <param name="data">
 		/// Data to convert to string
@@ -110,10 +108,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public static string ConvertToString(byte[] data, int count) 
 			=> data == null
 			? string.Empty
-			: Encoding.GetEncoding(DefaultCodePage).GetString(data, 0, count);
+			: Encoding.GetEncoding(CodePage).GetString(data, 0, count);
 
 		/// <summary>
-		/// Convert a byte array to a string using <see cref="DefaultCodePage"/>
+		/// Convert a byte array to a string using <see cref="CodePage"/>
 		/// </summary>
 		/// <param name="data">
 		/// Byte array to convert
@@ -130,7 +128,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				: Encoding.GetEncoding(SystemDefaultCodePage);
 
 		/// <summary>
-		/// Convert a byte array to a string  using <see cref="DefaultCodePage"/>
+		/// Convert a byte array to a string  using <see cref="CodePage"/>
 		/// </summary>
 		/// <param name="flags">The applicable general purpose bits flags</param>
 		/// <param name="data">
@@ -146,7 +144,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				: EncodingFromFlag(flags).GetString(data, 0, count);
 
 		/// <summary>
-		/// Convert a byte array to a string using <see cref="DefaultCodePage"/>
+		/// Convert a byte array to a string using <see cref="CodePage"/>
 		/// </summary>
 		/// <param name="data">
 		/// Byte array to convert
@@ -159,7 +157,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			=> ConvertToStringExt(flags, data, data.Length);
 
 		/// <summary>
-		/// Convert a string to a byte array using <see cref="DefaultCodePage"/>
+		/// Convert a string to a byte array using <see cref="CodePage"/>
 		/// </summary>
 		/// <param name="str">
 		/// String to convert to an array
@@ -168,10 +166,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public static byte[] ConvertToArray(string str)
 			=> str == null
 			? new byte[0]
-			: Encoding.GetEncoding(DefaultCodePage).GetBytes(str);
+			: Encoding.GetEncoding(CodePage).GetBytes(str);
 
 		/// <summary>
-		/// Convert a string to a byte array using <see cref="DefaultCodePage"/>
+		/// Convert a string to a byte array using <see cref="CodePage"/>
 		/// </summary>
 		/// <param name="flags">The applicable <see cref="GeneralBitFlags">general purpose bits flags</see></param>
 		/// <param name="str">
