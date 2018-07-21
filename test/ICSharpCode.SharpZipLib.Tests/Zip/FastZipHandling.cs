@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
 
@@ -137,34 +141,97 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			});
 		}
 
-		[Test]
-		[Category("Zip")]
-		public void UnicodeText()
+		#region String testing helper
+
+		private void TestFileNames(params string[] names)
+			=> TestFileNames((IEnumerable<string>)names);
+
+		private void TestFileNames(IEnumerable<string> names)
 		{
 			var zippy = new FastZip();
-			var factory = new ZipEntryFactory();
-			factory.IsUnicodeText = true;
-			zippy.EntryFactory = factory;
 
-			string tempFilePath = GetTempFilePath();
-			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
-
-			const string tempName1 = "a.dat";
-			string addFile = Path.Combine(tempFilePath, tempName1);
-			MakeTempFile(addFile, 1);
-
-			try {
-				var target = new MemoryStream();
-				zippy.CreateZip(target, tempFilePath, false, Regex.Escape(tempName1), null);
-
-				var archive = new MemoryStream(target.ToArray());
-
-				using (ZipFile z = new ZipFile(archive)) {
-					Assert.AreEqual(1, z.Count);
-					Assert.IsTrue(z[0].IsUnicodeText);
+			using (var tempDir = new Utils.TempDir())
+			using (var tempZip = new Utils.TempFile())
+			{
+				int nameCount = 0;
+				foreach (var name in names)
+				{
+					tempDir.CreateDummyFile(name);
+					nameCount++;
 				}
-			} finally {
-				File.Delete(addFile);
+
+				zippy.CreateZip(tempZip.Filename, tempDir.Fullpath, true, null, null);
+
+				using (ZipFile z = new ZipFile(tempZip.Filename))
+				{
+					Assert.AreEqual(nameCount, z.Count);
+					foreach (var name in names)
+					{
+						var index = z.FindEntry(name, true);
+
+						Assert.AreNotEqual(index, -1, "Zip entry \"{0}\" not found", name);
+
+						var entry = z[index];
+
+						if (ZipStrings.UseUnicode)
+						{
+							Assert.IsTrue(entry.IsUnicodeText, "Zip entry #{0} not marked as unicode", index);
+						}
+						else
+						{
+							Assert.IsFalse(entry.IsUnicodeText, "Zip entry #{0} marked as unicode", index);
+						}
+
+						Assert.AreEqual(name, entry.Name);
+
+						var nameBytes = string.Join(' ', Encoding.BigEndianUnicode.GetBytes(entry.Name).Select(b => b.ToString("x2")));
+
+						Console.WriteLine($" - Zip entry: {entry.Name} ({nameBytes})");
+					}
+				}
+
+			}
+		}
+
+#endregion
+
+		[Test]
+		[Category("Zip")]
+		[Category("Unicode")]
+		public void UnicodeText()
+		{
+			var preCp = ZipStrings.CodePage;
+			try
+			{
+				TestFileNames(StringTesting.Filenames);
+			}
+			finally
+			{
+				ZipStrings.CodePage = preCp;
+			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		[Category("Unicode")]
+		public void NonUnicodeText()
+		{
+			var preCp = ZipStrings.CodePage;
+			try
+			{
+				Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+				foreach((string language, string filename, string encoding) in StringTesting.GetTestSamples())
+				{
+					Console.WriteLine($"{language} filename \"{filename}\" using \"{encoding}\":");
+					ZipStrings.CodePage = Encoding.GetEncoding(encoding).CodePage;
+					TestFileNames(filename);
+				}
+
+			}
+			finally
+			{
+				ZipStrings.CodePage = preCp;
 			}
 		}
 
