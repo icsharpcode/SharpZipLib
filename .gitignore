@@ -252,3 +252,4 @@ paket-files/
 *.sln.iml
 /test/ICSharpCode.SharpZipLib.TestBootstrapper/Properties/launchSettings.json
 _testRunner/
+docs/help/api/.manifest

@@ -14,7 +14,10 @@
           ]
         }
       ],
-      "dest": "api"
+      "dest": "api",
+      "properties": {
+        "TargetFramework": "NETSTANDARD2"
+      }
     }
   ],
   "build": {
@@ -62,7 +65,7 @@
     ],
 	"globalMetadata": {
       "_appTitle": "SharpZipLib Help",
-	  "_appFooter": "Copyright © 2000-2017 SharpZipLib Contributors"
+	  "_appFooter": "Copyright © 2000-2018 SharpZipLib Contributors"
     },
     "dest": "_site",
     "globalMetadataFiles": [],
