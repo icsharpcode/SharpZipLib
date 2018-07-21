@@ -1,5 +1,5 @@
 # Since alpha1 used assembly version v1.0.0.0 we use that as a base line for build revisions
-$v1threshold = "git rev-list cbd05248c25de00bd6437d6217b91890af560496..HEAD --count";
+$v1threshold = "cbd05248c25de00bd6437d6217b91890af560496";
 
 $revision = $(git rev-list "$v1threshold..HEAD" --count)
 
@@ -37,7 +37,7 @@ if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
     $suffix = "";
 }
 
-$isRelease = $changes -gt 0 -or $branch -or $suffix;
+$isRelease = -not ($changes -gt 0 -or $branch -or $suffix);
 
 $build = "_${env:APPVEYOR_BUILD_NUMBER}";
 
@@ -48,11 +48,36 @@ if ($isRelease) {
 }
 
 $av_version = "$version$branch$suffix$build";
+$as_version = "$major.$minor.$patch.$revision";
 $env:APPVEYOR_BUILD_VERSION=$av_version;
+$env:AS_VERSION=$as_version;
 $env:VERSION=$version;
-$env:AS_VERSION="$major.$minor.$patch.$revision"
 
-write-host -n "new version: ";
+write-host -n "Version: "
+write-host -f white $version;
+
+write-host -n "Assembly version: "
+write-host -f white $env:AS_VERSION;
+
+write-host -n "Pre-release: "
+if($preRelease) {
+    write-host -f green "No";
+} else {
+    write-host -f yellow $preRelease;
+}
+
+write-host -n "Release: "
+if($isRelease) {
+    write-host -f green $tag;
+} else {
+    write-host -f yellow "No";
+    write-host -n "Branch: ";
+    write-host -f white $env:APPVEYOR_REPO_BRANCH;
+    write-host -n "Changes: ";
+    write-host -f white $changes;
+}
+
+write-host -n "AppVeyor build version: ";
 write-host -f green $av_version;
 
 appveyor UpdateBuild -Version $av_version;
