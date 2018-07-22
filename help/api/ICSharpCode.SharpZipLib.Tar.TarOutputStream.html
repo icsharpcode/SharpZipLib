@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class TarOutputStream
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.22.3.0">
+    <meta name="generator" content="docfx 2.37.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -20,12 +20,12 @@
     <meta property="docfx:tocrel" content="toc.html">
     
     
+    
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
-        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -47,8 +47,7 @@
               </form>
             </div>
           </div>
-        </nav>
-        
+        </nav>        
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -80,13 +79,27 @@ by writing to this stream using write().</p>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">System.IO.Stream</span></div>
-    <div class="level2"><span class="xref">TarOutputStream</span></div>
+    <div class="level1"><span class="xref">System.MarshalByRefObject</span></div>
+    <div class="level2"><span class="xref">System.IO.Stream</span></div>
+    <div class="level3"><span class="xref">TarOutputStream</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
       <span class="xref">System.IO.Stream.Null</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginRead(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginWrite(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Close()</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream)</span>
@@ -104,7 +117,16 @@ by writing to this stream using write().</p>
       <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32, System.Threading.CancellationToken)</span>
     </div>
     <div>
+      <span class="xref">System.IO.Stream.CreateWaitHandle()</span>
+    </div>
+    <div>
       <span class="xref">System.IO.Stream.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndRead(System.IAsyncResult)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndWrite(System.IAsyncResult)</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.FlushAsync()</span>
@@ -113,10 +135,16 @@ by writing to this stream using write().</p>
       <span class="xref">System.IO.Stream.FlushAsync(System.Threading.CancellationToken)</span>
     </div>
     <div>
+      <span class="xref">System.IO.Stream.ObjectInvariant()</span>
+    </div>
+    <div>
       <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32)</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Synchronized(System.IO.Stream)</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32)</span>
@@ -132,6 +160,15 @@ by writing to this stream using write().</p>
     </div>
     <div>
       <span class="xref">System.IO.Stream.WriteTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.GetLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.InitializeLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.MemberwiseClone(System.Boolean)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -165,10 +202,10 @@ by writing to this stream using write().</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.%23ctor(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.%23ctor(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L19">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L19">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_System_IO_Stream_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor(System.IO.Stream)">TarOutputStream(Stream)</h4>
@@ -199,10 +236,10 @@ by writing to this stream using write().</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_System_IO_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.%23ctor(System.IO.Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_System_IO_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.%23ctor(System.IO.Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L29">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L29">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_System_IO_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor(System.IO.Stream,System.Int32)">TarOutputStream(Stream, Int32)</h4>
@@ -241,10 +278,10 @@ by writing to this stream using write().</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_assemblyBuffer.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.assemblyBuffer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_assemblyBuffer.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.assemblyBuffer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L430">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L431">View Source</a>
   </span>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_assemblyBuffer" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.assemblyBuffer">assemblyBuffer</h4>
   <div class="markdown level1 summary"><p>&apos;Assembly&apos; buffer used to assemble data before writing</p>
@@ -271,10 +308,10 @@ by writing to this stream using write().</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_blockBuffer.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.blockBuffer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_blockBuffer.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.blockBuffer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L425">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L426">View Source</a>
   </span>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_blockBuffer" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.blockBuffer">blockBuffer</h4>
   <div class="markdown level1 summary"><p>single block working buffer </p>
@@ -301,10 +338,10 @@ by writing to this stream using write().</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_buffer.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.buffer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_buffer.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.buffer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L435">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L436">View Source</a>
   </span>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_buffer" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.buffer">buffer</h4>
   <div class="markdown level1 summary"><p>TarBuffer used to provide correct blocking factor</p>
@@ -331,10 +368,10 @@ by writing to this stream using write().</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_currSize.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.currSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_currSize.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.currSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L420">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L421">View Source</a>
   </span>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_currSize" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.currSize">currSize</h4>
   <div class="markdown level1 summary"><p>Size for the current entry</p>
@@ -361,10 +398,10 @@ by writing to this stream using write().</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_outputStream.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.outputStream%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_outputStream.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.outputStream%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L440">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L441">View Source</a>
   </span>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_outputStream" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.outputStream">outputStream</h4>
   <div class="markdown level1 summary"><p>the destination stream for the archive contents</p>
@@ -393,10 +430,10 @@ by writing to this stream using write().</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_CanRead.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanRead%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_CanRead.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanRead%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L56">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L56">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_CanRead_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanRead*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_CanRead" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanRead">CanRead</h4>
@@ -426,10 +463,10 @@ by writing to this stream using write().</p>
   <div><span class="xref">System.IO.Stream.CanRead</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_CanSeek.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanSeek%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_CanSeek.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanSeek%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L65">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L65">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_CanSeek_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanSeek*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_CanSeek" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanSeek">CanSeek</h4>
@@ -459,10 +496,10 @@ by writing to this stream using write().</p>
   <div><span class="xref">System.IO.Stream.CanSeek</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_CanWrite.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanWrite%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_CanWrite.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanWrite%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L74">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L74">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_CanWrite_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanWrite*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_CanWrite" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.CanWrite">CanWrite</h4>
@@ -492,10 +529,10 @@ by writing to this stream using write().</p>
   <div><span class="xref">System.IO.Stream.CanWrite</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_IsStreamOwner.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.IsStreamOwner%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_IsStreamOwner.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.IsStreamOwner%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L48">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L48">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_IsStreamOwner_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.IsStreamOwner*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_IsStreamOwner" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.IsStreamOwner">IsStreamOwner</h4>
@@ -527,10 +564,10 @@ When the flag is true <span class="xref">System.IO.Stream.Dispose()</span> will 
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Length.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Length%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Length.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Length%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L83">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L83">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Length_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Length*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Length" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Length">Length</h4>
@@ -560,10 +597,10 @@ When the flag is true <span class="xref">System.IO.Stream.Dispose()</span> will 
   <div><span class="xref">System.IO.Stream.Length</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Position.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Position.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L92">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L92">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Position_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Position*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Position" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Position">Position</h4>
@@ -593,10 +630,10 @@ When the flag is true <span class="xref">System.IO.Stream.Dispose()</span> will 
   <div><span class="xref">System.IO.Stream.Position</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_RecordSize.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.RecordSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_RecordSize.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.RecordSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L183">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L183">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_RecordSize_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.RecordSize*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_RecordSize" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.RecordSize">RecordSize</h4>
@@ -626,10 +663,10 @@ When the flag is true <span class="xref">System.IO.Stream.Dispose()</span> will 
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_CloseEntry.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.CloseEntry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_CloseEntry.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.CloseEntry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L267">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L267">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_CloseEntry_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.CloseEntry*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_CloseEntry" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.CloseEntry">CloseEntry()</h4>
@@ -648,10 +685,10 @@ next entry written.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L171">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L171">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Dispose_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Dispose*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Dispose_System_Boolean_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Dispose(System.Boolean)">Dispose(Boolean)</h4>
@@ -687,10 +724,10 @@ TarBuffer&apos;s Close().</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Finish.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Finish%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Finish.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Finish%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L158">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L158">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Finish_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Finish*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Finish" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Finish">Finish()</h4>
@@ -704,10 +741,10 @@ The result is that the EOF block of nulls is written.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Flush.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Flush%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Flush.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Flush%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L149">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L149">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Flush_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Flush*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Flush" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Flush">Flush()</h4>
@@ -722,10 +759,10 @@ The result is that the EOF block of nulls is written.</p>
   <div><span class="xref">System.IO.Stream.Flush()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_GetRecordSize.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.GetRecordSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_GetRecordSize.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.GetRecordSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L193">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L193">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_GetRecordSize_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.GetRecordSize*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_GetRecordSize" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.GetRecordSize">GetRecordSize()</h4>
@@ -755,10 +792,10 @@ public int GetRecordSize()</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_PutNextEntry_ICSharpCode_SharpZipLib_Tar_TarEntry_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.PutNextEntry(ICSharpCode.SharpZipLib.Tar.TarEntry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_PutNextEntry_ICSharpCode_SharpZipLib_Tar_TarEntry_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.PutNextEntry(ICSharpCode.SharpZipLib.Tar.TarEntry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L219">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L219">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_PutNextEntry_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.PutNextEntry*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_PutNextEntry_ICSharpCode_SharpZipLib_Tar_TarEntry_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.PutNextEntry(ICSharpCode.SharpZipLib.Tar.TarEntry)">PutNextEntry(TarEntry)</h4>
@@ -795,10 +832,10 @@ is completely written to the output stream.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Read_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Read(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Read_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Read(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L141">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L141">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Read_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Read*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Read_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Read(System.Byte[],System.Int32,System.Int32)">Read(Byte[], Int32, Int32)</h4>
@@ -852,7 +889,7 @@ stream by the number of bytes read.</p>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><p>The total number of bytes read, or zero if at the end of the stream.
-The number of bytes may be less than the <code data-dev-comment-type="paramref">count</code>
+The number of bytes may be less than the <code data-dev-comment-type="paramref" class="paramref">count</code>
 requested if data is not avialable.</p>
 </td>
       </tr>
@@ -862,10 +899,10 @@ requested if data is not avialable.</p>
   <div><span class="xref">System.IO.Stream.Read(System.Byte[], System.Int32, System.Int32)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_ReadByte.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.ReadByte%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_ReadByte.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.ReadByte%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L126">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L126">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_ReadByte_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.ReadByte*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_ReadByte" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.ReadByte">ReadByte()</h4>
@@ -897,10 +934,10 @@ by one byte or returns -1 if at the end of the stream.</p>
   <div><span class="xref">System.IO.Stream.ReadByte()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Seek_System_Int64_System_IO_SeekOrigin_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Seek(System.Int64%2CSystem.IO.SeekOrigin)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Seek_System_Int64_System_IO_SeekOrigin_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Seek(System.Int64%2CSystem.IO.SeekOrigin)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L107">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L107">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Seek_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Seek*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Seek_System_Int64_System_IO_SeekOrigin_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Seek(System.Int64,System.IO.SeekOrigin)">Seek(Int64, SeekOrigin)</h4>
@@ -924,7 +961,7 @@ by one byte or returns -1 if at the end of the stream.</p>
       <tr>
         <td><span class="xref">System.Int64</span></td>
         <td><span class="parametername">offset</span></td>
-        <td><p>The offset relative to the <code data-dev-comment-type="paramref">origin</code> to seek to</p>
+        <td><p>The offset relative to the <code data-dev-comment-type="paramref" class="paramref">origin</code> to seek to</p>
 </td>
       </tr>
       <tr>
@@ -955,10 +992,10 @@ by one byte or returns -1 if at the end of the stream.</p>
   <div><span class="xref">System.IO.Stream.Seek(System.Int64, System.IO.SeekOrigin)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_SetLength_System_Int64_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.SetLength(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_SetLength_System_Int64_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.SetLength(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L116">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L116">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_SetLength_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.SetLength*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_SetLength_System_Int64_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.SetLength(System.Int64)">SetLength(Int64)</h4>
@@ -991,10 +1028,10 @@ by one byte or returns -1 if at the end of the stream.</p>
   <div><span class="xref">System.IO.Stream.SetLength(System.Int64)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Write_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Write(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_Write_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.Write(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L316">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L316">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Write_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Write*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_Write_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.Write(System.Byte[],System.Int32,System.Int32)">Write(Byte[], Int32, Int32)</h4>
@@ -1045,10 +1082,10 @@ assembling records from small buffers.</p>
   <div><span class="xref">System.IO.Stream.Write(System.Byte[], System.Int32, System.Int32)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_WriteByte_System_Byte_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.WriteByte(System.Byte)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream_WriteByte_System_Byte_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream.WriteByte(System.Byte)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L293">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L293">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_WriteByte_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.WriteByte*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarOutputStream_WriteByte_System_Byte_" data-uid="ICSharpCode.SharpZipLib.Tar.TarOutputStream.WriteByte(System.Byte)">WriteByte(Byte)</h4>
@@ -1080,6 +1117,10 @@ This method simply calls Write(byte[], int, int).</p>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">System.IO.Stream.WriteByte(System.Byte)</span></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
 </article>
           </div>
           
@@ -1088,10 +1129,10 @@ This method simply calls Write(byte[], int, int).</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarOutputStream.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarOutputStream%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L12" class="contribution-link">View Source</a>
+                    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarOutputStream.cs/#L12" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -1110,7 +1151,7 @@ This method simply calls Write(byte[], int, int).</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2000-2017 SharpZipLib Contributors
+            Copyright © 2000-2018 SharpZipLib Contributors
             
           </div>
         </div>

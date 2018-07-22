@@ -1,0 +1,17 @@
+button, a {
+    color: #516d86;
+    cursor: pointer;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+    color: #181c20;
+    background-color: #c4cdd4;
+}
+
+svg:hover path {
+    fill: currentColor;
+}
+
+.navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover {
+    color: #3d4852;
+}

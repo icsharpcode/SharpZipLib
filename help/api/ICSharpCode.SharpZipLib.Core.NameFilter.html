@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class NameFilter
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.22.3.0">
+    <meta name="generator" content="docfx 2.37.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -20,12 +20,12 @@
     <meta property="docfx:tocrel" content="toc.html">
     
     
+    
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
-        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -47,8 +47,7 @@
               </form>
             </div>
           </div>
-        </nav>
-        
+        </nav>        
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -75,7 +74,7 @@
   <div class="markdown level0 summary"><p>NameFilter is a string matching class which allows for both positive and negative
 matching.
 A filter is a sequence of independant <span class="xref">System.Text.RegularExpressions.Regex</span> separated by semi-colons &apos;;&apos;.
-To include a semi-colon it may be quoted as in \;. Each expression can be prefixed by a plus &apos;+&apos; sign or
+To include a semi-colon it may be quoted as in ;. Each expression can be prefixed by a plus &apos;+&apos; sign or
 a minus &apos;-&apos; sign to denote the expression is intended to include or exclude names.
 If neither a plus or minus sign is found include is the default.
 A given name is tested for inclusion before checking exclusions.  Only names matching an include spec 
@@ -87,6 +86,10 @@ An empty filter matches any name.</p>
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">NameFilter</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">IScanFilter</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -123,10 +126,10 @@ An empty filter matches any name.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter__ctor_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter__ctor_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L30">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L30">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Core_NameFilter__ctor_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.#ctor*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Core_NameFilter__ctor_System_String_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.#ctor(System.String)">NameFilter(String)</h4>
@@ -159,10 +162,10 @@ An empty filter matches any name.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter_IsExcluded_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.IsExcluded(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter_IsExcluded_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.IsExcluded(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L169">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L169">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Core_NameFilter_IsExcluded_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.IsExcluded*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Core_NameFilter_IsExcluded_System_String_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.IsExcluded(System.String)">IsExcluded(String)</h4>
@@ -209,10 +212,10 @@ An empty filter matches any name.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter_IsIncluded_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.IsIncluded(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter_IsIncluded_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.IsIncluded(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L148">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L148">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Core_NameFilter_IsIncluded_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.IsIncluded*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Core_NameFilter_IsIncluded_System_String_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.IsIncluded(System.String)">IsIncluded(String)</h4>
@@ -259,10 +262,10 @@ An empty filter matches any name.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter_IsMatch_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.IsMatch(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter_IsMatch_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.IsMatch(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L187">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L187">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Core_NameFilter_IsMatch_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.IsMatch*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Core_NameFilter_IsMatch_System_String_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.IsMatch(System.String)">IsMatch(String)</h4>
@@ -307,14 +310,12 @@ An empty filter matches any name.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="implements">Implements</h5>
-      <div><a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html#ICSharpCode_SharpZipLib_Core_IScanFilter_IsMatch_System_String_">IScanFilter.IsMatch(String)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter_IsValidExpression_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.IsValidExpression(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter_IsValidExpression_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.IsValidExpression(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L44">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L44">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Core_NameFilter_IsValidExpression_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.IsValidExpression*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Core_NameFilter_IsValidExpression_System_String_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.IsValidExpression(System.String)">IsValidExpression(String)</h4>
@@ -361,10 +362,10 @@ An empty filter matches any name.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter_IsValidFilterExpression_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.IsValidFilterExpression(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter_IsValidFilterExpression_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.IsValidFilterExpression(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L60">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L60">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Core_NameFilter_IsValidFilterExpression_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.IsValidFilterExpression*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Core_NameFilter_IsValidFilterExpression_System_String_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.IsValidFilterExpression(System.String)">IsValidFilterExpression(String)</h4>
@@ -411,10 +412,10 @@ An empty filter matches any name.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter_SplitQuoted_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.SplitQuoted(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter_SplitQuoted_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.SplitQuoted(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L95">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L95">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Core_NameFilter_SplitQuoted_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.SplitQuoted*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Core_NameFilter_SplitQuoted_System_String_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.SplitQuoted(System.String)">SplitQuoted(String)</h4>
@@ -461,10 +462,10 @@ An empty filter matches any name.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter_ToString.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter_ToString.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L138">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L138">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Core_NameFilter_ToString_" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.ToString*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Core_NameFilter_ToString" data-uid="ICSharpCode.SharpZipLib.Core.NameFilter.ToString">ToString()</h4>
@@ -493,6 +494,10 @@ An empty filter matches any name.</p>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">System.Object.ToString()</span></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">IScanFilter</a>
+  </div>
 </article>
           </div>
           
@@ -501,10 +506,10 @@ An empty filter matches any name.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_NameFilter.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.NameFilter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L23" class="contribution-link">View Source</a>
+                    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/NameFilter.cs/#L23" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -523,7 +528,7 @@ An empty filter matches any name.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2000-2017 SharpZipLib Contributors
+            Copyright © 2000-2018 SharpZipLib Contributors
             
           </div>
         </div>

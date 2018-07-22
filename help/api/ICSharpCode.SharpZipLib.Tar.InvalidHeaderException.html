@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class InvalidHeaderException
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.22.3.0">
+    <meta name="generator" content="docfx 2.37.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -20,12 +20,12 @@
     <meta property="docfx:tocrel" content="toc.html">
     
     
+    
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
-        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -47,8 +47,7 @@
               </form>
             </div>
           </div>
-        </nav>
-        
+        </nav>        
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -84,10 +83,20 @@ with a TAR archive header.</p>
     <div class="level3"><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarException.html">TarException</a></div>
     <div class="level4"><span class="xref">InvalidHeaderException</span></div>
   </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
       <span class="xref">System.Exception.GetBaseException()</span>
+    </div>
+    <div>
+      <span class="xref">System.Exception.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)</span>
+    </div>
+    <div>
+      <span class="xref">System.Exception.GetType()</span>
     </div>
     <div>
       <span class="xref">System.Exception.ToString()</span>
@@ -114,6 +123,12 @@ with a TAR archive header.</p>
       <span class="xref">System.Exception.StackTrace</span>
     </div>
     <div>
+      <span class="xref">System.Exception.TargetSite</span>
+    </div>
+    <div>
+      <span class="xref">System.Exception.SerializeObjectState</span>
+    </div>
+    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
@@ -121,9 +136,6 @@ with a TAR archive header.</p>
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
@@ -136,16 +148,16 @@ with a TAR archive header.</p>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_Tar_InvalidHeaderException_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class InvalidHeaderException : TarException</code></pre>
+    <pre><code class="lang-csharp hljs">public class InvalidHeaderException : TarException, ISerializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/InvalidHeaderException.cs/#L14">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/InvalidHeaderException.cs/#L14">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor_" data-uid="ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor" data-uid="ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor">InvalidHeaderException()</h4>
@@ -158,10 +170,10 @@ with a TAR archive header.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/InvalidHeaderException.cs/#L22">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/InvalidHeaderException.cs/#L22">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor_" data-uid="ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor_System_String_" data-uid="ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor(System.String)">InvalidHeaderException(String)</h4>
@@ -192,10 +204,10 @@ with a TAR archive header.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor_System_String_System_Exception_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.%23ctor(System.String%2CSystem.Exception)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor_System_String_System_Exception_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.%23ctor(System.String%2CSystem.Exception)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/InvalidHeaderException.cs/#L32">View Source</a>
+    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/InvalidHeaderException.cs/#L32">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor_" data-uid="ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor_System_String_System_Exception_" data-uid="ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor(System.String,System.Exception)">InvalidHeaderException(String, Exception)</h4>
@@ -230,6 +242,10 @@ with a TAR archive header.</p>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.Runtime.Serialization.ISerializable</span>
+  </div>
 </article>
           </div>
           
@@ -238,10 +254,10 @@ with a TAR archive header.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_InvalidHeaderException.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.InvalidHeaderException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/piksel/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_InvalidHeaderException.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.InvalidHeaderException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/InvalidHeaderException.cs/#L9" class="contribution-link">View Source</a>
+                    <a href="https://github.com/piksel/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/InvalidHeaderException.cs/#L9" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -260,7 +276,7 @@ with a TAR archive header.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2000-2017 SharpZipLib Contributors
+            Copyright © 2000-2018 SharpZipLib Contributors
             
           </div>
         </div>
