@@ -3,6 +3,6 @@ description: "#ziplib is a Zip, GZip, Tar and BZip2 library written entirely in 
 google_analytics: 
 show_downloads: true
 theme: jekyll-theme-minimal
-logo: logotype/png256px/colored-dark.png
+#logo: logotype/png256px/colored-dark.png
 gems:
   - jekyll-mentions
