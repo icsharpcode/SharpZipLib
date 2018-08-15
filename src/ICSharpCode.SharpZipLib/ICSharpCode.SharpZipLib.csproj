@@ -9,10 +9,10 @@
   
   <!-- Nuget specific tags -->
   <PropertyGroup>
-    <AssemblyVersion>1.0.0.4</AssemblyVersion>
-    <FileVersion>1.0.0.4</FileVersion>
-    <Version>1.0.0-rc2</Version>
-    <PackageId>SharpZipLib </PackageId>
+    <AssemblyVersion>1.0.0.5</AssemblyVersion>
+    <FileVersion>1.0.0.5</FileVersion>
+    <Version>1.0.0</Version>
+    <PackageId>SharpZipLib</PackageId>
     <Company>ICSharpCode</Company>
     <Authors>ICSharpCode</Authors>
     <Description>SharpZipLib (#ziplib, formerly NZipLib) is a compression library for Zip, GZip, BZip2, and Tar written entirely in C# for .NET. It is implemented as an assembly (installable in the GAC), and thus can easily be incorporated into other projects (in any .NET language)</Description>
@@ -22,7 +22,7 @@
     <Copyright>Copyright © 2000-2018 SharpZipLib Contributors</Copyright>
     <PackageTags>Compression Library Zip GZip BZip2 LZW Tar</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <PackageReleaseNotes>This is a release candidate for v1.0
+    <PackageReleaseNotes>This is the first stable release for v1.0
 
 Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.0 for more information.</PackageReleaseNotes>
     <PackageLicenseUrl>https://github.com/icsharpcode/SharpZipLib/blob/master/LICENSE.txt</PackageLicenseUrl>
