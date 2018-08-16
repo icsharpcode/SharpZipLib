@@ -78,15 +78,21 @@ namespace ICSharpCode.SharpZipLib.Encryption
 
 			// Performs the equivalent of derive_key in Dr Brian Gladman's pwd2key.c
 			var pdb = new Rfc2898DeriveBytes(key, saltBytes, KEY_ROUNDS);
-            var rm = Aes.Create();
+			var rm = new AesManaged();//Aes.Create();
 			rm.Mode = CipherMode.ECB;           // No feedback from cipher for CTR mode
 			_counterNonce = new byte[_blockSize];
 			byte[] byteKey1 = pdb.GetBytes(_blockSize);
-			byte[] byteKey2 = pdb.GetBytes(_blockSize);
-			_encryptor = rm.CreateEncryptor(byteKey1, byteKey2);
+			byte[] byteIV = pdb.GetBytes(_blockSize);
+			if (byteIV.Length > 16)
+			{
+				byte[] byteInit = new byte[16];
+				Buffer.BlockCopy(byteIV, 0, byteInit, 0, 16);
+				byteIV = byteInit;
+			}
+			_encryptor = rm.CreateEncryptor(byteKey1, byteIV);
 			_pwdVerifier = pdb.GetBytes(PWD_VER_LENGTH);
 			//
-			_hmacsha1 = IncrementalHash.CreateHMAC(HashAlgorithmName.SHA1, byteKey2);
+			_hmacsha1 = IncrementalHash.CreateHMAC(HashAlgorithmName.SHA1, byteIV);
 			_writeMode = writeMode;
 		}
 
