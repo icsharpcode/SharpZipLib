@@ -24,7 +24,7 @@ Namespace layout
 | Module | Namespace |
 |:----------------:|:-----------------------------|
 |BZip2 implementation|ICSharpCode.SharpZipLib.BZip2.\*|
-|Checksum implementation|ICSharpCode.SharpZipLib.Checksums.\*|
+|Checksum implementation|ICSharpCode.SharpZipLib.Checksum.\*|
 |Core utilities / interfaces|ICSharpCode.SharpZipLib.Core.\*|
 |Encryption implementation|ICSharpCode.SharpZipLib.Encryption.\*|
 |GZip implementation|ICSharpCode.SharpZipLib.GZip.\*|
