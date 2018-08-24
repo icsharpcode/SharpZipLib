@@ -32,12 +32,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			"7z", "7za",
 
 			// Check in default install location
-			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "7z.exe"),
-			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "7z.exe"),
+			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "7-Zip", "7z.exe"),
+			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "7-Zip", "7z.exe"),
 		};
 
 		public static bool TryGet7zBinPath(out string path7z)
 		{
+			var runTimeLimit = TimeSpan.FromSeconds(3);
+
 			foreach (var testPath in possible7zPaths)
 			{
 				try
@@ -46,8 +48,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					{
 						RedirectStandardOutput = true
 					});
-					if (!p.WaitForExit(3000))
+					while (!p.StandardOutput.EndOfStream && (DateTime.Now - p.StartTime) < runTimeLimit)
 					{
+						p.StandardOutput.DiscardBufferedData();
+					}
+					if (!p.HasExited)
+					{
+						p.Close();
 						Assert.Warn($"Timed out checking for 7z binary in \"{testPath}\"!");
 						continue;
 					}
@@ -98,6 +105,7 @@ Vestibulum id iaculis leo. Duis porta ante lorem. Duis condimentum enim nec lore
 
 				if (TryGet7zBinPath(out string path7z))
 				{
+					Console.WriteLine("Using 7z path: \"{path7z}\"");
 
 					ms.Seek(0, SeekOrigin.Begin);
 
