@@ -27,25 +27,44 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			CreateZipWithEncryptedEntries("foo", 256);
 		}
 
-		public bool Is7zaInPath()
+		private static readonly string[] possible7zPaths = new[] {
+			// Check in PATH
+			"7z", "7za",
+
+			// Check in default install location
+			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "7z.exe"),
+			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "7z.exe"),
+		};
+
+		public static bool TryGet7zBinPath(out string path7z)
 		{
-			try
+			foreach (var testPath in possible7zPaths)
 			{
-				var p = Process.Start(new ProcessStartInfo("7zax", "i")
+				try
 				{
-					RedirectStandardOutput = true
-				});
-				if (!p.WaitForExit(2000))
-				{
-					Assert.Warn("Timed out checking for 7za!");
-					return false;
+					var p = Process.Start(new ProcessStartInfo(testPath, "i")
+					{
+						RedirectStandardOutput = true
+					});
+					if (!p.WaitForExit(3000))
+					{
+						Assert.Warn($"Timed out checking for 7z binary in \"{testPath}\"!");
+						continue;
+					}
+
+					if (p.ExitCode == 0)
+					{
+						path7z = testPath;
+						return true;
+					}
 				}
-				return p.ExitCode == 0;
+				catch (Exception)
+				{
+					continue;
+				}
 			}
-			catch(Exception)
-			{
-				return false;
-			}
+			path7z = null;
+			return false;
 		}
 
 		public void CreateZipWithEncryptedEntries(string password, int keySize)
@@ -77,7 +96,7 @@ Vestibulum id iaculis leo. Duis porta ante lorem. Duis condimentum enim nec lore
 					zs.CloseEntry();
 				}
 
-				if (Is7zaInPath())
+				if (TryGet7zBinPath(out string path7z))
 				{
 
 					ms.Seek(0, SeekOrigin.Begin);
@@ -92,7 +111,7 @@ Vestibulum id iaculis leo. Duis porta ante lorem. Duis condimentum enim nec lore
 							ms.CopyTo(fs);
 						}
 
-						var p = Process.Start("7za", $"t -p{password} {fileName}");
+						var p = Process.Start(path7z, $"t -p{password} {fileName}");
 						if (!p.WaitForExit(2000))
 						{
 							Assert.Warn("Timed out verifying zip file!");
