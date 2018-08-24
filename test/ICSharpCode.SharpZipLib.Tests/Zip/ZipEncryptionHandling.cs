@@ -105,7 +105,7 @@ Vestibulum id iaculis leo. Duis porta ante lorem. Duis condimentum enim nec lore
 
 				if (TryGet7zBinPath(out string path7z))
 				{
-					Console.WriteLine("Using 7z path: \"{path7z}\"");
+					Console.WriteLine($"Using 7z path: \"{path7z}\"");
 
 					ms.Seek(0, SeekOrigin.Begin);
 
