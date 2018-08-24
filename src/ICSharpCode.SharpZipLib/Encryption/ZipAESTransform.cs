@@ -81,18 +81,14 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			var rm = new AesManaged();
 			rm.Mode = CipherMode.ECB;           // No feedback from cipher for CTR mode
 			_counterNonce = new byte[_blockSize];
-			byte[] byteKey1 = pdb.GetBytes(_blockSize);
-			byte[] byteIV = pdb.GetBytes(_blockSize);
-			if (byteIV.Length > 16)
-			{
-				byte[] byteInit = new byte[16];
-				Buffer.BlockCopy(byteIV, 0, byteInit, 0, 16);
-				byteIV = byteInit;
-			}
-			_encryptor = rm.CreateEncryptor(byteKey1, byteIV);
+			byte[] key1bytes = pdb.GetBytes(_blockSize);
+			byte[] key2bytes = pdb.GetBytes(_blockSize);
+			
+			// Use empty IV for AES
+			_encryptor = rm.CreateEncryptor(key1bytes, new byte[16]);
 			_pwdVerifier = pdb.GetBytes(PWD_VER_LENGTH);
 			//
-			_hmacsha1 = IncrementalHash.CreateHMAC(HashAlgorithmName.SHA1, byteIV);
+			_hmacsha1 = IncrementalHash.CreateHMAC(HashAlgorithmName.SHA1, key2bytes);
 			_writeMode = writeMode;
 		}
 
