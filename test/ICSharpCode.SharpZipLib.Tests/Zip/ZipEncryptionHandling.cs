@@ -22,6 +22,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Test]
 		[Category("Encryption")]
 		[Category("Zip")]
+		public void Aes192Encryption()
+		{
+			CreateZipWithEncryptedEntries("foo", 192);
+		}
+		
+		[Test]
+		[Category("Encryption")]
+		[Category("Zip")]
 		public void Aes256Encryption()
 		{
 			CreateZipWithEncryptedEntries("foo", 256);
