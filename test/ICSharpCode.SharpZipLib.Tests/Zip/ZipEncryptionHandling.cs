@@ -22,6 +22,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Test]
 		[Category("Encryption")]
 		[Category("Zip")]
+		[Ignore("Creation is not supported by any of the common archiving software even though it's included in the spec")]
 		public void Aes192Encryption()
 		{
 			CreateZipWithEncryptedEntries("foo", 192);
