@@ -27,6 +27,36 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			CreateZipWithEncryptedEntries("foo", 256);
 		}
 
+		[Test]
+		[Category("Encryption")]
+		[Category("Zip")]
+		public void ZipFileAesDecryption()
+		{
+			var password = "password";
+
+			using (var ms = new MemoryStream())
+			{
+				WriteEncryptedZipToStream(ms, password, 256);
+
+				var zipFile = new ZipFile(ms)
+				{
+					Password = password
+				};
+
+				foreach (ZipEntry entry in zipFile)
+				{
+					if (!entry.IsFile) continue;
+					
+					using(var zis = zipFile.GetInputStream(entry))
+					using (var sr = new StreamReader(zis, Encoding.UTF8))
+					{
+						var content = sr.ReadToEnd();
+						Assert.AreEqual(DummyDataString, content, "Decompressed content does not match input data");
+					}
+				}
+			}
+		}
+
 		private static readonly string[] possible7zPaths = new[] {
 			// Check in PATH
 			"7z", "7za",
@@ -74,34 +104,36 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			return false;
 		}
 
+		public void WriteEncryptedZipToStream(Stream stream, string password, int keySize)
+		{
+			using (var zs = new ZipOutputStream(stream))
+			{
+				zs.IsStreamOwner = false;
+				zs.SetLevel(9); // 0-9, 9 being the highest level of compression
+				zs.Password = password;  // optional. Null is the same as not setting. Required if using AES.
+
+				ZipEntry zipEntry = new ZipEntry("test");
+				zipEntry.AESKeySize = keySize;
+				zipEntry.DateTime = DateTime.Now;
+
+				zs.PutNextEntry(zipEntry);
+
+				byte[] dummyData = Encoding.UTF8.GetBytes(DummyDataString);
+
+				using (var dummyStream = new MemoryStream(dummyData))
+				{
+					dummyStream.CopyTo(zs);
+				}
+
+				zs.CloseEntry();
+			}
+		}
+
 		public void CreateZipWithEncryptedEntries(string password, int keySize)
 		{
 			using (var ms = new MemoryStream())
 			{
-				using (var zs = new ZipOutputStream(ms))
-				{
-					zs.IsStreamOwner = false;
-					zs.SetLevel(9); // 0-9, 9 being the highest level of compression
-					zs.Password = password;  // optional. Null is the same as not setting. Required if using AES.
-
-					ZipEntry zipEntry = new ZipEntry("test");
-					zipEntry.AESKeySize = keySize;
-					zipEntry.DateTime = DateTime.Now;
-
-					zs.PutNextEntry(zipEntry);
-
-					byte[] dummyData = Encoding.UTF8.GetBytes(@"Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Fusce bibendum diam ac nunc rutrum ornare. Maecenas blandit elit ligula, eget suscipit lectus rutrum eu. 
-Maecenas aliquam, purus mattis pulvinar pharetra, nunc orci maximus justo, sed facilisis massa dui sed lorem. 
-Vestibulum id iaculis leo. Duis porta ante lorem. Duis condimentum enim nec lorem tristique interdum. Fusce in faucibus libero.");
-
-					using (var dummyStream = new MemoryStream(dummyData))
-					{
-						dummyStream.CopyTo(zs);
-					}
-
-					zs.CloseEntry();
-				}
+				WriteEncryptedZipToStream(ms, password, keySize);
 
 				if (TryGet7zBinPath(out string path7z))
 				{
@@ -140,5 +172,10 @@ Vestibulum id iaculis leo. Duis porta ante lorem. Duis condimentum enim nec lore
 			}
 
 		}
+
+		const string DummyDataString = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Fusce bibendum diam ac nunc rutrum ornare. Maecenas blandit elit ligula, eget suscipit lectus rutrum eu. 
+Maecenas aliquam, purus mattis pulvinar pharetra, nunc orci maximus justo, sed facilisis massa dui sed lorem. 
+Vestibulum id iaculis leo. Duis porta ante lorem. Duis condimentum enim nec lorem tristique interdum. Fusce in faucibus libero.";
 	}
 }
