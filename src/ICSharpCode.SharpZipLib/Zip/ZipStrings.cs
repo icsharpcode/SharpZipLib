@@ -125,7 +125,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private static Encoding EncodingFromFlag(int flags)
 			=> ((flags & (int)GeneralBitFlags.UnicodeText) != 0)
 				? Encoding.UTF8
-				: Encoding.GetEncoding(SystemDefaultCodePage);
+				: Encoding.GetEncoding(
+					// if CodePage wasn't set manually and no utf flag present
+					// then we must use SystemDefault (old behavior)
+					// otherwise, CodePage should be preferred over SystemDefault
+					// see https://github.com/icsharpcode/SharpZipLib/issues/274
+					CodePage == Encoding.UTF8.CodePage? 
+						SystemDefaultCodePage:
+						CodePage);
 
 		/// <summary>
 		/// Convert a byte array to a string  using <see cref="CodePage"/>
