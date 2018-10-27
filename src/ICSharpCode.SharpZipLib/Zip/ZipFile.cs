@@ -3020,6 +3020,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				byte[] buffer = new byte[Math.Max(nameLen, commentLen)];
 
 				StreamUtils.ReadFully(baseStream_, buffer, 0, nameLen);
+				if (ZipStrings.UseUnicode)
+				{
+					bitFlags |= (int)GeneralBitFlags.UnicodeText;
+				}
 				string name = ZipConstants.ConvertToStringExt(bitFlags, buffer, nameLen);
 
 				var entry = new ZipEntry(name, versionToExtract, versionMadeBy, (CompressionMethod)method);
