@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
-using ICSharpCode.SharpZipLib.Zip;
+﻿using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
+using System;
+using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -36,10 +36,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			var wnt = new WindowsNameTransform();
 			var veryLong = new string('x', 261);
-			try {
+			try
+			{
 				wnt.TransformDirectory(veryLong);
 				Assert.Fail("Expected an exception");
-			} catch (PathTooLongException) {
+			}
+			catch (PathTooLongException)
+			{
 			}
 		}
 
@@ -48,9 +51,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			var wnt = new WindowsNameTransform();
 			string veryLong = "c:\\" + new string('x', 260);
-			try {
+			try
+			{
 				string transformed = wnt.TransformDirectory(veryLong);
-			} catch {
+			}
+			catch
+			{
 				Assert.Fail("Expected no exception");
 			}
 		}
@@ -59,34 +65,49 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		public void ReplacementChecking()
 		{
 			var wnt = new WindowsNameTransform();
-			try {
+			try
+			{
 				wnt.Replacement = '*';
 				Assert.Fail("Expected an exception");
-			} catch (ArgumentException) {
+			}
+			catch (ArgumentException)
+			{
 			}
 
-			try {
+			try
+			{
 				wnt.Replacement = '?';
 				Assert.Fail("Expected an exception");
-			} catch (ArgumentException) {
+			}
+			catch (ArgumentException)
+			{
 			}
 
-			try {
+			try
+			{
 				wnt.Replacement = ':';
 				Assert.Fail("Expected an exception");
-			} catch (ArgumentException) {
+			}
+			catch (ArgumentException)
+			{
 			}
 
-			try {
+			try
+			{
 				wnt.Replacement = '/';
 				Assert.Fail("Expected an exception");
-			} catch (ArgumentException) {
+			}
+			catch (ArgumentException)
+			{
 			}
 
-			try {
+			try
+			{
 				wnt.Replacement = '\\';
 				Assert.Fail("Expected an exception");
-			} catch (ArgumentException) {
+			}
+			catch (ArgumentException)
+			{
 			}
 		}
 

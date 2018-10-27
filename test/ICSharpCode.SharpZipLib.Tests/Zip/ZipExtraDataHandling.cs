@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
-using ICSharpCode.SharpZipLib.Zip;
+﻿using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
+using System;
+using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -41,9 +41,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.AreEqual(65535, zed.Length);
 
 			bool caught = false;
-			try {
+			try
+			{
 				zed.AddEntry(3, null);
-			} catch {
+			}
+			catch
+			{
 				caught = true;
 			}
 
@@ -54,9 +57,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.AreEqual(65510, zed.Length);
 
 			caught = false;
-			try {
+			try
+			{
 				zed.AddEntry(2, new byte[22]);
-			} catch {
+			}
+			catch
+			{
 				caught = true;
 			}
 			Assert.IsTrue(caught, "Expected an exception when max size exceeded");
@@ -115,7 +121,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			zed2.AddEntry(1, new byte[] { });
 
 			byte[] data = zed.GetEntryData();
-			for (int i = 0; i < data.Length; ++i) {
+			for (int i = 0; i < data.Length; ++i)
+			{
 				Assert.AreEqual(zed2.GetEntryData()[i], data[i]);
 			}
 
@@ -136,14 +143,16 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			findResult = zed.Find(1);
 			Assert.IsTrue(findResult, "B - Should find tag 1");
 			Assert.AreEqual(3, zed.ValueLength, "B - Length of entry should be 3");
-			for (int i = 1; i <= 3; ++i) {
+			for (int i = 1; i <= 3; ++i)
+			{
 				Assert.AreEqual(i, zed.ReadByte());
 			}
 			Assert.AreEqual(-1, zed.ReadByte());
 
 			Stream s = zed.GetStreamForTag(1);
 			Assert.AreEqual(3, s.Length, "B.1 Stream length should be 3");
-			for (int i = 1; i <= 3; ++i) {
+			for (int i = 1; i <= 3; ++i)
+			{
 				Assert.AreEqual(i, s.ReadByte());
 			}
 			Assert.AreEqual(-1, s.ReadByte());
@@ -154,7 +163,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			findResult = zed.Find(1);
 			Assert.IsTrue(findResult, "C.1 - Should find tag 1");
 			Assert.AreEqual(3, zed.ValueLength, "C.1 - Length of entry should be 3");
-			for (int i = 1; i <= 3; ++i) {
+			for (int i = 1; i <= 3; ++i)
+			{
 				Assert.AreEqual(i, zed.ReadByte());
 			}
 			Assert.AreEqual(-1, zed.ReadByte());
@@ -249,7 +259,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			zed = new ZipExtraData(new byte[] { 1, 0, 7, 0, 1, 2, 3, 4, 5, 6, 7 });
 			Assert.IsTrue(zed.Find(1), "Should find tag 1");
 
-			for (int i = 0; i < 7; ++i) {
+			for (int i = 0; i < 7; ++i)
+			{
 				Assert.AreEqual(7 - i, zed.UnreadCount);
 				zed.ReadByte();
 			}
@@ -287,9 +298,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			bool exceptionCaught = false;
 
-			try {
+			try
+			{
 				zed.Skip(1);
-			} catch (ZipException) {
+			}
+			catch (ZipException)
+			{
 				exceptionCaught = true;
 			}
 			Assert.IsTrue(exceptionCaught, "Should fail to skip past end");
@@ -302,9 +316,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.AreEqual(4, zed.CurrentReadIndex);
 
 			exceptionCaught = false;
-			try {
+			try
+			{
 				zed.Skip(-1);
-			} catch (ZipException) {
+			}
+			catch (ZipException)
+			{
 				exceptionCaught = true;
 			}
 			Assert.IsTrue(exceptionCaught, "Should fail to skip before beginning");
@@ -320,9 +337,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			// Empty Tag
 			bool exceptionCaught = false;
-			try {
+			try
+			{
 				zed.ReadLong();
-			} catch (ZipException) {
+			}
+			catch (ZipException)
+			{
 				exceptionCaught = true;
 			}
 			Assert.IsTrue(exceptionCaught, "Expected EOS exception");
@@ -332,9 +352,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsTrue(zed.Find(1), "Should find tag 1");
 
 			exceptionCaught = false;
-			try {
+			try
+			{
 				zed.ReadLong();
-			} catch (ZipException) {
+			}
+			catch (ZipException)
+			{
 				exceptionCaught = true;
 			}
 			Assert.IsTrue(exceptionCaught, "Expected EOS exception");
@@ -345,9 +368,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			zed.ReadLong();
 
 			exceptionCaught = false;
-			try {
+			try
+			{
 				zed.ReadLong();
-			} catch (ZipException) {
+			}
+			catch (ZipException)
+			{
 				exceptionCaught = true;
 			}
 			Assert.IsTrue(exceptionCaught, "Expected EOS exception");
@@ -363,9 +389,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			// Empty Tag
 			bool exceptionCaught = false;
-			try {
+			try
+			{
 				zed.ReadInt();
-			} catch (ZipException) {
+			}
+			catch (ZipException)
+			{
 				exceptionCaught = true;
 			}
 			Assert.IsTrue(exceptionCaught, "Expected EOS exception");
@@ -375,9 +404,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsTrue(zed.Find(1), "Should find tag 1");
 
 			exceptionCaught = false;
-			try {
+			try
+			{
 				zed.ReadInt();
-			} catch (ZipException) {
+			}
+			catch (ZipException)
+			{
 				exceptionCaught = true;
 			}
 			Assert.IsTrue(exceptionCaught, "Expected EOS exception");
@@ -388,9 +420,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			zed.ReadInt();
 
 			exceptionCaught = false;
-			try {
+			try
+			{
 				zed.ReadInt();
-			} catch (ZipException) {
+			}
+			catch (ZipException)
+			{
 				exceptionCaught = true;
 			}
 			Assert.IsTrue(exceptionCaught, "Expected EOS exception");
@@ -406,9 +441,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			// Empty Tag
 			bool exceptionCaught = false;
-			try {
+			try
+			{
 				zed.ReadShort();
-			} catch (ZipException) {
+			}
+			catch (ZipException)
+			{
 				exceptionCaught = true;
 			}
 			Assert.IsTrue(exceptionCaught, "Expected EOS exception");
@@ -418,9 +456,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsTrue(zed.Find(1), "Should find tag 1");
 
 			exceptionCaught = false;
-			try {
+			try
+			{
 				zed.ReadShort();
-			} catch (ZipException) {
+			}
+			catch (ZipException)
+			{
 				exceptionCaught = true;
 			}
 			Assert.IsTrue(exceptionCaught, "Expected EOS exception");
@@ -431,9 +472,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			zed.ReadShort();
 
 			exceptionCaught = false;
-			try {
+			try
+			{
 				zed.ReadShort();
-			} catch (ZipException) {
+			}
+			catch (ZipException)
+			{
 				exceptionCaught = true;
 			}
 			Assert.IsTrue(exceptionCaught, "Expected EOS exception");

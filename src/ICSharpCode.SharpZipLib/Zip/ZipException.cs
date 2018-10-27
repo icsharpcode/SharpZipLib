@@ -7,7 +7,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	public class ZipException : SharpZipBaseException
 	{
-
 		/// <summary>
 		/// Initialise a new instance of <see cref="ZipException" />.
 		/// </summary>

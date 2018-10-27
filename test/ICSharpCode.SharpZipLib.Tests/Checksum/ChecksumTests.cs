@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using ICSharpCode.SharpZipLib.Checksum;
+﻿using ICSharpCode.SharpZipLib.Checksum;
+using NUnit.Framework;
 using System;
 
 namespace ICSharpCode.SharpZipLib.Tests.Checksum
@@ -8,7 +8,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Checksum
 	[Category("Checksum")]
 	public class ChecksumTests
 	{
-		readonly
+		private readonly
 				// Represents ASCII string of "123456789"
 				byte[] check = { 49, 50, 51, 52, 53, 54, 55, 56, 57 };
 
@@ -59,57 +59,74 @@ namespace ICSharpCode.SharpZipLib.Tests.Checksum
 
 		private void exceptionTesting(IChecksum crcUnderTest)
 		{
-
 			bool exception = false;
 
-			try {
+			try
+			{
 				crcUnderTest.Update(null);
-			} catch (ArgumentNullException) {
+			}
+			catch (ArgumentNullException)
+			{
 				exception = true;
 			}
 			Assert.IsTrue(exception, "Passing a null buffer should cause an ArgumentNullException");
 
 			// reset exception
 			exception = false;
-			try {
+			try
+			{
 				crcUnderTest.Update(new ArraySegment<byte>(null, 0, 0));
-			} catch (ArgumentNullException) {
+			}
+			catch (ArgumentNullException)
+			{
 				exception = true;
 			}
 			Assert.IsTrue(exception, "Passing a null buffer should cause an ArgumentNullException");
 
 			// reset exception
 			exception = false;
-			try {
+			try
+			{
 				crcUnderTest.Update(new ArraySegment<byte>(check, -1, 9));
-			} catch (ArgumentOutOfRangeException) {
+			}
+			catch (ArgumentOutOfRangeException)
+			{
 				exception = true;
 			}
 			Assert.IsTrue(exception, "Passing a negative offset should cause an ArgumentOutOfRangeException");
 
 			// reset exception
 			exception = false;
-			try {
+			try
+			{
 				crcUnderTest.Update(new ArraySegment<byte>(check, 10, 0));
-			} catch (ArgumentException) {
+			}
+			catch (ArgumentException)
+			{
 				exception = true;
 			}
 			Assert.IsTrue(exception, "Passing an offset greater than buffer.Length should cause an ArgumentException");
 
 			// reset exception
 			exception = false;
-			try {
+			try
+			{
 				crcUnderTest.Update(new ArraySegment<byte>(check, 0, -1));
-			} catch (ArgumentOutOfRangeException) {
+			}
+			catch (ArgumentOutOfRangeException)
+			{
 				exception = true;
 			}
 			Assert.IsTrue(exception, "Passing a negative count should cause an ArgumentOutOfRangeException");
 
 			// reset exception
 			exception = false;
-			try {
+			try
+			{
 				crcUnderTest.Update(new ArraySegment<byte>(check, 0, 10));
-			} catch (ArgumentException) {
+			}
+			catch (ArgumentException)
+			{
 				exception = true;
 			}
 			Assert.IsTrue(exception, "Passing a count + offset greater than buffer.Length should cause an ArgumentException");

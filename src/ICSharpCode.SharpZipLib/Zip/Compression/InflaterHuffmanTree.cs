@@ -1,6 +1,6 @@
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.Collections.Generic;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression
 {
@@ -10,12 +10,16 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 	public class InflaterHuffmanTree
 	{
 		#region Constants
-		const int MAX_BITLEN = 15;
-		#endregion
+
+		private const int MAX_BITLEN = 15;
+
+		#endregion Constants
 
 		#region Instance Fields
-		short[] tree;
-		#endregion
+
+		private short[] tree;
+
+		#endregion Instance Fields
 
 		/// <summary>
 		/// Literal length tree
@@ -29,35 +33,44 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		static InflaterHuffmanTree()
 		{
-			try {
+			try
+			{
 				byte[] codeLengths = new byte[288];
 				int i = 0;
-				while (i < 144) {
+				while (i < 144)
+				{
 					codeLengths[i++] = 8;
 				}
-				while (i < 256) {
+				while (i < 256)
+				{
 					codeLengths[i++] = 9;
 				}
-				while (i < 280) {
+				while (i < 280)
+				{
 					codeLengths[i++] = 7;
 				}
-				while (i < 288) {
+				while (i < 288)
+				{
 					codeLengths[i++] = 8;
 				}
 				defLitLenTree = new InflaterHuffmanTree(codeLengths);
 
 				codeLengths = new byte[32];
 				i = 0;
-				while (i < 32) {
+				while (i < 32)
+				{
 					codeLengths[i++] = 5;
 				}
 				defDistTree = new InflaterHuffmanTree(codeLengths);
-			} catch (Exception) {
+			}
+			catch (Exception)
+			{
 				throw new SharpZipBaseException("InflaterHuffmanTree: static tree length illegal");
 			}
 		}
 
 		#region Constructors
+
 		/// <summary>
 		/// Constructs a Huffman tree from the array of code lengths.
 		/// </summary>
@@ -68,26 +81,31 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		{
 			BuildTree(codeLengths);
 		}
-		#endregion
 
-		void BuildTree(IList<byte> codeLengths)
+		#endregion Constructors
+
+		private void BuildTree(IList<byte> codeLengths)
 		{
 			int[] blCount = new int[MAX_BITLEN + 1];
 			int[] nextCode = new int[MAX_BITLEN + 1];
 
-			for (int i = 0; i < codeLengths.Count; i++) {
+			for (int i = 0; i < codeLengths.Count; i++)
+			{
 				int bits = codeLengths[i];
-				if (bits > 0) {
+				if (bits > 0)
+				{
 					blCount[bits]++;
 				}
 			}
 
 			int code = 0;
 			int treeSize = 512;
-			for (int bits = 1; bits <= MAX_BITLEN; bits++) {
+			for (int bits = 1; bits <= MAX_BITLEN; bits++)
+			{
 				nextCode[bits] = code;
 				code += blCount[bits] << (16 - bits);
-				if (bits >= 10) {
+				if (bits >= 10)
+				{
 					/* We need an extra table for bit lengths >= 10. */
 					int start = nextCode[bits] & 0x1ff80;
 					int end = code & 0x1ff80;
@@ -96,7 +114,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			}
 
 			/* -jr comment this out! doesnt work for dynamic trees and pkzip 2.04g
-						if (code != 65536) 
+						if (code != 65536)
 						{
 							throw new SharpZipBaseException("Code lengths don't add up properly.");
 						}
@@ -106,40 +124,48 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			*/
 			tree = new short[treeSize];
 			int treePtr = 512;
-			for (int bits = MAX_BITLEN; bits >= 10; bits--) {
+			for (int bits = MAX_BITLEN; bits >= 10; bits--)
+			{
 				int end = code & 0x1ff80;
 				code -= blCount[bits] << (16 - bits);
 				int start = code & 0x1ff80;
-				for (int i = start; i < end; i += 1 << 7) {
+				for (int i = start; i < end; i += 1 << 7)
+				{
 					tree[DeflaterHuffman.BitReverse(i)] = (short)((-treePtr << 4) | bits);
 					treePtr += 1 << (bits - 9);
 				}
 			}
 
-			for (int i = 0; i < codeLengths.Count; i++) {
+			for (int i = 0; i < codeLengths.Count; i++)
+			{
 				int bits = codeLengths[i];
-				if (bits == 0) {
+				if (bits == 0)
+				{
 					continue;
 				}
 				code = nextCode[bits];
 				int revcode = DeflaterHuffman.BitReverse(code);
-				if (bits <= 9) {
-					do {
+				if (bits <= 9)
+				{
+					do
+					{
 						tree[revcode] = (short)((i << 4) | bits);
 						revcode += 1 << bits;
 					} while (revcode < 512);
-				} else {
+				}
+				else
+				{
 					int subTree = tree[revcode & 511];
 					int treeLen = 1 << (subTree & 15);
 					subTree = -(subTree >> 4);
-					do {
+					do
+					{
 						tree[subTree | (revcode >> 9)] = (short)((i << 4) | bits);
 						revcode += 1 << bits;
 					} while (revcode < treeLen);
 				}
 				nextCode[bits] = code + (1 << (16 - bits));
 			}
-
 		}
 
 		/// <summary>
@@ -204,4 +230,3 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		}
 	}
 }
-

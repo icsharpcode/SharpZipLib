@@ -20,7 +20,6 @@ namespace ICSharpCode.SharpZipLib
 		/// <param name="message">A message describing the exception.</param>
 		public StreamUnsupportedException(string message) : base(message) { }
 
-
 		/// <summary>
 		/// Initializes a new instance of the StreamUnsupportedException class with a specified
 		/// error message and a reference to the inner exception that is the cause of this exception.
@@ -28,6 +27,5 @@ namespace ICSharpCode.SharpZipLib
 		/// <param name="message">A message describing the exception.</param>
 		/// <param name="innerException">The inner exception</param>
 		public StreamUnsupportedException(string message, Exception innerException) : base(message, innerException) { }
-
 	}
 }
