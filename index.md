@@ -2,15 +2,15 @@
 
 ## Download
 
-Release Candidates of v1.0 is now available as a [NuGet Package](https://www.nuget.org/packages/SharpZipLib/1.0.0-rc1)
+Releases of v1.0 is now available as a [NuGet Package](https://www.nuget.org/packages/SharpZipLib/)
 
 Install using
 ```.ps1
-Install-Package SharpZipLib -Version 1.0.0-rc1
+Install-Package SharpZipLib
 ```
 or
 ```.sh
-dotnet add package SharpZipLib --version 1.0.0-rc1
+dotnet add package SharpZipLib
 ```
 
 [Release notes for v1.0](https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.0)
