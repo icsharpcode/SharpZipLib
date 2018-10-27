@@ -1,6 +1,6 @@
 {
   "homepages": [],
-  "source_base_path": "D:/GitWorkspace/SharpZipLib/docs/help",
+  "source_base_path": "D:/dev/.net/SharpZipLib/master/docs/help",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
@@ -9,10 +9,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2.html",
-          "hash": "EyDRL5FhaHvZThOicUFdWg=="
+          "hash": "ccVfnT9pycJQPyUpnMrghg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -21,10 +21,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2Exception.html",
-          "hash": "t+cz/65q3oFkDw5N2iMrCg=="
+          "hash": "tZKrirgrQJVa/bsN1H1giQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -33,10 +33,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.html",
-          "hash": "yBH9hFuyXy3/GWj4idYT9A=="
+          "hash": "EpMFNNxokTHcjP41dK5keg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -45,10 +45,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.html",
-          "hash": "BAwLlDvYDmIJOyVvciCoMA=="
+          "hash": "3VF+2vEn/HJPgwcWWtgL/Q=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -57,10 +57,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.html",
-          "hash": "tGlrBHAmN9CCRUGYpyQ/ng=="
+          "hash": "8yjRjitV6ukuQkpE4bsF6A=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -69,10 +69,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.Adler32.html",
-          "hash": "jL2sMC3rEp1s16/j+62ytg=="
+          "hash": "Z79kN3JdtGHG4YYoDTKZ4Q=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -81,10 +81,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.BZip2Crc.html",
-          "hash": "zeZFOF+q6NsF+60wU1MyLA=="
+          "hash": "PyDrrHhUhX8iatMYv+DiSQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -93,10 +93,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.Crc32.html",
-          "hash": "7vVJor2kIn8T7esHnF0XeA=="
+          "hash": "Vp3hzDn9S2bEv+UA7QsyMw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -105,10 +105,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.IChecksum.html",
-          "hash": "d1NMfSeL7sCGSPsLaBvA/A=="
+          "hash": "8zB4xjxIhZkT6BZV8DUKqA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -117,10 +117,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.html",
-          "hash": "RteKQO/GmIki2aovDY0yUw=="
+          "hash": "lYzZlcb1DJQhVPrxAmyEPA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -129,10 +129,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.CompletedFileHandler.html",
-          "hash": "ru3KQFphV9YBk33b6tu+gQ=="
+          "hash": "zfv/eAbUbypgFGeTh96m0A=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -141,10 +141,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.DirectoryEventArgs.html",
-          "hash": "9MbLHCM9m43wtvZsrg+GJw=="
+          "hash": "7TWxe31TFOh7FsOGA7N7GA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -153,10 +153,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.DirectoryFailureHandler.html",
-          "hash": "sQiiztH5yLczdJIt6sRtzw=="
+          "hash": "iFHiwlkdwLzfS74G24jvyg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -165,10 +165,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.html",
-          "hash": "V3YmqdFLBBbAd5qcTCTgKA=="
+          "hash": "uT/Qd4n9oizj7AbdAwxzeA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -177,10 +177,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.FileFailureHandler.html",
-          "hash": "8/UXRjqWL9gPMwiDLtyO0g=="
+          "hash": "TDyhICBvlhNfDBJNwKKWbw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -189,10 +189,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.FileSystemScanner.html",
-          "hash": "qGMZQql3K5xTGUM82nDJ7w=="
+          "hash": "6UIIc+g2tOvvQIUhk8UeHw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -201,10 +201,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.INameTransform.html",
-          "hash": "/V14HdRXLzzChdaG8O0gFA=="
+          "hash": "11nh2R+dKptKig0QTg50Jw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -213,10 +213,22 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.IScanFilter.html",
-          "hash": "Pbo+1GhjZ+Qf3VFduguAeA=="
+          "hash": "AC9n0CDaNNkocmBa0MCJXQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Core.InvalidNameException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Core.InvalidNameException.html",
+          "hash": "c1E4npAMNvz4R7+dLyIlRQ=="
+        }
+      },
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -225,10 +237,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.NameAndSizeFilter.html",
-          "hash": "BM4+pd6oXldJyYGh5b4NUw=="
+          "hash": "ObpCAlCNE4t3QNy+L+oIhA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -237,10 +249,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.NameFilter.html",
-          "hash": "6rupMS9A87O8rf9qlVlYSA=="
+          "hash": "twkrkXxK66R5Ar/G8nH87Q=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -249,10 +261,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.PathFilter.html",
-          "hash": "Y9T0IdkXq+lNsWyLJ5wUbw=="
+          "hash": "2B3LapBCaMQH7UpzxRW+ug=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -261,10 +273,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.ProcessFileHandler.html",
-          "hash": "mHj5dCJMbU+jsuD4cJ9+Dg=="
+          "hash": "AkjieIVQGii5S6QOmgxwDA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -273,10 +285,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.ProgressEventArgs.html",
-          "hash": "OdGWxcZXzq/3Qp6CkcKEEQ=="
+          "hash": "b7dscMrmni2M8oCVFMPKhw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -285,10 +297,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.ProgressHandler.html",
-          "hash": "fPbUXEqYoRZUQ1IpL2BwIQ=="
+          "hash": "ReI6uFJqUybIC6foTOp77w=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -297,10 +309,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.ScanEventArgs.html",
-          "hash": "Fv9ajSE6BpBZjp6+wQCqTQ=="
+          "hash": "ZwozlJ1Z33sh6y0cczRW2g=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -309,10 +321,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs.html",
-          "hash": "Eswbdm1GNgh2X/uWNnTl8A=="
+          "hash": "mgL4DBcjiqZ4fdHKj21eHQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -321,10 +333,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.StreamUtils.html",
-          "hash": "0FdvfSKWqjoBaLVt4FDbPg=="
+          "hash": "j9iIE/+BiIAKQA2lP1Eing=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -333,10 +345,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.WindowsPathUtils.html",
-          "hash": "Y9ScopP+Dh1IqmgyVbKDFQ=="
+          "hash": "1QRwMbovnkHJelGMOwpLNQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -345,10 +357,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.html",
-          "hash": "smAoVrpuE/p72L7YIG6M0Q=="
+          "hash": "LdRevh70gQ6mQeefjL46Lg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -357,10 +369,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Encryption.PkzipClassic.html",
-          "hash": "NKBl37MvrAtxg53qPyXfNQ=="
+          "hash": "27M75FIBqL5uJtae16J/jA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -369,10 +381,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Encryption.PkzipClassicManaged.html",
-          "hash": "Ijw+7ndOMTaGcsATDOtvqA=="
+          "hash": "hdhaxAIN6dRWRLr05UOqCQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -381,10 +393,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Encryption.html",
-          "hash": "54gDWO9I+D5gnEv9IjU30w=="
+          "hash": "n3Y1GI3r9Dm32j7aXXBXgQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -393,10 +405,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZip.html",
-          "hash": "w9DJ4jpvHnqhcMematYv6Q=="
+          "hash": "Mvmba6TrYUC9P99I1J4xFA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -405,10 +417,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipConstants.html",
-          "hash": "ijhnReCDo/vfvnJvAiHp0A=="
+          "hash": "RDf+KWvG5g8qJTtY2gik1Q=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -417,10 +429,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipException.html",
-          "hash": "/WGwT7zuNo22/kfm9tVwUQ=="
+          "hash": "FwD3r2a53ofSN5ojNBivSg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -429,10 +441,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipInputStream.html",
-          "hash": "HDVif3wQhuU03dtFWgFIFg=="
+          "hash": "gpegxe0VG3ES4nAZjSjHuw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -441,10 +453,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html",
-          "hash": "IMS/jx2Zny92wPb+JR/ylg=="
+          "hash": "aR6fijakAsSmvfG17Acnog=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -453,10 +465,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.GZip.html",
-          "hash": "+Vuc3asB1DFZbbXa6RfazA=="
+          "hash": "Neckbwx+G3Zi1qfevIkuHQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -465,10 +477,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Lzw.LzwConstants.html",
-          "hash": "xxReYw4glajlZHrza+38Qw=="
+          "hash": "bEB/sNFo+CqCSYZBpPe3eQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -477,10 +489,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Lzw.LzwException.html",
-          "hash": "HJGjkda1wBXZ15DyEdcdiw=="
+          "hash": "QtvTKWmdzw2Sgb9VNYZQ8w=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -489,10 +501,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Lzw.LzwInputStream.html",
-          "hash": "78w/74M/vDPOpk9AkpZe9g=="
+          "hash": "GZY8SuB63zZm+tULqoLyug=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -501,10 +513,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Lzw.html",
-          "hash": "kQUmX+5Mzc9Qb+1CqMJ1xQ=="
+          "hash": "ShxSuCdKf9BeZSDzkFEQrw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -513,10 +525,34 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.SharpZipBaseException.html",
-          "hash": "Fb+RzMRH9gAd62RM7tpEXg=="
+          "hash": "gjXELF0fQ89LkJhM+sfXbg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.StreamDecodingException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.StreamDecodingException.html",
+          "hash": "S3xiirtsVK0GRQxivkdNSA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.StreamUnsupportedException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.StreamUnsupportedException.html",
+          "hash": "F2Aq6RLnB9ZzgTacfTfniQ=="
+        }
+      },
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -525,10 +561,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.html",
-          "hash": "MawG9/EAgvJT2JB5/7MowQ=="
+          "hash": "Lykz2Y1mkNR9w5QspTCWpA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -537,10 +573,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.ProgressMessageHandler.html",
-          "hash": "gGkGTJfZXw2jknQKpN1pyg=="
+          "hash": "yXuQDzEQJKJ6cgsoOHw6/w=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -549,10 +585,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarArchive.html",
-          "hash": "OCDfkXyp5ShPct3efYpdvg=="
+          "hash": "IvYskdwcL+eKYLqO2+NeLA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -561,10 +597,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarBuffer.html",
-          "hash": "JqxLD9+m5o9iYkmOMBklIQ=="
+          "hash": "FZO9vnMRGv5Qc2DhyChkDQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -573,10 +609,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarEntry.html",
-          "hash": "AZnbmwx8822IIA7q0PrBzQ=="
+          "hash": "bxtqDUTSlOFsq/jg21MyQw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -585,10 +621,22 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarException.html",
-          "hash": "pQIN0o+OVhK3DZwRQ7IkHQ=="
+          "hash": "gVNKzxR0YhOdFTclXW4jiA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarExtendedHeaderReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarExtendedHeaderReader.html",
+          "hash": "2Hd94q2QmGEq5mqbsTF/kQ=="
+        }
+      },
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -597,10 +645,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarHeader.html",
-          "hash": "imaai3wi06raFz/CNxljGw=="
+          "hash": "Wn+2sOUqV4AJL7ezlBpwsQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -609,10 +657,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.html",
-          "hash": "+LF20nJl2iWam2veug2UGw=="
+          "hash": "vuaVoxP7V5B/lE++OrZ3xg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -621,10 +669,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarInputStream.IEntryFactory.html",
-          "hash": "CJsFd/BOPbJiaaDww6+15A=="
+          "hash": "XBIZYPOrY1HDhLio3JKdtg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -633,10 +681,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarInputStream.html",
-          "hash": "I5FIMR5eHUq7SFHXJKsQxw=="
+          "hash": "141PKqWJUleL7AFjhXilFw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -645,10 +693,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.html",
-          "hash": "LJNRRH/t/JQPrlxzm7SHkw=="
+          "hash": "hYlBOMw8UFwtGGQCUV/YcA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -657,10 +705,34 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.html",
-          "hash": "WloViKbBPuUeucnxUF4Qag=="
+          "hash": "2DD/FzlU1qD7/iUTmzFfTw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.html",
+          "hash": "VtEw+VILXGLRxh0WWsabHw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.ValueOutOfRangeException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.ValueOutOfRangeException.html",
+          "hash": "5hyIfDWvvWZKHmxY6DonKA=="
+        }
+      },
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -669,10 +741,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.html",
-          "hash": "ZTooMe1tmELe44azVtmW5w=="
+          "hash": "jWRpXGu/MDQckcjCFLo18g=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -681,10 +753,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflateStrategy.html",
-          "hash": "qH2ZoOC/7goaLbwDUK8QXA=="
+          "hash": "YEo3upzhTn6SYTaGR89B8A=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -693,10 +765,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Deflater.CompressionLevel.html",
-          "hash": "U6ufVZcNYI5DxMcLpu1wGA=="
+          "hash": "Ja4uvZDD4pwYXtEdFeu4IA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -705,10 +777,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Deflater.html",
-          "hash": "FxWFhDP2FaUQ19bw94402A=="
+          "hash": "WgUcCXWFhGCAZk3UKlt/Cg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -717,10 +789,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterConstants.html",
-          "hash": "HQpR1DA3J/3SpL/vfsQmYQ=="
+          "hash": "eh9JiKbSKHcwWCXPuxJwbw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -729,10 +801,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.html",
-          "hash": "B4Qx1LTeQb72tj6c+4w2IA=="
+          "hash": "757aOiMbhrgoD+muEyHAdw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -741,10 +813,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterHuffman.html",
-          "hash": "SNm0cr/s8gabqKqEB9ePkw=="
+          "hash": "u3CfyDay/2zZ6qXiLmV8+g=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -753,10 +825,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending.html",
-          "hash": "5O7O9jkwx38MhTmvzuiWjA=="
+          "hash": "1UVdgstiZRAJB5dOnCe70w=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -765,10 +837,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Inflater.html",
-          "hash": "DIdNjJOMjWVSnQAZwkm7xA=="
+          "hash": "tO9CZtugKEpb9NDohhRx2g=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -777,10 +849,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.html",
-          "hash": "GgCSCqR6vEKznoR/qj8mkg=="
+          "hash": "RtjWeLoZpqegwl3/7D3G3Q=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -789,10 +861,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.html",
-          "hash": "6t71qkzUz50jpvIGO4WWxA=="
+          "hash": "VVaZxfQ+a0lZl5MwDs//+g=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -801,10 +873,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html",
-          "hash": "4WO5jqwir5v7LLcoLIKIPQ=="
+          "hash": "ba48VgpybsFR3Gm3N5fheQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -813,10 +885,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.html",
-          "hash": "iGA9YEmhcF7CUJWVEA0/cQ=="
+          "hash": "TcBW5XW9NyNCYt8ykWPzLA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -825,10 +897,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html",
-          "hash": "v0kt3oYcKo8qwXnGMypJog=="
+          "hash": "0zFhxDPOm89eoldKtNNmfQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -837,10 +909,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.OutputWindow.html",
-          "hash": "Js8WhccQbni91/nTXFHCgg=="
+          "hash": "7YUohLkrCQBnjwRkVbav7g=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -849,10 +921,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator.html",
-          "hash": "X75S0KZHyOox0nqI/lhM/Q=="
+          "hash": "Ep7UfSvPXLZAGwvcK0oZAw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -861,10 +933,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.html",
-          "hash": "3hIZogATmOITwjb2sHiUVw=="
+          "hash": "aZA0ds5rZqowrG8mdXGkMw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -873,10 +945,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.html",
-          "hash": "+tt5Dj7RndKo6pTSXsFBHg=="
+          "hash": "JFz1B6/zo18n5b6es/sZug=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -885,10 +957,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.CompressionMethod.html",
-          "hash": "E4+qYKOdNRZpZjJRxRyxFw=="
+          "hash": "JNwBscIvbPeQoAC3XDBZLA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -897,10 +969,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.DescriptorData.html",
-          "hash": "fL5jr9s/zF5AgEiVM0Aexw=="
+          "hash": "KmeYPFgQyMEUZ7pUmKnrew=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -909,10 +981,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.html",
-          "hash": "taWV4dr6tAT7+ZFmCY/kiw=="
+          "hash": "mygKgpy1KJECCOrSY13Ovw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -921,10 +993,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.DynamicDiskDataSource.html",
-          "hash": "1IWlHtT2VxO+jSDaSPYn1w=="
+          "hash": "1+fgaZj/M+jR9eFjlbUKhQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -933,10 +1005,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.EncryptionAlgorithm.html",
-          "hash": "Rv4nBCq1+ogGxVLRLw/Xlg=="
+          "hash": "cF2cNPE0PQ0ZBArj2g6t7Q=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -945,10 +1017,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.Flags.html",
-          "hash": "aZ3dqgeStg3BjCAryYvG3w=="
+          "hash": "N/utkhX16HA3hDOUzNrBIg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -957,10 +1029,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.html",
-          "hash": "RD5ZWsDbUOQ/IlrJ53HJXQ=="
+          "hash": "5uAF+QwOmSur+Ug/zTMpKQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -969,10 +1041,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate.html",
-          "hash": "d04ASTtOs+DfAHkD7EDoTQ=="
+          "hash": "mCu/W29kz2dqzv4zGwL2nA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -981,10 +1053,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite.html",
-          "hash": "0wb2BKA0SwikVwm2m0YIJQ=="
+          "hash": "FNG5izGgaghTmW2jq4KFVw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -993,10 +1065,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZip.html",
-          "hash": "J3VmBPA/zRGF/YD5ihpIUA=="
+          "hash": "7JUbQkkWGQsA5QumM+W2ug=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1005,10 +1077,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZipEvents.html",
-          "hash": "3Ae8p8iTb9IYZ8BkuuJ5Ug=="
+          "hash": "r4Kn2DnNjAAvsuBxZf5LSQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1017,10 +1089,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FileUpdateMode.html",
-          "hash": "NgwPjH7SZ6lByDqNXYvb4g=="
+          "hash": "6GYBeRBVIBNXULd5wik6TA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1029,10 +1101,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.GeneralBitFlags.html",
-          "hash": "mOiLf3sahDHsHMzpWeuvNA=="
+          "hash": "LyjPShJF0xhm8Xpcmh3m/Q=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1041,10 +1113,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.HostSystemID.html",
-          "hash": "rVWkozK0rZolDwaXXC9MDQ=="
+          "hash": "pkGwlvD9pA9XbPkAxiZuHw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1053,10 +1125,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.IArchiveStorage.html",
-          "hash": "IPcBxyzmrSHPhNPLiHPRXg=="
+          "hash": "kqoc1gFcXKuFOgY8q2BoXA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1065,10 +1137,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.IDynamicDataSource.html",
-          "hash": "spOzEJDgl3vPEXZEcSNqSQ=="
+          "hash": "j59vUBJeQSrDnpCTFftELg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1077,10 +1149,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.IEntryFactory.html",
-          "hash": "oVl3j4d+vXHtxqQ4hbus/g=="
+          "hash": "SHm5wwMbY9k11dLoYw3IZQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1089,10 +1161,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.IStaticDataSource.html",
-          "hash": "xrSffbFD1Td0o4oQQLF7bg=="
+          "hash": "BbxqRhbMHmn4BuOO4pQ7+Q=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1101,10 +1173,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ITaggedData.html",
-          "hash": "RiLzYPg8IHV74RVK2bSNoQ=="
+          "hash": "dczRgxTtS/2YwGYJcEGCBw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1113,10 +1185,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.KeysRequiredEventArgs.html",
-          "hash": "rLjSawGo+fx9Rs5z91p31Q=="
+          "hash": "LrBxCW3HoGhvWkKtEU+v9w=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1125,10 +1197,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.html",
-          "hash": "2U8QDBmOGKV28vsPFqgkDw=="
+          "hash": "s7tPtfa6qmLM1i9MAmmMig=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1137,10 +1209,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.NTTaggedData.html",
-          "hash": "4ybFgk6dzarWcea/iIxAkg=="
+          "hash": "FMRoFjctgCUtOc65+OF+/w=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1149,10 +1221,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.RawTaggedData.html",
-          "hash": "Y47B62Oidm0QmTpgZN7caQ=="
+          "hash": "SH/Rpg4Q6cART+9sRPFWCg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1161,10 +1233,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource.html",
-          "hash": "XtOohf7u3njS1E3S4Q3yIw=="
+          "hash": "n9jzrJbo8PM1qWIoiqtcSw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1173,10 +1245,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.TestOperation.html",
-          "hash": "wBzKcBhhHO15W0rbDtB7Jw=="
+          "hash": "P9+DmYQDCBEGeyAVjq5Q6g=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1185,10 +1257,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.TestStatus.html",
-          "hash": "rnPi67u6t+eWOOpjDtb9Dw=="
+          "hash": "HCb/csYOyenId8QiOB2Img=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1197,10 +1269,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.TestStrategy.html",
-          "hash": "x5hkggmTI05peoH6/f2XYw=="
+          "hash": "WujCld3LmBhKploOk9mf5w=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1209,10 +1281,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.UseZip64.html",
-          "hash": "TVGrtMtCj8siX9VhAT3Qpg=="
+          "hash": "KZl3HdOenCU7+0xB7MwDkw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1221,10 +1293,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.WindowsNameTransform.html",
-          "hash": "ajDXjb84ZgkPOeUK7s99ZQ=="
+          "hash": "y931luLy5VWDmHHJcbmd3A=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1233,10 +1305,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipConstants.html",
-          "hash": "9u8yhnB31JcRkyggPvqajw=="
+          "hash": "GRi7bMyTOx+nO4yotVROtA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1245,10 +1317,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEntry.html",
-          "hash": "N4anvxZe/5I53dZmBzrsCw=="
+          "hash": "aWFde8PFGAEflIEZU4j1uA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1257,10 +1329,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting.html",
-          "hash": "0Jdc//OPWfuM3D7drx0t3w=="
+          "hash": "6t5eQAKE4kxSbzdWPMfvAg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1269,10 +1341,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.html",
-          "hash": "etYYTXND6sEXuvtVQvYCuA=="
+          "hash": "C5FeTNK5UgpBt9XSZbvxtg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1281,10 +1353,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipException.html",
-          "hash": "SseZlFbMVcm/e9OIowcrLA=="
+          "hash": "0hYccZ7Ornh5DlZpL/keYA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1293,10 +1365,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipExtraData.html",
-          "hash": "QZ6eWiBwzbU/Ssot0UYrFQ=="
+          "hash": "zCDIbv2gM3Dr9sm09KT+DQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1305,10 +1377,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipFile.KeysRequiredEventHandler.html",
-          "hash": "Gg2f5UJ1VyHAgOF1PWIfkA=="
+          "hash": "PI3NyJ/+7h+DoVUFapP8pA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1317,10 +1389,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipFile.html",
-          "hash": "IlwP6GI7xuYv4mVj52alSQ=="
+          "hash": "ui+lNamPp1C0YcghfVLcqA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1329,10 +1401,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipInputStream.html",
-          "hash": "PDXD6R4bxnBCd73jYfkBew=="
+          "hash": "PCWcyCikeBypmukvFs/j4A=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1341,10 +1413,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipNameTransform.html",
-          "hash": "0SpgvLAGN1dRt71Ue38rfw=="
+          "hash": "S0JRVv9jaCffF8iDKY12wQ=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1353,10 +1425,22 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html",
-          "hash": "iKZXWrClJl5M0mLE3nZO5g=="
+          "hash": "P8n9613x0VScw0iPZqlgNA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipStrings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipStrings.html",
+          "hash": "n4YH38+pEnwZlsSf4J2IUQ=="
+        }
+      },
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1365,10 +1449,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipTestResultHandler.html",
-          "hash": "yrMxNxRV/CvX7Jb3Rc8M7g=="
+          "hash": "rp9Y6L5y2fc4HhKa+zbKTw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1377,10 +1461,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.html",
-          "hash": "Zf0zHbz0rS6doZng7kiSJw=="
+          "hash": "YVywmLow0GLb65HDfIuvSw=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1389,10 +1473,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.html",
-          "hash": "p6etMU/RJfGPbGVT3kXEnw=="
+          "hash": "AMOGMC1hnRNYffr9P1Syng=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1401,10 +1485,10 @@
       "output": {
         ".html": {
           "relative_path": "api/index.html",
-          "hash": "NcpIp8AjyKTnfjF3JlqGQg=="
+          "hash": "/oTK+9sUcq6ytAn25dHJDA=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1413,7 +1497,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "evJeVYz58BtgYGb27SzOIg=="
+          "hash": "eQkgOoTAYxzbFMhAQY7NsQ=="
         }
       },
       "is_incremental": false,
@@ -1425,10 +1509,10 @@
       "output": {
         ".html": {
           "relative_path": "articles/intro.html",
-          "hash": "eWI9fw06YMP85wO4y+5XJQ=="
+          "hash": "3C5Wc7RS4m/iKZuOPmddtg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -1437,7 +1521,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/toc.html",
-          "hash": "MthxFYC+doDRUguh/vpudA=="
+          "hash": "xVlQaX7Tk85omoiWv3O+Ag=="
         }
       },
       "is_incremental": false,
@@ -1449,7 +1533,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "j4TDz5kFLDSqGTZLMswofQ=="
+          "hash": "4IuxQvglN1uOwnAzCELbXg=="
         }
       },
       "is_incremental": false,
@@ -1461,7 +1545,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "3mzO2XU3vGs/pY6w/BFtNw=="
+          "hash": "ob7LqWp4kTNLz+9W4omdTw=="
         }
       },
       "is_incremental": false,
@@ -1471,43 +1555,39 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": true,
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
         "incrementalPhase": "build"
       },
       "processors": {
-        "ResourceDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build"
-        },
-        "RestApiDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor RestApiDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build"
-        },
         "TocDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build"
-        },
-        "ConceptualDocumentProcessor": {
-          "can_incremental": true,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         },
         "ManagedReferenceDocumentProcessor": {
-          "can_incremental": true,
+          "can_incremental": false,
+          "incrementalPhase": "build"
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
           "incrementalPhase": "build"
         }
       }
     },
     {
       "status": {
-        "can_incremental": true,
-        "details": "Can support incremental post processing.",
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
         "incrementalPhase": "postProcessing"
       },
       "processors": {}
     }
   ],
-  "version_info": {}
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
 }

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class TarInputStream
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.22.3.0">
+    <meta name="generator" content="docfx 2.37.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -20,12 +20,12 @@
     <meta property="docfx:tocrel" content="toc.html">
     
     
+    
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
-        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -47,8 +47,7 @@
               </form>
             </div>
           </div>
-        </nav>
-        
+        </nav>        
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -81,13 +80,27 @@ using read().</p>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">System.IO.Stream</span></div>
-    <div class="level2"><span class="xref">TarInputStream</span></div>
+    <div class="level1"><span class="xref">System.MarshalByRefObject</span></div>
+    <div class="level2"><span class="xref">System.IO.Stream</span></div>
+    <div class="level3"><span class="xref">TarInputStream</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
       <span class="xref">System.IO.Stream.Null</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginRead(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginWrite(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Close()</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream)</span>
@@ -105,7 +118,16 @@ using read().</p>
       <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32, System.Threading.CancellationToken)</span>
     </div>
     <div>
+      <span class="xref">System.IO.Stream.CreateWaitHandle()</span>
+    </div>
+    <div>
       <span class="xref">System.IO.Stream.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndRead(System.IAsyncResult)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndWrite(System.IAsyncResult)</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.FlushAsync()</span>
@@ -114,10 +136,16 @@ using read().</p>
       <span class="xref">System.IO.Stream.FlushAsync(System.Threading.CancellationToken)</span>
     </div>
     <div>
+      <span class="xref">System.IO.Stream.ObjectInvariant()</span>
+    </div>
+    <div>
       <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32)</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Synchronized(System.IO.Stream)</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32)</span>
@@ -133,6 +161,15 @@ using read().</p>
     </div>
     <div>
       <span class="xref">System.IO.Stream.WriteTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.GetLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.InitializeLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.MemberwiseClone(System.Boolean)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -245,7 +282,7 @@ using read().</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_entryFactory.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.entryFactory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L622">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L656">View Source</a>
   </span>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_entryFactory" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.entryFactory">entryFactory</h4>
   <div class="markdown level1 summary"><p>Factory used to create TarEntry or descendant class instance</p>
@@ -275,7 +312,7 @@ using read().</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_entryOffset.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.entryOffset%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L602">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L636">View Source</a>
   </span>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_entryOffset" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.entryOffset">entryOffset</h4>
   <div class="markdown level1 summary"><p>Number of bytes read for this entry so far</p>
@@ -305,7 +342,7 @@ using read().</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_entrySize.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.entrySize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L597">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L631">View Source</a>
   </span>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_entrySize" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.entrySize">entrySize</h4>
   <div class="markdown level1 summary"><p>Size of this entry as recorded in header</p>
@@ -335,7 +372,7 @@ using read().</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_hasHitEOF.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.hasHitEOF%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L592">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L626">View Source</a>
   </span>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_hasHitEOF" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.hasHitEOF">hasHitEOF</h4>
   <div class="markdown level1 summary"><p>Flag set when last block has been read</p>
@@ -365,7 +402,7 @@ using read().</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_readBuffer.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.readBuffer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L607">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L641">View Source</a>
   </span>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_readBuffer" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.readBuffer">readBuffer</h4>
   <div class="markdown level1 summary"><p>Buffer used with calls to <pre><code>Read()</code></pre></p>
@@ -395,7 +432,7 @@ using read().</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_tarBuffer.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.tarBuffer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L612">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L646">View Source</a>
   </span>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_tarBuffer" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.tarBuffer">tarBuffer</h4>
   <div class="markdown level1 summary"><p>Working buffer</p>
@@ -749,7 +786,7 @@ Setting the Position is not supported and throws a NotSupportedExceptionNotSuppo
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContents_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L489">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L523">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContents_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContents_System_IO_Stream_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents(System.IO.Stream)">CopyEntryContents(Stream)</h4>
@@ -1371,6 +1408,10 @@ This operation is not supported and will throw a NotSupportedException</p>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
 </article>
           </div>
           
@@ -1401,7 +1442,7 @@ This operation is not supported and will throw a NotSupportedException</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2000-2017 SharpZipLib Contributors
+            Copyright © 2000-2018 SharpZipLib Contributors
             
           </div>
         </div>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Adler32
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.22.3.0">
+    <meta name="generator" content="docfx 2.37.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -20,12 +20,12 @@
     <meta property="docfx:tocrel" content="toc.html">
     
     
+    
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
-        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -47,8 +47,7 @@
               </form>
             </div>
           </div>
-        </nav>
-        
+        </nav>        
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -111,6 +110,10 @@ checksum of zero.)&quot;</p>
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">Adler32</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.IChecksum.html">IChecksum</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -193,8 +196,6 @@ checksum of zero.)&quot;</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="implements">Implements</h5>
-      <div><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.IChecksum.html#ICSharpCode_SharpZipLib_Checksum_IChecksum_Value">IChecksum.Value</a></div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -213,8 +214,40 @@ checksum of zero.)&quot;</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Reset()</code></pre>
   </div>
-  <h5 class="implements">Implements</h5>
-      <div><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.IChecksum.html#ICSharpCode_SharpZipLib_Checksum_IChecksum_Reset">IChecksum.Reset()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Checksum_Adler32_Update_System_ArraySegment_System_Byte__.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Checksum.Adler32.Update(System.ArraySegment%7BSystem.Byte%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Checksum/Adler32.cs/#L129">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Checksum_Adler32_Update_" data-uid="ICSharpCode.SharpZipLib.Checksum.Adler32.Update*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Checksum_Adler32_Update_System_ArraySegment_System_Byte__" data-uid="ICSharpCode.SharpZipLib.Checksum.Adler32.Update(System.ArraySegment{System.Byte})">Update(ArraySegment&lt;Byte&gt;)</h4>
+  <div class="markdown level1 summary"><p>Update Adler32 data checksum based on a portion of a block of data</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Update(ArraySegment&lt;byte&gt; segment)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArraySegment</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">segment</span></td>
+        <td><p>The chunk of data to add</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Checksum_Adler32_Update_System_Byte___.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Checksum.Adler32.Update(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -250,56 +283,6 @@ a block of data.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="implements">Implements</h5>
-      <div><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.IChecksum.html#ICSharpCode_SharpZipLib_Checksum_IChecksum_Update_System_Byte___">IChecksum.Update(Byte[])</a></div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Checksum_Adler32_Update_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Checksum.Adler32.Update(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Checksum/Adler32.cs/#L129">View Source</a>
-  </span>
-  <a id="ICSharpCode_SharpZipLib_Checksum_Adler32_Update_" data-uid="ICSharpCode.SharpZipLib.Checksum.Adler32.Update*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Checksum_Adler32_Update_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Checksum.Adler32.Update(System.Byte[],System.Int32,System.Int32)">Update(Byte[], Int32, Int32)</h4>
-  <div class="markdown level1 summary"><p>Update Adler32 data checksum based on a portion of a block of data</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Update(byte[] buffer, int offset, int count)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
-        <td><span class="parametername">buffer</span></td>
-        <td><p>Contains the data to update the CRC with.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">offset</span></td>
-        <td><p>The offset into the buffer where the data starts</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">count</span></td>
-        <td><p>The number of data bytes to update the CRC with.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="implements">Implements</h5>
-      <div><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.IChecksum.html#ICSharpCode_SharpZipLib_Checksum_IChecksum_Update_System_Byte___System_Int32_System_Int32_">IChecksum.Update(Byte[], Int32, Int32)</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Checksum_Adler32_Update_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Checksum.Adler32.Update(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -334,8 +317,10 @@ a block of data.</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="implements">Implements</h5>
-      <div><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.IChecksum.html#ICSharpCode_SharpZipLib_Checksum_IChecksum_Update_System_Int32_">IChecksum.Update(Int32)</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Checksum.IChecksum.html">IChecksum</a>
+  </div>
 </article>
           </div>
           
@@ -366,7 +351,7 @@ a block of data.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2000-2017 SharpZipLib Contributors
+            Copyright © 2000-2018 SharpZipLib Contributors
             
           </div>
         </div>

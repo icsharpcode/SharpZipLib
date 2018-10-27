@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class LzwInputStream
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.22.3.0">
+    <meta name="generator" content="docfx 2.37.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -20,12 +20,12 @@
     <meta property="docfx:tocrel" content="toc.html">
     
     
+    
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
-        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -47,8 +47,7 @@
               </form>
             </div>
           </div>
-        </nav>
-        
+        </nav>        
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -86,13 +85,27 @@ code in the gzip package.</p>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">System.IO.Stream</span></div>
-    <div class="level2"><span class="xref">LzwInputStream</span></div>
+    <div class="level1"><span class="xref">System.MarshalByRefObject</span></div>
+    <div class="level2"><span class="xref">System.IO.Stream</span></div>
+    <div class="level3"><span class="xref">LzwInputStream</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
       <span class="xref">System.IO.Stream.Null</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginRead(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginWrite(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Close()</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream)</span>
@@ -110,7 +123,16 @@ code in the gzip package.</p>
       <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32, System.Threading.CancellationToken)</span>
     </div>
     <div>
+      <span class="xref">System.IO.Stream.CreateWaitHandle()</span>
+    </div>
+    <div>
       <span class="xref">System.IO.Stream.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndRead(System.IAsyncResult)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndWrite(System.IAsyncResult)</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.FlushAsync()</span>
@@ -119,10 +141,16 @@ code in the gzip package.</p>
       <span class="xref">System.IO.Stream.FlushAsync(System.Threading.CancellationToken)</span>
     </div>
     <div>
+      <span class="xref">System.IO.Stream.ObjectInvariant()</span>
+    </div>
+    <div>
       <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32)</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Synchronized(System.IO.Stream)</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32)</span>
@@ -138,6 +166,15 @@ code in the gzip package.</p>
     </div>
     <div>
       <span class="xref">System.IO.Stream.WriteTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.GetLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.InitializeLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.MemberwiseClone(System.Boolean)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -844,6 +881,10 @@ Always throws a NotSupportedException</p>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
 </article>
           </div>
           
@@ -874,7 +915,7 @@ Always throws a NotSupportedException</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2000-2017 SharpZipLib Contributors
+            Copyright © 2000-2018 SharpZipLib Contributors
             
           </div>
         </div>

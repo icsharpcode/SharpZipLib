@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ZipExtraData
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.22.3.0">
+    <meta name="generator" content="docfx 2.37.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -20,12 +20,12 @@
     <meta property="docfx:tocrel" content="toc.html">
     
     
+    
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
-        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -47,8 +47,7 @@
               </form>
             </div>
           </div>
-        </nav>
-        
+        </nav>        
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -79,6 +78,10 @@
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">ZipExtraData</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -688,8 +691,6 @@ Initially the result will be the index of the first byte of actual data.  The va
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
   </div>
-  <h5 class="implements">Implements</h5>
-      <div><span class="xref">System.IDisposable.Dispose()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipExtraData_Find_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipExtraData.Find(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -754,7 +755,8 @@ Initially the result will be the index of the first byte of actual data.  The va
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public T GetData&lt;T&gt;()where T : class, ITaggedData, new ()</code></pre>
+    <pre><code class="lang-csharp hljs">public T GetData&lt;T&gt;()
+    where T : class, ITaggedData, new()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1056,6 +1058,10 @@ The new entry is completed and actually added by calling <a class="xref" href="I
   <div class="seealso">
       <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipExtraData.html#ICSharpCode_SharpZipLib_Zip_ZipExtraData_AddEntry_ICSharpCode_SharpZipLib_Zip_ITaggedData_">AddEntry(ITaggedData)</a></div>
   </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
 </article>
           </div>
           
@@ -1086,7 +1092,7 @@ The new entry is completed and actually added by calling <a class="xref" href="I
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2000-2017 SharpZipLib Contributors
+            Copyright © 2000-2018 SharpZipLib Contributors
             
           </div>
         </div>

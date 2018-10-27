@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class TarException
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.22.3.0">
+    <meta name="generator" content="docfx 2.37.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -20,12 +20,12 @@
     <meta property="docfx:tocrel" content="toc.html">
     
     
+    
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
-        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -47,8 +47,7 @@
               </form>
             </div>
           </div>
-        </nav>
-        
+        </nav>        
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -81,12 +80,22 @@
     <div class="level1"><span class="xref">System.Exception</span></div>
     <div class="level2"><a class="xref" href="ICSharpCode.SharpZipLib.SharpZipBaseException.html">SharpZipBaseException</a></div>
     <div class="level3"><span class="xref">TarException</span></div>
-  </div>
       <div class="level4"><a class="xref" href="ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.html">InvalidHeaderException</a></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
       <span class="xref">System.Exception.GetBaseException()</span>
+    </div>
+    <div>
+      <span class="xref">System.Exception.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)</span>
+    </div>
+    <div>
+      <span class="xref">System.Exception.GetType()</span>
     </div>
     <div>
       <span class="xref">System.Exception.ToString()</span>
@@ -113,6 +122,12 @@
       <span class="xref">System.Exception.StackTrace</span>
     </div>
     <div>
+      <span class="xref">System.Exception.TargetSite</span>
+    </div>
+    <div>
+      <span class="xref">System.Exception.SerializeObjectState</span>
+    </div>
+    <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
     <div>
@@ -120,9 +135,6 @@
     </div>
     <div>
       <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
     </div>
     <div>
       <span class="xref">System.Object.MemberwiseClone()</span>
@@ -135,7 +147,7 @@
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_Tar_TarException_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TarException : SharpZipBaseException</code></pre>
+    <pre><code class="lang-csharp hljs">public class TarException : SharpZipBaseException, ISerializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -229,6 +241,10 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.Runtime.Serialization.ISerializable</span>
+  </div>
 </article>
           </div>
           
@@ -259,7 +275,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2000-2017 SharpZipLib Contributors
+            Copyright © 2000-2018 SharpZipLib Contributors
             
           </div>
         </div>

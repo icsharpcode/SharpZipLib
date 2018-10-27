@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class BZip2InputStream
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.22.3.0">
+    <meta name="generator" content="docfx 2.37.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -20,12 +20,12 @@
     <meta property="docfx:tocrel" content="toc.html">
     
     
+    
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
-        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -47,8 +47,7 @@
               </form>
             </div>
           </div>
-        </nav>
-        
+        </nav>        
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -78,13 +77,27 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">System.IO.Stream</span></div>
-    <div class="level2"><span class="xref">BZip2InputStream</span></div>
+    <div class="level1"><span class="xref">System.MarshalByRefObject</span></div>
+    <div class="level2"><span class="xref">System.IO.Stream</span></div>
+    <div class="level3"><span class="xref">BZip2InputStream</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
       <span class="xref">System.IO.Stream.Null</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginRead(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginWrite(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Close()</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream)</span>
@@ -102,7 +115,16 @@
       <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32, System.Threading.CancellationToken)</span>
     </div>
     <div>
+      <span class="xref">System.IO.Stream.CreateWaitHandle()</span>
+    </div>
+    <div>
       <span class="xref">System.IO.Stream.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndRead(System.IAsyncResult)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndWrite(System.IAsyncResult)</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.FlushAsync()</span>
@@ -111,10 +133,16 @@
       <span class="xref">System.IO.Stream.FlushAsync(System.Threading.CancellationToken)</span>
     </div>
     <div>
+      <span class="xref">System.IO.Stream.ObjectInvariant()</span>
+    </div>
+    <div>
       <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32)</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Synchronized(System.IO.Stream)</span>
     </div>
     <div>
       <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32)</span>
@@ -130,6 +158,15 @@
     </div>
     <div>
       <span class="xref">System.IO.Stream.WriteTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.GetLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.InitializeLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.MemberwiseClone(System.Boolean)</span>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -202,7 +239,7 @@
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_CanRead.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.CanRead%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L117">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L121">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_CanRead_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.CanRead*"></a>
   <h4 id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_CanRead" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.CanRead">CanRead</h4>
@@ -235,7 +272,7 @@
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_CanSeek.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.CanSeek%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L126">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L130">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_CanSeek_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.CanSeek*"></a>
   <h4 id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_CanSeek" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.CanSeek">CanSeek</h4>
@@ -268,7 +305,7 @@
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_CanWrite.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.CanWrite%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L136">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L140">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_CanWrite_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.CanWrite*"></a>
   <h4 id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_CanWrite" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.CanWrite">CanWrite</h4>
@@ -302,7 +339,7 @@ This property always returns false</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_IsStreamOwner.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.IsStreamOwner%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L111">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L115">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_IsStreamOwner_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.IsStreamOwner*"></a>
   <h4 id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_IsStreamOwner" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.IsStreamOwner">IsStreamOwner</h4>
@@ -334,7 +371,7 @@ When the flag is true <span class="xref">System.IO.Stream.Dispose()</span> will 
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Length.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Length%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L145">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L149">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Length_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Length*"></a>
   <h4 id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Length" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Length">Length</h4>
@@ -367,12 +404,12 @@ When the flag is true <span class="xref">System.IO.Stream.Dispose()</span> will 
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Position.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L156">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L160">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Position_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Position*"></a>
   <h4 id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Position" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Position">Position</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the streams position.
-Setting the position is not supported and will throw a NotSupportException</p>
+  <div class="markdown level1 summary"><p>Gets the current position of the stream.
+Setting the position is not supported and will throw a NotSupportException.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -407,7 +444,7 @@ Setting the position is not supported and will throw a NotSupportException</p>
     <tbody>
       <tr>
         <td><span class="xref">System.NotSupportedException</span></td>
-        <td><p>Any attempt to set the position</p>
+        <td><p>Any attempt to set the position.</p>
 </td>
       </tr>
     </tbody>
@@ -419,7 +456,7 @@ Setting the position is not supported and will throw a NotSupportException</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L251">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L253">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Dispose_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Dispose*"></a>
   <h4 id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Dispose_System_Boolean_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Dispose(System.Boolean)">Dispose(Boolean)</h4>
@@ -454,7 +491,7 @@ Setting the position is not supported and will throw a NotSupportException</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Flush.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Flush%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L168">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L172">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Flush_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Flush*"></a>
   <h4 id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Flush" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Flush">Flush()</h4>
@@ -472,7 +509,7 @@ Setting the position is not supported and will throw a NotSupportException</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Read_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Read(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L232">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L234">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Read_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Read*"></a>
   <h4 id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Read_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Read(System.Byte[],System.Int32,System.Int32)">Read(Byte[], Int32, Int32)</h4>
@@ -538,7 +575,7 @@ currently available or zero if the end of the stream is reached.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_ReadByte.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.ReadByte%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L261">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L263">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_ReadByte_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.ReadByte*"></a>
   <h4 id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_ReadByte" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.ReadByte">ReadByte()</h4>
@@ -572,7 +609,7 @@ currently available or zero if the end of the stream is reached.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Seek_System_Int64_System_IO_SeekOrigin_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Seek(System.Int64%2CSystem.IO.SeekOrigin)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L182">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L184">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Seek_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Seek*"></a>
   <h4 id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Seek_System_Int64_System_IO_SeekOrigin_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Seek(System.Int64,System.IO.SeekOrigin)">Seek(Int64, SeekOrigin)</h4>
@@ -596,7 +633,7 @@ currently available or zero if the end of the stream is reached.</p>
       <tr>
         <td><span class="xref">System.Int64</span></td>
         <td><span class="parametername">offset</span></td>
-        <td><p>A byte offset relative to the <code data-dev-comment-type="paramref">origin</code> parameter.</p>
+        <td><p>A byte offset relative to the <code data-dev-comment-type="paramref" class="paramref">origin</code> parameter.</p>
 </td>
       </tr>
       <tr>
@@ -646,7 +683,7 @@ currently available or zero if the end of the stream is reached.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_SetLength_System_Int64_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.SetLength(System.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L193">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L195">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_SetLength_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.SetLength*"></a>
   <h4 id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_SetLength_System_Int64_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.SetLength(System.Int64)">SetLength(Int64)</h4>
@@ -699,7 +736,7 @@ This operation is not supported and will throw a NotSupportedExceptionortedExcep
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Write_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Write(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L206">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L208">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Write_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Write*"></a>
   <h4 id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Write_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Write(System.Byte[],System.Int32,System.Int32)">Write(Byte[], Int32, Int32)</h4>
@@ -764,7 +801,7 @@ This operation is not supported and will throw a NotSupportedException</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_WriteByte_System_Byte_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.WriteByte(System.Byte)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L217">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/BZip2/BZip2InputStream.cs/#L219">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_WriteByte_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.WriteByte*"></a>
   <h4 id="ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_WriteByte_System_Byte_" data-uid="ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.WriteByte(System.Byte)">WriteByte(Byte)</h4>
@@ -812,6 +849,10 @@ This operation is not supported and will throw a NotSupportedException</p>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
 </article>
           </div>
           
@@ -842,7 +883,7 @@ This operation is not supported and will throw a NotSupportedException</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2000-2017 SharpZipLib Contributors
+            Copyright © 2000-2018 SharpZipLib Contributors
             
           </div>
         </div>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ZipConstants
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.22.3.0">
+    <meta name="generator" content="docfx 2.37.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -20,12 +20,12 @@
     <meta property="docfx:tocrel" content="toc.html">
     
     
+    
   </head>
-  <body data-spy="scroll" data-target="#affix">
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
-        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -47,8 +47,7 @@
               </form>
             </div>
           </div>
-        </nav>
-        
+        </nav>        
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -108,7 +107,7 @@
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipConstants_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class ZipConstants</code></pre>
+    <pre><code class="lang-csharp hljs">public static class ZipConstants</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -1204,7 +1203,7 @@ for an entry.  See <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.ht
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipConstants_DefaultCodePage.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipConstants.DefaultCodePage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipConstants.cs/#L438">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipConstants.cs/#L430">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipConstants_DefaultCodePage_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipConstants.DefaultCodePage*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipConstants_DefaultCodePage" data-uid="ICSharpCode.SharpZipLib.Zip.ZipConstants.DefaultCodePage">DefaultCodePage</h4>
@@ -1216,7 +1215,8 @@ European users, however be careful about compatability.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int DefaultCodePage { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use ZipStrings instead&quot;)]
+public static int DefaultCodePage { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1240,16 +1240,17 @@ European users, however be careful about compatability.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToArray_System_Int32_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToArray(System.Int32%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipConstants.cs/#L561">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipConstants.cs/#L463">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToArray_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToArray*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToArray_System_Int32_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToArray(System.Int32,System.String)">ConvertToArray(Int32, String)</h4>
-  <div class="markdown level1 summary"><p>Convert a string to a byte array</p>
+  <div class="markdown level1 summary"><p>Depracated wrapper for <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToArray_System_Int32_System_String_">ConvertToArray(Int32, String)</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static byte[] ConvertToArray(int flags, string str)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use ZipStrings.ConvertToArray instead&quot;)]
+public static byte[] ConvertToArray(int flags, string str)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1264,14 +1265,12 @@ European users, however be careful about compatability.</p>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">flags</span></td>
-        <td><p>The applicable <a class="xref" href="ICSharpCode.SharpZipLib.Zip.GeneralBitFlags.html">GeneralBitFlags</a></p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">str</span></td>
-        <td><p>String to convert to an array</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1286,8 +1285,7 @@ European users, however be careful about compatability.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
-        <td><p>Converted array</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1296,16 +1294,17 @@ European users, however be careful about compatability.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToArray_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToArray(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipConstants.cs/#L544">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipConstants.cs/#L458">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToArray_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToArray*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToArray_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToArray(System.String)">ConvertToArray(String)</h4>
-  <div class="markdown level1 summary"><p>Convert a string to a byte array</p>
+  <div class="markdown level1 summary"><p>Depracated wrapper for <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToArray_System_String_">ConvertToArray(String)</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static byte[] ConvertToArray(string str)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use ZipStrings.ConvertToArray instead&quot;)]
+public static byte[] ConvertToArray(string str)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1320,8 +1319,7 @@ European users, however be careful about compatability.</p>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">str</span></td>
-        <td><p>String to convert to an array</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1336,8 +1334,7 @@ European users, however be careful about compatability.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
-        <td><p>Converted array</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1346,16 +1343,17 @@ European users, however be careful about compatability.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToString_System_Byte___.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToString(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipConstants.cs/#L482">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipConstants.cs/#L443">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToString_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToString*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToString_System_Byte___" data-uid="ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToString(System.Byte[])">ConvertToString(Byte[])</h4>
-  <div class="markdown level1 summary"><p>Convert a byte array to string</p>
+  <div class="markdown level1 summary"><p>Depracated wrapper for <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToString_System_Byte___">ConvertToString(Byte[])</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string ConvertToString(byte[] data)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use ZipStrings.ConvertToString instead&quot;)]
+public static string ConvertToString(byte[] data)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1370,8 +1368,7 @@ European users, however be careful about compatability.</p>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">data</span></td>
-        <td><p>Byte array to convert</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1386,8 +1383,7 @@ European users, however be careful about compatability.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p><code data-dev-comment-type="paramref">data</code>converted to a string</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1396,16 +1392,17 @@ European users, however be careful about compatability.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToString_System_Byte___System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToString(System.Byte%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipConstants.cs/#L464">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipConstants.cs/#L438">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToString_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToString*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToString_System_Byte___System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToString(System.Byte[],System.Int32)">ConvertToString(Byte[], Int32)</h4>
-  <div class="markdown level1 summary"><p>Convert a portion of a byte array to a string.</p>
+  <div class="markdown level1 summary"><p>Depracated wrapper for <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToString_System_Byte___System_Int32_">ConvertToString(Byte[], Int32)</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string ConvertToString(byte[] data, int count)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use ZipStrings.ConvertToString instead&quot;)]
+public static string ConvertToString(byte[] data, int count)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1420,14 +1417,12 @@ European users, however be careful about compatability.</p>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">data</span></td>
-        <td><p>Data to convert to string</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">count</span></td>
-        <td><p>Number of bytes to convert starting from index 0</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1442,8 +1437,7 @@ European users, however be careful about compatability.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p>data[0]..data[count - 1] converted to a string</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1452,16 +1446,17 @@ European users, however be careful about compatability.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToStringExt_System_Int32_System_Byte___.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToStringExt(System.Int32%2CSystem.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipConstants.cs/#L524">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipConstants.cs/#L453">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToStringExt_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToStringExt*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToStringExt_System_Int32_System_Byte___" data-uid="ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToStringExt(System.Int32,System.Byte[])">ConvertToStringExt(Int32, Byte[])</h4>
-  <div class="markdown level1 summary"><p>Convert a byte array to string</p>
+  <div class="markdown level1 summary"><p>Depracated wrapper for <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToStringExt_System_Int32_System_Byte___">ConvertToStringExt(Int32, Byte[])</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string ConvertToStringExt(int flags, byte[] data)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use ZipStrings.ConvertToStringExt instead&quot;)]
+public static string ConvertToStringExt(int flags, byte[] data)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1476,14 +1471,12 @@ European users, however be careful about compatability.</p>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">flags</span></td>
-        <td><p>The applicable general purpose bits flags</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">data</span></td>
-        <td><p>Byte array to convert</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1498,8 +1491,7 @@ European users, however be careful about compatability.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p><code data-dev-comment-type="paramref">data</code>converted to a string</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1508,16 +1500,17 @@ European users, however be careful about compatability.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToStringExt_System_Int32_System_Byte___System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToStringExt(System.Int32%2CSystem.Byte%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipConstants.cs/#L501">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipConstants.cs/#L448">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToStringExt_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToStringExt*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipConstants_ConvertToStringExt_System_Int32_System_Byte___System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipConstants.ConvertToStringExt(System.Int32,System.Byte[],System.Int32)">ConvertToStringExt(Int32, Byte[], Int32)</h4>
-  <div class="markdown level1 summary"><p>Convert a byte array to string</p>
+  <div class="markdown level1 summary"><p>Depracated wrapper for <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToStringExt_System_Int32_System_Byte___System_Int32_">ConvertToStringExt(Int32, Byte[], Int32)</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string ConvertToStringExt(int flags, byte[] data, int count)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use ZipStrings.ConvertToStringExt instead&quot;)]
+public static string ConvertToStringExt(int flags, byte[] data, int count)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1532,20 +1525,17 @@ European users, however be careful about compatability.</p>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">flags</span></td>
-        <td><p>The applicable general purpose bits flags</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">data</span></td>
-        <td><p>Byte array to convert</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">count</span></td>
-        <td><p>The number of bytes to convert.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1560,8 +1550,7 @@ European users, however be careful about compatability.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p><code data-dev-comment-type="paramref">data</code>converted to a string</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -1595,7 +1584,7 @@ European users, however be careful about compatability.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2000-2017 SharpZipLib Contributors
+            Copyright © 2000-2018 SharpZipLib Contributors
             
           </div>
         </div>
