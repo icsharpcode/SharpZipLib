@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Zip
@@ -29,8 +29,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// In practice, most zip apps use OEM or system encoding (typically cp437 on Windows). 
 		/// Let's be good citizens and default to UTF-8 http://utf8everywhere.org/
 		/// </remarks>
-		private static int codePage = Encoding.UTF8.CodePage;
+		private static int codePage = AutomaticCodePage;
 
+		/// Automatically select codepage while opening archive
+		/// see https://github.com/icsharpcode/SharpZipLib/pull/280#issuecomment-433608324
+		/// 
+		private const int AutomaticCodePage = -1;
 
 		/// <summary>
 		/// Encoding used for string conversion. Setting this to 65001 (UTF-8) will
@@ -40,7 +44,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			get
 			{
-				return codePage;
+				return codePage == AutomaticCodePage? Encoding.UTF8.CodePage:codePage;
 			}
 			set
 			{
@@ -130,9 +134,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 					// then we must use SystemDefault (old behavior)
 					// otherwise, CodePage should be preferred over SystemDefault
 					// see https://github.com/icsharpcode/SharpZipLib/issues/274
-					CodePage == Encoding.UTF8.CodePage? 
+					codePage == AutomaticCodePage? 
 						SystemDefaultCodePage:
-						CodePage);
+						codePage);
 
 		/// <summary>
 		/// Convert a byte array to a string  using <see cref="CodePage"/>
