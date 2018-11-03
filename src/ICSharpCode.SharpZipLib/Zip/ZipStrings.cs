@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Zip
@@ -13,8 +13,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			try
 			{
-				var codePage = Encoding.GetEncoding(0).CodePage;
-				SystemDefaultCodePage = (codePage == 1 || codePage == 2 || codePage == 3 || codePage == 42) ? FallbackCodePage : codePage;
+				var platformCodepage = Encoding.GetEncoding(0).CodePage;
+				SystemDefaultCodePage = (platformCodepage == 1 || platformCodepage == 2 || platformCodepage == 3 || platformCodepage == 42) ? FallbackCodePage : platformCodepage;
 			}
 			catch
 			{
