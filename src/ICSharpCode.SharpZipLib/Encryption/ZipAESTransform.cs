@@ -159,7 +159,11 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
 		{
-			throw new NotImplementedException("ZipAESTransform.TransformFinalBlock");
+			if(inputCount > 0)
+			{
+				throw new NotImplementedException("TransformFinalBlock is not implemented and inputCount is greater than 0");
+			}
+			return new byte[0];
 		}
 
 		/// <summary>
