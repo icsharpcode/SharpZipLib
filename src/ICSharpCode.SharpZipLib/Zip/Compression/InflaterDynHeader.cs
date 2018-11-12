@@ -1,29 +1,29 @@
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.Collections.Generic;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression
 {
-	class InflaterDynHeader
+	internal class InflaterDynHeader
 	{
 		#region Constants
 
 		// maximum number of literal/length codes
-		const int LITLEN_MAX = 286;
+		private const int LITLEN_MAX = 286;
 
 		// maximum number of distance codes
-		const int DIST_MAX = 30;
+		private const int DIST_MAX = 30;
 
 		// maximum data code lengths to read
-		const int CODELEN_MAX = LITLEN_MAX + DIST_MAX;
+		private const int CODELEN_MAX = LITLEN_MAX + DIST_MAX;
 
 		// maximum meta code length codes to read
-		const int META_MAX = 19;
+		private const int META_MAX = 19;
 
-		static readonly int[] MetaCodeLengthIndex =
+		private static readonly int[] MetaCodeLengthIndex =
 			{ 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 };
 
-		#endregion
+		#endregion Constants
 
 		/// <summary>
 		/// Continue decoding header from <see cref="input"/> until more bits are needed or decoding has been completed
@@ -41,7 +41,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		private IEnumerable<bool> CreateStateMachine()
 		{
-
 			// Read initial code length counts from header
 			while (!input.TryGetBits(5, ref litLenCodeCount, 257)) yield return false;
 			while (!input.TryGetBits(5, ref distanceCodeCount, 1)) yield return false;
@@ -53,7 +52,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			if (metaCodeCount > META_MAX) throw new ValueOutOfRangeException(nameof(metaCodeCount));
 
 			// Load code lengths for the meta tree from the header bits
-			for (int i=0; i < metaCodeCount; i++)
+			for (int i = 0; i < metaCodeCount; i++)
 			{
 				while (!input.TryGetBits(3, ref codeLengths, MetaCodeLengthIndex[i])) yield return false;
 			}
@@ -80,14 +79,13 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 					if (symbol == 16) // Repeat last code length 3..6 times
 					{
-
 						if (index == 0)
 							throw new StreamDecodingException("Cannot repeat previous code length when no other code length has been read");
 
 						codeLength = codeLengths[index - 1];
 
 						// 2 bits + 3, [3..6]
-						while(!input.TryGetBits(2, ref repeatCount, 3)) yield return false;
+						while (!input.TryGetBits(2, ref repeatCount, 3)) yield return false;
 					}
 					else if (symbol == 17) // Repeat zero 3..10 times
 					{
@@ -146,10 +144,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		private InflaterHuffmanTree litLenTree;
 		private InflaterHuffmanTree distTree;
 
-		int litLenCodeCount, distanceCodeCount, metaCodeCount;
+		private int litLenCodeCount, distanceCodeCount, metaCodeCount;
 
-		#endregion
-
+		#endregion Instance Fields
 	}
-
 }

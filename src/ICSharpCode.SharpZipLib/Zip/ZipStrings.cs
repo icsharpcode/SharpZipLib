@@ -8,7 +8,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	public static class ZipStrings
 	{
-
 		static ZipStrings()
 		{
 			try
@@ -24,9 +23,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		/// <summary>Code page backing field</summary>
 		/// <remarks>
-		/// The original Zip specification (https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT) states 
-		/// that file names should only be encoded with IBM Code Page 437 or UTF-8. 
-		/// In practice, most zip apps use OEM or system encoding (typically cp437 on Windows). 
+		/// The original Zip specification (https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT) states
+		/// that file names should only be encoded with IBM Code Page 437 or UTF-8.
+		/// In practice, most zip apps use OEM or system encoding (typically cp437 on Windows).
 		/// Let's be good citizens and default to UTF-8 http://utf8everywhere.org/
 		/// </remarks>
 		private static int codePage = AutomaticCodePage;
@@ -57,7 +56,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				codePage = value;
 			}
 		}
-
 
 		private const int FallbackCodePage = 437;
 
@@ -99,7 +97,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		/// <summary>
 		/// Convert a portion of a byte array to a string using <see cref="CodePage"/>
-		/// </summary>		
+		/// </summary>
 		/// <param name="data">
 		/// Data to convert to string
 		/// </param>
@@ -109,7 +107,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// data[0]..data[count - 1] converted to a string
 		/// </returns>
-		public static string ConvertToString(byte[] data, int count) 
+		public static string ConvertToString(byte[] data, int count)
 			=> data == null
 			? string.Empty
 			: Encoding.GetEncoding(CodePage).GetString(data, 0, count);

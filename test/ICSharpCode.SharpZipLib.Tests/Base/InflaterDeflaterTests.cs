@@ -1,11 +1,11 @@
-using System;
-using System.IO;
-using System.Security;
-using System.Text;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using NUnit.Framework;
+using System;
+using System.IO;
+using System.Security;
+using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tests.Base
 {
@@ -15,7 +15,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 	[TestFixture]
 	public class InflaterDeflaterTestSuite
 	{
-		void Inflate(MemoryStream ms, byte[] original, int level, bool zlib)
+		private void Inflate(MemoryStream ms, byte[] original, int level, bool zlib)
 		{
 			ms.Seek(0, SeekOrigin.Begin);
 
@@ -26,48 +26,61 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			int currentIndex = 0;
 			int count = buf2.Length;
 
-			try {
-				while (true) {
+			try
+			{
+				while (true)
+				{
 					int numRead = inStream.Read(buf2, currentIndex, count);
-					if (numRead <= 0) {
+					if (numRead <= 0)
+					{
 						break;
 					}
 					currentIndex += numRead;
 					count -= numRead;
 				}
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				Console.WriteLine("Unexpected exception - '{0}'", ex.Message);
 				throw;
 			}
 
-			if (currentIndex != original.Length) {
+			if (currentIndex != original.Length)
+			{
 				Console.WriteLine("Original {0}, new {1}", original.Length, currentIndex);
 				Assert.Fail("Lengths different");
 			}
 
-			for (int i = 0; i < original.Length; ++i) {
-				if (buf2[i] != original[i]) {
+			for (int i = 0; i < original.Length; ++i)
+			{
+				if (buf2[i] != original[i])
+				{
 					string description = string.Format("Difference at {0} level {1} zlib {2} ", i, level, zlib);
-					if (original.Length < 2048) {
+					if (original.Length < 2048)
+					{
 						var builder = new StringBuilder(description);
-						for (int d = 0; d < original.Length; ++d) {
+						for (int d = 0; d < original.Length; ++d)
+						{
 							builder.AppendFormat("{0} ", original[d]);
 						}
 
 						Assert.Fail(builder.ToString());
-					} else {
+					}
+					else
+					{
 						Assert.Fail(description);
 					}
 				}
 			}
 		}
 
-		MemoryStream Deflate(byte[] data, int level, bool zlib)
+		private MemoryStream Deflate(byte[] data, int level, bool zlib)
 		{
 			var memoryStream = new MemoryStream();
 
 			var deflater = new Deflater(level, !zlib);
-			using (DeflaterOutputStream outStream = new DeflaterOutputStream(memoryStream, deflater)) {
+			using (DeflaterOutputStream outStream = new DeflaterOutputStream(memoryStream, deflater))
+			{
 				outStream.IsStreamOwner = false;
 				outStream.Write(data, 0, data.Length);
 				outStream.Flush();
@@ -76,7 +89,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			return memoryStream;
 		}
 
-		void RandomDeflateInflate(int size, int level, bool zlib)
+		private void RandomDeflateInflate(int size, int level, bool zlib)
 		{
 			byte[] buffer = new byte[size];
 			var rnd = new Random();
@@ -93,33 +106,38 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		[Category("Base")]
 		public void InflateDeflateZlib()
 		{
-			for (int level = 0; level < 10; ++level) {
+			for (int level = 0; level < 10; ++level)
+			{
 				RandomDeflateInflate(100000, level, true);
 			}
 		}
 
-		delegate void RunCompress(byte[] buffer);
+		private delegate void RunCompress(byte[] buffer);
 
-		int runLevel;
-		bool runZlib;
-		long runCount;
-		Random runRandom = new Random(5);
+		private int runLevel;
+		private bool runZlib;
+		private long runCount;
+		private Random runRandom = new Random(5);
 
-		void DeflateAndInflate(byte[] buffer)
+		private void DeflateAndInflate(byte[] buffer)
 		{
 			++runCount;
 			MemoryStream ms = Deflate(buffer, runLevel, runZlib);
 			Inflate(ms, buffer, runLevel, runZlib);
 		}
 
-		void TryVariants(RunCompress test, byte[] buffer, int index)
+		private void TryVariants(RunCompress test, byte[] buffer, int index)
 		{
 			int worker = 0;
-			while (worker <= 255) {
+			while (worker <= 255)
+			{
 				buffer[index] = (byte)worker;
-				if (index < buffer.Length - 1) {
+				if (index < buffer.Length - 1)
+				{
 					TryVariants(test, buffer, index + 1);
-				} else {
+				}
+				else
+				{
 					test(buffer);
 				}
 
@@ -127,7 +145,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			}
 		}
 
-		void TryManyVariants(int level, bool zlib, RunCompress test, byte[] buffer)
+		private void TryManyVariants(int level, bool zlib, RunCompress test, byte[] buffer)
 		{
 			runLevel = level;
 			runZlib = zlib;
@@ -151,7 +169,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		[Category("Base")]
 		public void InflateDeflateNonZlib()
 		{
-			for (int level = 0; level < 10; ++level) {
+			for (int level = 0; level < 10; ++level)
+			{
 				RandomDeflateInflate(100000, level, false);
 			}
 		}
@@ -161,9 +180,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		public void CloseDeflatorWithNestedUsing()
 		{
 			string tempFile = null;
-			try {
+			try
+			{
 				tempFile = Path.GetTempPath();
-			} catch (SecurityException) {
+			}
+			catch (SecurityException)
+			{
 			}
 
 			Assert.IsNotNull(tempFile, "No permission to execute this test?");
@@ -171,7 +193,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
 			using (FileStream diskFile = File.Create(tempFile))
 			using (DeflaterOutputStream deflator = new DeflaterOutputStream(diskFile))
-			using (StreamWriter txtFile = new StreamWriter(deflator)) {
+			using (StreamWriter txtFile = new StreamWriter(deflator))
+			{
 				txtFile.Write("Hello");
 				txtFile.Flush();
 			}
@@ -205,7 +228,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 
 			Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
 			Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
-
 		}
 
 		[Test]
@@ -234,7 +256,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 
 			Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
 			Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
-
 		}
 
 		[Test]
@@ -242,9 +263,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		public void CloseInflatorWithNestedUsing()
 		{
 			string tempFile = null;
-			try {
+			try
+			{
 				tempFile = Path.GetTempPath();
-			} catch (SecurityException) {
+			}
+			catch (SecurityException)
+			{
 			}
 
 			Assert.IsNotNull(tempFile, "No permission to execute this test?");
@@ -252,14 +276,16 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
 			using (FileStream diskFile = File.Create(tempFile))
 			using (DeflaterOutputStream deflator = new DeflaterOutputStream(diskFile))
-			using (StreamWriter textWriter = new StreamWriter(deflator)) {
+			using (StreamWriter textWriter = new StreamWriter(deflator))
+			{
 				textWriter.Write("Hello");
 				textWriter.Flush();
 			}
 
 			using (FileStream diskFile = File.OpenRead(tempFile))
 			using (InflaterInputStream deflator = new InflaterInputStream(diskFile))
-			using (StreamReader textReader = new StreamReader(deflator)) {
+			using (StreamReader textReader = new StreamReader(deflator))
+			{
 				char[] buffer = new char[5];
 				int readCount = textReader.Read(buffer, 0, 5);
 				Assert.AreEqual(5, readCount);
@@ -267,7 +293,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 				var b = new StringBuilder();
 				b.Append(buffer);
 				Assert.AreEqual("Hello", b.ToString());
-
 			}
 
 			File.Delete(tempFile);

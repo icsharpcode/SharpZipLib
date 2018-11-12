@@ -1,31 +1,32 @@
-using System;
-
 namespace ICSharpCode.SharpZipLib.Zip.Compression
 {
 	/// <summary>
 	/// This class is general purpose class for writing data to a buffer.
-	/// 
+	///
 	/// It allows you to write bits as well as bytes
 	/// Based on DeflaterPending.java
-	/// 
+	///
 	/// author of the original java version : Jochen Hoenicke
 	/// </summary>
 	public class PendingBuffer
 	{
 		#region Instance Fields
+
 		/// <summary>
 		/// Internal work buffer
 		/// </summary>
-		readonly byte[] buffer;
+		private readonly byte[] buffer;
 
-		int start;
-		int end;
+		private int start;
+		private int end;
 
-		uint bits;
-		int bitCount;
-		#endregion
+		private uint bits;
+		private int bitCount;
+
+		#endregion Instance Fields
 
 		#region Constructors
+
 		/// <summary>
 		/// construct instance using default buffer size of 4096
 		/// </summary>
@@ -44,7 +45,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			buffer = new byte[bufferSize];
 		}
 
-		#endregion
+		#endregion Constructors
 
 		/// <summary>
 		/// Clear internal state/buffers
@@ -116,7 +117,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		public void WriteBlock(byte[] block, int offset, int length)
 		{
 #if DebugDeflation
-			if (DeflaterConstants.DEBUGGING && (start != 0) ) 
+			if (DeflaterConstants.DEBUGGING && (start != 0) )
 			{
 				throw new SharpZipBaseException("Debug check: start != 0");
 			}
@@ -128,8 +129,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// The number of bits written to the buffer
 		/// </summary>
-		public int BitCount {
-			get {
+		public int BitCount
+		{
+			get
+			{
 				return bitCount;
 			}
 		}
@@ -140,14 +143,16 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		public void AlignToByte()
 		{
 #if DebugDeflation
-			if (DeflaterConstants.DEBUGGING && (start != 0) ) 
+			if (DeflaterConstants.DEBUGGING && (start != 0) )
 			{
 				throw new SharpZipBaseException("Debug check: start != 0");
 			}
 #endif
-			if (bitCount > 0) {
+			if (bitCount > 0)
+			{
 				buffer[end++] = unchecked((byte)bits);
-				if (bitCount > 8) {
+				if (bitCount > 8)
+				{
 					buffer[end++] = unchecked((byte)(bits >> 8));
 				}
 			}
@@ -163,7 +168,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		public void WriteBits(int b, int count)
 		{
 #if DebugDeflation
-			if (DeflaterConstants.DEBUGGING && (start != 0) ) 
+			if (DeflaterConstants.DEBUGGING && (start != 0) )
 			{
 				throw new SharpZipBaseException("Debug check: start != 0");
 			}
@@ -174,7 +179,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 #endif
 			bits |= (uint)(b << bitCount);
 			bitCount += count;
-			if (bitCount >= 16) {
+			if (bitCount >= 16)
+			{
 				buffer[end++] = unchecked((byte)bits);
 				buffer[end++] = unchecked((byte)(bits >> 8));
 				bits >>= 16;
@@ -189,7 +195,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		public void WriteShortMSB(int s)
 		{
 #if DebugDeflation
-			if (DeflaterConstants.DEBUGGING && (start != 0) ) 
+			if (DeflaterConstants.DEBUGGING && (start != 0) )
 			{
 				throw new SharpZipBaseException("Debug check: start != 0");
 			}
@@ -201,8 +207,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Indicates if buffer has been flushed
 		/// </summary>
-		public bool IsFlushed {
-			get {
+		public bool IsFlushed
+		{
+			get
+			{
 				return end == 0;
 			}
 		}
@@ -217,18 +225,22 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <returns>The number of bytes flushed.</returns>
 		public int Flush(byte[] output, int offset, int length)
 		{
-			if (bitCount >= 8) {
+			if (bitCount >= 8)
+			{
 				buffer[end++] = unchecked((byte)bits);
 				bits >>= 8;
 				bitCount -= 8;
 			}
 
-			if (length > end - start) {
+			if (length > end - start)
+			{
 				length = end - start;
 				System.Array.Copy(buffer, start, output, offset, length);
 				start = 0;
 				end = 0;
-			} else {
+			}
+			else
+			{
 				System.Array.Copy(buffer, start, output, offset, length);
 				start += length;
 			}
@@ -245,7 +257,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		public byte[] ToByteArray()
 		{
 			AlignToByte();
-			
+
 			byte[] result = new byte[end - start];
 			System.Array.Copy(buffer, start, result, 0, result.Length);
 			start = 0;

@@ -66,7 +66,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// When multiplied by compression parameter (1-9) gives the block size for compression
 		/// 9 gives the best compression but uses the most memory.
-		/// </summary>		
+		/// </summary>
 		public const int BaseBlockSize = 100000;
 
 		/// <summary>

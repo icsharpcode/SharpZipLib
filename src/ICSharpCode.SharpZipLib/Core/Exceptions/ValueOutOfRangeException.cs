@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ICSharpCode.SharpZipLib
 {
-
 	/// <summary>
 	/// Indicates that a value was outside of the expected range when decoding an input stream
 	/// </summary>
@@ -14,7 +11,7 @@ namespace ICSharpCode.SharpZipLib
 		/// Initializes a new instance of the ValueOutOfRangeException class naming the the causing variable
 		/// </summary>
 		/// <param name="nameOfValue">Name of the variable, use: nameof()</param>
-		public ValueOutOfRangeException(string nameOfValue ) 
+		public ValueOutOfRangeException(string nameOfValue)
 			: base($"{nameOfValue} out of range") { }
 
 		/// <summary>
@@ -25,7 +22,7 @@ namespace ICSharpCode.SharpZipLib
 		/// <param name="value">The invalid value</param>
 		/// <param name="maxValue">Expected maximum value</param>
 		/// <param name="minValue">Expected minimum value</param>
-		public ValueOutOfRangeException(string nameOfValue, long value, long maxValue, long minValue = 0) 
+		public ValueOutOfRangeException(string nameOfValue, long value, long maxValue, long minValue = 0)
 			: this(nameOfValue, value.ToString(), maxValue.ToString(), minValue.ToString()) { }
 
 		/// <summary>
@@ -37,9 +34,15 @@ namespace ICSharpCode.SharpZipLib
 		/// <param name="maxValue">Expected maximum value</param>
 		/// <param name="minValue">Expected minimum value</param>
 		public ValueOutOfRangeException(string nameOfValue, string value, string maxValue, string minValue = "0") :
-			base($"{nameOfValue} out of range: {value}, should be {minValue}..{maxValue}") { }
+			base($"{nameOfValue} out of range: {value}, should be {minValue}..{maxValue}")
+		{ }
 
-		private ValueOutOfRangeException() { }
-		private ValueOutOfRangeException(string message, Exception innerException) : base(message, innerException) {}
+		private ValueOutOfRangeException()
+		{
+		}
+
+		private ValueOutOfRangeException(string message, Exception innerException) : base(message, innerException)
+		{
+		}
 	}
 }

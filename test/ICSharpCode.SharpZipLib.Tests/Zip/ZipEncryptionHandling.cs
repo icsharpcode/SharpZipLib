@@ -1,7 +1,6 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -9,8 +8,8 @@ using System.Text;
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
 	[TestFixture]
-    public class ZipEncryptionHandling
-    {
+	public class ZipEncryptionHandling
+	{
 		[Test]
 		[Category("Encryption")]
 		[Category("Zip")]
@@ -46,8 +45,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				foreach (ZipEntry entry in zipFile)
 				{
 					if (!entry.IsFile) continue;
-					
-					using(var zis = zipFile.GetInputStream(entry))
+
+					using (var zis = zipFile.GetInputStream(entry))
 					using (var sr = new StreamReader(zis, Encoding.UTF8))
 					{
 						var content = sr.ReadToEnd();
@@ -145,7 +144,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 					try
 					{
-
 						using (var fs = File.OpenWrite(fileName))
 						{
 							ms.CopyTo(fs);
@@ -158,7 +156,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 						}
 
 						Assert.AreEqual(0, p.ExitCode, "Archive verification failed");
-
 					}
 					finally
 					{
@@ -170,12 +167,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					Assert.Warn("Skipping file verification since 7za is not in path");
 				}
 			}
-
 		}
 
-		const string DummyDataString = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-Fusce bibendum diam ac nunc rutrum ornare. Maecenas blandit elit ligula, eget suscipit lectus rutrum eu. 
-Maecenas aliquam, purus mattis pulvinar pharetra, nunc orci maximus justo, sed facilisis massa dui sed lorem. 
+		private const string DummyDataString = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Fusce bibendum diam ac nunc rutrum ornare. Maecenas blandit elit ligula, eget suscipit lectus rutrum eu.
+Maecenas aliquam, purus mattis pulvinar pharetra, nunc orci maximus justo, sed facilisis massa dui sed lorem.
 Vestibulum id iaculis leo. Duis porta ante lorem. Duis condimentum enim nec lorem tristique interdum. Fusce in faucibus libero.";
 	}
 }

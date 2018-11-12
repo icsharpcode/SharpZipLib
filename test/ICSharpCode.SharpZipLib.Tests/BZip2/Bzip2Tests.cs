@@ -1,10 +1,8 @@
-using System;
-using System.IO;
 using ICSharpCode.SharpZipLib.BZip2;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
-using System.Threading;
-using System.Diagnostics;
+using System;
+using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tests.BZip2
 {
@@ -33,18 +31,22 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 			ms = new MemoryStream(ms.GetBuffer());
 			ms.Seek(0, SeekOrigin.Begin);
 
-			using (BZip2InputStream inStream = new BZip2InputStream(ms)) {
+			using (BZip2InputStream inStream = new BZip2InputStream(ms))
+			{
 				byte[] buf2 = new byte[buf.Length];
 				int pos = 0;
-				while (true) {
+				while (true)
+				{
 					int numRead = inStream.Read(buf2, pos, 4096);
-					if (numRead <= 0) {
+					if (numRead <= 0)
+					{
 						break;
 					}
 					pos += numRead;
 				}
 
-				for (int i = 0; i < buf.Length; ++i) {
+				for (int i = 0; i < buf.Length; ++i)
+				{
 					Assert.AreEqual(buf2[i], buf[i]);
 				}
 			}
@@ -64,12 +66,15 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 
 			ms.Seek(0, SeekOrigin.Begin);
 
-			using (BZip2InputStream inStream = new BZip2InputStream(ms)) {
+			using (BZip2InputStream inStream = new BZip2InputStream(ms))
+			{
 				byte[] buffer = new byte[1024];
 				int pos = 0;
-				while (true) {
+				while (true)
+				{
 					int numRead = inStream.Read(buffer, 0, buffer.Length);
-					if (numRead <= 0) {
+					if (numRead <= 0)
+					{
 						break;
 					}
 					pos += numRead;
@@ -79,11 +84,11 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 			}
 		}
 
-		BZip2OutputStream outStream_;
-		BZip2InputStream inStream_;
-		WindowedStream window_;
-		long readTarget_;
-		long writeTarget_;
+		private BZip2OutputStream outStream_;
+		private BZip2InputStream inStream_;
+		private WindowedStream window_;
+		private long readTarget_;
+		private long writeTarget_;
 
 		[Test]
 		[Category("BZip2")]
@@ -109,7 +114,5 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 				output: w => new BZip2OutputStream(w)
 			);
 		}
-
-
 	}
 }

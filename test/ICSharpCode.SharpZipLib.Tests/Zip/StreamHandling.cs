@@ -1,9 +1,7 @@
-﻿using System;
-using System.IO;
-using ICSharpCode.SharpZipLib.Tests.TestSupport;
+﻿using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
-using System.Threading;
+using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -13,12 +11,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	[TestFixture]
 	public class StreamHandling : ZipBase
 	{
-		void MustFailRead(Stream s, byte[] buffer, int offset, int count)
+		private void MustFailRead(Stream s, byte[] buffer, int offset, int count)
 		{
 			bool exception = false;
-			try {
+			try
+			{
 				s.Read(buffer, offset, count);
-			} catch {
+			}
+			catch
+			{
 				exception = true;
 			}
 			Assert.IsTrue(exception, "Read should fail");
@@ -93,7 +94,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		public void ReadAndWriteZip64NonSeekable()
 		{
 			MemoryStream msw = new MemoryStreamWithoutSeek();
-			using (ZipOutputStream outStream = new ZipOutputStream(msw)) {
+			using (ZipOutputStream outStream = new ZipOutputStream(msw))
+			{
 				outStream.UseZip64 = UseZip64.On;
 
 				outStream.IsStreamOwner = false;
@@ -110,12 +112,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			msw.Position = 0;
 
-			using (ZipInputStream zis = new ZipInputStream(msw)) {
-				while (zis.GetNextEntry() != null) {
+			using (ZipInputStream zis = new ZipInputStream(msw))
+			{
+				while (zis.GetNextEntry() != null)
+				{
 					int len = 0;
 					int bufferSize = 1024;
 					byte[] buffer = new byte[bufferSize];
-					while ((len = zis.Read(buffer, 0, bufferSize)) > 0) {
+					while ((len = zis.Read(buffer, 0, bufferSize)) > 0)
+					{
 						// Reading the data is enough
 					}
 				}
@@ -143,6 +148,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
 		}
+
 		/// <summary>
 		/// Empty zip entries can be created and read?
 		/// </summary>
@@ -154,7 +160,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			var ms = new MemoryStream();
 			var outStream = new ZipOutputStream(ms);
 
-			for (int i = 0; i < 10; ++i) {
+			for (int i = 0; i < 10; ++i)
+			{
 				outStream.PutNextEntry(new ZipEntry(i.ToString()));
 			}
 
@@ -167,10 +174,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			int extractCount = 0;
 			byte[] decompressedData = new byte[100];
 
-			while ((inStream.GetNextEntry()) != null) {
-				while (true) {
+			while ((inStream.GetNextEntry()) != null)
+			{
+				while (true)
+				{
 					int numRead = inStream.Read(decompressedData, extractCount, decompressedData.Length);
-					if (numRead <= 0) {
+					if (numRead <= 0)
+					{
 						break;
 					}
 					extractCount += numRead;
@@ -194,7 +204,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			ms.Seek(0, SeekOrigin.Begin);
 
 			var inStream = new ZipInputStream(ms);
-			while ((inStream.GetNextEntry()) != null) {
+			while ((inStream.GetNextEntry()) != null)
+			{
 				Assert.Fail("No entries should be found in empty zip");
 			}
 		}
@@ -209,7 +220,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed");
 
-			using (ZipOutputStream stream = new ZipOutputStream(ms)) {
+			using (ZipOutputStream stream = new ZipOutputStream(ms))
+			{
 				Assert.IsTrue(stream.IsStreamOwner, "Should be stream owner by default");
 			}
 
@@ -226,7 +238,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed");
 
-			using (ZipOutputStream stream = new ZipOutputStream(ms)) {
+			using (ZipOutputStream stream = new ZipOutputStream(ms))
+			{
 				Assert.IsTrue(stream.IsStreamOwner, "Should be stream owner by default");
 				stream.IsStreamOwner = false;
 			}
@@ -243,19 +256,26 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed initially");
 			bool blewUp = false;
-			try {
-				using (ZipOutputStream stream = new ZipOutputStream(ms)) {
+			try
+			{
+				using (ZipOutputStream stream = new ZipOutputStream(ms))
+				{
 					Assert.IsTrue(stream.IsStreamOwner, "Should be stream owner by default");
-					try {
+					try
+					{
 						stream.PutNextEntry(new ZipEntry("Tiny"));
 						stream.Write(new byte[32], 0, 32);
-					} finally {
+					}
+					finally
+					{
 						Assert.IsFalse(ms.IsClosed, "Stream should still not be closed.");
 						stream.Close();
 						Assert.Fail("Exception not thrown");
 					}
 				}
-			} catch {
+			}
+			catch
+			{
 				blewUp = true;
 			}
 
@@ -277,7 +297,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			});
 		}
 
-	    [Test]
+		[Test]
 		[Category("Zip")]
 		[Category("Performance")]
 		[Explicit("Long Running")]
@@ -304,6 +324,5 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			);
 		}
-
 	}
 }

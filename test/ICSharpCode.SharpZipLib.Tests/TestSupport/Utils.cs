@@ -1,7 +1,6 @@
+using NUnit.Framework;
 using System;
 using System.IO;
-using System.Text;
-using NUnit.Framework;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
@@ -10,20 +9,23 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	/// </summary>
 	public static class Utils
 	{
-		static Random random = new Random();
+		private static Random random = new Random();
 
-		static void Compare(byte[] a, byte[] b)
+		private static void Compare(byte[] a, byte[] b)
 		{
-			if (a == null) {
+			if (a == null)
+			{
 				throw new ArgumentNullException(nameof(a));
 			}
 
-			if (b == null) {
+			if (b == null)
+			{
 				throw new ArgumentNullException(nameof(b));
 			}
 
 			Assert.AreEqual(a.Length, b.Length);
-			for (int i = 0; i < a.Length; ++i) {
+			for (int i = 0; i < a.Length; ++i)
+			{
 				Assert.AreEqual(a[i], b[i]);
 			}
 		}
@@ -62,8 +64,8 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			}
 
 			#region IDisposable Support
-			private bool disposed = false; // To detect redundant calls
 
+			private bool disposed = false; // To detect redundant calls
 
 			protected virtual void Dispose(bool disposing)
 			{
@@ -85,8 +87,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			public void Dispose()
 				=> Dispose(true);
 
-			#endregion
-
+			#endregion IDisposable Support
 		}
 
 		public class TempDir : IDisposable
@@ -100,8 +101,8 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			}
 
 			#region IDisposable Support
-			private bool disposed = false; // To detect redundant calls
 
+			private bool disposed = false; // To detect redundant calls
 
 			protected virtual void Dispose(bool disposing)
 			{
@@ -133,10 +134,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 				return fileName;
 			}
 
-			#endregion
-
+			#endregion IDisposable Support
 		}
 	}
-
-	
 }

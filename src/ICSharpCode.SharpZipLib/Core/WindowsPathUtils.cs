@@ -22,30 +22,40 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			string result = path;
 
-			if (!string.IsNullOrEmpty(path)) {
-				if ((path[0] == '\\') || (path[0] == '/')) {
+			if (!string.IsNullOrEmpty(path))
+			{
+				if ((path[0] == '\\') || (path[0] == '/'))
+				{
 					// UNC name ?
-					if ((path.Length > 1) && ((path[1] == '\\') || (path[1] == '/'))) {
+					if ((path.Length > 1) && ((path[1] == '\\') || (path[1] == '/')))
+					{
 						int index = 2;
 						int elements = 2;
 
 						// Scan for two separate elements \\machine\share\restofpath
 						while ((index <= path.Length) &&
-							(((path[index] != '\\') && (path[index] != '/')) || (--elements > 0))) {
+							(((path[index] != '\\') && (path[index] != '/')) || (--elements > 0)))
+						{
 							index++;
 						}
 
 						index++;
 
-						if (index < path.Length) {
+						if (index < path.Length)
+						{
 							result = path.Substring(index);
-						} else {
+						}
+						else
+						{
 							result = "";
 						}
 					}
-				} else if ((path.Length > 1) && (path[1] == ':')) {
+				}
+				else if ((path.Length > 1) && (path[1] == ':'))
+				{
 					int dropCount = 2;
-					if ((path.Length > 2) && ((path[2] == '\\') || (path[2] == '/'))) {
+					if ((path.Length > 2) && ((path[2] == '\\') || (path[2] == '/')))
+					{
 						dropCount = 3;
 					}
 					result = result.Remove(0, dropCount);

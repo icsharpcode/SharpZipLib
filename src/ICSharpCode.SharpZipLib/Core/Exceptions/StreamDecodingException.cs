@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ICSharpCode.SharpZipLib
 {
-    /// <summary>
-    /// Indicates that an error occured during decoding of a input stream due to corrupt 
+	/// <summary>
+	/// Indicates that an error occured during decoding of a input stream due to corrupt
 	/// data or (unintentional) library incompability.
-    /// </summary>
-    public class StreamDecodingException: SharpZipBaseException
-    {
+	/// </summary>
+	public class StreamDecodingException : SharpZipBaseException
+	{
 		private const string GenericMessage = "Input stream could not be decoded";
 
 		/// <summary>
@@ -22,7 +20,6 @@ namespace ICSharpCode.SharpZipLib
 		/// </summary>
 		/// <param name="message">A message describing the exception.</param>
 		public StreamDecodingException(string message) : base(message) { }
-
 
 		/// <summary>
 		/// Initializes a new instance of the StreamDecodingException class with a specified

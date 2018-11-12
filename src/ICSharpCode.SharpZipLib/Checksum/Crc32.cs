@@ -32,10 +32,11 @@ namespace ICSharpCode.SharpZipLib.Checksum
 	public sealed class Crc32 : IChecksum
 	{
 		#region Instance Fields
-		readonly static uint crcInit = 0xFFFFFFFF;
-		readonly static uint crcXor = 0xFFFFFFFF;
 
-		readonly static uint[] crcTable = {
+		private static readonly uint crcInit = 0xFFFFFFFF;
+		private static readonly uint crcXor = 0xFFFFFFFF;
+
+		private static readonly uint[] crcTable = {
 			0x00000000, 0x77073096, 0xEE0E612C, 0x990951BA, 0x076DC419,
 			0x706AF48F, 0xE963A535, 0x9E6495A3, 0x0EDB8832, 0x79DCB8A4,
 			0xE0D5E91E, 0x97D2D988, 0x09B64C2B, 0x7EB17CBD, 0xE7B82D07,
@@ -93,8 +94,9 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		/// <summary>
 		/// The CRC data checksum so far.
 		/// </summary>
-		uint checkValue;
-		#endregion
+		private uint checkValue;
+
+		#endregion Instance Fields
 
 		internal static uint ComputeCrc32(uint oldCrc, byte bval)
 		{
@@ -121,8 +123,10 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		/// Returns the CRC data checksum computed so far.
 		/// </summary>
 		/// <remarks>Reversed Out = false</remarks>
-		public long Value {
-			get {
+		public long Value
+		{
+			get
+			{
 				return (long)(checkValue ^ crcXor);
 			}
 		}
@@ -140,13 +144,14 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		}
 
 		/// <summary>
-		/// Updates the CRC data checksum with the bytes taken from 
+		/// Updates the CRC data checksum with the bytes taken from
 		/// a block of data.
 		/// </summary>
 		/// <param name="buffer">Contains the data to update the CRC with.</param>
 		public void Update(byte[] buffer)
 		{
-			if (buffer == null) {
+			if (buffer == null)
+			{
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
@@ -161,7 +166,8 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		/// </param>
 		public void Update(ArraySegment<byte> segment)
 		{
-			foreach (byte b in segment) {
+			foreach (byte b in segment)
+			{
 				Update(b);
 			}
 		}

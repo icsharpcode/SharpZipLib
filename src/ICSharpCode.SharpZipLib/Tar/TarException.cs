@@ -7,7 +7,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 	/// </summary>
 	public class TarException : SharpZipBaseException
 	{
-
 		/// <summary>
 		/// Initialise a new instance of <see cref="TarException" />.
 		/// </summary>
