@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -224,6 +224,20 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				foreach((string language, string filename, string encoding) in StringTesting.GetTestSamples())
 				{
 					Console.WriteLine($"{language} filename \"{filename}\" using \"{encoding}\":");
+
+					// TODO: samples of this test must be reversible
+					// Some samples can't be restored back with their encoding.
+					// test wasn't failing only because SystemDefaultCodepage is 65001 on Net.Core and
+					// old behaviour actually was using Unicode instead of user's passed codepage
+					var encoder = Encoding.GetEncoding(encoding);
+					var bytes = encoder.GetBytes(filename);
+					var restoredString = encoder.GetString(bytes);
+					if(string.CompareOrdinal(filename, restoredString) != 0)
+					{
+						Console.WriteLine($"Sample for language {language} with value of {filename} is skipped, because it's irreversable");
+						continue;
+					}
+
 					ZipStrings.CodePage = Encoding.GetEncoding(encoding).CodePage;
 					TestFileNames(filename);
 				}

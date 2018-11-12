@@ -12,6 +12,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			AddLanguage("Greek", "Ϗΰ.txt", "windows-1253");
 			AddLanguage("Nordic", "Åæ.txt", "windows-1252");
 			AddLanguage("Arabic", "ڀڅ.txt", "windows-1256");
+			AddLanguage("Russian", "Прйвёт.txt", "windows-1251");
 		}
 
 		private static void AddLanguage(string language, string filename, string encoding)
