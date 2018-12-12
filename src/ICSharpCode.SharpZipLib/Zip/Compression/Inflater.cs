@@ -172,7 +172,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		public Inflater(bool noHeader)
 		{
 			this.noHeader = noHeader;
-			this.adler = new Adler32();
+			if (!noHeader)
+				this.adler = new Adler32();
 			input = new StreamManipulator();
 			outputWindow = new OutputWindow();
 			mode = noHeader ? DECODE_BLOCKS : DECODE_HEADER;
@@ -195,7 +196,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			litlenTree = null;
 			distTree = null;
 			isLastBlock = false;
-			adler.Reset();
+			adler?.Reset();
 		}
 
 		/// <summary>
@@ -407,9 +408,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				neededBits -= 8;
 			}
 
-			if ((int)adler.Value != readAdler)
+			if ((int)adler?.Value != readAdler)
 			{
-				throw new SharpZipBaseException("Adler chksum doesn't match: " + (int)adler.Value + " vs. " + readAdler);
+				throw new SharpZipBaseException("Adler chksum doesn't match: " + (int)adler?.Value + " vs. " + readAdler);
 			}
 
 			mode = FINISHED;
@@ -607,13 +608,13 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				throw new InvalidOperationException("Dictionary is not needed");
 			}
 
-			adler.Update(new ArraySegment<byte>(buffer, index, count));
+			adler?.Update(new ArraySegment<byte>(buffer, index, count));
 
-			if ((int)adler.Value != readAdler)
+			if (adler != null && (int)adler.Value != readAdler)
 			{
 				throw new SharpZipBaseException("Wrong adler checksum");
 			}
-			adler.Reset();
+			adler?.Reset();
 			outputWindow.CopyDict(buffer, index, count);
 			mode = DECODE_BLOCKS;
 		}
@@ -759,7 +760,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					int more = outputWindow.CopyOutput(buffer, offset, count);
 					if (more > 0)
 					{
-						adler.Update(new ArraySegment<byte>(buffer, offset, more));
+						adler?.Update(new ArraySegment<byte>(buffer, offset, more));
 						offset += more;
 						bytesCopied += more;
 						totalOut += (long)more;
@@ -823,7 +824,18 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		{
 			get
 			{
-				return IsNeedingDictionary ? readAdler : (int)adler.Value;
+				if (IsNeedingDictionary)
+				{
+					return readAdler;
+				}
+				else if (adler != null)
+				{
+					return (int)adler.Value;
+				}
+				else
+				{
+					return 0;
+				}
 			}
 		}
 

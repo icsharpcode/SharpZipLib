@@ -56,15 +56,33 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		/// <summary>
 		/// Construct instance with pending buffer
+		/// Adler calculation will be peformed
 		/// </summary>
 		/// <param name="pending">
 		/// Pending buffer to use
-		/// </param>>
+		/// </param>
 		public DeflaterEngine(DeflaterPending pending)
+			: this (pending, false)
+		{
+		}
+
+
+
+		/// <summary>
+		/// Construct instance with pending buffer
+		/// </summary>
+		/// <param name="pending">
+		/// Pending buffer to use
+		/// </param>
+		/// <param name="noAdlerCalculation">
+		/// If no adler calculation should be performed
+		/// </param>
+		public DeflaterEngine(DeflaterPending pending, bool noAdlerCalculation)
 		{
 			this.pending = pending;
 			huffman = new DeflaterHuffman(pending);
-			adler = new Adler32();
+			if (!noAdlerCalculation)
+				adler = new Adler32();
 
 			window = new byte[2 * DeflaterConstants.WSIZE];
 			head = new short[DeflaterConstants.HASH_SIZE];
@@ -185,7 +203,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				throw new InvalidOperationException("strstart not 1");
 			}
 #endif
-			adler.Update(new ArraySegment<byte>(buffer, offset, length));
+			adler?.Update(new ArraySegment<byte>(buffer, offset, length));
 			if (length < DeflaterConstants.MIN_MATCH)
 			{
 				return;
@@ -216,7 +234,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		public void Reset()
 		{
 			huffman.Reset();
-			adler.Reset();
+			adler?.Reset();
 			blockStart = strstart = 1;
 			lookahead = 0;
 			totalIn = 0;
@@ -239,7 +257,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// </summary>
 		public void ResetAdler()
 		{
-			adler.Reset();
+			adler?.Reset();
 		}
 
 		/// <summary>
@@ -249,7 +267,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		{
 			get
 			{
-				return unchecked((int)adler.Value);
+				return (adler != null) ? unchecked((int)adler.Value) : 0;
 			}
 		}
 
@@ -368,7 +386,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				}
 
 				System.Array.Copy(inputBuf, inputOff, window, strstart + lookahead, more);
-				adler.Update(new ArraySegment<byte>(inputBuf, inputOff, more));
+				adler?.Update(new ArraySegment<byte>(inputBuf, inputOff, more));
 
 				inputOff += more;
 				totalIn += more;
