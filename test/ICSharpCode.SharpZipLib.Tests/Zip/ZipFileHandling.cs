@@ -403,6 +403,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			string addFile2 = Path.Combine(tempFile, "b.dat");
 			MakeTempFile(addFile2, 259);
 
+			string addDirectory = Path.Combine(tempFile, "dir");
+
 			tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
 
 			using (ZipFile f = ZipFile.Create(tempFile))
@@ -410,16 +412,26 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				f.BeginUpdate();
 				f.Add(addFile);
 				f.Add(addFile2);
+				f.AddDirectory(addDirectory);
 				f.CommitUpdate();
 				Assert.IsTrue(f.TestArchive(true));
 			}
 
 			using (ZipFile f = new ZipFile(tempFile))
 			{
-				Assert.AreEqual(2, f.Count);
+				Assert.AreEqual(3, f.Count);
 				Assert.IsTrue(f.TestArchive(true));
+
+				// Delete file
 				f.BeginUpdate();
 				f.Delete(f[0]);
+				f.CommitUpdate();
+				Assert.AreEqual(2, f.Count);
+				Assert.IsTrue(f.TestArchive(true));
+
+				// Delete directory
+				f.BeginUpdate();
+				f.Delete(f[1]);
 				f.CommitUpdate();
 				Assert.AreEqual(1, f.Count);
 				Assert.IsTrue(f.TestArchive(true));

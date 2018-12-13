@@ -2461,7 +2461,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private int FindExistingUpdate(ZipEntry entry)
 		{
 			int result = -1;
-			string convertedName = GetTransformedFileName(entry.Name);
+			string convertedName = entry.IsDirectory
+				? GetTransformedDirectoryName(entry.Name)
+				: GetTransformedFileName(entry.Name);
 
 			if (updateIndex_.ContainsKey(convertedName))
 			{
