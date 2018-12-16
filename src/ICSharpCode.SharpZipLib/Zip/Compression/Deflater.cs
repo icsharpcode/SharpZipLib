@@ -187,7 +187,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			}
 
 			pending = new DeflaterPending();
-			engine = new DeflaterEngine(pending);
+			engine = new DeflaterEngine(pending, noZlibHeaderOrFooter);
 			this.noZlibHeaderOrFooter = noZlibHeaderOrFooter;
 			SetStrategy(DeflateStrategy.Default);
 			SetLevel(level);
