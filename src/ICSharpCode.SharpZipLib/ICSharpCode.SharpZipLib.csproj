@@ -10,9 +10,9 @@
   
   <!-- Nuget specific tags -->
   <PropertyGroup>
-    <AssemblyVersion>1.0.0.5</AssemblyVersion>
-    <FileVersion>1.0.0.5</FileVersion>
-    <Version>1.0.0</Version>
+    <AssemblyVersion>1.1.0.6</AssemblyVersion>
+    <FileVersion>1.1.0.6</FileVersion>
+    <Version>1.1.0</Version>
     <PackageId>SharpZipLib</PackageId>
     <Company>ICSharpCode</Company>
     <Authors>ICSharpCode</Authors>
@@ -23,9 +23,8 @@
     <Copyright>Copyright © 2000-2018 SharpZipLib Contributors</Copyright>
     <PackageTags>Compression Library Zip GZip BZip2 LZW Tar</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <PackageReleaseNotes>This is the first stable release for v1.0
-
-Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.0 for more information.</PackageReleaseNotes>
+    <PackageReleaseNotes>
+Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.1 for more information.</PackageReleaseNotes>
     <PackageLicenseUrl>https://github.com/icsharpcode/SharpZipLib/blob/master/LICENSE.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/icsharpcode/SharpZipLib</PackageProjectUrl> 
   </PropertyGroup>
