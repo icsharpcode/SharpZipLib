@@ -425,7 +425,25 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ZipException">
 		/// The file doesn't contain a valid zip archive.
 		/// </exception>
-		public ZipFile(FileStream file)
+		public ZipFile(FileStream file) :
+			this(file, false)
+		{
+			
+		}
+
+		/// <summary>
+		/// Opens a Zip file reading the given <see cref="FileStream"/>.
+		/// </summary>
+		/// <param name="file">The <see cref="FileStream"/> to read archive data from.</param>
+		/// <param name="leaveOpen">true to leave the <see cref="FileStream">file</see> open when the ZipFile is disposed, false to dispose of it</param>
+		/// <exception cref="ArgumentNullException">The supplied argument is null.</exception>
+		/// <exception cref="IOException">
+		/// An i/o error occurs.
+		/// </exception>
+		/// <exception cref="ZipException">
+		/// The file doesn't contain a valid zip archive.
+		/// </exception>
+		public ZipFile(FileStream file, bool leaveOpen)
 		{
 			if (file == null)
 			{
@@ -439,7 +457,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			baseStream_ = file;
 			name_ = file.Name;
-			isStreamOwner = true;
+			isStreamOwner = !leaveOpen;
 
 			try
 			{
@@ -468,7 +486,30 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ArgumentNullException">
 		/// The <see cref="Stream">stream</see> argument is null.
 		/// </exception>
-		public ZipFile(Stream stream)
+		public ZipFile(Stream stream) :
+			this(stream, false)
+		{
+			
+		}
+
+		/// <summary>
+		/// Opens a Zip file reading the given <see cref="Stream"/>.
+		/// </summary>
+		/// <param name="stream">The <see cref="Stream"/> to read archive data from.</param>
+		/// <param name="leaveOpen">true to leave the <see cref="Stream">stream</see> open when the ZipFile is disposed, false to dispose of it</param>
+		/// <exception cref="IOException">
+		/// An i/o error occurs
+		/// </exception>
+		/// <exception cref="ZipException">
+		/// The stream doesn't contain a valid zip archive.<br/>
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		/// The <see cref="Stream">stream</see> doesnt support seeking.
+		/// </exception>
+		/// <exception cref="ArgumentNullException">
+		/// The <see cref="Stream">stream</see> argument is null.
+		/// </exception>
+		public ZipFile(Stream stream, bool leaveOpen)
 		{
 			if (stream == null)
 			{
@@ -481,7 +522,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			baseStream_ = stream;
-			isStreamOwner = true;
+			isStreamOwner = !leaveOpen;
 
 			if (baseStream_.Length > 0)
 			{
