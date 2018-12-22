@@ -8,8 +8,8 @@ dotnet_csproj:
   file: '**\*.csproj'
   version: $(VERSION)
   package_version: $(VERSION)
-  assembly_version: $(SHORT_VERSION).999
-  file_version: $(SHORT_VERSION).999
+  assembly_version: $(BIN_VERSION)
+  file_version: $(BIN_VERSION)
   informational_version: $(VERSION)
 install:
 - ps: tools/appveyor-install.ps1

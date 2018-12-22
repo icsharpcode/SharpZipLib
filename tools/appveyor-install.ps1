@@ -19,36 +19,27 @@ $suffix = $(if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { "-pr$env:APPVEYOR_PULL_REQU
 # Main build is when we're in the master branch and not a PR
 $is_main_build = ($branch -eq "" -and $suffix -eq "")
 
-# Use YYDDD as the build for main builds, otherwise use 99999
-if($is_main_build) {
-	$today = Get-Date
-	$build = $today.ToString("yy") + $today.DayOfYear.ToString("d3")
-} else {
-	$build = "_${env:APPVEYOR_BUILD_NUMBER}"
-}
+# Use appveyor build number as the last version digit (x.x.x.B)
+$build = ${env:APPVEYOR_BUILD_NUMBER}
 
 $is_release_build = ($commits_since_tag -eq 0 -and $is_main_build) 
 
 $version = $(if ($is_release_build) { $short_version } else { "$short_version-$commit_hash" })
+$bin_version = "$short_version.$build"
 
 write-host -n "Release type: ";
 if ($is_release_build) {write-host -f green 'release'} else { write-host -f yellow 'pre-release'}
 
 write-host -n "NuGet Package Version: ";
-write-host -n -f green $short_version;
-if (!$is_release_build) {
-	write-host -n " (";
-	write-host -n -f cyan $version;
-	write-host ")";
-} else {
-	write-host "";
-}
+write-host -f cyan $version;
 
+write-host -n "Assembly Version: ";
+write-host -f cyan $bin_version;
 
-$av_version = "$version$branch$suffix$build";
+$av_version = "$bin_version$branch$suffix";
 
 $env:APPVEYOR_BUILD_VERSION=$av_version;
-$env:SHORT_VERSION=$short_version;
+$env:BIN_VERSION=$bin_version;
 $env:VERSION=$version;
 
 write-host -n "AppVeyor Build Version: ";
