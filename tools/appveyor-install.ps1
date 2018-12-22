@@ -1,31 +1,42 @@
-$describe = $(git describe --long) -split('-')
+# Describe from the lastest tag matching 'vX.Y.Z', removing the initial 'v'
+$description = $(git describe --long --tags --match 'v[0-9]*.[0-9]*.[0-9]*').substring(1);
 
-$short_version = $describe[0] + '.' + $describe[1]
+# Description is in the format of: TAG-COMMITS_SINCE_TAG-COMMIT_HASH
+$dparts = $description -split('-');
+$short_version = $dparts[0];
+$commits_since_tag = $dparts[1];
+$commit_hash = $dparts[2];
 
 $masterBranches = @("master");
 
-if ($masterBranches -contains $env:APPVEYOR_REPO_BRANCH) {
-	$branch = "";
+# If not in master branch, set branch variable
+$av_branch = $env:APPVEYOR_REPO_BRANCH;
+$branch = $(if ($masterBranches -contains $av_branch) { "" } else { "-$av_branch" });
+
+# If this is a PR, add the PR suffix
+$suffix = $(if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { "-pr$env:APPVEYOR_PULL_REQUEST_NUMBER" } else { "" });
+
+# Main build is when we're in the master branch and not a PR
+$is_main_build = ($branch -eq "" -and $suffix -eq "")
+
+# Use YYDDD as the build for main builds, otherwise use 99999
+if($is_main_build) {
+	$today = Get-Date
+	$build = $today.ToString("yy") + $today.DayOfYear.ToString("d3")
 } else {
-	$branch = "-$env:APPVEYOR_REPO_BRANCH";
+	$build = "_${env:APPVEYOR_BUILD_NUMBER}"
 }
 
-if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
-	$suffix = "-pr$env:APPVEYOR_PULL_REQUEST_NUMBER";
-} else {
-	$suffix = "";
-}
+$is_release_build = ($commits_since_tag -eq 0 -and $is_main_build) 
 
-$release_build = ($describe[1] -eq 0 -and $branch -eq "" -and $suffix -eq "") 
-
-$version = $(if ($release_build) { $short_version } else { $short_version + '-' + $describe[2] })
+$version = $(if ($is_release_build) { $short_version } else { "$short_version-$commit_hash" })
 
 write-host -n "Release type: ";
-if ($release_build) {write-host -f green 'release'} else { write-host -f yellow 'pre-release'}
+if ($is_release_build) {write-host -f green 'release'} else { write-host -f yellow 'pre-release'}
 
 write-host -n "NuGet Package Version: ";
 write-host -n -f green $short_version;
-if (!$release_build) {
+if (!$is_release_build) {
 	write-host -n " (";
 	write-host -n -f cyan $version;
 	write-host ")";
@@ -33,7 +44,7 @@ if (!$release_build) {
 	write-host "";
 }
 
-$build = "_${env:APPVEYOR_BUILD_NUMBER}"
+
 $av_version = "$version$branch$suffix$build";
 
 $env:APPVEYOR_BUILD_VERSION=$av_version;
