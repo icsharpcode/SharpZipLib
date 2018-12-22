@@ -9,9 +9,11 @@ $commit_hash = $dparts[2];
 
 $masterBranches = @("master");
 
+$is_tag_build = ($env:APPVEYOR_REPO_TAG -eq "true");
+
 # If not in master branch, set branch variable
 $av_branch = $env:APPVEYOR_REPO_BRANCH;
-$branch = $(if ($masterBranches -contains $av_branch) { "" } else { "-$av_branch" });
+$branch = $(if ($is_tag_build -or $masterBranches -contains $av_branch) { "" } else { "-$av_branch" });
 
 # If this is a PR, add the PR suffix
 $suffix = $(if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { "-pr$env:APPVEYOR_PULL_REQUEST_NUMBER" } else { "" });
@@ -26,6 +28,9 @@ $is_release_build = ($commits_since_tag -eq 0 -and $is_main_build)
 
 $version = $(if ($is_release_build) { $short_version } else { "$short_version-$commit_hash" })
 $bin_version = "$short_version.$build"
+
+write-host -n "Branch: ";
+write-host -f cyan $av_branch;
 
 write-host -n "Release type: ";
 if ($is_release_build) {write-host -f green 'release'} else { write-host -f yellow 'pre-release'}
