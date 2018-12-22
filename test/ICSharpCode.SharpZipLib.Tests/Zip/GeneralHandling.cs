@@ -886,7 +886,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-			ZipConstants.DefaultCodePage = 850;
+			ZipStrings.CodePage = 850;
 			string sample = "Hello world";
 
 			byte[] rawData = Encoding.ASCII.GetBytes(sample);
