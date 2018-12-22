@@ -84,12 +84,6 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 			}
 		}
 
-		private BZip2OutputStream outStream_;
-		private BZip2InputStream inStream_;
-		private WindowedStream window_;
-		private long readTarget_;
-		private long writeTarget_;
-
 		[Test]
 		[Category("BZip2")]
 		[Category("Performance")]
