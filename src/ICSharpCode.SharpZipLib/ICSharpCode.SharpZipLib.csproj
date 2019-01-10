@@ -26,7 +26,6 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageReleaseNotes>
 Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.1 for more information.</PackageReleaseNotes>
-    <PackageLicenseUrl>https://github.com/icsharpcode/SharpZipLib/blob/master/LICENSE.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/icsharpcode/SharpZipLib</PackageProjectUrl> 
   </PropertyGroup>
 
