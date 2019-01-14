@@ -4058,7 +4058,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					{
 						readPos_ += readCount;
 					}
-					return readCount;
+					return correctReadCount;
 				}
 			}
 
