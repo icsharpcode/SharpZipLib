@@ -4038,6 +4038,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 						baseStream_.Seek(readPos_, SeekOrigin.Begin);
 					}
 					int readCount = baseStream_.Read(buffer, offset, count);
+
+					// Azure CloudBlockBlob SDK Stream implementation is: Returns only the bytes in its buffer and does not fetch from remote until its buffer is empty.
+					// This observation causes an issue in above baseStream_.Read call because the buffer is only filled partially
+					int correctReadCount = readCount;
+					if (readCount > 0 && readCount < count)
+					{
+						// save to readPos
+						readPos_ += readCount;
+
+						// get the remaining bytes
+						readCount = baseStream_.Read(buffer, offset + readCount, count - readCount);
+
+						// set correct count
+						correctReadCount += readCount;
+					}
+
 					if (readCount > 0)
 					{
 						readPos_ += readCount;
