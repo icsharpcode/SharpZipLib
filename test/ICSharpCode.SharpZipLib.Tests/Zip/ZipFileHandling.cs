@@ -1138,5 +1138,234 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			s.ReadByte();
 		}
+
+		/// <summary>
+		/// Check that input stream is closed when IsStreamOwner is true (default), or leaveOpen is false
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void StreamClosedWhenOwner()
+		{
+			var ms = new MemoryStream();
+			MakeZipFile(ms, false, "StreamClosedWhenOwner", 1, 10, "test");
+			ms.Seek(0, SeekOrigin.Begin);
+			var zipData = ms.ToArray();
+
+			// Stream should be closed when leaveOpen is unspecified
+			{
+				var inMemoryZip = new TrackedMemoryStream(zipData);
+				Assert.IsFalse(inMemoryZip.IsClosed, "Input stream should NOT be closed");
+
+				using (var zipFile = new ZipFile(inMemoryZip))
+				{
+					Assert.IsTrue(zipFile.IsStreamOwner, "Should be stream owner by default");
+				}
+
+				Assert.IsTrue(inMemoryZip.IsClosed, "Input stream should be closed by default");
+			}
+
+			// Stream should be closed when leaveOpen is false
+			{
+				var inMemoryZip = new TrackedMemoryStream(zipData);
+				Assert.IsFalse(inMemoryZip.IsClosed, "Input stream should NOT be closed");
+
+				using (var zipFile = new ZipFile(inMemoryZip, false))
+				{
+					Assert.IsTrue(zipFile.IsStreamOwner, "Should be stream owner when leaveOpen is false");
+				}
+
+				Assert.IsTrue(inMemoryZip.IsClosed, "Input stream should be closed when leaveOpen is false");
+			}
+		}
+
+		/// <summary>
+		/// Check that input stream is not closed when IsStreamOwner is false;
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void StreamNotClosedWhenNotOwner()
+		{
+			var ms = new TrackedMemoryStream();
+			MakeZipFile(ms, false, "StreamNotClosedWhenNotOwner", 1, 10, "test");
+			ms.Seek(0, SeekOrigin.Begin);
+
+			Assert.IsFalse(ms.IsClosed, "Input stream should NOT be closed");
+
+			// Stream should not be closed when leaveOpen is true
+			{
+				using (var zipFile = new ZipFile(ms, true))
+				{
+					Assert.IsFalse(zipFile.IsStreamOwner, "Should NOT be stream owner when leaveOpen is true");
+				}
+
+				Assert.IsFalse(ms.IsClosed, "Input stream should NOT be closed when leaveOpen is true");
+			}
+
+			ms.Seek(0, SeekOrigin.Begin);
+
+			// Stream should not be closed when IsStreamOwner is set to false after opening
+			{
+				using (var zipFile = new ZipFile(ms, false))
+				{
+					Assert.IsTrue(zipFile.IsStreamOwner, "Should be stream owner when leaveOpen is false");
+					zipFile.IsStreamOwner = false;
+					Assert.IsFalse(zipFile.IsStreamOwner, "Should be able to set IsStreamOwner to false");
+				}
+
+				Assert.IsFalse(ms.IsClosed, "Input stream should NOT be closed when IsStreamOwner is false");
+			}
+		}
+
+		/// <summary>
+		/// Check that input file is closed when IsStreamOwner is true (default), or leaveOpen is false
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void FileStreamClosedWhenOwner()
+		{
+			string tempFile = GetTempFilePath();
+			Assert.IsNotNull(tempFile, "No permission to execute this test?");
+
+			tempFile = Path.Combine(tempFile, "SharpZipFileStreamClosedWhenOwnerTest.Zip");
+			if (File.Exists(tempFile))
+			{
+				File.Delete(tempFile);
+			}
+
+			MakeZipFile(tempFile, "FileStreamClosedWhenOwner", 2, 10, "test");
+
+			// Stream should be closed when leaveOpen is unspecified
+			{
+				var fileStream = new TrackedFileStream(tempFile);
+				Assert.IsFalse(fileStream.IsClosed, "Input file should NOT be closed");
+
+				using (var zipFile = new ZipFile(fileStream))
+				{
+					Assert.IsTrue(zipFile.IsStreamOwner, "Should be stream owner by default");
+				}
+
+				Assert.IsTrue(fileStream.IsClosed, "Input stream should be closed by default");
+			}
+
+			// Stream should be closed when leaveOpen is false
+			{
+				var fileStream = new TrackedFileStream(tempFile);
+				Assert.IsFalse(fileStream.IsClosed, "Input stream should NOT be closed");
+
+				using (var zipFile = new ZipFile(fileStream, false))
+				{
+					Assert.IsTrue(zipFile.IsStreamOwner, "Should be stream owner when leaveOpen is false");
+				}
+
+				Assert.IsTrue(fileStream.IsClosed, "Input stream should be closed when leaveOpen is false");
+			}
+
+			File.Delete(tempFile);
+		}
+
+		/// <summary>
+		/// Check that input file is not closed when IsStreamOwner is false;
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void FileStreamNotClosedWhenNotOwner()
+		{
+			string tempFile = GetTempFilePath();
+			Assert.IsNotNull(tempFile, "No permission to execute this test?");
+
+			tempFile = Path.Combine(tempFile, "SharpZipFileStreamNotClosedWhenNotOwner.Zip");
+			if (File.Exists(tempFile))
+			{
+				File.Delete(tempFile);
+			}
+
+			MakeZipFile(tempFile, "FileStreamClosedWhenOwner", 2, 10, "test");
+
+			// Stream should not be closed when leaveOpen is true
+			{
+				using (var fileStream = new TrackedFileStream(tempFile))
+				{
+					Assert.IsFalse(fileStream.IsClosed, "Input file should NOT be closed");
+
+					using (var zipFile = new ZipFile(fileStream, true))
+					{
+						Assert.IsFalse(zipFile.IsStreamOwner, "Should NOT be stream owner when leaveOpen is true");
+					}
+
+					Assert.IsFalse(fileStream.IsClosed, "Input stream should NOT be closed when leaveOpen is true");
+				}
+			}
+
+			// Stream should not be closed when IsStreamOwner is set to false after opening
+			{
+				using (var fileStream = new TrackedFileStream(tempFile))
+				{
+					Assert.IsFalse(fileStream.IsClosed, "Input file should NOT be closed");
+
+					using (var zipFile = new ZipFile(fileStream, false))
+					{
+						Assert.IsTrue(zipFile.IsStreamOwner, "Should be stream owner when leaveOpen is false");
+						zipFile.IsStreamOwner = false;
+						Assert.IsFalse(zipFile.IsStreamOwner, "Should be able to set IsStreamOwner to false");
+					}
+
+					Assert.IsFalse(fileStream.IsClosed, "Input stream should NOT be closed when leaveOpen is true");
+				}
+			}
+
+			File.Delete(tempFile);
+		}
+
+		/// <summary>
+		/// Check that input stream is closed when construction fails and leaveOpen is false
+		/// </summary>
+		[Test]
+		public void StreamClosedOnError()
+		{
+			var ms = new TrackedMemoryStream(new byte[32]);
+
+			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed initially");
+			bool blewUp = false;
+			try
+			{
+				using (var zipFile = new ZipFile(ms, false))
+				{
+					Assert.Fail("Exception not thrown");
+				}
+			}
+			catch
+			{
+				blewUp = true;
+			}
+
+			Assert.IsTrue(blewUp, "Should have failed to load the file");
+			Assert.IsTrue(ms.IsClosed, "Underlying stream should be closed");
+		}
+
+		/// <summary>
+		/// Check that input stream is not closed when construction fails and leaveOpen is true
+		/// </summary>
+		[Test]
+		public void StreamNotClosedOnError()
+		{
+			var ms = new TrackedMemoryStream(new byte[32]);
+
+			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed initially");
+			bool blewUp = false;
+			try
+			{
+				using (var zipFile = new ZipFile(ms, true))
+				{
+					Assert.Fail("Exception not thrown");
+				}
+			}
+			catch
+			{
+				blewUp = true;
+			}
+
+			Assert.IsTrue(blewUp, "Should have failed to load the file");
+			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed");
+		}
 	}
 }

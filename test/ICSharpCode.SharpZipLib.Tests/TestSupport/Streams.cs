@@ -100,6 +100,74 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	}
 
 	/// <summary>
+	/// An extended <see cref="FileStream">file stream</see>
+	/// that tracks closing and disposing
+	/// </summary>
+	public class TrackedFileStream : FileStream
+	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="TrackedMemoryStream"/> class.
+		/// </summary>
+		/// <param name="buffer">The buffer.</param>
+		public TrackedFileStream(string path, FileMode mode = FileMode.Open, FileAccess access = FileAccess.Read)
+			: base(path, mode, access)
+		{
+		}
+
+		/// <summary>
+		/// Releases the unmanaged resources used by the <see cref="T:System.IO.MemoryStream"/> class and optionally releases the managed resources.
+		/// </summary>
+		/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+		protected override void Dispose(bool disposing)
+		{
+			isDisposed_ = true;
+			base.Dispose(disposing);
+		}
+
+		/// <summary>
+		/// Closes the current stream and releases any resources (such as sockets and file handles) associated with the current stream.
+		/// </summary>
+		public override void Close()
+		{
+			if (isClosed_)
+			{
+				throw new InvalidOperationException("Already closed");
+			}
+
+			isClosed_ = true;
+			base.Close();
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether this instance is closed.
+		/// </summary>
+		/// <value><c>true</c> if this instance is closed; otherwise, <c>false</c>.</value>
+		public bool IsClosed
+		{
+			get { return isClosed_; }
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether this instance is disposed.
+		/// </summary>
+		/// <value>
+		/// 	<c>true</c> if this instance is disposed; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsDisposed
+		{
+			get { return isDisposed_; }
+		}
+
+		#region Instance Fields
+
+		private bool isDisposed_;
+
+		private bool isClosed_;
+
+		#endregion Instance Fields
+	}
+
+	/// <summary>
 	/// A <see cref="Stream"/> that cannot seek.
 	/// </summary>
 	public class MemoryStreamWithoutSeek : TrackedMemoryStream
