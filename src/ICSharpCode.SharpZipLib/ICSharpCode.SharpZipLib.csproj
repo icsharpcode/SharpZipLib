@@ -10,9 +10,9 @@
   
   <!-- Nuget specific tags -->
   <PropertyGroup>
-    <AssemblyVersion>1.1.0.6</AssemblyVersion>
-    <FileVersion>1.1.0.6</FileVersion>
-    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
+    <FileVersion>1.1.1.0</FileVersion>
+    <Version>1.1.1</Version>
     <PackageId>SharpZipLib</PackageId>
     <Company>ICSharpCode</Company>
     <Authors>ICSharpCode</Authors>
@@ -46,7 +46,7 @@ Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.1 for more 
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All"/>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All" />
 	</ItemGroup>
 
 </Project>
