@@ -81,8 +81,16 @@ namespace ICSharpCode.SharpZipLib.Encryption
 				int obtained = _stream.Read(_slideBuffer, _slideBufFreePos, lengthToRead);
 				_slideBufFreePos += obtained;
 
-				// Recalculate how much data we now have
-				byteCount = _slideBufFreePos - _slideBufStartPos;
+                if (obtained > 0 && obtained < lengthToRead)
+                {
+                    // less bytes are returned but may not be the end of file. Get more to fill the required length. Eof returns 0 bytes so this is safe
+                    int moreObtained = _stream.Read(_slideBuffer, _slideBufFreePos, lengthToRead - obtained);
+                    _slideBufFreePos += moreObtained;
+                    obtained += moreObtained;
+                }
+
+                // Recalculate how much data we now have
+                byteCount = _slideBufFreePos - _slideBufStartPos;
 				if (byteCount >= _blockAndAuth)
 				{
 					// At least a 16 byte block and an auth code remains.
