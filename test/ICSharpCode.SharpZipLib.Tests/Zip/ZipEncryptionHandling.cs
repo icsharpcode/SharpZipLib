@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -36,6 +37,37 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			using (var ms = new MemoryStream())
 			{
 				WriteEncryptedZipToStream(ms, password, 256);
+
+				var zipFile = new ZipFile(ms)
+				{
+					Password = password
+				};
+
+				foreach (ZipEntry entry in zipFile)
+				{
+					if (!entry.IsFile) continue;
+
+					using (var zis = zipFile.GetInputStream(entry))
+					using (var sr = new StreamReader(zis, Encoding.UTF8))
+					{
+						var content = sr.ReadToEnd();
+						Assert.AreEqual(DummyDataString, content, "Decompressed content does not match input data");
+					}
+				}
+			}
+		}
+
+		[Test]
+		[Category("Encryption")]
+		[Category("Zip")]
+		public void ZipFileAesRead()
+		{
+			var password = "password";
+
+			using (var ms = new SingleByteReadingStream())
+			{
+				WriteEncryptedZipToStream(ms, password, 256);
+				ms.Seek(0, SeekOrigin.Begin);
 
 				var zipFile = new ZipFile(ms)
 				{
