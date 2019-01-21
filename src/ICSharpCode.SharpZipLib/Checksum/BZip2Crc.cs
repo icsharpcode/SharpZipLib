@@ -177,10 +177,11 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		/// </param>
 		public void Update(ArraySegment<byte> segment)
 		{
-			foreach (byte b in segment)
-			{
-				Update(b);
-			}
+			var count = segment.Count;
+			var offset = segment.Offset;
+
+			while (--count >= 0)
+				Update(segment.Array[offset++]);
 		}
 	}
 }
