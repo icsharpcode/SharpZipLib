@@ -1579,7 +1579,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			contentsEdited_ = true;
 
-			int index = FindExistingUpdate(update.Entry.Name);
+			int index = FindExistingUpdate(update.Entry);
 
 			if (index >= 0)
 			{
@@ -2489,7 +2489,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			int result = -1;
 
-			string convertedName = GetTransformedFileName(fileName);
+			string convertedName = IsDirectoryName(fileName)
+				? GetTransformedDirectoryName(fileName)
+				: GetTransformedFileName(fileName);
 
 			if (updateIndex_.ContainsKey(convertedName))
 			{
@@ -2508,6 +2510,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 						}
 			 */
 
+			return result;
+		}
+
+		private bool IsDirectoryName(string name)
+		{
+			int nameLength = name.Length;
+			bool result =
+				((nameLength > 0) &&
+				((name[nameLength - 1] == '/') || (name[nameLength - 1] == '\\')));
 			return result;
 		}
 
