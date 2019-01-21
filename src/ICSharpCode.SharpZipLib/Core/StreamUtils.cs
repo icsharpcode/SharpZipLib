@@ -65,6 +65,54 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 
 		/// <summary>
+		/// Read as much data as possible from a <see cref="Stream"/>", up to the requested number of bytes
+		/// </summary>
+		/// <param name="stream">The stream to read data from.</param>
+		/// <param name="buffer">The buffer to store data in.</param>
+		/// <param name="offset">The offset at which to begin storing data.</param>
+		/// <param name="count">The number of bytes of data to store.</param>
+		/// <exception cref="ArgumentNullException">Required parameter is null</exception>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> and or <paramref name="count"/> are invalid.</exception>
+		static public int ReadRequestedBytes(Stream stream, byte[] buffer, int offset, int count)
+		{
+			if (stream == null)
+			{
+				throw new ArgumentNullException(nameof(stream));
+			}
+
+			if (buffer == null)
+			{
+				throw new ArgumentNullException(nameof(buffer));
+			}
+
+			// Offset can equal length when buffer and count are 0.
+			if ((offset < 0) || (offset > buffer.Length))
+			{
+				throw new ArgumentOutOfRangeException(nameof(offset));
+			}
+
+			if ((count < 0) || (offset + count > buffer.Length))
+			{
+				throw new ArgumentOutOfRangeException(nameof(count));
+			}
+
+			int totalReadCount = 0;
+			while (count > 0)
+			{
+				int readCount = stream.Read(buffer, offset, count);
+				if (readCount <= 0)
+				{
+					break;
+				}
+				offset += readCount;
+				count -= readCount;
+				totalReadCount += readCount;
+			}
+
+			return totalReadCount;
+		}
+
+		/// <summary>
 		/// Copy the contents of one <see cref="Stream"/> to another.
 		/// </summary>
 		/// <param name="source">The stream to source data from.</param>

@@ -3564,12 +3564,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 					int saltLen = entry.AESSaltLen;
 					byte[] saltBytes = new byte[saltLen];
-					int saltIn = baseStream.Read(saltBytes, 0, saltLen);
+					int saltIn = StreamUtils.ReadRequestedBytes(baseStream, saltBytes, 0, saltLen);
 					if (saltIn != saltLen)
 						throw new ZipException("AES Salt expected " + saltLen + " got " + saltIn);
 					//
 					byte[] pwdVerifyRead = new byte[2];
-					baseStream.Read(pwdVerifyRead, 0, 2);
+					StreamUtils.ReadFully(baseStream, pwdVerifyRead);
 					int blockSize = entry.AESKeySize / 8;   // bits to bytes
 
 					var decryptor = new ZipAESTransform(rawPassword_, saltBytes, blockSize, false);

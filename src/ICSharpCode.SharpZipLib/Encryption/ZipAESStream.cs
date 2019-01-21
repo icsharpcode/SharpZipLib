@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Encryption
 {
@@ -78,7 +79,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 					_slideBufFreePos -= _slideBufStartPos;      // Note the -=
 					_slideBufStartPos = 0;
 				}
-				int obtained = _stream.Read(_slideBuffer, _slideBufFreePos, lengthToRead);
+				int obtained = StreamUtils.ReadRequestedBytes(_stream, _slideBuffer, _slideBufFreePos, lengthToRead);
 				_slideBufFreePos += obtained;
 
 				// Recalculate how much data we now have

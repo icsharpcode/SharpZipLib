@@ -521,4 +521,22 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		#endregion Instance Fields
 	}
+
+	internal class SingleByteReadingStream : MemoryStream
+	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SingleByteReadingStream"/> class.
+		/// </summary>
+		public SingleByteReadingStream()
+		{
+		}
+
+		public override int Read(byte[] buffer, int offset, int count)
+		{
+			if (count > 0)
+				count = 1;
+
+			return base.Read(buffer, offset, count);
+		}
+	}
 }
