@@ -50,7 +50,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// BZip2 compression. Not supported by #Zip.
 		/// </summary>
-		BZip2 = 11,
+		BZip2 = 12,
 
 		/// <summary>
 		/// WinZip special for AES encryption, Now supported by #Zip.
