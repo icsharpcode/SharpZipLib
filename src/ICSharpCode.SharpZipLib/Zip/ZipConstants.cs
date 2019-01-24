@@ -281,6 +281,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public const int VersionZip64 = 45;
 
+		/// <summary>
+		/// The version required for BZip2 compression (4.6 or higher)
+		/// </summary>
+		public const int VersionBZip2 = 46;
+
 		#endregion Versions
 
 		#region Header Sizes
