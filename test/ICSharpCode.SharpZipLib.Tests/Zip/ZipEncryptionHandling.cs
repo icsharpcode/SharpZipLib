@@ -181,7 +181,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 							ms.CopyTo(fs);
 						}
 
-						var p = Process.Start(path7z, $"t -p{password} {fileName}");
+						var p = Process.Start(path7z, $"t -p{password} \"{fileName}\"");
 						if (!p.WaitForExit(2000))
 						{
 							Assert.Warn("Timed out verifying zip file!");
