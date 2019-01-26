@@ -447,5 +447,61 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				Directory.Delete(tempPath, true);
 			}
 		}
+
+		/// <summary>
+		/// Check that the input stream is not closed on error when isStreamOwner is false
+		/// </summary>
+		[Test]
+		public void StreamNotClosedOnError()
+		{
+			// test paths
+			string tempFilePath = GetTempFilePath();
+			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
+
+			var tempFolderPath = Path.Combine(tempFilePath, Path.GetRandomFileName());
+			Assert.That(Directory.Exists(tempFolderPath), Is.False, "Temp folder path should not exist");
+
+			// memory that isn't a valid zip
+			var ms = new TrackedMemoryStream(new byte[32]);
+			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed initially");
+
+			// Try to extract
+			var fastZip = new FastZip();
+			fastZip.CreateEmptyDirectories = true;
+
+			Assert.Throws<ZipException>(() => fastZip.ExtractZip(ms, tempFolderPath, FastZip.Overwrite.Always, null, "a", "b", false, false), "Should throw when extracting an invalid file");
+			Assert.IsFalse(ms.IsClosed, "inputStream stream should NOT be closed when isStreamOwner is false");
+
+			// test folder should not have been created on error
+			Assert.That(Directory.Exists(tempFolderPath), Is.False, "Temp folder path should still not exist");
+		}
+
+		/// <summary>
+		/// Check that the input stream is closed on error when isStreamOwner is true
+		/// </summary>
+		[Test]
+		public void StreamClosedOnError()
+		{
+			// test paths
+			string tempFilePath = GetTempFilePath();
+			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
+
+			var tempFolderPath = Path.Combine(tempFilePath, Path.GetRandomFileName());
+			Assert.That(Directory.Exists(tempFolderPath), Is.False, "Temp folder path should not exist");
+
+			// memory that isn't a valid zip
+			var ms = new TrackedMemoryStream(new byte[32]);
+			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed initially");
+
+			// Try to extract
+			var fastZip = new FastZip();
+			fastZip.CreateEmptyDirectories = true;
+
+			Assert.Throws<ZipException>(() => fastZip.ExtractZip(ms, tempFolderPath, FastZip.Overwrite.Always, null, "a", "b", false, true), "Should throw when extracting an invalid file");
+			Assert.IsTrue(ms.IsClosed, "inputStream stream should be closed when isStreamOwner is true");
+
+			// test folder should not have been created on error
+			Assert.That(Directory.Exists(tempFolderPath), Is.False, "Temp folder path should still not exist");
+		}
 	}
 }

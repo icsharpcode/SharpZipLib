@@ -464,13 +464,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 			directoryFilter_ = new NameFilter(directoryFilter);
 			restoreDateTimeOnExtract_ = restoreDateTime;
 
-			using (zipFile_ = new ZipFile(inputStream))
+			using (zipFile_ = new ZipFile(inputStream, !isStreamOwner))
 			{
 				if (password_ != null)
 				{
 					zipFile_.Password = password_;
 				}
-				zipFile_.IsStreamOwner = isStreamOwner;
+
 				System.Collections.IEnumerator enumerator = zipFile_.GetEnumerator();
 				while (continueRunning_ && enumerator.MoveNext())
 				{
