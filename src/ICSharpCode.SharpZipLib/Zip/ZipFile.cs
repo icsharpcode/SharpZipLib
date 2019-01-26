@@ -2171,8 +2171,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLEInt((int)entry.Crc);
 			}
 
+			bool useExtraCompressedSize = false; //Do we want to store the compressed size in the extra data?
 			if ((entry.IsZip64Forced()) || (entry.CompressedSize >= 0xffffffff))
 			{
+				useExtraCompressedSize = true;
 				WriteLEInt(-1);
 			}
 			else
@@ -2180,8 +2182,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLEInt((int)(entry.CompressedSize & 0xffffffff));
 			}
 
+			bool useExtraUncompressedSize = false; //Do we want to store the uncompressed size in the extra data?
 			if ((entry.IsZip64Forced()) || (entry.Size >= 0xffffffff))
 			{
+				useExtraUncompressedSize = true;
 				WriteLEInt(-1);
 			}
 			else
@@ -2205,12 +2209,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				ed.StartNewEntry();
 
-				if ((entry.Size >= 0xffffffff) || (useZip64_ == UseZip64.On))
+				if (useExtraUncompressedSize)
 				{
 					ed.AddLeLong(entry.Size);
 				}
 
-				if ((entry.CompressedSize >= 0xffffffff) || (useZip64_ == UseZip64.On))
+				if (useExtraCompressedSize)
 				{
 					ed.AddLeLong(entry.CompressedSize);
 				}
