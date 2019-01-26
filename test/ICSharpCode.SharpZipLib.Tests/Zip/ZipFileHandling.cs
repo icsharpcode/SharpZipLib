@@ -136,6 +136,57 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+		/// <summary>
+		/// Test that entries can be removed from a Zip64 file
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void Zip64Update()
+		{
+			using (var memStream = new MemoryStream())
+			{
+				using (ZipFile f = new ZipFile(memStream, leaveOpen: true))
+				{
+					f.UseZip64 = UseZip64.On;
+
+					var m = new StringMemoryDataSource("0000000");
+					f.BeginUpdate(new MemoryArchiveStorage());
+					f.Add(m, "a.dat");
+					f.Add(m, "b.dat");
+					f.CommitUpdate();
+					Assert.That(f.TestArchive(true), Is.True, "initial archive should be valid");
+				}
+
+				memStream.Seek(0, SeekOrigin.Begin);
+
+				using (ZipFile f = new ZipFile(memStream, leaveOpen: true))
+				{
+					Assert.That(f.Count, Is.EqualTo(2), "Archive should have 2 entries");
+
+					f.BeginUpdate(new MemoryArchiveStorage());
+					f.Delete("b.dat");
+					f.CommitUpdate();
+					Assert.That(f.TestArchive(true), Is.True, "modified archive should be valid");
+				}
+
+				memStream.Seek(0, SeekOrigin.Begin);
+
+				using (ZipFile f = new ZipFile(memStream, leaveOpen: true))
+				{
+					Assert.That(f.Count, Is.EqualTo(1), "Archive should have 1 entry");
+
+					for (int index = 0; index < f.Count; ++index)
+					{
+						Stream entryStream = f.GetInputStream(index);
+						var data = new MemoryStream();
+						StreamUtils.Copy(entryStream, data, new byte[128]);
+						string contents = Encoding.ASCII.GetString(data.ToArray());
+						Assert.That(contents, Is.EqualTo("0000000"), "archive member data should be correct");
+					}
+				}
+			}
+		}
+
 		[Test]
 		[Category("Zip")]
 		[Explicit]
