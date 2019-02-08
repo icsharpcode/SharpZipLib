@@ -20,6 +20,6 @@ namespace ICSharpCode.SharpZipLib.Checksum.Proxy
 			return (lookupValue & (1L << 31)) > 0 ? _poly ^ (lookupValue << 1) : (lookupValue << 1);
 		}
 
-		protected override uint InitLookupValue(uint lookupValue) => lookupValue << 24;
+		protected override uint InitLookupValue(uint index) => index << 24;
 	}
 }

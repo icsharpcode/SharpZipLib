@@ -30,7 +30,7 @@ namespace ICSharpCode.SharpZipLib.Checksum.Proxy
 			Init();
 		}
 
-		protected abstract uint InitLookupValue(uint lookupValue);
+		protected abstract uint InitLookupValue(uint index);
 		protected abstract uint CalculateLookupValue(uint lookupValue);
 		protected abstract uint CalculateCrc(uint crc, byte input, uint[] lookupTable);
 
