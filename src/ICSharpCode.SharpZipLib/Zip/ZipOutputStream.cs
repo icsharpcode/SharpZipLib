@@ -744,7 +744,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			foreach (ZipEntry entry in entries)
 			{
 				WriteLeInt(ZipConstants.CentralHeaderSignature);
-				WriteLeShort(ZipConstants.VersionMadeBy);
+				WriteLeShort(entry.VersionMadeBy);
 				WriteLeShort(entry.Version);
 				WriteLeShort(entry.Flags);
 				WriteLeShort((short)entry.CompressionMethodForHeader);
