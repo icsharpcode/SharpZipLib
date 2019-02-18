@@ -414,7 +414,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 		}
 
-		private void GetAuthCodeIfAES()
+		/// <summary>
+		/// Get the Auth code for AES encrypted entries
+		/// </summary>
+		protected void GetAuthCodeIfAES()
 		{
 			if (cryptoTransform_ is ZipAESTransform)
 			{
