@@ -169,7 +169,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ArgumentNullException">
 		/// The name passed is null
 		/// </exception>
-		internal ZipEntry(string name, int versionRequiredToExtract)
+		public ZipEntry(string name, int versionRequiredToExtract)
 			: this(name, versionRequiredToExtract, ZipConstants.VersionMadeBy,
 			CompressionMethod.Deflated)
 		{
@@ -192,7 +192,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// This constructor is used by the ZipFile class when reading from the central header
 		/// It is not generally useful, use the constructor specifying the name only.
 		/// </remarks>
-		internal ZipEntry(string name, int versionRequiredToExtract, int madeByInfo,
+		public ZipEntry(string name, int versionRequiredToExtract, int madeByInfo,
 			CompressionMethod method)
 		{
 			if (name == null)
@@ -444,7 +444,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			get
 			{
-				return (versionMadeBy & 0xff);
+				return versionMadeBy;
 			}
 		}
 
@@ -526,7 +526,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			set
 			{
-				versionMadeBy &= 0xff;
+				versionMadeBy &= 0xff00;
 				versionMadeBy |= (ushort)((value & 0xff) << 8);
 			}
 		}
