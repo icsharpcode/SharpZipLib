@@ -379,10 +379,14 @@ namespace ICSharpCode.SharpZipLib.Tar
 			string name = file;
 
 			// 23-Jan-2004 GnuTar allows device names in path where the name is not local to the current directory
+			// 04-Apr-2019 Removed this block, as it creates different behavior based the location of the executing
+			//             assembly.
+			/*
 			if (name.IndexOf(Directory.GetCurrentDirectory(), StringComparison.Ordinal) == 0)
 			{
 				name = name.Substring(Directory.GetCurrentDirectory().Length);
 			}
+			*/
 
 			/*
 						if (Path.DirectorySeparatorChar == '\\')
@@ -403,14 +407,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 			*/
 
 			name = name.Replace(Path.DirectorySeparatorChar, '/');
-
-			// No absolute pathnames
-			// Windows (and Posix?) paths can start with UNC style "\\NetworkDrive\",
-			// so we loop on starting /'s.
-			while (name.StartsWith("/", StringComparison.Ordinal))
-			{
-				name = name.Substring(1);
-			}
 
 			header.LinkName = String.Empty;
 			header.Name = name;
