@@ -486,6 +486,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 					deflater_.Reset();
 				}
 			}
+			else if (curMethod == CompressionMethod.Stored)
+			{
+				// This is done by Finsh() for Deflated entries, but we need to do it
+				// ourselves for Stored ones
+				base.GetAuthCodeIfAES();
+			}
 
 			// Write the AES Authentication Code (a hash of the compressed and encrypted data)
 			if (curEntry.AESKeySize > 0)
