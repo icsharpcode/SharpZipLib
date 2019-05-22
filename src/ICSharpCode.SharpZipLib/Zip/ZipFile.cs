@@ -2157,7 +2157,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLEInt(ZipConstants.CentralHeaderSignature);
 
 			// Version made by
-			WriteLEShort(entry.VersionMadeBy);
+			WriteLEShort((entry.HostSystem << 8) | entry.VersionMadeBy);
 
 			// Version required to extract
 			WriteLEShort(entry.Version);
