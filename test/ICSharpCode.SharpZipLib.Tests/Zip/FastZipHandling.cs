@@ -197,7 +197,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 						Assert.AreEqual(name, entry.Name);
 
-						var nameBytes = string.Join(' ', Encoding.BigEndianUnicode.GetBytes(entry.Name).Select(b => b.ToString("x2")));
+						var nameBytes = string.Join(" ", Encoding.BigEndianUnicode.GetBytes(entry.Name).Select(b => b.ToString("x2")).ToArray());
 
 						Console.WriteLine($" - Zip entry: {entry.Name} ({nameBytes})");
 					}
@@ -231,7 +231,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			var preCp = ZipStrings.CodePage;
 			try
 			{
+#if !NET35
 				Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+#endif
 
 				foreach ((string language, string filename, string encoding) in StringTesting.GetTestSamples())
 				{

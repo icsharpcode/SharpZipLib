@@ -17,8 +17,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			TestFile(wnt, "Bogan", "Bogan");
 			TestFile(wnt, "absolute/file2", Path.Combine("absolute", "file2"));
 			TestFile(wnt, "C:/base/////////t", Path.Combine("base", "t"));
-			TestFile(wnt, "//unc/share/zebidi/and/dylan", Path.Combine("zebidi", "and", "dylan"));
-			TestFile(wnt, @"\\unc\share\/zebidi\/and\/dylan", Path.Combine("zebidi", "and", "dylan"));
+			TestFile(wnt, "//unc/share/zebidi/and/dylan", Path.Combine("zebidi", Path.Combine("and", "dylan")));
+			TestFile(wnt, @"\\unc\share\/zebidi\/and\/dylan", Path.Combine("zebidi",Path.Combine("and", "dylan")));
 		}
 
 		[Test]

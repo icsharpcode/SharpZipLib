@@ -150,8 +150,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			"7z", "7za",
 
 			// Check in default install location
-			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "7-Zip", "7z.exe"),
-			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "7-Zip", "7z.exe"),
+			Path.Combine(Path.Combine(Environment.GetEnvironmentVariable("ProgramW6432"), "7-Zip"), "7z.exe"),
+			Path.Combine(Path.Combine(Environment.GetEnvironmentVariable("ProgramFiles(x86)"), "7-Zip"), "7z.exe"),
 		};
 
 		public static bool TryGet7zBinPath(out string path7z)
@@ -164,6 +164,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				{
 					var p = Process.Start(new ProcessStartInfo(testPath, "i")
 					{
+						UseShellExecute = false,
 						RedirectStandardOutput = true
 					});
 					while (!p.StandardOutput.EndOfStream && (DateTime.Now - p.StartTime) < runTimeLimit)
@@ -183,7 +184,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 						return true;
 					}
 				}
-				catch (Exception)
+				catch (Exception ex)
 				{
 					continue;
 				}

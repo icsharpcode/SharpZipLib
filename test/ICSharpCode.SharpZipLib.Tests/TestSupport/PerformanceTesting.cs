@@ -20,7 +20,15 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		public static void TestReadWrite(int size, Func<Stream, Stream> input, Func<Stream, Stream> output, Action<Stream> outputClose = null)
 		{
-			var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1));
+			var cts =
+#if NET35 || NET45
+				new CancellationTokenSource();
+			var timer = new System.Timers.Timer(TimeSpan.FromMinutes(1).TotalMilliseconds) { AutoReset = false };
+			timer.Elapsed += (sender, eventArgs) => { cts.Cancel(); };
+			timer.Start();
+#else
+				new CancellationTokenSource(TimeSpan.FromMinutes(1));
+#endif
 			var window = new WindowedStream(size, cts.Token);
 
 			var readerState = new PerfWorkerState()
@@ -131,7 +139,15 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		public static void TestWrite(int size, Func<Stream, Stream> output, Action<Stream> outputClose = null)
 		{
-			var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1));
+			var cts =
+#if NET35 || NET45
+				new CancellationTokenSource();
+			var timer = new System.Timers.Timer(TimeSpan.FromMinutes(1).TotalMilliseconds) { AutoReset = false };
+			timer.Elapsed += (sender, eventArgs) => { cts.Cancel(); };
+			timer.Start();
+#else
+				new CancellationTokenSource(TimeSpan.FromMinutes(1));
+#endif
 
 			var sw = Stopwatch.StartNew();
 			var writerState = new PerfWorkerState()
