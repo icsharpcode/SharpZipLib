@@ -113,8 +113,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			if (codeLengths[256] == 0)
 				throw new StreamDecodingException("Inflater dynamic header end-of-block code missing");
 
-			litLenTree = new InflaterHuffmanTree(new ArraySegment<byte>(codeLengths, 0, litLenCodeCount));
-			distTree = new InflaterHuffmanTree(new ArraySegment<byte>(codeLengths, litLenCodeCount, distanceCodeCount));
+			litLenTree = new InflaterHuffmanTree(new ArraySegment<byte>(codeLengths, 0, litLenCodeCount).ToList());
+			distTree = new InflaterHuffmanTree(new ArraySegment<byte>(codeLengths, litLenCodeCount, distanceCodeCount).ToList());
 
 			yield return true;
 		}
@@ -133,7 +133,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		public InflaterHuffmanTree DistanceTree
 			=> distTree ?? throw new StreamDecodingException("Header properties were accessed before header had been successfully read");
 
-		#region Instance Fields
+#region Instance Fields
 
 		private readonly StreamManipulator input;
 		private readonly IEnumerator<bool> state;
@@ -146,6 +146,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		private int litLenCodeCount, distanceCodeCount, metaCodeCount;
 
-		#endregion Instance Fields
+#endregion Instance Fields
 	}
 }
