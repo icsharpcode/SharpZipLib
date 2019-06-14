@@ -13,6 +13,7 @@ dotnet_csproj:
   informational_version: $(VERSION)
 install:
 - ps: tools/appveyor-install.ps1
+- ps: tools/appveyor-vs-add-component
 nuget:
   project_feed: true
   disable_publish_on_pr: true
