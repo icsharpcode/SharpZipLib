@@ -289,6 +289,61 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			}
 		}
 
+		/// <summary>
+		/// Test that if we flush a GZip output stream then all data that has been written
+		/// is flushed through to the underlying stream and can be successfully read back
+		/// even if the stream is not yet finished.
+		/// </summary>
+		[Test]
+		[Category("GZip")]
+		public void FlushToUnderlyingStream()
+		{
+			var ms = new MemoryStream();
+			var outStream = new GZipOutputStream(ms);
+
+			byte[] buf = new byte[100000];
+			var rnd = new Random();
+			rnd.NextBytes(buf);
+
+			outStream.Write(buf, 0, buf.Length);
+			// Flush output stream but don't finish it yet
+			outStream.Flush();
+
+			ms.Seek(0, SeekOrigin.Begin);
+
+			var inStream = new GZipInputStream(ms);
+			byte[] buf2 = new byte[buf.Length];
+			int currentIndex = 0;
+			int count = buf2.Length;
+
+			while (true)
+			{
+				try
+				{
+					int numRead = inStream.Read(buf2, currentIndex, count);
+					if (numRead <= 0)
+					{
+						break;
+					}
+					currentIndex += numRead;
+					count -= numRead;
+				}
+				catch (GZipException)
+				{
+					// We should get an unexpected EOF exception once we've read all
+					// data as the stream isn't yet finished.
+					break;
+				}
+			}
+
+			Assert.AreEqual(0, count);
+
+			for (int i = 0; i < buf.Length; ++i)
+			{
+				Assert.AreEqual(buf2[i], buf[i]);
+			}
+		}
+
 		[Test]
 		[Category("GZip")]
 		[Category("Performance")]

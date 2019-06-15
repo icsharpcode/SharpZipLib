@@ -139,6 +139,9 @@ namespace ICSharpCode.SharpZipLib.GZip
 				if (inf.IsFinished)
 				{
 					ReadFooter();
+				} else if (inf.RemainingInput == 0) {
+					// If the stream is not finished but we have no more data to read, don't keep looping forever
+					throw new GZipException("Unexpected EOF");
 				}
 
 				if (bytesRead > 0)
