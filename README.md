@@ -1,45 +1,6 @@
-# SharpZipLib [![Join the chat at https://gitter.im/icsharpcode/SharpZipLib](https://badges.gitter.im/icsharpcode/SharpZipLib.svg)](https://gitter.im/icsharpcode/SharpZipLib?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Stories in Ready](https://badge.waffle.io/icsharpcode/SharpZipLib.svg?label=ready&title=Ready)](http://waffle.io/icsharpcode/SharpZipLib) [![Coverage Status](https://coveralls.io/repos/github/McNeight/SharpZipLib/badge.svg?branch=master)](https://coveralls.io/github/McNeight/SharpZipLib?branch=master) [![Coverity Scan Build Status](https://scan.coverity.com/projects/8519/badge.svg)](https://scan.coverity.com/projects/mcneight-sharpziplib)
+# SharpZipLib [![Build status](https://ci.appveyor.com/api/projects/status/wuf8l79mypqsbor3/branch/master?svg=true)](https://ci.appveyor.com/project/icsharpcode/sharpziplib/branch/master) [![Join the chat at https://gitter.im/icsharpcode/SharpZipLib](https://badges.gitter.im/icsharpcode/SharpZipLib.svg)](https://gitter.im/icsharpcode/SharpZipLib?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
 
-<table>
-  <tr>
-    <th style="text-align:center">Build Server</th>
-    <th>Operating System</th>
-    <th>Framework</th>
-    <th style="text-align:center">Status</th>
-  </tr>
-  <tr>
-    <td style="text-align:center">AppVeyor</td>
-    <td>Windows Server 2012</td>
-    <td>.NET Framework 4.5</td>
-    <td style="text-align:center"><a href="https://ci.appveyor.com/project/McNeight/SharpZipLib/branch/master"><img src="https://ci.appveyor.com/api/projects/status/oe7kwnaib3qscm8l/branch/master?svg=true" alt="AppVeyor build status" /></a></td>
-  </tr>
-  <tr>
-    <td style="text-align:center" rowspan="2">Travis</td>
-    <td>Ubuntu 12.04.5 LTS</td>
-    <td>Mono 4.2.3</td>
-    <td style="text-align:center" rowspan="2">
-    <a href="https://travis-ci.org/McNeight/SharpZipLib"><img src="https://travis-ci.org/McNeight/SharpZipLib.svg?branch=master" alt="Travis build status" /></a></td>
-  </tr>
-  <tr>
-    <td>MacOSX 13.4.0.0</td>
-    <td>Mono 4.2.3</td>
-  </tr>
-  <tr>
-    <td style="text-align:center" rowspan="3">Bitrise</td>
-    <td>OSX</td>
-    <td>Xamarin.iOS</td>
-    <td style="text-align:center" rowspan="3">
-    <a href="https://www.bitrise.io/app/e085f985c0c29473"><img src="https://www.bitrise.io/app/e085f985c0c29473.svg?token=TKMy51lbK4ZU0N2lQi5WNg&branch=master" alt="Bitrise Build Status" /></a></td>
-  </tr>
-  <tr>
-    <td>OSX</td>
-    <td>Xamarin.Android</td>
-  </tr>
-  <tr>
-    <td>OSX</td>
-    <td>Xamarin.Mac</td>
-  </tr>
-</table>
+The SharpZipLib project is looking for a new maintainer - please read [State of the Union August 2017](https://github.com/icsharpcode/SharpZipLib/issues/187)
 
 Introduction
 ------------
@@ -48,7 +9,7 @@ SharpZipLib (\#ziplib, formerly NZipLib) is a compression library that supports 
 
 SharpZipLib was originally ported from the [GNU Classpath](http://www.gnu.org/software/classpath/) java.util.zip library for use with [SharpDevelop](http://www.icsharpcode.net/OpenSource/SD), which needed gzip/zip compression. bzip2 compression and tar archiving were added later due to popular demand.
 
-The [SharpZipLib homepage](http://icsharpcode.github.io/SharpZipLib/) has precompiled libraries available for download, [a link to the forum for support](http://community.sharpdevelop.net/forums/12/ShowForum.aspx), [release history](https://github.com/icsharpcode/SharpZipLib/wiki/Release-History), samples and more.
+The [SharpZipLib homepage](http://icsharpcode.github.io/SharpZipLib/) has precompiled libraries available for download, [API documentation](https://icsharpcode.github.io/SharpZipLib/help/api/index.html), [a link to the forum for support](http://community.sharpdevelop.net/forums/12/ShowForum.aspx), [release history](https://github.com/icsharpcode/SharpZipLib/wiki/Release-History), samples and more.
 
 License
 -------
@@ -63,7 +24,7 @@ Namespace layout
 | Module | Namespace |
 |:----------------:|:-----------------------------|
 |BZip2 implementation|ICSharpCode.SharpZipLib.BZip2.\*|
-|Checksum implementation|ICSharpCode.SharpZipLib.Checksums.\*|
+|Checksum implementation|ICSharpCode.SharpZipLib.Checksum.\*|
 |Core utilities / interfaces|ICSharpCode.SharpZipLib.Core.\*|
 |Encryption implementation|ICSharpCode.SharpZipLib.Encryption.\*|
 |GZip implementation|ICSharpCode.SharpZipLib.GZip.\*|
@@ -76,10 +37,7 @@ Namespace layout
 Credits
 -------
 
-SharpZipLib was initially developed by [Mike Krüger](http://www.icsharpcode.net/pub/relations/krueger.aspx). Past maintainers are John Reilly and David Pierson. The current maintainer is Neil McNeight.
+SharpZipLib was initially developed by [Mike Krüger](http://www.icsharpcode.net/pub/relations/krueger.aspx). Past maintainers are John Reilly, David Pierson and Neil McNeight. 
 
 And thanks to all the people that contributed features, bug fixes and issue reports.
 
-Metrics
--------
-[![Throughput Graph](https://graphs.waffle.io/icsharpcode/SharpZipLib/throughput.svg)](https://waffle.io/icsharpcode/SharpZipLib/metrics/throughput)

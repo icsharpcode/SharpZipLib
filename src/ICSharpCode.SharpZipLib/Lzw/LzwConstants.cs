@@ -31,6 +31,7 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		/// Indicates the presence of a fourth header byte
 		/// </summary>
 		public const int EXTENDED_MASK = 0x20;
+
 		//public const int FREE_MASK      = 0x40;
 
 		/// <summary>
@@ -54,7 +55,7 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		/// </summary>
 		public const int INIT_BITS = 9;
 
-		LzwConstants()
+		private LzwConstants()
 		{
 		}
 	}

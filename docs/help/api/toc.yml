@@ -1,0 +1,244 @@
+### YamlMime:TableOfContent
+- uid: ICSharpCode.SharpZipLib
+  name: ICSharpCode.SharpZipLib
+  items:
+  - uid: ICSharpCode.SharpZipLib.SharpZipBaseException
+    name: SharpZipBaseException
+- uid: ICSharpCode.SharpZipLib.BZip2
+  name: ICSharpCode.SharpZipLib.BZip2
+  items:
+  - uid: ICSharpCode.SharpZipLib.BZip2.BZip2
+    name: BZip2
+  - uid: ICSharpCode.SharpZipLib.BZip2.BZip2Exception
+    name: BZip2Exception
+  - uid: ICSharpCode.SharpZipLib.BZip2.BZip2InputStream
+    name: BZip2InputStream
+  - uid: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream
+    name: BZip2OutputStream
+- uid: ICSharpCode.SharpZipLib.Checksum
+  name: ICSharpCode.SharpZipLib.Checksum
+  items:
+  - uid: ICSharpCode.SharpZipLib.Checksum.Adler32
+    name: Adler32
+  - uid: ICSharpCode.SharpZipLib.Checksum.BZip2Crc
+    name: BZip2Crc
+  - uid: ICSharpCode.SharpZipLib.Checksum.Crc32
+    name: Crc32
+  - uid: ICSharpCode.SharpZipLib.Checksum.IChecksum
+    name: IChecksum
+- uid: ICSharpCode.SharpZipLib.Core
+  name: ICSharpCode.SharpZipLib.Core
+  items:
+  - uid: ICSharpCode.SharpZipLib.Core.CompletedFileHandler
+    name: CompletedFileHandler
+  - uid: ICSharpCode.SharpZipLib.Core.DirectoryEventArgs
+    name: DirectoryEventArgs
+  - uid: ICSharpCode.SharpZipLib.Core.DirectoryFailureHandler
+    name: DirectoryFailureHandler
+  - uid: ICSharpCode.SharpZipLib.Core.ExtendedPathFilter
+    name: ExtendedPathFilter
+  - uid: ICSharpCode.SharpZipLib.Core.FileFailureHandler
+    name: FileFailureHandler
+  - uid: ICSharpCode.SharpZipLib.Core.FileSystemScanner
+    name: FileSystemScanner
+  - uid: ICSharpCode.SharpZipLib.Core.INameTransform
+    name: INameTransform
+  - uid: ICSharpCode.SharpZipLib.Core.IScanFilter
+    name: IScanFilter
+  - uid: ICSharpCode.SharpZipLib.Core.NameAndSizeFilter
+    name: NameAndSizeFilter
+  - uid: ICSharpCode.SharpZipLib.Core.NameFilter
+    name: NameFilter
+  - uid: ICSharpCode.SharpZipLib.Core.PathFilter
+    name: PathFilter
+  - uid: ICSharpCode.SharpZipLib.Core.ProcessFileHandler
+    name: ProcessFileHandler
+  - uid: ICSharpCode.SharpZipLib.Core.ProgressEventArgs
+    name: ProgressEventArgs
+  - uid: ICSharpCode.SharpZipLib.Core.ProgressHandler
+    name: ProgressHandler
+  - uid: ICSharpCode.SharpZipLib.Core.ScanEventArgs
+    name: ScanEventArgs
+  - uid: ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs
+    name: ScanFailureEventArgs
+  - uid: ICSharpCode.SharpZipLib.Core.StreamUtils
+    name: StreamUtils
+  - uid: ICSharpCode.SharpZipLib.Core.WindowsPathUtils
+    name: WindowsPathUtils
+- uid: ICSharpCode.SharpZipLib.Encryption
+  name: ICSharpCode.SharpZipLib.Encryption
+  items:
+  - uid: ICSharpCode.SharpZipLib.Encryption.PkzipClassic
+    name: PkzipClassic
+  - uid: ICSharpCode.SharpZipLib.Encryption.PkzipClassicManaged
+    name: PkzipClassicManaged
+- uid: ICSharpCode.SharpZipLib.GZip
+  name: ICSharpCode.SharpZipLib.GZip
+  items:
+  - uid: ICSharpCode.SharpZipLib.GZip.GZip
+    name: GZip
+  - uid: ICSharpCode.SharpZipLib.GZip.GZipConstants
+    name: GZipConstants
+  - uid: ICSharpCode.SharpZipLib.GZip.GZipException
+    name: GZipException
+  - uid: ICSharpCode.SharpZipLib.GZip.GZipInputStream
+    name: GZipInputStream
+  - uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream
+    name: GZipOutputStream
+- uid: ICSharpCode.SharpZipLib.Lzw
+  name: ICSharpCode.SharpZipLib.Lzw
+  items:
+  - uid: ICSharpCode.SharpZipLib.Lzw.LzwConstants
+    name: LzwConstants
+  - uid: ICSharpCode.SharpZipLib.Lzw.LzwException
+    name: LzwException
+  - uid: ICSharpCode.SharpZipLib.Lzw.LzwInputStream
+    name: LzwInputStream
+- uid: ICSharpCode.SharpZipLib.Tar
+  name: ICSharpCode.SharpZipLib.Tar
+  items:
+  - uid: ICSharpCode.SharpZipLib.Tar.InvalidHeaderException
+    name: InvalidHeaderException
+  - uid: ICSharpCode.SharpZipLib.Tar.ProgressMessageHandler
+    name: ProgressMessageHandler
+  - uid: ICSharpCode.SharpZipLib.Tar.TarArchive
+    name: TarArchive
+  - uid: ICSharpCode.SharpZipLib.Tar.TarBuffer
+    name: TarBuffer
+  - uid: ICSharpCode.SharpZipLib.Tar.TarEntry
+    name: TarEntry
+  - uid: ICSharpCode.SharpZipLib.Tar.TarException
+    name: TarException
+  - uid: ICSharpCode.SharpZipLib.Tar.TarHeader
+    name: TarHeader
+  - uid: ICSharpCode.SharpZipLib.Tar.TarInputStream
+    name: TarInputStream
+  - uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter
+    name: TarInputStream.EntryFactoryAdapter
+  - uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.IEntryFactory
+    name: TarInputStream.IEntryFactory
+  - uid: ICSharpCode.SharpZipLib.Tar.TarOutputStream
+    name: TarOutputStream
+- uid: ICSharpCode.SharpZipLib.Zip
+  name: ICSharpCode.SharpZipLib.Zip
+  items:
+  - uid: ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage
+    name: BaseArchiveStorage
+  - uid: ICSharpCode.SharpZipLib.Zip.CompressionMethod
+    name: CompressionMethod
+  - uid: ICSharpCode.SharpZipLib.Zip.DescriptorData
+    name: DescriptorData
+  - uid: ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage
+    name: DiskArchiveStorage
+  - uid: ICSharpCode.SharpZipLib.Zip.DynamicDiskDataSource
+    name: DynamicDiskDataSource
+  - uid: ICSharpCode.SharpZipLib.Zip.EncryptionAlgorithm
+    name: EncryptionAlgorithm
+  - uid: ICSharpCode.SharpZipLib.Zip.ExtendedUnixData
+    name: ExtendedUnixData
+  - uid: ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.Flags
+    name: ExtendedUnixData.Flags
+  - uid: ICSharpCode.SharpZipLib.Zip.FastZip
+    name: FastZip
+  - uid: ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate
+    name: FastZip.ConfirmOverwriteDelegate
+  - uid: ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite
+    name: FastZip.Overwrite
+  - uid: ICSharpCode.SharpZipLib.Zip.FastZipEvents
+    name: FastZipEvents
+  - uid: ICSharpCode.SharpZipLib.Zip.FileUpdateMode
+    name: FileUpdateMode
+  - uid: ICSharpCode.SharpZipLib.Zip.GeneralBitFlags
+    name: GeneralBitFlags
+  - uid: ICSharpCode.SharpZipLib.Zip.HostSystemID
+    name: HostSystemID
+  - uid: ICSharpCode.SharpZipLib.Zip.IArchiveStorage
+    name: IArchiveStorage
+  - uid: ICSharpCode.SharpZipLib.Zip.IDynamicDataSource
+    name: IDynamicDataSource
+  - uid: ICSharpCode.SharpZipLib.Zip.IEntryFactory
+    name: IEntryFactory
+  - uid: ICSharpCode.SharpZipLib.Zip.IStaticDataSource
+    name: IStaticDataSource
+  - uid: ICSharpCode.SharpZipLib.Zip.ITaggedData
+    name: ITaggedData
+  - uid: ICSharpCode.SharpZipLib.Zip.KeysRequiredEventArgs
+    name: KeysRequiredEventArgs
+  - uid: ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage
+    name: MemoryArchiveStorage
+  - uid: ICSharpCode.SharpZipLib.Zip.NTTaggedData
+    name: NTTaggedData
+  - uid: ICSharpCode.SharpZipLib.Zip.RawTaggedData
+    name: RawTaggedData
+  - uid: ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource
+    name: StaticDiskDataSource
+  - uid: ICSharpCode.SharpZipLib.Zip.TestOperation
+    name: TestOperation
+  - uid: ICSharpCode.SharpZipLib.Zip.TestStatus
+    name: TestStatus
+  - uid: ICSharpCode.SharpZipLib.Zip.TestStrategy
+    name: TestStrategy
+  - uid: ICSharpCode.SharpZipLib.Zip.UseZip64
+    name: UseZip64
+  - uid: ICSharpCode.SharpZipLib.Zip.WindowsNameTransform
+    name: WindowsNameTransform
+  - uid: ICSharpCode.SharpZipLib.Zip.ZipConstants
+    name: ZipConstants
+  - uid: ICSharpCode.SharpZipLib.Zip.ZipEntry
+    name: ZipEntry
+  - uid: ICSharpCode.SharpZipLib.Zip.ZipEntryFactory
+    name: ZipEntryFactory
+  - uid: ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting
+    name: ZipEntryFactory.TimeSetting
+  - uid: ICSharpCode.SharpZipLib.Zip.ZipException
+    name: ZipException
+  - uid: ICSharpCode.SharpZipLib.Zip.ZipExtraData
+    name: ZipExtraData
+  - uid: ICSharpCode.SharpZipLib.Zip.ZipFile
+    name: ZipFile
+  - uid: ICSharpCode.SharpZipLib.Zip.ZipFile.KeysRequiredEventHandler
+    name: ZipFile.KeysRequiredEventHandler
+  - uid: ICSharpCode.SharpZipLib.Zip.ZipInputStream
+    name: ZipInputStream
+  - uid: ICSharpCode.SharpZipLib.Zip.ZipNameTransform
+    name: ZipNameTransform
+  - uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream
+    name: ZipOutputStream
+  - uid: ICSharpCode.SharpZipLib.Zip.ZipTestResultHandler
+    name: ZipTestResultHandler
+- uid: ICSharpCode.SharpZipLib.Zip.Compression
+  name: ICSharpCode.SharpZipLib.Zip.Compression
+  items:
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.Deflater
+    name: Deflater
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.Deflater.CompressionLevel
+    name: Deflater.CompressionLevel
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.DeflaterConstants
+    name: DeflaterConstants
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine
+    name: DeflaterEngine
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.DeflaterHuffman
+    name: DeflaterHuffman
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending
+    name: DeflaterPending
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.DeflateStrategy
+    name: DeflateStrategy
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.Inflater
+    name: Inflater
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree
+    name: InflaterHuffmanTree
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer
+    name: PendingBuffer
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams
+  name: ICSharpCode.SharpZipLib.Zip.Compression.Streams
+  items:
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream
+    name: DeflaterOutputStream
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer
+    name: InflaterInputBuffer
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream
+    name: InflaterInputStream
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.OutputWindow
+    name: OutputWindow
+  - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator
+    name: StreamManipulator

@@ -1,0 +1,94 @@
+version: 1.0.{build}
+branches:
+  only:
+  - master
+  except:
+  - gh-pages
+  - coverity_scan
+
+skip_tags: true
+image: Visual Studio 2017
+
+init:
+  - git config --global core.autocrlf input
+
+cache:
+  - packages -> **\packages.config
+
+assembly_info:
+  patch: true
+  file: 'src\**\AssemblyInfo.cs'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+
+nuget:
+  account_feed: true
+  project_feed: true
+  disable_publish_on_pr: true
+
+configuration: Release
+
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: B/NQfoRYUnKLGS5KJSJrGBvcYD0Jv+coudjJMY2jf+gqvqDWral9CDmv2i0WovY7
+  COVERITY_TOKEN:
+    secure: n9NA/kasTqxUc8UBfQ2cBlZcDyFJvko1gcMzVTDvZq8=
+  COVERITY_EMAIL:
+    secure: j/N0ZmnUZYKnS2nGocKyNsXoKQBfWTBOg+VI4q7yMn4=
+
+before_build:
+- dotnet restore ICSharpCode.SharpZipLib.sln
+
+build_script:
+- ps: Build\run-appveyor-build.ps1
+
+test_script:
+  - dotnet test test\ICSharpCode.SharpZipLib.Tests
+
+after_test:
+  - cmd: Build\run-opencover.cmd
+  - cmd: packages\coveralls.io.1.3.4\tools\coveralls.net.exe --opencover Documentation\opencover-results-release.xml
+  - cmd: nuget pack Build\ICSharpCode.SharpZipLib.nuspec -BasePath bin\Release\ -OutputDirectory bin\Release\ -Version %APPVEYOR_BUILD_VERSION%
+
+test_script:
+  - cmd: nunit3-console --framework=net-4.5 --labels=All --testlist=ICSharpCode.SharpZipLib.Tests\PassingTests.txt --result=Documentation\nunit3-test-results-appveyor.xml;format=AppVeyor bin\Release\ICSharpCode.SharpZipLib.Tests.dll
+
+artifacts:
+- path: bin\Release
+  name: BuildRelease
+- path: bin\**\*.nupkg
+  name: NuGet
+- path: Documentation\*.xml
+  name: TestResults
+- path: Documentation\coverity.zip
+  name: Coverity
+
+deploy:
+- provider: GitHub
+  release: sharpziplib-dogfood-{version}
+  description: 'Something To Eat'
+  auth_token:
+    secure: pZ5zHJ/2mZsmqQH0gPke0LMqSgUhz79wbcCjdDTCEIl6hRJYlYhkaPianw2hz26k # your encrypted token from GitHub
+  artifact: BuildRelease
+  draft: true
+  prerelease: true
+  on:
+    branch: master
+#    appveyor_repo_tag: true        # deploy on tag push only
+- provider: NuGet
+  skip_symbols: false
+  symbol_server: https://ci.appveyor.com/nuget/mcneight-93sw9hg8ve02/api/v2/package
+  api_key:
+    secure: z+iy8Iv5qqQghGrATRbx2I921HCHD7x7/xIrmkGGauMgpA/d1DBoOVUNNCHLE9Dj
+  artifact: NuGet
+
+notifications:
+- provider: Email
+  to:
+    - mcneight+appveyor@gmail.com
+  subject: Build {{status}}
+  message: Version {{version}} {{commitId}} from {{branch}} {{status}} {{message}}
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: true

@@ -1,7 +1,4 @@
 using System;
-using System.Globalization;
-using System.Text;
-using System.Threading;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -17,10 +14,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <remarks>An entry can have this overridden if required <see cref="ZipEntry.ForceZip64"></see></remarks>
 		Off,
+
 		/// <summary>
 		/// Zip64 should always be used.
 		/// </summary>
 		On,
+
 		/// <summary>
 		/// #ZipLib will determine use based on entry values when added to archive.
 		/// </summary>
@@ -38,7 +37,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		Stored = 0,
 
 		/// <summary>
-		/// Common Zip compression method using a sliding dictionary 
+		/// Common Zip compression method using a sliding dictionary
 		/// of up to 32KB and secondary compression from Huffman/Shannon-Fano trees
 		/// </summary>
 		Deflated = 8,
@@ -51,13 +50,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// BZip2 compression. Not supported by #Zip.
 		/// </summary>
-		BZip2 = 11,
+		BZip2 = 12,
 
 		/// <summary>
 		/// WinZip special for AES encryption, Now supported by #Zip.
 		/// </summary>
 		WinZipAES = 99,
-
 	}
 
 	/// <summary>
@@ -69,54 +67,67 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// No encryption has been used.
 		/// </summary>
 		None = 0,
+
 		/// <summary>
 		/// Encrypted using PKZIP 2.0 or 'classic' encryption.
 		/// </summary>
 		PkzipClassic = 1,
+
 		/// <summary>
 		/// DES encryption has been used.
 		/// </summary>
 		Des = 0x6601,
+
 		/// <summary>
 		/// RC2 encryption has been used for encryption.
 		/// </summary>
 		RC2 = 0x6602,
+
 		/// <summary>
 		/// Triple DES encryption with 168 bit keys has been used for this entry.
 		/// </summary>
 		TripleDes168 = 0x6603,
+
 		/// <summary>
 		/// Triple DES with 112 bit keys has been used for this entry.
 		/// </summary>
 		TripleDes112 = 0x6609,
+
 		/// <summary>
 		/// AES 128 has been used for encryption.
 		/// </summary>
 		Aes128 = 0x660e,
+
 		/// <summary>
 		/// AES 192 has been used for encryption.
 		/// </summary>
 		Aes192 = 0x660f,
+
 		/// <summary>
 		/// AES 256 has been used for encryption.
 		/// </summary>
 		Aes256 = 0x6610,
+
 		/// <summary>
 		/// RC2 corrected has been used for encryption.
 		/// </summary>
 		RC2Corrected = 0x6702,
+
 		/// <summary>
 		/// Blowfish has been used for encryption.
 		/// </summary>
 		Blowfish = 0x6720,
+
 		/// <summary>
 		/// Twofish has been used for encryption.
 		/// </summary>
 		Twofish = 0x6721,
+
 		/// <summary>
 		/// RC4 has been used for encryption.
 		/// </summary>
 		RC4 = 0x6801,
+
 		/// <summary>
 		/// An unknown algorithm has been used for encryption.
 		/// </summary>
@@ -133,52 +144,64 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Bit 0 if set indicates that the file is encrypted
 		/// </summary>
 		Encrypted = 0x0001,
+
 		/// <summary>
 		/// Bits 1 and 2 - Two bits defining the compression method (only for Method 6 Imploding and 8,9 Deflating)
 		/// </summary>
 		Method = 0x0006,
+
 		/// <summary>
 		/// Bit 3 if set indicates a trailing data desciptor is appended to the entry data
 		/// </summary>
 		Descriptor = 0x0008,
+
 		/// <summary>
 		/// Bit 4 is reserved for use with method 8 for enhanced deflation
 		/// </summary>
 		ReservedPKware4 = 0x0010,
+
 		/// <summary>
 		/// Bit 5 if set indicates the file contains Pkzip compressed patched data.
 		/// Requires version 2.7 or greater.
 		/// </summary>
 		Patched = 0x0020,
+
 		/// <summary>
 		/// Bit 6 if set indicates strong encryption has been used for this entry.
 		/// </summary>
 		StrongEncryption = 0x0040,
+
 		/// <summary>
 		/// Bit 7 is currently unused
 		/// </summary>
 		Unused7 = 0x0080,
+
 		/// <summary>
 		/// Bit 8 is currently unused
 		/// </summary>
 		Unused8 = 0x0100,
+
 		/// <summary>
 		/// Bit 9 is currently unused
 		/// </summary>
 		Unused9 = 0x0200,
+
 		/// <summary>
 		/// Bit 10 is currently unused
 		/// </summary>
 		Unused10 = 0x0400,
+
 		/// <summary>
-		/// Bit 11 if set indicates the filename and 
+		/// Bit 11 if set indicates the filename and
 		/// comment fields for this file must be encoded using UTF-8.
 		/// </summary>
 		UnicodeText = 0x0800,
+
 		/// <summary>
 		/// Bit 12 is documented as being reserved by PKware for enhanced compression.
 		/// </summary>
 		EnhancedCompress = 0x1000,
+
 		/// <summary>
 		/// Bit 13 if set indicates that values in the local header are masked to hide
 		/// their actual values, and the central directory is encrypted.
@@ -187,24 +210,27 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Used when encrypting the central directory contents.
 		/// </remarks>
 		HeaderMasked = 0x2000,
+
 		/// <summary>
 		/// Bit 14 is documented as being reserved for use by PKware
 		/// </summary>
 		ReservedPkware14 = 0x4000,
+
 		/// <summary>
 		/// Bit 15 is documented as being reserved for use by PKware
 		/// </summary>
 		ReservedPkware15 = 0x8000
 	}
 
-	#endregion
+	#endregion Enumerations
 
 	/// <summary>
 	/// This class contains constants used for Zip format files
 	/// </summary>
-	public sealed class ZipConstants
+	public static class ZipConstants
 	{
 		#region Versions
+
 		/// <summary>
 		/// The version made by field for entries in the central header when created by this library
 		/// </summary>
@@ -244,9 +270,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The version required for Zip64 extensions (4.5 or higher)
 		/// </summary>
 		public const int VersionZip64 = 45;
-		#endregion
+
+		#endregion Versions
 
 		#region Header Sizes
+
 		/// <summary>
 		/// Size of local entry header (excluding variable length fields at end)
 		/// </summary>
@@ -306,7 +334,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		[Obsolete("Use CryptoHeaderSize instead")]
 		public const int CRYPTO_HEADER_SIZE = 12;
-		#endregion
+
+		#endregion Header Sizes
 
 		#region Header Signatures
 
@@ -419,15 +448,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		[Obsolete("Use EndOfCentralDirectorySignature instead")]
 		public const int ENDSIG = 'P' | ('K' << 8) | (5 << 16) | (6 << 24);
-		#endregion
 
-		/// <remarks>
-		/// The original Zip specification (https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT) states 
-		/// that file names should only be encoded with IBM Code Page 437 or UTF-8. 
-		/// In practice, most zip apps use OEM or system encoding (typically cp437 on Windows). 
-		/// Let's be good citizens and default to UTF-8 http://utf8everywhere.org/
-		/// </remarks>
-		static int defaultCodePage = Encoding.UTF8.CodePage;
+		#endregion Header Signatures
 
 		/// <summary>
 		/// Default encoding used for string conversion.  0 gives the default system OEM code page.
@@ -435,152 +457,41 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// there are many variable factors, codepage 850 is often a good choice for
 		/// European users, however be careful about compatability.
 		/// </summary>
-		public static int DefaultCodePage {
-			get {
-				return defaultCodePage;
-			}
-			set {
-				if ((value < 0) || (value > 65535) ||
-					(value == 1) || (value == 2) || (value == 3) || (value == 42)) {
-					throw new ArgumentOutOfRangeException(nameof(value));
-				}
-
-				defaultCodePage = value;
-			}
+		[Obsolete("Use ZipStrings instead")]
+		public static int DefaultCodePage
+		{
+			get => ZipStrings.CodePage;
+			set => ZipStrings.CodePage = value;
 		}
 
-		/// <summary>
-		/// Convert a portion of a byte array to a string.
-		/// </summary>		
-		/// <param name="data">
-		/// Data to convert to string
-		/// </param>
-		/// <param name="count">
-		/// Number of bytes to convert starting from index 0
-		/// </param>
-		/// <returns>
-		/// data[0]..data[count - 1] converted to a string
-		/// </returns>
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToString(byte[], int)"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToString instead")]
 		public static string ConvertToString(byte[] data, int count)
-		{
-			if (data == null) {
-				return string.Empty;
-			}
+			=> ZipStrings.ConvertToString(data, count);
 
-			return Encoding.GetEncoding(DefaultCodePage).GetString(data, 0, count);
-		}
-
-		/// <summary>
-		/// Convert a byte array to string
-		/// </summary>
-		/// <param name="data">
-		/// Byte array to convert
-		/// </param>
-		/// <returns>
-		/// <paramref name="data">data</paramref>converted to a string
-		/// </returns>
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToString(byte[])"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToString instead")]
 		public static string ConvertToString(byte[] data)
-		{
-			if (data == null) {
-				return string.Empty;
-			}
-			return ConvertToString(data, data.Length);
-		}
+			=> ZipStrings.ConvertToString(data);
 
-		/// <summary>
-		/// Convert a byte array to string
-		/// </summary>
-		/// <param name="flags">The applicable general purpose bits flags</param>
-		/// <param name="data">
-		/// Byte array to convert
-		/// </param>
-		/// <param name="count">The number of bytes to convert.</param>
-		/// <returns>
-		/// <paramref name="data">data</paramref>converted to a string
-		/// </returns>
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToStringExt(int, byte[], int)"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToStringExt instead")]
 		public static string ConvertToStringExt(int flags, byte[] data, int count)
-		{
-			if (data == null) {
-				return string.Empty;
-			}
+			=> ZipStrings.ConvertToStringExt(flags, data, count);
 
-			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0) {
-				return Encoding.UTF8.GetString(data, 0, count);
-			} else {
-				return ConvertToString(data, count);
-			}
-		}
-
-		/// <summary>
-		/// Convert a byte array to string
-		/// </summary>
-		/// <param name="data">
-		/// Byte array to convert
-		/// </param>
-		/// <param name="flags">The applicable general purpose bits flags</param>
-		/// <returns>
-		/// <paramref name="data">data</paramref>converted to a string
-		/// </returns>
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToStringExt(int, byte[])"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToStringExt instead")]
 		public static string ConvertToStringExt(int flags, byte[] data)
-		{
-			if (data == null) {
-				return string.Empty;
-			}
+			=> ZipStrings.ConvertToStringExt(flags, data);
 
-			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0) {
-				return Encoding.UTF8.GetString(data, 0, data.Length);
-			} else {
-				return ConvertToString(data, data.Length);
-			}
-		}
-
-		/// <summary>
-		/// Convert a string to a byte array
-		/// </summary>
-		/// <param name="str">
-		/// String to convert to an array
-		/// </param>
-		/// <returns>Converted array</returns>
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToArray(string)"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToArray instead")]
 		public static byte[] ConvertToArray(string str)
-		{
-			if (str == null) {
-				return new byte[0];
-			}
+			=> ZipStrings.ConvertToArray(str);
 
-			return Encoding.GetEncoding(DefaultCodePage).GetBytes(str);
-		}
-
-		/// <summary>
-		/// Convert a string to a byte array
-		/// </summary>
-		/// <param name="flags">The applicable <see cref="GeneralBitFlags">general purpose bits flags</see></param>
-		/// <param name="str">
-		/// String to convert to an array
-		/// </param>
-		/// <returns>Converted array</returns>
+		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToArray(int, string)"/></summary>
+		[Obsolete("Use ZipStrings.ConvertToArray instead")]
 		public static byte[] ConvertToArray(int flags, string str)
-		{
-			if (str == null) {
-				return new byte[0];
-			}
-
-			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0) {
-				return Encoding.UTF8.GetBytes(str);
-			} else {
-				return ConvertToArray(str);
-			}
-		}
-
-
-		/// <summary>
-		/// Initialise default instance of <see cref="ZipConstants">ZipConstants</see>
-		/// </summary>
-		/// <remarks>
-		/// Private to prevent instances being created.
-		/// </remarks>
-		ZipConstants()
-		{
-			// Do nothing
-		}
+			=> ZipStrings.ConvertToArray(flags, str);
 	}
 }

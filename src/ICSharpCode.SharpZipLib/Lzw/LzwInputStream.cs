@@ -10,7 +10,7 @@ namespace ICSharpCode.SharpZipLib.Lzw
 	///
 	/// See http://en.wikipedia.org/wiki/Compress
 	/// See http://wiki.wxwidgets.org/Development:_Z_File_Format
-	/// 
+	///
 	/// The file header consists of 3 (or optionally 4) bytes. The first two bytes
 	/// contain the magic marker "0x1f 0x9d", followed by a byte of flags.
 	///
@@ -21,10 +21,10 @@ namespace ICSharpCode.SharpZipLib.Lzw
 	/// <code>
 	/// using System;
 	/// using System.IO;
-	/// 
+	///
 	/// using ICSharpCode.SharpZipLib.Core;
 	/// using ICSharpCode.SharpZipLib.LZW;
-	/// 
+	///
 	/// class MainClass
 	/// {
 	/// 	public static void Main(string[] args)
@@ -38,22 +38,17 @@ namespace ICSharpCode.SharpZipLib.Lzw
 	///                         // now do something with the buffer
 	/// 		}
 	/// 	}
-	/// }	
+	/// }
 	/// </code>
 	/// </example>
 	public class LzwInputStream : Stream
 	{
 		/// <summary>
-		/// Get/set flag indicating ownership of underlying stream.
-		/// When the flag is true <see cref="Close"/> will close the underlying stream also.
+		/// Gets or sets a flag indicating ownership of underlying stream.
+		/// When the flag is true <see cref="Stream.Dispose()" /> will close the underlying stream also.
 		/// </summary>
-		/// <remarks>
-		/// The default value is true.
-		/// </remarks>
-		public bool IsStreamOwner {
-			get { return isStreamOwner; }
-			set { isStreamOwner = value; }
-		}
+		/// <remarks>The default value is true.</remarks>
+		public bool IsStreamOwner { get; set; } = true;
 
 		/// <summary>
 		/// Creates a LzwInputStream
@@ -118,10 +113,10 @@ namespace ICSharpCode.SharpZipLib.Lzw
 			byte[] lData = data;
 			int lBitPos = bitPos;
 
-
 			// empty stack if stuff still left
 			int sSize = lStack.Length - lStackP;
-			if (sSize > 0) {
+			if (sSize > 0)
+			{
 				int num = (sSize >= count) ? count : sSize;
 				Array.Copy(lStack, lStackP, buffer, offset, num);
 				offset += num;
@@ -129,26 +124,31 @@ namespace ICSharpCode.SharpZipLib.Lzw
 				lStackP += num;
 			}
 
-			if (count == 0) {
+			if (count == 0)
+			{
 				stackP = lStackP;
 				return offset - start;
 			}
 
-
-			// loop, filling local buffer until enough data has been decompressed
-			MainLoop:
-			do {
-				if (end < EXTRA) {
+		// loop, filling local buffer until enough data has been decompressed
+		MainLoop:
+			do
+			{
+				if (end < EXTRA)
+				{
 					Fill();
 				}
 
 				int bitIn = (got > 0) ? (end - end % lNBits) << 3 :
 										(end << 3) - (lNBits - 1);
 
-				while (lBitPos < bitIn) {
+				while (lBitPos < bitIn)
+				{
 					#region A
+
 					// handle 1-byte reads correctly
-					if (count == 0) {
+					if (count == 0)
+					{
 						nBits = lNBits;
 						maxCode = lMaxCode;
 						maxMaxCode = lMaxMaxCode;
@@ -163,7 +163,8 @@ namespace ICSharpCode.SharpZipLib.Lzw
 					}
 
 					// check for code-width expansion
-					if (lFreeEnt > lMaxCode) {
+					if (lFreeEnt > lMaxCode)
+					{
 						int nBytes = lNBits << 3;
 						lBitPos = (lBitPos - 1) +
 						nBytes - (lBitPos - 1 + nBytes) % nBytes;
@@ -176,9 +177,11 @@ namespace ICSharpCode.SharpZipLib.Lzw
 						lBitPos = ResetBuf(lBitPos);
 						goto MainLoop;
 					}
-					#endregion
+
+					#endregion A
 
 					#region B
+
 					// read next code
 					int pos = lBitPos >> 3;
 					int code = (((lData[pos] & 0xFF) |
@@ -189,7 +192,8 @@ namespace ICSharpCode.SharpZipLib.Lzw
 					lBitPos += lNBits;
 
 					// handle first iteration
-					if (lOldCode == -1) {
+					if (lOldCode == -1)
+					{
 						if (code >= 256)
 							throw new LzwException("corrupt input: " + code + " > 255");
 
@@ -200,7 +204,8 @@ namespace ICSharpCode.SharpZipLib.Lzw
 					}
 
 					// handle CLEAR code
-					if (code == TBL_CLEAR && blockMode) {
+					if (code == TBL_CLEAR && blockMode)
+					{
 						Array.Copy(zeros, 0, lTabPrefix, 0, zeros.Length);
 						lFreeEnt = TBL_FIRST - 1;
 
@@ -215,16 +220,20 @@ namespace ICSharpCode.SharpZipLib.Lzw
 						lBitPos = ResetBuf(lBitPos);
 						goto MainLoop;
 					}
-					#endregion
+
+					#endregion B
 
 					#region C
+
 					// setup
 					int inCode = code;
 					lStackP = lStack.Length;
 
 					// Handle KwK case
-					if (code >= lFreeEnt) {
-						if (code > lFreeEnt) {
+					if (code >= lFreeEnt)
+					{
+						if (code > lFreeEnt)
+						{
 							throw new LzwException("corrupt input: code=" + code +
 								", freeEnt=" + lFreeEnt);
 						}
@@ -234,7 +243,8 @@ namespace ICSharpCode.SharpZipLib.Lzw
 					}
 
 					// Generate output characters in reverse order
-					while (code >= 256) {
+					while (code >= 256)
+					{
 						lStack[--lStackP] = lTabSuffix[code];
 						code = lTabPrefix[code];
 					}
@@ -250,11 +260,14 @@ namespace ICSharpCode.SharpZipLib.Lzw
 					offset += num;
 					count -= num;
 					lStackP += num;
-					#endregion
+
+					#endregion C
 
 					#region D
+
 					// generate new entry in table
-					if (lFreeEnt < lMaxMaxCode) {
+					if (lFreeEnt < lMaxMaxCode)
+					{
 						lTabPrefix[lFreeEnt] = lOldCode;
 						lTabSuffix[lFreeEnt] = lFinChar;
 						lFreeEnt++;
@@ -264,7 +277,8 @@ namespace ICSharpCode.SharpZipLib.Lzw
 					lOldCode = inCode;
 
 					// if output buffer full, then return
-					if (count == 0) {
+					if (count == 0)
+					{
 						nBits = lNBits;
 						maxCode = lMaxCode;
 						bitMask = lBitMask;
@@ -276,11 +290,11 @@ namespace ICSharpCode.SharpZipLib.Lzw
 
 						return offset - start;
 					}
-					#endregion
+
+					#endregion D
 				}   // while
 
 				lBitPos = ResetBuf(lBitPos);
-
 			} while (got > 0);  // do..while
 
 			nBits = lNBits;
@@ -310,15 +324,14 @@ namespace ICSharpCode.SharpZipLib.Lzw
 			return 0;
 		}
 
-
 		private void Fill()
 		{
 			got = baseInputStream.Read(data, end, data.Length - 1 - end);
-			if (got > 0) {
+			if (got > 0)
+			{
 				end += got;
 			}
 		}
-
 
 		private void ParseHeader()
 		{
@@ -332,7 +345,8 @@ namespace ICSharpCode.SharpZipLib.Lzw
 			if (result < 0)
 				throw new LzwException("Failed to read LZW header");
 
-			if (hdr[0] != (LzwConstants.MAGIC >> 8) || hdr[1] != (LzwConstants.MAGIC & 0xff)) {
+			if (hdr[0] != (LzwConstants.MAGIC >> 8) || hdr[1] != (LzwConstants.MAGIC & 0xff))
+			{
 				throw new LzwException(String.Format(
 					"Wrong LZW header. Magic bytes don't match. 0x{0:x2} 0x{1:x2}",
 					hdr[0], hdr[1]));
@@ -342,13 +356,15 @@ namespace ICSharpCode.SharpZipLib.Lzw
 			blockMode = (hdr[2] & LzwConstants.BLOCK_MODE_MASK) > 0;
 			maxBits = hdr[2] & LzwConstants.BIT_MASK;
 
-			if (maxBits > LzwConstants.MAX_BITS) {
+			if (maxBits > LzwConstants.MAX_BITS)
+			{
 				throw new LzwException("Stream compressed with " + maxBits +
 					" bits, but decompression can only handle " +
 					LzwConstants.MAX_BITS + " bits.");
 			}
 
-			if ((hdr[2] & LzwConstants.RESERVED_MASK) > 0) {
+			if ((hdr[2] & LzwConstants.RESERVED_MASK) > 0)
+			{
 				throw new LzwException("Unsupported bits set in the header.");
 			}
 
@@ -371,11 +387,14 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		}
 
 		#region Stream Overrides
+
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports reading
 		/// </summary>
-		public override bool CanRead {
-			get {
+		public override bool CanRead
+		{
+			get
+			{
 				return baseInputStream.CanRead;
 			}
 		}
@@ -383,8 +402,10 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		/// <summary>
 		/// Gets a value of false indicating seeking is not supported for this stream.
 		/// </summary>
-		public override bool CanSeek {
-			get {
+		public override bool CanSeek
+		{
+			get
+			{
 				return false;
 			}
 		}
@@ -392,8 +413,10 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		/// <summary>
 		/// Gets a value of false indicating that this stream is not writeable.
 		/// </summary>
-		public override bool CanWrite {
-			get {
+		public override bool CanWrite
+		{
+			get
+			{
 				return false;
 			}
 		}
@@ -401,8 +424,10 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		/// <summary>
 		/// A value representing the length of the stream in bytes.
 		/// </summary>
-		public override long Length {
-			get {
+		public override long Length
+		{
+			get
+			{
 				return got;
 			}
 		}
@@ -412,11 +437,14 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		/// Throws a NotSupportedException when attempting to set the position
 		/// </summary>
 		/// <exception cref="NotSupportedException">Attempting to set the position</exception>
-		public override long Position {
-			get {
+		public override long Position
+		{
+			get
+			{
 				return baseInputStream.Position;
 			}
-			set {
+			set
+			{
 				throw new NotSupportedException("InflaterInputStream Position not supported");
 			}
 		}
@@ -483,36 +511,33 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
-			if (!isClosed) {
+			if (!isClosed)
+			{
 				isClosed = true;
-				if (isStreamOwner) {
+				if (IsStreamOwner)
+				{
 					baseInputStream.Dispose();
 				}
 			}
 		}
 
-		#endregion
+		#endregion Stream Overrides
 
 		#region Instance Fields
 
-		Stream baseInputStream;
-
-		/// <summary>
-		/// Flag indicating wether this instance is designated the stream owner.
-		/// When closing if this flag is true the underlying stream is closed.
-		/// </summary>
-		bool isStreamOwner = true;
+		private Stream baseInputStream;
 
 		/// <summary>
 		/// Flag indicating wether this instance has been closed or not.
 		/// </summary>
-		bool isClosed;
+		private bool isClosed;
 
-		readonly byte[] one = new byte[1];
-		bool headerParsed;
+		private readonly byte[] one = new byte[1];
+		private bool headerParsed;
 
 		// string table stuff
 		private const int TBL_CLEAR = 0x100;
+
 		private const int TBL_FIRST = TBL_CLEAR + 1;
 
 		private int[] tabPrefix;
@@ -522,6 +547,7 @@ namespace ICSharpCode.SharpZipLib.Lzw
 
 		// various state
 		private bool blockMode;
+
 		private int nBits;
 		private int maxBits;
 		private int maxMaxCode;
@@ -534,11 +560,13 @@ namespace ICSharpCode.SharpZipLib.Lzw
 
 		// input buffer
 		private readonly byte[] data = new byte[1024 * 8];
+
 		private int bitPos;
 		private int end;
-		int got;
+		private int got;
 		private bool eof;
 		private const int EXTRA = 64;
-		#endregion
+
+		#endregion Instance Fields
 	}
 }

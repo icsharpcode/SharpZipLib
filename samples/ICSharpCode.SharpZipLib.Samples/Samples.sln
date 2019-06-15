@@ -1,37 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CS", "CS", "{07E37AC9-4F01-4D1D-B5CB-6524CA36D22A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VB", "VB", "{F2D07126-17F2-4EBE-910D-B3838DA7C6D3}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "CreateZipFile", "vb\CreateZipFile\CreateZipFile.vbproj", "{1B2FD768-E530-45B7-B14F-AE5D07B24485}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD} = {0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}
-	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "minibzip2", "vb\minibzip2\minibzip2.vbproj", "{E4AFB41C-DDBB-44AD-9D64-304B7FEE66C9}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD} = {0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}
-	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ViewZipFile", "vb\viewzipfile\ViewZipFile.vbproj", "{DB53264C-64AD-4B43-91A9-F5325561C77B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD} = {0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}
-	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ZipFileTest", "vb\zipfiletest\ZipFileTest.vbproj", "{54057AFD-35E2-48C3-8419-45D57C351C1F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD} = {0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}
-	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WpfCreateZipFile", "vb\WpfCreateZipFile\WpfCreateZipFile.vbproj", "{2B42AA12-DD23-4EB8-A1CD-5D0F4B772895}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZipLib", "..\ICSharpCode.SharpZipLib\ICSharpCode.SharpZipLib.csproj", "{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFFolderBrowser", "..\..\wpffolderbrowser\WPFFolderBrowser.csproj", "{CE304F35-FABF-4A24-AC48-5710670A82BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateZipFile", "cs\CreateZipFile\CreateZipFile.csproj", "{DF63551E-BB6C-4A8D-9B01-DB94F721E74A}"
 EndProject
@@ -81,14 +65,6 @@ Global
 		{2B42AA12-DD23-4EB8-A1CD-5D0F4B772895}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B42AA12-DD23-4EB8-A1CD-5D0F4B772895}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B42AA12-DD23-4EB8-A1CD-5D0F4B772895}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CE304F35-FABF-4A24-AC48-5710670A82BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE304F35-FABF-4A24-AC48-5710670A82BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE304F35-FABF-4A24-AC48-5710670A82BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE304F35-FABF-4A24-AC48-5710670A82BE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF63551E-BB6C-4A8D-9B01-DB94F721E74A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF63551E-BB6C-4A8D-9B01-DB94F721E74A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF63551E-BB6C-4A8D-9B01-DB94F721E74A}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,6 +1,6 @@
+using ICSharpCode.SharpZipLib.Core;
 using System;
 using System.IO;
-using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -10,6 +10,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	public class ZipEntryFactory : IEntryFactory
 	{
 		#region Enumerations
+
 		/// <summary>
 		/// Defines the possible values to be used for the <see cref="ZipEntry.DateTime"/>.
 		/// </summary>
@@ -19,39 +20,47 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// Use the recorded LastWriteTime value for the file.
 			/// </summary>
 			LastWriteTime,
+
 			/// <summary>
 			/// Use the recorded LastWriteTimeUtc value for the file
 			/// </summary>
 			LastWriteTimeUtc,
+
 			/// <summary>
 			/// Use the recorded CreateTime value for the file.
 			/// </summary>
 			CreateTime,
+
 			/// <summary>
 			/// Use the recorded CreateTimeUtc value for the file.
 			/// </summary>
 			CreateTimeUtc,
+
 			/// <summary>
 			/// Use the recorded LastAccessTime value for the file.
 			/// </summary>
 			LastAccessTime,
+
 			/// <summary>
 			/// Use the recorded LastAccessTimeUtc value for the file.
 			/// </summary>
 			LastAccessTimeUtc,
+
 			/// <summary>
 			/// Use a fixed value.
 			/// </summary>
 			/// <remarks>The actual <see cref="DateTime"/> value used can be
-			/// specified via the <see cref="ZipEntryFactory(DateTime)"/> constructor or 
+			/// specified via the <see cref="ZipEntryFactory(DateTime)"/> constructor or
 			/// using the <see cref="ZipEntryFactory(TimeSetting)"/> with the setting set
 			/// to <see cref="TimeSetting.Fixed"/> which will use the <see cref="DateTime"/> when this class was constructed.
 			/// The <see cref="FixedDateTime"/> property can also be used to set this value.</remarks>
 			Fixed,
 		}
-		#endregion
+
+		#endregion Enumerations
 
 		#region Constructors
+
 		/// <summary>
 		/// Initialise a new instance of the <see cref="ZipEntryFactory"/> class.
 		/// </summary>
@@ -59,44 +68,49 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public ZipEntryFactory()
 		{
 			nameTransform_ = new ZipNameTransform();
+			isUnicodeText_ = ZipStrings.UseUnicode;
 		}
 
 		/// <summary>
 		/// Initialise a new instance of <see cref="ZipEntryFactory"/> using the specified <see cref="TimeSetting"/>
 		/// </summary>
 		/// <param name="timeSetting">The <see cref="TimeSetting">time setting</see> to use when creating <see cref="ZipEntry">Zip entries</see>.</param>
-		public ZipEntryFactory(TimeSetting timeSetting)
+		public ZipEntryFactory(TimeSetting timeSetting) : this()
 		{
 			timeSetting_ = timeSetting;
-			nameTransform_ = new ZipNameTransform();
 		}
 
 		/// <summary>
 		/// Initialise a new instance of <see cref="ZipEntryFactory"/> using the specified <see cref="DateTime"/>
 		/// </summary>
 		/// <param name="time">The time to set all <see cref="ZipEntry.DateTime"/> values to.</param>
-		public ZipEntryFactory(DateTime time)
+		public ZipEntryFactory(DateTime time) : this()
 		{
 			timeSetting_ = TimeSetting.Fixed;
 			FixedDateTime = time;
-			nameTransform_ = new ZipNameTransform();
 		}
 
-		#endregion
+		#endregion Constructors
 
 		#region Properties
+
 		/// <summary>
 		/// Get / set the <see cref="INameTransform"/> to be used when creating new <see cref="ZipEntry"/> values.
 		/// </summary>
 		/// <remarks>
 		/// Setting this property to null will cause a default <see cref="ZipNameTransform">name transform</see> to be used.
 		/// </remarks>
-		public INameTransform NameTransform {
+		public INameTransform NameTransform
+		{
 			get { return nameTransform_; }
-			set {
-				if (value == null) {
+			set
+			{
+				if (value == null)
+				{
 					nameTransform_ = new ZipNameTransform();
-				} else {
+				}
+				else
+				{
 					nameTransform_ = value;
 				}
 			}
@@ -105,7 +119,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get / set the <see cref="TimeSetting"/> in use.
 		/// </summary>
-		public TimeSetting Setting {
+		public TimeSetting Setting
+		{
 			get { return timeSetting_; }
 			set { timeSetting_ = value; }
 		}
@@ -113,10 +128,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get / set the <see cref="DateTime"/> value to use when <see cref="Setting"/> is set to <see cref="TimeSetting.Fixed"/>
 		/// </summary>
-		public DateTime FixedDateTime {
+		public DateTime FixedDateTime
+		{
 			get { return fixedDateTime_; }
-			set {
-				if (value.Year < 1970) {
+			set
+			{
+				if (value.Year < 1970)
+				{
 					throw new ArgumentException("Value is too old to be valid", nameof(value));
 				}
 				fixedDateTime_ = value;
@@ -127,7 +145,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// A bitmask defining the attributes to be retrieved from the actual file.
 		/// </summary>
 		/// <remarks>The default is to get all possible attributes from the actual file.</remarks>
-		public int GetAttributes {
+		public int GetAttributes
+		{
 			get { return getAttributes_; }
 			set { getAttributes_ = value; }
 		}
@@ -136,7 +155,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// A bitmask defining which attributes are to be set on.
 		/// </summary>
 		/// <remarks>By default no attributes are set on.</remarks>
-		public int SetAttributes {
+		public int SetAttributes
+		{
 			get { return setAttributes_; }
 			set { setAttributes_ = value; }
 		}
@@ -144,12 +164,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get set a value indicating wether unidoce text should be set on.
 		/// </summary>
-		public bool IsUnicodeText {
+		public bool IsUnicodeText
+		{
 			get { return isUnicodeText_; }
 			set { isUnicodeText_ = value; }
 		}
 
-		#endregion
+		#endregion Properties
 
 		#region IEntryFactory Members
 
@@ -190,12 +211,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 			bool useAttributes = (setAttributes_ != 0);
 
 			FileInfo fi = null;
-			if (useFileSystem) {
+			if (useFileSystem)
+			{
 				fi = new FileInfo(fileName);
 			}
 
-			if ((fi != null) && fi.Exists) {
-				switch (timeSetting_) {
+			if ((fi != null) && fi.Exists)
+			{
+				switch (timeSetting_)
+				{
 					case TimeSetting.CreateTime:
 						result.DateTime = fi.CreationTime;
 						break;
@@ -232,13 +256,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				useAttributes = true;
 				externalAttributes = ((int)fi.Attributes & getAttributes_);
-			} else {
-				if (timeSetting_ == TimeSetting.Fixed) {
+			}
+			else
+			{
+				if (timeSetting_ == TimeSetting.Fixed)
+				{
 					result.DateTime = fixedDateTime_;
 				}
 			}
 
-			if (useAttributes) {
+			if (useAttributes)
+			{
 				externalAttributes |= setAttributes_;
 				result.ExternalFileAttributes = externalAttributes;
 			}
@@ -264,7 +292,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns a new <see cref="ZipEntry"></see> representing a directory.</returns>
 		public ZipEntry MakeDirectoryEntry(string directoryName, bool useFileSystem)
 		{
-
 			var result = new ZipEntry(nameTransform_.TransformDirectory(directoryName));
 			result.IsUnicodeText = isUnicodeText_;
 			result.Size = 0;
@@ -273,13 +300,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			DirectoryInfo di = null;
 
-			if (useFileSystem) {
+			if (useFileSystem)
+			{
 				di = new DirectoryInfo(directoryName);
 			}
 
-
-			if ((di != null) && di.Exists) {
-				switch (timeSetting_) {
+			if ((di != null) && di.Exists)
+			{
+				switch (timeSetting_)
+				{
 					case TimeSetting.CreateTime:
 						result.DateTime = di.CreationTime;
 						break;
@@ -313,8 +342,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				externalAttributes = ((int)di.Attributes & getAttributes_);
-			} else {
-				if (timeSetting_ == TimeSetting.Fixed) {
+			}
+			else
+			{
+				if (timeSetting_ == TimeSetting.Fixed)
+				{
 					result.DateTime = fixedDateTime_;
 				}
 			}
@@ -326,16 +358,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 
-		#endregion
+		#endregion IEntryFactory Members
 
 		#region Instance Fields
-		INameTransform nameTransform_;
-		DateTime fixedDateTime_ = DateTime.Now;
-		TimeSetting timeSetting_;
-		bool isUnicodeText_;
 
-		int getAttributes_ = -1;
-		int setAttributes_;
-		#endregion
+		private INameTransform nameTransform_;
+		private DateTime fixedDateTime_ = DateTime.Now;
+		private TimeSetting timeSetting_;
+		private bool isUnicodeText_;
+
+		private int getAttributes_ = -1;
+		private int setAttributes_;
+
+		#endregion Instance Fields
 	}
 }

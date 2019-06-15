@@ -11,7 +11,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		public const int GZIP_MAGIC = 0x1F8B;
 
 		/*  The flag byte is divided into individual bits as follows:
-			
+
 			bit 0   FTEXT
 			bit 1   FHCRC
 			bit 2   FEXTRA
@@ -51,7 +51,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// Initialise default instance.
 		/// </summary>
 		/// <remarks>Constructor is private to prevent instances being created.</remarks>
-		GZipConstants()
+		private GZipConstants()
 		{
 		}
 	}
