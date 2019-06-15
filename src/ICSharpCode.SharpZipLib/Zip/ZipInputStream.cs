@@ -206,10 +206,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			string name = ZipStrings.ConvertToStringExt(flags, buffer);
 
-			entry = new ZipEntry(name, versionRequiredToExtract)
+			entry = new ZipEntry(name, versionRequiredToExtract, ZipConstants.VersionMadeBy, (CompressionMethod)method)
 			{
 				Flags = flags,
-				CompressionMethod = (CompressionMethod)method
 			};
 
 			if ((flags & 8) == 0)
