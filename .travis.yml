@@ -1,22 +1,32 @@
 language: csharp
-mono:
-  - latest
-os:
-  - linux
-  - osx
 solution: ICSharpCode.SharpZipLib.sln
+
+#matrix:
+#  include:
+#   - mono: latest
+#   - mono: none
+#     env: NETCORE=1
+#     dotnet: 2.1
+mono: none
+dotnet: 2.1
+os: linux
 install:
-  - nuget restore ICSharpCode.SharpZipLib.sln
+  - dotnet restore
+# - nuget restore ICSharpCode.SharpZipLib.sln
+# - nuget install NUnit.Console -Version 3.8.0 -OutputDirectory _testRunner
 script:
-  - xbuild /p:Configuration=Debug ICSharpCode.SharpZipLib.sln
-  - xbuild /p:Configuration=Release ICSharpCode.SharpZipLib.sln
-  - mono ./packages/NUnit.ConsoleRunner.3.2.1/tools/nunit3-console.exe --framework=mono-4.0 --labels=All --result=./Documentation/nunit3-test-results-travis.xml ./bin/Release/ICSharpCode.SharpZipLib.Tests.dll
+  - dotnet build -f netstandard2 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+  - dotnet run -c Debug -f netcoreapp2 -p test/ICSharpCode.SharpZipLib.TestBootstrapper/ICSharpCode.SharpZipLib.TestBootstrapper.csproj -- --where "class !~ WindowsNameTransformHandling & test !~ ZipEntryFactoryHandling.CreatedValues & test !~ ZipNameTransformHandling.FilenameCleaning" --result=docs/nunit3-test-results-debug.xml
+  - dotnet run -c Release -f netcoreapp2 -p test/ICSharpCode.SharpZipLib.TestBootstrapper/ICSharpCode.SharpZipLib.TestBootstrapper.csproj -- --where "class !~ WindowsNameTransformHandling & test !~ ZipEntryFactoryHandling.CreatedValues & test !~ ZipNameTransformHandling.FilenameCleaning" --result=docs\nunit3-test-results-release.xml
+#  - dotnet test test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
+#  - xbuild /p:Configuration=Release ICSharpCode.SharpZipLib.sln
+#  - mono ./packages/NUnit.ConsoleRunner.3.2.1/tools/nunit3-console.exe --framework=mono-4.0 --labels=All --result=./Documentation/nunit3-test-results-travis.xml ./bin/Release/ICSharpCode.SharpZipLib.Tests.dll
 after_script:
-  - nuget pack Build/ICSharpCode.SharpZipLib.nuspec -BasePath Build -OutputDirectory bin/Release
-cache:
-  directories:
-    - bin
-    - Documentation
+  - dotnet pack -f netstandard2 -o _dist/ src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+#cache:
+#  directories:
+#    - bin
+#    - Documentation
 #deploy:
 #  provider: releases
 #  api_key: "GITHUB OAUTH TOKEN"

@@ -1,7 +1,11 @@
-﻿using System.IO;
-using System.Text.RegularExpressions;
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -23,12 +27,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			string addFile = Path.Combine(tempFilePath, tempName1);
 			MakeTempFile(addFile, 1);
 
-			try {
+			try
+			{
 				var fastZip = new FastZip();
 				fastZip.CreateZip(target, tempFilePath, false, @"a\(1\)\.dat", null);
 
 				var archive = new MemoryStream(target.ToArray());
-				using (ZipFile zf = new ZipFile(archive)) {
+				using (ZipFile zf = new ZipFile(archive))
+				{
 					Assert.AreEqual(1, zf.Count);
 					ZipEntry entry = zf[0];
 					Assert.AreEqual(tempName1, entry.Name);
@@ -37,18 +43,21 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 					zf.Close();
 				}
-			} finally {
+			}
+			finally
+			{
 				File.Delete(tempName1);
 			}
 		}
 
-		const string ZipTempDir = "SharpZipLibTest";
+		private const string ZipTempDir = "SharpZipLibTest";
 
-		void EnsureTestDirectoryIsEmpty(string baseDir)
+		private void EnsureTestDirectoryIsEmpty(string baseDir)
 		{
 			string name = Path.Combine(baseDir, ZipTempDir);
 
-			if (Directory.Exists(name)) {
+			if (Directory.Exists(name))
+			{
 				Directory.Delete(name, true);
 			}
 
@@ -68,8 +77,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			EnsureTestDirectoryIsEmpty(tempFilePath);
 
 			string targetDir = Path.Combine(tempFilePath, ZipTempDir + @"\floyd");
-			using (FileStream fs = File.Create(name)) {
-				using (ZipOutputStream zOut = new ZipOutputStream(fs)) {
+			using (FileStream fs = File.Create(name))
+			{
+				using (ZipOutputStream zOut = new ZipOutputStream(fs))
+				{
 					zOut.PutNextEntry(new ZipEntry("floyd/"));
 				}
 			}
@@ -96,14 +107,16 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			string addFile = Path.Combine(tempFilePath, tempName1);
 			MakeTempFile(addFile, 1);
 
-			try {
+			try
+			{
 				var fastZip = new FastZip();
 				fastZip.Password = "Ahoy";
 
 				fastZip.CreateZip(target, tempFilePath, false, @"a\.dat", null);
 
 				var archive = new MemoryStream(target.ToArray());
-				using (ZipFile zf = new ZipFile(archive)) {
+				using (ZipFile zf = new ZipFile(archive))
+				{
 					zf.Password = "Ahoy";
 					Assert.AreEqual(1, zf.Count);
 					ZipEntry entry = zf[0];
@@ -112,7 +125,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					Assert.IsTrue(zf.TestArchive(true));
 					Assert.IsTrue(entry.IsCrypted);
 				}
-			} finally {
+			}
+			finally
+			{
 				File.Delete(tempName1);
 			}
 		}
@@ -125,45 +140,123 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			string tempFilePath = GetTempFilePath();
 			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
 
-			Assert.Throws<DirectoryNotFoundException>(() => 
+			Assert.Throws<DirectoryNotFoundException>(() =>
 			{
 				string addFile = Path.Combine(tempFilePath, "test.zip");
-				try {
+				try
+				{
 					fastZip.CreateZip(addFile, @"z:\doesnt exist", false, null);
-				} finally {
+				}
+				finally
+				{
 					File.Delete(addFile);
 				}
 			});
 		}
 
-		[Test]
-		[Category("Zip")]
-		public void UnicodeText()
+		#region String testing helper
+
+		private void TestFileNames(params string[] names)
+			=> TestFileNames((IEnumerable<string>)names);
+
+		private void TestFileNames(IEnumerable<string> names)
 		{
 			var zippy = new FastZip();
-			var factory = new ZipEntryFactory();
-			factory.IsUnicodeText = true;
-			zippy.EntryFactory = factory;
 
-			string tempFilePath = GetTempFilePath();
-			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
-
-			const string tempName1 = "a.dat";
-			string addFile = Path.Combine(tempFilePath, tempName1);
-			MakeTempFile(addFile, 1);
-
-			try {
-				var target = new MemoryStream();
-				zippy.CreateZip(target, tempFilePath, false, Regex.Escape(tempName1), null);
-
-				var archive = new MemoryStream(target.ToArray());
-
-				using (ZipFile z = new ZipFile(archive)) {
-					Assert.AreEqual(1, z.Count);
-					Assert.IsTrue(z[0].IsUnicodeText);
+			using (var tempDir = new Utils.TempDir())
+			using (var tempZip = new Utils.TempFile())
+			{
+				int nameCount = 0;
+				foreach (var name in names)
+				{
+					tempDir.CreateDummyFile(name);
+					nameCount++;
 				}
-			} finally {
-				File.Delete(addFile);
+
+				zippy.CreateZip(tempZip.Filename, tempDir.Fullpath, true, null, null);
+
+				using (ZipFile z = new ZipFile(tempZip.Filename))
+				{
+					Assert.AreEqual(nameCount, z.Count);
+					foreach (var name in names)
+					{
+						var index = z.FindEntry(name, true);
+
+						Assert.AreNotEqual(index, -1, "Zip entry \"{0}\" not found", name);
+
+						var entry = z[index];
+
+						if (ZipStrings.UseUnicode)
+						{
+							Assert.IsTrue(entry.IsUnicodeText, "Zip entry #{0} not marked as unicode", index);
+						}
+						else
+						{
+							Assert.IsFalse(entry.IsUnicodeText, "Zip entry #{0} marked as unicode", index);
+						}
+
+						Assert.AreEqual(name, entry.Name);
+
+						var nameBytes = string.Join(' ', Encoding.BigEndianUnicode.GetBytes(entry.Name).Select(b => b.ToString("x2")));
+
+						Console.WriteLine($" - Zip entry: {entry.Name} ({nameBytes})");
+					}
+				}
+			}
+		}
+
+		#endregion String testing helper
+
+		[Test]
+		[Category("Zip")]
+		[Category("Unicode")]
+		public void UnicodeText()
+		{
+			var preCp = ZipStrings.CodePage;
+			try
+			{
+				TestFileNames(StringTesting.Filenames);
+			}
+			finally
+			{
+				ZipStrings.CodePage = preCp;
+			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		[Category("Unicode")]
+		public void NonUnicodeText()
+		{
+			var preCp = ZipStrings.CodePage;
+			try
+			{
+				Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+				foreach ((string language, string filename, string encoding) in StringTesting.GetTestSamples())
+				{
+					Console.WriteLine($"{language} filename \"{filename}\" using \"{encoding}\":");
+
+					// TODO: samples of this test must be reversible
+					// Some samples can't be restored back with their encoding.
+					// test wasn't failing only because SystemDefaultCodepage is 65001 on Net.Core and
+					// old behaviour actually was using Unicode instead of user's passed codepage
+					var encoder = Encoding.GetEncoding(encoding);
+					var bytes = encoder.GetBytes(filename);
+					var restoredString = encoder.GetString(bytes);
+					if(string.CompareOrdinal(filename, restoredString) != 0)
+					{
+						Console.WriteLine($"Sample for language {language} with value of {filename} is skipped, because it's irreversable");
+						continue;
+					}
+
+					ZipStrings.CodePage = Encoding.GetEncoding(encoding).CodePage;
+					TestFileNames(filename);
+				}
+			}
+			finally
+			{
+				ZipStrings.CodePage = preCp;
 			}
 		}
 
@@ -176,9 +269,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
 
 			string addFile = Path.Combine(tempFilePath, "test.zip");
-			try {
+			try
+			{
 				Assert.Throws<FileNotFoundException>(() => fastZip.ExtractZip(addFile, @"z:\doesnt exist", null));
-			} finally {
+			}
+			finally
+			{
 				File.Delete(addFile);
 			}
 		}
@@ -197,7 +293,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		 *    but doing so would make FastZip work with locked files (that are potentially written to by others)
 		 *    and silently ignoring any locks. HOWEVER: This can lead to corrupt/incomplete files, which is why it
 		 *    should not be the default behavior.
-		 *    
+		 *
 		 * Therefore I would remove this test.
 		 **/
 		public void ReadingOfLockedDataFiles()
@@ -212,14 +308,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			string addFile = Path.Combine(tempFilePath, tempName1);
 			MakeTempFile(addFile, 1);
 
-			try {
+			try
+			{
 				var fastZip = new FastZip();
 
-				using (File.Open(addFile, FileMode.Open, FileAccess.Write, FileShare.ReadWrite)) {
+				using (File.Open(addFile, FileMode.Open, FileAccess.Write, FileShare.ReadWrite))
+				{
 					fastZip.CreateZip(target, tempFilePath, false, @"a\.dat", null);
 
 					var archive = new MemoryStream(target.ToArray());
-					using (ZipFile zf = new ZipFile(archive)) {
+					using (ZipFile zf = new ZipFile(archive))
+					{
 						Assert.AreEqual(1, zf.Count);
 						ZipEntry entry = zf[0];
 						Assert.AreEqual(tempName1, entry.Name);
@@ -229,7 +328,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 						zf.Close();
 					}
 				}
-			} finally {
+			}
+			finally
+			{
 				File.Delete(tempName1);
 			}
 		}
@@ -249,14 +350,16 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			MakeTempFile(addFile, 1);
 
 			string password = "abc\u0066\u0393";
-			try {
+			try
+			{
 				var fastZip = new FastZip();
 				fastZip.Password = password;
 
 				fastZip.CreateZip(target, tempFilePath, false, @"a\.dat", null);
 
 				var archive = new MemoryStream(target.ToArray());
-				using (ZipFile zf = new ZipFile(archive)) {
+				using (ZipFile zf = new ZipFile(archive))
+				{
 					zf.Password = password;
 					Assert.AreEqual(1, zf.Count);
 					ZipEntry entry = zf[0];
@@ -265,9 +368,140 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					Assert.IsTrue(zf.TestArchive(true));
 					Assert.IsTrue(entry.IsCrypted);
 				}
-			} finally {
+			}
+			finally
+			{
 				File.Delete(tempName1);
 			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void LimitExtractPath()
+		{
+			string tempPath = GetTempFilePath();
+			Assert.IsNotNull(tempPath, "No permission to execute this test?");
+
+			var uniqueName = "SharpZipLib.Test_" + DateTime.Now.Ticks.ToString("x");
+
+			tempPath = Path.Combine(tempPath, uniqueName);
+			var extractPath = Path.Combine(tempPath, "output");
+
+			const string contentFile = "content.txt";
+
+			var contentFilePathBad = Path.Combine("..", contentFile);
+			var extractFilePathBad = Path.Combine(tempPath, contentFile);
+			var archiveFileBad = Path.Combine(tempPath, "test-good.zip");
+
+			var contentFilePathGood = Path.Combine("childDir", contentFile);
+			var extractFilePathGood = Path.Combine(extractPath, contentFilePathGood);
+			var archiveFileGood = Path.Combine(tempPath, "test-bad.zip");
+
+			try
+			{
+				Directory.CreateDirectory(extractPath);
+
+				// Create test input
+				void CreateTestFile(string archiveFile, string contentPath)
+				{
+					using (var zf = ZipFile.Create(archiveFile))
+					{
+						zf.BeginUpdate();
+						zf.Add(new StringMemoryDataSource($"Content of {archiveFile}"), contentPath);
+						zf.CommitUpdate();
+					}
+				}
+
+				CreateTestFile(archiveFileGood, contentFilePathGood);
+				CreateTestFile(archiveFileBad, contentFilePathBad);
+
+				Assert.IsTrue(File.Exists(archiveFileGood), "Good test archive was not created");
+				Assert.IsTrue(File.Exists(archiveFileBad), "Bad test archive was not created");
+
+				var fastZip = new FastZip();
+
+				Assert.DoesNotThrow(() =>
+				{
+					fastZip.ExtractZip(archiveFileGood, extractPath, "");
+				}, "Threw exception on good file name");
+
+				Assert.IsTrue(File.Exists(extractFilePathGood), "Good output file not created");
+
+				Assert.Throws<SharpZipLib.Core.InvalidNameException>(() =>
+				{
+					fastZip.ExtractZip(archiveFileBad, extractPath, "");
+				}, "No exception was thrown for bad file name");
+
+				Assert.IsFalse(File.Exists(extractFilePathBad), "Bad output file created");
+
+				Assert.DoesNotThrow(() =>
+				{
+					fastZip.ExtractZip(archiveFileBad, extractPath, FastZip.Overwrite.Never, null, "", "", true, true);
+				}, "Threw exception on bad file name when traversal explicitly allowed");
+
+				Assert.IsTrue(File.Exists(extractFilePathBad), "Bad output file not created when traversal explicitly allowed");
+			}
+			finally
+			{
+				Directory.Delete(tempPath, true);
+			}
+		}
+
+		/// <summary>
+		/// Check that the input stream is not closed on error when isStreamOwner is false
+		/// </summary>
+		[Test]
+		public void StreamNotClosedOnError()
+		{
+			// test paths
+			string tempFilePath = GetTempFilePath();
+			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
+
+			var tempFolderPath = Path.Combine(tempFilePath, Path.GetRandomFileName());
+			Assert.That(Directory.Exists(tempFolderPath), Is.False, "Temp folder path should not exist");
+
+			// memory that isn't a valid zip
+			var ms = new TrackedMemoryStream(new byte[32]);
+			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed initially");
+
+			// Try to extract
+			var fastZip = new FastZip();
+			fastZip.CreateEmptyDirectories = true;
+
+			Assert.Throws<ZipException>(() => fastZip.ExtractZip(ms, tempFolderPath, FastZip.Overwrite.Always, null, "a", "b", false, false), "Should throw when extracting an invalid file");
+			Assert.IsFalse(ms.IsClosed, "inputStream stream should NOT be closed when isStreamOwner is false");
+
+			// test folder should not have been created on error
+			Assert.That(Directory.Exists(tempFolderPath), Is.False, "Temp folder path should still not exist");
+		}
+
+		/// <summary>
+		/// Check that the input stream is closed on error when isStreamOwner is true
+		/// </summary>
+		[Test]
+		public void StreamClosedOnError()
+		{
+			// test paths
+			string tempFilePath = GetTempFilePath();
+			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
+
+			var tempFolderPath = Path.Combine(tempFilePath, Path.GetRandomFileName());
+			Assert.That(Directory.Exists(tempFolderPath), Is.False, "Temp folder path should not exist");
+
+			// memory that isn't a valid zip
+			var ms = new TrackedMemoryStream(new byte[32]);
+			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed initially");
+
+			// Try to extract
+			var fastZip = new FastZip();
+			fastZip.CreateEmptyDirectories = true;
+
+			Assert.Throws<ZipException>(() => fastZip.ExtractZip(ms, tempFolderPath, FastZip.Overwrite.Always, null, "a", "b", false, true), "Should throw when extracting an invalid file");
+			Assert.IsTrue(ms.IsClosed, "inputStream stream should be closed when isStreamOwner is true");
+
+			// test folder should not have been created on error
+			Assert.That(Directory.Exists(tempFolderPath), Is.False, "Temp folder path should still not exist");
 		}
 	}
 }

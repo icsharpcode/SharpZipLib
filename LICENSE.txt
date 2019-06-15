@@ -1,4 +1,4 @@
-﻿Copyright © 2000-2016 SharpZipLib Contributors
+Copyright © 2000-2018 SharpZipLib Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this
 software and associated documentation files (the "Software"), to deal in the Software

@@ -1,16 +1,16 @@
-using System;
-using System.IO;
-using System.Security;
-using System.Text;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
+using System;
+using System.IO;
+using System.Security;
+using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
-	class RuntimeInfo
+	internal class RuntimeInfo
 	{
 		public RuntimeInfo(CompressionMethod method, int compressionLevel,
 			int size, string password, bool getCrc)
@@ -22,22 +22,26 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			this.random = false;
 
 			original = new byte[Size];
-			if (random) {
+			if (random)
+			{
 				var rnd = new Random();
 				rnd.NextBytes(original);
-			} else {
-				for (int i = 0; i < size; ++i) {
+			}
+			else
+			{
+				for (int i = 0; i < size; ++i)
+				{
 					original[i] = (byte)'A';
 				}
 			}
 
-			if (getCrc) {
+			if (getCrc)
+			{
 				var crc32 = new Crc32();
-				crc32.Update(original, 0, size);
+				crc32.Update(new ArraySegment<byte>(original, 0, size));
 				crc = crc32.Value;
 			}
 		}
-
 
 		public RuntimeInfo(string password, bool isDirectory)
 		{
@@ -50,53 +54,64 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			original = new byte[0];
 		}
 
-		public byte[] Original {
+		public byte[] Original
+		{
 			get { return original; }
 		}
 
-		public CompressionMethod Method {
+		public CompressionMethod Method
+		{
 			get { return method; }
 		}
 
-		public int CompressionLevel {
+		public int CompressionLevel
+		{
 			get { return compressionLevel; }
 		}
 
-		public int Size {
+		public int Size
+		{
 			get { return size; }
 		}
 
-		public string Password {
+		public string Password
+		{
 			get { return password; }
 		}
 
-		bool Random {
+		private bool Random
+		{
 			get { return random; }
 		}
 
-		public long Crc {
+		public long Crc
+		{
 			get { return crc; }
 		}
 
-		public bool IsDirectory {
+		public bool IsDirectory
+		{
 			get { return isDirectory_; }
 		}
 
 		#region Instance Fields
-		readonly byte[] original;
-		readonly CompressionMethod method;
-		int compressionLevel;
-		int size;
-		string password;
-		bool random;
-		bool isDirectory_;
-		long crc = -1;
-		#endregion
+
+		private readonly byte[] original;
+		private readonly CompressionMethod method;
+		private int compressionLevel;
+		private int size;
+		private string password;
+		private bool random;
+		private bool isDirectory_;
+		private long crc = -1;
+
+		#endregion Instance Fields
 	}
 
-	class MemoryDataSource : IStaticDataSource
+	internal class MemoryDataSource : IStaticDataSource
 	{
 		#region Constructors
+
 		/// <summary>
 		/// Initialise a new instance.
 		/// </summary>
@@ -105,7 +120,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			data_ = data;
 		}
-		#endregion
+
+		#endregion Constructors
 
 		#region IDataSource Members
 
@@ -117,14 +133,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			return new MemoryStream(data_);
 		}
-		#endregion
+
+		#endregion IDataSource Members
 
 		#region Instance Fields
-		readonly byte[] data_;
-		#endregion
+
+		private readonly byte[] data_;
+
+		#endregion Instance Fields
 	}
 
-	class StringMemoryDataSource : MemoryDataSource
+	internal class StringMemoryDataSource : MemoryDataSource
 	{
 		public StringMemoryDataSource(string data)
 			: base(Encoding.ASCII.GetBytes(data))
@@ -137,9 +156,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		static protected string GetTempFilePath()
 		{
 			string result = null;
-			try {
+			try
+			{
 				result = Path.GetTempPath();
-			} catch (SecurityException) {
+			}
+			catch (SecurityException)
+			{
 			}
 			return result;
 		}
@@ -148,38 +170,49 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			MemoryStream ms;
 
-			if (withSeek) {
+			if (withSeek)
+			{
 				ms = new MemoryStream();
-			} else {
+			}
+			else
+			{
 				ms = new MemoryStreamWithoutSeek();
 			}
 
-			using (ZipOutputStream outStream = new ZipOutputStream(ms)) {
-				for (int counter = 0; counter < createSpecs.Length; ++counter) {
+			using (ZipOutputStream outStream = new ZipOutputStream(ms))
+			{
+				for (int counter = 0; counter < createSpecs.Length; ++counter)
+				{
 					var info = createSpecs[counter] as RuntimeInfo;
 					outStream.Password = info.Password;
 
-					if (info.Method != CompressionMethod.Stored) {
+					if (info.Method != CompressionMethod.Stored)
+					{
 						outStream.SetLevel(info.CompressionLevel); // 0 - store only to 9 - means best compression
 					}
 
 					string entryName;
 
-					if (info.IsDirectory) {
+					if (info.IsDirectory)
+					{
 						entryName = "dir" + counter + "/";
-					} else {
+					}
+					else
+					{
 						entryName = "entry" + counter + ".tst";
 					}
 
 					var entry = new ZipEntry(entryName);
 					entry.CompressionMethod = info.Method;
-					if (info.Crc >= 0) {
+					if (info.Crc >= 0)
+					{
 						entry.Crc = info.Crc;
 					}
 
 					outStream.PutNextEntry(entry);
 
-					if (info.Size > 0) {
+					if (info.Size > 0)
+					{
 						outStream.Write(info.Original, 0, info.Original.Length);
 					}
 				}
@@ -192,16 +225,21 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			MemoryStream ms;
 
-			if (withSeek) {
+			if (withSeek)
+			{
 				ms = new MemoryStream();
-			} else {
+			}
+			else
+			{
 				ms = new MemoryStreamWithoutSeek();
 			}
 
-			using (ZipOutputStream outStream = new ZipOutputStream(ms)) {
+			using (ZipOutputStream outStream = new ZipOutputStream(ms))
+			{
 				outStream.Password = password;
 
-				if (method != CompressionMethod.Stored) {
+				if (method != CompressionMethod.Stored)
+				{
 					outStream.SetLevel(compressionLevel); // 0 - store only to 9 - means best compression
 				}
 
@@ -210,7 +248,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				outStream.PutNextEntry(entry);
 
-				if (size > 0) {
+				if (size > 0)
+				{
 					var rnd = new Random();
 					original = new byte[size];
 					rnd.NextBytes(original);
@@ -219,7 +258,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					// throws up buffering problems including with encryption the original
 					// source for this change.
 					int index = 0;
-					while (size > 0) {
+					while (size > 0)
+					{
 						int count = (size > 0x200) ? 0x200 : size;
 						outStream.Write(original, index, count);
 						size -= 0x200;
@@ -232,9 +272,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		protected static void MakeTempFile(string name, int size)
 		{
-			using (FileStream fs = File.Create(name)) {
+			using (FileStream fs = File.Create(name))
+			{
 				byte[] buffer = new byte[4096];
-				while (size > 0) {
+				while (size > 0)
+				{
 					fs.Write(buffer, 0, Math.Min(size, buffer.Length));
 					size -= buffer.Length;
 				}
@@ -246,19 +288,22 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			return (byte)((rhs * 253 + 7) & 0xff);
 		}
 
-		static void AddKnownDataToEntry(ZipOutputStream zipStream, int size)
+		private static void AddKnownDataToEntry(ZipOutputStream zipStream, int size)
 		{
-			if (size > 0) {
+			if (size > 0)
+			{
 				byte nextValue = 0;
 				int bufferSize = Math.Min(size, 65536);
 				byte[] data = new byte[bufferSize];
 				int currentIndex = 0;
-				for (int i = 0; i < size; ++i) {
+				for (int i = 0; i < size; ++i)
+				{
 					data[currentIndex] = nextValue;
 					nextValue = ScatterValue(nextValue);
 
 					currentIndex += 1;
-					if ((currentIndex >= data.Length) || (i + 1 == size)) {
+					if ((currentIndex >= data.Length) || (i + 1 == size))
+					{
 						zipStream.Write(data, 0, currentIndex);
 						currentIndex = 0;
 					}
@@ -268,18 +313,22 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		public void WriteToFile(string fileName, byte[] data)
 		{
-			using (FileStream fs = File.Open(fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.Read)) {
+			using (FileStream fs = File.Open(fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.Read))
+			{
 				fs.Write(data, 0, data.Length);
 			}
 		}
 
 		#region MakeZipFile
+
 		protected void MakeZipFile(Stream storage, bool isOwner, string[] names, int size, string comment)
 		{
-			using (ZipOutputStream zOut = new ZipOutputStream(storage)) {
+			using (ZipOutputStream zOut = new ZipOutputStream(storage))
+			{
 				zOut.IsStreamOwner = isOwner;
 				zOut.SetComment(comment);
-				for (int i = 0; i < names.Length; ++i) {
+				for (int i = 0; i < names.Length; ++i)
+				{
 					zOut.PutNextEntry(new ZipEntry(names[i]));
 					AddKnownDataToEntry(zOut, size);
 				}
@@ -289,10 +338,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		protected void MakeZipFile(string name, string[] names, int size, string comment)
 		{
-			using (FileStream fs = File.Create(name)) {
-				using (ZipOutputStream zOut = new ZipOutputStream(fs)) {
+			using (FileStream fs = File.Create(name))
+			{
+				using (ZipOutputStream zOut = new ZipOutputStream(fs))
+				{
 					zOut.SetComment(comment);
-					for (int i = 0; i < names.Length; ++i) {
+					for (int i = 0; i < names.Length; ++i)
+					{
 						zOut.PutNextEntry(new ZipEntry(names[i]));
 						AddKnownDataToEntry(zOut, size);
 					}
@@ -301,15 +353,19 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				fs.Close();
 			}
 		}
-		#endregion
+
+		#endregion MakeZipFile
 
 		#region MakeZipFile Entries
+
 		protected void MakeZipFile(string name, string entryNamePrefix, int entries, int size, string comment)
 		{
 			using (FileStream fs = File.Create(name))
-			using (ZipOutputStream zOut = new ZipOutputStream(fs)) {
+			using (ZipOutputStream zOut = new ZipOutputStream(fs))
+			{
 				zOut.SetComment(comment);
-				for (int i = 0; i < entries; ++i) {
+				for (int i = 0; i < entries; ++i)
+				{
 					zOut.PutNextEntry(new ZipEntry(entryNamePrefix + (i + 1)));
 					AddKnownDataToEntry(zOut, size);
 				}
@@ -319,17 +375,19 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		protected void MakeZipFile(Stream storage, bool isOwner,
 			string entryNamePrefix, int entries, int size, string comment)
 		{
-			using (ZipOutputStream zOut = new ZipOutputStream(storage)) {
+			using (ZipOutputStream zOut = new ZipOutputStream(storage))
+			{
 				zOut.IsStreamOwner = isOwner;
 				zOut.SetComment(comment);
-				for (int i = 0; i < entries; ++i) {
+				for (int i = 0; i < entries; ++i)
+				{
 					zOut.PutNextEntry(new ZipEntry(entryNamePrefix + (i + 1)));
 					AddKnownDataToEntry(zOut, size);
 				}
 			}
 		}
 
-		#endregion
+		#endregion MakeZipFile Entries
 
 		protected static void CheckKnownEntry(Stream inStream, int expectedCount)
 		{
@@ -338,9 +396,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			int bytesRead;
 			int total = 0;
 			byte nextValue = 0;
-			while ((bytesRead = inStream.Read(buffer, 0, buffer.Length)) > 0) {
+			while ((bytesRead = inStream.Read(buffer, 0, buffer.Length)) > 0)
+			{
 				total += bytesRead;
-				for (int i = 0; i < bytesRead; ++i) {
+				for (int i = 0; i < bytesRead; ++i)
+				{
 					Assert.AreEqual(nextValue, buffer[i], "Wrong value read from entry");
 					nextValue = ScatterValue(nextValue);
 				}
@@ -368,15 +428,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			long result = ReadInt(stream) & 0xffffffff;
 			return result | (((long)ReadInt(stream)) << 32);
 		}
-
 	}
 
-	class TestHelper
+	internal class TestHelper
 	{
 		static public void SaveMemoryStream(MemoryStream ms, string fileName)
 		{
 			byte[] data = ms.ToArray();
-			using (FileStream fs = File.Open(fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.Read)) {
+			using (FileStream fs = File.Open(fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.Read))
+			{
 				fs.Write(data, 0, data.Length);
 			}
 		}
@@ -386,15 +446,20 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			// Compare dates to dos accuracy...
 			// Ticks can be different yet all these values are still the same!
 			int result = l.Year - r.Year;
-			if (result == 0) {
+			if (result == 0)
+			{
 				result = l.Month - r.Month;
-				if (result == 0) {
+				if (result == 0)
+				{
 					result = l.Day - r.Day;
-					if (result == 0) {
+					if (result == 0)
+					{
 						result = l.Hour - r.Hour;
-						if (result == 0) {
+						if (result == 0)
+						{
 							result = l.Minute - r.Minute;
-							if (result == 0) {
+							if (result == 0)
+							{
 								result = (l.Second / 2) - (r.Second / 2);
 							}
 						}

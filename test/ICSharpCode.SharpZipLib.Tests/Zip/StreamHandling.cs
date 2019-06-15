@@ -1,9 +1,7 @@
-﻿using System;
-using System.IO;
-using ICSharpCode.SharpZipLib.Tests.TestSupport;
+﻿using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
-using System.Threading;
+using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -13,12 +11,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	[TestFixture]
 	public class StreamHandling : ZipBase
 	{
-		void MustFailRead(Stream s, byte[] buffer, int offset, int count)
+		private void MustFailRead(Stream s, byte[] buffer, int offset, int count)
 		{
 			bool exception = false;
-			try {
+			try
+			{
 				s.Read(buffer, offset, count);
-			} catch {
+			}
+			catch
+			{
 				exception = true;
 			}
 			Assert.IsTrue(exception, "Read should fail");
@@ -93,7 +94,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		public void ReadAndWriteZip64NonSeekable()
 		{
 			MemoryStream msw = new MemoryStreamWithoutSeek();
-			using (ZipOutputStream outStream = new ZipOutputStream(msw)) {
+			using (ZipOutputStream outStream = new ZipOutputStream(msw))
+			{
 				outStream.UseZip64 = UseZip64.On;
 
 				outStream.IsStreamOwner = false;
@@ -110,12 +112,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			msw.Position = 0;
 
-			using (ZipInputStream zis = new ZipInputStream(msw)) {
-				while (zis.GetNextEntry() != null) {
+			using (ZipInputStream zis = new ZipInputStream(msw))
+			{
+				while (zis.GetNextEntry() != null)
+				{
 					int len = 0;
 					int bufferSize = 1024;
 					byte[] buffer = new byte[bufferSize];
-					while ((len = zis.Read(buffer, 0, bufferSize)) > 0) {
+					while ((len = zis.Read(buffer, 0, bufferSize)) > 0)
+					{
 						// Reading the data is enough
 					}
 				}
@@ -143,6 +148,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			Assert.IsTrue(ZipTesting.TestArchive(msw.ToArray()));
 		}
+
 		/// <summary>
 		/// Empty zip entries can be created and read?
 		/// </summary>
@@ -154,7 +160,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			var ms = new MemoryStream();
 			var outStream = new ZipOutputStream(ms);
 
-			for (int i = 0; i < 10; ++i) {
+			for (int i = 0; i < 10; ++i)
+			{
 				outStream.PutNextEntry(new ZipEntry(i.ToString()));
 			}
 
@@ -167,10 +174,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			int extractCount = 0;
 			byte[] decompressedData = new byte[100];
 
-			while ((inStream.GetNextEntry()) != null) {
-				while (true) {
+			while ((inStream.GetNextEntry()) != null)
+			{
+				while (true)
+				{
 					int numRead = inStream.Read(decompressedData, extractCount, decompressedData.Length);
-					if (numRead <= 0) {
+					if (numRead <= 0)
+					{
 						break;
 					}
 					extractCount += numRead;
@@ -194,7 +204,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			ms.Seek(0, SeekOrigin.Begin);
 
 			var inStream = new ZipInputStream(ms);
-			while ((inStream.GetNextEntry()) != null) {
+			while ((inStream.GetNextEntry()) != null)
+			{
 				Assert.Fail("No entries should be found in empty zip");
 			}
 		}
@@ -209,7 +220,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed");
 
-			using (ZipOutputStream stream = new ZipOutputStream(ms)) {
+			using (ZipOutputStream stream = new ZipOutputStream(ms))
+			{
 				Assert.IsTrue(stream.IsStreamOwner, "Should be stream owner by default");
 			}
 
@@ -226,7 +238,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed");
 
-			using (ZipOutputStream stream = new ZipOutputStream(ms)) {
+			using (ZipOutputStream stream = new ZipOutputStream(ms))
+			{
 				Assert.IsTrue(stream.IsStreamOwner, "Should be stream owner by default");
 				stream.IsStreamOwner = false;
 			}
@@ -243,19 +256,26 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed initially");
 			bool blewUp = false;
-			try {
-				using (ZipOutputStream stream = new ZipOutputStream(ms)) {
+			try
+			{
+				using (ZipOutputStream stream = new ZipOutputStream(ms))
+				{
 					Assert.IsTrue(stream.IsStreamOwner, "Should be stream owner by default");
-					try {
+					try
+					{
 						stream.PutNextEntry(new ZipEntry("Tiny"));
 						stream.Write(new byte[32], 0, 32);
-					} finally {
+					}
+					finally
+					{
 						Assert.IsFalse(ms.IsClosed, "Stream should still not be closed.");
 						stream.Close();
 						Assert.Fail("Exception not thrown");
 					}
 				}
-			} catch {
+			}
+			catch
+			{
 				blewUp = true;
 			}
 
@@ -265,122 +285,44 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		[Test]
 		[Category("Zip")]
-		[Ignore("TODO : Fix this")]
+		[Category("Performance")]
+		[Explicit("Long Running")]
 		public void WriteThroughput()
 		{
-			outStream_ = new ZipOutputStream(new NullStream());
-
-			DateTime startTime = DateTime.Now;
-
-			long target = 0x10000000;
-
-			writeTarget_ = target;
-			outStream_.PutNextEntry(new ZipEntry("0"));
-			WriteTargetBytes();
-
-			outStream_.Close();
-
-			DateTime endTime = DateTime.Now;
-			TimeSpan span = endTime - startTime;
-			Console.WriteLine("Time {0} throughput {1} KB/Sec", span, (target / 1024.0) / span.TotalSeconds);
+			PerformanceTesting.TestWrite(0x10000000, bs =>
+			{
+				var zos = new ZipOutputStream(bs);
+				zos.PutNextEntry(new ZipEntry("0"));
+				return zos;
+			});
 		}
 
-	    [Test]
+		[Test]
 		[Category("Zip")]
-		[Category("Long Running")]
-		[Ignore("TODO : Fix this")]
+		[Category("Performance")]
+		[Explicit("Long Running")]
 		public void SingleLargeEntry()
 		{
-			window_ = new WindowedStream(0x10000);
-			outStream_ = new ZipOutputStream(window_);
-			inStream_ = new ZipInputStream(window_);
+			const string EntryName = "CantSeek";
 
-			long target = 0x10000000;
-			readTarget_ = writeTarget_ = target;
+			PerformanceTesting.TestReadWrite(
+				size: TestDataSize.Large,
+				input: bs =>
+				{
+					var zis = new ZipInputStream(bs);
+					var entry = zis.GetNextEntry();
 
-			Thread reader = new Thread(Reader);
-			reader.Name = "Reader";
-
-			Thread writer = new Thread(Writer);
-			writer.Name = "Writer";
-
-			DateTime startTime = DateTime.Now;
-			reader.Start();
-			writer.Start();
-
-			writer.Join();
-			reader.Join();
-
-			DateTime endTime = DateTime.Now;
-			TimeSpan span = endTime - startTime;
-			Console.WriteLine("Time {0} throughput {1} KB/Sec", span, (target / 1024.0) / span.TotalSeconds);
-		}
-
-		void Reader()
-		{
-			const int Size = 8192;
-			int readBytes = 1;
-			byte[] buffer = new byte[Size];
-
-			long passifierLevel = readTarget_ - 0x10000000;
-			ZipEntry single = inStream_.GetNextEntry();
-
-			Assert.AreEqual(single.Name, "CantSeek");
-			Assert.IsTrue((single.Flags & (int)GeneralBitFlags.Descriptor) != 0);
-
-			while ((readTarget_ > 0) && (readBytes > 0)) {
-				int count = Size;
-				if (count > readTarget_) {
-					count = (int)readTarget_;
+					Assert.AreEqual(entry.Name, EntryName);
+					Assert.IsTrue((entry.Flags & (int)GeneralBitFlags.Descriptor) != 0);
+					return zis;
+				},
+				output: bs =>
+				{
+					var zos = new ZipOutputStream(bs);
+					zos.PutNextEntry(new ZipEntry(EntryName));
+					return zos;
 				}
-
-				readBytes = inStream_.Read(buffer, 0, count);
-				readTarget_ -= readBytes;
-
-				if (readTarget_ <= passifierLevel) {
-					Console.WriteLine("Reader {0} bytes remaining", readTarget_);
-					passifierLevel = readTarget_ - 0x10000000;
-				}
-			}
-
-			Assert.IsTrue(window_.IsClosed, "Window should be closed");
-
-			// This shouldnt read any data but should read the footer
-			readBytes = inStream_.Read(buffer, 0, 1);
-			Assert.AreEqual(0, readBytes, "Stream should be empty");
-			Assert.AreEqual(0, window_.Length, "Window should be closed");
-			inStream_.Close();
+			);
 		}
-
-		void WriteTargetBytes()
-		{
-			const int Size = 8192;
-
-			byte[] buffer = new byte[Size];
-
-			while (writeTarget_ > 0) {
-				int thisTime = Size;
-				if (thisTime > writeTarget_) {
-					thisTime = (int)writeTarget_;
-				}
-
-				outStream_.Write(buffer, 0, thisTime);
-				writeTarget_ -= thisTime;
-			}
-		}
-
-		void Writer()
-		{
-			outStream_.PutNextEntry(new ZipEntry("CantSeek"));
-			WriteTargetBytes();
-			outStream_.Close();
-		}
-
-		WindowedStream window_;
-		ZipOutputStream outStream_;
-		ZipInputStream inStream_;
-		long readTarget_;
-		long writeTarget_;
-
 	}
 }

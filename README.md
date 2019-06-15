@@ -9,7 +9,7 @@ SharpZipLib (\#ziplib, formerly NZipLib) is a compression library that supports 
 
 SharpZipLib was originally ported from the [GNU Classpath](http://www.gnu.org/software/classpath/) java.util.zip library for use with [SharpDevelop](http://www.icsharpcode.net/OpenSource/SD), which needed gzip/zip compression. bzip2 compression and tar archiving were added later due to popular demand.
 
-The [SharpZipLib homepage](http://icsharpcode.github.io/SharpZipLib/) has precompiled libraries available for download, [a link to the forum for support](http://community.sharpdevelop.net/forums/12/ShowForum.aspx), [release history](https://github.com/icsharpcode/SharpZipLib/wiki/Release-History), samples and more.
+The [SharpZipLib homepage](http://icsharpcode.github.io/SharpZipLib/) has precompiled libraries available for download, [API documentation](https://icsharpcode.github.io/SharpZipLib/help/api/index.html), [a link to the forum for support](http://community.sharpdevelop.net/forums/12/ShowForum.aspx), [release history](https://github.com/icsharpcode/SharpZipLib/wiki/Release-History), samples and more.
 
 License
 -------
@@ -24,7 +24,7 @@ Namespace layout
 | Module | Namespace |
 |:----------------:|:-----------------------------|
 |BZip2 implementation|ICSharpCode.SharpZipLib.BZip2.\*|
-|Checksum implementation|ICSharpCode.SharpZipLib.Checksums.\*|
+|Checksum implementation|ICSharpCode.SharpZipLib.Checksum.\*|
 |Core utilities / interfaces|ICSharpCode.SharpZipLib.Core.\*|
 |Encryption implementation|ICSharpCode.SharpZipLib.Encryption.\*|
 |GZip implementation|ICSharpCode.SharpZipLib.GZip.\*|

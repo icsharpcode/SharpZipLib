@@ -9,12 +9,13 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 	///
 	/// This class is <i>not</i> thread safe.  This is inherent in the API, due
 	/// to the split of deflate and setInput.
-	/// 
+	///
 	/// author of the original java version : Jochen Hoenicke
 	/// </summary>
 	public class Deflater
 	{
 		#region Deflater Documentation
+
 		/*
 		* The Deflater can do the following state transitions:
 		*
@@ -49,8 +50,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		* (7) At any time (7)
 		*
 		*/
-		#endregion
+
+		#endregion Deflater Documentation
+
 		#region Public Constants
+
 		/// <summary>
 		/// The best and slowest compression level.  This tries to find very
 		/// long and distant string repetitions.
@@ -77,65 +81,73 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// There is no need to use this constant at all.
 		/// </summary>
 		public const int DEFLATED = 8;
-        #endregion
-        #region Public Enum
 
-        /// <summary>
-        /// Compression Level as an enum for safer use
-        /// </summary>
-        public enum CompressionLevel
-        {
-            /// <summary>
-            /// The best and slowest compression level.  This tries to find very
-            /// long and distant string repetitions.
-            /// </summary>
-            BEST_COMPRESSION = Deflater.BEST_COMPRESSION,
+		#endregion Public Constants
 
-            /// <summary>
-            /// The worst but fastest compression level.
-            /// </summary>
-            BEST_SPEED = Deflater.BEST_SPEED,
+		#region Public Enum
 
-            /// <summary>
-            /// The default compression level.
-            /// </summary>
-            DEFAULT_COMPRESSION = Deflater.DEFAULT_COMPRESSION,
+		/// <summary>
+		/// Compression Level as an enum for safer use
+		/// </summary>
+		public enum CompressionLevel
+		{
+			/// <summary>
+			/// The best and slowest compression level.  This tries to find very
+			/// long and distant string repetitions.
+			/// </summary>
+			BEST_COMPRESSION = Deflater.BEST_COMPRESSION,
 
-            /// <summary>
-            /// This level won't compress at all but output uncompressed blocks.
-            /// </summary>
-            NO_COMPRESSION = Deflater.NO_COMPRESSION,
+			/// <summary>
+			/// The worst but fastest compression level.
+			/// </summary>
+			BEST_SPEED = Deflater.BEST_SPEED,
 
-            /// <summary>
-            /// The compression method.  This is the only method supported so far.
-            /// There is no need to use this constant at all.
-            /// </summary>
-            DEFLATED = Deflater.DEFLATED
-        }
+			/// <summary>
+			/// The default compression level.
+			/// </summary>
+			DEFAULT_COMPRESSION = Deflater.DEFAULT_COMPRESSION,
 
-        #endregion
-        #region Local Constants
-        private const int IS_SETDICT = 0x01;
+			/// <summary>
+			/// This level won't compress at all but output uncompressed blocks.
+			/// </summary>
+			NO_COMPRESSION = Deflater.NO_COMPRESSION,
+
+			/// <summary>
+			/// The compression method.  This is the only method supported so far.
+			/// There is no need to use this constant at all.
+			/// </summary>
+			DEFLATED = Deflater.DEFLATED
+		}
+
+		#endregion Public Enum
+
+		#region Local Constants
+
+		private const int IS_SETDICT = 0x01;
 		private const int IS_FLUSHING = 0x04;
 		private const int IS_FINISHING = 0x08;
 
 		private const int INIT_STATE = 0x00;
 		private const int SETDICT_STATE = 0x01;
+
 		//		private static  int INIT_FINISHING_STATE    = 0x08;
 		//		private static  int SETDICT_FINISHING_STATE = 0x09;
 		private const int BUSY_STATE = 0x10;
+
 		private const int FLUSHING_STATE = 0x14;
 		private const int FINISHING_STATE = 0x1c;
 		private const int FINISHED_STATE = 0x1e;
 		private const int CLOSED_STATE = 0x7f;
-		#endregion
+
+		#endregion Local Constants
+
 		#region Constructors
+
 		/// <summary>
 		/// Creates a new deflater with default compression level.
 		/// </summary>
 		public Deflater() : this(DEFAULT_COMPRESSION, false)
 		{
-
 		}
 
 		/// <summary>
@@ -148,7 +160,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <exception cref="System.ArgumentOutOfRangeException">if lvl is out of range.</exception>
 		public Deflater(int level) : this(level, false)
 		{
-
 		}
 
 		/// <summary>
@@ -166,20 +177,24 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <exception cref="System.ArgumentOutOfRangeException">if lvl is out of range.</exception>
 		public Deflater(int level, bool noZlibHeaderOrFooter)
 		{
-			if (level == DEFAULT_COMPRESSION) {
+			if (level == DEFAULT_COMPRESSION)
+			{
 				level = 6;
-			} else if (level < NO_COMPRESSION || level > BEST_COMPRESSION) {
+			}
+			else if (level < NO_COMPRESSION || level > BEST_COMPRESSION)
+			{
 				throw new ArgumentOutOfRangeException(nameof(level));
 			}
 
 			pending = new DeflaterPending();
-			engine = new DeflaterEngine(pending);
+			engine = new DeflaterEngine(pending, noZlibHeaderOrFooter);
 			this.noZlibHeaderOrFooter = noZlibHeaderOrFooter;
 			SetStrategy(DeflateStrategy.Default);
 			SetLevel(level);
 			Reset();
 		}
-		#endregion
+
+		#endregion Constructors
 
 		/// <summary>
 		/// Resets the deflater.  The deflater acts afterwards as if it was
@@ -197,8 +212,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Gets the current adler checksum of the data that was processed so far.
 		/// </summary>
-		public int Adler {
-			get {
+		public int Adler
+		{
+			get
+			{
 				return engine.Adler;
 			}
 		}
@@ -206,8 +223,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Gets the number of input bytes processed so far.
 		/// </summary>
-		public long TotalIn {
-			get {
+		public long TotalIn
+		{
+			get
+			{
 				return engine.TotalIn;
 			}
 		}
@@ -215,8 +234,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Gets the number of output bytes so far.
 		/// </summary>
-		public long TotalOut {
-			get {
+		public long TotalOut
+		{
+			get
+			{
 				return totalOut;
 			}
 		}
@@ -247,20 +268,24 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// Returns true if the stream was finished and no more output bytes
 		/// are available.
 		/// </summary>
-		public bool IsFinished {
-			get {
+		public bool IsFinished
+		{
+			get
+			{
 				return (state == FINISHED_STATE) && pending.IsFlushed;
 			}
 		}
 
 		/// <summary>
 		/// Returns true, if the input buffer is empty.
-		/// You should then call setInput(). 
+		/// You should then call setInput().
 		/// NOTE: This method can also return true when the stream
 		/// was finished.
 		/// </summary>
-		public bool IsNeedingInput {
-			get {
+		public bool IsNeedingInput
+		{
+			get
+			{
 				return engine.NeedsInput();
 			}
 		}
@@ -305,7 +330,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// </exception>
 		public void SetInput(byte[] input, int offset, int count)
 		{
-			if ((state & IS_FINISHING) != 0) {
+			if ((state & IS_FINISHING) != 0)
+			{
 				throw new InvalidOperationException("Finish() already called");
 			}
 			engine.SetInput(input, offset, count);
@@ -322,13 +348,17 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// </param>
 		public void SetLevel(int level)
 		{
-			if (level == DEFAULT_COMPRESSION) {
+			if (level == DEFAULT_COMPRESSION)
+			{
 				level = 6;
-			} else if (level < NO_COMPRESSION || level > BEST_COMPRESSION) {
+			}
+			else if (level < NO_COMPRESSION || level > BEST_COMPRESSION)
+			{
 				throw new ArgumentOutOfRangeException(nameof(level));
 			}
 
-			if (this.level != level) {
+			if (this.level != level)
+			{
 				this.level = level;
 				engine.SetLevel(level);
 			}
@@ -398,27 +428,32 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		{
 			int origLength = length;
 
-			if (state == CLOSED_STATE) {
+			if (state == CLOSED_STATE)
+			{
 				throw new InvalidOperationException("Deflater closed");
 			}
 
-			if (state < BUSY_STATE) {
+			if (state < BUSY_STATE)
+			{
 				// output header
 				int header = (DEFLATED +
 					((DeflaterConstants.MAX_WBITS - 8) << 4)) << 8;
 				int level_flags = (level - 1) >> 1;
-				if (level_flags < 0 || level_flags > 3) {
+				if (level_flags < 0 || level_flags > 3)
+				{
 					level_flags = 3;
 				}
 				header |= level_flags << 6;
-				if ((state & IS_SETDICT) != 0) {
+				if ((state & IS_SETDICT) != 0)
+				{
 					// Dictionary was set
 					header |= DeflaterConstants.PRESET_DICT;
 				}
 				header += 31 - (header % 31);
 
 				pending.WriteShortMSB(header);
-				if ((state & IS_SETDICT) != 0) {
+				if ((state & IS_SETDICT) != 0)
+				{
 					int chksum = engine.Adler;
 					engine.ResetAdler();
 					pending.WriteShortMSB(chksum >> 16);
@@ -428,29 +463,36 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				state = BUSY_STATE | (state & (IS_FLUSHING | IS_FINISHING));
 			}
 
-			for (;;) {
+			for (; ; )
+			{
 				int count = pending.Flush(output, offset, length);
 				offset += count;
 				totalOut += count;
 				length -= count;
 
-				if (length == 0 || state == FINISHED_STATE) {
+				if (length == 0 || state == FINISHED_STATE)
+				{
 					break;
 				}
 
-				if (!engine.Deflate((state & IS_FLUSHING) != 0, (state & IS_FINISHING) != 0)) {
-					switch (state) {
+				if (!engine.Deflate((state & IS_FLUSHING) != 0, (state & IS_FINISHING) != 0))
+				{
+					switch (state)
+					{
 						case BUSY_STATE:
 							// We need more input now
 							return origLength - length;
+
 						case FLUSHING_STATE:
-							if (level != NO_COMPRESSION) {
+							if (level != NO_COMPRESSION)
+							{
 								/* We have to supply some lookahead.  8 bit lookahead
 								 * is needed by the zlib inflater, and we must fill
 								 * the next byte, so that all bits are flushed.
 								 */
 								int neededbits = 8 + ((-pending.BitCount) & 7);
-								while (neededbits > 0) {
+								while (neededbits > 0)
+								{
 									/* write a static tree block consisting solely of
 									 * an EOF:
 									 */
@@ -460,11 +502,13 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 							}
 							state = BUSY_STATE;
 							break;
+
 						case FINISHING_STATE:
 							pending.AlignToByte();
 
 							// Compressed data is complete.  Write footer information if required.
-							if (!noZlibHeaderOrFooter) {
+							if (!noZlibHeaderOrFooter)
+							{
 								int adler = engine.Adler;
 								pending.WriteShortMSB(adler >> 16);
 								pending.WriteShortMSB(adler & 0xffff);
@@ -514,7 +558,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// </exception>
 		public void SetDictionary(byte[] dictionary, int index, int count)
 		{
-			if (state != INIT_STATE) {
+			if (state != INIT_STATE)
+			{
 				throw new InvalidOperationException();
 			}
 
@@ -523,35 +568,37 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		}
 
 		#region Instance Fields
+
 		/// <summary>
 		/// Compression level.
 		/// </summary>
-		int level;
+		private int level;
 
 		/// <summary>
 		/// If true no Zlib/RFC1950 headers or footers are generated
 		/// </summary>
-		bool noZlibHeaderOrFooter;
+		private bool noZlibHeaderOrFooter;
 
 		/// <summary>
 		/// The current state.
 		/// </summary>
-		int state;
+		private int state;
 
 		/// <summary>
 		/// The total bytes of output written.
 		/// </summary>
-		long totalOut;
+		private long totalOut;
 
 		/// <summary>
 		/// The pending output.
 		/// </summary>
-		DeflaterPending pending;
+		private DeflaterPending pending;
 
 		/// <summary>
 		/// The deflater engine.
 		/// </summary>
-		DeflaterEngine engine;
-		#endregion
+		private DeflaterEngine engine;
+
+		#endregion Instance Fields
 	}
 }

@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
-using ICSharpCode.SharpZipLib.Zip;
+﻿using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
+using System;
+using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -94,18 +94,20 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			tempDir = Path.Combine(tempDir, "SharpZipTest");
 
-			if (tempDir != null) {
-
+			if (tempDir != null)
+			{
 				Directory.CreateDirectory(tempDir);
 
-				try {
+				try
+				{
 					// Note the seconds returned will be even!
 					var createTime = new DateTime(2100, 2, 27, 11, 07, 56);
 					var lastWriteTime = new DateTime(2050, 11, 3, 7, 23, 32);
 					var lastAccessTime = new DateTime(2050, 11, 3, 0, 42, 12);
 
 					string tempFile = Path.Combine(tempDir, "SharpZipTest.Zip");
-					using (FileStream f = File.Create(tempFile, 1024)) {
+					using (FileStream f = File.Create(tempFile, 1024))
+					{
 						f.WriteByte(0);
 					}
 
@@ -120,7 +122,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					ZipEntry entry;
 					int combinedAttributes = 0;
 
-					try {
+					try
+					{
 						factory = new ZipEntryFactory();
 
 						factory.Setting = ZipEntryFactory.TimeSetting.CreateTime;
@@ -142,7 +145,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 						entry = factory.MakeFileEntry(tempFile);
 						Assert.AreEqual(lastWriteTime, entry.DateTime, "Write time failure");
 						Assert.AreEqual(1, entry.Size);
-					} finally {
+					}
+					finally
+					{
 						File.Delete(tempFile);
 					}
 
@@ -168,7 +173,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					factory.Setting = ZipEntryFactory.TimeSetting.LastWriteTime;
 					entry = factory.MakeDirectoryEntry(tempDir);
 					Assert.AreEqual(lastWriteTime, entry.DateTime, "Directory write time failure");
-				} finally {
+				}
+				finally
+				{
 					Directory.Delete(tempDir, true);
 				}
 			}

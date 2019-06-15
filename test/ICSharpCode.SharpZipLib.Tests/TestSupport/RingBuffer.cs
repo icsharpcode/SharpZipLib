@@ -2,10 +2,9 @@
 // They are about the same in terms of speed.
 #define SimpleSynch
 
+using NUnit.Framework;
 using System;
 using System.Threading;
-using NUnit.Framework;
-
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
@@ -17,18 +16,21 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	public class ReadWriteRingBuffer
 	{
 		#region Constructors
+
 		/// <summary>
 		/// Create a new RingBuffer with a specified size.
 		/// </summary>
 		/// <param name="size">The size of the ring buffer to create.</param>
-		public ReadWriteRingBuffer(int size)
+		public ReadWriteRingBuffer(int size, CancellationToken? token = null)
 		{
-			if (size <= 0) {
+			if (size <= 0)
+			{
 				throw new ArgumentOutOfRangeException(nameof(size));
 			}
 
 			array_ = new byte[size];
 			lockObject_ = new object();
+			token_ = token;
 
 #if SimpleSynch
 			waitSpan_ = TimeSpan.FromMilliseconds(1);
@@ -37,7 +39,8 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			notFullEvent_ = new ManualResetEvent(true);
 #endif
 		}
-		#endregion
+
+		#endregion Constructors
 
 		/// <summary>
 		/// Clear the buffer contents.
@@ -74,19 +77,23 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// <param name="value">The value to add.</param>
 		public void WriteByte(byte value)
 		{
-			if (isClosed_) {
+			if (isClosed_)
+			{
 				throw new ApplicationException("Buffer is closed");
 			}
 
 #if SimpleSynch
-			while (IsFull) {
+			while (IsFull)
+			{
 				Thread.Sleep(waitSpan_);
+				token_?.ThrowIfCancellationRequested();
 			}
 #else
 			notFullEvent_.WaitOne();
 #endif
 
-			lock (lockObject_) {
+			lock (lockObject_)
+			{
 				array_[head_] = value;
 				head_ = (head_ + 1) % array_.Length;
 
@@ -114,14 +121,18 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		public void Write(byte[] buffer, int index, int count)
 		{
-			if (isClosed_) {
+			if (isClosed_)
+			{
 				throw new ApplicationException("Buffer is closed");
 			}
 
-			while (count > 0) {
+			while (count > 0)
+			{
 #if SimpleSynch
-				while (IsFull) {
+				while (IsFull)
+				{
 					Thread.Sleep(waitSpan_);
+					token_?.ThrowIfCancellationRequested();
 				}
 #else
 				notFullEvent_.WaitOne();
@@ -129,17 +140,20 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 				// Gauranteed to not be full at this point, however readers may sill read
 				// from the buffer first.
-				lock (lockObject_) {
+				lock (lockObject_)
+				{
 					int bytesToWrite = Length - Count;
 
-					if (count < bytesToWrite) {
+					if (count < bytesToWrite)
+					{
 						bytesToWrite = count;
 					}
 #if !SimpleSynch
 					bool setEmpty = (count_ == 0);
 #endif
 
-					while (bytesToWrite > 0) {
+					while (bytesToWrite > 0)
+					{
 						array_[head_] = buffer[index];
 						index++;
 
@@ -175,15 +189,19 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			int result = -1;
 
 #if SimpleSynch
-			while (!isClosed_ && IsEmpty) {
+			while (!isClosed_ && IsEmpty)
+			{
 				Thread.Sleep(waitSpan_);
+				token_?.ThrowIfCancellationRequested();
 			}
 #else
 			notEmptyEvent_.WaitOne();
 #endif
 
-			if (!IsEmpty) {
-				lock (lockObject_) {
+			if (!IsEmpty)
+			{
+				lock (lockObject_)
+				{
 					result = array_[tail_];
 					tail_ = (tail_ + 1) % array_.Length;
 #if !SimpleSynch
@@ -213,22 +231,30 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		{
 			int result = 0;
 
-			while (count > 0) {
+			while (count > 0)
+			{
 #if SimpleSynch
-				while (!isClosed_ && IsEmpty) {
+				while (!isClosed_ && IsEmpty)
+				{
 					Thread.Sleep(waitSpan_);
+					token_?.ThrowIfCancellationRequested();
 				}
 #else
 				notEmptyEvent_.WaitOne();
 #endif
 
-				if (IsEmpty) {
+				if (IsEmpty)
+				{
 					count = 0;
-				} else {
-					lock (lockObject_) {
+				}
+				else
+				{
+					lock (lockObject_)
+					{
 						int toRead = Count;
 
-						if (toRead > count) {
+						if (toRead > count)
+						{
 							toRead = count;
 						}
 
@@ -238,7 +264,8 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 						bool setFull = IsFull;
 #endif
 
-						while (toRead > 0) {
+						while (toRead > 0)
+						{
 							buffer[index] = array_[tail_];
 							index++;
 
@@ -271,48 +298,59 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// <summary>
 		/// Gets a value indicating wether the buffer is empty or not.
 		/// </summary>
-		public bool IsEmpty {
+		public bool IsEmpty
+		{
 			get { return count_ == 0; }
 		}
 
-		public bool IsFull {
-			get {
+		public bool IsFull
+		{
+			get
+			{
 				return (count_ == array_.Length);
 			}
 		}
 
-		public bool IsClosed {
+		public bool IsClosed
+		{
 			get { return isClosed_; }
 		}
 
 		/// <summary>
 		/// Gets the number of elements in the buffer.
 		/// </summary>
-		public int Count {
-			get {
+		public int Count
+		{
+			get
+			{
 				return count_;
 			}
 		}
 
-
-		public int Length {
+		public int Length
+		{
 			get { return array_.Length; }
 		}
 
-		public long BytesWritten {
+		public long BytesWritten
+		{
 			get { return bytesWritten_; }
 		}
 
-		public long BytesRead {
+		public long BytesRead
+		{
 			get { return bytesRead_; }
 		}
 
 		/// <summary>
 		/// Indexer - Get an element from the tail of the RingBuffer.
 		/// </summary>
-		public byte this[int index] {
-			get {
-				if ((index < 0) || (index >= array_.Length)) {
+		public byte this[int index]
+		{
+			get
+			{
+				if ((index < 0) || (index >= array_.Length))
+				{
 					throw new ArgumentOutOfRangeException(nameof(index));
 				}
 
@@ -320,48 +358,50 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			}
 		}
 
-		#endregion
+		#endregion Properties
 
 		#region Instance Variables
+
 		/// <summary>
 		/// Flag indicating the buffer is closed.
 		/// </summary>
-		bool isClosed_;
+		private bool isClosed_;
 
 		/// <summary>
 		/// Index for the head of the buffer.
 		/// </summary>
 		/// <remarks>Its the index of the next byte to be <see cref="Write">written</see>.</remarks>
-		int head_;
+		private int head_;
 
 		/// <summary>
 		/// Index for the tail of the buffer.
 		/// </summary>
 		/// <remarks>Its the index of the next byte to be <see cref="Read">written</see>.</remarks>
-		int tail_;
+		private int tail_;
 
 		/// <summary>
 		/// The total number of elements added to the buffer.
 		/// </summary>
-		int count_;
+		private int count_;
 
 		/// <summary>
 		/// Storage for the ring buffer contents.
 		/// </summary>
-		byte[] array_;
+		private byte[] array_;
 
-		long bytesWritten_;
-		long bytesRead_;
+		private long bytesWritten_;
+		private long bytesRead_;
 
-		object lockObject_;
-
-		TimeSpan waitSpan_;
+		private object lockObject_;
+		private CancellationToken? token_;
+		private TimeSpan waitSpan_;
 
 #if !SimpleSynch
 		ManualResetEvent notEmptyEvent_;
 		ManualResetEvent notFullEvent_;
 #endif
-		#endregion
+
+		#endregion Instance Variables
 	}
 
 	[TestFixture]
@@ -388,7 +428,8 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			Assert.IsFalse(buffer_.IsFull);
 			Assert.IsTrue(buffer_.IsEmpty);
 
-			for (int i = 0; i < buffer_.Length; ++i) {
+			for (int i = 0; i < buffer_.Length; ++i)
+			{
 				buffer_.WriteByte(unchecked((byte)(i & 0xff)));
 			}
 
@@ -400,9 +441,12 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			Assert.IsTrue(buffer_.IsClosed);
 
 			bool caught = false;
-			try {
+			try
+			{
 				buffer_.WriteByte(1);
-			} catch {
+			}
+			catch
+			{
 				caught = true;
 			}
 
@@ -411,7 +455,8 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			int count = Size;
 			int expected = 0;
 
-			while (count != 0) {
+			while (count != 0)
+			{
 				Assert.AreEqual(count, buffer_.Count);
 				Assert.AreEqual(expected, buffer_.ReadByte());
 				count--;
@@ -425,13 +470,13 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		[Test]
 		public void Buffered()
 		{
-
 			const int Size = 64;
 
 			buffer_ = new ReadWriteRingBuffer(Size);
 
 			byte[] writeBuffer = new byte[16];
-			for (int i = 0; i < 16; ++i) {
+			for (int i = 0; i < 16; ++i)
+			{
 				writeBuffer[i] = (byte)i;
 			}
 
@@ -440,10 +485,10 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 			byte[] readBuffer = new byte[16];
 			Assert.AreEqual(3, buffer_.Read(readBuffer, 0, 3));
-			for (int i = 0; i < 3; ++i) {
+			for (int i = 0; i < 3; ++i)
+			{
 				Assert.AreEqual(i, readBuffer[i]);
 			}
-
 		}
 
 		[Test]
@@ -462,18 +507,21 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			reader.Join();
 		}
 
-		void Reader()
+		private void Reader()
 		{
 			var r = new Random();
 			byte nextValue = 0;
 
-			while (readTarget_ > 0) {
+			while (readTarget_ > 0)
+			{
 				int thisTime = r.Next(16);
-				if (thisTime > readTarget_) {
+				if (thisTime > readTarget_)
+				{
 					thisTime = readTarget_;
 				}
 
-				while (thisTime > 0) {
+				while (thisTime > 0)
+				{
 					int readValue = buffer_.ReadByte();
 					Assert.AreEqual(nextValue, readValue);
 					nextValue = (byte)((nextValue + 1) & 0xff);
@@ -482,7 +530,6 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 				}
 
 				Thread.Sleep(r.Next(10));
-
 			}
 
 			int last = buffer_.ReadByte();
@@ -491,18 +538,21 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			Assert.IsTrue(buffer_.IsClosed);
 		}
 
-		void Writer()
+		private void Writer()
 		{
 			var r = new Random();
 
 			byte nextValue = 0;
-			while (writeTarget_ > 0) {
+			while (writeTarget_ > 0)
+			{
 				int thisTime = r.Next(16);
-				if (thisTime > writeTarget_) {
+				if (thisTime > writeTarget_)
+				{
 					thisTime = writeTarget_;
 				}
 
-				while (thisTime > 0) {
+				while (thisTime > 0)
+				{
 					buffer_.WriteByte(nextValue);
 					nextValue = (byte)((nextValue + 1) & 0xff);
 					thisTime--;
@@ -513,10 +563,9 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			buffer_.Close();
 		}
 
-		int readTarget_;
-		int writeTarget_;
+		private int readTarget_;
+		private int writeTarget_;
 
-		ReadWriteRingBuffer buffer_;
-
+		private ReadWriteRingBuffer buffer_;
 	}
 }

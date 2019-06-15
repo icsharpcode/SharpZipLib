@@ -1,26 +1,52 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
-    <PackageId>SharpZipLib </PackageId>
+    <TargetFrameworks>netstandard2;net45</TargetFrameworks>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>ICSharpCode.SharpZipLib.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0-alpha2</Version>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+  </PropertyGroup>
+  
+  <!-- Nuget specific tags -->
+  <PropertyGroup>
+    <AssemblyVersion>1.1.0.6</AssemblyVersion>
+    <FileVersion>1.1.0.6</FileVersion>
+    <Version>1.1.0</Version>
+    <PackageId>SharpZipLib</PackageId>
+    <Company>ICSharpCode</Company>
+    <Authors>ICSharpCode</Authors>
+    <Description>SharpZipLib (#ziplib, formerly NZipLib) is a compression library for Zip, GZip, BZip2, and Tar written entirely in C# for .NET. It is implemented as an assembly (installable in the GAC), and thus can easily be incorporated into other projects (in any .NET language)</Description>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>http://icsharpcode.github.io/SharpZipLib/</PackageProjectUrl>
+		<PackageIconUrl>http://icsharpcode.github.io/SharpZipLib/assets/sharpziplib-nuget-256x256.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/icsharpcode/SharpZipLib</RepositoryUrl>
-    <PackageReleaseNotes>This is a pre-release version!
-
-Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.0 for more information.</PackageReleaseNotes>
-    <PackageLicenseUrl>https://github.com/icsharpcode/SharpZipLib/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <Copyright>Copyright © 2000-2018 SharpZipLib Contributors</Copyright>
+    <PackageTags>Compression Library Zip GZip BZip2 LZW Tar</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageReleaseNotes>
+Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.1 for more information.</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/icsharpcode/SharpZipLib</PackageProjectUrl> 
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard1.3\ICSharpCode.SharpZipLib.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2\ICSharpCode.SharpZipLib.xml</DocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.3\ICSharpCode.SharpZipLib.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2\ICSharpCode.SharpZipLib.xml</DocumentationFile>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
+    <DocumentationFile>bin\Debug\net45\ICSharpCode.SharpZipLib.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
+    <DocumentationFile>bin\Release\net45\ICSharpCode.SharpZipLib.xml</DocumentationFile>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All"/>
+	</ItemGroup>
 
 </Project>

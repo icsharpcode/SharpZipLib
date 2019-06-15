@@ -1,8 +1,8 @@
-using System;
-using System.IO;
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using System;
+using System.IO;
 
 namespace ICSharpCode.SharpZipLib.GZip
 {
@@ -16,10 +16,10 @@ namespace ICSharpCode.SharpZipLib.GZip
 	/// <code>
 	/// using System;
 	/// using System.IO;
-	/// 
+	///
 	/// using ICSharpCode.SharpZipLib.GZip;
 	/// using ICSharpCode.SharpZipLib.Core;
-	/// 
+	///
 	/// class MainClass
 	/// {
 	/// 	public static void Main(string[] args)
@@ -31,12 +31,12 @@ namespace ICSharpCode.SharpZipLib.GZip
 	/// 			}
 	/// 		}
 	/// 	}
-	/// }	
+	/// }
 	/// </code>
 	/// </example>
 	public class GZipOutputStream : DeflaterOutputStream
 	{
-		enum OutputState
+		private enum OutputState
 		{
 			Header,
 			Footer,
@@ -45,14 +45,18 @@ namespace ICSharpCode.SharpZipLib.GZip
 		};
 
 		#region Instance Fields
+
 		/// <summary>
 		/// CRC-32 value for uncompressed data
 		/// </summary>
 		protected Crc32 crc = new Crc32();
-		OutputState state_ = OutputState.Header;
-		#endregion
+
+		private OutputState state_ = OutputState.Header;
+
+		#endregion Instance Fields
 
 		#region Constructors
+
 		/// <summary>
 		/// Creates a GzipOutputStream with the default buffer size
 		/// </summary>
@@ -76,11 +80,13 @@ namespace ICSharpCode.SharpZipLib.GZip
 		public GZipOutputStream(Stream baseOutputStream, int size) : base(baseOutputStream, new Deflater(Deflater.DEFAULT_COMPRESSION, true), size)
 		{
 		}
-		#endregion
+
+		#endregion Constructors
 
 		#region Public API
+
 		/// <summary>
-		/// Sets the active compression level (1-9).  The new level will be activated
+		/// Sets the active compression level (0-9).  The new level will be activated
 		/// immediately.
 		/// </summary>
 		/// <param name="level">The compression level to set.</param>
@@ -90,9 +96,9 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <see cref="Deflater"/>
 		public void SetLevel(int level)
 		{
-			if (level < Deflater.BEST_SPEED) {
-				throw new ArgumentOutOfRangeException(nameof(level));
-			}
+			if (level < Deflater.NO_COMPRESSION || level > Deflater.BEST_COMPRESSION)
+				throw new ArgumentOutOfRangeException(nameof(level), "Compression level must be 0-9");
+
 			deflater_.SetLevel(level);
 		}
 
@@ -104,9 +110,11 @@ namespace ICSharpCode.SharpZipLib.GZip
 		{
 			return deflater_.GetLevel();
 		}
-		#endregion
+
+		#endregion Public API
 
 		#region Stream overrides
+
 		/// <summary>
 		/// Write given buffer to output updating crc
 		/// </summary>
@@ -115,15 +123,17 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <param name="count">Number of bytes to write</param>
 		public override void Write(byte[] buffer, int offset, int count)
 		{
-			if (state_ == OutputState.Header) {
+			if (state_ == OutputState.Header)
+			{
 				WriteHeader();
 			}
 
-			if (state_ != OutputState.Footer) {
+			if (state_ != OutputState.Footer)
+			{
 				throw new InvalidOperationException("Write not permitted in current state");
 			}
 
-			crc.Update(buffer, offset, count);
+			crc.Update(new ArraySegment<byte>(buffer, offset, count));
 			base.Write(buffer, offset, count);
 		}
 
@@ -133,31 +143,40 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
-			try {
+			try
+			{
 				Finish();
-			} finally {
-				if (state_ != OutputState.Closed) {
+			}
+			finally
+			{
+				if (state_ != OutputState.Closed)
+				{
 					state_ = OutputState.Closed;
-					if (IsStreamOwner) {
+					if (IsStreamOwner)
+					{
 						baseOutputStream_.Dispose();
 					}
 				}
 			}
 		}
-		#endregion
+
+		#endregion Stream overrides
 
 		#region DeflaterOutputStream overrides
+
 		/// <summary>
 		/// Finish compression and write any footer information required to stream
 		/// </summary>
 		public override void Finish()
 		{
 			// If no data has been written a header should be added.
-			if (state_ == OutputState.Header) {
+			if (state_ == OutputState.Header)
+			{
 				WriteHeader();
 			}
 
-			if (state_ == OutputState.Footer) {
+			if (state_ == OutputState.Footer)
+			{
 				state_ = OutputState.Finished;
 				base.Finish();
 
@@ -166,7 +185,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 				byte[] gzipFooter;
 
-				unchecked {
+				unchecked
+				{
 					gzipFooter = new byte[] {
 					(byte) crcval, (byte) (crcval >> 8),
 					(byte) (crcval >> 16), (byte) (crcval >> 24),
@@ -179,12 +199,15 @@ namespace ICSharpCode.SharpZipLib.GZip
 				baseOutputStream_.Write(gzipFooter, 0, gzipFooter.Length);
 			}
 		}
-		#endregion
+
+		#endregion DeflaterOutputStream overrides
 
 		#region Support Routines
-		void WriteHeader()
+
+		private void WriteHeader()
 		{
-			if (state_ == OutputState.Header) {
+			if (state_ == OutputState.Header)
+			{
 				state_ = OutputState.Footer;
 
 				var mod_time = (int)((DateTime.Now.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000L);  // Ticks give back 100ns intervals
@@ -211,6 +234,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 				baseOutputStream_.Write(gzipHeader, 0, gzipHeader.Length);
 			}
 		}
-		#endregion
+
+		#endregion Support Routines
 	}
 }

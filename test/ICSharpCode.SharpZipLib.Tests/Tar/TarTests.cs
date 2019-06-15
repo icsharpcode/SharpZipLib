@@ -1,21 +1,20 @@
-using System;
-using System.IO;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
+using System;
+using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tests.Tar
 {
-
 	/// <summary>
 	/// This class contains test cases for Tar archive handling.
 	/// </summary>
 	[TestFixture]
 	public class TarTestSuite
 	{
-		int entryCount;
+		private int entryCount;
 
-		void EntryCounter(TarArchive archive, TarEntry entry, string message)
+		private void EntryCounter(TarArchive archive, TarEntry entry, string message)
 		{
 			entryCount++;
 		}
@@ -29,7 +28,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		{
 			var ms = new MemoryStream();
 			int recordSize = 0;
-			using (TarArchive tarOut = TarArchive.CreateOutputTarArchive(ms)) {
+			using (TarArchive tarOut = TarArchive.CreateOutputTarArchive(ms))
+			{
 				recordSize = tarOut.RecordSize;
 			}
 
@@ -40,7 +40,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 
-			using (TarArchive tarIn = TarArchive.CreateInputTarArchive(ms2)) {
+			using (TarArchive tarIn = TarArchive.CreateInputTarArchive(ms2))
+			{
 				entryCount = 0;
 				tarIn.ProgressMessageEvent += EntryCounter;
 				tarIn.ListContents();
@@ -59,10 +60,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			const int MaximumBlockFactor = 64;
 			const int FillFactor = 2;
 
-			for (int factor = MinimumBlockFactor; factor < MaximumBlockFactor; ++factor) {
+			for (int factor = MinimumBlockFactor; factor < MaximumBlockFactor; ++factor)
+			{
 				var ms = new MemoryStream();
 
-				using (TarOutputStream tarOut = new TarOutputStream(ms, factor)) {
+				using (TarOutputStream tarOut = new TarOutputStream(ms, factor))
+				{
 					TarEntry entry = TarEntry.CreateTarEntry("TestEntry");
 					entry.Size = (TarBuffer.BlockSize * factor * FillFactor);
 					tarOut.PutNextEntry(entry);
@@ -73,7 +76,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					r.NextBytes(buffer);
 
 					// Last block is a partial one
-					for (int i = 0; i < factor * FillFactor; ++i) {
+					for (int i = 0; i < factor * FillFactor; ++i)
+					{
 						tarOut.Write(buffer, 0, buffer.Length);
 					}
 				}
@@ -90,10 +94,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 				Assert.AreEqual(TarBuffer.BlockSize * totalBlocks, tarData.Length, "Tar file should contain {0} blocks in length",
 					totalBlocks);
 
-				if (usedBlocks < totalBlocks) {
+				if (usedBlocks < totalBlocks)
+				{
 					// Start at first byte after header.
 					int byteIndex = TarBuffer.BlockSize * ((factor * FillFactor) + 1);
-					while (byteIndex < tarData.Length) {
+					while (byteIndex < tarData.Length)
+					{
 						int blockNumber = byteIndex / TarBuffer.BlockSize;
 						int offset = blockNumber % TarBuffer.BlockSize;
 						Assert.AreEqual(0, tarData[byteIndex],
@@ -115,12 +121,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		{
 			const int TestBlockFactor = 3;
 
-			for (int iteration = 0; iteration < TestBlockFactor * 2; ++iteration) {
+			for (int iteration = 0; iteration < TestBlockFactor * 2; ++iteration)
+			{
 				var ms = new MemoryStream();
 
-				using (TarOutputStream tarOut = new TarOutputStream(ms, TestBlockFactor)) {
+				using (TarOutputStream tarOut = new TarOutputStream(ms, TestBlockFactor))
+				{
 					TarEntry entry = TarEntry.CreateTarEntry("TestEntry");
-					if (iteration > 0) {
+					if (iteration > 0)
+					{
 						entry.Size = (TarBuffer.BlockSize * (iteration - 1)) + 9;
 					}
 					tarOut.PutNextEntry(entry);
@@ -130,13 +139,16 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					var r = new Random();
 					r.NextBytes(buffer);
 
-					if (iteration > 0) {
-						for (int i = 0; i < iteration - 1; ++i) {
+					if (iteration > 0)
+					{
+						for (int i = 0; i < iteration - 1; ++i)
+						{
 							tarOut.Write(buffer, 0, buffer.Length);
 						}
 
 						// Last block is a partial one
-						for (int i = 1; i < 10; ++i) {
+						for (int i = 1; i < 10; ++i)
+						{
 							tarOut.WriteByte((byte)i);
 						}
 					}
@@ -154,10 +166,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 				Assert.AreEqual(TarBuffer.BlockSize * totalBlocks, tarData.Length,
 					string.Format("Tar file should be {0} blocks in length", totalBlocks));
 
-				if (usedBlocks < totalBlocks) {
+				if (usedBlocks < totalBlocks)
+				{
 					// Start at first byte after header.
 					int byteIndex = TarBuffer.BlockSize * (iteration + 1);
-					while (byteIndex < tarData.Length) {
+					while (byteIndex < tarData.Length)
+					{
 						int blockNumber = byteIndex / TarBuffer.BlockSize;
 						int offset = blockNumber % TarBuffer.BlockSize;
 						Assert.AreEqual(0, tarData[byteIndex],
@@ -170,10 +184,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			}
 		}
 
-		void TryLongName(string name)
+		private void TryLongName(string name)
 		{
 			var ms = new MemoryStream();
-			using (TarOutputStream tarOut = new TarOutputStream(ms)) {
+			using (TarOutputStream tarOut = new TarOutputStream(ms))
+			{
 				DateTime modTime = DateTime.Now;
 
 				TarEntry entry = TarEntry.CreateTarEntry(name);
@@ -184,7 +199,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 
-			using (TarInputStream tarIn = new TarInputStream(ms2)) {
+			using (TarInputStream tarIn = new TarInputStream(ms2))
+			{
 				TarEntry nextEntry = tarIn.GetNextEntry();
 
 				Assert.AreEqual(nextEntry.Name, name, "Name match failure");
@@ -224,10 +240,61 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 						"11111111112222222222333333333344444444445555555555" +
 						"66666666667777777777888888888899999999990000000000");
 
-			for (int n = 1; n < 1024; ++n) {
+			for (int n = 1; n < 1024; ++n)
+			{
 				string format = "{0," + n + "}";
 				string formatted = string.Format(format, "A");
 				TryLongName(formatted);
+			}
+		}
+
+		[Test]
+		[Category("Tar")]
+		public void ExtendedHeaderLongName()
+		{
+			string expectedName = "lftest-0000000000111111111122222222223333333333444444444455555555556666666666777777777788888888889999999999";
+
+			var input64 = @"Li9QYXhIZWFkZXJzLjExOTY5L2xmdGVzdC0wMDAwMDAwMDAwMTExMTExMTExMTIyMjIyMjIyMjIz
+							MzMzMzMzMzMzNDQ0NDQ0NDQ0NDU1NTU1NTU1NTU2NjY2NjY2NjY2Nzc3NzAwMDA2NDQAMDAwMDAw
+							MAAwMDAwMDAwADAwMDAwMDAwMzE3ADEzMzE2MTYyMzMzADAyMTYwNgAgeAAAAAAAAAAAAAAAAAAA
+							AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+							AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB1c3RhcgAwMAAAAAAAAAAAAAAAAAAAAAAAAAAA
+							AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+							AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+							AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+							AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAx
+							MTcgcGF0aD1sZnRlc3QtMDAwMDAwMDAwMDExMTExMTExMTEyMjIyMjIyMjIyMzMzMzMzMzMzMzQ0
+							NDQ0NDQ0NDQ1NTU1NTU1NTU1NjY2NjY2NjY2Njc3Nzc3Nzc3Nzc4ODg4ODg4ODg4OTk5OTk5OTk5
+							OQozMCBtdGltZT0xNTMwNDU1MjU5LjcwNjU0ODg4OAozMCBhdGltZT0xNTMwNDU1MjU5LjcwNjU0
+							ODg4OAozMCBjdGltZT0xNTMwNDU1MjU5LjcwNjU0ODg4OAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+							AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+							AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+							AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+							AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+							AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGxm
+							dGVzdC0wMDAwMDAwMDAwMTExMTExMTExMTIyMjIyMjIyMjIzMzMzMzMzMzMzNDQ0NDQ0NDQ0NDU1
+							NTU1NTU1NTU2NjY2NjY2NjY2Nzc3Nzc3Nzc3Nzg4ODg4ODg4ODg5OTkwMDAwNjY0ADAwMDE3NTAA
+							MDAwMTc1MAAwMDAwMDAwMDAwMAAxMzMxNjE2MjMzMwAwMjM3MjcAIDAAAAAAAAAAAAAAAAAAAAAA
+							AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+							AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAdXN0YXIAMDBuaWxzAAAAAAAAAAAAAAAAAAAAAAAA
+							AAAAAAAAAAAAAG5pbHMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDAwMDAwMAAwMDAwMDAw";
+
+			var buffer = new byte[2560];
+			var truncated = Convert.FromBase64String(input64);
+			Array.Copy(truncated, buffer, truncated.Length);
+			truncated = null;
+
+			using (var ms = new MemoryStream(buffer))
+			using (var tis = new TarInputStream(ms))
+			{
+				var entry = tis.GetNextEntry();
+				Assert.IsNotNull(entry, "Entry is null");
+
+				Assert.IsNotNull(entry.Name, "Entry name is null");
+
+				Assert.AreEqual(expectedName.Length, entry.Name.Length, $"Entry name is truncated to {entry.Name.Length} bytes.");
+
+				Assert.AreEqual(expectedName, entry.Name, "Entry name does not match expected value");
 			}
 		}
 
@@ -303,7 +370,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			h2.GroupName = h1.GroupName;
 			Assert.IsTrue(h1.Equals(h2));
 
-
 			h1.DevMajor = 165;
 			Assert.IsFalse(h1.Equals(h2));
 			h2.DevMajor = h1.DevMajor;
@@ -313,7 +379,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			Assert.IsFalse(h1.Equals(h2));
 			h2.DevMinor = h1.DevMinor;
 			Assert.IsTrue(h1.Equals(h2));
-
 		}
 
 		[Test]
@@ -321,7 +386,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		public void Checksum()
 		{
 			var ms = new MemoryStream();
-			using (TarOutputStream tarOut = new TarOutputStream(ms)) {
+			using (TarOutputStream tarOut = new TarOutputStream(ms))
+			{
 				DateTime modTime = DateTime.Now;
 
 				TarEntry entry = TarEntry.CreateTarEntry("TestEntry");
@@ -335,7 +401,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			ms2.Seek(0, SeekOrigin.Begin);
 			TarEntry nextEntry;
 
-			using (TarInputStream tarIn = new TarInputStream(ms2)) {
+			using (TarInputStream tarIn = new TarInputStream(ms2))
+			{
 				nextEntry = tarIn.GetNextEntry();
 				Assert.IsTrue(nextEntry.TarHeader.IsChecksumValid, "Checksum should be valid");
 			}
@@ -346,12 +413,16 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			ms3.Write(new byte[] { 34 }, 0, 1);
 			ms3.Seek(0, SeekOrigin.Begin);
 
-			using (TarInputStream tarIn = new TarInputStream(ms3)) {
+			using (TarInputStream tarIn = new TarInputStream(ms3))
+			{
 				bool trapped = false;
 
-				try {
+				try
+				{
 					nextEntry = tarIn.GetNextEntry();
-				} catch (TarException) {
+				}
+				catch (TarException)
+				{
 					trapped = true;
 				}
 
@@ -370,7 +441,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			TarEntry entry;
 			DateTime modTime = DateTime.Now;
 
-			using (TarOutputStream tarOut = new TarOutputStream(ms)) {
+			using (TarOutputStream tarOut = new TarOutputStream(ms))
+			{
 				entry = TarEntry.CreateTarEntry("TestEntry");
 				entry.GroupId = 12;
 				entry.UserId = 14;
@@ -386,20 +458,22 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 
-			using (TarInputStream tarIn = new TarInputStream(ms2)) {
+			using (TarInputStream tarIn = new TarInputStream(ms2))
+			{
 				TarEntry nextEntry = tarIn.GetNextEntry();
 				Assert.AreEqual(entry.TarHeader.Checksum, nextEntry.TarHeader.Checksum, "Checksum");
 
 				Assert.IsTrue(nextEntry.Equals(entry), "Entries should be equal");
 				Assert.IsTrue(nextEntry.TarHeader.Equals(entry.TarHeader), "Headers should match");
 
-				// Tar only stores seconds 
+				// Tar only stores seconds
 				var truncatedTime = new DateTime(modTime.Year, modTime.Month, modTime.Day,
 					modTime.Hour, modTime.Minute, modTime.Second);
 				Assert.AreEqual(truncatedTime, nextEntry.ModTime, "Modtimes should match");
 
 				entryCount = 0;
-				while (nextEntry != null) {
+				while (nextEntry != null)
+				{
 					++entryCount;
 					nextEntry = tarIn.GetNextEntry();
 				}
@@ -611,6 +685,107 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 
 			Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
 			Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
+		}
+
+		[Test]
+		[Category("Tar")]
+		public void EndBlockHandling()
+		{
+			int dummySize = 70145;
+
+			long outCount, inCount;
+
+			using (var ms = new MemoryStream())
+			{
+				using (var tarOut = TarArchive.CreateOutputTarArchive(ms))
+				using (var dummyFile = Utils.GetDummyFile(dummySize))
+				{
+					tarOut.IsStreamOwner = false;
+					tarOut.WriteEntry(TarEntry.CreateEntryFromFile(dummyFile.Filename), false);
+				}
+
+				outCount = ms.Position;
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var tarIn = TarArchive.CreateInputTarArchive(ms))
+				using (var tempDir = new Utils.TempDir())
+				{
+					tarIn.IsStreamOwner = false;
+					tarIn.ExtractContents(tempDir.Fullpath);
+
+					foreach (var file in Directory.GetFiles(tempDir.Fullpath, "*", SearchOption.AllDirectories))
+					{
+						Console.WriteLine($"Extracted \"{file}\"");
+					}
+				}
+
+				inCount = ms.Position;
+
+				Console.WriteLine($"Output count: {outCount}");
+				Console.WriteLine($"Input count: {inCount}");
+
+				Assert.AreEqual(inCount, outCount, "Bytes read and bytes written should be equal");
+			}
+		}
+
+		[Test]
+		[Category("Tar")]
+		[Category("Performance")]
+		[Explicit("Long Running")]
+		public void WriteThroughput()
+		{
+			const string EntryName = "LargeTarEntry";
+
+			PerformanceTesting.TestWrite(TestDataSize.Large, bs =>
+			{
+				var tos = new TarOutputStream(bs);
+				tos.PutNextEntry(new TarEntry(new TarHeader()
+				{
+					Name = EntryName,
+					Size = (int)TestDataSize.Large,
+				}));
+				return tos;
+			},
+			stream =>
+			{
+				((TarOutputStream)stream).CloseEntry();
+			});
+		}
+
+		[Test]
+		[Category("Tar")]
+		[Category("Performance")]
+		[Explicit("Long Running")]
+		public void SingleLargeEntry()
+		{
+			const string EntryName = "LargeTarEntry";
+			const TestDataSize dataSize = TestDataSize.Large;
+
+			PerformanceTesting.TestReadWrite(
+				size: dataSize,
+				input: bs =>
+				{
+					var tis = new TarInputStream(bs);
+					var entry = tis.GetNextEntry();
+
+					Assert.AreEqual(entry.Name, EntryName);
+					return tis;
+				},
+				output: bs =>
+				{
+					var tos = new TarOutputStream(bs);
+					tos.PutNextEntry(new TarEntry(new TarHeader()
+					{
+						Name = EntryName,
+						Size = (int)dataSize,
+					}));
+					return tos;
+				},
+				outputClose: stream =>
+				{
+					((TarOutputStream)stream).CloseEntry();
+				}
+			);
 		}
 	}
 }

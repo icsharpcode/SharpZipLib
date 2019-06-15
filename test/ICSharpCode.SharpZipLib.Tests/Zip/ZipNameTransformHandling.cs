@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
-using ICSharpCode.SharpZipLib.Core;
+﻿using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
+using System;
+using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -36,10 +36,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			var zt = new ZipNameTransform();
 			var veryLong = new string('x', 65536);
-			try {
+			try
+			{
 				zt.TransformDirectory(veryLong);
 				Assert.Fail("Expected an exception");
-			} catch (PathTooLongException) {
+			}
+			catch (PathTooLongException)
+			{
 			}
 		}
 
@@ -48,9 +51,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			var zt = new ZipNameTransform();
 			string veryLong = "c:\\" + new string('x', 65535);
-			try {
+			try
+			{
 				zt.TransformDirectory(veryLong);
-			} catch {
+			}
+			catch
+			{
 				Assert.Fail("Expected no exception");
 			}
 		}

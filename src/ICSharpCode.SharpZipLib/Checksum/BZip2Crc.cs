@@ -32,10 +32,11 @@ namespace ICSharpCode.SharpZipLib.Checksum
 	public sealed class BZip2Crc : IChecksum
 	{
 		#region Instance Fields
-		const uint crcInit = 0xFFFFFFFF;
+
+		private const uint crcInit = 0xFFFFFFFF;
 		//const uint crcXor = 0x00000000;
 
-		readonly static uint[] crcTable = {
+		private static readonly uint[] crcTable = {
 			0X00000000, 0X04C11DB7, 0X09823B6E, 0X0D4326D9,
 			0X130476DC, 0X17C56B6B, 0X1A864DB2, 0X1E475005,
 			0X2608EDB8, 0X22C9F00F, 0X2F8AD6D6, 0X2B4BCB61,
@@ -105,12 +106,13 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		/// <summary>
 		/// The CRC data checksum so far.
 		/// </summary>
-		uint checkValue;
-		#endregion
+		private uint checkValue;
+
+		#endregion Instance Fields
 
 		/// <summary>
 		/// Initialise a default instance of <see cref="BZip2Crc"></see>
-		/// </summary>	
+		/// </summary>
 		public BZip2Crc()
 		{
 			Reset();
@@ -128,8 +130,10 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		/// Returns the CRC data checksum computed so far.
 		/// </summary>
 		/// <remarks>Reversed Out = true</remarks>
-		public long Value {
-			get {
+		public long Value
+		{
+			get
+			{
 				// Tehcnically, the output should be:
 				//return (long)(~checkValue ^ crcXor);
 				// but x ^ 0 = x, so there is no point in adding
@@ -151,50 +155,33 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		}
 
 		/// <summary>
-		/// Updates the CRC data checksum with the bytes taken from 
+		/// Updates the CRC data checksum with the bytes taken from
 		/// a block of data.
 		/// </summary>
 		/// <param name="buffer">Contains the data to update the CRC with.</param>
 		public void Update(byte[] buffer)
 		{
-			if (buffer == null) {
+			if (buffer == null)
+			{
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
-			Update(buffer, 0, buffer.Length);
+			Update(new ArraySegment<byte>(buffer, 0, buffer.Length));
 		}
 
 		/// <summary>
 		/// Update CRC data checksum based on a portion of a block of data
 		/// </summary>
-		/// <param name = "buffer">Contains the data to update the CRC with.</param>
-		/// <param name = "offset">The offset into the buffer where the data starts</param>
-		/// <param name = "count">The number of data bytes to update the CRC with.</param>
-		public void Update(byte[] buffer, int offset, int count)
+		/// <param name = "segment">
+		/// The chunk of data to add
+		/// </param>
+		public void Update(ArraySegment<byte> segment)
 		{
-			if (buffer == null) {
-				throw new ArgumentNullException(nameof(buffer));
-			}
+			var count = segment.Count;
+			var offset = segment.Offset;
 
-			if (offset < 0) {
-				throw new ArgumentOutOfRangeException(nameof(offset), "cannot be less than zero");
-			}
-
-			if (offset >= buffer.Length) {
-				throw new ArgumentOutOfRangeException(nameof(offset), "not a valid index into buffer");
-			}
-
-			if (count < 0) {
-				throw new ArgumentOutOfRangeException(nameof(count), "cannot be less than zero");
-			}
-
-			if (offset + count > buffer.Length) {
-				throw new ArgumentOutOfRangeException(nameof(count), "exceeds buffer size");
-			}
-
-			for (int i = 0; i < count; ++i) {
-				Update(buffer[offset++]);
-			}
+			while (--count >= 0)
+				Update(segment.Array[offset++]);
 		}
 	}
 }

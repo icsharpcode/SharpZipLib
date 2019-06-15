@@ -1,0 +1,27 @@
+version: '{build}'
+image: Visual Studio 2017
+configuration:
+- Debug
+- Release
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: $(VERSION)
+  package_version: $(VERSION)
+  assembly_version: $(BIN_VERSION)
+  file_version: $(BIN_VERSION)
+  informational_version: $(VERSION)
+install:
+- ps: tools/appveyor-install.ps1
+nuget:
+  project_feed: true
+  disable_publish_on_pr: true
+before_build:
+- ps: nuget restore ICSharpCode.SharpZipLib.sln
+build:
+  project: ICSharpCode.SharpZipLib.sln
+  publish_nuget: true
+  publish_nuget_symbols: true
+  verbosity: normal
+test_script:
+- ps: tools/appveyor-test.ps1
