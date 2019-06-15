@@ -784,7 +784,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			string newName = null;
 
-			if (rootPath != null)
+			if (!String.IsNullOrEmpty(rootPath))
 			{
 				if (entry.Name.StartsWith(rootPath, StringComparison.OrdinalIgnoreCase))
 				{
