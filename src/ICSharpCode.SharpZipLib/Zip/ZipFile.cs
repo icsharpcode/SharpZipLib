@@ -3565,23 +3565,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			CryptoStream result = null;
 
-			if ((entry.Version < ZipConstants.VersionStrongEncryption)
-				|| (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0)
+			if (entry.CompressionMethodForHeader == CompressionMethod.WinZipAES)
 			{
-				var classicManaged = new PkzipClassicManaged();
-
-				OnKeysRequired(entry.Name);
-				if (HaveKeys == false)
-				{
-					throw new ZipException("No password available for encrypted stream");
-				}
-
-				result = new CryptoStream(baseStream, classicManaged.CreateDecryptor(key, null), CryptoStreamMode.Read);
-				CheckClassicPassword(result, entry);
-			}
-			else
-			{
-				if (entry.Version == ZipConstants.VERSION_AES)
+				if (entry.Version >= ZipConstants.VERSION_AES)
 				{
 					//
 					OnKeysRequired(entry.Name);
@@ -3607,6 +3593,28 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
+					throw new ZipException("Decryption method not supported");
+				}
+			}
+			else
+			{
+				if ((entry.Version < ZipConstants.VersionStrongEncryption)
+					|| (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0)
+				{
+					var classicManaged = new PkzipClassicManaged();
+
+					OnKeysRequired(entry.Name);
+					if (HaveKeys == false)
+					{
+						throw new ZipException("No password available for encrypted stream");
+					}
+
+					result = new CryptoStream(baseStream, classicManaged.CreateDecryptor(key, null), CryptoStreamMode.Read);
+					CheckClassicPassword(result, entry);
+				}
+				else
+				{
+					// We don't support PKWare strong encryption
 					throw new ZipException("Decryption method not supported");
 				}
 			}
