@@ -1840,6 +1840,29 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Add a <see cref="ZipEntry"/> with data.
+		/// </summary>
+		/// <param name="dataSource">The source of the data for this entry.</param>
+		/// <param name="entry">The entry to add.</param>
+		/// <remarks>This can be used to add file entries with a custom data source.</remarks>
+		public void Add(IStaticDataSource dataSource, ZipEntry entry)
+		{
+			if (entry == null)
+			{
+				throw new ArgumentNullException(nameof(entry));
+			}
+
+			if (dataSource == null)
+			{
+				throw new ArgumentNullException(nameof(dataSource));
+			}
+
+			CheckUpdating();
+
+			AddUpdate(new ZipUpdate(dataSource, entry));
+		}
+
+		/// <summary>
 		/// Add a directory entry to the archive.
 		/// </summary>
 		/// <param name="directoryName">The directory to add.</param>
