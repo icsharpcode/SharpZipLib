@@ -1215,7 +1215,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 
 					// Central header compression method matches local entry
-					if (entry.CompressionMethod != (CompressionMethod)compressionMethod)
+					if (entry.CompressionMethodForHeader != (CompressionMethod)compressionMethod)
 					{
 						throw new ZipException("Central header/local header compression method mismatch");
 					}
