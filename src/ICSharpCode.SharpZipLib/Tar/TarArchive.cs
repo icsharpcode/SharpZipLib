@@ -623,20 +623,32 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 				if (process)
 				{
-					bool asciiTrans = false;
-
-					Stream outputStream = File.Create(destFile);
-					if (this.asciiTranslate)
+					using (var outputStream = File.Create(destFile))
 					{
-						asciiTrans = !IsBinary(destFile);
+						if (this.asciiTranslate)
+						{
+							// May need to translate the file.
+							ExtractAndTranslateEntry(destFile, outputStream);
+						}
+						else
+						{
+							// If translation is disabled, just copy the entry across directly.
+							tarIn.CopyEntryContents(outputStream);
+						}
 					}
+				}
+			}
+		}
 
-					StreamWriter outw = null;
-					if (asciiTrans)
-					{
-						outw = new StreamWriter(outputStream);
-					}
+		// Extract a TAR entry, and perform an ASCII translation if required.
+		private void ExtractAndTranslateEntry(string destFile, Stream outputStream)
+		{
+			bool asciiTrans = !IsBinary(destFile);
 
+			if (asciiTrans)
+			{
+				using (var outw = new StreamWriter(outputStream, new UTF8Encoding(false), 1024, true))
+				{
 					byte[] rdbuf = new byte[32 * 1024];
 
 					while (true)
@@ -648,33 +660,22 @@ namespace ICSharpCode.SharpZipLib.Tar
 							break;
 						}
 
-						if (asciiTrans)
+						for (int off = 0, b = 0; b < numRead; ++b)
 						{
-							for (int off = 0, b = 0; b < numRead; ++b)
+							if (rdbuf[b] == 10)
 							{
-								if (rdbuf[b] == 10)
-								{
-									string s = Encoding.ASCII.GetString(rdbuf, off, (b - off));
-									outw.WriteLine(s);
-									off = b + 1;
-								}
+								string s = Encoding.ASCII.GetString(rdbuf, off, (b - off));
+								outw.WriteLine(s);
+								off = b + 1;
 							}
 						}
-						else
-						{
-							outputStream.Write(rdbuf, 0, numRead);
-						}
-					}
-
-					if (asciiTrans)
-					{
-						outw.Dispose();
-					}
-					else
-					{
-						outputStream.Dispose();
 					}
 				}
+			}
+			else
+			{
+				// No translation required.
+				tarIn.CopyEntryContents(outputStream);
 			}
 		}
 
