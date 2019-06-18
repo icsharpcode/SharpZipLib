@@ -102,6 +102,20 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>Returns a new <see cref="TarArchive"/> suitable for reading from.</returns>
 		public static TarArchive CreateInputTarArchive(Stream inputStream)
 		{
+			return CreateInputTarArchive(inputStream, null);
+		}
+
+		/// <summary>
+		/// The InputStream based constructors create a TarArchive for the
+		/// purposes of extracting or listing a tar archive. Thus, use
+		/// these constructors when you wish to extract files from or list
+		/// the contents of an existing tar archive.
+		/// </summary>
+		/// <param name="inputStream">The stream to retrieve archive data from.</param>
+		/// <param name="enc">name encoding</param>
+		/// <returns>Returns a new <see cref="TarArchive"/> suitable for reading from.</returns>
+		public static TarArchive CreateInputTarArchive(Stream inputStream, Encoding enc)
+		{
 			if (inputStream == null)
 			{
 				throw new ArgumentNullException(nameof(inputStream));
@@ -116,7 +130,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 			else
 			{
-				result = CreateInputTarArchive(inputStream, TarBuffer.DefaultBlockFactor);
+				result = CreateInputTarArchive(inputStream, TarBuffer.DefaultBlockFactor, enc);
 			}
 			return result;
 		}
@@ -129,6 +143,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>Returns a <see cref="TarArchive"/> suitable for reading.</returns>
 		public static TarArchive CreateInputTarArchive(Stream inputStream, int blockFactor)
 		{
+			return CreateInputTarArchive(inputStream, blockFactor, null);
+		}
+
+		/// <summary>
+		/// Create TarArchive for reading setting block factor
+		/// </summary>
+		/// <param name="inputStream">A stream containing the tar archive contents</param>
+		/// <param name="blockFactor">The blocking factor to apply</param>
+		/// <param name="enc">name encoding</param>
+		/// <returns>Returns a <see cref="TarArchive"/> suitable for reading.</returns>
+		public static TarArchive CreateInputTarArchive(Stream inputStream, int blockFactor, Encoding enc)
+		{
 			if (inputStream == null)
 			{
 				throw new ArgumentNullException(nameof(inputStream));
@@ -139,9 +165,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ArgumentException("TarInputStream not valid");
 			}
 
-			return new TarArchive(new TarInputStream(inputStream, blockFactor));
+			return new TarArchive(new TarInputStream(inputStream, blockFactor, enc));
 		}
-
 		/// <summary>
 		/// Create a TarArchive for writing to, using the default blocking factor
 		/// </summary>

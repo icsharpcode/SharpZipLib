@@ -4,6 +4,7 @@ using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tests.Tar
 {
@@ -831,7 +832,38 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					}
 
 					Assert.That(Directory.Exists(tempDirName), Is.False, "Temporary folder should have been removed");
-				}	
+				}
+			}
+		}	
+		[Test]
+		[TestCase(1)]
+		[TestCase(100)]
+		[TestCase(128)]
+		[Category("Tar")]
+		public void StreamWithJapaneseName(int length)
+		{
+			// U+3042 is Japanese Hiragana
+			// https://unicode.org/charts/PDF/U3040.pdf
+			var entryName = new string((char)0x3042, length);
+			var data = new byte[32];
+			using(var memoryStream = new MemoryStream())
+			{
+				using(var tarOutput = new TarOutputStream(memoryStream, System.Text.Encoding.UTF8))
+				{
+					var entry = TarEntry.CreateTarEntry(entryName);
+					entry.Size = 32;
+					tarOutput.PutNextEntry(entry);
+					tarOutput.Write(data, 0, data.Length);
+				}
+				using(var memInput = new MemoryStream(memoryStream.ToArray()))
+				using(var inputStream = new TarInputStream(memInput, Encoding.UTF8))
+				{
+					var buf = new byte[64];
+					var entry = inputStream.GetNextEntry();
+					Assert.AreEqual(entryName, entry.Name);
+					var bytesread = inputStream.Read(buf, 0, buf.Length);
+					Assert.AreEqual(data.Length, bytesread);
+				}
 			}
 		}
 	}
