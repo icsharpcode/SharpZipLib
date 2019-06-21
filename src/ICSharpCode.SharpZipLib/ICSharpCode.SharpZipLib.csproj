@@ -10,9 +10,9 @@
   
   <!-- Nuget specific tags -->
   <PropertyGroup>
-    <AssemblyVersion>1.1.0.6</AssemblyVersion>
-    <FileVersion>1.1.0.6</FileVersion>
-    <Version>1.1.0</Version>
+    <AssemblyVersion>1.2.0.7</AssemblyVersion>
+    <FileVersion>1.2.0.7</FileVersion>
+    <Version>1.2.0</Version>
     <PackageId>SharpZipLib</PackageId>
     <Company>ICSharpCode</Company>
     <Authors>ICSharpCode</Authors>
@@ -21,11 +21,11 @@
 		<PackageProjectUrl>http://icsharpcode.github.io/SharpZipLib/</PackageProjectUrl>
 		<PackageIconUrl>http://icsharpcode.github.io/SharpZipLib/assets/sharpziplib-nuget-256x256.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/icsharpcode/SharpZipLib</RepositoryUrl>
-    <Copyright>Copyright © 2000-2018 SharpZipLib Contributors</Copyright>
+    <Copyright>Copyright © 2000-2019 SharpZipLib Contributors</Copyright>
     <PackageTags>Compression Library Zip GZip BZip2 LZW Tar</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageReleaseNotes>
-Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.1 for more information.</PackageReleaseNotes>
+Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.2 for more information.</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/icsharpcode/SharpZipLib</PackageProjectUrl> 
   </PropertyGroup>
 
@@ -46,7 +46,7 @@ Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.1 for more 
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02" PrivateAssets="All"/>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19270-01" PrivateAssets="All"/>
 	</ItemGroup>
 
 </Project>
