@@ -132,7 +132,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			{
 				filename_ = value;
 				flagFname_ = !string.IsNullOrEmpty(filename_)
-					? flagFname_ = FlagSetFileName.SET
+					? FlagSetFileName.SET
 					: FlagSetFileName.NotSet;
 			}
 		}
