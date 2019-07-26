@@ -44,6 +44,12 @@ namespace ICSharpCode.SharpZipLib.GZip
 			Closed,
 		};
 
+		private enum FlagSetFileName
+		{
+			SET = GZipConstants.FNAME,
+			NotSet = 0x0
+		}
+
 		#region Instance Fields
 
 		/// <summary>
@@ -52,6 +58,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 		protected Crc32 crc = new Crc32();
 
 		private OutputState state_ = OutputState.Header;
+		private string filename_;
+		private FlagSetFileName flagFname_ = FlagSetFileName.NotSet;
 
 		#endregion Instance Fields
 
@@ -109,6 +117,24 @@ namespace ICSharpCode.SharpZipLib.GZip
 		public int GetLevel()
 		{
 			return deflater_.GetLevel();
+		}
+
+		/// <summary>
+		/// Set a file name internal gzip
+		/// </summary>
+		public string FileName
+		{
+			get
+			{
+				return filename_;
+			}
+			set
+			{
+				filename_ = value;
+				flagFname_ = !string.IsNullOrEmpty(filename_)
+					? flagFname_ = FlagSetFileName.SET
+					: FlagSetFileName.NotSet;
+			}
 		}
 
 		#endregion Public API
@@ -218,8 +244,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 					// The compression type
 					(byte) Deflater.DEFLATED,
 
-					// The flags (not set)
-					0,
+					// The flags (File Name)
+					(byte) flagFname_,
 
 					// The modification time
 					(byte) mod_time, (byte) (mod_time >> 8),
@@ -232,6 +258,13 @@ namespace ICSharpCode.SharpZipLib.GZip
 					(byte) 255
 				};
 				baseOutputStream_.Write(gzipHeader, 0, gzipHeader.Length);
+
+				if(flagFname_ == FlagSetFileName.SET)
+				{
+					var fileNameBytes = System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(FileName);
+					baseOutputStream_.Write(fileNameBytes, 0, fileNameBytes.Length);
+					baseOutputStream_.Write(new byte[] { 0 }, 0, 0);
+				}
 			}
 		}
 
