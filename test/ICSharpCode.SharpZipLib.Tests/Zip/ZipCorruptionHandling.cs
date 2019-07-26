@@ -1,15 +1,12 @@
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using ICSharpCode.SharpZipLib;
 using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
-    public class ZipCorruptionHandling
+	public class ZipCorruptionHandling
     {
 
         const string TestFileZeroCodeLength = "UEsDBBQA+AAIANwyZ0U5T8HwjQAAAL8AAAAIABUAbGltZXJpY2t" +
@@ -52,6 +49,23 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
             });
         }
 
-    }
+		const string TestFileBadCDGoodCD64 = @"UEsDBC0AAAAIANhy+k4cj+r8//////////8IABQAdGVzdGZpbGUBABAAAAA
+			AAAAAAAAUAAAAAAAAACtJLS5Jy8xJVUjOzytJzSsp5gIAUEsBAjMALQAAAAgA2HL6ThyP6vz//////////wgAFAAAAAAAA
+			AAAAAAAAAAAAHRlc3RmaWxlAQAQABIAAAAAAAAAFAAAAAAAAABQSwUGAAAAAAEAAQBKAAAATgAAAAAA";
+
+		[Test]
+		[Category("Zip")]
+		public void CorruptCentralDirWithCorrectZip64CD()
+		{
+			var fileBytes = Convert.FromBase64String(TestFileBadCDGoodCD64);
+			using (var ms = new MemoryStream(fileBytes))
+			using (var zip = new ZipFile(ms))
+			{
+				Assert.AreEqual(1, zip.Count);
+				Assert.AreNotEqual(0, zip[0].Size, "Uncompressed file size read from corrupt CentralDir instead of CD64");
+			}
+		}
+
+	}
 
 }
