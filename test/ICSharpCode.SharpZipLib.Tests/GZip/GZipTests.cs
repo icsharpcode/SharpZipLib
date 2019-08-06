@@ -346,6 +346,56 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 
 		[Test]
 		[Category("GZip")]
+		public void SmallBufferDecompression()
+		{
+			var outputBufferSize = 100000;
+			var inputBufferSize = outputBufferSize * 4;
+			
+			var outputBuffer = new byte[outputBufferSize];
+			var inputBuffer = new byte[inputBufferSize];
+			
+			using (var msGzip = new MemoryStream())
+			{
+				using (var gzos = new GZipOutputStream(msGzip))
+				{
+					gzos.IsStreamOwner = false;
+
+					var rnd = new Random(0);
+					rnd.NextBytes(inputBuffer);
+					gzos.Write(inputBuffer, 0, inputBuffer.Length);
+				
+					gzos.Flush();
+					gzos.Finish();
+				}
+
+				msGzip.Seek(0, SeekOrigin.Begin);
+				
+
+				using (var gzis = new GZipInputStream(msGzip))
+				using (var msRaw = new MemoryStream())
+				{
+					
+					int readOut;
+					while ((readOut = gzis.Read(outputBuffer, 0, outputBuffer.Length)) > 0)
+					{
+						msRaw.Write(outputBuffer, 0, readOut);
+					}
+
+					var resultBuffer = msRaw.ToArray();
+
+					for (var i = 0; i < resultBuffer.Length; i++)
+					{
+						Assert.AreEqual(inputBuffer[i], resultBuffer[i]);
+					}
+
+
+				}
+		}
+
+	}
+
+		[Test]
+		[Category("GZip")]
 		[Category("Performance")]
 		[Category("Long Running")]
 		[Explicit("Long Running")]
