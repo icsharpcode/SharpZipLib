@@ -3408,6 +3408,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			bool isZip64 = false;
+			bool requireZip64 = false;
 
 			// Check if zip64 header information is required.
 			if ((thisDiskNumber == 0xffff) ||
@@ -3417,13 +3418,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 				(centralDirSize == 0xffffffff) ||
 				(offsetOfCentralDir == 0xffffffff))
 			{
-				isZip64 = true;
+				requireZip64 = true;
+			}
 
-				long offset = LocateBlockWithSignature(ZipConstants.Zip64CentralDirLocatorSignature, locatedEndOfCentralDir, 0, 0x1000);
-				if (offset < 0)
+			// #357 - always check for the existance of the Zip64 central directory.
+			long locatedZip64EndOfCentralDir = LocateBlockWithSignature(ZipConstants.Zip64CentralDirLocatorSignature, locatedEndOfCentralDir, 0, 0x1000);
+			if (locatedZip64EndOfCentralDir < 0)
+			{
+				if (requireZip64)
 				{
+					// This is only an error in cases where the Zip64 directory is required.
 					throw new ZipException("Cannot find Zip64 locator");
 				}
+			}
+			else
+			{
+				isZip64 = true;
 
 				// number of the disk with the start of the zip64 end of central directory 4 bytes
 				// relative offset of the zip64 end of central directory record 8 bytes
