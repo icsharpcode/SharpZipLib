@@ -1,11 +1,10 @@
-﻿using System.IO;
-using ICSharpCode.SharpZipLib.Lzw;
+﻿using ICSharpCode.SharpZipLib.Lzw;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
+using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tests.Lzw
 {
-
 	[TestFixture]
 	public class LzwTestSuite
 	{
@@ -44,15 +43,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Lzw
 		{
 			var lis = new LzwInputStream(new MemoryStream());
 			bool exception = false;
-			try {
+			try
+			{
 				lis.ReadByte();
-			} catch {
+			}
+			catch
+			{
 				exception = true;
 			}
 
 			Assert.IsTrue(exception, "reading from an empty stream should cause an exception");
 		}
-
 
 		[Test]
 		[Category("LZW")]
@@ -80,7 +81,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Lzw
 
 			Assert.IsFalse(memStream.IsClosed, "Should not be closed after parent owner close");
 			Assert.IsFalse(memStream.IsDisposed, "Should not be disposed after parent owner close");
-
 		}
 	}
 }

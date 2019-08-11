@@ -1,83 +1,53 @@
-# Since alpha1 used assembly version v1.0.0.0 we use that as a base line for build revisions
-$v1threshold = "cbd05248c25de00bd6437d6217b91890af560496";
+# Describe from the lastest tag matching 'vX.Y.Z', removing the initial 'v'
+$description = $(git describe --long --tags --match 'v[0-9]*.[0-9]*.[0-9]*').substring(1);
 
-$revision = $(git rev-list "$v1threshold..HEAD" --count)
-
-$commit = $(git rev-parse --short HEAD);
-$tag = $(git describe --tags --abbrev=0);
-$tagVersion = $tag.Substring(1);
-
-$parts = $tagVersion.Split("-");
-if ($parts.length > 1) {
-    $preRelease = $parts[1];
-}
-else {
-    $preRelease = "";
-}
-
-$parts = $parts[0].Split(".");
-
-$major = $parts[0];
-$minor = $parts[1];
-$patch = $parts[2];
-
-$changes = $(git rev-list "$tag..HEAD" --count);
+# Description is in the format of: TAG-COMMITS_SINCE_TAG-COMMIT_HASH
+$dparts = $description -split('-');
+$short_version = $dparts[0];
+$commits_since_tag = $dparts[1];
+$commit_hash = $dparts[2];
 
 $masterBranches = @("master");
 
-if ($masterBranches -contains $env:APPVEYOR_REPO_BRANCH) {
-    $branch = "";
-} else {
-    $branch = "-$env:APPVEYOR_REPO_BRANCH";
-}
+$is_tag_build = ($env:APPVEYOR_REPO_TAG -eq "true");
 
-if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
-    $suffix = "-pr$env:APPVEYOR_PULL_REQUEST_NUMBER";
-} else {
-    $suffix = "";
-}
+# If not in master branch, set branch variable
+$av_branch = $env:APPVEYOR_REPO_BRANCH;
+$branch = $(if ($is_tag_build -or $masterBranches -contains $av_branch) { "" } else { "-$av_branch" });
 
-$isRelease = -not ($changes -gt 0 -or $branch -or $suffix);
+# If this is a PR, add the PR suffix
+$suffix = $(if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { "-pr$env:APPVEYOR_PULL_REQUEST_NUMBER" } else { "" });
 
-$build = "_${env:APPVEYOR_BUILD_NUMBER}";
+# Main build is when we're in the master branch and not a PR
+$is_main_build = ($branch -eq "" -and $suffix -eq "")
 
-if ($isRelease) {
-    $version = "$tagVersion";
-} else {
-    $version = "$tagVersion-git$commit";
-}
+# Use appveyor build number as the last version digit (x.x.x.B)
+$build = ${env:APPVEYOR_BUILD_NUMBER}
 
-$av_version = "$version$branch$suffix$build";
-$as_version = "$major.$minor.$patch.$revision";
+$is_release_build = ($commits_since_tag -eq 0 -and $is_main_build) 
+
+$version = $(if ($is_release_build) { $short_version } else { "$short_version-$commit_hash" })
+$bin_version = "$short_version.$build"
+
+write-host -n "Branch: ";
+write-host -f cyan $av_branch;
+
+write-host -n "Release type: ";
+if ($is_release_build) {write-host -f green 'release'} else { write-host -f yellow 'pre-release'}
+
+write-host -n "NuGet Package Version: ";
+write-host -f cyan $version;
+
+write-host -n "Assembly Version: ";
+write-host -f cyan $bin_version;
+
+$av_version = "$bin_version$branch$suffix";
+
 $env:APPVEYOR_BUILD_VERSION=$av_version;
-$env:AS_VERSION=$as_version;
+$env:BIN_VERSION=$bin_version;
 $env:VERSION=$version;
 
-write-host -n "Version: "
-write-host -f magenta $version;
-
-write-host -n "Assembly version: "
-write-host -f magenta $env:AS_VERSION;
-
-write-host -n "Pre-release: "
-if($preRelease) {
-    write-host -f yellow $preRelease;
-} else {
-    write-host -f green "No";
-}
-
-write-host -n "Release: "
-if($isRelease) {
-    write-host -f green $tag;
-} else {
-    write-host -f yellow "No";
-    write-host -n "Branch: ";
-    write-host -f magenta $env:APPVEYOR_REPO_BRANCH;
-    write-host -n "Changes: ";
-    write-host -f magenta $changes;
-}
-
-write-host -n "AppVeyor build version: ";
+write-host -n "AppVeyor Build Version: ";
 write-host -f green $av_version;
 
-appveyor UpdateBuild -Version $av_version;
+appveyor UpdateBuild -Version $av_version

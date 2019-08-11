@@ -1,4 +1,3 @@
-
 $proj = ".\test\ICSharpCode.SharpZipLib.TestBootstrapper\ICSharpCode.SharpZipLib.TestBootstrapper.csproj";
 $resxml = ".\docs\nunit3-test-results-debug.xml";
 

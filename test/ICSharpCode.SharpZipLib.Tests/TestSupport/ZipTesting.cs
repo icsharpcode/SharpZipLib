@@ -1,12 +1,12 @@
-using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
+using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
 	/// <summary>
 	/// Provides support for testing in memory zip archives.
 	/// </summary>
-	static class ZipTesting
+	internal static class ZipTesting
 	{
 		/// <summary>
 		/// Tests the archive.
@@ -27,7 +27,8 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		public static bool TestArchive(byte[] data, string password)
 		{
 			using (MemoryStream ms = new MemoryStream(data))
-			using (ZipFile zipFile = new ZipFile(ms)) {
+			using (ZipFile zipFile = new ZipFile(ms))
+			{
 				zipFile.Password = password;
 				return zipFile.TestArchive(true);
 			}

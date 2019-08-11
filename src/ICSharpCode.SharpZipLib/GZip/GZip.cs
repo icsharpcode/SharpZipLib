@@ -11,7 +11,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 	public static class GZip
 	{
 		/// <summary>
-		/// Decompress the <paramref name="inStream">input</paramref> writing 
+		/// Decompress the <paramref name="inStream">input</paramref> writing
 		/// uncompressed data to the <paramref name="outStream">output stream</paramref>
 		/// </summary>
 		/// <param name="inStream">The readable stream containing data to decompress.</param>
@@ -45,7 +45,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		}
 
 		/// <summary>
-		/// Compress the <paramref name="inStream">input stream</paramref> sending 
+		/// Compress the <paramref name="inStream">input stream</paramref> sending
 		/// result data to <paramref name="outStream">output stream</paramref>
 		/// </summary>
 		/// <param name="inStream">The readable stream to compress.</param>
@@ -61,13 +61,13 @@ namespace ICSharpCode.SharpZipLib.GZip
 			if (inStream == null)
 				throw new ArgumentNullException(nameof(inStream), "Input stream is null");
 
-			if(outStream == null)
+			if (outStream == null)
 				throw new ArgumentNullException(nameof(outStream), "Output stream is null");
 
 			if (bufferSize < 512)
 				throw new ArgumentOutOfRangeException(nameof(bufferSize), "Deflate buffer size must be >= 512");
 
-			if (level<NO_COMPRESSION || level> BEST_COMPRESSION)
+			if (level < NO_COMPRESSION || level > BEST_COMPRESSION)
 				throw new ArgumentOutOfRangeException(nameof(level), "Compression level must be 0-9");
 
 			try
@@ -88,6 +88,5 @@ namespace ICSharpCode.SharpZipLib.GZip
 				}
 			}
 		}
-
 	}
 }

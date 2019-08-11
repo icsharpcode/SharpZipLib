@@ -1,20 +1,21 @@
-﻿using System;
+﻿using ICSharpCode.SharpZipLib.Tests.TestSupport;
+using ICSharpCode.SharpZipLib.Zip;
+using NUnit.Framework;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using ICSharpCode.SharpZipLib.Tests.TestSupport;
-using ICSharpCode.SharpZipLib.Zip;
-using NUnit.Framework;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
 	[TestFixture]
 	public class ZipEntryHandling : ZipBase
 	{
-		byte[] MakeLocalHeader(string asciiName, short versionToExtract, short flags, short method,
+		private byte[] MakeLocalHeader(string asciiName, short versionToExtract, short flags, short method,
 							  int dostime, int crc, int compressedSize, int size)
 		{
-			using (TrackedMemoryStream ms = new TrackedMemoryStream()) {
+			using (TrackedMemoryStream ms = new TrackedMemoryStream())
+			{
 				ms.WriteByte((byte)'P');
 				ms.WriteByte((byte)'K');
 				ms.WriteByte(3);
@@ -36,7 +37,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
-		ZipEntry MakeEntry(string asciiName, short versionToExtract, short flags, short method,
+		private ZipEntry MakeEntry(string asciiName, short versionToExtract, short flags, short method,
 							  int dostime, int crc, int compressedSize, int size)
 		{
 			byte[] data = MakeLocalHeader(asciiName, versionToExtract, flags, method,
@@ -48,7 +49,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			return ze;
 		}
 
-		void PiecewiseCompare(ZipEntry lhs, ZipEntry rhs)
+		private void PiecewiseCompare(ZipEntry lhs, ZipEntry rhs)
 		{
 			Type entryType = typeof(ZipEntry);
 			BindingFlags binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
@@ -57,7 +58,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			Assert.Greater(fields.Length, 8, "Failed to find fields");
 
-			foreach (FieldInfo info in fields) {
+			foreach (FieldInfo info in fields)
+			{
 				object lValue = info.GetValue(lhs);
 				object rValue = info.GetValue(rhs);
 

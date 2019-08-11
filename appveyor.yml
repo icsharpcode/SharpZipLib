@@ -8,11 +8,11 @@ dotnet_csproj:
   file: '**\*.csproj'
   version: $(VERSION)
   package_version: $(VERSION)
-  assembly_version: $(AS_VERSION)
-  file_version: $(AS_VERSION)
+  assembly_version: $(BIN_VERSION)
+  file_version: $(BIN_VERSION)
   informational_version: $(VERSION)
 install:
-- ps: .\tools\appveyor-install.ps1
+- ps: tools/appveyor-install.ps1
 nuget:
   project_feed: true
   disable_publish_on_pr: true
@@ -27,7 +27,7 @@ build:
 after_build:
 - ps: .\tools\appveyor-docfx-build.ps1
 test_script:
-- ps: .\tools\appveyor-test.ps1
+- ps: tools\appveyor-test.ps1
 artifacts:
 - path: docs\help\_site
   type: zip

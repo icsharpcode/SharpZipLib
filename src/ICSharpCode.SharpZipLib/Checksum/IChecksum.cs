@@ -19,7 +19,8 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		/// <summary>
 		/// Returns the data checksum computed so far.
 		/// </summary>
-		long Value {
+		long Value
+		{
 			get;
 		}
 

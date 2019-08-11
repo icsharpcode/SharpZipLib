@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
-    public static class StringTesting
-    {
+	public static class StringTesting
+	{
 		static StringTesting()
 		{
 			AddLanguage("Chinese", "測試.txt", "big5");
 			AddLanguage("Greek", "Ϗΰ.txt", "windows-1253");
 			AddLanguage("Nordic", "Åæ.txt", "windows-1252");
 			AddLanguage("Arabic", "ڀڅ.txt", "windows-1256");
+			AddLanguage("Russian", "Прйвёт.txt", "windows-1251");
 		}
 
 		private static void AddLanguage(string language, string filename, string encoding)

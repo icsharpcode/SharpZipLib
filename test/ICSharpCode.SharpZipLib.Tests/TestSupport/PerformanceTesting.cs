@@ -1,16 +1,14 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.ExceptionServices;
-using System.Text;
 using System.Threading;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
-    internal static class PerformanceTesting
-    {
+	internal static class PerformanceTesting
+	{
 		private const double ByteToMB = 1000000;
 		private const int PacifierOffset = 0x100000;
 
@@ -42,8 +40,6 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 				streamCls = outputClose
 			};
 
-
-
 			var reader = new Thread(stateObject =>
 			{
 				var state = (PerfWorkerState)stateObject;
@@ -57,7 +53,6 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 					if (!state.token.IsCancellationRequested)
 					{
-
 						Assert.IsFalse(state.baseStream.CanRead, "Base Stream should be closed");
 
 						// This shouldnt read any data but should read the footer
@@ -127,7 +122,6 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			//Assert.IsTrue(writerJoined, "Timed out waiting for reader thread to join");
 			//Assert.IsTrue(readerJoined, "Timed out waiting for writer thread to join");
 
-
 			Assert.IsFalse(cts.IsCancellationRequested, "Threads were cancelled before completing execution");
 
 			var elapsed = sw.Elapsed;
@@ -162,7 +156,6 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		internal static void WriteTargetBytes(ref PerfWorkerState state)
 		{
-
 			const int bufferSize = 8192;
 			byte[] buffer = new byte[bufferSize];
 			int bytesToWrite = bufferSize;
@@ -175,7 +168,6 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 				state.stream.Write(buffer, 0, bytesToWrite);
 				state.bytesLeft -= bytesToWrite;
 			}
-
 		}
 
 		internal static void ReadTargetBytes(ref PerfWorkerState state)
@@ -203,7 +195,6 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 				if (bytesRead == 0) break;
 			}
 		}
-
 	}
 
 	internal class PerfWorkerState
@@ -227,10 +218,10 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		}
 	}
 
-	public enum TestDataSize: int
+	public enum TestDataSize : int
 	{
 		Large = 0x10000000,
 		Medium = 0x5000000,
-		Small =  0x1400000,
+		Small = 0x1400000,
 	}
 }
