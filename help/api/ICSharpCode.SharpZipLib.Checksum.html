@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
   
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace ICSharpCode.SharpZipLib.Checksum
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.37.0.0">
+    <meta name="generator" content="docfx 2.44.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -82,17 +82,17 @@ compute.</p>
 <p>The specification for Adler32 may be found in RFC 1950.
 ZLIB Compressed Data Format Specification version 3.3)</p>
 <p>From that document:</p>
-<p> &quot;ADLER32 (Adler-32 checksum)
-  This contains a checksum value of the uncompressed data
-  (excluding any dictionary data) computed according to Adler-32
-  algorithm. This algorithm is a 32-bit extension and improvement
-  of the Fletcher algorithm, used in the ITU-T X.224 / ISO 8073
-  standard.</p>
-<p>  Adler-32 is composed of two sums accumulated per byte: s1 is
-  the sum of all bytes, s2 is the sum of all s1 values. Both sums
-  are done modulo 65521. s1 is initialized to 1, s2 to zero.  The
-  Adler-32 checksum is stored as s2*65536 + s1 in most-
-  significant-byte first (network) order.&quot;</p>
+<p>&quot;ADLER32 (Adler-32 checksum)
+ This contains a checksum value of the uncompressed data
+ (excluding any dictionary data) computed according to Adler-32
+ algorithm. This algorithm is a 32-bit extension and improvement
+ of the Fletcher algorithm, used in the ITU-T X.224 / ISO 8073
+ standard.</p>
+<p> Adler-32 is composed of two sums accumulated per byte: s1 is
+ the sum of all bytes, s2 is the sum of all s1 values. Both sums
+ are done modulo 65521. s1 is initialized to 1, s2 to zero.  The
+ Adler-32 checksum is stored as s2*65536 + s1 in most-
+ significant-byte first (network) order.&quot;</p>
 <p>&quot;8.2. The Adler-32 algorithm</p>
 <p>The Adler-32 algorithm is much faster than the CRC32 algorithm yet
 still provides an extremely low probability of undetected errors.</p>
@@ -149,7 +149,7 @@ update the value of the current checksum can be returned by calling</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2000-2018 SharpZipLib Contributors
+            Copyright © 2000-2019 SharpZipLib Contributors
             
           </div>
         </div>

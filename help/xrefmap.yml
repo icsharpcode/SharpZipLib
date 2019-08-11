@@ -57,6 +57,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor
   fullName: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.BZip2Exception()
   nameWithType: BZip2Exception.BZip2Exception()
+- uid: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: BZip2Exception(SerializationInfo, StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2Exception.html#ICSharpCode_SharpZipLib_BZip2_BZip2Exception__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.BZip2Exception(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: BZip2Exception.BZip2Exception(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor(System.String)
   name: BZip2Exception(String)
   href: api/ICSharpCode.SharpZipLib.BZip2.BZip2Exception.html#ICSharpCode_SharpZipLib_BZip2_BZip2Exception__ctor_System_String_
@@ -1095,6 +1101,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor
   fullName: ICSharpCode.SharpZipLib.Core.InvalidNameException.InvalidNameException()
   nameWithType: InvalidNameException.InvalidNameException()
+- uid: ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: InvalidNameException(SerializationInfo, StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.Core.InvalidNameException.html#ICSharpCode_SharpZipLib_Core_InvalidNameException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.Core.InvalidNameException.InvalidNameException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: InvalidNameException.InvalidNameException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor(System.String)
   name: InvalidNameException(String)
   href: api/ICSharpCode.SharpZipLib.Core.InvalidNameException.html#ICSharpCode_SharpZipLib_Core_InvalidNameException__ctor_System_String_
@@ -1597,6 +1609,22 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully
   nameWithType: StreamUtils.ReadFully
+- uid: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes(System.IO.Stream,System.Byte[],System.Int32,System.Int32)
+  name: ReadRequestedBytes(Stream, Byte[], Int32, Int32)
+  href: api/ICSharpCode.SharpZipLib.Core.StreamUtils.html#ICSharpCode_SharpZipLib_Core_StreamUtils_ReadRequestedBytes_System_IO_Stream_System_Byte___System_Int32_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes(System.IO.Stream,System.Byte[],System.Int32,System.Int32)
+  name.vb: ReadRequestedBytes(Stream, Byte(), Int32, Int32)
+  fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes(System.IO.Stream, System.Byte[], System.Int32, System.Int32)
+  fullName.vb: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes(System.IO.Stream, System.Byte(), System.Int32, System.Int32)
+  nameWithType: StreamUtils.ReadRequestedBytes(Stream, Byte[], Int32, Int32)
+  nameWithType.vb: StreamUtils.ReadRequestedBytes(Stream, Byte(), Int32, Int32)
+- uid: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes*
+  name: ReadRequestedBytes
+  href: api/ICSharpCode.SharpZipLib.Core.StreamUtils.html#ICSharpCode_SharpZipLib_Core_StreamUtils_ReadRequestedBytes_
+  commentId: Overload:ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes
+  nameWithType: StreamUtils.ReadRequestedBytes
 - uid: ICSharpCode.SharpZipLib.Core.WindowsPathUtils
   name: WindowsPathUtils
   href: api/ICSharpCode.SharpZipLib.Core.WindowsPathUtils.html
@@ -1852,6 +1880,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.GZip.GZipException.#ctor
   fullName: ICSharpCode.SharpZipLib.GZip.GZipException.GZipException()
   nameWithType: GZipException.GZipException()
+- uid: ICSharpCode.SharpZipLib.GZip.GZipException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: GZipException(SerializationInfo, StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipException.html#ICSharpCode_SharpZipLib_GZip_GZipException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipException.GZipException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: GZipException.GZipException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.GZip.GZipException.#ctor(System.String)
   name: GZipException(String)
   href: api/ICSharpCode.SharpZipLib.GZip.GZipException.html#ICSharpCode_SharpZipLib_GZip_GZipException__ctor_System_String_
@@ -2089,6 +2123,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor
   fullName: ICSharpCode.SharpZipLib.Lzw.LzwException.LzwException()
   nameWithType: LzwException.LzwException()
+- uid: ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: LzwException(SerializationInfo, StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.Lzw.LzwException.html#ICSharpCode_SharpZipLib_Lzw_LzwException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.Lzw.LzwException.LzwException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: LzwException.LzwException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor(System.String)
   name: LzwException(String)
   href: api/ICSharpCode.SharpZipLib.Lzw.LzwException.html#ICSharpCode_SharpZipLib_Lzw_LzwException__ctor_System_String_
@@ -2327,6 +2367,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor
   fullName: ICSharpCode.SharpZipLib.SharpZipBaseException.SharpZipBaseException()
   nameWithType: SharpZipBaseException.SharpZipBaseException()
+- uid: ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: SharpZipBaseException(SerializationInfo, StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.SharpZipBaseException.html#ICSharpCode_SharpZipLib_SharpZipBaseException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.SharpZipBaseException.SharpZipBaseException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: SharpZipBaseException.SharpZipBaseException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.String)
   name: SharpZipBaseException(String)
   href: api/ICSharpCode.SharpZipLib.SharpZipBaseException.html#ICSharpCode_SharpZipLib_SharpZipBaseException__ctor_System_String_
@@ -2358,6 +2404,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor
   fullName: ICSharpCode.SharpZipLib.StreamDecodingException.StreamDecodingException()
   nameWithType: StreamDecodingException.StreamDecodingException()
+- uid: ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: StreamDecodingException(SerializationInfo, StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.StreamDecodingException.html#ICSharpCode_SharpZipLib_StreamDecodingException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.StreamDecodingException.StreamDecodingException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: StreamDecodingException.StreamDecodingException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.String)
   name: StreamDecodingException(String)
   href: api/ICSharpCode.SharpZipLib.StreamDecodingException.html#ICSharpCode_SharpZipLib_StreamDecodingException__ctor_System_String_
@@ -2389,6 +2441,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor
   fullName: ICSharpCode.SharpZipLib.StreamUnsupportedException.StreamUnsupportedException()
   nameWithType: StreamUnsupportedException.StreamUnsupportedException()
+- uid: ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: StreamUnsupportedException(SerializationInfo, StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.StreamUnsupportedException.html#ICSharpCode_SharpZipLib_StreamUnsupportedException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.StreamUnsupportedException.StreamUnsupportedException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: StreamUnsupportedException.StreamUnsupportedException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.String)
   name: StreamUnsupportedException(String)
   href: api/ICSharpCode.SharpZipLib.StreamUnsupportedException.html#ICSharpCode_SharpZipLib_StreamUnsupportedException__ctor_System_String_
@@ -3438,6 +3496,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Tar.TarException.#ctor
   fullName: ICSharpCode.SharpZipLib.Tar.TarException.TarException()
   nameWithType: TarException.TarException()
+- uid: ICSharpCode.SharpZipLib.Tar.TarException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: TarException(SerializationInfo, StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarException.html#ICSharpCode_SharpZipLib_Tar_TarException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarException.TarException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: TarException.TarException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.Tar.TarException.#ctor(System.String)
   name: TarException(String)
   href: api/ICSharpCode.SharpZipLib.Tar.TarException.html#ICSharpCode_SharpZipLib_Tar_TarException__ctor_System_String_
@@ -4926,6 +4990,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor
   fullName: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.UnexpectedEndOfStreamException()
   nameWithType: UnexpectedEndOfStreamException.UnexpectedEndOfStreamException()
+- uid: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: UnexpectedEndOfStreamException(SerializationInfo, StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.html#ICSharpCode_SharpZipLib_UnexpectedEndOfStreamException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.UnexpectedEndOfStreamException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: UnexpectedEndOfStreamException.UnexpectedEndOfStreamException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.String)
   name: UnexpectedEndOfStreamException(String)
   href: api/ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.html#ICSharpCode_SharpZipLib_UnexpectedEndOfStreamException__ctor_System_String_
@@ -4951,6 +5021,12 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.ValueOutOfRangeException
   fullName: ICSharpCode.SharpZipLib.ValueOutOfRangeException
   nameWithType: ValueOutOfRangeException
+- uid: ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: ValueOutOfRangeException(SerializationInfo, StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.ValueOutOfRangeException.html#ICSharpCode_SharpZipLib_ValueOutOfRangeException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.ValueOutOfRangeException.ValueOutOfRangeException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: ValueOutOfRangeException.ValueOutOfRangeException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(System.String)
   name: ValueOutOfRangeException(String)
   href: api/ICSharpCode.SharpZipLib.ValueOutOfRangeException.html#ICSharpCode_SharpZipLib_ValueOutOfRangeException__ctor_System_String_
@@ -5580,6 +5656,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.#ctor(ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending)
   fullName: ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.DeflaterEngine(ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending)
   nameWithType: DeflaterEngine.DeflaterEngine(DeflaterPending)
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.#ctor(ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending,System.Boolean)
+  name: DeflaterEngine(DeflaterPending, Boolean)
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.html#ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine__ctor_ICSharpCode_SharpZipLib_Zip_Compression_DeflaterPending_System_Boolean_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.#ctor(ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending,System.Boolean)
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.DeflaterEngine(ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending, System.Boolean)
+  nameWithType: DeflaterEngine.DeflaterEngine(DeflaterPending, Boolean)
 - uid: ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.#ctor*
   name: DeflaterEngine
   href: api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.html#ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine__ctor_
@@ -6540,6 +6622,19 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Flush
   nameWithType: DeflaterOutputStream.Flush
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.GetAuthCodeIfAES
+  name: GetAuthCodeIfAES()
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_GetAuthCodeIfAES
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.GetAuthCodeIfAES
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.GetAuthCodeIfAES()
+  nameWithType: DeflaterOutputStream.GetAuthCodeIfAES()
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.GetAuthCodeIfAES*
+  name: GetAuthCodeIfAES
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_GetAuthCodeIfAES_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.GetAuthCodeIfAES
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.GetAuthCodeIfAES
+  nameWithType: DeflaterOutputStream.GetAuthCodeIfAES
 - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializeAESPassword(ICSharpCode.SharpZipLib.Zip.ZipEntry,System.String,System.Byte[]@,System.Byte[]@)
   name: InitializeAESPassword(ZipEntry, String, out Byte[], out Byte[])
   href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_InitializeAESPassword_ICSharpCode_SharpZipLib_Zip_ZipEntry_System_String_System_Byte____System_Byte____
@@ -7510,6 +7605,18 @@ references:
   commentId: F:ICSharpCode.SharpZipLib.Zip.CompressionMethod.Deflated
   fullName: ICSharpCode.SharpZipLib.Zip.CompressionMethod.Deflated
   nameWithType: CompressionMethod.Deflated
+- uid: ICSharpCode.SharpZipLib.Zip.CompressionMethod.LZMA
+  name: LZMA
+  href: api/ICSharpCode.SharpZipLib.Zip.CompressionMethod.html#ICSharpCode_SharpZipLib_Zip_CompressionMethod_LZMA
+  commentId: F:ICSharpCode.SharpZipLib.Zip.CompressionMethod.LZMA
+  fullName: ICSharpCode.SharpZipLib.Zip.CompressionMethod.LZMA
+  nameWithType: CompressionMethod.LZMA
+- uid: ICSharpCode.SharpZipLib.Zip.CompressionMethod.PPMd
+  name: PPMd
+  href: api/ICSharpCode.SharpZipLib.Zip.CompressionMethod.html#ICSharpCode_SharpZipLib_Zip_CompressionMethod_PPMd
+  commentId: F:ICSharpCode.SharpZipLib.Zip.CompressionMethod.PPMd
+  fullName: ICSharpCode.SharpZipLib.Zip.CompressionMethod.PPMd
+  nameWithType: CompressionMethod.PPMd
 - uid: ICSharpCode.SharpZipLib.Zip.CompressionMethod.Stored
   name: Stored
   href: api/ICSharpCode.SharpZipLib.Zip.CompressionMethod.html#ICSharpCode_SharpZipLib_Zip_CompressionMethod_Stored
@@ -10342,6 +10449,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Zip.ZipException.#ctor
   fullName: ICSharpCode.SharpZipLib.Zip.ZipException.ZipException()
   nameWithType: ZipException.ZipException()
+- uid: ICSharpCode.SharpZipLib.Zip.ZipException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: ZipException(SerializationInfo, StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipException.html#ICSharpCode_SharpZipLib_Zip_ZipException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipException.ZipException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: ZipException.ZipException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipException.#ctor(System.String)
   name: ZipException(String)
   href: api/ICSharpCode.SharpZipLib.Zip.ZipException.html#ICSharpCode_SharpZipLib_Zip_ZipException__ctor_System_String_
@@ -10721,12 +10834,24 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.FileStream)
   fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(System.IO.FileStream)
   nameWithType: ZipFile.ZipFile(FileStream)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.FileStream,System.Boolean)
+  name: ZipFile(FileStream, Boolean)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_System_IO_FileStream_System_Boolean_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.FileStream,System.Boolean)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(System.IO.FileStream, System.Boolean)
+  nameWithType: ZipFile.ZipFile(FileStream, Boolean)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.Stream)
   name: ZipFile(Stream)
   href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_System_IO_Stream_
   commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.Stream)
   fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(System.IO.Stream)
   nameWithType: ZipFile.ZipFile(Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.Stream,System.Boolean)
+  name: ZipFile(Stream, Boolean)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_System_IO_Stream_System_Boolean_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.Stream,System.Boolean)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(System.IO.Stream, System.Boolean)
+  nameWithType: ZipFile.ZipFile(Stream, Boolean)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.String)
   name: ZipFile(String)
   href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_System_String_
@@ -10753,6 +10878,12 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.AbortUpdate
   nameWithType: ZipFile.AbortUpdate
+- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.Add(ICSharpCode.SharpZipLib.Zip.IStaticDataSource,ICSharpCode.SharpZipLib.Zip.ZipEntry)
+  name: Add(IStaticDataSource, ZipEntry)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile_Add_ICSharpCode_SharpZipLib_Zip_IStaticDataSource_ICSharpCode_SharpZipLib_Zip_ZipEntry_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.Add(ICSharpCode.SharpZipLib.Zip.IStaticDataSource,ICSharpCode.SharpZipLib.Zip.ZipEntry)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.Add(ICSharpCode.SharpZipLib.Zip.IStaticDataSource, ICSharpCode.SharpZipLib.Zip.ZipEntry)
+  nameWithType: ZipFile.Add(IStaticDataSource, ZipEntry)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipFile.Add(ICSharpCode.SharpZipLib.Zip.IStaticDataSource,System.String)
   name: Add(IStaticDataSource, String)
   href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile_Add_ICSharpCode_SharpZipLib_Zip_IStaticDataSource_System_String_

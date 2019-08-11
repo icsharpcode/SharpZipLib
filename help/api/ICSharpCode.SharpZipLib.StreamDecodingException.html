@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
   
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class StreamDecodingException
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.37.0.0">
+    <meta name="generator" content="docfx 2.44.0.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -71,7 +71,7 @@
   
   <h1 id="ICSharpCode_SharpZipLib_StreamDecodingException" data-uid="ICSharpCode.SharpZipLib.StreamDecodingException" class="text-break">Class StreamDecodingException
   </h1>
-  <div class="markdown level0 summary"><p>Indicates that an error occured during decoding of a input stream due to corrupt 
+  <div class="markdown level0 summary"><p>Indicates that an error occured during decoding of a input stream due to corrupt
 data or (unintentional) library incompability.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
@@ -150,7 +150,8 @@ data or (unintentional) library incompability.</p>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_StreamDecodingException_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class StreamDecodingException : SharpZipBaseException, ISerializable</code></pre>
+    <pre><code class="lang-csharp hljs">[Serializable]
+public class StreamDecodingException : SharpZipBaseException, ISerializable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -159,7 +160,7 @@ data or (unintentional) library incompability.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_StreamDecodingException__ctor.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.StreamDecodingException.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/Exceptions/StreamDecodingException.cs/#L18">View Source</a>
+    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Core/Exceptions/StreamDecodingException.cs/#L18">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_StreamDecodingException__ctor_" data-uid="ICSharpCode.SharpZipLib.StreamDecodingException.#ctor*"></a>
   <h4 id="ICSharpCode_SharpZipLib_StreamDecodingException__ctor" data-uid="ICSharpCode.SharpZipLib.StreamDecodingException.#ctor">StreamDecodingException()</h4>
@@ -172,10 +173,52 @@ data or (unintentional) library incompability.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_StreamDecodingException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.StreamDecodingException.%23ctor(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Core/Exceptions/StreamDecodingException.cs/#L45">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_StreamDecodingException__ctor_" data-uid="ICSharpCode.SharpZipLib.StreamDecodingException.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_StreamDecodingException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">StreamDecodingException(SerializationInfo, StreamingContext)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the StreamDecodingException class with serialized data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected StreamDecodingException(SerializationInfo info, StreamingContext context)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Runtime.Serialization.SerializationInfo</span></td>
+        <td><span class="parametername">info</span></td>
+        <td><p>The System.Runtime.Serialization.SerializationInfo that holds the serialized
+object data about the exception being thrown.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Runtime.Serialization.StreamingContext</span></td>
+        <td><span class="parametername">context</span></td>
+        <td><p>The System.Runtime.Serialization.StreamingContext that contains contextual information
+about the source or destination.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_StreamDecodingException__ctor_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.StreamDecodingException.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/Exceptions/StreamDecodingException.cs/#L24">View Source</a>
+    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Core/Exceptions/StreamDecodingException.cs/#L24">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_StreamDecodingException__ctor_" data-uid="ICSharpCode.SharpZipLib.StreamDecodingException.#ctor*"></a>
   <h4 id="ICSharpCode_SharpZipLib_StreamDecodingException__ctor_System_String_" data-uid="ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.String)">StreamDecodingException(String)</h4>
@@ -209,7 +252,7 @@ data or (unintentional) library incompability.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_StreamDecodingException__ctor_System_String_System_Exception_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.StreamDecodingException.%23ctor(System.String%2CSystem.Exception)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/Exceptions/StreamDecodingException.cs/#L33">View Source</a>
+    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Core/Exceptions/StreamDecodingException.cs/#L32">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_StreamDecodingException__ctor_" data-uid="ICSharpCode.SharpZipLib.StreamDecodingException.#ctor*"></a>
   <h4 id="ICSharpCode_SharpZipLib_StreamDecodingException__ctor_System_String_System_Exception_" data-uid="ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.String,System.Exception)">StreamDecodingException(String, Exception)</h4>
@@ -260,7 +303,7 @@ error message and a reference to the inner exception that is the cause of this e
                     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_StreamDecodingException.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.StreamDecodingException%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/Exceptions/StreamDecodingException.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Core/Exceptions/StreamDecodingException.cs/#L10" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -279,7 +322,7 @@ error message and a reference to the inner exception that is the cause of this e
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2000-2018 SharpZipLib Contributors
+            Copyright © 2000-2019 SharpZipLib Contributors
             
           </div>
         </div>
