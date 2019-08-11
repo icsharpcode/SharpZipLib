@@ -65,7 +65,11 @@
     ],
 	"globalMetadata": {
       "_appTitle": "SharpZipLib Help",
-	  "_appFooter": "Copyright © 2000-2018 SharpZipLib Contributors"
+      "_appFooter": "Copyright © 2000-2019 SharpZipLib Contributors",
+      "_gitContribute": {
+         "repo": "https://github.com/icsharpcode/SharpZipLib",
+         "branch": "master"
+      }
     },
     "dest": "_site",
     "globalMetadataFiles": [],
