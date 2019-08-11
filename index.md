@@ -2,7 +2,7 @@
 
 ## Download
 
-Releases of v1.0 is now available as a [NuGet Package](https://www.nuget.org/packages/SharpZipLib/)
+Releases of v1.2 is now available as a [NuGet Package](https://www.nuget.org/packages/SharpZipLib/)
 
 Install using
 ```.ps1
@@ -13,7 +13,7 @@ or
 dotnet add package SharpZipLib
 ```
 
-[Release notes for v1.0](https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.0)
+[Release notes for v1.2](https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.2)
 
 ### Legacy
 
@@ -25,7 +25,7 @@ Legacy versions of SharpZipLib can be found on the [legacy page](legacy)
 
 The library is released under the MIT license:
 
-> Copyright © 2000-2018 SharpZipLib Contributors
+> Copyright © 2000-2019 SharpZipLib Contributors
 > 
 > Permission is hereby granted, free of charge, to any person obtaining a copy of this
 > software and associated documentation files (the "Software"), to deal in the Software
