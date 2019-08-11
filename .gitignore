@@ -252,4 +252,10 @@ paket-files/
 *.sln.iml
 /test/ICSharpCode.SharpZipLib.TestBootstrapper/Properties/launchSettings.json
 _testRunner/
+
+
+# DocFX
 docs/help/api/.manifest
+
+# Vim
+*.swp

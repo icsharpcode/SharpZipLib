@@ -21,7 +21,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		On,
 
 		/// <summary>
-		/// #ZipLib will determine use based on entry values when added to archive.
+		/// SharpZipLib will determine use based on entry values when added to archive.
 		/// </summary>
 		Dynamic,
 	}

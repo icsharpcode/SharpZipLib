@@ -339,30 +339,82 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get/Set general purpose bit flag for entry
 		/// </summary>
 		/// <remarks>
-		/// General purpose bit flag<br/>
-		/// <br/>
-		/// Bit 0: If set, indicates the file is encrypted<br/>
-		/// Bit 1-2 Only used for compression type 6 Imploding, and 8, 9 deflating<br/>
-		/// Imploding:<br/>
-		/// Bit 1 if set indicates an 8K sliding dictionary was used.  If clear a 4k dictionary was used<br/>
-		/// Bit 2 if set indicates 3 Shannon-Fanno trees were used to encode the sliding dictionary, 2 otherwise<br/>
-		/// <br/>
-		/// Deflating:<br/>
-		///   Bit 2    Bit 1<br/>
-		///     0        0       Normal compression was used<br/>
-		///     0        1       Maximum compression was used<br/>
-		///     1        0       Fast compression was used<br/>
-		///     1        1       Super fast compression was used<br/>
-		/// <br/>
-		/// Bit 3: If set, the fields crc-32, compressed size
-		/// and uncompressed size are were not able to be written during zip file creation
-		/// The correct values are held in a data descriptor immediately following the compressed data. <br/>
-		/// Bit 4: Reserved for use by PKZIP for enhanced deflating<br/>
-		/// Bit 5: If set indicates the file contains compressed patch data<br/>
-		/// Bit 6: If set indicates strong encryption was used.<br/>
-		/// Bit 7-10: Unused or reserved<br/>
-		/// Bit 11: If set the name and comments for this entry are in <a href="http://www.unicode.org">unicode</a>.<br/>
-		/// Bit 12-15: Unused or reserved<br/>
+		///  <list type="table">
+		///    <listheader>
+		///      <term>Bit(s)</term>
+		///      <description>Description</description>
+		///    </listheader>  
+		///    <item>
+		///      <term>0</term>
+		///      <description>If set, indicates the file is encrypted</description>
+		///    </item>
+		///    <item>
+		///      <term>1-2</term>
+		///      <description>Only used for compression type 6 imploding, and 8, 9 deflating</description>
+		///    </item>
+		///    <item> 
+		///      <term>3</term> 
+		///      <description>
+		///        If set, the fields crc-32, compressed size and uncompressed size are were not able to be written during 
+		///        zip file creation. The correct values are held in a data descriptor immediately following the compressed data.
+		///      </description>
+		///    </item>
+		///    <item>
+		///      <term>4</term>
+		///      <description>Reserved for use by PKZIP for enhanced deflating</description>
+		///    </item>
+		///    <item>
+		///      <term>5</term>
+		///      <description>If set indicates the file contains compressed patch data</description>
+		///    </item>
+		///    <item>
+		///      <term>6</term>
+		///      <description>If set indicates strong encryption was used.</description>
+		///    </item>
+		///    <item>
+		///      <term>7-10</term>
+		///      <description> Unused or reserved</description>
+		///    </item>
+		///    <item>
+		///      <term>11</term>
+		///      <description>If set the name and comments for this entry are in <a href="http://www.unicode.org">unicode</a>.</description>
+		///    </item>
+		///    <item>
+		///      <term>12-15</term>
+		///      <description> Unused or reserved</description>
+		///     </item>
+		///   </list>
+		///   **Imploding:**  
+		///   <list type="table">
+		///    <item>
+		///      <term>Bit 1</term>
+		///      <description>if set indicates an 8K sliding dictionary was used.  If clear a 4k dictionary was used</description>
+		///    </item>
+		///    <item>
+		///      <term>Bit 2</term> 
+		///      <description>if set indicates 3 Shannon-Fanno trees were used to encode the sliding dictionary, 2 otherwise</description>
+		///    </item>
+		///   </list>
+		///   **Deflating:**  
+		///   Uses bits 1-2 as a 2-bit number (MSB first, I.E: yx where y is bit 2 and x is bit 1)
+		///   <list type="table">
+		///    <item> 
+		///      <term><c>00</c></term>
+		///      <description>Normal compression was used</description>
+		///    </item>
+		///    <item> 
+		///      <term><c>01</c></term>
+		///      <description>Maximum compression was used</description>
+		///    </item>
+		///    <item> 
+		///      <term><c>10</c></term>
+		///      <description>Fast compression was used</description>
+		///    </item>
+		///    <item> 
+		///      <term><c>11</c></term>
+		///      <description>Super fast compression was used</description>
+		///    </item>
+		///   </list>
 		/// </remarks>
 		/// <seealso cref="IsUnicodeText"></seealso>
 		/// <seealso cref="IsCrypted"></seealso>
@@ -493,28 +545,28 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// to obtain up to date and correct information.  The modified appnote by the infozip group is
 		/// particularly helpful as it documents a lot of peculiarities.  The document is however a little dated.
 		/// <list type="table">
-		/// <item>0 - MS-DOS and OS/2 (FAT / VFAT / FAT32 file systems)</item>
-		/// <item>1 - Amiga</item>
-		/// <item>2 - OpenVMS</item>
-		/// <item>3 - Unix</item>
-		/// <item>4 - VM/CMS</item>
-		/// <item>5 - Atari ST</item>
-		/// <item>6 - OS/2 HPFS</item>
-		/// <item>7 - Macintosh</item>
-		/// <item>8 - Z-System</item>
-		/// <item>9 - CP/M</item>
-		/// <item>10 - Windows NTFS</item>
-		/// <item>11 - MVS (OS/390 - Z/OS)</item>
-		/// <item>12 - VSE</item>
-		/// <item>13 - Acorn Risc</item>
-		/// <item>14 - VFAT</item>
-		/// <item>15 - Alternate MVS</item>
-		/// <item>16 - BeOS</item>
-		/// <item>17 - Tandem</item>
-		/// <item>18 - OS/400</item>
-		/// <item>19 - OS/X (Darwin)</item>
-		/// <item>99 - WinZip AES</item>
-		/// <item>remainder - unused</item>
+		/// <item> <term>0</term> <description>MS-DOS and OS/2 (FAT / VFAT / FAT32 file systems)</description></item>
+		/// <item> <term>1</term> <description>Amiga</description> </item>
+		/// <item> <term>2</term> <description>OpenVMS</description> </item>
+		/// <item> <term>3</term> <description>Unix</description> </item>
+		/// <item> <term>4</term> <description>VM/CMS</description> </item>
+		/// <item> <term>5</term> <description>Atari ST</description> </item>
+		/// <item> <term>6</term> <description>OS/2 HPFS</description> </item>
+		/// <item> <term>7</term> <description>Macintosh</description> </item>
+		/// <item> <term>8</term> <description>Z-System</description> </item>
+		/// <item> <term>9</term> <description>CP/M</description> </item>
+		/// <item> <term>10</term> <description>Windows NTFS</description> </item>
+		/// <item> <term>11</term> <description>MVS (OS/390 - Z/OS)</description> </item>
+		/// <item> <term>12</term> <description>VSE</description> </item>
+		/// <item> <term>13</term> <description>Acorn Risc</description> </item>
+		/// <item> <term>14</term> <description>VFAT</description> </item>
+		/// <item> <term>15</term> <description>Alternate MVS</description> </item>
+		/// <item> <term>16</term> <description>BeOS</description> </item>
+		/// <item> <term>17</term> <description>Tandem</description> </item>
+		/// <item> <term>18</term> <description>OS/400</description> </item>
+		/// <item> <term>19</term> <description>OS/X (Darwin)</description> </item>
+		/// <item> <term>99</term> <description>WinZip AES</description> </item>
+		/// <item> <term>remainder</term> <description>unused</description> </item>
 		/// </list>
 		/// </remarks>
 		public int HostSystem
@@ -535,30 +587,32 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get minimum Zip feature version required to extract this entry
 		/// </summary>
 		/// <remarks>
-		/// Minimum features are defined as:<br/>
-		/// 1.0 - Default value<br/>
-		/// 1.1 - File is a volume label<br/>
-		/// 2.0 - File is a folder/directory<br/>
-		/// 2.0 - File is compressed using Deflate compression<br/>
-		/// 2.0 - File is encrypted using traditional encryption<br/>
-		/// 2.1 - File is compressed using Deflate64<br/>
-		/// 2.5 - File is compressed using PKWARE DCL Implode<br/>
-		/// 2.7 - File is a patch data set<br/>
-		/// 4.5 - File uses Zip64 format extensions<br/>
-		/// 4.6 - File is compressed using BZIP2 compression<br/>
-		/// 5.0 - File is encrypted using DES<br/>
-		/// 5.0 - File is encrypted using 3DES<br/>
-		/// 5.0 - File is encrypted using original RC2 encryption<br/>
-		/// 5.0 - File is encrypted using RC4 encryption<br/>
-		/// 5.1 - File is encrypted using AES encryption<br/>
-		/// 5.1 - File is encrypted using corrected RC2 encryption<br/>
-		/// 5.1 - File is encrypted using corrected RC2-64 encryption<br/>
-		/// 6.1 - File is encrypted using non-OAEP key wrapping<br/>
-		/// 6.2 - Central directory encryption (not confirmed yet)<br/>
-		/// 6.3 - File is compressed using LZMA<br/>
-		/// 6.3 - File is compressed using PPMD+<br/>
-		/// 6.3 - File is encrypted using Blowfish<br/>
-		/// 6.3 - File is encrypted using Twofish<br/>
+		///   Minimum features are defined as:
+		///   <list type="table">
+		///     <item> <term>1.0</term> <description>Default value</description> </item>
+		///     <item> <term>1.1</term> <description>File is a volume label</description> </item>
+		///     <item> <term>2.0</term> <description>File is a folder/directory</description> </item>
+		///     <item> <term>2.0</term> <description>File is compressed using Deflate compression</description> </item>
+		///     <item> <term>2.0</term> <description>File is encrypted using traditional encryption</description> </item>
+		///     <item> <term>2.1</term> <description>File is compressed using Deflate64</description> </item>
+		///     <item> <term>2.5</term> <description>File is compressed using PKWARE DCL Implode</description> </item>
+		///     <item> <term>2.7</term> <description>File is a patch data set</description> </item>
+		///     <item> <term>4.5</term> <description>File uses Zip64 format extensions</description> </item>
+		///     <item> <term>4.6</term> <description>File is compressed using BZIP2 compression</description> </item>
+		///     <item> <term>5.0</term> <description>File is encrypted using DES</description> </item>
+		///     <item> <term>5.0</term> <description>File is encrypted using 3DES</description> </item>
+		///     <item> <term>5.0</term> <description>File is encrypted using original RC2 encryption</description> </item>
+		///     <item> <term>5.0</term> <description>File is encrypted using RC4 encryption</description> </item>
+		///     <item> <term>5.1</term> <description>File is encrypted using AES encryption</description> </item>
+		///     <item> <term>5.1</term> <description>File is encrypted using corrected RC2 encryption</description> </item>
+		///     <item> <term>5.1</term> <description>File is encrypted using corrected RC2-64 encryption</description> </item>
+		///     <item> <term>6.1</term> <description>File is encrypted using non-OAEP key wrapping</description> </item>
+		///     <item> <term>6.2</term> <description>Central directory encryption (not confirmed yet)</description> </item>
+		///     <item> <term>6.3</term> <description>File is compressed using LZMA</description> </item>
+		///     <item> <term>6.3</term> <description>File is compressed using PPMD+</description> </item>
+		///     <item> <term>6.3</term> <description>File is encrypted using Blowfish</description> </item>
+		///     <item> <term>6.3</term> <description>File is encrypted using Twofish</description> </item>
+		///   </list>
 		/// </remarks>
 		/// <seealso cref="CanDecompress"></seealso>
 		public int Version
@@ -1282,8 +1336,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		/// <summary>
 		/// Cleans a name making it conform to Zip file conventions.
-		/// Devices names ('c:\') and UNC share names ('\\server\share') are removed
-		/// and forward slashes ('\') are converted to back slashes ('/').
+		/// Devices names (<c>c:\\</c>) and UNC share names (<c>\\\\server\\share</c>) are removed
+		/// and back slashes <c>\\</c> are converted to forward slashes (<c>/</c>).
 		/// Names are made relative by trimming leading slashes which is compatible
 		/// with the ZIP naming convention.
 		/// </summary>
