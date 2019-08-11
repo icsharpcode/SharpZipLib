@@ -14,7 +14,10 @@
           ]
         }
       ],
-      "dest": "api"
+      "dest": "api",
+      "properties": {
+        "TargetFramework": "NETSTANDARD2"
+      }
     }
   ],
   "build": {
@@ -62,13 +65,18 @@
     ],
 	"globalMetadata": {
       "_appTitle": "SharpZipLib Help",
-	  "_appFooter": "Copyright © 2000-2017 SharpZipLib Contributors"
+      "_appFooter": "Copyright © 2000-2019 SharpZipLib Contributors",
+      "_gitContribute": {
+         "repo": "https://github.com/icsharpcode/SharpZipLib",
+         "branch": "master"
+      }
     },
     "dest": "_site",
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [
-      "default"
+        "default",
+        "template"
     ],
     "postProcessors": [],
     "noLangKeyword": false,
