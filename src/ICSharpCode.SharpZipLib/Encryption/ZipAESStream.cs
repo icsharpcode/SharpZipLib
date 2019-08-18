@@ -40,7 +40,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		}
 
 		// The final n bytes of the AES stream contain the Auth Code.
-		public const int AUTH_CODE_LENGTH = 10;
+		public const int AUTH_CODE_LENGTH = Zip.ZipConstants.AESAuthCodeLength;
 
 		// Blocksize is always 16 here, even for AES-256 which has transform.InputBlockSize of 32.
 		private const int CRYPTO_BLOCK_SIZE = 16;

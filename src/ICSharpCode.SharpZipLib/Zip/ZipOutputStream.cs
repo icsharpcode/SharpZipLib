@@ -443,6 +443,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (Password != null)
 			{
 				entry.IsCrypted = true;
+				
+				// In case of AES the CRC is always 0 according to specification.
+				// This also prevents that a data descriptor is needed for the CRC as it is the case for other
+				// password protected zip files. AES uses a 10 Byte auth code instead of the CRC
+				if (entry.AESKeySize != 0)
+				{
+					entry.Crc = 0;
+				}
+
 				if (entry.Crc < 0)
 				{
 					// Need to append a data descriptor as the crc isnt available for use

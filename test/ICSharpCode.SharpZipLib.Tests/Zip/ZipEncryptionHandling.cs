@@ -12,6 +12,18 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	[TestFixture]
 	public class ZipEncryptionHandling
 	{
+		static ZipEncryptionHandling()
+		{
+			var sb = new StringBuilder();
+			for (int i = 0; i < 200; i++)
+			{
+				sb.AppendLine(Guid.NewGuid().ToString());
+			}
+
+			DummyDataString = sb.ToString();
+			DummyDataStringShort = Guid.NewGuid().ToString();
+		}
+		
 		[Test]
 		[Category("Encryption")]
 		[Category("Zip")]
@@ -110,6 +122,143 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+		/// <summary>
+		/// Tests for reading encrypted entries using ZipInputStream.
+		/// </summary>
+		[Test]
+		[Category("Encryption")]
+		[Category("Zip")]
+		public void ZipInputStreamDecryption(
+			[Values(0, 128, 256)] int aesKeySize,
+			[Values(CompressionMethod.Stored, CompressionMethod.Deflated)]
+			CompressionMethod compressionMethod,
+			[Values] bool forceDataDescriptor)
+		{
+			var password = "password";
+
+			using (var ms = forceDataDescriptor ? new MemoryStreamWithoutSeek() : new MemoryStream())
+			{
+				WriteEncryptedZipToStream(ms, 3, 3, password, aesKeySize, compressionMethod);
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var zis = new ZipInputStream(ms))
+				{
+					zis.IsStreamOwner = false;
+					zis.Password = password;
+
+					for (int i = 0; i < 6; i++)
+					{
+						var entry = zis.GetNextEntry();
+						int fileNumber = int.Parse(entry.Name[5].ToString());
+
+						using (var sr = new StreamReader(zis, Encoding.UTF8, leaveOpen: true, detectEncodingFromByteOrderMarks: true, bufferSize: 1024))
+						{
+							var content = sr.ReadToEnd();
+
+							Assert.AreEqual(fileNumber < 3 ? DummyDataString : DummyDataStringShort, content,
+								"Decompressed content does not match input data");
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Tests for reading encrypted entries using ZipInputStream.
+		/// Verify that it is possible to skip reading of entries.
+		/// </summary>
+		[Test]
+		[Category("Encryption")]
+		[Category("Zip")]
+		public void ZipInputStreamDecryptionSupportsSkippingEntries(
+			[Values(0, 128, 256)] int aesKeySize,
+			[Values(CompressionMethod.Stored, CompressionMethod.Deflated)]
+			CompressionMethod compressionMethod,
+			[Values] bool forceDataDescriptor)
+		{
+			var password = "password";
+
+			using (var ms = forceDataDescriptor ? new MemoryStreamWithoutSeek() : new MemoryStream())
+			{
+				WriteEncryptedZipToStream(ms, 3, 3, password, aesKeySize, compressionMethod);
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var zis = new ZipInputStream(ms))
+				{
+					zis.IsStreamOwner = false;
+					zis.Password = password;
+
+					for (int i = 0; i < 6; i++)
+					{
+						var entry = zis.GetNextEntry();
+						int fileNumber = int.Parse(entry.Name[5].ToString());
+
+						if (fileNumber % 2 == 1)
+						{
+							continue;
+						}
+
+						using (var sr = new StreamReader(zis, Encoding.UTF8, leaveOpen: true,
+							detectEncodingFromByteOrderMarks: true, bufferSize: 1024))
+						{
+							var content = sr.ReadToEnd();
+
+							Assert.AreEqual(fileNumber < 3 ? DummyDataString : DummyDataStringShort, content,
+								"Decompressed content does not match input data");
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Tests for reading encrypted entries using ZipInputStream.
+		/// Verify that it is possible to read entries only partially.
+		/// </summary>
+		[Test]
+		[Category("Encryption")]
+		[Category("Zip")]
+		public void ZipInputStreamDecryptionSupportsPartiallyReadingOfEntries(
+			[Values(0, 128, 256)] int aesKeySize,
+			[Values(CompressionMethod.Stored, CompressionMethod.Deflated)]
+			CompressionMethod compressionMethod,
+			[Values] bool forceDataDescriptor)
+		{
+			var password = "password";
+
+			using (var ms = forceDataDescriptor ? new MemoryStreamWithoutSeek() : new MemoryStream())
+			{
+				WriteEncryptedZipToStream(ms, 3, 3, password, aesKeySize, compressionMethod);
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var zis = new ZipInputStream(ms))
+				{
+					zis.IsStreamOwner = false;
+					zis.Password = password;
+
+					for (int i = 0; i < 6; i++)
+					{
+						var entry = zis.GetNextEntry();
+						int fileNumber = int.Parse(entry.Name[5].ToString());
+
+						if (fileNumber % 2 == 1)
+						{
+							zis.ReadByte();
+							continue;
+						}
+
+						using (var sr = new StreamReader(zis, Encoding.UTF8, leaveOpen: true, detectEncodingFromByteOrderMarks: true, bufferSize: 1024))
+						{
+							var content = sr.ReadToEnd();
+
+							Assert.AreEqual(fileNumber < 3 ? DummyDataString : DummyDataStringShort, content,
+								"Decompressed content does not match input data");
+						}
+					}
+				}
+			}		
+		}			
+		
 		[Test]
 		[Category("Encryption")]
 		[Category("Zip")]
@@ -379,7 +528,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			using (var memoryStream = new MemoryStream())
 			{
 				// Try to create a zip stream
-				WriteEncryptedZipToStream(memoryStream, 3, password, keySize, CompressionMethod.Deflated);
+				WriteEncryptedZipToStream(memoryStream, 3, 0, password, keySize, CompressionMethod.Deflated);
 
 				// reset
 				memoryStream.Seek(0, SeekOrigin.Begin);
@@ -482,40 +631,77 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			}
 		}
+		
+		// This is a zip file with three AES encrypted entry, whose password is password.
+		const string TestFileWithThreeEntries = @"UEsDBDMAAQBjAI9jbFIAAAAAIQAAAAUAAAAJAAsARmlsZTEudHh0AZkHAAIAQUUDAAAoyz4gbB4/SnNvoPSBMVS9Zhp5sKKD
+            GnLy8zwsuV0Jh/RQSwMEMwABAGMAnWNsUgAAAAAhAAAABQAAAAkACwBGaWxlMi50eHQBmQcAAgBBRQMAANoCDbQUG7iCJgGC2/5OrmUQUk/+fACL804W0bboF8YMM1BLAwQzAA
+            EAYwCjY2xSAAAAACEAAAAFAAAACQALAEZpbGUzLnR4dAGZBwACAEFFAwAAqmBqgBkl3tP6ND0uCD50mhwfOtbmwV1IKyUVK5wGVQUiUEsBAj8AMwABAGMAj2NsUgAAAAAhAAAA
+            BQAAAAkALwAAAAAAAAAgAAAAAAAAAEZpbGUxLnR4dAoAIAAAAAAAAQAYAApFb9MyF9cB7fEh1jIX1wHNrjnNMhfXAQGZBwACAEFFAwAAUEsBAj8AMwABAGMAnWNsUgAAAAAhAA
+            AABQAAAAkALwAAAAAAAAAgAAAAUwAAAEZpbGUyLnR4dAoAIAAAAAAAAQAYAK5pWOQyF9cBdTCL5TIX1wGab3HVMhfXAQGZBwACAEFFAwAAUEsBAj8AMwABAGMAo2NsUgAAAAAh
+            AAAABQAAAAkALwAAAAAAAAAgAAAApgAAAEZpbGUzLnR4dAoAIAAAAAAAAQAYANB1M+kyF9cB0gxl6jIX1wGqVSHWMhfXAQGZBwACAEFFAwAAUEsFBgAAAAADAAMAMgEAAPkAAAAAAA==";
 
 		/// <summary>
-		/// ZipInputStream can't decrypt AES encrypted entries, but it should report that to the caller
-		/// rather than just failing.
+		/// Test reading an AES encrypted file and skipping some entries by not reading form the stream
 		/// </summary>
 		[Test]
 		[Category("Zip")]
-		public void ZipinputStreamShouldGracefullyFailWithAESStreams()
+		public void ZipInputStreamAESReadSkippingEntriesIsPossible()
 		{
-			string password = "password";
+			var fileBytes = Convert.FromBase64String(TestFileWithThreeEntries);
 
-			using (var memoryStream = new MemoryStream())
+			using (var ms = new MemoryStream(fileBytes))
+			using (var zis = new ZipInputStream(ms) { IsStreamOwner = false})
 			{
-				// Try to create a zip stream
-				WriteEncryptedZipToStream(memoryStream, password, 256);
+				zis.Password = "password";
 
-				// reset
-				memoryStream.Seek(0, SeekOrigin.Begin);
-
-				// Try to read
-				using (var inputStream = new ZipInputStream(memoryStream))
+				for (int i = 0; i < 3; i++)
 				{
-					inputStream.Password = password;
-					var entry = inputStream.GetNextEntry();
-					Assert.That(entry.AESKeySize, Is.EqualTo(256), "Test entry should be AES256 encrypted.");
+					var entry = zis.GetNextEntry();
+					if (i == 1)
+					{
+						continue;
+					}
 
-					// CanDecompressEntry should be false.
-					Assert.That(inputStream.CanDecompressEntry, Is.False, "CanDecompressEntry should be false for AES encrypted entries");
-
-					// Should throw on read.
-					Assert.Throws<ZipException>(() => inputStream.ReadByte());
+					using (var sr = new StreamReader(zis, Encoding.UTF8, leaveOpen: true, detectEncodingFromByteOrderMarks: true, bufferSize: 1024))
+					{
+						var content = sr.ReadToEnd();
+						Assert.AreEqual(Path.GetFileNameWithoutExtension(entry.Name), content, "Decompressed content does not match input data");
+					}
 				}
 			}
 		}
+		
+		/// <summary>
+		/// Test reading an AES encrypted file and reading some entries only partially be not reading to the end of stream.
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void ZipInputStreamAESReadEntriesCanBeReadPartially()
+		{
+			var fileBytes = Convert.FromBase64String(TestFileWithThreeEntries);
+
+			using (var ms = new MemoryStream(fileBytes))
+			using (var zis = new ZipInputStream(ms) { IsStreamOwner = false})
+			{
+				zis.Password = "password";
+
+				for (int i = 0; i < 3; i++)
+				{
+					var entry = zis.GetNextEntry();
+					if (i == 1)
+					{
+						zis.ReadByte();
+						continue;
+					}
+
+					using (var sr = new StreamReader(zis, Encoding.UTF8, leaveOpen: true, detectEncodingFromByteOrderMarks: true, bufferSize: 1024))
+					{
+						var content = sr.ReadToEnd();
+						Assert.AreEqual(Path.GetFileNameWithoutExtension(entry.Name), content, "Decompressed content does not match input data");
+					}
+				}
+			}
+		}		
 
 		public static void WriteEncryptedZipToStream(Stream stream, string password, int keySize, CompressionMethod compressionMethod = CompressionMethod.Deflated)
 		{
@@ -525,11 +711,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				zs.SetLevel(9); // 0-9, 9 being the highest level of compression
 				zs.Password = password;  // optional. Null is the same as not setting. Required if using AES.
 
-				AddEncrypedEntryToStream(zs, $"test", keySize, compressionMethod);
+				AddEncrypedEntryToStream(zs, $"test", keySize, compressionMethod, DummyDataString);
 			}
 		}
 
-		public void WriteEncryptedZipToStream(Stream stream, int entryCount, string password, int keySize, CompressionMethod compressionMethod)
+		public static void WriteEncryptedZipToStream(Stream stream, int entryCount, int shortEntryCount, string password, int keySize, CompressionMethod compressionMethod = CompressionMethod.Deflated)
 		{
 			using (var zs = new ZipOutputStream(stream))
 			{
@@ -539,12 +725,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				for (int i = 0;  i < entryCount; i++)
 				{
-					AddEncrypedEntryToStream(zs, $"test-{i}", keySize, compressionMethod);
+					AddEncrypedEntryToStream(zs, $"test-{i}", keySize, compressionMethod, DummyDataString);
 				}
+				
+				for (int i = 0;  i < shortEntryCount; i++)
+				{
+					AddEncrypedEntryToStream(zs, $"test-{i + entryCount}", keySize, compressionMethod, DummyDataStringShort);
+				}				
 			}
 		}
 
-		private static void AddEncrypedEntryToStream(ZipOutputStream zipOutputStream, string entryName, int keySize, CompressionMethod compressionMethod)
+		private static void AddEncrypedEntryToStream(ZipOutputStream zipOutputStream, string entryName, int keySize, CompressionMethod compressionMethod, string content)
 		{
 			ZipEntry zipEntry = new ZipEntry(entryName)
 			{
@@ -555,7 +746,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			zipOutputStream.PutNextEntry(zipEntry);
 
-			byte[] dummyData = Encoding.UTF8.GetBytes(DummyDataString);
+			byte[] dummyData = Encoding.UTF8.GetBytes(content);
 
 			using (var dummyStream = new MemoryStream(dummyData))
 			{
@@ -574,9 +765,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
-		private const string DummyDataString = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-Fusce bibendum diam ac nunc rutrum ornare. Maecenas blandit elit ligula, eget suscipit lectus rutrum eu.
-Maecenas aliquam, purus mattis pulvinar pharetra, nunc orci maximus justo, sed facilisis massa dui sed lorem.
-Vestibulum id iaculis leo. Duis porta ante lorem. Duis condimentum enim nec lorem tristique interdum. Fusce in faucibus libero.";
+		private static readonly string DummyDataString;
+		private static readonly string DummyDataStringShort;
 	}
 }
