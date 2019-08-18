@@ -33,8 +33,6 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		}
 #endif
 
-		private const int PWD_VER_LENGTH = 2;
-
 		// WinZip use iteration count of 1000 for PBKDF2 key generation
 		private const int KEY_ROUNDS = 1000;
 
@@ -84,7 +82,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 
 			// Use empty IV for AES
 			_encryptor = rm.CreateEncryptor(key1bytes, new byte[16]);
-			_pwdVerifier = pdb.GetBytes(PWD_VER_LENGTH);
+			_pwdVerifier = pdb.GetBytes(Zip.ZipConstants.AESPasswordVerifyLength);
 			//
 			_hmacsha1 = IncrementalHash.CreateHMAC(HashAlgorithmName.SHA1, key2bytes);
 			_writeMode = writeMode;
