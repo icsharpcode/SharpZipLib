@@ -72,6 +72,44 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+		/// <summary>
+		/// Tests for reading encrypted entries using ZipInputStream.
+		/// </summary>
+		/// <param name="aesKeySize"></param>
+		[Test]
+		[Category("Encryption")]
+		[Category("Zip")]
+		[TestCase(0, CompressionMethod.Deflated)]
+		[TestCase(0, CompressionMethod.Stored)]
+		[TestCase(128, CompressionMethod.Deflated)]
+		[TestCase(128, CompressionMethod.Stored)]
+		[TestCase(256, CompressionMethod.Deflated)]
+		[TestCase(256, CompressionMethod.Stored)]
+		public void ZipInputStreamDecryption(int aesKeySize, CompressionMethod compressionMethod)
+		{
+			var password = "password";
+
+			using (var ms = new MemoryStream())
+			{
+				WriteEncryptedZipToStream(ms, password, aesKeySize, compressionMethod);
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var zis = new ZipInputStream(ms))
+				{
+					zis.IsStreamOwner = false;
+					zis.Password = password;
+
+					var hmm = zis.GetNextEntry();
+
+					using (var sr = new StreamReader(zis, Encoding.UTF8))
+					{
+						var content = sr.ReadToEnd();
+						Assert.AreEqual(DummyDataString, content, "Decompressed content does not match input data");
+					}
+				}
+			}
+		}
+
 		[Test]
 		[Category("Encryption")]
 		[Category("Zip")]
