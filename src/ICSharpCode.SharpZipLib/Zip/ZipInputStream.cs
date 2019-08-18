@@ -73,7 +73,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private ZipEntry entry;
 
 		private long size;
-		private CompressionMethod method;
 		private int flags;
 		private string password;
 
@@ -191,7 +190,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			var versionRequiredToExtract = (short)inputBuffer.ReadLeShort();
 
 			flags = inputBuffer.ReadLeShort();
-			method = (CompressionMethod)inputBuffer.ReadLeShort();
+			var method = (CompressionMethod)inputBuffer.ReadLeShort();
 			var dostime = (uint)inputBuffer.ReadLeInt();
 			int crc2 = inputBuffer.ReadLeInt();
 			csize = inputBuffer.ReadLeInt();
@@ -332,7 +331,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			crc.Reset();
 
-			if (method == CompressionMethod.Deflated)
+			if (entry.CompressionMethod == CompressionMethod.Deflated)
 			{
 				inf.Reset();
 			}
@@ -360,7 +359,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return;
 			}
 
-			if (method == CompressionMethod.Deflated)
+			if (entry.CompressionMethod == CompressionMethod.Deflated)
 			{
 				if ((flags & 8) != 0)
 				{
@@ -530,7 +529,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if ((csize > 0) || ((flags & (int)GeneralBitFlags.Descriptor) != 0))
 			{
-				if ((method == CompressionMethod.Deflated) && (inputBuffer.Available > 0))
+				if ((entry.CompressionMethod == CompressionMethod.Deflated) && (inputBuffer.Available > 0))
 				{
 					inputBuffer.SetInflaterInput(inf);
 				}
@@ -612,7 +611,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			bool finished = false;
 
-			switch (method)
+			switch (entry.CompressionMethod)
 			{
 				case CompressionMethod.Deflated:
 					count = base.Read(buffer, offset, count);
