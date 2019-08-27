@@ -241,7 +241,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		protected void Deflate()
 		{
-			while (!deflater_.IsNeedingInput)
+			Deflate(false);
+		}
+
+		private void Deflate(bool flushing)
+		{
+			while (flushing || !deflater_.IsNeedingInput)
 			{
 				int deflateCount = deflater_.Deflate(buffer_, 0, buffer_.Length);
 
@@ -380,7 +385,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		public override void Flush()
 		{
 			deflater_.Flush();
-			Deflate();
+			Deflate(true);
 			baseOutputStream_.Flush();
 		}
 
@@ -414,7 +419,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 		}
 
-		private void GetAuthCodeIfAES()
+		/// <summary>
+		/// Get the Auth code for AES encrypted entries
+		/// </summary>
+		protected void GetAuthCodeIfAES()
 		{
 			if (cryptoTransform_ is ZipAESTransform)
 			{

@@ -1,4 +1,5 @@
 using ICSharpCode.SharpZipLib.Tar;
+using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
 using System;
@@ -786,6 +787,52 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					((TarOutputStream)stream).CloseEntry();
 				}
 			);
+		}
+
+		// Test for corruption issue described @ https://github.com/icsharpcode/SharpZipLib/issues/321
+		[Test]
+		[Category("Tar")]
+		public void ExtractingCorruptTarShouldntLeakFiles()
+		{
+			using (var memoryStream = new MemoryStream())
+			{
+				//Create a tar.gz in the output stream
+				using (var gzipStream = new GZipOutputStream(memoryStream))
+				{
+					gzipStream.IsStreamOwner = false;
+
+					using (var tarOut = TarArchive.CreateOutputTarArchive(gzipStream))
+					using (var dummyFile = Utils.GetDummyFile(32000))
+					{
+						tarOut.IsStreamOwner = false;
+						tarOut.WriteEntry(TarEntry.CreateEntryFromFile(dummyFile.Filename), false);
+					}
+				}
+
+				// corrupt archive - make sure the file still has more than one block
+				memoryStream.SetLength(16000);
+				memoryStream.Seek(0, SeekOrigin.Begin);
+
+				// try to extract
+				using (var gzipStream = new GZipInputStream(memoryStream))
+				{
+					string tempDirName;
+					gzipStream.IsStreamOwner = false;
+
+					using (var tempDir = new Utils.TempDir())
+					{
+						tempDirName = tempDir.Fullpath;
+
+						using (var tarIn = TarArchive.CreateInputTarArchive(gzipStream))
+						{
+							tarIn.IsStreamOwner = false;
+							Assert.Throws<SharpZipBaseException>(() => tarIn.ExtractContents(tempDir.Fullpath));
+						}
+					}
+
+					Assert.That(Directory.Exists(tempDirName), Is.False, "Temporary folder should have been removed");
+				}	
+			}
 		}
 	}
 }

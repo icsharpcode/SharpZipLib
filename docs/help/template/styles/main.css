@@ -1,0 +1,35 @@
+button, a {
+    color: #516d86;
+    cursor: pointer;
+}
+
+.affix > ul > li.active > a, .affix > ul > li.active > a:before,
+.affix   ul > li.active > a, .affix   ul > li.active > a:before {
+    color: #516d86;
+}
+
+.toc .nav > li.active > a {
+    color: #7391ab;
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+    color: #181c20;
+    background-color: #c4cdd4;
+}
+
+svg:hover path {
+    fill: currentColor;
+}
+
+.navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover {
+    color: #3d4852;
+}
+
+#toc .level1 > li {
+    font-weight: normal;
+    font-size: 14px;
+}
+
+#sidetoc .sidetoc.shiftup {
+    bottom: 50px;
+}

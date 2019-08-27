@@ -4,6 +4,14 @@
   items:
   - uid: ICSharpCode.SharpZipLib.SharpZipBaseException
     name: SharpZipBaseException
+  - uid: ICSharpCode.SharpZipLib.StreamDecodingException
+    name: StreamDecodingException
+  - uid: ICSharpCode.SharpZipLib.StreamUnsupportedException
+    name: StreamUnsupportedException
+  - uid: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException
+    name: UnexpectedEndOfStreamException
+  - uid: ICSharpCode.SharpZipLib.ValueOutOfRangeException
+    name: ValueOutOfRangeException
 - uid: ICSharpCode.SharpZipLib.BZip2
   name: ICSharpCode.SharpZipLib.BZip2
   items:
@@ -43,6 +51,8 @@
     name: FileSystemScanner
   - uid: ICSharpCode.SharpZipLib.Core.INameTransform
     name: INameTransform
+  - uid: ICSharpCode.SharpZipLib.Core.InvalidNameException
+    name: InvalidNameException
   - uid: ICSharpCode.SharpZipLib.Core.IScanFilter
     name: IScanFilter
   - uid: ICSharpCode.SharpZipLib.Core.NameAndSizeFilter
@@ -109,6 +119,8 @@
     name: TarEntry
   - uid: ICSharpCode.SharpZipLib.Tar.TarException
     name: TarException
+  - uid: ICSharpCode.SharpZipLib.Tar.TarExtendedHeaderReader
+    name: TarExtendedHeaderReader
   - uid: ICSharpCode.SharpZipLib.Tar.TarHeader
     name: TarHeader
   - uid: ICSharpCode.SharpZipLib.Tar.TarInputStream
@@ -204,6 +216,8 @@
     name: ZipNameTransform
   - uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream
     name: ZipOutputStream
+  - uid: ICSharpCode.SharpZipLib.Zip.ZipStrings
+    name: ZipStrings
   - uid: ICSharpCode.SharpZipLib.Zip.ZipTestResultHandler
     name: ZipTestResultHandler
 - uid: ICSharpCode.SharpZipLib.Zip.Compression
