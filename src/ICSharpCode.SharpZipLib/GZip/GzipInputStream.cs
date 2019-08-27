@@ -141,7 +141,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 					ReadFooter();
 				}
 
-				if (bytesRead > 0)
+				// Attempting to read 0 bytes will never yield any bytesRead, so we return instead of looping forever
+				if (bytesRead > 0 || count == 0)
 				{
 					return bytesRead;
 				}

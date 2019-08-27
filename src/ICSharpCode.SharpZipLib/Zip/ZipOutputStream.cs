@@ -486,6 +486,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 					deflater_.Reset();
 				}
 			}
+			else if (curMethod == CompressionMethod.Stored)
+			{
+				// This is done by Finsh() for Deflated entries, but we need to do it
+				// ourselves for Stored ones
+				base.GetAuthCodeIfAES();
+			}
 
 			// Write the AES Authentication Code (a hash of the compressed and encrypted data)
 			if (curEntry.AESKeySize > 0)
@@ -744,7 +750,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			foreach (ZipEntry entry in entries)
 			{
 				WriteLeInt(ZipConstants.CentralHeaderSignature);
-				WriteLeShort(ZipConstants.VersionMadeBy);
+				WriteLeShort((entry.HostSystem << 8) | entry.VersionMadeBy);
 				WriteLeShort(entry.Version);
 				WriteLeShort(entry.Flags);
 				WriteLeShort((short)entry.CompressionMethodForHeader);

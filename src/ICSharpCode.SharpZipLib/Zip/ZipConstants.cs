@@ -53,6 +53,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		BZip2 = 12,
 
 		/// <summary>
+		/// LZMA compression. Not supported by #Zip.
+		/// </summary>
+		LZMA = 14,
+
+		/// <summary>
+		/// PPMd compression. Not supported by #Zip.
+		/// </summary>
+		PPMd = 98,
+
+		/// <summary>
 		/// WinZip special for AES encryption, Now supported by #Zip.
 		/// </summary>
 		WinZipAES = 99,

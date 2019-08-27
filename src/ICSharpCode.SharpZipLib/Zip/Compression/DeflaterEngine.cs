@@ -643,7 +643,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 				huffman.FlushStoredBlock(window, blockStart, storedLength, lastBlock);
 				blockStart += storedLength;
-				return !lastBlock;
+				return !(lastBlock || storedLength == 0);
 			}
 			return true;
 		}

@@ -324,5 +324,33 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			);
 		}
+
+		const string BZip2CompressedZip =
+			"UEsDBC4AAAAMAEyxgU5p3ou9JwAAAAcAAAAFAAAAYS5kYXRCWmg5MUFZJlNZ0buMcAAAAkgACABA" +
+			"ACAAIQCCCxdyRThQkNG7jHBQSwECMwAuAAAADABMsYFOad6LvScAAAAHAAAABQAAAAAAAAAAAAAA" +
+			"AAAAAAAAYS5kYXRQSwUGAAAAAAEAAQAzAAAASgAAAAAA";
+
+		/// <summary>
+		/// Should fail to read a zip with BZip2 compression
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void ShouldReadBZip2EntryButNotDecompress()
+		{
+			var fileBytes = System.Convert.FromBase64String(BZip2CompressedZip);
+
+			using (var input = new MemoryStream(fileBytes, false))
+			{
+				var zis = new ZipInputStream(input);
+				var entry = zis.GetNextEntry();
+
+				Assert.That(entry.Name, Is.EqualTo("a.dat"), "Should be able to get entry name");
+				Assert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.BZip2), "Entry should be BZip2 compressed");
+				Assert.That(zis.CanDecompressEntry, Is.False, "Should not be able to decompress BZip2 entry");
+
+				var buffer = new byte[1];
+				Assert.Throws<ZipException>(() => zis.Read(buffer, 0, 1), "Trying to read the stream should throw");
+			}
+		}
 	}
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace ICSharpCode.SharpZipLib
 {
@@ -8,6 +9,7 @@ namespace ICSharpCode.SharpZipLib
 	/// </summary>
 	/// <remarks>NOTE: Not all exceptions thrown will be derived from this class.
 	/// A variety of other exceptions are possible for example <see cref="ArgumentNullException"></see></remarks>
+	[Serializable]
 	public class SharpZipBaseException : Exception
 	{
 		/// <summary>
@@ -34,6 +36,22 @@ namespace ICSharpCode.SharpZipLib
 		/// <param name="innerException">The inner exception</param>
 		public SharpZipBaseException(string message, Exception innerException)
 			: base(message, innerException)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the SharpZipBaseException class with serialized data.
+		/// </summary>
+		/// <param name="info">
+		/// The System.Runtime.Serialization.SerializationInfo that holds the serialized
+		/// object data about the exception being thrown.
+		/// </param>
+		/// <param name="context">
+		/// The System.Runtime.Serialization.StreamingContext that contains contextual information
+		/// about the source or destination.
+		/// </param>
+		protected SharpZipBaseException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
 		{
 		}
 	}
