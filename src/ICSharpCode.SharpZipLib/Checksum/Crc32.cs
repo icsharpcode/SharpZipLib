@@ -15,7 +15,7 @@ namespace ICSharpCode.SharpZipLib.Checksum
 
 		internal static uint ComputeCrc32(uint oldCrc, byte bval)
 		{
-			return ~_proxy.Append(~oldCrc, new byte[] { (byte)bval }, 0, 1);
+			return ~_proxy.Append(~oldCrc, new [] { bval }, 0, 1);
 		}
 
 

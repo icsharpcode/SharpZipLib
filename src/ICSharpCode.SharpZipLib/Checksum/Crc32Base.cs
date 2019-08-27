@@ -22,7 +22,7 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		/// <summary>
 		/// Initialise a default instance of <see cref="Crc32"></see>
 		/// </summary>
-		public Crc32Base()
+		protected Crc32Base()
 		{
 			Reset();
 		}
@@ -61,7 +61,7 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		/// <remarks>Reversed Data = true</remarks>
 		public void Update(int bval)
 		{
-			checkValue = Proxy.Append(checkValue, new byte[] { (byte)bval }, 0, 1);
+			checkValue = Proxy.Append(checkValue, new [] { (byte)bval }, 0, 1);
 		}
 
 

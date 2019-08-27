@@ -39,13 +39,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Checksum
 			var adler = new Adler32();
 			Assert.AreEqual(0x00000001, adler.Value);
 
-			var sw = new Stopwatch();
-			sw.Start();
-
 			adler.Update(buffer);
-
-			sw.Stop();
-			Console.WriteLine($"Adler32 Hashing of 256 MiB: {sw.Elapsed.TotalSeconds:f4} second(s)");
 
 			adler.Update(check);
 			Assert.AreEqual(0xD4897DA3, adler.Value);

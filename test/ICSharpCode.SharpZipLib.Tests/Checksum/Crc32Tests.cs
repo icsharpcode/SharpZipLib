@@ -40,7 +40,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Checksum
 			Assert.AreEqual(0x0, underTestCrc32.Value);
 
 			foreach (byte b in check)
+			{
 				underTestCrc32.Update((int)b);
+			}
 			Assert.AreEqual(0xCBF43926, underTestCrc32.Value);
 
 			underTestCrc32.Reset();

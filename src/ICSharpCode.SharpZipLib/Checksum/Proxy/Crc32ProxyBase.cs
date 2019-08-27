@@ -25,7 +25,7 @@ namespace ICSharpCode.SharpZipLib.Checksum.Proxy
 	{
 		private readonly uint[] _table = new uint[16 * 256];
 
-		public Crc32ProxyBase()
+		protected Crc32ProxyBase()
 		{
 			Init();
 		}
@@ -44,7 +44,10 @@ namespace ICSharpCode.SharpZipLib.Checksum.Proxy
 				uint lookupVal = InitLookupValue(i);
 				for (int t = 0; t < 16; t++)
 				{
-					for (int k = 0; k < 8; k++) lookupVal = CalculateLookupValue(lookupVal);
+					for (int k = 0; k < 8; k++)
+					{
+						lookupVal = CalculateLookupValue(lookupVal);
+					}
 					table[(t * 256) + i] = lookupVal;
 				}
 			}
@@ -52,10 +55,12 @@ namespace ICSharpCode.SharpZipLib.Checksum.Proxy
 
 
 
-		public uint Append(uint crc, byte[] input, int offset, int length)
+		public uint Append(uint crc, byte[] input, int startOffset, int startLength)
 		{
 			uint crcLocal = uint.MaxValue ^ crc;
 			uint[] table = _table;
+			int offset = startOffset;
+			int length = startLength;
 
 			while (length >= 16)
 			{
@@ -85,7 +90,9 @@ namespace ICSharpCode.SharpZipLib.Checksum.Proxy
 			}
 
 			while (--length >= 0)
+			{
 				crcLocal = CalculateCrc(crcLocal, input[offset++], table);
+			}
 
 			return crcLocal ^ uint.MaxValue;
 		}
