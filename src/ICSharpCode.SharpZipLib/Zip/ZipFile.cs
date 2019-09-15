@@ -1879,10 +1879,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// We don't currently support adding entries with AES encryption, so throw
 			// up front instead of failing or falling back to ZipCrypto later on
-			if (entry.AESKeySize > 0)
-			{
-				throw new NotSupportedException("Creation of AES encrypted entries is not supported");
-			}
+			//if (entry.AESKeySize > 0)
+			//{
+			//	throw new NotSupportedException("Creation of AES encrypted entries is not supported");
+			//}
 
 			CheckSupportedCompressionMethod(entry.CompressionMethod);
 			CheckUpdating();
@@ -2171,6 +2171,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 				ed.Delete(1);
 			}
 
+			// Write AES Data if needed
+			if (entry.AESKeySize > 0)
+			{
+				AddExtraDataAES(entry, ed);
+			}
+
 			entry.ExtraData = ed.GetEntryData();
 
 			WriteLEShort(name.Length);
@@ -2294,6 +2300,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				ed.Delete(1);
 			}
 
+			if (entry.AESKeySize > 0)
+			{
+				AddExtraDataAES(entry, ed);
+			}
+
 			byte[] centralExtraData = ed.GetEntryData();
 
 			WriteLEShort(centralExtraData.Length);
@@ -2346,6 +2357,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			return ZipConstants.CentralHeaderBaseSize + name.Length + centralExtraData.Length + rawComment.Length;
+		}
+
+		private static void AddExtraDataAES(ZipEntry entry, ZipExtraData extraData)
+		{
+			// Vendor Version: AE-1 IS 1. AE-2 is 2. With AE-2 no CRC is required and 0 is stored.
+			const int VENDOR_VERSION = 2;
+			// Vendor ID is the two ASCII characters "AE".
+			const int VENDOR_ID = 0x4541; //not 6965;
+			extraData.StartNewEntry();
+			// Pack AES extra data field see http://www.winzip.com/aes_info.htm
+			//extraData.AddLeShort(7);							// Data size (currently 7)
+			extraData.AddLeShort(VENDOR_VERSION);               // 2 = AE-2
+			extraData.AddLeShort(VENDOR_ID);                    // "AE"
+			extraData.AddData(entry.AESEncryptionStrength);     //  1 = 128, 2 = 192, 3 = 256
+			extraData.AddLeShort((int)entry.CompressionMethod); // The actual compression method used to compress the file
+			extraData.AddNewEntry(0x9901);
 		}
 
 		#endregion Writing Values/Headers
@@ -3723,9 +3750,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private Stream CreateAndInitEncryptionStream(Stream baseStream, ZipEntry entry)
 		{
-			CryptoStream result = null;
-			if ((entry.Version < ZipConstants.VersionStrongEncryption)
-				|| (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0)
+			if (entry.CompressionMethodForHeader == CompressionMethod.WinZipAES)
+			{
+				int blockSize = entry.AESKeySize / 8;   // bits to bytes
+
+				var aesStream =
+					new ZipAESEncryptionStream(baseStream, rawPassword_, entry.AESSaltLen, blockSize);
+
+				return aesStream;
+			}
+			else
 			{
 				var classicManaged = new PkzipClassicManaged();
 
@@ -3737,7 +3771,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				// Closing a CryptoStream will close the base stream as well so wrap it in an UncompressedStream
 				// which doesnt do this.
-				result = new CryptoStream(new UncompressedStream(baseStream),
+				CryptoStream result = new CryptoStream(new UncompressedStream(baseStream),
 					classicManaged.CreateEncryptor(key, null), CryptoStreamMode.Write);
 
 				if ((entry.Crc < 0) || (entry.Flags & 8) != 0)
@@ -3748,8 +3782,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					WriteEncryptionHeader(result, entry.Crc);
 				}
+
+				return result;
 			}
-			return result;
 		}
 
 		private static void CheckClassicPassword(CryptoStream classicCryptoStream, ZipEntry entry)
