@@ -160,6 +160,20 @@ namespace ICSharpCode.SharpZipLib.GZip
 			}
 		}
 
+		/// <summary>
+		/// Flushes the stream by ensuring the header is written, and then calling <see cref="DeflaterOutputStream.Flush">Flush</see>
+		/// on the deflater.
+		/// </summary>
+		public override void Flush()
+		{
+			if (state_ == OutputState.Header)
+			{
+				WriteHeader();
+			}
+
+			base.Flush();
+		}
+
 		#endregion Stream overrides
 
 		#region DeflaterOutputStream overrides
