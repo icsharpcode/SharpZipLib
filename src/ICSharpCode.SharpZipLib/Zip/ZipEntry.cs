@@ -526,7 +526,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			set
 			{
-				versionMadeBy &= 0xff;
+				versionMadeBy &= 0x00ff;
 				versionMadeBy |= (ushort)((value & 0xff) << 8);
 			}
 		}
@@ -1131,10 +1131,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			if (extraData.Find(0x9901))
 			{
-				// Set version and flag for Zipfile.CreateAndInitDecryptionStream
+				// Set version for Zipfile.CreateAndInitDecryptionStream
 				versionToExtract = ZipConstants.VERSION_AES;            // Ver 5.1 = AES see "Version" getter
-																		// Set StrongEncryption flag for ZipFile.CreateAndInitDecryptionStream
-				Flags = Flags | (int)GeneralBitFlags.StrongEncryption;
+
 				//
 				// Unpack AES extra data field see http://www.winzip.com/aes_info.htm
 				int length = extraData.ValueLength;         // Data size currently 7

@@ -1371,6 +1371,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// Check that input stream is closed when construction fails and leaveOpen is false
 		/// </summary>
 		[Test]
+		[Category("Zip")]
 		public void StreamClosedOnError()
 		{
 			var ms = new TrackedMemoryStream(new byte[32]);
@@ -1397,6 +1398,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// Check that input stream is not closed when construction fails and leaveOpen is true
 		/// </summary>
 		[Test]
+		[Category("Zip")]
 		public void StreamNotClosedOnError()
 		{
 			var ms = new TrackedMemoryStream(new byte[32]);
@@ -1417,6 +1419,67 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			Assert.IsTrue(blewUp, "Should have failed to load the file");
 			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed");
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void HostSystemPersistedFromOutputStream()
+		{
+			using (var ms = new MemoryStream())
+			{
+				var fileName = "testfile";
+
+				using (var zos = new ZipOutputStream(ms) { IsStreamOwner = false })
+				{
+					var source = new StringMemoryDataSource("foo");
+					zos.PutNextEntry(new ZipEntry(fileName) { HostSystem = (int)HostSystemID.Unix });
+					source.GetSource().CopyTo(zos);
+					zos.CloseEntry();
+					zos.Finish();
+				}
+
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var zis = new ZipFile(ms))
+				{
+					var ze = zis.GetEntry(fileName);
+					Assert.NotNull(ze);
+
+					Assert.AreEqual((int)HostSystemID.Unix, ze.HostSystem);
+					Assert.AreEqual(ZipConstants.VersionMadeBy, ze.VersionMadeBy);
+				}
+			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void HostSystemPersistedFromZipFile()
+		{
+			using (var ms = new MemoryStream())
+			{
+				var fileName = "testfile";
+
+				using (var zof = new ZipFile(ms, true))
+				{
+					var ze = zof.EntryFactory.MakeFileEntry(fileName, false);
+					ze.HostSystem = (int)HostSystemID.Unix;
+
+					zof.BeginUpdate();
+					zof.Add(new StringMemoryDataSource("foo"), ze);
+					zof.CommitUpdate();
+				}
+
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var zis = new ZipFile(ms))
+				{
+					var ze = zis.GetEntry(fileName);
+					Assert.NotNull(ze);
+
+					Assert.AreEqual((int)HostSystemID.Unix, ze.HostSystem);
+					Assert.AreEqual(ZipConstants.VersionMadeBy, ze.VersionMadeBy);
+				}
+			}
 		}
 	}
 }

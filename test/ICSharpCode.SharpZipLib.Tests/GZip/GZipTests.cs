@@ -289,6 +289,111 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			}
 		}
 
+		/// <summary>
+		/// Test that if we flush a GZip output stream then all data that has been written
+		/// is flushed through to the underlying stream and can be successfully read back
+		/// even if the stream is not yet finished.
+		/// </summary>
+		[Test]
+		[Category("GZip")]
+		public void FlushToUnderlyingStream()
+		{
+			var ms = new MemoryStream();
+			var outStream = new GZipOutputStream(ms);
+
+			byte[] buf = new byte[100000];
+			var rnd = new Random();
+			rnd.NextBytes(buf);
+
+			outStream.Write(buf, 0, buf.Length);
+			// Flush output stream but don't finish it yet
+			outStream.Flush();
+
+			ms.Seek(0, SeekOrigin.Begin);
+
+			var inStream = new GZipInputStream(ms);
+			byte[] buf2 = new byte[buf.Length];
+			int currentIndex = 0;
+			int count = buf2.Length;
+
+			while (true)
+			{
+				try
+				{
+					int numRead = inStream.Read(buf2, currentIndex, count);
+					if (numRead <= 0)
+					{
+						break;
+					}
+					currentIndex += numRead;
+					count -= numRead;
+				}
+				catch (GZipException)
+				{
+					// We should get an unexpected EOF exception once we've read all
+					// data as the stream isn't yet finished.
+					break;
+				}
+			}
+
+			Assert.AreEqual(0, count);
+
+			for (int i = 0; i < buf.Length; ++i)
+			{
+				Assert.AreEqual(buf2[i], buf[i]);
+			}
+		}
+
+		[Test]
+		[Category("GZip")]
+		public void SmallBufferDecompression()
+		{
+			var outputBufferSize = 100000;
+			var inputBufferSize = outputBufferSize * 4;
+			
+			var outputBuffer = new byte[outputBufferSize];
+			var inputBuffer = new byte[inputBufferSize];
+			
+			using (var msGzip = new MemoryStream())
+			{
+				using (var gzos = new GZipOutputStream(msGzip))
+				{
+					gzos.IsStreamOwner = false;
+
+					var rnd = new Random(0);
+					rnd.NextBytes(inputBuffer);
+					gzos.Write(inputBuffer, 0, inputBuffer.Length);
+				
+					gzos.Flush();
+					gzos.Finish();
+				}
+
+				msGzip.Seek(0, SeekOrigin.Begin);
+				
+
+				using (var gzis = new GZipInputStream(msGzip))
+				using (var msRaw = new MemoryStream())
+				{
+					
+					int readOut;
+					while ((readOut = gzis.Read(outputBuffer, 0, outputBuffer.Length)) > 0)
+					{
+						msRaw.Write(outputBuffer, 0, readOut);
+					}
+
+					var resultBuffer = msRaw.ToArray();
+
+					for (var i = 0; i < resultBuffer.Length; i++)
+					{
+						Assert.AreEqual(inputBuffer[i], resultBuffer[i]);
+					}
+
+
+				}
+		}
+
+	}
+
 		[Test]
 		[Category("GZip")]
 		[Category("Performance")]

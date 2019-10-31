@@ -18,10 +18,17 @@ nuget:
   disable_publish_on_pr: true
 before_build:
 - ps: nuget restore ICSharpCode.SharpZipLib.sln
+- ps: .\tools\appveyor-docfx-init.ps1
 build:
   project: ICSharpCode.SharpZipLib.sln
   publish_nuget: true
   publish_nuget_symbols: true
   verbosity: normal
+after_build:
+- ps: .\tools\appveyor-docfx-build.ps1
 test_script:
-- ps: tools/appveyor-test.ps1
+- ps: tools\appveyor-test.ps1
+artifacts:
+- path: docs\help\_site
+  type: zip
+  name: Documentation

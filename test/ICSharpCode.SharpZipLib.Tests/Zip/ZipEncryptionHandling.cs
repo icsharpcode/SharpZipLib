@@ -1,4 +1,5 @@
-﻿using ICSharpCode.SharpZipLib.Zip;
+﻿using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
 using System;
 using System.Diagnostics;
@@ -140,6 +141,66 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					{
 						var content = sr.ReadToEnd();
 						Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match input data");
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Test using AES encryption on a file whose contents are Stored rather than deflated
+		/// </summary>
+		[Test]
+		[Category("Encryption")]
+		[Category("Zip")]
+		public void ZipFileStoreAesPartialRead()
+		{
+			string password = "password";
+
+			using (var memoryStream = new MemoryStream())
+			{
+				// Try to create a zip stream
+				WriteEncryptedZipToStream(memoryStream, password, 256, CompressionMethod.Stored);
+
+				// reset
+				memoryStream.Seek(0, SeekOrigin.Begin);
+
+				// try to read it
+				var zipFile = new ZipFile(memoryStream, leaveOpen: true)
+				{
+					Password = password
+				};
+
+				foreach (ZipEntry entry in zipFile)
+				{
+					if (!entry.IsFile) continue;
+
+					// Should be stored rather than deflated
+					Assert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.Stored), "Entry should be stored");
+
+					using (var ms = new MemoryStream())
+					{
+						using (var zis = zipFile.GetInputStream(entry))
+						{
+							byte[] buffer = new byte[1];
+
+							while (true)
+							{
+								int b = zis.ReadByte();
+
+								if (b == -1)
+									break;
+
+								ms.WriteByte((byte)b);
+							}
+						}
+
+						ms.Seek(0, SeekOrigin.Begin);
+
+						using (var sr = new StreamReader(ms, Encoding.UTF8))
+						{
+							var content = sr.ReadToEnd();
+							Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match input data");
+						}
 					}
 				}
 			}

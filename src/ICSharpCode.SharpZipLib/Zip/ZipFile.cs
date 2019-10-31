@@ -428,7 +428,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public ZipFile(FileStream file) :
 			this(file, false)
 		{
-			
+
 		}
 
 		/// <summary>
@@ -489,7 +489,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public ZipFile(Stream stream) :
 			this(stream, false)
 		{
-			
+
 		}
 
 		/// <summary>
@@ -1840,6 +1840,29 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Add a <see cref="ZipEntry"/> with data.
+		/// </summary>
+		/// <param name="dataSource">The source of the data for this entry.</param>
+		/// <param name="entry">The entry to add.</param>
+		/// <remarks>This can be used to add file entries with a custom data source.</remarks>
+		public void Add(IStaticDataSource dataSource, ZipEntry entry)
+		{
+			if (entry == null)
+			{
+				throw new ArgumentNullException(nameof(entry));
+			}
+
+			if (dataSource == null)
+			{
+				throw new ArgumentNullException(nameof(dataSource));
+			}
+
+			CheckUpdating();
+
+			AddUpdate(new ZipUpdate(dataSource, entry));
+		}
+
+		/// <summary>
 		/// Add a directory entry to the archive.
 		/// </summary>
 		/// <param name="directoryName">The directory to add.</param>
@@ -2157,7 +2180,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLEInt(ZipConstants.CentralHeaderSignature);
 
 			// Version made by
-			WriteLEShort(ZipConstants.VersionMadeBy);
+			WriteLEShort((entry.HostSystem << 8) | entry.VersionMadeBy);
 
 			// Version required to extract
 			WriteLEShort(entry.Version);
@@ -3385,6 +3408,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			bool isZip64 = false;
+			bool requireZip64 = false;
 
 			// Check if zip64 header information is required.
 			if ((thisDiskNumber == 0xffff) ||
@@ -3394,13 +3418,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 				(centralDirSize == 0xffffffff) ||
 				(offsetOfCentralDir == 0xffffffff))
 			{
-				isZip64 = true;
+				requireZip64 = true;
+			}
 
-				long offset = LocateBlockWithSignature(ZipConstants.Zip64CentralDirLocatorSignature, locatedEndOfCentralDir, 0, 0x1000);
-				if (offset < 0)
+			// #357 - always check for the existance of the Zip64 central directory.
+			long locatedZip64EndOfCentralDir = LocateBlockWithSignature(ZipConstants.Zip64CentralDirLocatorSignature, locatedEndOfCentralDir, 0, 0x1000);
+			if (locatedZip64EndOfCentralDir < 0)
+			{
+				if (requireZip64)
 				{
+					// This is only an error in cases where the Zip64 directory is required.
 					throw new ZipException("Cannot find Zip64 locator");
 				}
+			}
+			else
+			{
+				isZip64 = true;
 
 				// number of the disk with the start of the zip64 end of central directory 4 bytes
 				// relative offset of the zip64 end of central directory record 8 bytes
@@ -3542,23 +3575,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			CryptoStream result = null;
 
-			if ((entry.Version < ZipConstants.VersionStrongEncryption)
-				|| (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0)
+			if (entry.CompressionMethodForHeader == CompressionMethod.WinZipAES)
 			{
-				var classicManaged = new PkzipClassicManaged();
-
-				OnKeysRequired(entry.Name);
-				if (HaveKeys == false)
-				{
-					throw new ZipException("No password available for encrypted stream");
-				}
-
-				result = new CryptoStream(baseStream, classicManaged.CreateDecryptor(key, null), CryptoStreamMode.Read);
-				CheckClassicPassword(result, entry);
-			}
-			else
-			{
-				if (entry.Version == ZipConstants.VERSION_AES)
+				if (entry.Version >= ZipConstants.VERSION_AES)
 				{
 					//
 					OnKeysRequired(entry.Name);
@@ -3584,6 +3603,28 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
+					throw new ZipException("Decryption method not supported");
+				}
+			}
+			else
+			{
+				if ((entry.Version < ZipConstants.VersionStrongEncryption)
+					|| (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0)
+				{
+					var classicManaged = new PkzipClassicManaged();
+
+					OnKeysRequired(entry.Name);
+					if (HaveKeys == false)
+					{
+						throw new ZipException("No password available for encrypted stream");
+					}
+
+					result = new CryptoStream(baseStream, classicManaged.CreateDecryptor(key, null), CryptoStreamMode.Read);
+					CheckClassicPassword(result, entry);
+				}
+				else
+				{
+					// We don't support PKWare strong encryption
 					throw new ZipException("Decryption method not supported");
 				}
 			}
