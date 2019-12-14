@@ -1620,7 +1620,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			contentsEdited_ = true;
 
-			int index = FindExistingUpdate(update.Entry.Name);
+			int index = FindExistingUpdate(update.Entry.Name, true);
 
 			if (index >= 0)
 			{
@@ -2529,13 +2529,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private int FindExistingUpdate(ZipEntry entry)
 		{
 			int result = -1;
-			string convertedName = entry.IsDirectory
-				? GetTransformedDirectoryName(entry.Name)
-				: GetTransformedFileName(entry.Name);
-
-			if (updateIndex_.ContainsKey(convertedName))
+			if (updateIndex_.ContainsKey(entry.Name))
 			{
-				result = (int)updateIndex_[convertedName];
+				result = (int)updateIndex_[entry.Name];
 			}
 			/*
 						// This is slow like the coming of the next ice age but takes less storage and may be useful
@@ -2553,11 +2549,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 
-		private int FindExistingUpdate(string fileName)
+		private int FindExistingUpdate(string fileName, bool isEntityName = false)
 		{
 			int result = -1;
 
-			string convertedName = GetTransformedFileName(fileName);
+			string convertedName = !isEntityName ? GetTransformedFileName(fileName) : fileName;
 
 			if (updateIndex_.ContainsKey(convertedName))
 			{
