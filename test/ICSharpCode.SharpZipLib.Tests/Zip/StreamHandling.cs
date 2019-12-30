@@ -1,4 +1,5 @@
-﻿using ICSharpCode.SharpZipLib.Tests.TestSupport;
+﻿using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
 using System.IO;
@@ -188,6 +189,53 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 			inStream.Close();
 			Assert.AreEqual(extractCount, 0, "No data should be read from empty entries");
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void WriteZipStreamWithNoCompression([Values(0, 1, 256)] int contentLength)
+		{
+			var buffer = new byte[255];
+
+			using (var dummyZip = Utils.GetDummyFile(0))
+			using (var inputFile = Utils.GetDummyFile(contentLength))
+			{
+				using (var zipFileStream = File.OpenWrite(dummyZip.Filename))
+				using (var zipOutputStream = new ZipOutputStream(zipFileStream))
+				using (var inputFileStream = File.OpenRead(inputFile.Filename))
+				{
+					zipOutputStream.PutNextEntry(new ZipEntry(inputFile.Filename)
+					{
+						CompressionMethod = CompressionMethod.Stored,
+					});
+
+					StreamUtils.Copy(inputFileStream, zipOutputStream, buffer);
+				}
+
+				using (var zf = new ZipFile(dummyZip.Filename))
+				{
+					var inputBytes = File.ReadAllBytes(inputFile.Filename);
+
+					var inputFileName = ZipEntry.CleanName(inputFile.Filename);
+					var entry = zf.GetEntry(inputFileName);
+					Assert.IsNotNull(entry, "No entry matching source file \"{0}\" found in archive, found \"{1}\"", inputFileName, zf[0].Name);
+
+					Assert.DoesNotThrow(() =>
+					{
+						using (var entryStream = zf.GetInputStream(entry))
+						{
+							var outputBytes = new byte[entryStream.Length];
+							entryStream.Read(outputBytes, 0, outputBytes.Length);
+
+							Assert.AreEqual(inputBytes, outputBytes, "Archive content does not match the source content");
+						}
+					}, "Failed to locate entry stream in archive");
+
+					Assert.IsTrue(zf.TestArchive(testData: true), "Archive did not pass TestArchive");
+				}
+
+				
+			}
 		}
 
 		/// <summary>

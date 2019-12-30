@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
@@ -9,6 +10,8 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	/// </summary>
 	public static class Utils
 	{
+		public static int DummyContentLength = 16;
+
 		private static Random random = new Random();
 
 		private static void Compare(byte[] a, byte[] b)
@@ -32,16 +35,24 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		public static void WriteDummyData(string fileName, int size = -1)
 		{
-			if (size < 0)
+			using(var fs = File.OpenWrite(fileName))
 			{
-				File.WriteAllText(fileName, DateTime.UtcNow.Ticks.ToString("x16"));
+				WriteDummyData(fs, size);
 			}
-			else if (size > 0)
+		}
+
+		public static void WriteDummyData(Stream stream, int size = -1)
+		{
+			var bytes = (size < 0)
+				? Encoding.ASCII.GetBytes(DateTime.UtcNow.Ticks.ToString("x16"))
+				: new byte[size];
+
+			if(size > 0)
 			{
-				var bytes = Array.CreateInstance(typeof(byte), size) as byte[];
 				random.NextBytes(bytes);
-				File.WriteAllBytes(fileName, bytes);
 			}
+
+			stream.Write(bytes, 0, bytes.Length);
 		}
 
 		public static TempFile GetDummyFile(int size = -1)
@@ -85,7 +96,10 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			}
 
 			public void Dispose()
-				=> Dispose(true);
+			{
+				Dispose(true);
+				GC.SuppressFinalize(this);
+			}
 
 			#endregion IDisposable Support
 		}
@@ -122,7 +136,10 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			}
 
 			public void Dispose()
-				=> Dispose(true);
+			{
+				Dispose(true);
+				GC.SuppressFinalize(this);
+			}
 
 			internal string CreateDummyFile(int size = -1)
 				=> CreateDummyFile(GetDummyFileName(), size);

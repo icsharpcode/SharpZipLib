@@ -95,6 +95,32 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		[Test]
 		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void ContentEqualAfterAfterArchived([Values(0, 1, 64)]int contentSize)
+		{
+			using(var sourceDir = new Utils.TempDir())
+			using(var targetDir = new Utils.TempDir())
+			using(var zipFile = Utils.GetDummyFile(0))
+			{
+				var sourceFile = sourceDir.CreateDummyFile(contentSize);
+				var sourceContent = File.ReadAllBytes(sourceFile);
+				new FastZip().CreateZip(zipFile.Filename, sourceDir.Fullpath, true, null);
+
+				Assert.DoesNotThrow(() =>
+				{
+					new FastZip().ExtractZip(zipFile.Filename, targetDir.Fullpath, null);
+				}, "Exception during extraction of test archive");
+				
+				var targetFile = Path.Combine(targetDir.Fullpath, Path.GetFileName(sourceFile));
+				var targetContent = File.ReadAllBytes(targetFile);
+
+				Assert.AreEqual(sourceContent.Length, targetContent.Length, "Extracted file size does not match source file size");
+				Assert.AreEqual(sourceContent, targetContent, "Extracted content does not match source content");
+			}
+		}
+
+		[Test]
+		[Category("Zip")]
 		public void Encryption()
 		{
 			const string tempName1 = "a.dat";
