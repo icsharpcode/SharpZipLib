@@ -232,7 +232,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int compressionLevel = defaultCompressionLevel;
 
 			// Clear flags that the library manages internally
-			entry.Flags &= (int)GeneralBitFlags.UnicodeText;
+			entry.Flags &= GeneralBitFlags.UnicodeText;
 			patchEntryHeader = false;
 
 			bool headerInfoAvailable;
@@ -257,8 +257,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 						if (!CanPatchEntries)
 						{
 							// Can't patch entries so storing is not possible.
-							method = CompressionMethod.Deflated;
-							compressionLevel = 0;
+							// Update: support for GeneralBitFlags.Descriptor on non-deflate methods
+							//         have been present in PKZIP for ~20 years now
+							//method = CompressionMethod.Deflated;
+							//compressionLevel = 0;
+
 						}
 					}
 					else // entry.size must be > 0
@@ -277,7 +280,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					// after compressed data.
 
 					// Stored entries of this form have already been converted to deflating.
-					entry.Flags |= 8;
+					entry.Flags |= GeneralBitFlags.Descriptor;
 				}
 				else
 				{
@@ -293,7 +296,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					// Need to append a data descriptor as the crc isnt available for use
 					// with encryption, the date is used instead.  Setting the flag
 					// indicates this to the decompressor.
-					entry.Flags |= 8;
+					entry.Flags |= GeneralBitFlags.Descriptor;
 				}
 			}
 
@@ -312,7 +315,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLeInt(ZipConstants.LocalHeaderSignature);
 
 			WriteLeShort(entry.Version);
-			WriteLeShort(entry.Flags);
+			WriteLeShort((int)entry.Flags);
 			WriteLeShort((byte)entry.CompressionMethodForHeader);
 			WriteLeInt((int)entry.DosTime);
 
@@ -569,7 +572,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			// Add data descriptor if flagged as required
-			if ((curEntry.Flags & 8) != 0)
+			if (curEntry.Flags.HasFlag(GeneralBitFlags.Descriptor))
 			{
 				WriteLeInt(ZipConstants.DataDescriptorSignature);
 				WriteLeInt(unchecked((int)curEntry.Crc));
@@ -752,7 +755,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLeInt(ZipConstants.CentralHeaderSignature);
 				WriteLeShort((entry.HostSystem << 8) | entry.VersionMadeBy);
 				WriteLeShort(entry.Version);
-				WriteLeShort(entry.Flags);
+				WriteLeShort((short)entry.Flags);
 				WriteLeShort((short)entry.CompressionMethodForHeader);
 				WriteLeInt((int)entry.DosTime);
 				WriteLeInt((int)entry.Crc);

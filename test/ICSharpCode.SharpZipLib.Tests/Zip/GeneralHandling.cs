@@ -47,7 +47,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				ZipEntry entry2 = inStream.GetNextEntry();
 
-				if ((entry2.Flags & 8) == 0)
+				if (!entry2.Flags.HasFlag(GeneralBitFlags.Descriptor))
 				{
 					Assert.AreEqual(size, entry2.Size, "Entry size invalid");
 				}
@@ -894,14 +894,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			string converted = ZipStrings.ConvertToStringExt(0, rawData);
 			Assert.AreEqual(sample, converted);
 
-			converted = ZipStrings.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
+			converted = ZipStrings.ConvertToStringExt(GeneralBitFlags.UnicodeText, rawData);
 			Assert.AreEqual(sample, converted);
 
 			// This time use some greek characters
 			sample = "\u03A5\u03d5\u03a3";
 			rawData = Encoding.UTF8.GetBytes(sample);
 
-			converted = ZipStrings.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
+			converted = ZipStrings.ConvertToStringExt(GeneralBitFlags.UnicodeText, rawData);
 			Assert.AreEqual(sample, converted);
 		}
 

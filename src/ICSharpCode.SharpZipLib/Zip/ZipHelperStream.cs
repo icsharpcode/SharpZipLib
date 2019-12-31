@@ -192,7 +192,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLEInt(ZipConstants.LocalHeaderSignature);
 
 			WriteLEShort(entry.Version);
-			WriteLEShort(entry.Flags);
+			WriteLEShort((int)entry.Flags);
 			WriteLEShort((byte)method);
 			WriteLEInt((int)entry.DosTime);
 
@@ -562,7 +562,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int result = 0;
 
 			// Add data descriptor if flagged as required
-			if ((entry.Flags & (int)GeneralBitFlags.Descriptor) != 0)
+			if (entry.Flags.HasFlag(GeneralBitFlags.Descriptor))
 			{
 				// The signature is not PKZIP originally but is now described as optional
 				// in the PKZIP Appnote documenting trhe format.

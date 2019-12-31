@@ -313,7 +313,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					var entry = zis.GetNextEntry();
 
 					Assert.AreEqual(entry.Name, EntryName);
-					Assert.IsTrue((entry.Flags & (int)GeneralBitFlags.Descriptor) != 0);
+					Assert.IsTrue(entry.Flags.HasFlag(GeneralBitFlags.Descriptor));
 					return zis;
 				},
 				output: bs =>

@@ -79,7 +79,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			long testCompressedSize = 72347;
 			var testExtraData = new byte[] { 0x00, 0x01, 0x00, 0x02, 0x0EF, 0xFE };
 			string testName = "Namu";
-			int testFlags = 4567;
+			var testFlags = (GeneralBitFlags)4567;
 			long testDosTime = 23434536;
 			CompressionMethod testMethod = CompressionMethod.Deflated;
 
@@ -114,7 +114,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			long testCompressedSize = 72347;
 			var testExtraData = new byte[] { 0x00, 0x01, 0x00, 0x02, 0x0EF, 0xFE };
 			string testName = "Namu";
-			int testFlags = 4567;
+			var testFlags = (GeneralBitFlags)4567;
 			long testDosTime = 23434536;
 			CompressionMethod testMethod = CompressionMethod.Deflated;
 

@@ -366,15 +366,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </remarks>
 		/// <seealso cref="IsUnicodeText"></seealso>
 		/// <seealso cref="IsCrypted"></seealso>
-		public int Flags
+		public GeneralBitFlags Flags
 		{
 			get
 			{
-				return flags;
+				return (GeneralBitFlags)flags;
 			}
 			set
 			{
-				flags = value;
+				flags = (int)value;
 			}
 		}
 

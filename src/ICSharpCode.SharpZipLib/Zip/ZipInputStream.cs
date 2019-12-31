@@ -74,7 +74,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private long size;
 		private int method;
-		private int flags;
+		private GeneralBitFlags flags;
 		private string password;
 
 		#endregion Instance Fields
@@ -190,7 +190,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			var versionRequiredToExtract = (short)inputBuffer.ReadLeShort();
 
-			flags = inputBuffer.ReadLeShort();
+			flags = (GeneralBitFlags)inputBuffer.ReadLeShort();
 			method = inputBuffer.ReadLeShort();
 			var dostime = (uint)inputBuffer.ReadLeInt();
 			int crc2 = inputBuffer.ReadLeInt();
@@ -199,7 +199,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int nameLen = inputBuffer.ReadLeShort();
 			int extraLen = inputBuffer.ReadLeShort();
 
-			bool isCrypted = (flags & 1) == 1;
+			bool isCrypted = flags.HasFlag(GeneralBitFlags.Encrypted);
 
 			byte[] buffer = new byte[nameLen];
 			inputBuffer.ReadRawBuffer(buffer);
@@ -211,7 +211,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				Flags = flags,
 			};
 
-			if ((flags & 8) == 0)
+			if (!flags.HasFlag(GeneralBitFlags.Descriptor))
 			{
 				entry.Crc = crc2 & 0xFFFFFFFFL;
 				entry.Size = size & 0xFFFFFFFFL;
@@ -317,7 +317,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			StopDecrypting();
 
-			if ((flags & 8) != 0)
+			if (flags.HasFlag(GeneralBitFlags.Descriptor))
 			{
 				ReadDataDescriptor();
 			}
@@ -362,7 +362,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if (method == (int)CompressionMethod.Deflated)
 			{
-				if ((flags & 8) != 0)
+				if (flags.HasFlag(GeneralBitFlags.Descriptor))
 				{
 					// We don't know how much we must skip, read until end.
 					byte[] tmp = new byte[4096];
@@ -518,7 +518,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					csize -= ZipConstants.CryptoHeaderSize;
 				}
-				else if ((entry.Flags & (int)GeneralBitFlags.Descriptor) == 0)
+				else if (!entry.Flags.HasFlag(GeneralBitFlags.Descriptor))
 				{
 					throw new ZipException(string.Format("Entry compressed size {0} too small for encryption", csize));
 				}
@@ -528,7 +528,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				inputBuffer.CryptoTransform = null;
 			}
 
-			if ((csize > 0) || ((flags & (int)GeneralBitFlags.Descriptor) != 0))
+			if ((csize > 0) || flags.HasFlag(GeneralBitFlags.Descriptor))
 			{
 				if ((method == (int)CompressionMethod.Deflated) && (inputBuffer.Available > 0))
 				{
@@ -625,7 +625,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						inputBuffer.Available = inf.RemainingInput;
 
 						// A csize of -1 is from an unpatched local header
-						if ((flags & 8) == 0 &&
+						if (!flags.HasFlag(GeneralBitFlags.Descriptor) &&
 							(inf.TotalIn != csize && csize != 0xFFFFFFFF && csize != -1 || inf.TotalOut != size))
 						{
 							throw new ZipException("Size mismatch: " + csize + ";" + size + " <-> " + inf.TotalIn + ";" + inf.TotalOut);

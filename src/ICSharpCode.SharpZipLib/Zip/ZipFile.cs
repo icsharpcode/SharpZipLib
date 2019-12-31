@@ -571,9 +571,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="System.IO.IOException">
 		/// An i/o error occurs.
 		/// </exception>
-		public void Close()
+		public void Dispose()
 		{
-			DisposeInternal(true);
+			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
@@ -990,7 +990,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 							testing &= strategy != TestStrategy.FindFirstError;
 						}
 
-						if ((this[entryIndex].Flags & (int)GeneralBitFlags.Descriptor) != 0)
+						if (this[entryIndex].Flags.HasFlag(GeneralBitFlags.Descriptor))
 						{
 							var helper = new ZipHelperStream(baseStream_);
 							var data = new DescriptorData();
@@ -1204,7 +1204,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 
 					// Central header flags match local entry flags.
-					if (localFlags != entry.Flags)
+					if (localFlags != (int)entry.Flags)
 					{
 						throw new ZipException("Central header/local header flags mismatch");
 					}
@@ -1263,7 +1263,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 
 					// Name data has already been read convert it and compare.
-					string localName = ZipStrings.ConvertToStringExt(localFlags, nameData);
+					string localName = ZipStrings.ConvertToStringExt((GeneralBitFlags)localFlags, nameData);
 
 					// Central directory and local entry name match
 					if (localName != entry.Name)
@@ -2038,7 +2038,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else if (entry.CompressionMethod == CompressionMethod.Stored)
 				{
-					entry.Flags &= ~(int)GeneralBitFlags.Descriptor;
+					// Older versions of pkzip would not accept Descriptor flag for non-deflate compression
+					// but disregarding that allows us to use Stored method without seeking!
+					// entry.Flags &= ~GeneralBitFlags.Descriptor;
 				}
 
 				if (HaveKeys)
@@ -2046,7 +2048,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					entry.IsCrypted = true;
 					if (entry.Crc < 0)
 					{
-						entry.Flags |= (int)GeneralBitFlags.Descriptor;
+						entry.Flags |= GeneralBitFlags.Descriptor;
 					}
 				}
 				else
@@ -2077,7 +2079,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLEInt(ZipConstants.LocalHeaderSignature);
 
 			WriteLEShort(entry.Version);
-			WriteLEShort(entry.Flags);
+			WriteLEShort((int)entry.Flags);
 
 			WriteLEShort((byte)entry.CompressionMethod);
 			WriteLEInt((int)entry.DosTime);
@@ -2185,7 +2187,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// Version required to extract
 			WriteLEShort(entry.Version);
 
-			WriteLEShort(entry.Flags);
+			WriteLEShort((int)entry.Flags);
 
 			unchecked
 			{
@@ -2438,7 +2440,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private int GetDescriptorSize(ZipUpdate update)
 		{
 			int result = 0;
-			if ((update.Entry.Flags & (int)GeneralBitFlags.Descriptor) != 0)
+			if (update.Entry.Flags.HasFlag(GeneralBitFlags.Descriptor))
 			{
 				result = ZipConstants.DataDescriptorSize - 4;
 				if (update.Entry.LocalHeaderRequiresZip64)
@@ -2657,7 +2659,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					long dataEnd = workFile.baseStream_.Position;
 					update.OutEntry.CompressedSize = dataEnd - dataStart;
 
-					if ((update.OutEntry.Flags & (int)GeneralBitFlags.Descriptor) == (int)GeneralBitFlags.Descriptor)
+					if (update.OutEntry.Flags.HasFlag(GeneralBitFlags.Descriptor))
 					{
 						var helper = new ZipHelperStream(workFile.baseStream_);
 						helper.WriteDataDescriptor(update.OutEntry);
@@ -3254,9 +3256,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		#region IDisposable Members
 
-		void IDisposable.Dispose()
+
+		/// <summary>
+		/// Closes the ZipFile.  If the stream is <see cref="IsStreamOwner">owned</see> then this also closes the underlying input stream.
+		/// Once closed, no further instance methods should be called.
+		/// </summary>
+		/// <exception cref="System.IO.IOException">
+		/// An i/o error occurs.
+		/// </exception>
+		public void Close()
 		{
-			Close();
+			Dispose();
 		}
 
 		#endregion IDisposable Members
@@ -3492,7 +3502,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				int versionMadeBy = ReadLEUshort();
 				int versionToExtract = ReadLEUshort();
-				int bitFlags = ReadLEUshort();
+				var bitFlags = (GeneralBitFlags)ReadLEUshort();
 				int method = ReadLEUshort();
 				uint dostime = ReadLEUint();
 				uint crc = ReadLEUint();
@@ -3525,7 +3535,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					ExternalFileAttributes = (int)externalAttributes
 				};
 
-				if ((bitFlags & 8) == 0)
+				if (!bitFlags.HasFlag(GeneralBitFlags.Descriptor))
 				{
 					entry.CryptoCheckValue = (byte)(crc >> 24);
 				}
@@ -3609,7 +3619,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			else
 			{
 				if ((entry.Version < ZipConstants.VersionStrongEncryption)
-					|| (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0)
+					|| !entry.Flags.HasFlag(GeneralBitFlags.StrongEncryption))
 				{
 					var classicManaged = new PkzipClassicManaged();
 
@@ -3636,7 +3646,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			CryptoStream result = null;
 			if ((entry.Version < ZipConstants.VersionStrongEncryption)
-				|| (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0)
+				|| !entry.Flags.HasFlag(GeneralBitFlags.StrongEncryption))
 			{
 				var classicManaged = new PkzipClassicManaged();
 
@@ -3651,7 +3661,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				result = new CryptoStream(new UncompressedStream(baseStream),
 					classicManaged.CreateEncryptor(key, null), CryptoStreamMode.Write);
 
-				if ((entry.Crc < 0) || (entry.Flags & 8) != 0)
+				if ((entry.Crc < 0) || entry.Flags.HasFlag(GeneralBitFlags.Descriptor))
 				{
 					WriteEncryptionHeader(result, entry.DosTime << 16);
 				}
