@@ -80,17 +80,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			get
 			{
-				return codePage == Encoding.UTF8.CodePage;
+				return CodePage == Encoding.UTF8.CodePage;
 			}
 			set
 			{
 				if (value)
 				{
-					codePage = Encoding.UTF8.CodePage;
+					CodePage = Encoding.UTF8.CodePage;
 				}
 				else
 				{
-					codePage = SystemDefaultCodePage;
+					CodePage = SystemDefaultCodePage;
 				}
 			}
 		}
