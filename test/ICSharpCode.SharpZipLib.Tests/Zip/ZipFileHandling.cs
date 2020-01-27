@@ -187,6 +187,41 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+		/// <summary>
+		/// Test for issue #403 - zip64 locator signature bytes being present in a contained file,
+		/// when the outer zip file isn't using zip64
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void FakeZip64Locator()
+		{
+			using (var memStream = new MemoryStream())
+			{
+				// set the file contents to the zip 64 directory locator signature
+				var locatorValue = ZipConstants.Zip64CentralDirLocatorSignature;
+				var locatorBytes = new byte[] { (byte)(locatorValue & 0xff), (byte)((locatorValue >> 8) & 0xff), (byte)((locatorValue >> 16) & 0xff), (byte)((locatorValue >> 24) & 0xff) };
+
+				using (ZipFile f = new ZipFile(memStream, leaveOpen: true))
+				{
+					var m = new MemoryDataSource(locatorBytes);
+
+					// Add the entry - set compression method to stored so the signature bytes remain as expected
+					f.BeginUpdate(new MemoryArchiveStorage());
+					f.Add(m, "a.dat", CompressionMethod.Stored);
+					f.CommitUpdate();
+					Assert.IsTrue(f.TestArchive(true));
+				}
+
+				memStream.Seek(0, SeekOrigin.Begin);
+
+				// Check that the archive is readable.
+				using (ZipFile f = new ZipFile(memStream, leaveOpen: true))
+				{
+					Assert.That(f.Count, Is.EqualTo(1), "Archive should have 1 entry");
+				}
+			}
+		}
+
 		[Test]
 		[Category("Zip")]
 		[Explicit]

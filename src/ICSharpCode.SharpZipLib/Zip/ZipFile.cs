@@ -3427,8 +3427,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			// #357 - always check for the existance of the Zip64 central directory.
-			long locatedZip64EndOfCentralDir = LocateBlockWithSignature(ZipConstants.Zip64CentralDirLocatorSignature, locatedEndOfCentralDir, 0, 0x1000);
-			if (locatedZip64EndOfCentralDir < 0)
+			// #403 - Take account of the fixed size of the locator when searching.
+			//    Subtract from locatedEndOfCentralDir so that the endLocation is the location of EndOfCentralDirectorySignature,
+			//    rather than the data following the signature.
+			long locatedZip64EndOfCentralDirLocator = LocateBlockWithSignature(
+				ZipConstants.Zip64CentralDirLocatorSignature,
+				locatedEndOfCentralDir - 4,
+				ZipConstants.Zip64EndOfCentralDirectoryLocatorSize,
+				0);
+
+			if (locatedZip64EndOfCentralDirLocator < 0)
 			{
 				if (requireZip64)
 				{

@@ -345,6 +345,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		[Obsolete("Use CryptoHeaderSize instead")]
 		public const int CRYPTO_HEADER_SIZE = 12;
 
+		/// <summary>
+		/// The size of the Zip64 central directory locator.
+		/// </summary>
+		public const int Zip64EndOfCentralDirectoryLocatorSize = 20;
+
 		#endregion Header Sizes
 
 		#region Header Signatures
