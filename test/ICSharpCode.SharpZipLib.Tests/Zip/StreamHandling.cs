@@ -352,5 +352,34 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				Assert.Throws<ZipException>(() => zis.Read(buffer, 0, 1), "Trying to read the stream should throw");
 			}
 		}
+
+		/// <summary>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/341
+		/// Should be able to read entries whose names contain invalid filesystem
+		/// characters
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void ShouldBeAbleToReadEntriesWithInvalidFileNames()
+		{
+			var testFileName = "<A|B?C>.txt";
+
+			using (var memoryStream = new MemoryStream())
+			{
+				using (var outStream = new ZipOutputStream(memoryStream))
+				{
+					outStream.IsStreamOwner = false;
+					outStream.PutNextEntry(new ZipEntry(testFileName));
+				}
+
+				memoryStream.Seek(0, SeekOrigin.Begin);
+
+				using (var inStream = new ZipInputStream(memoryStream))
+				{
+					var entry = inStream.GetNextEntry();
+					Assert.That(entry.Name, Is.EqualTo(testFileName), "output name must match original name");
+				}
+			}
+		}
 	}
 }
