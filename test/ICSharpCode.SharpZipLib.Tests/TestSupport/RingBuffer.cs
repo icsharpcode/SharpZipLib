@@ -405,6 +405,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	}
 
 	[TestFixture]
+	[Explicit("Meta tests (for ringbuffer)")]
 	public class ExerciseBuffer
 	{
 		[Test]

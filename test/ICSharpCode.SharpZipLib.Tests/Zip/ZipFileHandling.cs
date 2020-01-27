@@ -615,6 +615,37 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			File.Delete(tempFile);
 		}
 
+		[Test]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void CreateArchiveWithNoCompression()
+		{
+
+			using (var sourceFile = Utils.GetDummyFile())
+			using (var zipFile = Utils.GetDummyFile(0))
+			{
+				var inputContent = File.ReadAllText(sourceFile.Filename);
+				using (ZipFile f = ZipFile.Create(zipFile.Filename))
+				{
+					f.BeginUpdate();
+					f.Add(sourceFile.Filename, CompressionMethod.Stored);
+					f.CommitUpdate();
+					Assert.IsTrue(f.TestArchive(true));
+					f.Close();
+				}
+
+				using (ZipFile f = new ZipFile(zipFile.Filename))
+				{
+					Assert.AreEqual(1, f.Count);
+					using (var sr = new StreamReader(f.GetInputStream(f[0])))
+					{
+						var outputContent = sr.ReadToEnd();
+						Assert.AreEqual(inputContent, outputContent, "extracted content does not match source content");
+					}
+				}
+			}
+		}
+
 		/// <summary>
 		/// Check that ZipFile finds entries when its got a long comment
 		/// </summary>
@@ -1089,8 +1120,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				var names = new string[]
 				{
 					"\u030A\u03B0",     // Greek
-                    "\u0680\u0685"      // Arabic
-                };
+					"\u0680\u0685"      // Arabic
+				};
 
 				foreach (string name in names)
 				{

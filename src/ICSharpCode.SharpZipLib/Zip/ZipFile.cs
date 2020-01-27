@@ -1069,10 +1069,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 				bool testHeader = (tests & HeaderTest.Header) != 0;
 				bool testData = (tests & HeaderTest.Extract) != 0;
 
-				baseStream_.Seek(offsetOfFirstEntry + entry.Offset, SeekOrigin.Begin);
-				if ((int)ReadLEUint() != ZipConstants.LocalHeaderSignature)
+				var entryAbsOffset = offsetOfFirstEntry + entry.Offset;
+				
+				baseStream_.Seek(entryAbsOffset, SeekOrigin.Begin);
+				var signature = (int)ReadLEUint();
+
+				if (signature != ZipConstants.LocalHeaderSignature)
 				{
-					throw new ZipException(string.Format("Wrong local header signature @{0:X}", offsetOfFirstEntry + entry.Offset));
+					throw new ZipException(string.Format("Wrong local header signature at 0x{0:x}, expected 0x{1:x8}, actual 0x{2:x8}",
+						entryAbsOffset, ZipConstants.LocalHeaderSignature, signature));
 				}
 
 				var extractVersion = (short)(ReadLEUshort() & 0x00ff);
