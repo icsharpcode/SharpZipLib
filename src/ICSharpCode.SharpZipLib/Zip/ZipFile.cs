@@ -1620,7 +1620,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			contentsEdited_ = true;
 
-			int index = FindExistingUpdate(update.Entry.Name, true);
+			int index = FindExistingUpdate(update.Entry.Name, isEntityName: true);
 
 			if (index >= 0)
 			{
