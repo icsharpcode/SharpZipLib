@@ -87,16 +87,22 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		private int i2, j2;
 		private byte z;
 
+		private bool multiStream;
+		private long processedLastStream;
+
 		#endregion Instance Fields
 
 		/// <summary>
 		/// Construct instance for reading from stream
 		/// </summary>
 		/// <param name="stream">Data source</param>
-		public BZip2InputStream(Stream stream)
+		/// <param name="multiStream">Whether to continue reading streams after the first one</param>
+		public BZip2InputStream(Stream stream, bool multiStream)
 		{
-			if (stream == null)
-				throw new ArgumentNullException(nameof(stream));
+			baseStream = stream ?? throw new ArgumentNullException(nameof(stream));
+			this.multiStream = multiStream;
+
+
 			// init arrays
 			for (int i = 0; i < BZip2Constants.GroupCount; ++i)
 			{
@@ -105,13 +111,15 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				perm[i] = new int[BZip2Constants.MaximumAlphaSize];
 			}
 
-			baseStream = stream;
-			bsLive = 0;
-			bsBuff = 0;
+
 			Initialize();
-			InitBlock();
-			SetupBlock();
 		}
+
+		/// <summary>
+		/// Construct instance for reading from stream
+		/// </summary>
+		/// <param name="stream">Data source</param>
+		public BZip2InputStream(Stream stream) : this(stream, true) { }
 
 		/// <summary>
 		/// Get/set flag indicating ownership of underlying stream.
@@ -286,7 +294,17 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		{
 			if (streamEnd)
 			{
-				return -1; // ok
+				long bytesProcessed = baseStream.Position - processedLastStream;
+				long bytesLeft = baseStream.Length - baseStream.Position;
+				if (multiStream && bytesProcessed > 0 && bytesLeft > 0)
+				{
+					processedLastStream = bytesProcessed;
+					Initialize();
+				}
+				else
+				{
+					return -1; // ok
+				}
 			}
 
 			int retChar = currentChar;
@@ -334,38 +352,42 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		private void Initialize()
 		{
+			bsLive = 0;
+			bsBuff = 0;
+
 			char magic1 = BsGetUChar();
 			char magic2 = BsGetUChar();
 
-			char magic3 = BsGetUChar();
-			char magic4 = BsGetUChar();
+			char version = BsGetUChar();
+			char blockSize = BsGetUChar();
 
-			if (magic1 != 'B' || magic2 != 'Z' || magic3 != 'h' || magic4 < '1' || magic4 > '9')
+			if (magic1 != 'B' || magic2 != 'Z' || version != 'h' || blockSize < '1' || blockSize > '9')
 			{
 				streamEnd = true;
-				return;
+			}
+			else
+			{
+				streamEnd = false;
+				SetDecompressStructureSizes(blockSize - '0');
+				computedCombinedCRC = 0;
 			}
 
-			SetDecompressStructureSizes(magic4 - '0');
-			computedCombinedCRC = 0;
+			InitBlock();
+			SetupBlock();
 		}
 
 		private void InitBlock()
 		{
-			char magic1 = BsGetUChar();
-			char magic2 = BsGetUChar();
-			char magic3 = BsGetUChar();
-			char magic4 = BsGetUChar();
-			char magic5 = BsGetUChar();
-			char magic6 = BsGetUChar();
 
-			if (magic1 == 0x17 && magic2 == 0x72 && magic3 == 0x45 && magic4 == 0x38 && magic5 == 0x50 && magic6 == 0x90)
+			var streamMagic = BsGetStreamMagic();
+
+			if (streamMagic == BZip2Constants.MagicFooter)
 			{
 				Complete();
 				return;
 			}
 
-			if (magic1 != 0x31 || magic2 != 0x41 || magic3 != 0x59 || magic4 != 0x26 || magic5 != 0x53 || magic6 != 0x59)
+			if (streamMagic != BZip2Constants.MagicHeader)
 			{
 				BadBlockHeader();
 				streamEnd = true;
@@ -450,6 +472,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		private int BsGetIntVS(int numBits)
 		{
 			return BsR(numBits);
+		}
+
+		private ulong BsGetStreamMagic()
+		{
+			return ((ulong)BsR(24) << 24) | (uint)BsR(24);
 		}
 
 		private int BsGetInt32()
