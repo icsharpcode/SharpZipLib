@@ -2553,7 +2553,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			int result = -1;
 
-			string convertedName = !isEntityName ? GetTransformedFileName(fileName) : fileName;
+			string convertedName = !isEntryName ? GetTransformedFileName(fileName) : fileName;
 
 			if (updateIndex_.ContainsKey(convertedName))
 			{
