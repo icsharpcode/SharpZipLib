@@ -2549,7 +2549,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 
-		private int FindExistingUpdate(string fileName, bool isEntityName = false)
+		private int FindExistingUpdate(string fileName, bool isEntryName = false)
 		{
 			int result = -1;
 
