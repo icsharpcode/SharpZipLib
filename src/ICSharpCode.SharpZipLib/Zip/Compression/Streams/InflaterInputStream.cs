@@ -116,7 +116,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			rawLength = 0;
 			int toRead = rawData.Length;
 
-			while (toRead > 0)
+			while (toRead > 0 && inputStream.CanRead)
 			{
 				int count = inputStream.Read(rawData, rawLength, toRead);
 				if (count <= 0)

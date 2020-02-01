@@ -390,9 +390,41 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 
 
 				}
+			}
+
 		}
 
-	}
+		/// <summary>
+		/// Should gracefully handle reading from a stream that becomes unreadable after
+		///  all of the data has been read.
+		/// </summary>
+		/// <remarks>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/379
+		/// </remarks>
+		[Test]
+		[Category("Zip")]
+		public void ShouldGracefullyHandleReadingANonReableStream()
+		{
+			MemoryStream ms = new SelfClosingStream();
+			using (var gzos = new GZipOutputStream(ms))
+			{
+				gzos.IsStreamOwner = false;
+
+				byte[] buf = new byte[100000];
+				var rnd = new Random();
+				rnd.NextBytes(buf);
+
+				gzos.Write(buf, 0, buf.Length);
+			}
+
+			ms.Seek(0, SeekOrigin.Begin);
+
+			using (var gzis = new GZipInputStream(ms))
+			using (var msRaw = new MemoryStream())
+			{
+				gzis.CopyTo(msRaw);
+			}
+		}
 
 		[Test]
 		[Category("GZip")]
