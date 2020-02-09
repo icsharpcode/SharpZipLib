@@ -1,0 +1,77 @@
+name: On Push
+
+on: [push]
+
+jobs:
+  BuildAndTest:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        configuration: ['Debug', 'Release']
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: windows-latest
+            libframework: net45
+          - os: ubuntu-latest
+            libframework: netstandard2
+          - os: macos-latest
+            libframework: netstandard2
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      if: matrix.libframework == 'netstandard2'
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.108
+
+    - name: Build library
+      run: dotnet build -c ${{ matrix.configuration }} -f ${{ matrix.libframework }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      
+    - name: Restore test dependencies
+      run: dotnet restore test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
+
+    - name: Run tests (.NET Core)
+      run: dotnet test -c ${{ matrix.configuration }} -f netcoreapp2.0
+      
+    - name: Run tests (.NET Framework)
+      if: matrix.os == 'windows'
+      run: dotnet test -c ${{ matrix.configuration }} -f net45
+        
+
+  Package:
+    if: 1 == 2
+    needs: [BuildAndTest]
+    runs-on: windows-latest
+    env:
+      NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+     #   ref: v1.2.0
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 2.2.108
+        source-url: https://nuget.pkg.github.com/icsharpcode/index.json
+        
+    #- name: Fix sourcelink
+    #  run: git fetch && git checkout origin/master -- src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj assets/ICSharpCode.SharpZipLib.snk
+
+    - name: Build library for .NET Standard 2
+      run: dotnet build -c Release -f netstandard2 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+    - name: Build library for .NET Framework 4.5
+      run: dotnet build -c Release -f net45 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+
+    - name: Create nuget package
+      run: dotnet pack src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj --configuration Release --output dist /p:Version=$(git describe --abbrev | % { $_.substring(1) })
+      
+    - name: Show package name
+      run: ls dist\*.nupkg
+      
+    - name: Publish the package to GPR
+      if: false == true
+      run: dotnet nuget push dist\*.nupkg
