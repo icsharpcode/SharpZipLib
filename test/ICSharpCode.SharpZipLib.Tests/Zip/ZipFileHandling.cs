@@ -1547,5 +1547,27 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			}
 		}
+
+		/// <summary>
+		/// Refs https://github.com/icsharpcode/SharpZipLib/issues/385
+		/// Trying to add an AES Encrypted entry to ZipFile should throw as it isn't supported
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void AddingAnAESEncryptedEntryShouldThrow()
+		{
+			var memStream = new MemoryStream();
+			using (ZipFile zof = new ZipFile(memStream))
+			{
+				var entry = new ZipEntry("test")
+				{
+					AESKeySize = 256
+				};
+
+				zof.BeginUpdate();
+				var exception = Assert.Throws<NotSupportedException>(() => zof.Add(new StringMemoryDataSource("foo"), entry));
+				Assert.That(exception.Message, Is.EqualTo("Creation of AES encrypted entries is not supported"));
+			}
+		}
 	}
 }

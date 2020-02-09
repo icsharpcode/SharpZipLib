@@ -1850,6 +1850,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="dataSource">The source of the data for this entry.</param>
 		/// <param name="entry">The entry to add.</param>
 		/// <remarks>This can be used to add file entries with a custom data source.</remarks>
+		/// <exception cref="NotSupportedException">
+		/// The encryption method specified in <paramref name="entry"/> is unsupported.
+		/// </exception>
 		public void Add(IStaticDataSource dataSource, ZipEntry entry)
 		{
 			if (entry == null)
@@ -1860,6 +1863,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (dataSource == null)
 			{
 				throw new ArgumentNullException(nameof(dataSource));
+			}
+
+			// We don't currently support adding entries with AES encryption, so throw
+			// up front instead of failing or falling back to ZipCrypto later on
+			if (entry.AESKeySize > 0)
+			{
+				throw new NotSupportedException("Creation of AES encrypted entries is not supported");
 			}
 
 			CheckUpdating();
