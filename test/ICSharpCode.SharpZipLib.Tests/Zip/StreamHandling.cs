@@ -204,7 +204,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				using (var zipOutputStream = new ZipOutputStream(zipFileStream))
 				using (var inputFileStream = File.OpenRead(inputFile.Filename))
 				{
-					zipOutputStream.PutNextEntry(new ZipEntry(inputFile.Filename)
+					zipOutputStream.PutNextEntry(new ZipEntry(ZipEntry.CleanName(inputFile.Filename))
 					{
 						CompressionMethod = CompressionMethod.Stored,
 					});
