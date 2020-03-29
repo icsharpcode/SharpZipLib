@@ -1654,7 +1654,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="useUnicodeText">Ensure Unicode text is used for name and comment for this entry.</param>
 		/// <exception cref="ArgumentNullException">Argument supplied is null.</exception>
 		/// <exception cref="ObjectDisposedException">ZipFile has been closed.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">Compression method is not supported.</exception>
+		/// <exception cref="NotImplementedException">Compression method is not supported for creating entries.</exception>
 		public void Add(string fileName, CompressionMethod compressionMethod, bool useUnicodeText)
 		{
 			if (fileName == null)
@@ -1667,11 +1667,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ObjectDisposedException("ZipFile");
 			}
 
-			if (!ZipEntry.IsCompressionMethodSupported(compressionMethod))
-			{
-				throw new ArgumentOutOfRangeException(nameof(compressionMethod));
-			}
-
+			CheckSupportedCompressionMethod(compressionMethod);
 			CheckUpdating();
 			contentsEdited_ = true;
 
@@ -1688,7 +1684,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="fileName">The name of the file to add.</param>
 		/// <param name="compressionMethod">The compression method to use.</param>
 		/// <exception cref="ArgumentNullException">ZipFile has been closed.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">The compression method is not supported.</exception>
+		/// <exception cref="NotImplementedException">Compression method is not supported for creating entries.</exception>
 		public void Add(string fileName, CompressionMethod compressionMethod)
 		{
 			if (fileName == null)
@@ -1696,11 +1692,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException(nameof(fileName));
 			}
 
-			if (!ZipEntry.IsCompressionMethodSupported(compressionMethod))
-			{
-				throw new ArgumentOutOfRangeException(nameof(compressionMethod));
-			}
-
+			CheckSupportedCompressionMethod(compressionMethod);
 			CheckUpdating();
 			contentsEdited_ = true;
 
@@ -1774,6 +1766,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="dataSource">The source of the data for this entry.</param>
 		/// <param name="entryName">The name to give to the entry.</param>
 		/// <param name="compressionMethod">The compression method to use.</param>
+		/// <exception cref="NotImplementedException">Compression method is not supported for creating entries.</exception>
 		public void Add(IStaticDataSource dataSource, string entryName, CompressionMethod compressionMethod)
 		{
 			if (dataSource == null)
@@ -1786,6 +1779,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException(nameof(entryName));
 			}
 
+			CheckSupportedCompressionMethod(compressionMethod);
 			CheckUpdating();
 
 			ZipEntry entry = EntryFactory.MakeFileEntry(entryName, false);
@@ -1801,6 +1795,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="entryName">The name to give to the entry.</param>
 		/// <param name="compressionMethod">The compression method to use.</param>
 		/// <param name="useUnicodeText">Ensure Unicode text is used for name and comments for this entry.</param>
+		/// <exception cref="NotImplementedException">Compression method is not supported for creating entries.</exception>
 		public void Add(IStaticDataSource dataSource, string entryName, CompressionMethod compressionMethod, bool useUnicodeText)
 		{
 			if (dataSource == null)
@@ -1813,6 +1808,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException(nameof(entryName));
 			}
 
+			CheckSupportedCompressionMethod(compressionMethod);
 			CheckUpdating();
 
 			ZipEntry entry = EntryFactory.MakeFileEntry(entryName, false);
@@ -1853,6 +1849,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="NotSupportedException">
 		/// The encryption method specified in <paramref name="entry"/> is unsupported.
 		/// </exception>
+		/// <exception cref="NotImplementedException">Compression method is not supported for creating entries.</exception>
 		public void Add(IStaticDataSource dataSource, ZipEntry entry)
 		{
 			if (entry == null)
@@ -1872,6 +1869,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new NotSupportedException("Creation of AES encrypted entries is not supported");
 			}
 
+			CheckSupportedCompressionMethod(entry.CompressionMethod);
 			CheckUpdating();
 
 			AddUpdate(new ZipUpdate(dataSource, entry));
@@ -1892,6 +1890,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			ZipEntry dirEntry = EntryFactory.MakeDirectoryEntry(directoryName);
 			AddUpdate(new ZipUpdate(UpdateCommand.Add, dirEntry));
+		}
+
+		/// <summary>
+		/// Check if the specified compression method is supported for adding a new entry.
+		/// </summary>
+		/// <param name="compressionMethod">The compression method for the new entry.</param>
+		private void CheckSupportedCompressionMethod(CompressionMethod compressionMethod)
+		{
+			if (compressionMethod != CompressionMethod.Deflated && compressionMethod != CompressionMethod.Stored)
+			{
+				throw new NotImplementedException("Compression method not supported");
+			}
 		}
 
 		#endregion Adding Entries
