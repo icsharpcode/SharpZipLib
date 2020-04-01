@@ -708,6 +708,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 					try
 					{
 						Directory.CreateDirectory(dirName);
+
+						if (entry.IsDirectory && restoreDateTimeOnExtract_)
+						{
+							Directory.SetLastWriteTime(dirName, entry.DateTime);
+						}
 					}
 					catch (Exception ex)
 					{
