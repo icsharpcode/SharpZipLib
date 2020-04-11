@@ -223,7 +223,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 						Assert.AreEqual(name, entry.Name);
 
-						var nameBytes = string.Join(' ', Encoding.BigEndianUnicode.GetBytes(entry.Name).Select(b => b.ToString("x2")));
+						var nameBytes = string.Join(" ", Encoding.BigEndianUnicode.GetBytes(entry.Name).Select(b => b.ToString("x2")));
 
 						Console.WriteLine($" - Zip entry: {entry.Name} ({nameBytes})");
 					}
