@@ -204,6 +204,167 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+		/// <summary>
+		/// Test adding files to an encrypted zip
+		/// </summary>
+		[Test]
+		[Category("Encryption")]
+		[Category("Zip")]
+		public void ZipFileAesAdd()
+		{
+			string password = "password";
+			string testData = "AdditionalData";
+			int keySize = 256;
+
+			using (var memoryStream = new MemoryStream())
+			{
+				// Try to create a zip stream
+				WriteEncryptedZipToStream(memoryStream, password, keySize, CompressionMethod.Deflated);
+
+				// reset
+				memoryStream.Seek(0, SeekOrigin.Begin);
+
+				// Update the archive with ZipFile
+				{
+					using (var zipFile = new ZipFile(memoryStream, leaveOpen: true) { Password = password })
+					{
+						zipFile.BeginUpdate();
+						zipFile.Add(new StringMemoryDataSource(testData), "AdditionalEntry", CompressionMethod.Deflated);
+						zipFile.CommitUpdate();
+					}
+				}
+
+				// Test the updated archive
+				{
+					memoryStream.Seek(0, SeekOrigin.Begin);
+
+					using (var zipFile = new ZipFile(memoryStream, leaveOpen: true) { Password = password })
+					{
+						Assert.That(zipFile.Count, Is.EqualTo(2), "Incorrect entry count in updated archive");
+
+						// Disabled because of bug #317
+						// Assert.That(zipFile.TestArchive(true), Is.True);
+
+						// Check the original entry
+						{
+							var originalEntry = zipFile.GetEntry("test");
+							Assert.That(originalEntry.IsCrypted, Is.True);
+							Assert.That(originalEntry.AESKeySize, Is.EqualTo(keySize));
+
+
+							using (var zis = zipFile.GetInputStream(originalEntry))
+							using (var sr = new StreamReader(zis, Encoding.UTF8))
+							{
+								var content = sr.ReadToEnd();
+								Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match input data");
+							}
+						}
+
+						// Check the additional entry
+						// This should be encrypted, though currently only with ZipCrypto
+						{
+							var additionalEntry = zipFile.GetEntry("AdditionalEntry");
+							Assert.That(additionalEntry.IsCrypted, Is.True);
+
+							using (var zis = zipFile.GetInputStream(additionalEntry))
+							using (var sr = new StreamReader(zis, Encoding.UTF8))
+							{
+								var content = sr.ReadToEnd();
+								Assert.That(content, Is.EqualTo(testData), "Decompressed content does not match input data");
+							}
+						}
+					}
+				}
+
+				// As an extra test, verify the file with 7-zip
+				VerifyZipWith7Zip(memoryStream, password);
+			}
+		}
+
+		/// <summary>
+		/// Test deleting files from an encrypted zip
+		/// </summary>
+		[Test]
+		[Category("Encryption")]
+		[Category("Zip")]
+		public void ZipFileAesDelete()
+		{
+			string password = "password";
+			int keySize = 256;
+
+			using (var memoryStream = new MemoryStream())
+			{
+				// Try to create a zip stream
+				WriteEncryptedZipToStream(memoryStream, 3, password, keySize, CompressionMethod.Deflated);
+
+				// reset
+				memoryStream.Seek(0, SeekOrigin.Begin);
+
+				// delete one of the entries from the file
+				{
+					using (var zipFile = new ZipFile(memoryStream, leaveOpen: true) { Password = password })
+					{
+						// Must have 3 entries to start with
+						Assert.That(zipFile.Count, Is.EqualTo(3), "Must have 3 entries to start with");
+
+						var entryToDelete = zipFile.GetEntry("test-1");
+						Assert.That(entryToDelete, Is.Not.Null, "the entry that we want to delete must exist");
+
+						zipFile.BeginUpdate();
+						zipFile.Delete(entryToDelete);
+						zipFile.CommitUpdate();
+					}
+				}
+
+				// Test the updated archive
+				{
+					memoryStream.Seek(0, SeekOrigin.Begin);
+
+					using (var zipFile = new ZipFile(memoryStream, leaveOpen: true) { Password = password })
+					{
+						// We should now only have 2 files
+						Assert.That(zipFile.Count, Is.EqualTo(2), "Incorrect entry count in updated archive");
+
+						// Disabled because of bug #317
+						// Assert.That(zipFile.TestArchive(true), Is.True);
+
+						// Check the first entry
+						{
+							var originalEntry = zipFile.GetEntry("test-0");
+							Assert.That(originalEntry.IsCrypted, Is.True);
+							Assert.That(originalEntry.AESKeySize, Is.EqualTo(keySize));
+
+
+							using (var zis = zipFile.GetInputStream(originalEntry))
+							using (var sr = new StreamReader(zis, Encoding.UTF8))
+							{
+								var content = sr.ReadToEnd();
+								Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match input data");
+							}
+						}
+
+						// Check the second entry
+						{
+							var originalEntry = zipFile.GetEntry("test-2");
+							Assert.That(originalEntry.IsCrypted, Is.True);
+							Assert.That(originalEntry.AESKeySize, Is.EqualTo(keySize));
+
+
+							using (var zis = zipFile.GetInputStream(originalEntry))
+							using (var sr = new StreamReader(zis, Encoding.UTF8))
+							{
+								var content = sr.ReadToEnd();
+								Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match input data");
+							}
+						}
+					}
+				}
+
+				// As an extra test, verify the file with 7-zip
+				VerifyZipWith7Zip(memoryStream, password);
+			}
+		}
+
 		private static readonly string[] possible7zPaths = new[] {
 			// Check in PATH
 			"7z", "7za",
@@ -259,22 +420,44 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				zs.SetLevel(9); // 0-9, 9 being the highest level of compression
 				zs.Password = password;  // optional. Null is the same as not setting. Required if using AES.
 
-				ZipEntry zipEntry = new ZipEntry("test");
-				zipEntry.AESKeySize = keySize;
-				zipEntry.DateTime = DateTime.Now;
-				zipEntry.CompressionMethod = compressionMethod;
-
-				zs.PutNextEntry(zipEntry);
-
-				byte[] dummyData = Encoding.UTF8.GetBytes(DummyDataString);
-
-				using (var dummyStream = new MemoryStream(dummyData))
-				{
-					dummyStream.CopyTo(zs);
-				}
-
-				zs.CloseEntry();
+				AddEncrypedEntryToStream(zs, $"test", keySize, compressionMethod);
 			}
+		}
+
+		public void WriteEncryptedZipToStream(Stream stream, int entryCount, string password, int keySize, CompressionMethod compressionMethod)
+		{
+			using (var zs = new ZipOutputStream(stream))
+			{
+				zs.IsStreamOwner = false;
+				zs.SetLevel(9); // 0-9, 9 being the highest level of compression
+				zs.Password = password;  // optional. Null is the same as not setting. Required if using AES.
+
+				for (int i = 0;  i < entryCount; i++)
+				{
+					AddEncrypedEntryToStream(zs, $"test-{i}", keySize, compressionMethod);
+				}
+			}
+		}
+
+		private void AddEncrypedEntryToStream(ZipOutputStream zipOutputStream, string entryName, int keySize, CompressionMethod compressionMethod)
+		{
+			ZipEntry zipEntry = new ZipEntry(entryName)
+			{
+				AESKeySize = keySize,
+				DateTime = DateTime.Now,
+				CompressionMethod = compressionMethod
+			};
+
+			zipOutputStream.PutNextEntry(zipEntry);
+
+			byte[] dummyData = Encoding.UTF8.GetBytes(DummyDataString);
+
+			using (var dummyStream = new MemoryStream(dummyData))
+			{
+				dummyStream.CopyTo(zipOutputStream);
+			}
+
+			zipOutputStream.CloseEntry();
 		}
 
 		public void CreateZipWithEncryptedEntries(string password, int keySize, CompressionMethod compressionMethod = CompressionMethod.Deflated)
@@ -282,41 +465,50 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			using (var ms = new MemoryStream())
 			{
 				WriteEncryptedZipToStream(ms, password, keySize, compressionMethod);
-
-				if (TryGet7zBinPath(out string path7z))
-				{
-					Console.WriteLine($"Using 7z path: \"{path7z}\"");
-
-					ms.Seek(0, SeekOrigin.Begin);
-
-					var fileName = Path.GetTempFileName();
-
-					try
-					{
-						using (var fs = File.OpenWrite(fileName))
-						{
-							ms.CopyTo(fs);
-						}
-
-						var p = Process.Start(path7z, $"t -p{password} \"{fileName}\"");
-						if (!p.WaitForExit(2000))
-						{
-							Assert.Warn("Timed out verifying zip file!");
-						}
-
-						Assert.AreEqual(0, p.ExitCode, "Archive verification failed");
-					}
-					finally
-					{
-						File.Delete(fileName);
-					}
-				}
-				else
-				{
-					Assert.Warn("Skipping file verification since 7za is not in path");
-				}
+				VerifyZipWith7Zip(ms, password);
 			}
 		}
+
+		/// <summary>
+		/// Helper function to verify the provided zip stream with 7Zip.
+		/// </summary>
+		/// <param name="zipStream">A stream containing the zip archive to test.</param>
+		/// <param name="password">The password for the archive.</param>
+		private void VerifyZipWith7Zip(Stream zipStream, string password)
+		{
+			if (TryGet7zBinPath(out string path7z))
+			{
+				Console.WriteLine($"Using 7z path: \"{path7z}\"");
+
+				var fileName = Path.GetTempFileName();
+
+				try
+				{
+					using (var fs = File.OpenWrite(fileName))
+					{
+						zipStream.Seek(0, SeekOrigin.Begin);
+						zipStream.CopyTo(fs);
+					}
+
+					var p = Process.Start(path7z, $"t -p{password} \"{fileName}\"");
+					if (!p.WaitForExit(2000))
+					{
+						Assert.Warn("Timed out verifying zip file!");
+					}
+
+					Assert.AreEqual(0, p.ExitCode, "Archive verification failed");
+				}
+				finally
+				{
+					File.Delete(fileName);
+				}
+			}
+			else
+			{
+				Assert.Warn("Skipping file verification since 7za is not in path");
+			}
+		}
+
 
 		private const string DummyDataString = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 Fusce bibendum diam ac nunc rutrum ornare. Maecenas blandit elit ligula, eget suscipit lectus rutrum eu.

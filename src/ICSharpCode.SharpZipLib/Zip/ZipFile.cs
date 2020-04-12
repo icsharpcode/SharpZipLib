@@ -2104,7 +2104,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLEShort(entry.Version);
 			WriteLEShort(entry.Flags);
 
-			WriteLEShort((byte)entry.CompressionMethod);
+			WriteLEShort((byte)entry.CompressionMethodForHeader);
 			WriteLEInt((int)entry.DosTime);
 
 			if (!entry.HasCrc)
@@ -2214,7 +2214,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			unchecked
 			{
-				WriteLEShort((byte)entry.CompressionMethod);
+				WriteLEShort((byte)entry.CompressionMethodForHeader);
 				WriteLEInt((int)entry.DosTime);
 				WriteLEInt((int)entry.Crc);
 			}
