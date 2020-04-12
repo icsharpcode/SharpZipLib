@@ -15,33 +15,31 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Test]
 		[Category("Encryption")]
 		[Category("Zip")]
-		public void Aes128Encryption()
+		[TestCase(CompressionMethod.Stored)]
+		[TestCase(CompressionMethod.Deflated)]
+		public void Aes128Encryption(CompressionMethod compressionMethod)
 		{
-			CreateZipWithEncryptedEntries("foo", 128);
+			CreateZipWithEncryptedEntries("foo", 128, compressionMethod);
 		}
 
 		[Test]
 		[Category("Encryption")]
 		[Category("Zip")]
-		public void Aes128EncryptionStored()
+		[TestCase(CompressionMethod.Stored)]
+		[TestCase(CompressionMethod.Deflated)]
+		public void Aes256Encryption(CompressionMethod compressionMethod)
 		{
-			CreateZipWithEncryptedEntries("foo", 128, CompressionMethod.Stored);
+			CreateZipWithEncryptedEntries("foo", 256, compressionMethod);
 		}
 
 		[Test]
 		[Category("Encryption")]
 		[Category("Zip")]
-		public void Aes256Encryption()
+		[TestCase(CompressionMethod.Stored)]
+		[TestCase(CompressionMethod.Deflated)]
+		public void ZipCryptoEncryption(CompressionMethod compressionMethod)
 		{
-			CreateZipWithEncryptedEntries("foo", 256);
-		}
-
-		[Test]
-		[Category("Encryption")]
-		[Category("Zip")]
-		public void Aes256EncryptionStored()
-		{
-			CreateZipWithEncryptedEntries("foo", 256, CompressionMethod.Stored);
+			CreateZipWithEncryptedEntries("foo", 0, compressionMethod);
 		}
 
 		[Test]
