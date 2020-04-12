@@ -23,6 +23,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Serialization
         [Category("Serialization")]
         [TestCase(typeof(BZip2Exception))]
         [TestCase(typeof(GZipException))]
+        [TestCase(typeof(InvalidHeaderException))]
         [TestCase(typeof(InvalidNameException))]
         [TestCase(typeof(LzwException))]
         [TestCase(typeof(SharpZipBaseException))]
