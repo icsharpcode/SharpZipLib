@@ -37,3 +37,9 @@ end_of_line = crlf
 [*.yml]
 indent_style = space
 indent_size = 2
+
+# C# source
+[*.{cs}]
+
+# CA1303: Do not pass literals as localized parameters
+dotnet_diagnostic.CA1303.severity = none
