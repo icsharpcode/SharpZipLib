@@ -1069,10 +1069,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 				bool testHeader = (tests & HeaderTest.Header) != 0;
 				bool testData = (tests & HeaderTest.Extract) != 0;
 
-				baseStream_.Seek(offsetOfFirstEntry + entry.Offset, SeekOrigin.Begin);
-				if ((int)ReadLEUint() != ZipConstants.LocalHeaderSignature)
+				var entryAbsOffset = offsetOfFirstEntry + entry.Offset;
+				
+				baseStream_.Seek(entryAbsOffset, SeekOrigin.Begin);
+				var signature = (int)ReadLEUint();
+
+				if (signature != ZipConstants.LocalHeaderSignature)
 				{
-					throw new ZipException(string.Format("Wrong local header signature @{0:X}", offsetOfFirstEntry + entry.Offset));
+					throw new ZipException(string.Format("Wrong local header signature at 0x{0:x}, expected 0x{1:x8}, actual 0x{2:x8}",
+						entryAbsOffset, ZipConstants.LocalHeaderSignature, signature));
 				}
 
 				var extractVersion = (short)(ReadLEUshort() & 0x00ff);
@@ -1649,7 +1654,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="useUnicodeText">Ensure Unicode text is used for name and comment for this entry.</param>
 		/// <exception cref="ArgumentNullException">Argument supplied is null.</exception>
 		/// <exception cref="ObjectDisposedException">ZipFile has been closed.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">Compression method is not supported.</exception>
+		/// <exception cref="NotImplementedException">Compression method is not supported for creating entries.</exception>
 		public void Add(string fileName, CompressionMethod compressionMethod, bool useUnicodeText)
 		{
 			if (fileName == null)
@@ -1662,11 +1667,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ObjectDisposedException("ZipFile");
 			}
 
-			if (!ZipEntry.IsCompressionMethodSupported(compressionMethod))
-			{
-				throw new ArgumentOutOfRangeException(nameof(compressionMethod));
-			}
-
+			CheckSupportedCompressionMethod(compressionMethod);
 			CheckUpdating();
 			contentsEdited_ = true;
 
@@ -1683,7 +1684,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="fileName">The name of the file to add.</param>
 		/// <param name="compressionMethod">The compression method to use.</param>
 		/// <exception cref="ArgumentNullException">ZipFile has been closed.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">The compression method is not supported.</exception>
+		/// <exception cref="NotImplementedException">Compression method is not supported for creating entries.</exception>
 		public void Add(string fileName, CompressionMethod compressionMethod)
 		{
 			if (fileName == null)
@@ -1691,11 +1692,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException(nameof(fileName));
 			}
 
-			if (!ZipEntry.IsCompressionMethodSupported(compressionMethod))
-			{
-				throw new ArgumentOutOfRangeException(nameof(compressionMethod));
-			}
-
+			CheckSupportedCompressionMethod(compressionMethod);
 			CheckUpdating();
 			contentsEdited_ = true;
 
@@ -1769,6 +1766,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="dataSource">The source of the data for this entry.</param>
 		/// <param name="entryName">The name to give to the entry.</param>
 		/// <param name="compressionMethod">The compression method to use.</param>
+		/// <exception cref="NotImplementedException">Compression method is not supported for creating entries.</exception>
 		public void Add(IStaticDataSource dataSource, string entryName, CompressionMethod compressionMethod)
 		{
 			if (dataSource == null)
@@ -1781,6 +1779,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException(nameof(entryName));
 			}
 
+			CheckSupportedCompressionMethod(compressionMethod);
 			CheckUpdating();
 
 			ZipEntry entry = EntryFactory.MakeFileEntry(entryName, false);
@@ -1796,6 +1795,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="entryName">The name to give to the entry.</param>
 		/// <param name="compressionMethod">The compression method to use.</param>
 		/// <param name="useUnicodeText">Ensure Unicode text is used for name and comments for this entry.</param>
+		/// <exception cref="NotImplementedException">Compression method is not supported for creating entries.</exception>
 		public void Add(IStaticDataSource dataSource, string entryName, CompressionMethod compressionMethod, bool useUnicodeText)
 		{
 			if (dataSource == null)
@@ -1808,6 +1808,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException(nameof(entryName));
 			}
 
+			CheckSupportedCompressionMethod(compressionMethod);
 			CheckUpdating();
 
 			ZipEntry entry = EntryFactory.MakeFileEntry(entryName, false);
@@ -1845,6 +1846,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="dataSource">The source of the data for this entry.</param>
 		/// <param name="entry">The entry to add.</param>
 		/// <remarks>This can be used to add file entries with a custom data source.</remarks>
+		/// <exception cref="NotSupportedException">
+		/// The encryption method specified in <paramref name="entry"/> is unsupported.
+		/// </exception>
+		/// <exception cref="NotImplementedException">Compression method is not supported for creating entries.</exception>
 		public void Add(IStaticDataSource dataSource, ZipEntry entry)
 		{
 			if (entry == null)
@@ -1857,6 +1862,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException(nameof(dataSource));
 			}
 
+			// We don't currently support adding entries with AES encryption, so throw
+			// up front instead of failing or falling back to ZipCrypto later on
+			if (entry.AESKeySize > 0)
+			{
+				throw new NotSupportedException("Creation of AES encrypted entries is not supported");
+			}
+
+			CheckSupportedCompressionMethod(entry.CompressionMethod);
 			CheckUpdating();
 
 			AddUpdate(new ZipUpdate(dataSource, entry));
@@ -1877,6 +1890,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			ZipEntry dirEntry = EntryFactory.MakeDirectoryEntry(directoryName);
 			AddUpdate(new ZipUpdate(UpdateCommand.Add, dirEntry));
+		}
+
+		/// <summary>
+		/// Check if the specified compression method is supported for adding a new entry.
+		/// </summary>
+		/// <param name="compressionMethod">The compression method for the new entry.</param>
+		private void CheckSupportedCompressionMethod(CompressionMethod compressionMethod)
+		{
+			if (compressionMethod != CompressionMethod.Deflated && compressionMethod != CompressionMethod.Stored)
+			{
+				throw new NotImplementedException("Compression method not supported");
+			}
 		}
 
 		#endregion Adding Entries
@@ -2079,7 +2104,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLEShort(entry.Version);
 			WriteLEShort(entry.Flags);
 
-			WriteLEShort((byte)entry.CompressionMethod);
+			WriteLEShort((byte)entry.CompressionMethodForHeader);
 			WriteLEInt((int)entry.DosTime);
 
 			if (!entry.HasCrc)
@@ -2189,7 +2214,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			unchecked
 			{
-				WriteLEShort((byte)entry.CompressionMethod);
+				WriteLEShort((byte)entry.CompressionMethodForHeader);
 				WriteLEInt((int)entry.DosTime);
 				WriteLEInt((int)entry.Crc);
 			}
@@ -3408,6 +3433,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			bool isZip64 = false;
+			bool requireZip64 = false;
 
 			// Check if zip64 header information is required.
 			if ((thisDiskNumber == 0xffff) ||
@@ -3417,13 +3443,30 @@ namespace ICSharpCode.SharpZipLib.Zip
 				(centralDirSize == 0xffffffff) ||
 				(offsetOfCentralDir == 0xffffffff))
 			{
-				isZip64 = true;
+				requireZip64 = true;
+			}
 
-				long offset = LocateBlockWithSignature(ZipConstants.Zip64CentralDirLocatorSignature, locatedEndOfCentralDir, 0, 0x1000);
-				if (offset < 0)
+			// #357 - always check for the existance of the Zip64 central directory.
+			// #403 - Take account of the fixed size of the locator when searching.
+			//    Subtract from locatedEndOfCentralDir so that the endLocation is the location of EndOfCentralDirectorySignature,
+			//    rather than the data following the signature.
+			long locatedZip64EndOfCentralDirLocator = LocateBlockWithSignature(
+				ZipConstants.Zip64CentralDirLocatorSignature,
+				locatedEndOfCentralDir - 4,
+				ZipConstants.Zip64EndOfCentralDirectoryLocatorSize,
+				0);
+
+			if (locatedZip64EndOfCentralDirLocator < 0)
+			{
+				if (requireZip64)
 				{
+					// This is only an error in cases where the Zip64 directory is required.
 					throw new ZipException("Cannot find Zip64 locator");
 				}
+			}
+			else
+			{
+				isZip64 = true;
 
 				// number of the disk with the start of the zip64 end of central directory 4 bytes
 				// relative offset of the zip64 end of central directory record 8 bytes

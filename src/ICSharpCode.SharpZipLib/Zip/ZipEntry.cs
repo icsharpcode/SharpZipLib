@@ -211,7 +211,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			this.DateTime = DateTime.Now;
-			this.name = CleanName(name);
+			this.name = name;
 			this.versionMadeBy = (ushort)madeByInfo;
 			this.versionToExtract = (ushort)versionRequiredToExtract;
 			this.method = method;

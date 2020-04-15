@@ -187,6 +187,41 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+		/// <summary>
+		/// Test for issue #403 - zip64 locator signature bytes being present in a contained file,
+		/// when the outer zip file isn't using zip64
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void FakeZip64Locator()
+		{
+			using (var memStream = new MemoryStream())
+			{
+				// set the file contents to the zip 64 directory locator signature
+				var locatorValue = ZipConstants.Zip64CentralDirLocatorSignature;
+				var locatorBytes = new byte[] { (byte)(locatorValue & 0xff), (byte)((locatorValue >> 8) & 0xff), (byte)((locatorValue >> 16) & 0xff), (byte)((locatorValue >> 24) & 0xff) };
+
+				using (ZipFile f = new ZipFile(memStream, leaveOpen: true))
+				{
+					var m = new MemoryDataSource(locatorBytes);
+
+					// Add the entry - set compression method to stored so the signature bytes remain as expected
+					f.BeginUpdate(new MemoryArchiveStorage());
+					f.Add(m, "a.dat", CompressionMethod.Stored);
+					f.CommitUpdate();
+					Assert.IsTrue(f.TestArchive(true));
+				}
+
+				memStream.Seek(0, SeekOrigin.Begin);
+
+				// Check that the archive is readable.
+				using (ZipFile f = new ZipFile(memStream, leaveOpen: true))
+				{
+					Assert.That(f.Count, Is.EqualTo(1), "Archive should have 1 entry");
+				}
+			}
+		}
+
 		[Test]
 		[Category("Zip")]
 		[Explicit]
@@ -613,6 +648,37 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 
 			File.Delete(tempFile);
+		}
+
+		[Test]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void CreateArchiveWithNoCompression()
+		{
+
+			using (var sourceFile = Utils.GetDummyFile())
+			using (var zipFile = Utils.GetDummyFile(0))
+			{
+				var inputContent = File.ReadAllText(sourceFile.Filename);
+				using (ZipFile f = ZipFile.Create(zipFile.Filename))
+				{
+					f.BeginUpdate();
+					f.Add(sourceFile.Filename, CompressionMethod.Stored);
+					f.CommitUpdate();
+					Assert.IsTrue(f.TestArchive(true));
+					f.Close();
+				}
+
+				using (ZipFile f = new ZipFile(zipFile.Filename))
+				{
+					Assert.AreEqual(1, f.Count);
+					using (var sr = new StreamReader(f.GetInputStream(f[0])))
+					{
+						var outputContent = sr.ReadToEnd();
+						Assert.AreEqual(inputContent, outputContent, "extracted content does not match source content");
+					}
+				}
+			}
 		}
 
 		/// <summary>
@@ -1089,8 +1155,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				var names = new string[]
 				{
 					"\u030A\u03B0",     // Greek
-                    "\u0680\u0685"      // Arabic
-                };
+					"\u0680\u0685"      // Arabic
+				};
 
 				foreach (string name in names)
 				{
@@ -1479,6 +1545,28 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					Assert.AreEqual((int)HostSystemID.Unix, ze.HostSystem);
 					Assert.AreEqual(ZipConstants.VersionMadeBy, ze.VersionMadeBy);
 				}
+			}
+		}
+
+		/// <summary>
+		/// Refs https://github.com/icsharpcode/SharpZipLib/issues/385
+		/// Trying to add an AES Encrypted entry to ZipFile should throw as it isn't supported
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void AddingAnAESEncryptedEntryShouldThrow()
+		{
+			var memStream = new MemoryStream();
+			using (ZipFile zof = new ZipFile(memStream))
+			{
+				var entry = new ZipEntry("test")
+				{
+					AESKeySize = 256
+				};
+
+				zof.BeginUpdate();
+				var exception = Assert.Throws<NotSupportedException>(() => zof.Add(new StringMemoryDataSource("foo"), entry));
+				Assert.That(exception.Message, Is.EqualTo("Creation of AES encrypted entries is not supported"));
 			}
 		}
 	}

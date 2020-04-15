@@ -887,6 +887,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 			entries = null;
 		}
 
+		/// <summary>
+		/// Flushes the stream by calling <see cref="DeflaterOutputStream.Flush">Flush</see> on the deflater stream unless
+		/// the current compression method is <see cref="CompressionMethod.Stored"/>. Then it flushes the underlying output stream.
+		/// </summary>
+		public override void Flush()
+		{
+			if(curMethod == CompressionMethod.Stored)
+			{
+				baseOutputStream_.Flush();
+			} 
+			else
+			{
+				base.Flush();
+			}
+		}
+
 		#region Instance Fields
 
 		/// <summary>

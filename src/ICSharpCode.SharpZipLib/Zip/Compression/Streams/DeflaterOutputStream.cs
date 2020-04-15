@@ -379,7 +379,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 
 		/// <summary>
-		/// Flushes the stream by calling <see cref="DeflaterOutputStream.Flush">Flush</see> on the deflater and then
+		/// Flushes the stream by calling <see cref="Flush">Flush</see> on the deflater and then
 		/// on the underlying stream.  This ensures that all bytes are flushed.
 		/// </summary>
 		public override void Flush()
