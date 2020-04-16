@@ -35,7 +35,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			}
 
 			Assert.IsTrue(ms.GetBuffer().Length > 0, "Archive size must be > zero");
-			Assert.AreEqual(ms.GetBuffer().Length % recordSize, 0, "Archive size must be a multiple of record size");
+			Assert.Zero(ms.GetBuffer().Length % recordSize, "Archive size must be a multiple of record size");
 
 			var ms2 = new MemoryStream();
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
@@ -769,7 +769,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					var tis = new TarInputStream(bs);
 					var entry = tis.GetNextEntry();
 
-					Assert.AreEqual(entry.Name, EntryName);
+					Assert.AreEqual(EntryName, entry.Name);
 					return tis;
 				},
 				output: bs =>
