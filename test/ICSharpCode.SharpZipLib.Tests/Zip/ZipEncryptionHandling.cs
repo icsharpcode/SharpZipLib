@@ -384,7 +384,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				{
 					var p = Process.Start(new ProcessStartInfo(testPath, "i")
 					{
-						RedirectStandardOutput = true
+						RedirectStandardOutput = true,
+						UseShellExecute = false
 					});
 					while (!p.StandardOutput.EndOfStream && (DateTime.Now - p.StartTime) < runTimeLimit)
 					{
