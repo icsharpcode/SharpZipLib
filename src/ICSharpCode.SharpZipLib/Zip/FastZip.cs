@@ -362,12 +362,27 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>The <paramref name="outputStream"/> is closed after creation.</remarks>
 		public void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, string fileFilter, string directoryFilter)
 		{
+			CreateZip(outputStream, sourceDirectory, recurse, fileFilter, directoryFilter, false);
+		}
+
+		/// <summary>
+		/// Create a zip archive sending output to the <paramref name="outputStream"/> passed.
+		/// </summary>
+		/// <param name="outputStream">The stream to write archive data to.</param>
+		/// <param name="sourceDirectory">The directory to source files from.</param>
+		/// <param name="recurse">True to recurse directories, false for no recursion.</param>
+		/// <param name="fileFilter">The <see cref="PathFilter">file filter</see> to apply.</param>
+		/// <param name="directoryFilter">The <see cref="PathFilter">directory filter</see> to apply.</param>
+		/// <param name="leaveOpen">true to leave <paramref name="outputStream"/> open after the zip has been created, false to dispose it.</param>
+		public void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, string fileFilter, string directoryFilter, bool leaveOpen)
+		{
 			NameTransform = new ZipNameTransform(sourceDirectory);
 			sourceDirectory_ = sourceDirectory;
 
 			using (outputStream_ = new ZipOutputStream(outputStream))
 			{
 				outputStream_.SetLevel((int)CompressionLevel);
+				outputStream_.IsStreamOwner = !leaveOpen;
 
 				if (password_ != null)
 				{
