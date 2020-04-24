@@ -112,9 +112,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// the contents of an existing tar archive.
 		/// </summary>
 		/// <param name="inputStream">The stream to retrieve archive data from.</param>
-		/// <param name="enc">name encoding</param>
+		/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
 		/// <returns>Returns a new <see cref="TarArchive"/> suitable for reading from.</returns>
-		public static TarArchive CreateInputTarArchive(Stream inputStream, Encoding enc)
+		public static TarArchive CreateInputTarArchive(Stream inputStream, Encoding nameEncoding)
 		{
 			if (inputStream == null)
 			{
@@ -130,7 +130,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 			else
 			{
-				result = CreateInputTarArchive(inputStream, TarBuffer.DefaultBlockFactor, enc);
+				result = CreateInputTarArchive(inputStream, TarBuffer.DefaultBlockFactor, nameEncoding);
 			}
 			return result;
 		}
@@ -151,9 +151,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <param name="inputStream">A stream containing the tar archive contents</param>
 		/// <param name="blockFactor">The blocking factor to apply</param>
-		/// <param name="enc">name encoding</param>
+		/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
 		/// <returns>Returns a <see cref="TarArchive"/> suitable for reading.</returns>
-		public static TarArchive CreateInputTarArchive(Stream inputStream, int blockFactor, Encoding enc)
+		public static TarArchive CreateInputTarArchive(Stream inputStream, int blockFactor, Encoding nameEncoding)
 		{
 			if (inputStream == null)
 			{
@@ -165,7 +165,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ArgumentException("TarInputStream not valid");
 			}
 
-			return new TarArchive(new TarInputStream(inputStream, blockFactor, enc));
+			return new TarArchive(new TarInputStream(inputStream, blockFactor, nameEncoding));
 		}
 		/// <summary>
 		/// Create a TarArchive for writing to, using the default blocking factor

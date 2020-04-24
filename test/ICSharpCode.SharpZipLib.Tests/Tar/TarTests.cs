@@ -21,6 +21,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			entryCount++;
 		}
 
+		[SetUp]
+		public void Setup()
+		{
+			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+		}
+
 		/// <summary>
 		/// Test that an empty archive can be created and when read has 0 entries in it
 		/// </summary>
@@ -836,19 +842,23 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			}
 		}	
 		[Test]
-		[TestCase(1)]
-		[TestCase(100)]
-		[TestCase(128)]
+		[TestCase(1, "utf-8")]
+		[TestCase(100, "utf-8")]
+		[TestCase(128, "utf-8")]
+		[TestCase(1, "shift-jis")]
+		[TestCase(100, "shift_jis")]
+		[TestCase(128, "shift_jis")]
 		[Category("Tar")]
-		public void StreamWithJapaneseName(int length)
+		public void StreamWithJapaneseName(int length, string encodingName)
 		{
 			// U+3042 is Japanese Hiragana
 			// https://unicode.org/charts/PDF/U3040.pdf
 			var entryName = new string((char)0x3042, length);
 			var data = new byte[32];
+			var encoding = Encoding.GetEncoding(encodingName);
 			using(var memoryStream = new MemoryStream())
 			{
-				using(var tarOutput = new TarOutputStream(memoryStream, System.Text.Encoding.UTF8))
+				using(var tarOutput = new TarOutputStream(memoryStream, encoding))
 				{
 					var entry = TarEntry.CreateTarEntry(entryName);
 					entry.Size = 32;
@@ -856,7 +866,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					tarOutput.Write(data, 0, data.Length);
 				}
 				using(var memInput = new MemoryStream(memoryStream.ToArray()))
-				using(var inputStream = new TarInputStream(memInput, Encoding.UTF8))
+				using(var inputStream = new TarInputStream(memInput, encoding))
 				{
 					var buf = new byte[64];
 					var entry = inputStream.GetNextEntry();
@@ -864,6 +874,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					var bytesread = inputStream.Read(buf, 0, buf.Length);
 					Assert.AreEqual(data.Length, bytesread);
 				}
+				File.WriteAllBytes(Path.Combine(Path.GetTempPath(), $"jpnametest_{length}_{encodingName}.tar"), memoryStream.ToArray());
 			}
 		}
 	}
