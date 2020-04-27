@@ -100,6 +100,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <param name="inputStream">The stream to retrieve archive data from.</param>
 		/// <returns>Returns a new <see cref="TarArchive"/> suitable for reading from.</returns>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public static TarArchive CreateInputTarArchive(Stream inputStream)
 		{
 			return CreateInputTarArchive(inputStream, null);
@@ -141,6 +142,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="inputStream">A stream containing the tar archive contents</param>
 		/// <param name="blockFactor">The blocking factor to apply</param>
 		/// <returns>Returns a <see cref="TarArchive"/> suitable for reading.</returns>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public static TarArchive CreateInputTarArchive(Stream inputStream, int blockFactor)
 		{
 			return CreateInputTarArchive(inputStream, blockFactor, null);
@@ -171,8 +173,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Create a TarArchive for writing to, using the default blocking factor
 		/// </summary>
 		/// <param name="outputStream">The <see cref="Stream"/> to write to</param>
+		/// <param name="nameEncoding"></param>
 		/// <returns>Returns a <see cref="TarArchive"/> suitable for writing.</returns>
-		public static TarArchive CreateOutputTarArchive(Stream outputStream)
+		public static TarArchive CreateOutputTarArchive(Stream outputStream, Encoding nameEncoding)
 		{
 			if (outputStream == null)
 			{
@@ -188,9 +191,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 			else
 			{
-				result = CreateOutputTarArchive(outputStream, TarBuffer.DefaultBlockFactor);
+				result = CreateOutputTarArchive(outputStream, TarBuffer.DefaultBlockFactor, nameEncoding);
 			}
 			return result;
+		}
+		/// <summary>
+		/// Create a TarArchive for writing to, using the default blocking factor
+		/// </summary>
+		/// <param name="outputStream">The <see cref="Stream"/> to write to</param>
+		/// <returns>Returns a <see cref="TarArchive"/> suitable for writing.</returns>
+		public static TarArchive CreateOutputTarArchive(Stream outputStream)
+		{
+			return CreateOutputTarArchive(outputStream, null);
 		}
 
 		/// <summary>
@@ -200,6 +212,17 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="blockFactor">The blocking factor to use for buffering.</param>
 		/// <returns>Returns a <see cref="TarArchive"/> suitable for writing.</returns>
 		public static TarArchive CreateOutputTarArchive(Stream outputStream, int blockFactor)
+		{
+			return CreateOutputTarArchive(outputStream, blockFactor, null);
+		}
+		/// <summary>
+		/// Create a <see cref="TarArchive">tar archive</see> for writing.
+		/// </summary>
+		/// <param name="outputStream">The stream to write to</param>
+		/// <param name="blockFactor">The blocking factor to use for buffering.</param>
+		/// <param name="nameEncoding"></param>
+		/// <returns>Returns a <see cref="TarArchive"/> suitable for writing.</returns>
+		public static TarArchive CreateOutputTarArchive(Stream outputStream, int blockFactor, Encoding nameEncoding)
 		{
 			if (outputStream == null)
 			{
@@ -211,7 +234,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ArgumentException("TarOutputStream is not valid");
 			}
 
-			return new TarArchive(new TarOutputStream(outputStream, blockFactor));
+			return new TarArchive(new TarOutputStream(outputStream, blockFactor, nameEncoding));
 		}
 
 		#endregion Static factory methods

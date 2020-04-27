@@ -599,6 +599,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name = "header">
 		/// The tar entry header buffer to get information from.
 		/// </param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public void ParseBuffer(byte[] header)
 		{
 			ParseBuffer(header, null);
@@ -608,6 +609,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// 'Write' header information to buffer provided, updating the <see cref="Checksum">check sum</see>.
 		/// </summary>
 		/// <param name="outBuffer">output buffer for header information</param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public void WriteHeader(byte[] outBuffer)
 		{
 			WriteHeader(outBuffer, null);
@@ -811,6 +813,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The name parsed.
 		/// </returns>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		static public StringBuilder ParseName(byte[] header, int offset, int length)
 		{
 			return ParseName(header, offset, length, null);
@@ -978,6 +981,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// The index of the next free byte in the buffer
 		/// </returns>
 		/// TODO: what should be default behavior?(omit upper byte or UTF8?)
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public static int GetNameBytes(StringBuilder name, byte[] buffer, int offset, int length)
 		{
 			return GetNameBytes(name, buffer, offset, length, null);
@@ -1027,6 +1031,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="length">The number of header bytes to add</param>
 		/// <returns>The index of the next free byte in the buffer</returns>
 		/// TODO: what should be default behavior?(omit upper byte or UTF8?)
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public static int GetNameBytes(string name, byte[] buffer, int offset, int length)
 		{
 			return GetNameBytes(name, buffer, offset, length, null);
@@ -1064,6 +1069,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="bufferOffset">The offset to start adding at.</param>
 		/// <param name="length">The number of ascii characters to add.</param>
 		/// <returns>The next free index in the buffer.</returns>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public static int GetAsciiBytes(string toAdd, int nameOffset, byte[] buffer, int bufferOffset, int length)
 		{
 			return GetAsciiBytes(toAdd, nameOffset, buffer, bufferOffset, length, null);

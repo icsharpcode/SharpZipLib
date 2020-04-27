@@ -18,6 +18,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Construct TarOutputStream using default block factor
 		/// </summary>
 		/// <param name="outputStream">stream to write to</param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public TarOutputStream(Stream outputStream)
 			: this(outputStream, TarBuffer.DefaultBlockFactor)
 		{
@@ -38,6 +39,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <param name="outputStream">stream to write to</param>
 		/// <param name="blockFactor">blocking factor</param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public TarOutputStream(Stream outputStream, int blockFactor)
 		{
 			if (outputStream == null)

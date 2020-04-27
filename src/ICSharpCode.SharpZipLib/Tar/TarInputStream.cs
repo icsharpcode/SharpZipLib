@@ -18,6 +18,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Construct a TarInputStream with default block factor
 		/// </summary>
 		/// <param name="inputStream">stream to source data from</param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public TarInputStream(Stream inputStream)
 			: this(inputStream, TarBuffer.DefaultBlockFactor, null)
 		{
@@ -37,6 +38,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <param name="inputStream">stream to source data from</param>
 		/// <param name="blockFactor">block factor to apply to archive</param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public TarInputStream(Stream inputStream, int blockFactor)
 		{
 			this.inputStream = inputStream;
@@ -634,6 +636,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public interface IEntryFactory
 		{
+			// This interface does not considering name encoding.
+			// How this interface should be?
 			/// <summary>
 			/// Create an entry based on name alone
 			/// </summary>
@@ -696,6 +700,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			/// </summary>
 			/// <param name="headerBuffer">The buffer containing entry details.</param>
 			/// <returns>A new <see cref="TarEntry"/></returns>
+			[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 			public TarEntry CreateEntry(byte[] headerBuffer)
 			{
 				return new TarEntry(headerBuffer, null);

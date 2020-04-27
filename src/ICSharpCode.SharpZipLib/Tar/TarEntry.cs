@@ -484,6 +484,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name = "outBuffer">
 		/// The tar entry header buffer to fill in.
 		/// </param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public void WriteEntryHeader(byte[] outBuffer)
 		{
 			WriteEntryHeader(outBuffer, null);
@@ -513,6 +514,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="newName">
 		/// The new name to place into the header buffer.
 		/// </param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		static public void AdjustEntryName(byte[] buffer, string newName)
 		{
 			AdjustEntryName(buffer, newName, null);
