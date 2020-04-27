@@ -675,6 +675,22 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public class EntryFactoryAdapter : IEntryFactory
 		{
+			Encoding nameEncoding;
+			/// <summary>
+			/// Construct standard entry factory class with ASCII name encoding
+			/// </summary>
+			[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
+			public EntryFactoryAdapter()
+			{
+			}
+			/// <summary>
+			/// Construct standard entry factory with name encoding
+			/// </summary>
+			/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
+			public EntryFactoryAdapter(Encoding nameEncoding)
+			{
+				this.nameEncoding = nameEncoding;
+			}
 			/// <summary>
 			/// Create a <see cref="TarEntry"/> based on named
 			/// </summary>
@@ -700,18 +716,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			/// </summary>
 			/// <param name="headerBuffer">The buffer containing entry details.</param>
 			/// <returns>A new <see cref="TarEntry"/></returns>
-			[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 			public TarEntry CreateEntry(byte[] headerBuffer)
-			{
-				return new TarEntry(headerBuffer, null);
-			}
-			/// <summary>
-			/// Create an entry based on details in <paramref name="headerBuffer">header</paramref>
-			/// </summary>
-			/// <param name="headerBuffer">The buffer containing entry details.</param>
-			/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
-			/// <returns>A new <see cref="TarEntry"/></returns>
-			public TarEntry CreateEntry(byte[] headerBuffer, Encoding nameEncoding)
 			{
 				return new TarEntry(headerBuffer, nameEncoding);
 			}

@@ -50,6 +50,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name = "headerBuffer">
 		/// The header bytes from a tar archive entry.
 		/// </param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public TarEntry(byte[] headerBuffer) : this(headerBuffer, null)
 		{
 		}
