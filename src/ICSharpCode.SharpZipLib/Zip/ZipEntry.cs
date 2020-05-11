@@ -655,7 +655,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					if ((versionToExtract == 0) && IsCrypted)
 					{
-						trueCompressedSize += ZipConstants.CryptoHeaderSize;
+						trueCompressedSize += (ulong)this.EncryptionOverheadSize;
 					}
 
 					// TODO: A better estimation of the true limit based on compression overhead should be used
@@ -1010,6 +1010,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// Variable		Encrypted file data
 				//    10		Authentication code
 				return 12 + AESSaltLen;
+			}
+		}
+
+		/// <summary>
+		/// Number of extra bytes required to hold the encryption header fields.
+		/// </summary>
+		internal int EncryptionOverheadSize
+		{
+			get
+			{
+				// Entry is not encrypted - no overhead
+				if (!this.IsCrypted)
+					return 0;
+
+				// Entry is encrypted using ZipCrypto
+				if (_aesEncryptionStrength == 0)
+					return ZipConstants.CryptoHeaderSize;
+
+				// Entry is encrypted using AES
+				return this.AESOverheadSize;
 			}
 		}
 

@@ -337,7 +337,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					WriteLeInt(entry.IsCrypted ? (int)entry.CompressedSize + ZipConstants.CryptoHeaderSize : (int)entry.CompressedSize);
+					WriteLeInt((int)entry.CompressedSize + entry.EncryptionOverheadSize);
 					WriteLeInt((int)entry.Size);
 				}
 			}
@@ -382,7 +382,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if (headerInfoAvailable)
 				{
 					ed.AddLeLong(entry.Size);
-					ed.AddLeLong(entry.CompressedSize);
+					ed.AddLeLong(entry.CompressedSize + entry.EncryptionOverheadSize);
 				}
 				else
 				{
@@ -540,14 +540,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if (curEntry.IsCrypted)
 			{
-				if (curEntry.AESKeySize > 0)
-				{
-					curEntry.CompressedSize += curEntry.AESOverheadSize;
-				}
-				else
-				{
-					curEntry.CompressedSize += ZipConstants.CryptoHeaderSize;
-				}
+				curEntry.CompressedSize += curEntry.EncryptionOverheadSize;
 			}
 
 			// Patch the header if possible
