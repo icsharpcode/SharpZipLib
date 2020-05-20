@@ -721,17 +721,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			get
 			{
-				uint sec = Math.Min(59, 2 * (dosTime & 0x1f));
-				uint min = Math.Min(59, (dosTime >> 5) & 0x3f);
-				uint hrs = Math.Min(23, (dosTime >> 11) & 0x1f);
-				uint mon = Math.Max(1, Math.Min(12, ((dosTime >> 21) & 0xf)));
-				uint year = ((dosTime >> 25) & 0x7f) + 1980;
-				int day = Math.Max(1, Math.Min(DateTime.DaysInMonth((int)year, (int)mon), (int)((dosTime >> 16) & 0x1f)));
-				return new System.DateTime((int)year, (int)mon, day, (int)hrs, (int)min, (int)sec);
+				return dateTime;
 			}
 
 			set
 			{
+				dateTime = value;
+
 				var year = (uint)value.Year;
 				var month = (uint)value.Month;
 				var day = (uint)value.Day;
@@ -1329,6 +1325,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private ushort versionToExtract;                // Version required to extract (library handles <= 2.0)
 		private uint crc;
 		private uint dosTime;
+		private DateTime dateTime;
 
 		private CompressionMethod method = CompressionMethod.Deflated;
 		private byte[] extra;
