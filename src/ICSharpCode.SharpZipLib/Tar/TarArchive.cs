@@ -173,7 +173,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Create a TarArchive for writing to, using the default blocking factor
 		/// </summary>
 		/// <param name="outputStream">The <see cref="Stream"/> to write to</param>
-		/// <param name="nameEncoding"></param>
+		/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
 		/// <returns>Returns a <see cref="TarArchive"/> suitable for writing.</returns>
 		public static TarArchive CreateOutputTarArchive(Stream outputStream, Encoding nameEncoding)
 		{
@@ -220,7 +220,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <param name="outputStream">The stream to write to</param>
 		/// <param name="blockFactor">The blocking factor to use for buffering.</param>
-		/// <param name="nameEncoding"></param>
+		/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
 		/// <returns>Returns a <see cref="TarArchive"/> suitable for writing.</returns>
 		public static TarArchive CreateOutputTarArchive(Stream outputStream, int blockFactor, Encoding nameEncoding)
 		{
