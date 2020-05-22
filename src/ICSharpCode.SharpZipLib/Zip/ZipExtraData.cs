@@ -15,7 +15,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the ID for this tagged data value.
 		/// </summary>
-		short TagID { get; }
+		ushort TagID { get; }
 
 		/// <summary>
 		/// Set the contents of this instance from the data passed.
@@ -41,7 +41,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Initialise a new instance.
 		/// </summary>
 		/// <param name="tag">The tag ID.</param>
-		public RawTaggedData(short tag)
+		public RawTaggedData(ushort tag)
 		{
 			_tag = tag;
 		}
@@ -51,7 +51,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the ID for this tagged data value.
 		/// </summary>
-		public short TagID
+		public ushort TagID
 		{
 			get { return _tag; }
 			set { _tag = value; }
@@ -100,7 +100,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// The tag ID for this instance.
 		/// </summary>
-		private short _tag;
+		private ushort _tag;
 
 		private byte[] _data;
 
@@ -139,7 +139,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the ID
 		/// </summary>
-		public short TagID
+		public ushort TagID
 		{
 			get { return 0x5455; }
 		}
@@ -328,7 +328,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the ID for this tagged data value.
 		/// </summary>
-		public short TagID
+		public ushort TagID
 		{
 			get { return 10; }
 		}
@@ -473,6 +473,110 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private DateTime _createTime = DateTime.FromFileTimeUtc(0);
 
 		#endregion Instance Fields
+	}
+
+	/// <summary>
+	/// A TaggedData for handling WinzipAES extra data.
+	/// </summary>
+	/// <remarks>
+	/// See http://www.winzip.com/aes_info.htm for format documentation.
+	/// </remarks>
+	internal class WinZipAESTaggedData : ITaggedData
+	{
+		/// <summary>
+		/// The Version used by this entry.
+		/// </summary>
+		/// <remarks>
+		/// AE-1 iS 1. AE-2 is 2. With AE-2 no CRC is required and 0 is stored.
+		/// </remarks>
+		public enum VendorVersion : int
+		{
+			/// <summary>
+			/// Version AE-1.
+			/// </summary>
+			AE1 = 0x0001,
+
+			/// <summary>
+			/// Version AE-2.
+			/// </summary>
+			AE2 = 0x0002,
+		}
+
+		/// <summary>
+		/// Get the ID for this tagged data value.
+		/// </summary>
+		public ushort TagID => 0x9901;
+
+		/// <summary>
+		/// Set the data from the raw values provided.
+		/// </summary>
+		/// <param name="data">The raw data to extract values from.</param>
+		/// <param name="index">The index to start extracting values from.</param>
+		/// <param name="count">The number of bytes available.</param>
+		public void SetData(byte[] data, int index, int count)
+		{
+			using (MemoryStream ms = new MemoryStream(data, index, count, false))
+			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
+			{
+				//
+				// Unpack AES extra data field see http://www.winzip.com/aes_info.htm
+				var length = helperStream.Length;         // Data size currently 7
+				if (length < 7)
+					throw new ZipException("AES Extra Data Length " + length + " invalid.");
+
+				int ver = helperStream.ReadLEShort();            // Version number (1=AE-1 2=AE-2)
+				int vendorId = helperStream.ReadLEShort();       // 2-character vendor ID 0x4541 = "AE"
+				int encrStrength = helperStream.ReadByte();    // encryption strength 1 = 128 2 = 192 3 = 256
+				int actualCompress = helperStream.ReadLEShort(); // The actual compression method used to compress the file
+				
+				this.Version = (VendorVersion)ver;
+				this.EncryptionStrength = (byte)encrStrength;
+				this.CompressionMethod = (CompressionMethod)actualCompress;
+			}
+		}
+
+		/// <summary>
+		/// Get the binary data representing this instance.
+		/// </summary>
+		/// <returns>The raw binary data representing this instance.</returns>
+		public byte[] GetData()
+		{
+			using (MemoryStream ms = new MemoryStream())
+			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
+			{
+				helperStream.IsStreamOwner = false;
+
+				// Vendor ID is the two ASCII characters "AE".
+				const int VENDOR_ID = 0x4541; //not 6965;
+
+				// Pack AES extra data field see http://www.winzip.com/aes_info.htm
+				// extraData.AddLeShort(7);                              // Data size (currently 7)
+				helperStream.WriteLEShort((int)this.Version);            // Entry version
+				helperStream.WriteLEShort(VENDOR_ID);                    // "AE"
+				helperStream.WriteByte(this.EncryptionStrength);         // 1 = 128, 2 = 192, 3 = 256
+				helperStream.WriteLEShort((int)this.CompressionMethod);  // The actual compression method used to compress the file
+
+				return ms.ToArray();
+			}
+		}
+
+		/// <summary>
+		/// Get/set the <see cref="VendorVersion"> for this entry.</see>
+		/// </summary>
+		/// <remarks>
+		/// Defaults to 2 because we always use that when encrypting new entries.
+		/// </remarks>
+		public VendorVersion Version { get; set; } = VendorVersion.AE2;
+
+		/// <summary>
+		/// Get /set the real <see cref="CompressionMethod"> for this entry.</see>.
+		/// </summary>
+		public CompressionMethod CompressionMethod { get; set; }
+
+		/// <summary>
+		/// Get /set the encryption strength for this entry - 1 = 128 bit, 2 = 192 bit, 3 = 256 bit
+		/// </summary>	
+		public byte EncryptionStrength { get; set; }
 	}
 
 	/// <summary>
