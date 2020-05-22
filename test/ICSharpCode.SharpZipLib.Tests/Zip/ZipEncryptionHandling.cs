@@ -150,7 +150,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Test]
 		[Category("Encryption")]
 		[Category("Zip")]
-		public void ZipFileStoreAesPartialRead()
+		public void ZipFileStoreAesPartialRead([Values(1, 7, 17)] int readSize)
 		{
 			string password = "password";
 
@@ -179,16 +179,16 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					{
 						using (var zis = zipFile.GetInputStream(entry))
 						{
-							byte[] buffer = new byte[1];
+							byte[] buffer = new byte[readSize];
 
 							while (true)
 							{
-								int b = zis.ReadByte();
+								int read = zis.Read(buffer, 0, readSize);
 
-								if (b == -1)
+								if (read == 0)
 									break;
 
-								ms.WriteByte((byte)b);
+								ms.Write(buffer, 0, read);
 							}
 						}
 
