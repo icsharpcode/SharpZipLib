@@ -4229,7 +4229,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					throw new ArgumentException("Negative position is invalid");
 				}
 
-				if (newPos >= end_)
+				if (newPos > end_)
 				{
 					throw new IOException("Cannot seek past end");
 				}
@@ -4266,7 +4266,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						throw new ArgumentException("Negative position is invalid");
 					}
 
-					if (newPos >= end_)
+					if (newPos > end_)
 					{
 						throw new InvalidOperationException("Cannot seek past end");
 					}
