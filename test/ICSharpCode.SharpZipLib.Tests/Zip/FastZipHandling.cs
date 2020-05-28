@@ -93,6 +93,45 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsTrue(Directory.Exists(targetDir), "Empty directory should be created");
 		}
 
+		/// <summary>
+		/// Test that FastZip can create empty directory entries in archives.
+		/// </summary>
+		[TestCase(null)]
+		[TestCase("password")]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void CreateEmptyDirectories(string password)
+		{
+			using (var tempFilePath = new Utils.TempDir())
+			{
+				string name = Path.Combine(tempFilePath.Fullpath, "x.zip");
+
+				// Create empty test folders (The folder that we'll zip, and the test sub folder).
+				string archiveRootDir = Path.Combine(tempFilePath.Fullpath, ZipTempDir);
+				string targetDir = Path.Combine(archiveRootDir, "floyd");
+				Directory.CreateDirectory(targetDir);
+
+				// Create the archive with FastZip
+				var fastZip = new FastZip
+				{
+					CreateEmptyDirectories = true,
+					Password = password,
+				};
+				fastZip.CreateZip(name, archiveRootDir, true, null);
+
+				// Test that the archive contains the empty folder entry
+				using (var zipFile = new ZipFile(name))
+				{
+					Assert.That(zipFile.Count, Is.EqualTo(1), "Should only be one entry in the file");
+
+					var folderEntry = zipFile.GetEntry("floyd/");
+					Assert.That(folderEntry.IsDirectory, Is.True, "The entry must be a folder");
+
+					Assert.IsTrue(zipFile.TestArchive(true));
+				}
+			}
+		}
+
 		[Test]
 		[Category("Zip")]
 		[Category("CreatesTempFile")]
