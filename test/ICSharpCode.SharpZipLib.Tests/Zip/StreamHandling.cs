@@ -2,6 +2,7 @@
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
+using System;
 using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
@@ -189,6 +190,49 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 			inStream.Close();
 			Assert.AreEqual(extractCount, 0, "No data should be read from empty entries");
+		}
+
+		/// <summary>
+		/// Test that calling Write with 0 bytes behaves.
+		/// See issue @ https://github.com/icsharpcode/SharpZipLib/issues/123.
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void TestZeroByteWrite()
+		{
+			using (var ms = new MemoryStreamWithoutSeek())
+			{
+				using (var outStream = new ZipOutputStream(ms) { IsStreamOwner = false })
+				{
+					var ze = new ZipEntry("Striped Marlin");
+					outStream.PutNextEntry(ze);
+
+					var buffer = Array.Empty<byte>();
+					outStream.Write(buffer, 0, 0);
+				}
+
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var inStream = new ZipInputStream(ms) { IsStreamOwner = false })
+				{
+					int extractCount = 0;
+					byte[] decompressedData = new byte[100];
+
+					while (inStream.GetNextEntry() != null)
+					{
+						while (true)
+						{
+							int numRead = inStream.Read(decompressedData, extractCount, decompressedData.Length);
+							if (numRead <= 0)
+							{
+								break;
+							}
+							extractCount += numRead;
+						}
+					}
+					Assert.Zero(extractCount, "No data should be read from empty entries");
+				}
+			}
 		}
 
 		[Test]
