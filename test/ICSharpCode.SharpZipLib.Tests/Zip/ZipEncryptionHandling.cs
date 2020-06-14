@@ -365,15 +365,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
-
 		// This is a zip file with one AES encrypted entry, whose password in an empty string.
-		const string TestFileWithEmptyPassword = @"UEsDBDMACQBjABOayVAgyeOe//////////8EAB8AdGVzdAEAEACSAQAA
-			AAAAAA8BAAAAAAAAAZkHAAIAQUUDCADkSZYB7gbGRd9gGmKycLzgEl/poo7qKRcr37DC8/6BZdhEGVPdw4GBHnJ7Ub961XG
-			hogr33RCFVe99Oia31haQ9J+B0LGl/e64kxneuY2fZ4BtyaOw43SZTcuO3SUWPTZIhfUIzmeqUvw7HBkGvR67OyCSOD/Eu
-			3mXsI4PGloUmCllL9oSuF6L6f571mX9rgIoFl6MmJZZDLR7tQAcDvwZ0jaXU8lN+rufh3VyDzHxJqecRrPy/8XJW73frCI
-			/ulHo1r4Dp3cUOIFYO+jAlUBr2B1Rqth9IUKYKBVt0fwMWeJk39LBKQEpzYMfcUOu5+2CDQKQ1f/z4TCKJmbZ+PDQ1Sx8C
-			UQmyavlP/4g8x2UUEsHCCDJ454PAQAAAAAAAJIBAAAAAAAAUEsBAjMAMwAJAGMAE5rJUCDJ457//////////wQAHwAAAAA
-			AAAAAAAAAAAAAAHRlc3QBABAAkgEAAAAAAAAPAQAAAAAAAAGZBwACAEFFAwgAUEsFBgAAAAABAAEAUQAAAGgBAAAAAA==";
+		const string TestFileWithEmptyPassword = @"UEsDBDMACQBjACaj0FAyKbop//////////8EAB8AdGVzdAEAEAA4AAAA
+			AAAAAFIAAAAAAAAAAZkHAAIAQUUDCABADvo3YqmCtIE+lhw26kjbqkGsLEOk6bVA+FnSpVD4yGP4Mr66Hs14aTtsPUaANX2
+            Z6qZczEmwoaNQpNBnKl7p9YOG8GSHDfTCUU/AZvT4yGFhUEsHCDIpuilSAAAAAAAAADgAAAAAAAAAUEsBAjMAMwAJAGMAJq
+            PQUDIpuin//////////wQAHwAAAAAAAAAAAAAAAAAAAHRlc3QBABAAOAAAAAAAAABSAAAAAAAAAAGZBwACAEFFAwgAUEsFBgAAAAABAAEAUQAAAKsAAAAAAA==";
 
 		/// <summary>
 		/// Test reading an AES encrypted entry whose password is an empty string.
@@ -398,7 +394,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				using (var sr = new StreamReader(inputStream, Encoding.UTF8))
 				{
 					var content = sr.ReadToEnd();
-					Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match expected data");
+					Assert.That(content, Is.EqualTo("Lorem ipsum dolor sit amet, consectetur adipiscing elit."), "Decompressed content does not match expected data");
 				}
 			}
 		}

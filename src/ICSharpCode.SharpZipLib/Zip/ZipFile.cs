@@ -367,9 +367,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					rawPassword_ = value;
 					key = PkzipClassic.GenerateKeys(ZipStrings.ConvertToArray(value));
 				}
+
+				rawPassword_ = value;
 			}
 		}
 
@@ -3612,9 +3613,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				if (entry.Version >= ZipConstants.VERSION_AES)
 				{
-					//
+					// Issue #471 - accept an empty string as a password, but reject null.
 					OnKeysRequired(entry.Name);
-					if (HaveKeys == false)
+					if (rawPassword_ == null)
 					{
 						throw new ZipException("No password available for AES encrypted stream");
 					}
