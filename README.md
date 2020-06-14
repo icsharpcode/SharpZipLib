@@ -1,4 +1,4 @@
-# SharpZipLib [![Build status](https://ci.appveyor.com/api/projects/status/wuf8l79mypqsbor3/branch/master?svg=true)](https://ci.appveyor.com/project/icsharpcode/sharpziplib/branch/master) [![Join the chat at https://gitter.im/icsharpcode/SharpZipLib](https://badges.gitter.im/icsharpcode/SharpZipLib.svg)](https://gitter.im/icsharpcode/SharpZipLib?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
+# SharpZipLib [![Build status](https://ci.appveyor.com/api/projects/status/wuf8l79mypqsbor3/branch/master?svg=true)](https://ci.appveyor.com/project/icsharpcode/sharpziplib/branch/master) [![Join the chat at https://gitter.im/icsharpcode/SharpZipLib](https://badges.gitter.im/icsharpcode/SharpZipLib.svg)](https://gitter.im/icsharpcode/SharpZipLib?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![NuGet Version](https://img.shields.io/nuget/v/SharpZipLib.svg)](https://www.nuget.org/packages/SharpZipLib/)
 
 The SharpZipLib project is looking for a new maintainer - please read [State of the Union August 2017](https://github.com/icsharpcode/SharpZipLib/issues/187)
 
