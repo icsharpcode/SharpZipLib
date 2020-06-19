@@ -206,6 +206,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Entry name is too long<br/>
 		/// Finish has already been called<br/>
 		/// </exception>
+		/// <exception cref="System.NotImplementedException">
+		/// The Compression method specified for the entry is unsupported.
+		/// </exception>
 		public void PutNextEntry(ZipEntry entry)
 		{
 			if (entry == null)
@@ -229,6 +232,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			CompressionMethod method = entry.CompressionMethod;
+
+			// Check that the compression is one that we support
+			if (method != CompressionMethod.Deflated && method != CompressionMethod.Stored)
+			{
+				throw new NotImplementedException("Compression method not supported");
+			}
+
 			int compressionLevel = defaultCompressionLevel;
 
 			// Clear flags that the library manages internally
