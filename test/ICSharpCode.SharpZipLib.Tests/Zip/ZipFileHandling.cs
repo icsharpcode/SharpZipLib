@@ -1569,5 +1569,47 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				Assert.That(exception.Message, Is.EqualTo("Creation of AES encrypted entries is not supported"));
 			}
 		}
+
+		/// <summary>
+		/// Test that we can add a file entry and set the name to sometihng other than the name of the file.
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void AddFileWithAlternateName()
+		{
+			// Create a unique name that will be different from the file name
+			string fileName = Guid.NewGuid().ToString();
+
+			using (var sourceFile = Utils.GetDummyFile())
+			using (var outputFile = Utils.GetDummyFile(0))
+			{
+				var inputContent = File.ReadAllText(sourceFile.Filename);
+				using (ZipFile f = ZipFile.Create(outputFile.Filename))
+				{
+					f.BeginUpdate();
+
+					// Add a file with the unique display name
+					f.Add(sourceFile.Filename, fileName);
+					
+					f.CommitUpdate();
+					f.Close();
+				}
+
+				using (ZipFile zipFile = new ZipFile(outputFile.Filename))
+				{
+					Assert.That(zipFile.Count, Is.EqualTo(1));
+
+					var fileEntry = zipFile.GetEntry(fileName);
+					Assert.That(fileEntry, Is.Not.Null);
+
+					using (var sr = new StreamReader(zipFile.GetInputStream(fileEntry)))
+					{
+						var outputContent = sr.ReadToEnd();
+						Assert.AreEqual(inputContent, outputContent, "extracted content does not match source content");
+					}
+				}
+			}
+		}
 	}
 }
