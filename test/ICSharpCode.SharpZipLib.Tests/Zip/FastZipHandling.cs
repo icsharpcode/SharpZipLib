@@ -568,5 +568,62 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			// test folder should not have been created on error
 			Assert.That(Directory.Exists(tempFolderPath), Is.False, "Temp folder path should still not exist");
 		}
+
+		/// <summary>
+		/// #426 - set the modified date for created directory entries if the RestoreDateTimeOnExtract option is enabled
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void SetDirectoryModifiedDate()
+		{
+			string tempFilePath = GetTempFilePath();
+			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
+
+			string zipName = Path.Combine(tempFilePath, $"{nameof(SetDirectoryModifiedDate)}.zip");
+
+			EnsureTestDirectoryIsEmpty(tempFilePath);
+
+			var modifiedTime = new DateTime(2001, 1, 2);
+			string targetDir = Path.Combine(tempFilePath, ZipTempDir, nameof(SetDirectoryModifiedDate));
+			using (FileStream fs = File.Create(zipName))
+			{
+				using (ZipOutputStream zOut = new ZipOutputStream(fs))
+				{
+					// Add an empty directory entry, with a specified time field
+					var entry = new ZipEntry("emptyFolder/")
+					{
+						DateTime = modifiedTime
+					};
+					zOut.PutNextEntry(entry);
+				}
+			}
+
+			try
+			{
+				// extract the zip
+				var fastZip = new FastZip
+				{
+					CreateEmptyDirectories = true,
+					RestoreDateTimeOnExtract = true
+				};
+				fastZip.ExtractZip(zipName, targetDir, "zz");
+
+				File.Delete(zipName);
+
+				// Check that the empty sub folder exists and has the expected modlfied date
+				string emptyTargetDir = Path.Combine(targetDir, "emptyFolder");
+
+				Assert.That(Directory.Exists(emptyTargetDir), Is.True, "Empty directory should be created");
+
+				var extractedFolderTime = Directory.GetLastWriteTime(emptyTargetDir);
+				Assert.That(extractedFolderTime, Is.EqualTo(modifiedTime));
+			}
+			finally
+			{
+				// Tidy up
+				Directory.Delete(targetDir, true);
+			}
+		}
 	}
 }
