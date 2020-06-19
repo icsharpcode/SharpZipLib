@@ -80,7 +80,7 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 					pos += numRead;
 				}
 
-				Assert.AreEqual(pos, 0);
+				Assert.Zero(pos);
 			}
 		}
 

@@ -189,7 +189,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			}
 			inStream.Close();
-			Assert.AreEqual(extractCount, 0, "No data should be read from empty entries");
+			Assert.Zero(extractCount, "No data should be read from empty entries");
 		}
 
 		/// <summary>
@@ -404,7 +404,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					var zis = new ZipInputStream(bs);
 					var entry = zis.GetNextEntry();
 
-					Assert.AreEqual(entry.Name, EntryName);
+					Assert.AreEqual(EntryName, entry.Name);
 					Assert.IsTrue((entry.Flags & (int)GeneralBitFlags.Descriptor) != 0);
 					return zis;
 				},
