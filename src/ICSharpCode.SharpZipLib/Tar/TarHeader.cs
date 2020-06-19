@@ -528,7 +528,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name = "header">
 		/// The tar entry header buffer to get information from.
 		/// </param>
-		public void ParseBuffer(byte[] header)
+		/// <param name = "nameEncoding">
+		/// The <see cref="Encoding"/> used for the Name field, or null for ASCII only
+		/// </param>
+		public void ParseBuffer(byte[] header, Encoding nameEncoding)
 		{
 			if (header == null)
 			{
@@ -537,7 +540,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			int offset = 0;
 
-			name = ParseName(header, offset, NAMELEN).ToString();
+			name = ParseName(header, offset, NAMELEN, nameEncoding).ToString();
 			offset += NAMELEN;
 
 			mode = (int)ParseOctal(header, offset, MODELEN);
@@ -560,21 +563,21 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			TypeFlag = header[offset++];
 
-			LinkName = ParseName(header, offset, NAMELEN).ToString();
+			LinkName = ParseName(header, offset, NAMELEN, nameEncoding).ToString();
 			offset += NAMELEN;
 
-			Magic = ParseName(header, offset, MAGICLEN).ToString();
+			Magic = ParseName(header, offset, MAGICLEN, nameEncoding).ToString();
 			offset += MAGICLEN;
 
 			if (Magic == "ustar")
 			{
-				Version = ParseName(header, offset, VERSIONLEN).ToString();
+				Version = ParseName(header, offset, VERSIONLEN, nameEncoding).ToString();
 				offset += VERSIONLEN;
 
-				UserName = ParseName(header, offset, UNAMELEN).ToString();
+				UserName = ParseName(header, offset, UNAMELEN, nameEncoding).ToString();
 				offset += UNAMELEN;
 
-				GroupName = ParseName(header, offset, GNAMELEN).ToString();
+				GroupName = ParseName(header, offset, GNAMELEN, nameEncoding).ToString();
 				offset += GNAMELEN;
 
 				DevMajor = (int)ParseOctal(header, offset, DEVLEN);
@@ -583,7 +586,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				DevMinor = (int)ParseOctal(header, offset, DEVLEN);
 				offset += DEVLEN;
 
-				string prefix = ParseName(header, offset, PREFIXLEN).ToString();
+				string prefix = ParseName(header, offset, PREFIXLEN, nameEncoding).ToString();
 				if (!string.IsNullOrEmpty(prefix)) Name = prefix + '/' + Name;
 			}
 
@@ -591,10 +594,33 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 
 		/// <summary>
+		/// Parse TarHeader information from a header buffer.
+		/// </summary>
+		/// <param name = "header">
+		/// The tar entry header buffer to get information from.
+		/// </param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
+		public void ParseBuffer(byte[] header)
+		{
+			ParseBuffer(header, null);
+		}
+
+		/// <summary>
 		/// 'Write' header information to buffer provided, updating the <see cref="Checksum">check sum</see>.
 		/// </summary>
 		/// <param name="outBuffer">output buffer for header information</param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public void WriteHeader(byte[] outBuffer)
+		{
+			WriteHeader(outBuffer, null);
+		}
+
+		/// <summary>
+		/// 'Write' header information to buffer provided, updating the <see cref="Checksum">check sum</see>.
+		/// </summary>
+		/// <param name="outBuffer">output buffer for header information</param>
+		/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name field, or null for ASCII only</param>
+		public void WriteHeader(byte[] outBuffer, Encoding nameEncoding)
 		{
 			if (outBuffer == null)
 			{
@@ -603,7 +629,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			int offset = 0;
 
-			offset = GetNameBytes(Name, outBuffer, offset, NAMELEN);
+			offset = GetNameBytes(Name, outBuffer, offset, NAMELEN, nameEncoding);
 			offset = GetOctalBytes(mode, outBuffer, offset, MODELEN);
 			offset = GetOctalBytes(UserId, outBuffer, offset, UIDLEN);
 			offset = GetOctalBytes(GroupId, outBuffer, offset, GIDLEN);
@@ -619,11 +645,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			outBuffer[offset++] = TypeFlag;
 
-			offset = GetNameBytes(LinkName, outBuffer, offset, NAMELEN);
-			offset = GetAsciiBytes(Magic, 0, outBuffer, offset, MAGICLEN);
-			offset = GetNameBytes(Version, outBuffer, offset, VERSIONLEN);
-			offset = GetNameBytes(UserName, outBuffer, offset, UNAMELEN);
-			offset = GetNameBytes(GroupName, outBuffer, offset, GNAMELEN);
+			offset = GetNameBytes(LinkName, outBuffer, offset, NAMELEN, nameEncoding);
+			offset = GetAsciiBytes(Magic, 0, outBuffer, offset, MAGICLEN, nameEncoding);
+			offset = GetNameBytes(Version, outBuffer, offset, VERSIONLEN, nameEncoding);
+			offset = GetNameBytes(UserName, outBuffer, offset, UNAMELEN, nameEncoding);
+			offset = GetNameBytes(GroupName, outBuffer, offset, GNAMELEN, nameEncoding);
 
 			if ((TypeFlag == LF_CHR) || (TypeFlag == LF_BLK))
 			{
@@ -787,7 +813,31 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The name parsed.
 		/// </returns>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		static public StringBuilder ParseName(byte[] header, int offset, int length)
+		{
+			return ParseName(header, offset, length, null);
+		}
+
+		/// <summary>
+		/// Parse a name from a header buffer.
+		/// </summary>
+		/// <param name="header">
+		/// The header buffer from which to parse.
+		/// </param>
+		/// <param name="offset">
+		/// The offset into the buffer from which to parse.
+		/// </param>
+		/// <param name="length">
+		/// The number of header bytes to parse.
+		/// </param>
+		/// <param name="encoding">
+		/// name encoding, or null for ASCII only
+		/// </param>
+		/// <returns>
+		/// The name parsed.
+		/// </returns>
+		static public StringBuilder ParseName(byte[] header, int offset, int length, Encoding encoding)
 		{
 			if (header == null)
 			{
@@ -811,13 +861,28 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			var result = new StringBuilder(length);
 
-			for (int i = offset; i < offset + length; ++i)
+			int count = 0;
+			if(encoding == null)
 			{
-				if (header[i] == 0)
+				for (int i = offset; i < offset + length; ++i)
 				{
-					break;
+					if (header[i] == 0)
+					{
+						break;
+					}
+					result.Append((char)header[i]);
 				}
-				result.Append((char)header[i]);
+			}
+			else
+			{
+				for(int i = offset; i < offset + length; ++i, ++count)
+				{
+					if(header[i] == 0)
+					{
+						break;
+					}
+				}
+				result.Append(encoding.GetString(header, offset, count));
 			}
 
 			return result;
@@ -834,17 +899,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>The next free index in the <paramref name="buffer"/></returns>
 		public static int GetNameBytes(StringBuilder name, int nameOffset, byte[] buffer, int bufferOffset, int length)
 		{
-			if (name == null)
-			{
-				throw new ArgumentNullException(nameof(name));
-			}
-
-			if (buffer == null)
-			{
-				throw new ArgumentNullException(nameof(buffer));
-			}
-
-			return GetNameBytes(name.ToString(), nameOffset, buffer, bufferOffset, length);
+			return GetNameBytes(name.ToString(), nameOffset, buffer, bufferOffset, length, null);
 		}
 
 		/// <summary>
@@ -858,6 +913,21 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>The next free index in the <paramref name="buffer"/></returns>
 		public static int GetNameBytes(string name, int nameOffset, byte[] buffer, int bufferOffset, int length)
 		{
+			return GetNameBytes(name, nameOffset, buffer, bufferOffset, length, null);
+		}
+
+		/// <summary>
+		/// Add <paramref name="name">name</paramref> to the buffer as a collection of bytes
+		/// </summary>
+		/// <param name="name">The name to add</param>
+		/// <param name="nameOffset">The offset of the first character</param>
+		/// <param name="buffer">The buffer to add to</param>
+		/// <param name="bufferOffset">The index of the first byte to add</param>
+		/// <param name="length">The number of characters/bytes to add</param>
+		/// <param name="encoding">name encoding, or null for ASCII only</param>
+		/// <returns>The next free index in the <paramref name="buffer"/></returns>
+		public static int GetNameBytes(string name, int nameOffset, byte[] buffer, int bufferOffset, int length, Encoding encoding)
+		{
 			if (name == null)
 			{
 				throw new ArgumentNullException(nameof(name));
@@ -869,20 +939,29 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 
 			int i;
-
-			for (i = 0; i < length && nameOffset + i < name.Length; ++i)
+			if(encoding != null)
 			{
-				buffer[bufferOffset + i] = (byte)name[nameOffset + i];
+				// it can be more sufficient if using Span or unsafe
+				var nameArray = name.ToCharArray(nameOffset, Math.Min(name.Length - nameOffset, length));
+				// it can be more sufficient if using Span(or unsafe?) and ArrayPool for temporary buffer
+				var bytes = encoding.GetBytes(nameArray, 0, nameArray.Length);
+				i = Math.Min(bytes.Length, length);
+				Array.Copy(bytes, 0, buffer, bufferOffset, i);
+			}
+			else
+			{
+				for (i = 0; i < length && nameOffset + i < name.Length; ++i)
+				{
+					buffer[bufferOffset + i] = (byte)name[nameOffset + i];
+				}
 			}
 
 			for (; i < length; ++i)
 			{
 				buffer[bufferOffset + i] = 0;
 			}
-
 			return bufferOffset + length;
 		}
-
 		/// <summary>
 		/// Add an entry name to the buffer
 		/// </summary>
@@ -901,7 +980,34 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The index of the next free byte in the buffer
 		/// </returns>
+		/// TODO: what should be default behavior?(omit upper byte or UTF8?)
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public static int GetNameBytes(StringBuilder name, byte[] buffer, int offset, int length)
+		{
+			return GetNameBytes(name, buffer, offset, length, null);
+		}
+
+		/// <summary>
+		/// Add an entry name to the buffer
+		/// </summary>
+		/// <param name="name">
+		/// The name to add
+		/// </param>
+		/// <param name="buffer">
+		/// The buffer to add to
+		/// </param>
+		/// <param name="offset">
+		/// The offset into the buffer from which to start adding
+		/// </param>
+		/// <param name="length">
+		/// The number of header bytes to add
+		/// </param>
+		/// <param name="encoding">
+		/// </param>
+		/// <returns>
+		/// The index of the next free byte in the buffer
+		/// </returns>
+		public static int GetNameBytes(StringBuilder name, byte[] buffer, int offset, int length, Encoding encoding)
 		{
 			if (name == null)
 			{
@@ -913,7 +1019,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
-			return GetNameBytes(name.ToString(), 0, buffer, offset, length);
+			return GetNameBytes(name.ToString(), 0, buffer, offset, length, encoding);
 		}
 
 		/// <summary>
@@ -924,7 +1030,23 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="offset">The offset into the buffer from which to start adding</param>
 		/// <param name="length">The number of header bytes to add</param>
 		/// <returns>The index of the next free byte in the buffer</returns>
+		/// TODO: what should be default behavior?(omit upper byte or UTF8?)
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public static int GetNameBytes(string name, byte[] buffer, int offset, int length)
+		{
+			return GetNameBytes(name, buffer, offset, length, null);
+		}
+
+		/// <summary>
+		/// Add an entry name to the buffer
+		/// </summary>
+		/// <param name="name">The name to add</param>
+		/// <param name="buffer">The buffer to add to</param>
+		/// <param name="offset">The offset into the buffer from which to start adding</param>
+		/// <param name="length">The number of header bytes to add</param>
+		/// <param name="encoding"></param>
+		/// <returns>The index of the next free byte in the buffer</returns>
+		public static int GetNameBytes(string name, byte[] buffer, int offset, int length, Encoding encoding)
 		{
 			if (name == null)
 			{
@@ -936,7 +1058,21 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
-			return GetNameBytes(name, 0, buffer, offset, length);
+			return GetNameBytes(name, 0, buffer, offset, length, encoding);
+		}
+		/// <summary>
+		/// Add a string to a buffer as a collection of ascii bytes.
+		/// </summary>
+		/// <param name="toAdd">The string to add</param>
+		/// <param name="nameOffset">The offset of the first character to add.</param>
+		/// <param name="buffer">The buffer to add to.</param>
+		/// <param name="bufferOffset">The offset to start adding at.</param>
+		/// <param name="length">The number of ascii characters to add.</param>
+		/// <returns>The next free index in the buffer.</returns>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
+		public static int GetAsciiBytes(string toAdd, int nameOffset, byte[] buffer, int bufferOffset, int length)
+		{
+			return GetAsciiBytes(toAdd, nameOffset, buffer, bufferOffset, length, null);
 		}
 
 		/// <summary>
@@ -947,8 +1083,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="buffer">The buffer to add to.</param>
 		/// <param name="bufferOffset">The offset to start adding at.</param>
 		/// <param name="length">The number of ascii characters to add.</param>
+		/// <param name="encoding">String encoding, or null for ASCII only</param>
 		/// <returns>The next free index in the buffer.</returns>
-		public static int GetAsciiBytes(string toAdd, int nameOffset, byte[] buffer, int bufferOffset, int length)
+		public static int GetAsciiBytes(string toAdd, int nameOffset, byte[] buffer, int bufferOffset, int length, Encoding encoding)
 		{
 			if (toAdd == null)
 			{
@@ -961,9 +1098,21 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 
 			int i;
-			for (i = 0; i < length && nameOffset + i < toAdd.Length; ++i)
+			if(encoding == null)
 			{
-				buffer[bufferOffset + i] = (byte)toAdd[nameOffset + i];
+				for (i = 0; i < length && nameOffset + i < toAdd.Length; ++i)
+				{
+					buffer[bufferOffset + i] = (byte)toAdd[nameOffset + i];
+				}
+			}
+			else
+			{
+				// It can be more sufficient if using unsafe code or Span(ToCharArray can be omitted)
+				var chars = toAdd.ToCharArray();
+				// It can be more sufficient if using Span(or unsafe?) and ArrayPool for temporary buffer
+				var bytes = encoding.GetBytes(chars, nameOffset, Math.Min(toAdd.Length - nameOffset, length));
+				i = Math.Min(bytes.Length, length);
+				Array.Copy(bytes, 0, buffer, bufferOffset, i);
 			}
 			// If length is beyond the toAdd string length (which is OK by the prev loop condition), eg if a field has fixed length and the string is shorter, make sure all of the extra chars are written as NULLs, so that the reader func would ignore them and get back the original string
 			for (; i < length; ++i)

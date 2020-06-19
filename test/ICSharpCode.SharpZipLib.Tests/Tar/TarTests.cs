@@ -4,6 +4,7 @@ using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tests.Tar
 {
@@ -18,6 +19,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		private void EntryCounter(TarArchive archive, TarEntry entry, string message)
 		{
 			entryCount++;
+		}
+
+		[SetUp]
+		public void Setup()
+		{
+			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 		}
 
 		/// <summary>
@@ -41,7 +48,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 
-			using (TarArchive tarIn = TarArchive.CreateInputTarArchive(ms2))
+			using (TarArchive tarIn = TarArchive.CreateInputTarArchive(ms2, null))
 			{
 				entryCount = 0;
 				tarIn.ProgressMessageEvent += EntryCounter;
@@ -65,7 +72,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			{
 				var ms = new MemoryStream();
 
-				using (TarOutputStream tarOut = new TarOutputStream(ms, factor))
+				using (TarOutputStream tarOut = new TarOutputStream(ms, factor, null))
 				{
 					TarEntry entry = TarEntry.CreateTarEntry("TestEntry");
 					entry.Size = (TarBuffer.BlockSize * factor * FillFactor);
@@ -126,7 +133,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			{
 				var ms = new MemoryStream();
 
-				using (TarOutputStream tarOut = new TarOutputStream(ms, TestBlockFactor))
+				using (TarOutputStream tarOut = new TarOutputStream(ms, TestBlockFactor, null))
 				{
 					TarEntry entry = TarEntry.CreateTarEntry("TestEntry");
 					if (iteration > 0)
@@ -188,7 +195,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		private void TryLongName(string name)
 		{
 			var ms = new MemoryStream();
-			using (TarOutputStream tarOut = new TarOutputStream(ms))
+			using (TarOutputStream tarOut = new TarOutputStream(ms, null))
 			{
 				DateTime modTime = DateTime.Now;
 
@@ -200,7 +207,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 
-			using (TarInputStream tarIn = new TarInputStream(ms2))
+			using (TarInputStream tarIn = new TarInputStream(ms2, null))
 			{
 				TarEntry nextEntry = tarIn.GetNextEntry();
 
@@ -286,7 +293,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			truncated = null;
 
 			using (var ms = new MemoryStream(buffer))
-			using (var tis = new TarInputStream(ms))
+			using (var tis = new TarInputStream(ms, null))
 			{
 				var entry = tis.GetNextEntry();
 				Assert.IsNotNull(entry, "Entry is null");
@@ -387,7 +394,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		public void Checksum()
 		{
 			var ms = new MemoryStream();
-			using (TarOutputStream tarOut = new TarOutputStream(ms))
+			using (TarOutputStream tarOut = new TarOutputStream(ms, null))
 			{
 				DateTime modTime = DateTime.Now;
 
@@ -402,7 +409,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			ms2.Seek(0, SeekOrigin.Begin);
 			TarEntry nextEntry;
 
-			using (TarInputStream tarIn = new TarInputStream(ms2))
+			using (TarInputStream tarIn = new TarInputStream(ms2, null))
 			{
 				nextEntry = tarIn.GetNextEntry();
 				Assert.IsTrue(nextEntry.TarHeader.IsChecksumValid, "Checksum should be valid");
@@ -414,7 +421,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			ms3.Write(new byte[] { 34 }, 0, 1);
 			ms3.Seek(0, SeekOrigin.Begin);
 
-			using (TarInputStream tarIn = new TarInputStream(ms3))
+			using (TarInputStream tarIn = new TarInputStream(ms3, null))
 			{
 				bool trapped = false;
 
@@ -442,7 +449,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			TarEntry entry;
 			DateTime modTime = DateTime.Now;
 
-			using (TarOutputStream tarOut = new TarOutputStream(ms))
+			using (TarOutputStream tarOut = new TarOutputStream(ms, null))
 			{
 				entry = TarEntry.CreateTarEntry("TestEntry");
 				entry.GroupId = 12;
@@ -459,7 +466,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 
-			using (TarInputStream tarIn = new TarInputStream(ms2))
+			using (TarInputStream tarIn = new TarInputStream(ms2, null))
 			{
 				TarEntry nextEntry = tarIn.GetNextEntry();
 				Assert.AreEqual(entry.TarHeader.Checksum, nextEntry.TarHeader.Checksum, "Checksum");
@@ -637,7 +644,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		public void OutputStreamOwnership()
 		{
 			var memStream = new TrackedMemoryStream();
-			var s = new TarOutputStream(memStream);
+			var s = new TarOutputStream(memStream, null);
 
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
@@ -648,7 +655,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
 
 			memStream = new TrackedMemoryStream();
-			s = new TarOutputStream(memStream);
+			s = new TarOutputStream(memStream, null);
 
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
@@ -665,7 +672,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		public void InputStreamOwnership()
 		{
 			var memStream = new TrackedMemoryStream();
-			var s = new TarInputStream(memStream);
+			var s = new TarInputStream(memStream, null);
 
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
@@ -676,7 +683,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			Assert.IsTrue(memStream.IsDisposed, "Should be disposed after parent owner close");
 
 			memStream = new TrackedMemoryStream();
-			s = new TarInputStream(memStream);
+			s = new TarInputStream(memStream, null);
 
 			Assert.IsFalse(memStream.IsClosed, "Shouldnt be closed initially");
 			Assert.IsFalse(memStream.IsDisposed, "Shouldnt be disposed initially");
@@ -708,7 +715,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 				outCount = ms.Position;
 				ms.Seek(0, SeekOrigin.Begin);
 
-				using (var tarIn = TarArchive.CreateInputTarArchive(ms))
+				using (var tarIn = TarArchive.CreateInputTarArchive(ms, null))
 				using (var tempDir = new Utils.TempDir())
 				{
 					tarIn.IsStreamOwner = false;
@@ -739,7 +746,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 
 			PerformanceTesting.TestWrite(TestDataSize.Large, bs =>
 			{
-				var tos = new TarOutputStream(bs);
+				var tos = new TarOutputStream(bs, null);
 				tos.PutNextEntry(new TarEntry(new TarHeader()
 				{
 					Name = EntryName,
@@ -766,7 +773,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 				size: dataSize,
 				input: bs =>
 				{
-					var tis = new TarInputStream(bs);
+					var tis = new TarInputStream(bs, null);
 					var entry = tis.GetNextEntry();
 
 					Assert.AreEqual(EntryName, entry.Name);
@@ -774,7 +781,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 				},
 				output: bs =>
 				{
-					var tos = new TarOutputStream(bs);
+					var tos = new TarOutputStream(bs, null);
 					tos.PutNextEntry(new TarEntry(new TarHeader()
 					{
 						Name = EntryName,
@@ -823,7 +830,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					{
 						tempDirName = tempDir.Fullpath;
 
-						using (var tarIn = TarArchive.CreateInputTarArchive(gzipStream))
+						using (var tarIn = TarArchive.CreateInputTarArchive(gzipStream, null))
 						{
 							tarIn.IsStreamOwner = false;
 							Assert.Throws<SharpZipBaseException>(() => tarIn.ExtractContents(tempDir.Fullpath));
@@ -831,7 +838,65 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					}
 
 					Assert.That(Directory.Exists(tempDirName), Is.False, "Temporary folder should have been removed");
-				}	
+				}
+			}
+		}
+		[TestCase(10, "utf-8")]
+		[TestCase(10, "shift-jis")]
+		[Category("Tar")]
+		public void ParseHeaderWithEncoding(int length, string encodingName)
+		{
+			// U+3042 is Japanese Hiragana
+			// https://unicode.org/charts/PDF/U3040.pdf
+			var name = new string((char)0x3042, length);
+			var header = new TarHeader();
+			var enc = Encoding.GetEncoding(encodingName);
+			byte[] headerbytes = new byte[1024];
+			var encodedName = enc.GetBytes(name);
+			header.Name = name;
+			header.WriteHeader(headerbytes, enc);
+			var reparseHeader = new TarHeader();
+			reparseHeader.ParseBuffer(headerbytes, enc);
+			Assert.AreEqual(name, reparseHeader.Name);
+			// top 100 bytes are name field in tar header
+			for (int i = 0;i < encodedName.Length;i++)
+			{
+				Assert.AreEqual(encodedName[i], headerbytes[i]);
+			}
+		}
+		[TestCase(1, "utf-8")]
+		[TestCase(100, "utf-8")]
+		[TestCase(128, "utf-8")]
+		[TestCase(1, "shift-jis")]
+		[TestCase(100, "shift-jis")]
+		[TestCase(128, "shift-jis")]
+		[Category("Tar")]
+		public void StreamWithJapaneseName(int length, string encodingName)
+		{
+			// U+3042 is Japanese Hiragana
+			// https://unicode.org/charts/PDF/U3040.pdf
+			var entryName = new string((char)0x3042, length);
+			var data = new byte[32];
+			var encoding = Encoding.GetEncoding(encodingName);
+			using(var memoryStream = new MemoryStream())
+			{
+				using(var tarOutput = new TarOutputStream(memoryStream, encoding))
+				{
+					var entry = TarEntry.CreateTarEntry(entryName);
+					entry.Size = 32;
+					tarOutput.PutNextEntry(entry);
+					tarOutput.Write(data, 0, data.Length);
+				}
+				using(var memInput = new MemoryStream(memoryStream.ToArray()))
+				using(var inputStream = new TarInputStream(memInput, encoding))
+				{
+					var buf = new byte[64];
+					var entry = inputStream.GetNextEntry();
+					Assert.AreEqual(entryName, entry.Name);
+					var bytesread = inputStream.Read(buf, 0, buf.Length);
+					Assert.AreEqual(data.Length, bytesread);
+				}
+				File.WriteAllBytes(Path.Combine(Path.GetTempPath(), $"jpnametest_{length}_{encodingName}.tar"), memoryStream.ToArray());
 			}
 		}
 	}

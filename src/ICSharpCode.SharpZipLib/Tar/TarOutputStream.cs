@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tar
 {
@@ -17,8 +18,19 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Construct TarOutputStream using default block factor
 		/// </summary>
 		/// <param name="outputStream">stream to write to</param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public TarOutputStream(Stream outputStream)
 			: this(outputStream, TarBuffer.DefaultBlockFactor)
+		{
+		}
+
+		/// <summary>
+		/// Construct TarOutputStream using default block factor
+		/// </summary>
+		/// <param name="outputStream">stream to write to</param>
+		/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
+		public TarOutputStream(Stream outputStream, Encoding nameEncoding)
+			: this(outputStream, TarBuffer.DefaultBlockFactor, nameEncoding)
 		{
 		}
 
@@ -27,6 +39,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <param name="outputStream">stream to write to</param>
 		/// <param name="blockFactor">blocking factor</param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public TarOutputStream(Stream outputStream, int blockFactor)
 		{
 			if (outputStream == null)
@@ -39,6 +52,28 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			assemblyBuffer = new byte[TarBuffer.BlockSize];
 			blockBuffer = new byte[TarBuffer.BlockSize];
+		}
+
+		/// <summary>
+		/// Construct TarOutputStream with user specified block factor
+		/// </summary>
+		/// <param name="outputStream">stream to write to</param>
+		/// <param name="blockFactor">blocking factor</param>
+		/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
+		public TarOutputStream(Stream outputStream, int blockFactor, Encoding nameEncoding)
+		{
+			if (outputStream == null)
+			{
+				throw new ArgumentNullException(nameof(outputStream));
+			}
+
+			this.outputStream = outputStream;
+			buffer = TarBuffer.CreateOutputTarBuffer(outputStream, blockFactor);
+
+			assemblyBuffer = new byte[TarBuffer.BlockSize];
+			blockBuffer = new byte[TarBuffer.BlockSize];
+
+			this.nameEncoding = nameEncoding;
 		}
 
 		#endregion Constructors
@@ -241,7 +276,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ArgumentNullException(nameof(entry));
 			}
 
-			if (entry.TarHeader.Name.Length > TarHeader.NAMELEN)
+			var namelen = nameEncoding != null ? nameEncoding.GetByteCount(entry.TarHeader.Name) : entry.TarHeader.Name.Length;
+
+			if (namelen > TarHeader.NAMELEN)
 			{
 				var longHeader = new TarHeader();
 				longHeader.TypeFlag = TarHeader.LF_GNU_LONGNAME;
@@ -252,23 +289,23 @@ namespace ICSharpCode.SharpZipLib.Tar
 				longHeader.GroupName = entry.GroupName;
 				longHeader.UserName = entry.UserName;
 				longHeader.LinkName = "";
-				longHeader.Size = entry.TarHeader.Name.Length + 1;  // Plus one to avoid dropping last char
+				longHeader.Size = namelen + 1;  // Plus one to avoid dropping last char
 
-				longHeader.WriteHeader(blockBuffer);
+				longHeader.WriteHeader(blockBuffer, nameEncoding);
 				buffer.WriteBlock(blockBuffer);  // Add special long filename header block
 
 				int nameCharIndex = 0;
 
-				while (nameCharIndex < entry.TarHeader.Name.Length + 1 /* we've allocated one for the null char, now we must make sure it gets written out */)
+				while (nameCharIndex < namelen + 1 /* we've allocated one for the null char, now we must make sure it gets written out */)
 				{
 					Array.Clear(blockBuffer, 0, blockBuffer.Length);
-					TarHeader.GetAsciiBytes(entry.TarHeader.Name, nameCharIndex, this.blockBuffer, 0, TarBuffer.BlockSize); // This func handles OK the extra char out of string length
+					TarHeader.GetAsciiBytes(entry.TarHeader.Name, nameCharIndex, this.blockBuffer, 0, TarBuffer.BlockSize, nameEncoding); // This func handles OK the extra char out of string length
 					nameCharIndex += TarBuffer.BlockSize;
 					buffer.WriteBlock(blockBuffer);
 				}
 			}
 
-			entry.WriteEntryHeader(blockBuffer);
+			entry.WriteEntryHeader(blockBuffer, nameEncoding);
 			buffer.WriteBlock(blockBuffer);
 
 			currBytes = 0;
@@ -474,6 +511,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// the destination stream for the archive contents
 		/// </summary>
 		protected Stream outputStream;
+
+		/// <summary>
+		/// name encoding
+		/// </summary>
+		protected Encoding nameEncoding;
 
 		#endregion Instance Fields
 	}

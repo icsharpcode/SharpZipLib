@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tar
 {
@@ -49,10 +50,25 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name = "headerBuffer">
 		/// The header bytes from a tar archive entry.
 		/// </param>
-		public TarEntry(byte[] headerBuffer)
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
+		public TarEntry(byte[] headerBuffer) : this(headerBuffer, null)
+		{
+		}
+
+		/// <summary>
+		/// Construct an entry from an archive's header bytes. File is set
+		/// to null.
+		/// </summary>
+		/// <param name = "headerBuffer">
+		/// The header bytes from a tar archive entry.
+		/// </param>
+		/// <param name = "nameEncoding">
+		/// The <see cref="Encoding"/> used for the Name fields, or null for ASCII only
+		/// </param>
+		public TarEntry(byte[] headerBuffer, Encoding nameEncoding)
 		{
 			header = new TarHeader();
-			header.ParseBuffer(headerBuffer);
+			header.ParseBuffer(headerBuffer, nameEncoding);
 		}
 
 		/// <summary>
@@ -469,9 +485,24 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name = "outBuffer">
 		/// The tar entry header buffer to fill in.
 		/// </param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public void WriteEntryHeader(byte[] outBuffer)
 		{
-			header.WriteHeader(outBuffer);
+			WriteEntryHeader(outBuffer, null);
+		}
+
+		/// <summary>
+		/// Write an entry's header information to a header buffer.
+		/// </summary>
+		/// <param name = "outBuffer">
+		/// The tar entry header buffer to fill in.
+		/// </param>
+		/// <param name = "nameEncoding">
+		/// The <see cref="Encoding"/> used for the Name fields, or null for ASCII only
+		/// </param>
+		public void WriteEntryHeader(byte[] outBuffer, Encoding nameEncoding)
+		{
+			header.WriteHeader(outBuffer, nameEncoding);
 		}
 
 		/// <summary>
@@ -484,9 +515,28 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="newName">
 		/// The new name to place into the header buffer.
 		/// </param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		static public void AdjustEntryName(byte[] buffer, string newName)
 		{
-			TarHeader.GetNameBytes(newName, buffer, 0, TarHeader.NAMELEN);
+			AdjustEntryName(buffer, newName, null);
+		}
+
+		/// <summary>
+		/// Convenience method that will modify an entry's name directly
+		/// in place in an entry header buffer byte array.
+		/// </summary>
+		/// <param name="buffer">
+		/// The buffer containing the entry header to modify.
+		/// </param>
+		/// <param name="newName">
+		/// The new name to place into the header buffer.
+		/// </param>
+		/// <param name="nameEncoding">
+		/// The <see cref="Encoding"/> used for the Name fields, or null for ASCII only
+		/// </param>
+		static public void AdjustEntryName(byte[] buffer, string newName, Encoding nameEncoding)
+		{
+			TarHeader.GetNameBytes(newName, buffer, 0, TarHeader.NAMELEN, nameEncoding);
 		}
 
 		/// <summary>
