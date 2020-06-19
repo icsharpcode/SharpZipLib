@@ -163,7 +163,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		{
 			int copyCount = Math.Min(count, _transformBufferFreePos - _transformBufferStartPos);
 
-			Array.Copy(_transformBuffer, _transformBufferStartPos, buffer, offset, count);
+			Array.Copy(_transformBuffer, _transformBufferStartPos, buffer, offset, copyCount);
 			_transformBufferStartPos += copyCount;
 
 			return copyCount;
