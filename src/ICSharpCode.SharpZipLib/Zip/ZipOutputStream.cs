@@ -95,7 +95,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="comment">
 		/// The comment text for the entire archive.
 		/// </param>
-		/// <exception name ="ArgumentOutOfRangeException">
+		/// <exception cref="ArgumentOutOfRangeException">
 		/// The converted comment is longer than 0xffff bytes.
 		/// </exception>
 		public void SetComment(string comment)

@@ -584,7 +584,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// The number of bytes read (this may be less than the length requested, even before the end of stream), or 0 on end of stream.
 		/// </returns>
-		/// <exception name="IOException">
+		/// <exception cref="IOException">
 		/// An i/o error occured.
 		/// </exception>
 		/// <exception cref="ZipException">
