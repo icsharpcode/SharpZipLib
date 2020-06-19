@@ -365,6 +365,40 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+		// This is a zip file with one AES encrypted entry, whose password in an empty string.
+		const string TestFileWithEmptyPassword = @"UEsDBDMACQBjACaj0FAyKbop//////////8EAB8AdGVzdAEAEAA4AAAA
+			AAAAAFIAAAAAAAAAAZkHAAIAQUUDCABADvo3YqmCtIE+lhw26kjbqkGsLEOk6bVA+FnSpVD4yGP4Mr66Hs14aTtsPUaANX2
+            Z6qZczEmwoaNQpNBnKl7p9YOG8GSHDfTCUU/AZvT4yGFhUEsHCDIpuilSAAAAAAAAADgAAAAAAAAAUEsBAjMAMwAJAGMAJq
+            PQUDIpuin//////////wQAHwAAAAAAAAAAAAAAAAAAAHRlc3QBABAAOAAAAAAAAABSAAAAAAAAAAGZBwACAEFFAwgAUEsFBgAAAAABAAEAUQAAAKsAAAAAAA==";
+
+		/// <summary>
+		/// Test reading an AES encrypted entry whose password is an empty string.
+		/// </summary>
+		/// <remarks>
+		/// Test added for https://github.com/icsharpcode/SharpZipLib/issues/471.
+		/// </remarks>
+		[Test]
+		[Category("Zip")]
+		public void ZipFileAESReadWithEmptyPassword()
+		{
+			var fileBytes = Convert.FromBase64String(TestFileWithEmptyPassword);
+
+			using (var ms = new MemoryStream(fileBytes))
+			using (var zipFile = new ZipFile(ms, leaveOpen: true))
+			{
+				zipFile.Password = string.Empty;
+
+				var entry = zipFile.FindEntry("test", true);
+
+				using (var inputStream = zipFile.GetInputStream(entry))
+				using (var sr = new StreamReader(inputStream, Encoding.UTF8))
+				{
+					var content = sr.ReadToEnd();
+					Assert.That(content, Is.EqualTo("Lorem ipsum dolor sit amet, consectetur adipiscing elit."), "Decompressed content does not match expected data");
+				}
+			}
+		}
+
 		private static readonly string[] possible7zPaths = new[] {
 			// Check in PATH
 			"7z", "7za",
