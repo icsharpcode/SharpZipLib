@@ -2466,10 +2466,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int result = 0;
 			if ((update.Entry.Flags & (int)GeneralBitFlags.Descriptor) != 0)
 			{
-				result = ZipConstants.DataDescriptorSize - 4;
+				result = ZipConstants.DataDescriptorSize;
 				if (update.Entry.LocalHeaderRequiresZip64)
 				{
-					result = ZipConstants.Zip64DataDescriptorSize - 4;
+					result = ZipConstants.Zip64DataDescriptorSize;
 				}
 			}
 			return result;
