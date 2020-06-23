@@ -191,7 +191,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get a value indicating wether the last entry test was valid.
+		/// Get a value indicating whether the last entry test was valid.
 		/// </summary>
 		public bool EntryValid
 		{
@@ -318,7 +318,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#region KeyHandling
 
 		/// <summary>
-		/// Delegate for handling keys/password setting during compresion/decompression.
+		/// Delegate for handling keys/password setting during compression/decompression.
 		/// </summary>
 		public delegate void KeysRequiredEventHandler(
 			object sender,
@@ -375,7 +375,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get a value indicating wether encryption keys are currently available.
+		/// Get a value indicating whether encryption keys are currently available.
 		/// </summary>
 		private bool HaveKeys
 		{
@@ -654,7 +654,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get a value indicating wether
+		/// Get a value indicating whether
 		/// this archive is embedded in another file or not.
 		/// </summary>
 		public bool IsEmbeddedArchive
@@ -2094,7 +2094,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						break;
 
 					case UseZip64.Off:
-						// Do nothing.  The entry itself may be using Zip64 independantly.
+						// Do nothing.  The entry itself may be using Zip64 independently.
 						break;
 				}
 			}
@@ -3395,7 +3395,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			//
 			// The search is limited to 64K which is the maximum size of a trailing comment field to aid speed.
 			// This should be compatible with both SFX and ZIP files but has only been tested for Zip files
-			// If a SFX file has the Zip data attached as a resource and there are other resources occuring later then
+			// If a SFX file has the Zip data attached as a resource and there are other resources occurring later then
 			// this could be invalid.
 			// Could also speed this up by reading memory in larger blocks.
 
@@ -4381,7 +4381,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	public class StaticDiskDataSource : IStaticDataSource
 	{
 		/// <summary>
-		/// Initialise a new instnace of <see cref="StaticDiskDataSource"/>
+		/// Initialise a new instance of <see cref="StaticDiskDataSource"/>
 		/// </summary>
 		/// <param name="fileName">The name of the file to obtain data from.</param>
 		public StaticDiskDataSource(string fileName)
@@ -4394,7 +4394,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get a <see cref="Stream"/> providing data.
 		/// </summary>
-		/// <returns>Returns a <see cref="Stream"/> provising data.</returns>
+		/// <returns>Returns a <see cref="Stream"/> providing data.</returns>
 		public Stream GetSource()
 		{
 			return File.Open(fileName_, FileMode.Open, FileAccess.Read, FileShare.Read);
