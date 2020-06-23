@@ -662,7 +662,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			/// Create a tar entry based on the header information passed
 			/// </summary>
 			/// <param name="headerBuffer">
-			/// Buffer containing header information to create an an entry from.
+			/// Buffer containing header information to create an entry from.
 			/// </param>
 			/// <returns>
 			/// Created TarEntry or descendant class

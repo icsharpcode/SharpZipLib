@@ -42,7 +42,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		#endregion Constructors
 
 		/// <summary>
-		/// Get the length of bytes bytes in the <see cref="RawData"/>
+		/// Get the length of bytes in the <see cref="RawData"/>
 		/// </summary>
 		public int RawLength
 		{

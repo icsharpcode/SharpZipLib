@@ -130,7 +130,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	}
 
 	/// <summary>
-	/// Status returned returned by <see cref="ZipTestResultHandler"/> during testing.
+	/// Status returned by <see cref="ZipTestResultHandler"/> during testing.
 	/// </summary>
 	/// <seealso cref="ZipFile.TestArchive(bool)">TestArchive</seealso>
 	public class TestStatus
