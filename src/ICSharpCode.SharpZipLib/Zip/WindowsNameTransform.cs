@@ -81,7 +81,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Gets or sets a value indicating wether paths on incoming values should be removed.
+		/// Gets or sets a value indicating whether paths on incoming values should be removed.
 		/// </summary>
 		public bool TrimIncomingPaths
 		{

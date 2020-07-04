@@ -261,7 +261,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion Constructors
 
 		/// <summary>
-		/// Get a value indicating wether the entry has a CRC value available.
+		/// Get a value indicating whether the entry has a CRC value available.
 		/// </summary>
 		public bool HasCrc
 		{
@@ -296,7 +296,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get / set a flag indicating wether entry name and comment text are
+		/// Get / set a flag indicating whether entry name and comment text are
 		/// encoded in <a href="http://www.unicode.org">unicode UTF8</a>.
 		/// </summary>
 		/// <remarks>This is an assistant that interprets the <see cref="Flags">flags</see> property.</remarks>
@@ -606,7 +606,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get a value indicating whether this entry can be decompressed by the library.
 		/// </summary>
 		/// <remarks>This is based on the <see cref="Version"></see> and
-		/// wether the <see cref="IsCompressionMethodSupported()">compression method</see> is supported.</remarks>
+		/// whether the <see cref="IsCompressionMethodSupported()">compression method</see> is supported.</remarks>
 		public bool CanDecompress
 		{
 			get
@@ -630,7 +630,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get a value indicating wether Zip64 extensions were forced.
+		/// Get a value indicating whether Zip64 extensions were forced.
 		/// </summary>
 		/// <returns>A <see cref="bool"/> value of true if Zip64 extensions have been forced on; false if not.</returns>
 		public bool IsZip64Forced()
@@ -670,7 +670,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get a value indicating wether the central directory entry requires Zip64 extensions to be stored.
+		/// Get a value indicating whether the central directory entry requires Zip64 extensions to be stored.
 		/// </summary>
 		public bool CentralHeaderRequiresZip64
 		{
@@ -901,7 +901,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			get
 			{
-				// TODO: This is slightly safer but less efficient.  Think about wether it should change.
+				// TODO: This is slightly safer but less efficient.  Think about whether it should change.
 				//				return (byte[]) extra.Clone();
 				return extra;
 			}
@@ -1059,7 +1059,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				//		flag 13 is set indicating masking, the value stored for the
 				//		uncompressed size in the Local Header will be zero.
 				//
-				// Othewise there is problem with minizip implementation
+				// Otherwise there is problem with minizip implementation
 				if (size == uint.MaxValue)
 				{
 					size = (ulong)extraData.ReadLong();
