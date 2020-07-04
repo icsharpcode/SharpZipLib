@@ -95,7 +95,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion Constructors
 
 		/// <summary>
-		/// Get / set a value indicating whether the the underlying stream is owned or not.
+		/// Get / set a value indicating whether the underlying stream is owned or not.
 		/// </summary>
 		/// <remarks>If the stream is owned it is closed when this instance is closed.</remarks>
 		public bool IsStreamOwner

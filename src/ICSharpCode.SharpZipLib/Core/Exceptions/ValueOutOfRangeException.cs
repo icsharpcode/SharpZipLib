@@ -10,14 +10,14 @@ namespace ICSharpCode.SharpZipLib
 	public class ValueOutOfRangeException : StreamDecodingException
 	{
 		/// <summary>
-		/// Initializes a new instance of the ValueOutOfRangeException class naming the the causing variable
+		/// Initializes a new instance of the ValueOutOfRangeException class naming the causing variable
 		/// </summary>
 		/// <param name="nameOfValue">Name of the variable, use: nameof()</param>
 		public ValueOutOfRangeException(string nameOfValue)
 			: base($"{nameOfValue} out of range") { }
 
 		/// <summary>
-		/// Initializes a new instance of the ValueOutOfRangeException class naming the the causing variable,
+		/// Initializes a new instance of the ValueOutOfRangeException class naming the causing variable,
 		/// it's current value and expected range.
 		/// </summary>
 		/// <param name="nameOfValue">Name of the variable, use: nameof()</param>
@@ -28,7 +28,7 @@ namespace ICSharpCode.SharpZipLib
 			: this(nameOfValue, value.ToString(), maxValue.ToString(), minValue.ToString()) { }
 
 		/// <summary>
-		/// Initializes a new instance of the ValueOutOfRangeException class naming the the causing variable,
+		/// Initializes a new instance of the ValueOutOfRangeException class naming the causing variable,
 		/// it's current value and expected range.
 		/// </summary>
 		/// <param name="nameOfValue">Name of the variable, use: nameof()</param>
