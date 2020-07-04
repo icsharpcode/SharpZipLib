@@ -162,7 +162,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get set a value indicating wether unidoce text should be set on.
+		/// Get set a value indicating whether unidoce text should be set on.
 		/// </summary>
 		public bool IsUnicodeText
 		{

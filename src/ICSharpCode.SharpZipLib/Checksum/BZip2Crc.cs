@@ -134,7 +134,7 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		{
 			get
 			{
-				// Tehcnically, the output should be:
+				// Technically, the output should be:
 				//return (long)(~checkValue ^ crcXor);
 				// but x ^ 0 = x, so there is no point in adding
 				// the XOR operation

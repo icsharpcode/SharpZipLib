@@ -485,7 +485,7 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		/// Writes a sequence of bytes to stream and advances the current position
 		/// This method always throws a NotSupportedException
 		/// </summary>
-		/// <param name="buffer">Thew buffer containing data to write.</param>
+		/// <param name="buffer">The buffer containing data to write.</param>
 		/// <param name="offset">The offset of the first byte to write.</param>
 		/// <param name="count">The number of bytes to write.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>

@@ -209,7 +209,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#region Properties
 
 		/// <summary>
-		/// Get/set a value indicating wether empty directories should be created.
+		/// Get/set a value indicating whether empty directories should be created.
 		/// </summary>
 		public bool CreateEmptyDirectories
 		{
@@ -267,7 +267,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// read Zip64 archives. However it does avoid the situation were a large file
 		/// is added and cannot be completed correctly.
 		/// NOTE: Setting the size for entries before they are added is the best solution!
-		/// By default the EntryFactory used by FastZip will set fhe file size.
+		/// By default the EntryFactory used by FastZip will set the file size.
 		/// </remarks>
 		public UseZip64 UseZip64
 		{
@@ -276,7 +276,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get/set a value indicating wether file dates and times should
+		/// Get/set a value indicating whether file dates and times should
 		/// be restored when extracting files from an archive.
 		/// </summary>
 		/// <remarks>The default value is false.</remarks>
@@ -533,7 +533,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				try
 				{
-					// The open below is equivalent to OpenRead which gaurantees that if opened the
+					// The open below is equivalent to OpenRead which guarantees that if opened the
 					// file will not be changed by subsequent openers, but precludes opening in some cases
 					// were it could succeed. ie the open may fail as its already open for writing and the share mode should reflect that.
 					using (FileStream stream = File.Open(e.Name, FileMode.Open, FileAccess.Read, FileShare.Read))

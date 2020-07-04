@@ -78,7 +78,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 
 		/// <summary>
-		/// Get set a value indicating wether scanning should continue or not.
+		/// Get set a value indicating whether scanning should continue or not.
 		/// </summary>
 		public bool ContinueRunning
 		{
@@ -209,7 +209,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		}
 
 		/// <summary>
-		/// Get / set a value indicating wether scanning should continue.
+		/// Get / set a value indicating whether scanning should continue.
 		/// </summary>
 		public bool ContinueRunning
 		{

@@ -187,7 +187,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="count">The desired number of bytes to read.</param>
 		/// <returns>The total number of bytes read, or zero if at the end of the stream.
 		/// The number of bytes may be less than the <paramref name="count">count</paramref>
-		/// requested if data is not avialable.</returns>
+		/// requested if data is not available.</returns>
 		public override int Read(byte[] buffer, int offset, int count)
 		{
 			return outputStream.Read(buffer, offset, count);
@@ -250,7 +250,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 
 		/// <summary>
-		/// Get a value indicating wether an entry is open, requiring more data to be written.
+		/// Get a value indicating whether an entry is open, requiring more data to be written.
 		/// </summary>
 		private bool IsEntryOpen
 		{
@@ -483,7 +483,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		private int assemblyBufferLength;
 
 		/// <summary>
-		/// Flag indicating wether this instance has been closed or not.
+		/// Flag indicating whether this instance has been closed or not.
 		/// </summary>
 		private bool isClosed;
 
