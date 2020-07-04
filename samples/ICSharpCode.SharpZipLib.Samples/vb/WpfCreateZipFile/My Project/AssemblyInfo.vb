@@ -18,7 +18,7 @@ Imports System.Runtime.InteropServices
 'NeutralResourceLanguage attribute below.  Update the "en-US" in the line
 'below to match the UICulture setting in the project file.
 
-<Assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)>
+<Assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)>
 
 
 'The ThemeInfo attribute describes where any theme specific and generic resource dictionaries can be found.
