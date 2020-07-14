@@ -3,6 +3,7 @@ namespace ICSharpCode.SharpZipLib.Lzw
 	/// <summary>
 	/// This class contains constants used for LZW
 	/// </summary>
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "kept for backwards compatibility")]
 	sealed public class LzwConstants
 	{
 		/// <summary>
