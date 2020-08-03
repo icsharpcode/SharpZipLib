@@ -1,7 +1,5 @@
 # SharpZipLib [![Build status](https://ci.appveyor.com/api/projects/status/wuf8l79mypqsbor3/branch/master?svg=true)](https://ci.appveyor.com/project/icsharpcode/sharpziplib/branch/master) [![NuGet Version](https://img.shields.io/nuget/v/SharpZipLib.svg)](https://www.nuget.org/packages/SharpZipLib/)
 
-The SharpZipLib project is looking for a new maintainer - please read [State of the Union August 2017](https://github.com/icsharpcode/SharpZipLib/issues/187)
-
 Introduction
 ------------
 
