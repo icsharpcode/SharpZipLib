@@ -104,12 +104,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		/// </summary>
 		[Test]
 		[Category("Base")]
-		public void InflateDeflateZlib()
+		public void InflateDeflateZlib([Range(0, 9)] int level)
 		{
-			for (int level = 0; level < 10; ++level)
-			{
-				RandomDeflateInflate(100000, level, true);
-			}
+			RandomDeflateInflate(100000, level, true);
 		}
 
 		private delegate void RunCompress(byte[] buffer);
@@ -167,13 +164,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		/// </summary>
 		[Test]
 		[Category("Base")]
-		public void InflateDeflateNonZlib()
+		public void InflateDeflateNonZlib([Range(0, 9)] int level)
 		{
-			for (int level = 0; level < 10; ++level)
-			{
-				RandomDeflateInflate(100000, level, false);
-			}
+			RandomDeflateInflate(100000, level, false);
 		}
+
 
 		[Test]
 		[Category("Base")]
