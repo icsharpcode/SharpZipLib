@@ -368,6 +368,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			using (outputStream_ = new ZipOutputStream(outputStream))
 			{
 				outputStream_.SetLevel((int)CompressionLevel);
+				outputStream_.TransformEntryNames = false; // all required transforms handled by us
 
 				if (password_ != null)
 				{

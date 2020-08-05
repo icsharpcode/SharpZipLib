@@ -1,4 +1,5 @@
 using ICSharpCode.SharpZipLib.Checksum;
+using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
@@ -147,6 +148,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Controls whether to transform the names of entries added by <see cref="PutNextEntry(ZipEntry)"/> into Zip format, or to leave them as they are.
+		/// </summary>
+		public bool TransformEntryNames { get; set; } = true;
+
+		/// <summary>
 		/// Write an unsigned short in little endian byte order.
 		/// </summary>
 		private void WriteLeShort(int value)
@@ -180,6 +186,45 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLeInt((int)value);
 				WriteLeInt((int)(value >> 32));
 			}
+		}
+
+		// Transform entry names into zip format by fixing up separators and removing path roots.
+		private string TransformEntryName(ZipEntry entry)
+		{
+			string transformedName = entry.Name;
+
+			if (this.TransformEntryNames)
+			{
+				transformedName = transformedName.Replace(@"\", "/");
+				transformedName = WindowsPathUtils.DropPathRoot(transformedName);
+
+				// Drop any leading and trailing slashes.
+				transformedName = transformedName.Trim('/');
+
+				// Convert consecutive // characters to /
+				int index = transformedName.IndexOf("//", StringComparison.Ordinal);
+				while (index >= 0)
+				{
+					transformedName = transformedName.Remove(index, 1);
+					index = transformedName.IndexOf("//", StringComparison.Ordinal);
+				}
+
+				// Directory entries need just a single / on the end
+				if (entry.IsDirectory)
+				{
+					transformedName += "/";
+				}
+			}
+
+			return transformedName;
+		}
+
+		// Convert an entry name to a byte array, and apply any transforms
+		private byte[] TransformEntryNameToArray(ZipEntry entry)
+		{
+			string transformedName = TransformEntryName(entry);
+			byte[] name = ZipStrings.ConvertToArray(entry.Flags, transformedName);
+			return name;
 		}
 
 		/// <summary>
@@ -367,7 +412,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
-			byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
+			byte[] name = TransformEntryNameToArray(entry);
 
 			if (name.Length > 0xFFFF)
 			{
@@ -787,7 +832,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					WriteLeInt((int)entry.Size);
 				}
 
-				byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
+				byte[] name = TransformEntryNameToArray(entry);
 
 				if (name.Length > 0xffff)
 				{
