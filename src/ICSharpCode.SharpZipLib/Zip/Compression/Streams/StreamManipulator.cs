@@ -1,4 +1,5 @@
 using System;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 {
@@ -286,7 +287,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		#region Instance Fields
 
-		private byte[] window_;
+		private byte[] window_ = EmptyRefs.ByteArray;
 		private int windowStart_;
 		private int windowEnd_;
 

@@ -98,7 +98,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// The converted comment is longer than 0xffff bytes.
 		/// </exception>
-		public void SetComment(string comment)
+		public void SetComment(string? comment)
 		{
 			// TODO: Its not yet clear how to handle unicode comments here.
 			byte[] commentBytes = ZipStrings.ConvertToArray(comment);
@@ -712,7 +712,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
-		private void CopyAndEncrypt(byte[] buffer, int offset, int count)
+		private void CopyAndEncrypt(byte[]? buffer, int offset, int count)
 		{
 			const int CopyBufferSize = 4096;
 			byte[] localBuffer = new byte[CopyBufferSize];
@@ -894,7 +894,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				zhs.WriteEndOfCentralDirectory(numEntries, sizeEntries, offset, zipComment);
 			}
 
-			entries = null;
+			entries.Clear();
 		}
 
 		/// <summary>
@@ -928,7 +928,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// The current entry being added.
 		/// </summary>
-		private ZipEntry curEntry;
+		private ZipEntry? curEntry;
 
 		private int defaultCompressionLevel = Deflater.DEFAULT_COMPRESSION;
 

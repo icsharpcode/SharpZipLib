@@ -99,9 +99,9 @@ namespace ICSharpCode.SharpZipLib.Lzw
 			/* Using local copies of various variables speeds things up by as
 	         * much as 30% in Java! Performance not tested in C#.
 	         */
-			int[] lTabPrefix = tabPrefix;
-			byte[] lTabSuffix = tabSuffix;
-			byte[] lStack = stack;
+			int[] lTabPrefix = tabPrefix!;
+			byte[] lTabSuffix = tabSuffix!;
+			byte[] lStack = stack!;
 			int lNBits = nBits;
 			int lMaxCode = maxCode;
 			int lMaxMaxCode = maxMaxCode;
@@ -489,7 +489,7 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		/// <param name="offset">The offset of the first byte to write.</param>
 		/// <param name="count">The number of bytes to write.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
-		public override void Write(byte[] buffer, int offset, int count)
+		public override void Write(byte[]? buffer, int offset, int count)
 		{
 			throw new NotSupportedException("InflaterInputStream Write not supported");
 		}
@@ -540,10 +540,10 @@ namespace ICSharpCode.SharpZipLib.Lzw
 
 		private const int TBL_FIRST = TBL_CLEAR + 1;
 
-		private int[] tabPrefix;
-		private byte[] tabSuffix;
+		private int[]? tabPrefix;
+		private byte[]? tabSuffix;
 		private readonly int[] zeros = new int[256];
-		private byte[] stack;
+		private byte[]? stack;
 
 		// various state
 		private bool blockMode;

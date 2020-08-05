@@ -16,7 +16,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Initialise a new instance of <see cref="PathFilter"></see>.
 		/// </summary>
 		/// <param name="filter">The <see cref="NameFilter">filter</see> expression to apply.</param>
-		public PathFilter(string filter)
+		public PathFilter(string? filter)
 		{
 			nameFilter_ = new NameFilter(filter);
 		}
@@ -31,7 +31,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="name">The name to test.</param>
 		/// <returns>True if the name matches, false otherwise.</returns>
 		/// <remarks><see cref="Path.GetFullPath(string)"/> is used to get the full path before matching.</remarks>
-		public virtual bool IsMatch(string name)
+		public virtual bool IsMatch(string? name)
 		{
 			bool result = false;
 
@@ -68,7 +68,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="filter">The filter to apply.</param>
 		/// <param name="minSize">The minimum file size to include.</param>
 		/// <param name="maxSize">The maximum file size to include.</param>
-		public ExtendedPathFilter(string filter,
+		public ExtendedPathFilter(string? filter,
 			long minSize, long maxSize)
 			: base(filter)
 		{
@@ -82,7 +82,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="filter">The filter to apply.</param>
 		/// <param name="minDate">The minimum <see cref="DateTime"/> to include.</param>
 		/// <param name="maxDate">The maximum <see cref="DateTime"/> to include.</param>
-		public ExtendedPathFilter(string filter,
+		public ExtendedPathFilter(string? filter,
 			DateTime minDate, DateTime maxDate)
 			: base(filter)
 		{
@@ -98,7 +98,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="maxSize">The maximum file size to include.</param>
 		/// <param name="minDate">The minimum <see cref="DateTime"/> to include.</param>
 		/// <param name="maxDate">The maximum <see cref="DateTime"/> to include.</param>
-		public ExtendedPathFilter(string filter,
+		public ExtendedPathFilter(string? filter,
 			long minSize, long maxSize,
 			DateTime minDate, DateTime maxDate)
 			: base(filter)
@@ -119,7 +119,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="name">The filename to test.</param>
 		/// <returns>True if the filter matches, false otherwise.</returns>
 		/// <exception cref="System.IO.FileNotFoundException">The <see paramref="fileName"/> doesnt exist</exception>
-		public override bool IsMatch(string name)
+		public override bool IsMatch(string? name)
 		{
 			bool result = base.IsMatch(name);
 
@@ -247,7 +247,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="filter">The filter to apply.</param>
 		/// <param name="minSize">The minimum file size to include.</param>
 		/// <param name="maxSize">The maximum file size to include.</param>
-		public NameAndSizeFilter(string filter, long minSize, long maxSize)
+		public NameAndSizeFilter(string? filter, long minSize, long maxSize)
 			: base(filter)
 		{
 			MinSize = minSize;
@@ -259,7 +259,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <param name="name">The filename to test.</param>
 		/// <returns>True if the filter matches, false otherwise.</returns>
-		public override bool IsMatch(string name)
+		public override bool IsMatch(string? name)
 		{
 			bool result = base.IsMatch(name);
 

@@ -70,12 +70,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private ReadDataHandler internalReader;
 
 		private Crc32 crc = new Crc32();
-		private ZipEntry entry;
+		private ZipEntry? entry;
 
 		private long size;
 		private CompressionMethod method;
 		private int flags;
-		private string password;
+		private string? password;
 
 		#endregion Instance Fields
 
@@ -108,7 +108,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Optional password used for encryption when non-null
 		/// </summary>
 		/// <value>A password for all encrypted <see cref="ZipEntry">entries </see> in this <see cref="ZipInputStream"/></value>
-		public string Password
+		public string? Password
 		{
 			get
 			{
@@ -151,7 +151,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Password is not set, password is invalid, compression method is invalid,
 		/// version required to extract is not supported
 		/// </exception>
-		public ZipEntry GetNextEntry()
+		public ZipEntry? GetNextEntry()
 		{
 			if (crc == null)
 			{
@@ -288,11 +288,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		private void ReadDataDescriptor()
 		{
+			if(entry is null) throw new InvalidOperationException("No current entry");
+
 			if (inputBuffer.ReadLeInt() != ZipConstants.DataDescriptorSignature)
 			{
 				throw new ZipException("Data descriptor signature not found");
 			}
-
+			
 			entry.Crc = inputBuffer.ReadLeInt() & 0xFFFFFFFFL;
 
 			if (entry.LocalHeaderRequiresZip64)
@@ -315,6 +317,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="testCrc">True if the crc value should be tested</param>
 		private void CompleteCloseEntry(bool testCrc)
 		{
+			if (entry is null) throw new InvalidOperationException("No current entry");
+
 			StopDecrypting();
 
 			if ((flags & 8) != 0)
@@ -487,11 +491,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The actual number of bytes read.</returns>
 		private int InitialRead(byte[] destination, int offset, int count)
 		{
-			if (!CanDecompressEntry)
-			{
-				throw new ZipException("Library cannot extract this entry. Version required is (" + entry.Version + ")");
-			}
-
+			if (entry is null) throw new InvalidOperationException("No current entry");
+			if (!CanDecompressEntry) throw new ZipException($"Library cannot extract this entry. Version required is ({entry.Version})");
+			
 			// Handle encryption if required.
 			if (entry.IsCrypted)
 			{
@@ -684,7 +686,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		protected override void Dispose(bool disposing)
 		{
 			internalReader = new ReadDataHandler(ReadingNotAvailable);
-			crc = null;
 			entry = null;
 
 			base.Dispose(disposing);

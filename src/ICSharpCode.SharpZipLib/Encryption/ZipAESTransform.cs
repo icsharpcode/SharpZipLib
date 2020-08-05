@@ -13,7 +13,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		{
 			bool _finalised;
 			public IncrementalHash(byte[] key) : base(key) { }
-			public static IncrementalHash CreateHMAC(string n, byte[] key) => new IncrementalHash(key);
+			public static IncrementalHash CreateHMAC(string _, byte[] key) => new IncrementalHash(key);
 			public void AppendData(byte[] buffer, int offset, int count) => TransformBlock(buffer, offset, count, buffer, offset);
 			public byte[] GetHashAndReset()
 			{
@@ -29,7 +29,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 
 		static class HashAlgorithmName
 		{
-			public static string SHA1 = null;
+			public static readonly string SHA1 = string.Empty;
 		}
 #endif
 
@@ -50,7 +50,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		private int _encrPos;
 		private byte[] _pwdVerifier;
 		private IncrementalHash _hmacsha1;
-		private byte[] _authCode = null;
+		private byte[]? _authCode = null;
 
 		private bool _writeMode;
 
@@ -63,7 +63,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <param name="blockSize">The encryption strength, in bytes eg 16 for 128 bits.</param>
 		/// <param name="writeMode">True when creating a zip, false when reading. For the AuthCode.</param>
 		///
-		public ZipAESTransform(string key, byte[] saltBytes, int blockSize, bool writeMode)
+		public ZipAESTransform(string? key, byte[] saltBytes, int blockSize, bool writeMode)
 		{
 			if (blockSize != 16 && blockSize != 32) // 24 valid for AES but not supported by Winzip
 				throw new Exception("Invalid blocksize " + blockSize + ". Must be 16 or 32.");
@@ -157,7 +157,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Not implemented.
 		/// </summary>
-		public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
+		public byte[] TransformFinalBlock(byte[]? inputBuffer, int inputOffset, int inputCount)
 		{
 			if(inputCount > 0)
 			{

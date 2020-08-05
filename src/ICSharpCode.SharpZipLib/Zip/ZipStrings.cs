@@ -107,7 +107,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// data[0]..data[count - 1] converted to a string
 		/// </returns>
-		public static string ConvertToString(byte[] data, int count)
+		public static string ConvertToString(byte[]? data, int count)
 			=> data == null
 			? string.Empty
 			: Encoding.GetEncoding(CodePage).GetString(data, 0, count);
@@ -121,8 +121,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// <paramref name="data">data</paramref>converted to a string
 		/// </returns>
-		public static string ConvertToString(byte[] data)
-			=> ConvertToString(data, data.Length);
+		public static string ConvertToString(byte[]? data)
+			=> ConvertToString(data, data?.Length ?? 0);
 
 		private static Encoding EncodingFromFlag(int flags)
 			=> ((flags & (int)GeneralBitFlags.UnicodeText) != 0)
@@ -147,7 +147,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// <paramref name="data">data</paramref>converted to a string
 		/// </returns>
-		public static string ConvertToStringExt(int flags, byte[] data, int count)
+		public static string ConvertToStringExt(int flags, byte[]? data, int count)
 			=> (data == null)
 				? string.Empty
 				: EncodingFromFlag(flags).GetString(data, 0, count);
@@ -172,7 +172,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// String to convert to an array
 		/// </param>
 		/// <returns>Converted array</returns>
-		public static byte[] ConvertToArray(string str)
+		public static byte[] ConvertToArray(string? str)
 			=> str == null
 			? new byte[0]
 			: Encoding.GetEncoding(CodePage).GetBytes(str);
@@ -185,7 +185,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// String to convert to an array
 		/// </param>
 		/// <returns>Converted array</returns>
-		public static byte[] ConvertToArray(int flags, string str)
+		public static byte[] ConvertToArray(int flags, string? str)
 			=> (string.IsNullOrEmpty(str))
 				? new byte[0]
 				: EncodingFromFlag(flags).GetBytes(str);

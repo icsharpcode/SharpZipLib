@@ -424,7 +424,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <exception cref="System.ArgumentOutOfRangeException">
 		/// If offset or length don't match the array length.
 		/// </exception>
-		public int Deflate(byte[] output, int offset, int length)
+		public int Deflate(byte[]? output, int offset, int length)
 		{
 			int origLength = length;
 
@@ -556,7 +556,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <exception cref="System.InvalidOperationException">
 		/// If SetInput () or Deflate() were already called or another dictionary was already set.
 		/// </exception>
-		public void SetDictionary(byte[] dictionary, int index, int count)
+		public void SetDictionary(byte[]? dictionary, int index, int count)
 		{
 			if (state != INIT_STATE)
 			{

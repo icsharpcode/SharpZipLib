@@ -160,7 +160,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="name">
 		/// The name for this entry. Can include directory components.
 		/// The convention for names is 'unix'  style paths with no device names and
-		/// path elements separated by '/' characters.  This is not enforced see <see cref="CleanName(string)">CleanName</see>
+		/// path elements separated by '/' characters.  This is not enforced see <see cref="CleanName(string?)">CleanName</see>
 		/// on how to ensure names are valid if this is desired.
 		/// </param>
 		/// <param name="versionRequiredToExtract">
@@ -774,7 +774,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The unix naming convention is followed.
 		/// Path components in the entry should always separated by forward slashes ('/').
 		/// Dos device names like C: should also be removed.
-		/// See the <see cref="ZipNameTransform"/> class, or <see cref="CleanName(string)"/>
+		/// See the <see cref="ZipNameTransform"/> class, or <see cref="CleanName(string?)"/>
 		///</remarks>
 		public string Name
 		{
@@ -897,7 +897,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>
 		/// Extra data or null if not set.
 		/// </returns>
-		public byte[] ExtraData
+		public byte[]? ExtraData
 		{
 			get
 			{
@@ -1106,7 +1106,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 #endif
 
 			// Check for Unix timestamp
-			ExtendedUnixData unixData = extraData.GetData<ExtendedUnixData>();
+			ExtendedUnixData? unixData = extraData.GetData<ExtendedUnixData>();
 			if (unixData != null && unixData.Include.HasFlag(ExtendedUnixData.Flags.ModificationTime))
 				return unixData.ModificationTime;
 
@@ -1152,7 +1152,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// A comment is only available for entries when read via the <see cref="ZipFile"/> class.
 		/// The <see cref="ZipInputStream"/> class doesnt have the comment data available.
 		/// </remarks>
-		public string Comment
+		public string? Comment
 		{
 			get
 			{
@@ -1280,7 +1280,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>
 		/// The <seealso cref="ZipNameTransform">Zip name transform</seealso> class is more flexible.
 		/// </remarks>
-		public static string CleanName(string name)
+		public static string CleanName(string? name)
 		{
 			if (name == null)
 			{
@@ -1319,8 +1319,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private DateTime dateTime;
 
 		private CompressionMethod method = CompressionMethod.Deflated;
-		private byte[] extra;
-		private string comment;
+		private byte[]? extra;
+		private string? comment;
 
 		private int flags;                             // general purpose bit flags
 

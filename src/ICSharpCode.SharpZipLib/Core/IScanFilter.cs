@@ -10,6 +10,6 @@
 		/// </summary>
 		/// <param name="name">The name to test.</param>
 		/// <returns>Returns true if the name matches the filter, false if it does not match.</returns>
-		bool IsMatch(string name);
+		bool IsMatch(string? name);
 	}
 }

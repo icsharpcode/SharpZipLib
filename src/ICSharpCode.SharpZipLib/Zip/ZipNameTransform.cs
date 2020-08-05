@@ -25,7 +25,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Initialize a new instance of <see cref="ZipNameTransform"></see>
 		/// </summary>
 		/// <param name="trimPrefix">The string to trim from the front of paths if found.</param>
-		public ZipNameTransform(string trimPrefix)
+		public ZipNameTransform(string? trimPrefix)
 		{
 			TrimPrefix = trimPrefix;
 		}
@@ -60,7 +60,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="name">The directory name to transform.</param>
 		/// <returns>The transformed name.</returns>
-		public string TransformDirectory(string name)
+		public string TransformDirectory(string? name)
 		{
 			name = TransformFile(name);
 			if (name.Length > 0)
@@ -82,7 +82,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="name">The file name to transform.</param>
 		/// <returns>The transformed name.</returns>
-		public string TransformFile(string name)
+		public string TransformFile(string? name)
 		{
 			if (name != null)
 			{
@@ -129,7 +129,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <remarks>The prefix is trimmed before any conversion from
 		/// a windows path is done.</remarks>
-		public string TrimPrefix
+		public string? TrimPrefix
 		{
 			get { return trimPrefix_; }
 			set
@@ -191,26 +191,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// An empty name is valid for a file where the input comes from standard input.
 		/// A null name is not considered valid.
 		/// </remarks>
-		public static bool IsValidName(string name, bool relaxed)
-		{
-			bool result = (name != null);
-
-			if (result)
-			{
-				if (relaxed)
-				{
-					result = name.IndexOfAny(InvalidEntryCharsRelaxed) < 0;
-				}
-				else
-				{
-					result =
-						(name.IndexOfAny(InvalidEntryChars) < 0) &&
-						(name.IndexOf('/') != 0);
-				}
-			}
-
-			return result;
-		}
+		public static bool IsValidName(string? name, bool relaxed) 
+			=> name is {} 
+			&& (relaxed 
+				? name.IndexOfAny(InvalidEntryCharsRelaxed) < 0
+				: name.IndexOfAny(InvalidEntryChars) < 0 &&
+				  name.IndexOf('/') != 0);
 
 		/// <summary>
 		/// Test a name to see if it is a valid name for a zip entry.
@@ -224,19 +210,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// An empty name is valid where the input comes from standard input.
 		/// A null name is not considered valid.
 		/// </remarks>
-		public static bool IsValidName(string name)
-		{
-			bool result =
-				(name != null) &&
-				(name.IndexOfAny(InvalidEntryChars) < 0) &&
-				(name.IndexOf('/') != 0)
-				;
-			return result;
-		}
+		public static bool IsValidName(string? name) => IsValidName(name, false);
 
 		#region Instance Fields
 
-		private string trimPrefix_;
+		private string? trimPrefix_;
 
 		#endregion Instance Fields
 

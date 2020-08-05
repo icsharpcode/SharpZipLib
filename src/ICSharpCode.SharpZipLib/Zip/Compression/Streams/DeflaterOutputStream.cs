@@ -153,20 +153,20 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		#region Encryption
 
-		private string password;
+		private string? password;
 
-		private ICryptoTransform cryptoTransform_;
+		private ICryptoTransform? cryptoTransform_;
 
 		/// <summary>
 		/// Returns the 10 byte AUTH CODE to be appended immediately following the AES data stream.
 		/// </summary>
-		protected byte[] AESAuthCode;
+		protected byte[]? AESAuthCode;
 
 		/// <summary>
 		/// Get/set the password used for encryption.
 		/// </summary>
 		/// <remarks>When set to null or if the password is empty no encryption is performed</remarks>
-		public string Password
+		public string? Password
 		{
 			get
 			{
@@ -197,16 +197,16 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <param name="length">
 		/// Number of bytes in buffer to encrypt
 		/// </param>
-		protected void EncryptBlock(byte[] buffer, int offset, int length)
+		protected void EncryptBlock(byte[]? buffer, int offset, int length)
 		{
-			cryptoTransform_.TransformBlock(buffer, 0, length, buffer, 0);
+			cryptoTransform_?.TransformBlock(buffer, 0, length, buffer, 0);
 		}
 
 		/// <summary>
 		/// Initializes encryption keys based on given <paramref name="password"/>.
 		/// </summary>
 		/// <param name="password">The password.</param>
-		protected void InitializePassword(string password)
+		protected void InitializePassword(string? password)
 		{
 			var pkManaged = new PkzipClassicManaged();
 			byte[] key = PkzipClassic.GenerateKeys(ZipStrings.ConvertToArray(password));
@@ -216,7 +216,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Initializes encryption keys based on given password.
 		/// </summary>
-		protected void InitializeAESPassword(ZipEntry entry, string rawPassword,
+		protected void InitializeAESPassword(ZipEntry entry, string? rawPassword,
 											out byte[] salt, out byte[] pwdVerifier)
 		{
 			salt = new byte[entry.AESSaltLen];
@@ -373,7 +373,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <param name="count">The maximum number of bytes to read.</param>
 		/// <returns>The actual number of bytes read.  Zero if end of stream is detected.</returns>
 		/// <exception cref="NotSupportedException">Any access</exception>
-		public override int Read(byte[] buffer, int offset, int count)
+		public override int Read(byte[]? buffer, int offset, int count)
 		{
 			throw new NotSupportedException("DeflaterOutputStream Read not supported");
 		}

@@ -79,12 +79,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// </param>
 		public InflaterHuffmanTree(IList<byte> codeLengths)
 		{
-			BuildTree(codeLengths);
+			tree = BuildTree(codeLengths);
 		}
 
 		#endregion Constructors
 
-		private void BuildTree(IList<byte> codeLengths)
+		private short[] BuildTree(IList<byte> codeLengths)
 		{
 			int[] blCount = new int[MAX_BITLEN + 1];
 			int[] nextCode = new int[MAX_BITLEN + 1];
@@ -122,7 +122,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			/* Now create and fill the extra tables from longest to shortest
 			* bit len.  This way the sub trees will be aligned.
 			*/
-			tree = new short[treeSize];
+			var tree = new short[treeSize];
 			int treePtr = 512;
 			for (int bits = MAX_BITLEN; bits >= 10; bits--)
 			{
@@ -166,6 +166,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				}
 				nextCode[bits] = code + (1 << (16 - bits));
 			}
+
+			return tree;
 		}
 
 		/// <summary>

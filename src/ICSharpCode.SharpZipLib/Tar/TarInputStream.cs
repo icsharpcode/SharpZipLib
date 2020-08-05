@@ -28,7 +28,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <param name="inputStream">stream to source data from</param>
 		/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
-		public TarInputStream(Stream inputStream, Encoding nameEncoding)
+		public TarInputStream(Stream inputStream, Encoding? nameEncoding)
 			: this(inputStream, TarBuffer.DefaultBlockFactor, nameEncoding)
 		{
 		}
@@ -52,7 +52,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="inputStream">stream to source data from</param>
 		/// <param name="blockFactor">block factor to apply to archive</param>
 		/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
-		public TarInputStream(Stream inputStream, int blockFactor, Encoding nameEncoding)
+		public TarInputStream(Stream inputStream, int blockFactor, Encoding? nameEncoding)
 		{
 			this.inputStream = inputStream;
 			tarBuffer = TarBuffer.CreateInputTarBuffer(inputStream, blockFactor);
@@ -176,7 +176,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="offset">The offset in the buffer of the frist byte to write.</param>
 		/// <param name="count">The number of bytes to write.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
-		public override void Write(byte[] buffer, int offset, int count)
+		public override void Write(byte[]? buffer, int offset, int count)
 		{
 			throw new NotSupportedException("TarInputStream Write not supported");
 		}
@@ -322,7 +322,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Set the entry factory for this instance.
 		/// </summary>
 		/// <param name="factory">The factory for creating new entries</param>
-		public void SetEntryFactory(IEntryFactory factory)
+		public void SetEntryFactory(IEntryFactory? factory)
 		{
 			entryFactory = factory;
 		}
@@ -438,7 +438,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The next TarEntry in the archive, or null.
 		/// </returns>
-		public TarEntry GetNextEntry()
+		public TarEntry? GetNextEntry()
 		{
 			if (hasHitEOF)
 			{
@@ -452,11 +452,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			byte[] headerBuf = tarBuffer.ReadBlock();
 
-			if (headerBuf == null)
-			{
-				hasHitEOF = true;
-			}
-			else if (TarBuffer.IsEndOfArchiveBlock(headerBuf))
+			if (TarBuffer.IsEndOfArchiveBlock(headerBuf))
 			{
 				hasHitEOF = true;
 
@@ -485,7 +481,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					this.entryOffset = 0;
 					this.entrySize = header.Size;
 
-					StringBuilder longName = null;
+					StringBuilder? longName = null;
 
 					if (header.TypeFlag == TarHeader.LF_GNU_LONGNAME)
 					{
@@ -556,7 +552,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 							 header.TypeFlag != TarHeader.LF_SYMLINK &&
 							 header.TypeFlag != TarHeader.LF_DIR)
 					{
-						// Ignore things we dont understand completely for now
+						// Ignore things we don't understand completely for now
 						SkipToNextEntry();
 						headerBuf = tarBuffer.ReadBlock();
 					}
@@ -675,7 +671,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public class EntryFactoryAdapter : IEntryFactory
 		{
-			Encoding nameEncoding;
+			Encoding? nameEncoding;
 			/// <summary>
 			/// Construct standard entry factory class with ASCII name encoding
 			/// </summary>
@@ -687,7 +683,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			/// Construct standard entry factory with name encoding
 			/// </summary>
 			/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
-			public EntryFactoryAdapter(Encoding nameEncoding)
+			public EntryFactoryAdapter(Encoding? nameEncoding)
 			{
 				this.nameEncoding = nameEncoding;
 			}
@@ -742,7 +738,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Buffer used with calls to <code>Read()</code>
 		/// </summary>
-		protected byte[] readBuffer;
+		protected byte[]? readBuffer;
 
 		/// <summary>
 		/// Working buffer
@@ -752,19 +748,19 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Current entry being read
 		/// </summary>
-		private TarEntry currentEntry;
+		private TarEntry? currentEntry;
 
 		/// <summary>
 		/// Factory used to create TarEntry or descendant class instance
 		/// </summary>
-		protected IEntryFactory entryFactory;
+		protected IEntryFactory? entryFactory;
 
 		/// <summary>
 		/// Stream used as the source of input data.
 		/// </summary>
 		private readonly Stream inputStream;
 
-		private readonly Encoding encoding;
+		private readonly Encoding? encoding;
 
 		#endregion Instance Fields
 	}

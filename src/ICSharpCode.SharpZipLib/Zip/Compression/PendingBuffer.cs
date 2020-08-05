@@ -114,7 +114,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <param name="block">data to write</param>
 		/// <param name="offset">offset of first byte to write</param>
 		/// <param name="length">number of bytes to write</param>
-		public void WriteBlock(byte[] block, int offset, int length)
+		public void WriteBlock(byte[]? block, int offset, int length)
 		{
 #if DebugDeflation
 			if (DeflaterConstants.DEBUGGING && (start != 0) )
@@ -223,7 +223,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <param name="offset">The offset into output array.</param>
 		/// <param name="length">The maximum number of bytes to store.</param>
 		/// <returns>The number of bytes flushed.</returns>
-		public int Flush(byte[] output, int offset, int length)
+		public int Flush(byte[]? output, int offset, int length)
 		{
 			if (bitCount >= 8)
 			{

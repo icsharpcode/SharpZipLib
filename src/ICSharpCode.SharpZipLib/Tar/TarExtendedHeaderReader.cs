@@ -8,25 +8,23 @@ namespace ICSharpCode.SharpZipLib.Tar
 	/// </summary>
 	public class TarExtendedHeaderReader
 	{
-		private const byte LENGTH = 0;
-		private const byte KEY = 1;
-		private const byte VALUE = 2;
-		private const byte END = 3;
+		private const byte Length = 0;
+		private const byte Key = 1;
+		private const byte Value = 2;
+		private const byte End = 3;
 
-		private readonly Dictionary<string, string> headers = new Dictionary<string, string>();
+		private string[] _headerParts = new string[3];
 
-		private string[] headerParts = new string[3];
+		private int _bbIndex;
+		private byte[] _byteBuffer = new byte[4];
+		private char[] _charBuffer = new char[4];
 
-		private int bbIndex;
-		private byte[] byteBuffer;
-		private char[] charBuffer;
+		private readonly StringBuilder _sb = new StringBuilder();
+		private readonly Decoder _decoder = Encoding.UTF8.GetDecoder();
 
-		private readonly StringBuilder sb = new StringBuilder();
-		private readonly Decoder decoder = Encoding.UTF8.GetDecoder();
+		private int _state = Length;
 
-		private int state = LENGTH;
-
-		private static readonly byte[] StateNext = new[] { (byte)' ', (byte)'=', (byte)'\n' };
+		private static readonly byte[] StateNext = { (byte)' ', (byte)'=', (byte)'\n' };
 
 		/// <summary>
 		/// Creates a new <see cref="TarExtendedHeaderReader"/>.
@@ -47,23 +45,23 @@ namespace ICSharpCode.SharpZipLib.Tar
 			{
 				byte next = buffer[i];
 
-				if (next == StateNext[state])
+				if (next == StateNext[_state])
 				{
 					Flush();
-					headerParts[state] = sb.ToString();
-					sb.Clear();
+					_headerParts[_state] = _sb.ToString();
+					_sb.Clear();
 
-					if (++state == END)
+					if (++_state == End)
 					{
-						headers.Add(headerParts[KEY], headerParts[VALUE]);
-						headerParts = new string[3];
-						state = LENGTH;
+						Headers.Add(_headerParts[Key], _headerParts[Value]);
+						_headerParts = new string[3];
+						_state = Length;
 					}
 				}
 				else
 				{
-					byteBuffer[bbIndex++] = next;
-					if (bbIndex == 4)
+					_byteBuffer[_bbIndex++] = next;
+					if (_bbIndex == 4)
 						Flush();
 				}
 			}
@@ -71,29 +69,22 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 		private void Flush()
 		{
-			decoder.Convert(byteBuffer, 0, bbIndex, charBuffer, 0, 4, false, out int bytesUsed, out int charsUsed, out bool completed);
+			_decoder.Convert(_byteBuffer, 0, _bbIndex, _charBuffer, 0, 4, false, out _, out var charsUsed, out _);
 
-			sb.Append(charBuffer, 0, charsUsed);
+			_sb.Append(_charBuffer, 0, charsUsed);
 			ResetBuffers();
 		}
 
 		private void ResetBuffers()
 		{
-			charBuffer = new char[4];
-			byteBuffer = new byte[4];
-			bbIndex = 0;
+			_charBuffer = new char[4];
+			_byteBuffer = new byte[4];
+			_bbIndex = 0;
 		}
 
 		/// <summary>
 		/// Returns the parsed headers as key-value strings
 		/// </summary>
-		public Dictionary<string, string> Headers
-		{
-			get
-			{
-				// TODO: Check for invalid state? -NM 2018-07-01
-				return headers;
-			}
-		}
+		public Dictionary<string, string> Headers { get; } = new Dictionary<string, string>();
 	}
 }

@@ -481,17 +481,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToString(byte[], int)"/></summary>
 		[Obsolete("Use ZipStrings.ConvertToString instead")]
-		public static string ConvertToString(byte[] data, int count)
+		public static string ConvertToString(byte[]? data, int count)
 			=> ZipStrings.ConvertToString(data, count);
 
 		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToString(byte[])"/></summary>
 		[Obsolete("Use ZipStrings.ConvertToString instead")]
-		public static string ConvertToString(byte[] data)
+		public static string ConvertToString(byte[]? data)
 			=> ZipStrings.ConvertToString(data);
 
 		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToStringExt(int, byte[], int)"/></summary>
 		[Obsolete("Use ZipStrings.ConvertToStringExt instead")]
-		public static string ConvertToStringExt(int flags, byte[] data, int count)
+		public static string ConvertToStringExt(int flags, byte[]? data, int count)
 			=> ZipStrings.ConvertToStringExt(flags, data, count);
 
 		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToStringExt(int, byte[])"/></summary>
@@ -499,14 +499,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public static string ConvertToStringExt(int flags, byte[] data)
 			=> ZipStrings.ConvertToStringExt(flags, data);
 
-		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToArray(string)"/></summary>
+		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToArray(string?)"/></summary>
 		[Obsolete("Use ZipStrings.ConvertToArray instead")]
-		public static byte[] ConvertToArray(string str)
+		public static byte[] ConvertToArray(string? str)
 			=> ZipStrings.ConvertToArray(str);
 
-		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToArray(int, string)"/></summary>
+		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToArray(int, string?)"/></summary>
 		[Obsolete("Use ZipStrings.ConvertToArray instead")]
-		public static byte[] ConvertToArray(int flags, string str)
+		public static byte[] ConvertToArray(int flags, string? str)
 			=> ZipStrings.ConvertToArray(flags, str);
 	}
 }

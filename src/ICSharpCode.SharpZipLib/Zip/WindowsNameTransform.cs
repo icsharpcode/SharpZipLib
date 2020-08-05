@@ -16,7 +16,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>This may not valid for all windows systems - CE?, etc but I cant find the equivalent in the CLR.</remarks>
 		private const int MaxPath = 260;
 
-		private string _baseDirectory;
+		private string? _baseDirectory;
 		private bool _trimIncomingPaths;
 		private char _replacementChar = '_';
 		private bool _allowParentTraversal;
@@ -40,7 +40,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="baseDirectory"></param>
 		/// <param name="allowParentTraversal">Allow parent directory traversal in file paths (e.g. ../file)</param>
-		public WindowsNameTransform(string baseDirectory, bool allowParentTraversal = false)
+		public WindowsNameTransform(string? baseDirectory, bool allowParentTraversal = false)
 		{
 			BaseDirectory = baseDirectory ?? throw new ArgumentNullException(nameof(baseDirectory), "Directory name is invalid");
 			AllowParentTraversal = allowParentTraversal;
@@ -57,7 +57,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Gets or sets a value containing the target directory to prefix values with.
 		/// </summary>
-		public string BaseDirectory
+		public string? BaseDirectory
 		{
 			get { return _baseDirectory; }
 			set
@@ -94,7 +94,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="name">The directory name to transform.</param>
 		/// <returns>The transformed name.</returns>
-		public string TransformDirectory(string name)
+		public string TransformDirectory(string? name)
 		{
 			name = TransformFile(name);
 			if (name.Length > 0)
@@ -116,7 +116,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="name">The file name to transform.</param>
 		/// <returns>The transformed name.</returns>
-		public string TransformFile(string name)
+		public string TransformFile(string? name)
 		{
 			if (name != null)
 			{
@@ -152,7 +152,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="name">The name to test.</param>
 		/// <returns>Returns true if the name is a valid zip name; false otherwise.</returns>
 		/// <remarks>The filename isnt a true windows path in some fundamental ways like no absolute paths, no rooted paths etc.</remarks>
-		public static bool IsValidName(string name)
+		public static bool IsValidName(string? name)
 		{
 			bool result =
 				(name != null) &&

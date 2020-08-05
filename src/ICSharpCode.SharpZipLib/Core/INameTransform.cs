@@ -10,13 +10,13 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <param name="name">The name to transform.</param>
 		/// <returns>The transformed file name.</returns>
-		string TransformFile(string name);
+		string TransformFile(string? name);
 
 		/// <summary>
 		/// Given a directory name determine the transformed value.
 		/// </summary>
 		/// <param name="name">The name to transform.</param>
 		/// <returns>The transformed directory name</returns>
-		string TransformDirectory(string name);
+		string TransformDirectory(string? name);
 	}
 }

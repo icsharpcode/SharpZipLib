@@ -179,7 +179,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <exception cref="InvalidOperationException">
 		/// If a window underflow occurs
 		/// </exception>
-		public int CopyOutput(byte[] output, int offset, int len)
+		public int CopyOutput(byte[]? output, int offset, int len)
 		{
 			int copyEnd = windowEnd;
 			if (len > windowFilled)

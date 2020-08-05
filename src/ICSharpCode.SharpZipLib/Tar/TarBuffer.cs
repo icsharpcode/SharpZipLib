@@ -584,10 +584,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 		#region Instance Fields
 
-		private Stream inputStream;
-		private Stream outputStream;
+		private Stream? inputStream;
+		private Stream? outputStream;
 
-		private byte[] recordBuffer;
+		private byte[]? recordBuffer;
 		private int currentBlockIndex;
 		private int currentRecordIndex;
 

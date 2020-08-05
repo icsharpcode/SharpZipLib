@@ -156,7 +156,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <param name="offset">The offset to start reading data into.</param>
 		/// <param name="length">The number of bytes to read.</param>
 		/// <returns>Returns the number of bytes read.</returns>
-		public int ReadRawBuffer(byte[] outBuffer, int offset, int length)
+		public int ReadRawBuffer(byte[]? outBuffer, int offset, int length)
 		{
 			if (length < 0)
 			{
@@ -192,7 +192,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <param name="offset">The offset to start adding data at.</param>
 		/// <param name="length">The number of bytes to read.</param>
 		/// <returns>Returns the number of bytes actually read.</returns>
-		public int ReadClearTextBuffer(byte[] outBuffer, int offset, int length)
+		public int ReadClearTextBuffer(byte[]? outBuffer, int offset, int length)
 		{
 			if (length < 0)
 			{
@@ -272,7 +272,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Get/set the <see cref="ICryptoTransform"/> to apply to any data.
 		/// </summary>
 		/// <remarks>Set this value to null to have no transform applied.</remarks>
-		public ICryptoTransform CryptoTransform
+		public ICryptoTransform? CryptoTransform
 		{
 			set
 			{
@@ -308,11 +308,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		private int clearTextLength;
 		private byte[] clearText;
-		private byte[] internalClearText;
+		private byte[]? internalClearText;
 
 		private int available;
 
-		private ICryptoTransform cryptoTransform;
+		private ICryptoTransform? cryptoTransform;
 		private Stream inputStream;
 
 		#endregion Instance Fields
@@ -600,7 +600,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <param name="offset">The offset of the first byte to write.</param>
 		/// <param name="count">The number of bytes to write.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
-		public override void Write(byte[] buffer, int offset, int count)
+		public override void Write(byte[]? buffer, int offset, int count)
 		{
 			throw new NotSupportedException("InflaterInputStream Write not supported");
 		}

@@ -65,7 +65,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name = "nameEncoding">
 		/// The <see cref="Encoding"/> used for the Name fields, or null for ASCII only
 		/// </param>
-		public TarEntry(byte[] headerBuffer, Encoding nameEncoding)
+		public TarEntry(byte[] headerBuffer, Encoding? nameEncoding)
 		{
 			header = new TarHeader();
 			header.ParseBuffer(headerBuffer, nameEncoding);
@@ -138,7 +138,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// True if the entries are equal; false if not.
 		/// </returns>
-		public override bool Equals(object obj)
+		public override bool Equals(object? obj)
 		{
 			var localEntry = obj as TarEntry;
 
@@ -185,27 +185,15 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// This entry's TarHeader.
 		/// </returns>
-		public TarHeader TarHeader
-		{
-			get
-			{
-				return header;
-			}
-		}
+		public TarHeader TarHeader => header;
 
 		/// <summary>
 		/// Get/Set this entry's name.
 		/// </summary>
 		public string Name
 		{
-			get
-			{
-				return header.Name;
-			}
-			set
-			{
-				header.Name = value;
-			}
+			get => header.Name;
+			set => header.Name = value;
 		}
 
 		/// <summary>
@@ -213,14 +201,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public int UserId
 		{
-			get
-			{
-				return header.UserId;
-			}
-			set
-			{
-				header.UserId = value;
-			}
+			get => header.UserId;
+			set => header.UserId = value;
 		}
 
 		/// <summary>
@@ -228,14 +210,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public int GroupId
 		{
-			get
-			{
-				return header.GroupId;
-			}
-			set
-			{
-				header.GroupId = value;
-			}
+			get => header.GroupId;
+			set => header.GroupId = value;
 		}
 
 		/// <summary>
@@ -243,14 +219,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public string UserName
 		{
-			get
-			{
-				return header.UserName;
-			}
-			set
-			{
-				header.UserName = value;
-			}
+			get => header.UserName;
+			set => header.UserName = value;
 		}
 
 		/// <summary>
@@ -258,14 +228,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public string GroupName
 		{
-			get
-			{
-				return header.GroupName;
-			}
-			set
-			{
-				header.GroupName = value;
-			}
+			get => header.GroupName;
+			set => header.GroupName = value;
 		}
 
 		/// <summary>
@@ -303,14 +267,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public DateTime ModTime
 		{
-			get
-			{
-				return header.ModTime;
-			}
-			set
-			{
-				header.ModTime = value;
-			}
+			get => header.ModTime;
+			set => header.ModTime = value;
 		}
 
 		/// <summary>
@@ -319,27 +277,15 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// This entry's file.
 		/// </returns>
-		public string File
-		{
-			get
-			{
-				return file;
-			}
-		}
+		public string? File => file;
 
 		/// <summary>
 		/// Get/set this entry's recorded file size.
 		/// </summary>
 		public long Size
 		{
-			get
-			{
-				return header.Size;
-			}
-			set
-			{
-				header.Size = value;
-			}
+			get => header.Size;
+			set => header.Size = value;
 		}
 
 		/// <summary>
@@ -500,7 +446,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name = "nameEncoding">
 		/// The <see cref="Encoding"/> used for the Name fields, or null for ASCII only
 		/// </param>
-		public void WriteEntryHeader(byte[] outBuffer, Encoding nameEncoding)
+		public void WriteEntryHeader(byte[] outBuffer, Encoding? nameEncoding)
 		{
 			header.WriteHeader(outBuffer, nameEncoding);
 		}
@@ -534,7 +480,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="nameEncoding">
 		/// The <see cref="Encoding"/> used for the Name fields, or null for ASCII only
 		/// </param>
-		static public void AdjustEntryName(byte[] buffer, string newName, Encoding nameEncoding)
+		static public void AdjustEntryName(byte[] buffer, string newName, Encoding? nameEncoding)
 		{
 			TarHeader.GetNameBytes(newName, buffer, 0, TarHeader.NAMELEN, nameEncoding);
 		}
@@ -585,7 +531,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// The name of the file this entry represents or null if the entry is not based on a file.
 		/// </summary>
-		private string file;
+		private string? file;
 
 		/// <summary>
 		/// The entry's header information.

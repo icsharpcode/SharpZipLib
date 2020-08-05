@@ -25,7 +25,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Initialise a new instance of <see cref="KeysRequiredEventArgs"></see>
 		/// </summary>
 		/// <param name="name">The name of the file for which keys are required.</param>
-		public KeysRequiredEventArgs(string name)
+		public KeysRequiredEventArgs(string? name)
 		{
 			fileName = name;
 		}
@@ -35,7 +35,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="name">The name of the file for which keys are required.</param>
 		/// <param name="keyValue">The current key value.</param>
-		public KeysRequiredEventArgs(string name, byte[] keyValue)
+		public KeysRequiredEventArgs(string? name, byte[]? keyValue)
 		{
 			fileName = name;
 			key = keyValue;
@@ -48,7 +48,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Gets the name of the file for which keys are required.
 		/// </summary>
-		public string FileName
+		public string? FileName
 		{
 			get { return fileName; }
 		}
@@ -56,7 +56,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Gets or sets the key value
 		/// </summary>
-		public byte[] Key
+		public byte[]? Key
 		{
 			get { return key; }
 			set { key = value; }
@@ -66,8 +66,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		#region Instance Fields
 
-		private readonly string fileName;
-		private byte[] key;
+		private readonly string? fileName;
+		private byte[]? key;
 
 		#endregion Instance Fields
 	}
@@ -141,7 +141,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Initialise a new instance of <see cref="TestStatus"/>
 		/// </summary>
 		/// <param name="file">The <see cref="ZipFile"/> this status applies to.</param>
-		public TestStatus(ZipFile file)
+		public TestStatus(ZipFile? file)
 		{
 			file_ = file;
 		}
@@ -161,7 +161,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the <see cref="ZipFile"/> this status is applicable to.
 		/// </summary>
-		public ZipFile File
+		public ZipFile? File
 		{
 			get { return file_; }
 		}
@@ -169,7 +169,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the current/last entry tested.
 		/// </summary>
-		public ZipEntry Entry
+		public ZipEntry? Entry
 		{
 			get { return entry_; }
 		}
@@ -213,7 +213,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			operation_ = operation;
 		}
 
-		internal void SetEntry(ZipEntry entry)
+		internal void SetEntry(ZipEntry? entry)
 		{
 			entry_ = entry;
 			entryValid_ = true;
@@ -229,8 +229,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		#region Instance Fields
 
-		private readonly ZipFile file_;
-		private ZipEntry entry_;
+		private readonly ZipFile? file_;
+		private ZipEntry? entry_;
 		private bool entryValid_;
 		private int errorCount_;
 		private long bytesTested_;
@@ -244,7 +244,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	/// <remarks>If the message is non-null an error has occured.  If the message is null
 	/// the operation as found in <see cref="TestStatus">status</see> has started.</remarks>
-	public delegate void ZipTestResultHandler(TestStatus status, string message);
+	public delegate void ZipTestResultHandler(TestStatus? status, string? message);
 
 	#endregion Test Definitions
 
@@ -321,20 +321,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Delegate for handling keys/password setting during compression/decompression.
 		/// </summary>
 		public delegate void KeysRequiredEventHandler(
-			object sender,
-			KeysRequiredEventArgs e
+			object? sender,
+			KeysRequiredEventArgs? e
 		);
 
 		/// <summary>
 		/// Event handler for handling encryption keys.
 		/// </summary>
-		public KeysRequiredEventHandler KeysRequired;
+		public KeysRequiredEventHandler? KeysRequired;
 
 		/// <summary>
 		/// Handles getting of encryption keys when required.
 		/// </summary>
 		/// <param name="fileName">The file for which encryption keys are required.</param>
-		private void OnKeysRequired(string fileName)
+		private void OnKeysRequired(string? fileName)
 		{
 			if (KeysRequired != null)
 			{
@@ -347,7 +347,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get/set the encryption key value.
 		/// </summary>
-		private byte[] Key
+		private byte[]? Key
 		{
 			get { return key; }
 			set { key = value; }
@@ -547,10 +547,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Initialises a default <see cref="ZipFile"/> instance with no entries and no file storage.
 		/// </summary>
-		internal ZipFile()
+		internal ZipFile(bool newArchive, Stream baseStream, bool leaveOpen = false)
 		{
 			entries_ = new ZipEntry[0];
 			isNewArchive_ = true;
+
+			baseStream_ = baseStream;
+			isStreamOwner = !leaveOpen;
 		}
 
 		#endregion Constructors
@@ -597,11 +600,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			FileStream fs = File.Create(fileName);
 
-			return new ZipFile
+			return new ZipFile(true, fs, false)
 			{
 				name_ = fileName,
-				baseStream_ = fs,
-				isStreamOwner = true
 			};
 		}
 
@@ -629,11 +630,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentException("Stream is not seekable", nameof(outStream));
 			}
 
-			var result = new ZipFile
-			{
-				baseStream_ = outStream
-			};
-			return result;
+			return new ZipFile(true, outStream);
 		}
 
 		#endregion Creators
@@ -674,7 +671,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Gets the comment for the zip file.
 		/// </summary>
-		public string ZipFileComment
+		public string? ZipFileComment
 		{
 			get { return comment_; }
 		}
@@ -682,7 +679,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Gets the name of this zip file.
 		/// </summary>
-		public string Name
+		public string? Name
 		{
 			get { return name_; }
 		}
@@ -755,7 +752,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ObjectDisposedException">
 		/// The Zip file has been closed.
 		/// </exception>
-		public int FindEntry(string name, bool ignoreCase)
+		public int FindEntry(string? name, bool ignoreCase)
 		{
 			if (isDisposed_)
 			{
@@ -786,7 +783,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ObjectDisposedException">
 		/// The Zip file has been closed.
 		/// </exception>
-		public ZipEntry GetEntry(string name)
+		public ZipEntry? GetEntry(string? name)
 		{
 			if (isDisposed_)
 			{
@@ -913,7 +910,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="resultHandler">The <see cref="ZipTestResultHandler"></see> handler to call during testing.</param>
 		/// <returns>true if all tests pass, false otherwise</returns>
 		/// <exception cref="ObjectDisposedException">The object has already been closed.</exception>
-		public bool TestArchive(bool testData, TestStrategy strategy, ZipTestResultHandler resultHandler)
+		public bool TestArchive(bool testData, TestStrategy strategy, ZipTestResultHandler? resultHandler)
 		{
 			if (isDisposed_)
 			{
@@ -1477,9 +1474,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// NOTE: the baseStream_ may not currently support writing or seeking.
 
-			updateIndex_ = new Dictionary<string, int>();
+			updateIndex_ = new Dictionary<string?, int>();
 
-			updates_ = new List<ZipUpdate>(entries_.Length);
+			updates_ = new List<ZipUpdate?>(entries_.Length);
 			foreach (ZipEntry entry in entries_)
 			{
 				int index = updates_.Count;
@@ -1491,14 +1488,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 			updates_.Sort(new UpdateComparer());
 
 			int idx = 0;
-			foreach (ZipUpdate update in updates_)
+			foreach (var update in updates_)
 			{
 				//If last entry, there is no next entry offset to use
 				if (idx == updates_.Count - 1)
 					break;
 
-				update.OffsetBasedSize = ((ZipUpdate)updates_[idx + 1]).Entry.Offset - update.Entry.Offset;
+				if (!(update is {}) || !(updates_[idx + 1] is {} nextUpdate)) continue;
+
+				update.OffsetBasedSize = nextUpdate.Entry.Offset - update.Entry.Offset;
 				idx++;
+
 			}
 			updateCount_ = updates_.Count;
 
@@ -1544,14 +1544,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			if (isDisposed_)
 			{
-				throw new ObjectDisposedException("ZipFile");
+				throw new ObjectDisposedException(nameof(ZipFile));
 			}
 
 			CheckUpdating();
 
 			try
 			{
-				updateIndex_.Clear();
 				updateIndex_ = null;
 
 				if (contentsEdited_)
@@ -1565,14 +1564,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				else
 				{
 					// Create an empty archive if none existed originally.
-					if (entries_.Length == 0)
-					{
-						byte[] theComment = (newComment_ != null) ? newComment_.RawComment : ZipStrings.ConvertToArray(comment_);
-						using (ZipHelperStream zhs = new ZipHelperStream(baseStream_))
-						{
-							zhs.WriteEndOfCentralDirectory(0, 0, 0, theComment);
-						}
-					}
+					if (entries_.Length != 0) return;
+
+					byte[] theComment = (newComment_ != null) ? newComment_.RawComment : ZipStrings.ConvertToArray(comment_);
+					using ZipHelperStream zhs = new ZipHelperStream(baseStream_);
+					zhs.WriteEndOfCentralDirectory(0, 0, 0, theComment);
 				}
 			}
 			finally
@@ -1596,7 +1592,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="comment">The comment to record.</param>
 		/// <exception cref="ObjectDisposedException">ZipFile has been closed.</exception>
-		public void SetComment(string comment)
+		public void SetComment(string? comment)
 		{
 			if (isDisposed_)
 			{
@@ -1624,6 +1620,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private void AddUpdate(ZipUpdate update)
 		{
+			if(updates_  is null || updateIndex_ is null) throw new InvalidOperationException("Archive updating has not been started");
+
 			contentsEdited_ = true;
 
 			int index = FindExistingUpdate(update.Entry.Name);
@@ -1944,7 +1942,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException(nameof(fileName));
 			}
 
-			CheckUpdating();
+			if (updates_ is null) throw new NotUpdatingException();
 
 			bool result = false;
 			int index = FindExistingUpdate(fileName);
@@ -1973,7 +1971,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException(nameof(entry));
 			}
 
-			CheckUpdating();
+			if (updates_ is null) throw new NotUpdatingException();
 
 			int index = FindExistingUpdate(entry);
 			if (index >= 0)
@@ -1996,8 +1994,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private void WriteLEShort(int value)
 		{
-			baseStream_.WriteByte((byte)(value & 0xff));
-			baseStream_.WriteByte((byte)((value >> 8) & 0xff));
+			baseStream_!.WriteByte((byte)(value & 0xff));
+			baseStream_!.WriteByte((byte)((value >> 8) & 0xff));
 		}
 
 		/// <summary>
@@ -2005,8 +2003,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		private void WriteLEUshort(ushort value)
 		{
-			baseStream_.WriteByte((byte)(value & 0xff));
-			baseStream_.WriteByte((byte)(value >> 8));
+			baseStream_!.WriteByte((byte)(value & 0xff));
+			baseStream_!.WriteByte((byte)(value >> 8));
 		}
 
 		/// <summary>
@@ -2351,7 +2349,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
-		private string GetTransformedFileName(string name)
+		private string? GetTransformedFileName(string? name)
 		{
 			INameTransform transform = NameTransform;
 			return (transform != null) ?
@@ -2359,7 +2357,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				name;
 		}
 
-		private string GetTransformedDirectoryName(string name)
+		private string? GetTransformedDirectoryName(string? name)
 		{
 			INameTransform transform = NameTransform;
 			return (transform != null) ?
@@ -2555,9 +2553,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private int FindExistingUpdate(ZipEntry entry)
 		{
 			int result = -1;
-			string convertedName = entry.IsDirectory
+			string? convertedName = entry.IsDirectory
 				? GetTransformedDirectoryName(entry.Name)
 				: GetTransformedFileName(entry.Name);
+
+			if (updateIndex_ is null) throw new NotUpdatingException();
 
 			if (updateIndex_.ContainsKey(convertedName))
 			{
@@ -2579,11 +2579,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 
-		private int FindExistingUpdate(string fileName)
+		private int FindExistingUpdate(string? fileName)
 		{
 			int result = -1;
 
-			string convertedName = GetTransformedFileName(fileName);
+			string? convertedName = GetTransformedFileName(fileName);
+
+			if (updateIndex_ is null) throw new NotUpdatingException();
 
 			if (updateIndex_.ContainsKey(convertedName))
 			{
@@ -2612,12 +2614,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The output stream obtained for the entry.</returns>
 		private Stream GetOutputStream(ZipEntry entry)
 		{
-			Stream result = baseStream_;
-
-			if (entry.IsCrypted == true)
-			{
-				result = CreateAndInitEncryptionStream(result, entry);
-			}
+			var result = entry.IsCrypted ? CreateAndInitEncryptionStream(baseStream_, entry) : baseStream_;
 
 			switch (entry.CompressionMethod)
 			{
@@ -2641,16 +2638,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private void AddEntry(ZipFile workFile, ZipUpdate update)
 		{
-			Stream source = null;
+			Stream? source = null;
 
 			if (update.Entry.IsFile)
 			{
-				source = update.GetSource();
-
-				if (source == null)
-				{
-					source = updateDataSource_.GetSource(update.Entry, update.Filename);
-				}
+				source = update.GetSource() ?? updateDataSource_?.GetSource(update.Entry, update.Filename);
 			}
 
 			if (source != null)
@@ -2790,7 +2782,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			CopyDescriptorBytes(update, workFile.baseStream_, baseStream_);
 		}
 
-		private void Reopen(Stream source)
+		private void Reopen(Stream? source)
 		{
 			isNewArchive_ = false;
 			baseStream_ = source ?? throw new ZipException("Failed to reopen archive - no source");
@@ -2809,9 +2801,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private void UpdateCommentOnly()
 		{
+			if(archiveStorage_ is null) throw new InvalidOperationException("Archive Storage is null");
+
 			long baseLength = baseStream_.Length;
 
-			ZipHelperStream updateFile = null;
+			ZipHelperStream? updateFile = null;
 
 			if (archiveStorage_.UpdateMode == FileUpdateMode.Safe)
 			{
@@ -2822,7 +2816,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				};
 
 				baseStream_.Dispose();
-				baseStream_ = null;
 			}
 			else
 			{
@@ -2841,7 +2834,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				else
 				{
 					baseStream_.Dispose();
-					baseStream_ = null;
 					updateFile = new ZipHelperStream(Name);
 				}
 			}
@@ -2859,7 +2851,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				const int CentralHeaderCommentSizeOffset = 16;
 				updateFile.Position += CentralHeaderCommentSizeOffset;
 
-				byte[] rawComment = newComment_.RawComment;
+				byte[] rawComment = newComment_?.RawComment ?? EmptyRefs.ByteArray;
 
 				updateFile.WriteLEShort(rawComment.Length);
 				updateFile.Write(rawComment, 0, rawComment.Length);
@@ -2879,7 +2871,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Class used to sort updates.
 		/// </summary>
-		private class UpdateComparer : IComparer<ZipUpdate>
+		private class UpdateComparer : IComparer<ZipUpdate?>
 		{
 			/// <summary>
 			/// Compares two objects and returns a value indicating whether one is
@@ -2888,7 +2880,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <param name="x">First object to compare</param>
 			/// <param name="y">Second object to compare.</param>
 			/// <returns>Compare result.</returns>
-			public int Compare(ZipUpdate x, ZipUpdate y)
+			public int Compare(ZipUpdate? x, ZipUpdate? y)
 			{
 				int result;
 
@@ -2943,17 +2935,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			ZipFile workFile;
 
+			if (updates_ is null) throw new NotUpdatingException();
+			if (archiveStorage_ is null) throw new InvalidOperationException("Archive Storage is null");
+
 			if (IsNewArchive)
 			{
 				workFile = this;
-				workFile.baseStream_.Position = 0;
 				directUpdate = true;
 			}
 			else if (archiveStorage_.UpdateMode == FileUpdateMode.Direct)
 			{
+
 				workFile = this;
-				workFile.baseStream_.Position = 0;
 				directUpdate = true;
+
 
 				// Sort the updates by offset within copies/modifies, then adds.
 				// This ensures that data required by copies will not be overwritten.
@@ -2970,9 +2965,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
+			workFile.baseStream_.Position = 0;
+
 			try
 			{
-				foreach (ZipUpdate update in updates_)
+				foreach (ZipUpdate? update in updates_)
 				{
 					if (update != null)
 					{
@@ -3018,7 +3015,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				long centralDirOffset = workFile.baseStream_.Position;
 
-				foreach (ZipUpdate update in updates_)
+				foreach (ZipUpdate? update in updates_)
 				{
 					if (update != null)
 					{
@@ -3035,7 +3032,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				endOfStream = workFile.baseStream_.Position;
 
 				// And now patch entries...
-				foreach (ZipUpdate update in updates_)
+				foreach (ZipUpdate? update in updates_)
 				{
 					if (update != null)
 					{
@@ -3083,17 +3080,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			else
 			{
-				baseStream_.Dispose();
+				baseStream_?.Dispose();
 				Reopen(archiveStorage_.ConvertTemporaryToFinal());
 			}
 		}
 
+		private class NotUpdatingException : InvalidOperationException
+		{
+			public NotUpdatingException() : base("BeginUpdate has not been called") { }
+		}
+
 		private void CheckUpdating()
 		{
-			if (updates_ == null)
-			{
-				throw new InvalidOperationException("BeginUpdate has not been called");
-			}
+			if (updates_ is null) throw new NotUpdatingException();
 		}
 
 		#endregion Update Support
@@ -3107,7 +3106,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			#region Constructors
 
-			public ZipUpdate(string fileName, ZipEntry entry)
+			public ZipUpdate(string? fileName, ZipEntry entry)
 			{
 				command_ = UpdateCommand.Add;
 				entry_ = entry;
@@ -3115,7 +3114,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			[Obsolete]
-			public ZipUpdate(string fileName, string entryName, CompressionMethod compressionMethod)
+			public ZipUpdate(string? fileName, string entryName, CompressionMethod compressionMethod)
 			{
 				command_ = UpdateCommand.Add;
 				entry_ = new ZipEntry(entryName)
@@ -3126,14 +3125,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			[Obsolete]
-			public ZipUpdate(string fileName, string entryName)
+			public ZipUpdate(string? fileName, string entryName)
 				: this(fileName, entryName, CompressionMethod.Deflated)
 			{
 				// Do nothing.
 			}
 
 			[Obsolete]
-			public ZipUpdate(IStaticDataSource dataSource, string entryName, CompressionMethod compressionMethod)
+			public ZipUpdate(IStaticDataSource? dataSource, string entryName, CompressionMethod compressionMethod)
 			{
 				command_ = UpdateCommand.Add;
 				entry_ = new ZipEntry(entryName)
@@ -3143,14 +3142,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 				dataSource_ = dataSource;
 			}
 
-			public ZipUpdate(IStaticDataSource dataSource, ZipEntry entry)
+			public ZipUpdate(IStaticDataSource? dataSource, ZipEntry entry)
 			{
 				command_ = UpdateCommand.Add;
 				entry_ = entry;
 				dataSource_ = dataSource;
 			}
 
-			public ZipUpdate(ZipEntry original, ZipEntry updated)
+			public ZipUpdate(ZipEntry? original, ZipEntry? updated)
 			{
 				throw new ZipException("Modify not currently supported");
 				/*
@@ -3214,7 +3213,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <summary>
 			/// Get the filename if any for this update.  Null if none exists.
 			/// </summary>
-			public string Filename
+			public string? Filename
 			{
 				get { return filename_; }
 			}
@@ -3247,9 +3246,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				set { _offsetBasedSize = value; }
 			}
 
-			public Stream GetSource()
+			public Stream? GetSource()
 			{
-				Stream result = null;
+				Stream? result = null;
 				if (dataSource_ != null)
 				{
 					result = dataSource_.GetSource();
@@ -3261,10 +3260,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 			#region Instance Fields
 
 			private ZipEntry entry_;
-			private ZipEntry outEntry_;
+			private ZipEntry? outEntry_;
 			private readonly UpdateCommand command_;
-			private IStaticDataSource dataSource_;
-			private readonly string filename_;
+			private IStaticDataSource? dataSource_;
+			private readonly string? filename_;
 			private long sizePatchOffset_ = -1;
 			private long crcPatchOffset_ = -1;
 			private long _offsetBasedSize = -1;
@@ -3280,30 +3279,31 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		#region IDisposable Members
 
-		void IDisposable.Dispose()
+		/// <inheritdoc />
+		public void Dispose()
 		{
-			Close();
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
 		#endregion IDisposable Members
 
 		private void DisposeInternal(bool disposing)
 		{
-			if (!isDisposed_)
+			if (isDisposed_) return;
+
+			isDisposed_ = true;
+			entries_ = EmptyRefs.ZipEntryArray;
+
+			if (IsStreamOwner && (baseStream_ != null))
 			{
-				isDisposed_ = true;
-				entries_ = new ZipEntry[0];
-
-				if (IsStreamOwner && (baseStream_ != null))
+				lock (baseStream_)
 				{
-					lock (baseStream_)
-					{
-						baseStream_.Dispose();
-					}
+					baseStream_.Dispose();
 				}
-
-				PostUpdateCleanup();
 			}
+
+			PostUpdateCleanup();
 		}
 
 		/// <summary>
@@ -3607,7 +3607,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private Stream CreateAndInitDecryptionStream(Stream baseStream, ZipEntry entry)
 		{
-			CryptoStream result = null;
+			CryptoStream? result = null;
 
 			if (entry.CompressionMethodForHeader == CompressionMethod.WinZipAES)
 			{
@@ -3668,32 +3668,34 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private Stream CreateAndInitEncryptionStream(Stream baseStream, ZipEntry entry)
 		{
-			CryptoStream result = null;
-			if ((entry.Version < ZipConstants.VersionStrongEncryption)
-				|| (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0)
+			if ((entry.Version >= ZipConstants.VersionStrongEncryption) &&
+			    (entry.Flags & (int) GeneralBitFlags.StrongEncryption) != 0)
 			{
-				var classicManaged = new PkzipClassicManaged();
-
-				OnKeysRequired(entry.Name);
-				if (HaveKeys == false)
-				{
-					throw new ZipException("No password available for encrypted stream");
-				}
-
-				// Closing a CryptoStream will close the base stream as well so wrap it in an UncompressedStream
-				// which doesnt do this.
-				result = new CryptoStream(new UncompressedStream(baseStream),
-					classicManaged.CreateEncryptor(key, null), CryptoStreamMode.Write);
-
-				if ((entry.Crc < 0) || (entry.Flags & 8) != 0)
-				{
-					WriteEncryptionHeader(result, entry.DosTime << 16);
-				}
-				else
-				{
-					WriteEncryptionHeader(result, entry.Crc);
-				}
+				throw new NotSupportedException("Entry version and/or encryption type not supported");
 			}
+
+			var classicManaged = new PkzipClassicManaged();
+
+			OnKeysRequired(entry.Name);
+			if (HaveKeys == false)
+			{
+				throw new ZipException("No password available for encrypted stream");
+			}
+
+			// Closing a CryptoStream will close the base stream as well so wrap it in an UncompressedStream
+			// which doesnt do this.
+			var result = new CryptoStream(new UncompressedStream(baseStream),
+				classicManaged.CreateEncryptor(key, null), CryptoStreamMode.Write);
+
+			if ((entry.Crc < 0) || (entry.Flags & 8) != 0)
+			{
+				WriteEncryptionHeader(result, entry.DosTime << 16);
+			}
+			else
+			{
+				WriteEncryptionHeader(result, entry.Crc);
+			}
+
 			return result;
 		}
 
@@ -3721,14 +3723,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#region Instance Fields
 
 		private bool isDisposed_;
-		private string name_;
-		private string comment_;
-		private string rawPassword_;
+		private string? name_;
+		private string? comment_;
+		private string? rawPassword_;
 		private Stream baseStream_;
 		private bool isStreamOwner;
 		private long offsetOfFirstEntry;
-		private ZipEntry[] entries_;
-		private byte[] key;
+		private ZipEntry[] entries_ = EmptyRefs.ZipEntryArray;
+		private byte[]? key;
 		private bool isNewArchive_;
 
 		// Default is dynamic which is not backwards compatible and can cause problems
@@ -3739,15 +3741,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		#region Zip Update Instance Fields
 
-		private List<ZipUpdate> updates_;
+		private List<ZipUpdate?>? updates_;
 		private long updateCount_; // Count is managed manually as updates_ can contain nulls!
-		private Dictionary<string, int> updateIndex_;
-		private IArchiveStorage archiveStorage_;
-		private IDynamicDataSource updateDataSource_;
+		private Dictionary<string?, int>? updateIndex_;
+		private IArchiveStorage? archiveStorage_;
+		private IDynamicDataSource? updateDataSource_;
 		private bool contentsEdited_;
 		private int bufferSize_ = DefaultBufferSize;
-		private byte[] copyBuffer_;
-		private ZipString newComment_;
+		private byte[]? copyBuffer_;
+		private ZipString? newComment_;
 		private bool commentEdited_;
 		private IEntryFactory updateEntryFactory_ = new ZipEntryFactory();
 
@@ -3768,19 +3770,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// Initialise a <see cref="ZipString"/> with a string.
 			/// </summary>
 			/// <param name="comment">The textual string form.</param>
-			public ZipString(string comment)
+			public ZipString(string? comment)
 			{
 				comment_ = comment;
-				isSourceString_ = true;
+				IsSourceString = true;
 			}
 
 			/// <summary>
 			/// Initialise a <see cref="ZipString"/> using a string in its binary 'raw' form.
 			/// </summary>
 			/// <param name="rawString"></param>
-			public ZipString(byte[] rawString)
+			public ZipString(byte[]? rawString)
 			{
 				rawComment_ = rawString;
+				IsSourceString = false;
 			}
 
 			#endregion Constructors
@@ -3789,41 +3792,24 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// Get a value indicating the original source of data for this instance.
 			/// True if the source was a string; false if the source was binary data.
 			/// </summary>
-			public bool IsSourceString
-			{
-				get { return isSourceString_; }
-			}
+			public bool IsSourceString { get; }
 
 			/// <summary>
 			/// Get the length of the comment when represented as raw bytes.
 			/// </summary>
-			public int RawLength
-			{
-				get
-				{
-					MakeBytesAvailable();
-					return rawComment_.Length;
-				}
-			}
+			public int RawLength => MakeBytesAvailable().Length;
 
 			/// <summary>
 			/// Get the comment in its 'raw' form as plain bytes.
 			/// </summary>
-			public byte[] RawComment
-			{
-				get
-				{
-					MakeBytesAvailable();
-					return (byte[])rawComment_.Clone();
-				}
-			}
+			public byte[] RawComment => (byte[])MakeBytesAvailable().Clone();
 
 			/// <summary>
 			/// Reset the comment to its initial state.
 			/// </summary>
 			public void Reset()
 			{
-				if (isSourceString_)
+				if (IsSourceString)
 				{
 					rawComment_ = null;
 				}
@@ -3833,38 +3819,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
-			private void MakeTextAvailable()
-			{
-				if (comment_ == null)
-				{
-					comment_ = ZipStrings.ConvertToString(rawComment_);
-				}
-			}
+			private string MakeTextAvailable() => comment_ ??= ZipStrings.ConvertToString(rawComment_);
 
-			private void MakeBytesAvailable()
-			{
-				if (rawComment_ == null)
-				{
-					rawComment_ = ZipStrings.ConvertToArray(comment_);
-				}
-			}
+			private byte[] MakeBytesAvailable() => rawComment_ ??= ZipStrings.ConvertToArray(comment_);
 
 			/// <summary>
 			/// Implicit conversion of comment to a string.
 			/// </summary>
 			/// <param name="zipString">The <see cref="ZipString"/> to convert to a string.</param>
 			/// <returns>The textual equivalent for the input value.</returns>
-			static public implicit operator string(ZipString zipString)
-			{
-				zipString.MakeTextAvailable();
-				return zipString.comment_;
-			}
+			public static implicit operator string?(ZipString zipString) => zipString.MakeTextAvailable();
 
 			#region Instance Fields
 
-			private string comment_;
-			private byte[] rawComment_;
-			private readonly bool isSourceString_;
+			private string? comment_;
+			private byte[]? rawComment_;
 
 			#endregion Instance Fields
 		}
@@ -3876,7 +3845,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			#region Constructors
 
-			public ZipEntryEnumerator(ZipEntry[] entries)
+			public ZipEntryEnumerator(ZipEntry?[] entries)
 			{
 				array = entries;
 			}
@@ -3885,7 +3854,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			#region IEnumerator Members
 
-			public object Current
+			public object? Current
 			{
 				get
 				{
@@ -3907,7 +3876,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			#region Instance Fields
 
-			private ZipEntry[] array;
+			private ZipEntry?[] array;
 			private int index = -1;
 
 			#endregion Instance Fields
@@ -4010,7 +3979,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <exception cref="System.ArgumentNullException">buffer is null. </exception>
 			/// <exception cref="System.IO.IOException">An I/O error occurs. </exception>
 			/// <exception cref="System.ArgumentOutOfRangeException">offset or count is negative. </exception>
-			public override int Read(byte[] buffer, int offset, int count)
+			public override int Read(byte[]? buffer, int offset, int count)
 			{
 				return 0;
 			}
@@ -4054,7 +4023,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <exception cref="System.ArgumentNullException">buffer is null. </exception>
 			/// <exception cref="System.ArgumentException">The sum of offset and count is greater than the buffer length. </exception>
 			/// <exception cref="System.ArgumentOutOfRangeException">offset or count is negative. </exception>
-			public override void Write(byte[] buffer, int offset, int count)
+			public override void Write(byte[]? buffer, int offset, int count)
 			{
 				baseStream_.Write(buffer, offset, count);
 			}
@@ -4139,7 +4108,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <exception cref="System.ArgumentNullException">buffer is null. </exception>
 			/// <exception cref="System.IO.IOException">An I/O error occurs. </exception>
 			/// <exception cref="System.ArgumentOutOfRangeException">offset or count is negative. </exception>
-			public override int Read(byte[] buffer, int offset, int count)
+			public override int Read(byte[]? buffer, int offset, int count)
 			{
 				lock (baseStream_)
 				{
@@ -4178,7 +4147,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// <exception cref="System.ArgumentNullException">buffer is null. </exception>
 			/// <exception cref="System.ArgumentException">The sum of offset and count is greater than the buffer length. </exception>
 			/// <exception cref="System.ArgumentOutOfRangeException">offset or count is negative. </exception>
-			public override void Write(byte[] buffer, int offset, int count)
+			public override void Write(byte[]? buffer, int offset, int count)
 			{
 				throw new NotSupportedException();
 			}
@@ -4372,7 +4341,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="name">The name for data if known.</param>
 		/// <returns>Returns a <see cref="Stream"/> to use for compression input.</returns>
 		/// <remarks>Ideally a new stream is created and opened to achieve this, to avoid locking problems.</remarks>
-		Stream GetSource(ZipEntry entry, string name);
+		Stream? GetSource(ZipEntry? entry, string? name);
 	}
 
 	/// <summary>
@@ -4384,7 +4353,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Initialise a new instance of <see cref="StaticDiskDataSource"/>
 		/// </summary>
 		/// <param name="fileName">The name of the file to obtain data from.</param>
-		public StaticDiskDataSource(string fileName)
+		public StaticDiskDataSource(string? fileName)
 		{
 			fileName_ = fileName;
 		}
@@ -4406,7 +4375,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		#region Instance Fields
 
-		string fileName_;
+		string? fileName_;
 
 		#endregion Instance Fields
 	}
@@ -4424,9 +4393,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="entry">The entry to provide data for.</param>
 		/// <param name="name">The file name for data if known.</param>
 		/// <returns>Returns a stream providing data; or null if not available</returns>
-		public Stream GetSource(ZipEntry entry, string name)
+		public Stream? GetSource(ZipEntry? entry, string? name)
 		{
-			Stream result = null;
+			Stream? result = null;
 
 			if (name != null)
 			{
@@ -4480,7 +4449,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="stream">The current stream.</param>
 		/// <returns>Returns a stream suitable for direct updating.</returns>
 		/// <remarks>This may be the current stream passed.</remarks>
-		Stream OpenForDirectUpdate(Stream stream);
+		Stream OpenForDirectUpdate(Stream? stream);
 
 		/// <summary>
 		/// Dispose of this instance.
@@ -4535,7 +4504,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="stream">The <see cref="Stream"/> to open for direct update.</param>
 		/// <returns>Returns a stream suitable for direct updating.</returns>
-		public abstract Stream OpenForDirectUpdate(Stream stream);
+		public abstract Stream OpenForDirectUpdate(Stream? stream);
 
 		/// <summary>
 		/// Disposes this instance.
@@ -4633,7 +4602,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ZipException("No temporary stream has been created");
 			}
 
-			Stream result = null;
+			Stream? result = null;
 
 			string moveTempName = GetTempFileName(fileName_, false);
 			bool newFileCreated = false;
@@ -4689,7 +4658,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="stream">The current stream.</param>
 		/// <returns>Returns a stream suitable for direct updating.</returns>
 		/// <remarks>If the <paramref name="stream"/> is not null this is used as is.</remarks>
-		public override Stream OpenForDirectUpdate(Stream stream)
+		public override Stream OpenForDirectUpdate(Stream? stream)
 		{
 			Stream result;
 			if ((stream == null) || !stream.CanWrite)
@@ -4726,9 +4695,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		#region Internal routines
 
-		private static string GetTempFileName(string original, bool makeTempFile)
+		private static string GetTempFileName(string? original, bool makeTempFile)
 		{
-			string result = null;
+			string? result = null;
 
 			if (original == null)
 			{
@@ -4774,9 +4743,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		#region Instance Fields
 
-		private Stream temporaryStream_;
+		private Stream? temporaryStream_;
 		private readonly string fileName_;
-		private string temporaryName_;
+		private string? temporaryName_;
 
 		#endregion Instance Fields
 	}
@@ -4813,7 +4782,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the stream returned by <see cref="ConvertTemporaryToFinal"/> if this was in fact called.
 		/// </summary>
-		public MemoryStream FinalStream
+		public MemoryStream? FinalStream
 		{
 			get { return finalStream_; }
 		}
@@ -4868,7 +4837,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns a stream suitable for direct updating.</returns>
 		/// <remarks>If the <paramref name="stream"/> passed is not null this is used;
 		/// otherwise a new <see cref="MemoryStream"/> is returned.</remarks>
-		public override Stream OpenForDirectUpdate(Stream stream)
+		public override Stream OpenForDirectUpdate(Stream? stream)
 		{
 			Stream result;
 			if ((stream == null) || !stream.CanWrite)
@@ -4906,8 +4875,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		#region Instance Fields
 
-		private MemoryStream temporaryStream_;
-		private MemoryStream finalStream_;
+		private MemoryStream? temporaryStream_;
+		private MemoryStream? finalStream_;
 
 		#endregion Instance Fields
 	}

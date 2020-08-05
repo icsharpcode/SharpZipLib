@@ -40,7 +40,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <summary>
 		/// CRC-32 value for uncompressed data
 		/// </summary>
-		protected Crc32 crc;
+		protected Crc32 crc = new Crc32();
 
 		/// <summary>
 		/// Flag to indicate if we've read the GZIP header yet for the current member (block of compressed data).
@@ -156,7 +156,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		private bool ReadHeader()
 		{
 			// Initialize CRC for this block
-			crc = new Crc32();
+			crc.Reset();
 
 			// Make sure there is data in file. We can't rely on ReadLeByte() to fill the buffer, as this could be EOF,
 			// which is fine, but ReadLeByte() throws an exception if it doesn't find data, so we do this part ourselves.

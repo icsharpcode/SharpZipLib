@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -28,7 +29,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get the data representing this instance.
 		/// </summary>
 		/// <returns>Returns the data for this instance.</returns>
-		byte[] GetData();
+		byte[]? GetData();
 	}
 
 	/// <summary>
@@ -77,7 +78,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get the binary data representing this instance.
 		/// </summary>
 		/// <returns>The raw binary data representing this instance.</returns>
-		public byte[] GetData()
+		public byte[]? GetData()
 		{
 			return _data;
 		}
@@ -88,7 +89,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get /set the binary data representing this instance.
 		/// </summary>
 		/// <returns>The raw binary data representing this instance.</returns>
-		public byte[] Data
+		public byte[]? Data
 		{
 			get { return _data; }
 			set { _data = value; }
@@ -101,7 +102,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		private short _tag;
 
-		private byte[] _data;
+		private byte[]? _data;
 
 		#endregion Instance Fields
 	}
@@ -149,7 +150,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="data">The raw data to extract values from.</param>
 		/// <param name="index">The index to start extracting values from.</param>
 		/// <param name="count">The number of bytes available.</param>
-		public void SetData(byte[] data, int index, int count)
+		public void SetData(byte[]? data, int index, int count)
 		{
 			using (MemoryStream ms = new MemoryStream(data, index, count, false))
 			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
@@ -338,7 +339,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="data">The raw data to extract values from.</param>
 		/// <param name="index">The index to start extracting values from.</param>
 		/// <param name="count">The number of bytes available.</param>
-		public void SetData(byte[] data, int index, int count)
+		public void SetData(byte[]? data, int index, int count)
 		{
 			using (MemoryStream ms = new MemoryStream(data, index, count, false))
 			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
@@ -487,7 +488,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="offset">The offset to begin extracting data from.</param>
 		/// <param name="count">The number of bytes to extract.</param>
 		/// <returns>The located <see cref="ITaggedData">value found</see>, or null if not found.</returns>
-		ITaggedData Create(short tag, byte[] data, int offset, int count);
+		ITaggedData Create(short tag, byte[]? data, int offset, int count);
 	}
 
 	///
@@ -510,23 +511,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public ZipExtraData()
 		{
-			Clear();
 		}
 
 		/// <summary>
 		/// Initialise with known extra data.
 		/// </summary>
 		/// <param name="data">The extra data.</param>
-		public ZipExtraData(byte[] data)
+		public ZipExtraData(byte[]? data)
 		{
-			if (data == null)
-			{
-				_data = new byte[0];
-			}
-			else
-			{
-				_data = data;
-			}
+			_data = data ?? new byte[0];
 		}
 
 		#endregion Constructors
@@ -550,28 +543,25 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public void Clear()
 		{
-			if ((_data == null) || (_data.Length != 0))
+			if (_data.Length != 0)
 			{
-				_data = new byte[0];
+				_data = EmptyRefs.ByteArray;
 			}
 		}
 
 		/// <summary>
 		/// Gets the current extra data length.
 		/// </summary>
-		public int Length
-		{
-			get { return _data.Length; }
-		}
+		public int Length => _data.Length;
 
 		/// <summary>
 		/// Get a read-only <see cref="Stream"/> for the associated tag.
 		/// </summary>
 		/// <param name="tag">The tag to locate data for.</param>
 		/// <returns>Returns a <see cref="Stream"/> containing tag data or null if no tag was found.</returns>
-		public Stream GetStreamForTag(int tag)
+		public Stream? GetStreamForTag(int tag)
 		{
-			Stream result = null;
+			Stream? result = null;
 			if (Find(tag))
 			{
 				result = new MemoryStream(_data, _index, _readValueLength, false);
@@ -584,7 +574,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <typeparam name="T">The tag to search for.</typeparam>
 		/// <returns>Returns a <see cref="ITaggedData">tagged value</see> or null if none found.</returns>
-		public T GetData<T>()
+		public T? GetData<T>()
 			where T : class, ITaggedData, new()
 		{
 			T result = new T();
@@ -600,10 +590,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get the length of the last value found by <see cref="Find"/>
 		/// </summary>
 		/// <remarks>This is only valid if <see cref="Find"/> has previously returned true.</remarks>
-		public int ValueLength
-		{
-			get { return _readValueLength; }
-		}
+		public int ValueLength => _readValueLength;
 
 		/// <summary>
 		/// Get the index for the current read value.
@@ -611,10 +598,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>This is only valid if <see cref="Find"/> has previously returned true.
 		/// Initially the result will be the index of the first byte of actual data.  The value is updated after calls to
 		/// <see cref="ReadInt"/>, <see cref="ReadShort"/> and <see cref="ReadLong"/>. </remarks>
-		public int CurrentReadIndex
-		{
-			get { return _index; }
-		}
+		public int CurrentReadIndex => _index;
 
 		/// <summary>
 		/// Get the number of bytes remaining to be read for the current value;
@@ -689,14 +673,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="headerID">The ID for this entry.</param>
 		/// <param name="fieldData">The data to add.</param>
 		/// <remarks>If the ID already exists its contents are replaced.</remarks>
-		public void AddEntry(int headerID, byte[] fieldData)
+		public void AddEntry(int headerID, byte[]? fieldData)
 		{
 			if ((headerID > ushort.MaxValue) || (headerID < 0))
 			{
 				throw new ArgumentOutOfRangeException(nameof(headerID));
 			}
 
-			int addLength = (fieldData == null) ? 0 : fieldData.Length;
+			int addLength = fieldData?.Length ?? 0;
 
 			if (addLength > ushort.MaxValue)
 			{
@@ -724,10 +708,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			_data = newData;
 			SetShort(ref index, headerID);
 			SetShort(ref index, addLength);
-			if (fieldData != null)
-			{
-				fieldData.CopyTo(newData, index);
-			}
+			fieldData?.CopyTo(newData, index);
 		}
 
 		/// <summary>
@@ -747,7 +728,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="headerID">The identifier to use for this entry.</param>
 		public void AddNewEntry(int headerID)
 		{
-			byte[] newData = _newEntry.ToArray();
+			byte[] newData = _newEntry?.ToArray() ?? EmptyRefs.ByteArray;
 			_newEntry = null;
 			AddEntry(headerID, newData);
 		}
@@ -759,6 +740,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <seealso cref="StartNewEntry"/>
 		public void AddData(byte data)
 		{
+			if(_newEntry is null) throw new InvalidOperationException("No pending entry");
+
 			_newEntry.WriteByte(data);
 		}
 
@@ -769,10 +752,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <seealso cref="StartNewEntry"/>
 		public void AddData(byte[] data)
 		{
-			if (data == null)
-			{
-				throw new ArgumentNullException(nameof(data));
-			}
+			if (data == null) throw new ArgumentNullException(nameof(data));
+			if(_newEntry is null) throw new InvalidOperationException("No pending entry");
 
 			_newEntry.Write(data, 0, data.Length);
 		}
@@ -784,10 +765,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <seealso cref="StartNewEntry"/>
 		public void AddLeShort(int toAdd)
 		{
+			// Note: No null checking is performed here to improve performance
 			unchecked
 			{
-				_newEntry.WriteByte((byte)toAdd);
-				_newEntry.WriteByte((byte)(toAdd >> 8));
+				_newEntry!.WriteByte((byte)toAdd);
+				_newEntry!.WriteByte((byte)(toAdd >> 8));
 			}
 		}
 
@@ -971,8 +953,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private int _readValueStart;
 		private int _readValueLength;
 
-		private MemoryStream _newEntry;
-		private byte[] _data;
+		private MemoryStream? _newEntry;
+		private byte[] _data = EmptyRefs.ByteArray;
 
 		#endregion Instance Fields
 	}

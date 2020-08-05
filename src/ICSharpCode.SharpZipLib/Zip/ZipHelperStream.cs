@@ -77,10 +77,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Initialise an instance of this class.
 		/// </summary>
 		/// <param name="name">The name of the file to open.</param>
-		public ZipHelperStream(string name)
+		public ZipHelperStream(string? name)
 		{
 			stream_ = new FileStream(name, FileMode.Open, FileAccess.ReadWrite);
-			isOwner_ = true;
+			IsStreamOwner = true;
 		}
 
 		/// <summary>
@@ -98,44 +98,25 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get / set a value indicating whether the underlying stream is owned or not.
 		/// </summary>
 		/// <remarks>If the stream is owned it is closed when this instance is closed.</remarks>
-		public bool IsStreamOwner
-		{
-			get { return isOwner_; }
-			set { isOwner_ = value; }
-		}
+		public bool IsStreamOwner { get; set; }
 
 		#region Base Stream Methods
 
-		public override bool CanRead
-		{
-			get { return stream_.CanRead; }
-		}
+		public override bool CanRead => stream_.CanRead;
 
-		public override bool CanSeek
-		{
-			get { return stream_.CanSeek; }
-		}
+		public override bool CanSeek => stream_.CanSeek;
 
-		public override bool CanTimeout
-		{
-			get { return stream_.CanTimeout; }
-		}
+		public override bool CanTimeout => stream_.CanTimeout;
 
-		public override long Length
-		{
-			get { return stream_.Length; }
-		}
+		public override long Length => stream_.Length;
 
 		public override long Position
 		{
-			get { return stream_.Position; }
-			set { stream_.Position = value; }
+			get => stream_.Position;
+			set => stream_.Position = value;
 		}
 
-		public override bool CanWrite
-		{
-			get { return stream_.CanWrite; }
-		}
+		public override bool CanWrite => stream_.CanWrite;
 
 		public override void Flush()
 		{
@@ -152,12 +133,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			stream_.SetLength(value);
 		}
 
-		public override int Read(byte[] buffer, int offset, int count)
+		public override int Read(byte[]? buffer, int offset, int count)
 		{
 			return stream_.Read(buffer, offset, count);
 		}
 
-		public override void Write(byte[] buffer, int offset, int count)
+		public override void Write(byte[]? buffer, int offset, int count)
 		{
 			stream_.Write(buffer, offset, count);
 		}
@@ -170,13 +151,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </remarks>
 		protected override void Dispose(bool disposing)
 		{
-			Stream toClose = stream_;
-			stream_ = null;
-			if (isOwner_ && (toClose != null))
-			{
-				isOwner_ = false;
-				toClose.Dispose();
-			}
+			if (!IsStreamOwner || stream_ == null) return;
+			IsStreamOwner = false;
+			stream_.Dispose();
 		}
 
 		#endregion Base Stream Methods
@@ -285,7 +262,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				stream_.Write(name, 0, name.Length);
 			}
 
-			if (entry.LocalHeaderRequiresZip64 && patchEntryHeader)
+			if (entry.LocalHeaderRequiresZip64 && patchEntryHeader && patchData is {})
 			{
 				patchData.SizePatchOffset += stream_.Position;
 			}
@@ -369,7 +346,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="startOfCentralDirectory">The start of the central directory.</param>
 		/// <param name="comment">The archive comment.  (This can be null).</param>
 		public void WriteEndOfCentralDirectory(long noOfEntries, long sizeEntries,
-			long startOfCentralDirectory, byte[] comment)
+			long startOfCentralDirectory, byte[]? comment)
 		{
 			if ((noOfEntries >= 0xffff) ||
 				(startOfCentralDirectory >= 0xffffffff) ||
@@ -416,18 +393,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLEInt((int)startOfCentralDirectory);
 			}
 
-			int commentLength = (comment != null) ? comment.Length : 0;
+			int commentLength = comment?.Length ?? 0;
 
 			if (commentLength > 0xffff)
 			{
-				throw new ZipException(string.Format("Comment length({0}) is too long can only be 64K", commentLength));
+				throw new ZipException($"Comment length {commentLength} is too long can only be 64K");
 			}
 
 			WriteLEShort(commentLength);
 
 			if (commentLength > 0)
 			{
-				Write(comment, 0, comment.Length);
+				Write(comment, 0, commentLength);
 			}
 		}
 
@@ -621,7 +598,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		#region Instance Fields
 
-		private bool isOwner_;
 		private Stream stream_;
 
 		#endregion Instance Fields

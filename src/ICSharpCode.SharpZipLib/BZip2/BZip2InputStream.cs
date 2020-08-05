@@ -1,6 +1,7 @@
 using ICSharpCode.SharpZipLib.Checksum;
 using System;
 using System.IO;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.BZip2
 {
@@ -9,7 +10,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 	/// </summary>
 	public class BZip2InputStream : Stream
 	{
-		#region Constants
+#region Constants
 
 		private const int START_BLOCK_STATE = 1;
 		private const int RAND_PART_A_STATE = 2;
@@ -19,9 +20,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		private const int NO_RAND_PART_B_STATE = 6;
 		private const int NO_RAND_PART_C_STATE = 7;
 
-		#endregion Constants
+#endregion Constants
 
-		#region Instance Fields
+#region Instance Fields
 
 		/*--
 		index of the last char in the block, so
@@ -55,8 +56,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		private byte[] selector = new byte[BZip2Constants.MaximumSelectors];
 		private byte[] selectorMtf = new byte[BZip2Constants.MaximumSelectors];
 
-		private int[] tt;
-		private byte[] ll8;
+		private int[] tt = EmptyRefs.Int32Array;
+		private byte[] ll8 = EmptyRefs.ByteArray;
 
 		/*--
 		freq table collected to save a pass over the data
@@ -87,7 +88,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		private int i2, j2;
 		private byte z;
 
-		#endregion Instance Fields
+#endregion Instance Fields
 
 		/// <summary>
 		/// Construct instance for reading from stream
@@ -119,7 +120,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		public bool IsStreamOwner { get; set; } = true;
 
-		#region Stream Overrides
+#region Stream Overrides
 
 		/// <summary>
 		/// Gets a value indicating if the stream supports reading
@@ -222,7 +223,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <param name="offset">The offset to start obtaining data from.</param>
 		/// <param name="count">The number of bytes of data to write.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
-		public override void Write(byte[] buffer, int offset, int count)
+		public override void Write(byte[]? buffer, int offset, int count)
 		{
 			throw new NotSupportedException("BZip2InputStream Write not supported");
 		}
@@ -316,7 +317,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			return retChar;
 		}
 
-		#endregion Stream Overrides
+#endregion Stream Overrides
 
 		private void MakeMaps()
 		{
@@ -746,7 +747,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		private void SetupBlock()
 		{
-			int[] cftab = new int[257];
+			int[]? cftab = new int[257];
 
 			cftab[0] = 0;
 			Array.Copy(unzftab, 0, cftab, 1, 256);

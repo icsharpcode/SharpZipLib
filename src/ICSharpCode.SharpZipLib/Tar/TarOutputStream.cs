@@ -29,7 +29,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <param name="outputStream">stream to write to</param>
 		/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
-		public TarOutputStream(Stream outputStream, Encoding nameEncoding)
+		public TarOutputStream(Stream outputStream, Encoding? nameEncoding)
 			: this(outputStream, TarBuffer.DefaultBlockFactor, nameEncoding)
 		{
 		}
@@ -60,7 +60,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="outputStream">stream to write to</param>
 		/// <param name="blockFactor">blocking factor</param>
 		/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
-		public TarOutputStream(Stream outputStream, int blockFactor, Encoding nameEncoding)
+		public TarOutputStream(Stream outputStream, int blockFactor, Encoding? nameEncoding)
 		{
 			if (outputStream == null)
 			{
@@ -188,7 +188,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>The total number of bytes read, or zero if at the end of the stream.
 		/// The number of bytes may be less than the <paramref name="count">count</paramref>
 		/// requested if data is not available.</returns>
-		public override int Read(byte[] buffer, int offset, int count)
+		public override int Read(byte[]? buffer, int offset, int count)
 		{
 			return outputStream.Read(buffer, offset, count);
 		}
@@ -515,7 +515,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// name encoding
 		/// </summary>
-		protected Encoding nameEncoding;
+		protected Encoding? nameEncoding;
 
 		#endregion Instance Fields
 	}

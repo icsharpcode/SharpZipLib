@@ -1,6 +1,7 @@
 using ICSharpCode.SharpZipLib.Checksum;
 using System;
 using System.IO;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.BZip2
 {
@@ -79,11 +80,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		private char[] selector = new char[BZip2Constants.MaximumSelectors];
 		private char[] selectorMtf = new char[BZip2Constants.MaximumSelectors];
 
-		private byte[] block;
-		private int[] quadrant;
-		private int[] zptr;
-		private short[] szptr;
-		private int[] ftab;
+		private byte[] block = EmptyRefs.ByteArray;
+		private int[] quadrant = EmptyRefs.Int32Array;
+		private int[] zptr = EmptyRefs.Int32Array;
+		private short[] szptr = EmptyRefs.Int16Array;
+		private int[] ftab = EmptyRefs.Int32Array;
 
 		private int nMTF;
 
@@ -266,7 +267,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <returns>The total number of bytes read. This might be less than the number of bytes
 		/// requested if that number of bytes are not currently available, or zero
 		/// if the end of the stream is reached.</returns>
-		public override int Read(byte[] buffer, int offset, int count)
+		public override int Read(byte[]? buffer, int offset, int count)
 		{
 			throw new NotSupportedException("BZip2OutputStream Read not supported");
 		}
@@ -710,14 +711,14 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				remF -= aFreq;
 			}
 
-			int[][] rfreq = new int[BZip2Constants.GroupCount][];
+			int[][]? rfreq = new int[BZip2Constants.GroupCount][];
 			for (int i = 0; i < BZip2Constants.GroupCount; ++i)
 			{
 				rfreq[i] = new int[BZip2Constants.MaximumAlphaSize];
 			}
 
-			int[] fave = new int[BZip2Constants.GroupCount];
-			short[] cost = new short[BZip2Constants.GroupCount];
+			int[]? fave = new int[BZip2Constants.GroupCount];
+			short[]? cost = new short[BZip2Constants.GroupCount];
 			/*---
 			Iterate up to N_ITERS times to improve the tables.
 			---*/
@@ -1691,7 +1692,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			zptr = new int[n];
 			ftab = new int[65537];
 
-			if (block == null || quadrant == null || zptr == null || ftab == null)
+			if (block == EmptyRefs.ByteArray || quadrant == null || zptr == null || ftab == null)
 			{
 				//		int totalDraw = (n + 1 + NUM_OVERSHOOT_BYTES) + (n + NUM_OVERSHOOT_BYTES) + n + 65537;
 				//		compressOutOfMemory ( totalDraw, n );

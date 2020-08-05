@@ -25,7 +25,6 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		{
 			_stream = stream;
 			_transform = transform;
-			_slideBuffer = new byte[1024];
 
 			// mode:
 			//  CryptoStreamMode.Read means we read from "stream" and pass decrypted to our Read() method.
@@ -47,12 +46,13 @@ namespace ICSharpCode.SharpZipLib.Encryption
 
 		private Stream _stream;
 		private ZipAESTransform _transform;
-		private byte[] _slideBuffer;
+		private byte[] _slideBuffer = new byte[1024];
 		private int _slideBufStartPos;
 		private int _slideBufFreePos;
+		private bool _complete = false;
 
 		// Buffer block transforms to enable partial reads
-		private byte[] _transformBuffer = null;// new byte[CRYPTO_BLOCK_SIZE];
+		private byte[]? _transformBuffer = null;// new byte[CRYPTO_BLOCK_SIZE];
 		private int _transformBufferFreePos;
 		private int _transformBufferStartPos;
 
@@ -84,7 +84,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			}
 
 			// Read more data from the input, if available
-			if (_slideBuffer != null)
+			if (!_complete)
 				nBytes += ReadAndTransform(buffer, offset, count);
 
 			return nBytes;
@@ -105,7 +105,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 				// Maintain a read-ahead equal to the length of (crypto block + Auth Code).
 				// When that runs out we can detect these final sections.
 				int lengthToRead = BLOCK_AND_AUTH - byteCount;
-				if (_slideBuffer.Length - _slideBufFreePos < lengthToRead)
+				if (_slideBuffer!.Length - _slideBufFreePos < lengthToRead)
 				{
 					// Shift the data to the beginning of the buffer
 					int iTo = 0;
@@ -138,19 +138,18 @@ namespace ICSharpCode.SharpZipLib.Encryption
 					}
 					else if (byteCount < AUTH_CODE_LENGTH)
 						throw new Exception("Internal error missed auth code"); // Coding bug
-																				// Final block done. Check Auth code.
+					
+					// Final block done. Check Auth code.
 					byte[] calcAuthCode = _transform.GetAuthCode();
 					for (int i = 0; i < AUTH_CODE_LENGTH; i++)
 					{
 						if (calcAuthCode[i] != _slideBuffer[_slideBufStartPos + i])
 						{
-							throw new Exception("AES Authentication Code does not match. This is a super-CRC check on the data in the file after compression and encryption. \r\n"
-								+ "The file may be damaged.");
+							throw new Exception("AES Authentication Code does not match. This is a super-CRC check on the data in the file after compression and encryption. The file may be damaged.");
 						}
 					}
 
-					// don't need this any more, so use it as a 'complete' flag
-					_slideBuffer = null;
+					_complete = true;
 
 					break;  // Reached the auth code
 				}
@@ -159,7 +158,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		}
 
 		// read some buffered data
-		private int ReadBufferedData(byte[] buffer, int offset, int count)
+		private int ReadBufferedData(byte[]? buffer, int offset, int count)
 		{
 			int copyCount = Math.Min(count, _transformBufferFreePos - _transformBufferStartPos);
 
@@ -176,10 +175,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			// If it's smaller, do it into a temporary buffer and copy the requested part
 			bool bufferRequired = (blockSize > count);
 
-			if (bufferRequired && _transformBuffer == null)
-				_transformBuffer = new byte[CRYPTO_BLOCK_SIZE];
-
-			var targetBuffer = bufferRequired ? _transformBuffer : buffer;
+			var targetBuffer = bufferRequired ? _transformBuffer ??= new byte[CRYPTO_BLOCK_SIZE] : buffer;
 			var targetOffset = bufferRequired ? 0 : offset;
 
 			// Transform the data
@@ -211,7 +207,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <param name="buffer">An array of bytes. This method copies count bytes from buffer to the current stream. </param>
 		/// <param name="offset">The byte offset in buffer at which to begin copying bytes to the current stream. </param>
 		/// <param name="count">The number of bytes to be written to the current stream. </param>
-		public override void Write(byte[] buffer, int offset, int count)
+		public override void Write(byte[]? buffer, int offset, int count)
 		{
 			// ZipAESStream is used for reading but not for writing. Writing uses the ZipAESTransform directly.
 			throw new NotImplementedException();

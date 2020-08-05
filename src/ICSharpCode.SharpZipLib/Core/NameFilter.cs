@@ -27,7 +27,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Construct an instance based on the filter expression passed
 		/// </summary>
 		/// <param name="filter">The filter expression.</param>
-		public NameFilter(string filter)
+		public NameFilter(string? filter)
 		{
 			filter_ = filter;
 			inclusions_ = new List<Regex>();
@@ -42,7 +42,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <param name="expression">The expression to test.</param>
 		/// <returns>True if expression is a valid <see cref="System.Text.RegularExpressions.Regex"/> false otherwise.</returns>
-		public static bool IsValidExpression(string expression)
+		public static bool IsValidExpression(string? expression)
 		{
 			bool result = true;
 			try
@@ -61,7 +61,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <param name="toTest">The filter expression to test.</param>
 		/// <returns>True if the expression is valid, false otherwise.</returns>
-		public static bool IsValidFilterExpression(string toTest)
+		public static bool IsValidFilterExpression(string? toTest)
 		{
 			bool result = true;
 
@@ -161,7 +161,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Convert this filter to its string equivalent.
 		/// </summary>
 		/// <returns>The string equivalent for this filter.</returns>
-		public override string ToString()
+		public override string? ToString()
 		{
 			return filter_;
 		}
@@ -171,7 +171,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <param name="name">The value to test.</param>
 		/// <returns>True if the value is included, false otherwise.</returns>
-		public bool IsIncluded(string name)
+		public bool IsIncluded(string? name)
 		{
 			bool result = false;
 			if (inclusions_.Count == 0)
@@ -197,7 +197,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <param name="name">The value to test.</param>
 		/// <returns>True if the value is excluded, false otherwise.</returns>
-		public bool IsExcluded(string name)
+		public bool IsExcluded(string? name)
 		{
 			bool result = false;
 			foreach (Regex r in exclusions_)
@@ -218,7 +218,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <param name="name">The value to test.</param>
 		/// <returns>True if the value matches, false otherwise.</returns>
-		public bool IsMatch(string name)
+		public bool IsMatch(string? name)
 		{
 			return (IsIncluded(name) && !IsExcluded(name));
 		}
@@ -275,7 +275,7 @@ namespace ICSharpCode.SharpZipLib.Core
 
 		#region Instance Fields
 
-		private string filter_;
+		private string? filter_;
 		private List<Regex> inclusions_;
 		private List<Regex> exclusions_;
 

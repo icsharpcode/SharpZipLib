@@ -73,7 +73,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </returns>
 		protected byte TransformByte()
 		{
-			uint temp = ((keys[2] & 0xFFFF) | 2);
+			var temp = (_keys[2] & 0xFFFF) | 2;
 			return (byte)((temp * (temp ^ 1)) >> 8);
 		}
 
@@ -93,10 +93,9 @@ namespace ICSharpCode.SharpZipLib.Encryption
 				throw new InvalidOperationException("Key length is not valid");
 			}
 
-			keys = new uint[3];
-			keys[0] = (uint)((keyData[3] << 24) | (keyData[2] << 16) | (keyData[1] << 8) | keyData[0]);
-			keys[1] = (uint)((keyData[7] << 24) | (keyData[6] << 16) | (keyData[5] << 8) | keyData[4]);
-			keys[2] = (uint)((keyData[11] << 24) | (keyData[10] << 16) | (keyData[9] << 8) | keyData[8]);
+			_keys[0] = (uint)((keyData[ 3] << 24) | (keyData[ 2] << 16) | (keyData[1] << 8) | keyData[0]);
+			_keys[1] = (uint)((keyData[ 7] << 24) | (keyData[ 6] << 16) | (keyData[5] << 8) | keyData[4]);
+			_keys[2] = (uint)((keyData[11] << 24) | (keyData[10] << 16) | (keyData[9] << 8) | keyData[8]);
 		}
 
 		/// <summary>
@@ -104,10 +103,9 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		protected void UpdateKeys(byte ch)
 		{
-			keys[0] = Crc32.ComputeCrc32(keys[0], ch);
-			keys[1] = keys[1] + (byte)keys[0];
-			keys[1] = keys[1] * 134775813 + 1;
-			keys[2] = Crc32.ComputeCrc32(keys[2], (byte)(keys[1] >> 24));
+			_keys[0] = Crc32.ComputeCrc32(_keys[0], ch);
+			_keys[1] = (_keys[1] + (byte)_keys[0]) * 134775813 + 1;
+			_keys[2] = Crc32.ComputeCrc32(_keys[2], (byte)(_keys[1] >> 24));
 		}
 
 		/// <summary>
@@ -115,14 +113,14 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		protected void Reset()
 		{
-			keys[0] = 0;
-			keys[1] = 0;
-			keys[2] = 0;
+			_keys[0] = 0;
+			_keys[1] = 0;
+			_keys[2] = 0;
 		}
 
 		#region Instance Fields
 
-		private uint[] keys;
+		private readonly uint[] _keys = new uint[3];
 
 		#endregion Instance Fields
 	}
@@ -414,12 +412,12 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		{
 			get
 			{
-				if (key_ == null)
+				if (_key == null)
 				{
 					GenerateKey();
 				}
 
-				return (byte[])key_.Clone();
+				return (byte[])(_key?.Clone() ?? new byte[0]);
 			}
 
 			set
@@ -431,10 +429,10 @@ namespace ICSharpCode.SharpZipLib.Encryption
 
 				if (value.Length != 12)
 				{
-					throw new CryptographicException("Key size is illegal");
+					throw new CryptographicException("Key size is invalid");
 				}
 
-				key_ = (byte[])value.Clone();
+				_key = (byte[])value.Clone();
 			}
 		}
 
@@ -443,22 +441,22 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public override void GenerateKey()
 		{
-			key_ = new byte[12];
+			_key = new byte[12];
 			var rnd = new Random();
-			rnd.NextBytes(key_);
+			rnd.NextBytes(_key);
 		}
 
 		/// <summary>
 		/// Create an encryptor.
 		/// </summary>
 		/// <param name="rgbKey">The key to use for this encryptor.</param>
-		/// <param name="rgbIV">Initialisation vector for the new encryptor.</param>
+		/// <param name="rgbIV">Initialization vector for the new encryptor.</param>
 		/// <returns>Returns a new PkzipClassic encryptor</returns>
 		public override ICryptoTransform CreateEncryptor(
-			byte[] rgbKey,
-			byte[] rgbIV)
+			byte[]? rgbKey,
+			byte[]? rgbIV)
 		{
-			key_ = rgbKey;
+			_key = rgbKey;
 			return new PkzipClassicEncryptCryptoTransform(Key);
 		}
 
@@ -466,19 +464,19 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// Create a decryptor.
 		/// </summary>
 		/// <param name="rgbKey">Keys to use for this new decryptor.</param>
-		/// <param name="rgbIV">Initialisation vector for the new decryptor.</param>
+		/// <param name="rgbIV">Initialization vector for the new decryptor.</param>
 		/// <returns>Returns a new decryptor.</returns>
 		public override ICryptoTransform CreateDecryptor(
-			byte[] rgbKey,
-			byte[] rgbIV)
+			byte[]? rgbKey,
+			byte[]? rgbIV)
 		{
-			key_ = rgbKey;
+			_key = rgbKey;
 			return new PkzipClassicDecryptCryptoTransform(Key);
 		}
 
 		#region Instance Fields
 
-		private byte[] key_;
+		private byte[]? _key;
 
 		#endregion Instance Fields
 	}

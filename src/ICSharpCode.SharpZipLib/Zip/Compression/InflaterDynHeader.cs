@@ -141,8 +141,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		private byte[] codeLengths = new byte[CODELEN_MAX];
 
-		private InflaterHuffmanTree litLenTree;
-		private InflaterHuffmanTree distTree;
+		private InflaterHuffmanTree? litLenTree;
+		private InflaterHuffmanTree? distTree;
 
 		private int litLenCodeCount, distanceCodeCount, metaCodeCount;
 

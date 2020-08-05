@@ -20,7 +20,7 @@ namespace ICSharpCode.SharpZipLib
 		/// Initializes a new instance of the StreamUnsupportedException class with a specified error message.
 		/// </summary>
 		/// <param name="message">A message describing the exception.</param>
-		public StreamUnsupportedException(string message) : base(message) { }
+		public StreamUnsupportedException(string? message) : base(message) { }
 
 		/// <summary>
 		/// Initializes a new instance of the StreamUnsupportedException class with a specified
@@ -28,7 +28,7 @@ namespace ICSharpCode.SharpZipLib
 		/// </summary>
 		/// <param name="message">A message describing the exception.</param>
 		/// <param name="innerException">The inner exception</param>
-		public StreamUnsupportedException(string message, Exception innerException) : base(message, innerException) { }
+		public StreamUnsupportedException(string? message, Exception? innerException) : base(message, innerException) { }
 
 		/// <summary>
 		/// Initializes a new instance of the StreamUnsupportedException class with serialized data.
@@ -41,7 +41,7 @@ namespace ICSharpCode.SharpZipLib
 		/// The System.Runtime.Serialization.StreamingContext that contains contextual information
 		/// about the source or destination.
 		/// </param>
-		protected StreamUnsupportedException(SerializationInfo info, StreamingContext context)
+		protected StreamUnsupportedException(SerializationInfo? info, StreamingContext context)
 			: base(info, context)
 		{
 		}

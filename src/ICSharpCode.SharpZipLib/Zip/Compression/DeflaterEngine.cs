@@ -82,7 +82,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			this.pending = pending;
 			huffman = new DeflaterHuffman(pending);
 			if (!noAdlerCalculation)
-				adler = new Adler32();
+				adler.Reset();
 
 			window = new byte[2 * DeflaterConstants.WSIZE];
 			head = new short[DeflaterConstants.HASH_SIZE];
@@ -195,7 +195,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <param name="buffer">The buffer containing the dictionary data</param>
 		/// <param name="offset">The offset in the buffer for the first byte of data</param>
 		/// <param name="length">The length of the dictionary data.</param>
-		public void SetDictionary(byte[] buffer, int offset, int length)
+		public void SetDictionary(byte[]? buffer, int offset, int length)
 		{
 #if DebugDeflation
 			if (DeflaterConstants.DEBUGGING && (strstart != 1) )
@@ -916,7 +916,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// The input data for compression.
 		/// </summary>
-		private byte[] inputBuf;
+		private byte[]? inputBuf;
 
 		/// <summary>
 		/// The total bytes of input read.
@@ -939,7 +939,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// The adler checksum
 		/// </summary>
-		private Adler32 adler;
+		private Adler32 adler = new Adler32();
 
 		#endregion Instance Fields
 	}

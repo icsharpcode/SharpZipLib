@@ -1,4 +1,5 @@
 using System;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression
 {
@@ -66,13 +67,13 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 			public short[] freqs;
 
-			public byte[] length;
+			public byte[] length = EmptyRefs.ByteArray;
 
 			public int minNumCodes;
 
 			public int numCodes;
 
-			private short[] codes;
+			private short[] codes = EmptyRefs.Int16Array;
 			private readonly int[] bl_counts;
 			private readonly int maxLength;
 			private DeflaterHuffman dh;
@@ -101,8 +102,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				{
 					freqs[i] = 0;
 				}
-				codes = null;
-				length = null;
+				codes = EmptyRefs.Int16Array;
+				length = EmptyRefs.ByteArray;
 			}
 
 			public void WriteSymbol(int code)
@@ -763,7 +764,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <param name="storedOffset">Index of first byte to write</param>
 		/// <param name="storedLength">Count of bytes to write</param>
 		/// <param name="lastBlock">True if this is the last block</param>
-		public void FlushStoredBlock(byte[] stored, int storedOffset, int storedLength, bool lastBlock)
+		public void FlushStoredBlock(byte[]? stored, int storedOffset, int storedLength, bool lastBlock)
 		{
 #if DebugDeflation
 			//			if (DeflaterConstants.DEBUGGING) {
@@ -785,7 +786,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <param name="storedOffset">Index of first byte to flush</param>
 		/// <param name="storedLength">Count of bytes to flush</param>
 		/// <param name="lastBlock">True if this is the last block</param>
-		public void FlushBlock(byte[] stored, int storedOffset, int storedLength, bool lastBlock)
+		public void FlushBlock(byte[]? stored, int storedOffset, int storedLength, bool lastBlock)
 		{
 			literalTree.freqs[EOF_SYMBOL]++;
 

@@ -141,9 +141,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		private readonly StreamManipulator input;
 		private OutputWindow outputWindow;
-		private InflaterDynHeader dynHeader;
-		private InflaterHuffmanTree litlenTree, distTree;
-		private Adler32 adler;
+		private InflaterDynHeader? dynHeader;
+		private InflaterHuffmanTree? litlenTree, distTree;
+		private Adler32 adler = new Adler32();
 
 		#endregion Instance Fields
 
@@ -172,8 +172,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		public Inflater(bool noHeader)
 		{
 			this.noHeader = noHeader;
-			if (!noHeader)
-				this.adler = new Adler32();
+			if (!noHeader) adler.Reset();
+
 			input = new StreamManipulator();
 			outputWindow = new OutputWindow();
 			mode = noHeader ? DECODE_BLOCKS : DECODE_HEADER;
@@ -290,7 +290,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				{
 					case DECODE_HUFFMAN:
 						// This is the inner loop so it is optimized a bit
-						while (((symbol = litlenTree.GetSymbol(input)) & ~0xff) == 0)
+						while (((symbol = litlenTree!.GetSymbol(input)) & ~0xff) == 0)
 						{
 							outputWindow.Write(symbol);
 							if (--free < 258)
@@ -342,7 +342,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 						goto case DECODE_HUFFMAN_DIST; // fall through
 
 					case DECODE_HUFFMAN_DIST:
-						symbol = distTree.GetSymbol(input);
+						symbol = distTree!.GetSymbol(input);
 						if (symbol < 0)
 						{
 							return false;
@@ -408,9 +408,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				neededBits -= 8;
 			}
 
-			if ((int)adler?.Value != readAdler)
+			if ((int)adler.Value != readAdler)
 			{
-				throw new SharpZipBaseException("Adler chksum doesn't match: " + (int)adler?.Value + " vs. " + readAdler);
+				throw new SharpZipBaseException($"Calculated Adler checksum {adler.Value:x} does not match read checksum {readAdler:x}");
 			}
 
 			mode = FINISHED;
@@ -527,7 +527,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					}
 
 				case DECODE_DYN_HEADER:
-					if (!dynHeader.AttemptRead())
+					if (!dynHeader!.AttemptRead())
 					{
 						return false;
 					}
