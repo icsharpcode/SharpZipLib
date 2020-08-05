@@ -782,6 +782,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				return name;
 			}
+
+			internal set
+			{
+				name = value;
+			}
 		}
 
 		/// <summary>

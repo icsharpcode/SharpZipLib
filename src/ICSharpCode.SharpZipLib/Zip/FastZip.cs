@@ -383,6 +383,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				outputStream_.SetLevel((int)CompressionLevel);
 				outputStream_.IsStreamOwner = !leaveOpen;
+				outputStream_.NameTransform = null; // all required transforms handled by us
 
 				if (password_ != null)
 				{
