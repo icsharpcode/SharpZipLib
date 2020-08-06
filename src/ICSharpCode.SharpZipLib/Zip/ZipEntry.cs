@@ -696,14 +696,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					var utcDate = this.DateTime.ToUniversalTime();
-
-					var year = (uint)utcDate.Year;
-					var month = (uint)utcDate.Month;
-					var day = (uint)utcDate.Day;
-					var hour = (uint)utcDate.Hour;
-					var minute = (uint)utcDate.Minute;
-					var second = (uint)utcDate.Second;
+					var year = (uint)DateTime.Year;
+					var month = (uint)DateTime.Month;
+					var day = (uint)DateTime.Day;
+					var hour = (uint)DateTime.Hour;
+					var minute = (uint)DateTime.Minute;
+					var second = (uint)DateTime.Second;
 
 					if (year < 1980)
 					{
@@ -744,7 +742,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					uint mon = Math.Max(1, Math.Min(12, ((uint)(value >> 21) & 0xf)));
 					uint year = ((dosTime >> 25) & 0x7f) + 1980;
 					int day = Math.Max(1, Math.Min(DateTime.DaysInMonth((int)year, (int)mon), (int)((value >> 16) & 0x1f)));
-					DateTime = new DateTime((int)year, (int)mon, day, (int)hrs, (int)min, (int)sec, DateTimeKind.Utc);
+					DateTime = new DateTime((int)year, (int)mon, day, (int)hrs, (int)min, (int)sec, DateTimeKind.Unspecified);
 				}
 			}
 		}
