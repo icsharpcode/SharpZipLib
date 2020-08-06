@@ -95,17 +95,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				name = name.Replace(@"\", "/");
 				name = WindowsPathUtils.DropPathRoot(name);
 
-				// Drop any leading slashes.
-				while ((name.Length > 0) && (name[0] == '/'))
-				{
-					name = name.Remove(0, 1);
-				}
-
-				// Drop any trailing slashes.
-				while ((name.Length > 0) && (name[name.Length - 1] == '/'))
-				{
-					name = name.Remove(name.Length - 1, 1);
-				}
+				// Drop any leading and trailing slashes.
+				name = name.Trim('/');
 
 				// Convert consecutive // characters to /
 				int index = name.IndexOf("//", StringComparison.Ordinal);
