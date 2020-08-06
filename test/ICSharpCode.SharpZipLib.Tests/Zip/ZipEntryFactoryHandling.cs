@@ -106,6 +106,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					var lastAccessTime = new DateTime(2050, 11, 3, 0, 42, 12);
 
 					string tempFile = Path.Combine(tempDir, "SharpZipTest.Zip");
+					
 					using (FileStream f = File.Create(tempFile, 1024))
 					{
 						f.WriteByte(0);
