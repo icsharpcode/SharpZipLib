@@ -696,12 +696,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					var year = (uint)DateTime.Year;
-					var month = (uint)DateTime.Month;
-					var day = (uint)DateTime.Day;
-					var hour = (uint)DateTime.Hour;
-					var minute = (uint)DateTime.Minute;
-					var second = (uint)DateTime.Second;
+					var utcDate = this.DateTime.ToUniversalTime();
+
+					var year = (uint)utcDate.Year;
+					var month = (uint)utcDate.Month;
+					var day = (uint)utcDate.Day;
+					var hour = (uint)utcDate.Hour;
+					var minute = (uint)utcDate.Minute;
+					var second = (uint)utcDate.Second;
 
 					if (year < 1980)
 					{
