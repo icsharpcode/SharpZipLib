@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2;net45</TargetFrameworks>
     <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>ICSharpCode.SharpZipLib.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>../../assets/ICSharpCode.SharpZipLib.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
