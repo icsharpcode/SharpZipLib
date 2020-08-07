@@ -625,5 +625,45 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				Directory.Delete(targetDir, true);
 			}
 		}
+
+		/// <summary>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/78
+		/// </summary>
+		/// <param name="leaveOpen">if true, the stream given to CreateZip should be left open, if false it should be disposed.</param>
+		[TestCase(true)]
+		[TestCase(false)]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void CreateZipShouldLeaveOutputStreamOpenIfRequested(bool leaveOpen)
+		{
+			const string tempFileName = "a(2).dat";
+
+			using (var tempFolder = new Utils.TempDir())
+			{
+				// Create test input file
+				string addFile = Path.Combine(tempFolder.Fullpath, tempFileName);
+				MakeTempFile(addFile, 16);
+
+				// Create the zip with fast zip
+				var target = new TrackedMemoryStream();
+				var fastZip = new FastZip();
+
+     			fastZip.CreateZip(target, tempFolder.Fullpath, false, @"a\(2\)\.dat", null, leaveOpen: leaveOpen);
+
+				// Check that the output stream was disposed (or not) as expected
+				Assert.That(target.IsDisposed, Is.Not.EqualTo(leaveOpen), "IsDisposed should be the opposite of leaveOpen");
+
+				// Check that the file contents are correct in both cases
+				var archive = new MemoryStream(target.ToArray());
+				using (ZipFile zf = new ZipFile(archive))
+				{
+					Assert.AreEqual(1, zf.Count);
+					ZipEntry entry = zf[0];
+					Assert.AreEqual(tempFileName, entry.Name);
+					Assert.AreEqual(16, entry.Size);
+					Assert.IsTrue(zf.TestArchive(true));
+				}
+			}
+		}
 	}
 }
