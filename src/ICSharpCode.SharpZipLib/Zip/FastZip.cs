@@ -636,14 +636,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 							{
 								buffer_ = new byte[4096];
 							}
-							if ((events_ != null) && (events_.Progress != null))
+
+							using (var inputStream = zipFile_.GetInputStream(entry))
 							{
-								StreamUtils.Copy(zipFile_.GetInputStream(entry), outputStream, buffer_,
-									events_.Progress, events_.ProgressInterval, this, entry.Name, entry.Size);
-							}
-							else
-							{
-								StreamUtils.Copy(zipFile_.GetInputStream(entry), outputStream, buffer_);
+								if ((events_ != null) && (events_.Progress != null))
+								{
+									StreamUtils.Copy(inputStream, outputStream, buffer_,
+										events_.Progress, events_.ProgressInterval, this, entry.Name, entry.Size);
+								}
+								else
+								{
+									StreamUtils.Copy(inputStream, outputStream, buffer_);
+								}
 							}
 
 							if (events_ != null)
