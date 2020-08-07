@@ -4,6 +4,7 @@ using BenchmarkDotNet.Attributes;
 
 namespace ICSharpCode.SharpZipLib.Benchmark.Zip
 {
+	[MemoryDiagnoser]
 	[Config(typeof(MultipleRuntimes))]
 	public class ZipInputStream
 	{
@@ -12,6 +13,7 @@ namespace ICSharpCode.SharpZipLib.Benchmark.Zip
 		private const int N = ChunkCount * ChunkSize;
 
 		byte[] zippedData;
+		byte[] readBuffer = new byte[4096];
 
 		public ZipInputStream()
 		{
@@ -40,10 +42,9 @@ namespace ICSharpCode.SharpZipLib.Benchmark.Zip
 			{
 				using (var zipInputStream = new SharpZipLib.Zip.ZipInputStream(memoryStream))
 				{
-					var buffer = new byte[4096];
 					var entry = zipInputStream.GetNextEntry();
 
-					while (zipInputStream.Read(buffer, 0, buffer.Length) > 0)
+					while (zipInputStream.Read(readBuffer, 0, readBuffer.Length) > 0)
 					{
 
 					}
