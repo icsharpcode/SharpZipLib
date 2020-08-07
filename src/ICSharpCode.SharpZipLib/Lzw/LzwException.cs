@@ -20,7 +20,7 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		/// Initialise a new instance of <see cref="LzwException" /> with its message string.
 		/// </summary>
 		/// <param name="message">A <see cref="string"/> that describes the error.</param>
-		public LzwException(string? message)
+		public LzwException(string message)
 			: base(message)
 		{
 		}
@@ -30,7 +30,7 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		/// </summary>
 		/// <param name="message">A <see cref="string"/> that describes the error.</param>
 		/// <param name="innerException">The <see cref="Exception"/> that caused this exception.</param>
-		public LzwException(string? message, Exception? innerException)
+		public LzwException(string message, Exception innerException)
 			: base(message, innerException)
 		{
 		}
@@ -46,7 +46,7 @@ namespace ICSharpCode.SharpZipLib.Lzw
 		/// The System.Runtime.Serialization.StreamingContext that contains contextual information
 		/// about the source or destination.
 		/// </param>
-		protected LzwException(SerializationInfo? info, StreamingContext context)
+		protected LzwException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 		}

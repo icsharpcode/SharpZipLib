@@ -20,7 +20,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// Initialise a new instance of <see cref="BZip2Exception" /> with its message string.
 		/// </summary>
 		/// <param name="message">A <see cref="string"/> that describes the error.</param>
-		public BZip2Exception(string? message)
+		public BZip2Exception(string message)
 			: base(message)
 		{
 		}
@@ -30,7 +30,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		/// <param name="message">A <see cref="string"/> that describes the error.</param>
 		/// <param name="innerException">The <see cref="Exception"/> that caused this exception.</param>
-		public BZip2Exception(string? message, Exception? innerException)
+		public BZip2Exception(string message, Exception innerException)
 			: base(message, innerException)
 		{
 		}
@@ -46,7 +46,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// The System.Runtime.Serialization.StreamingContext that contains contextual information
 		/// about the source or destination.
 		/// </param>
-		protected BZip2Exception(SerializationInfo? info, StreamingContext context)
+		protected BZip2Exception(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 		}

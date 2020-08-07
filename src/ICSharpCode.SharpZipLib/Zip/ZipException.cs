@@ -20,7 +20,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Initialise a new instance of <see cref="ZipException" /> with its message string.
 		/// </summary>
 		/// <param name="message">A <see cref="string"/> that describes the error.</param>
-		public ZipException(string? message)
+		public ZipException(string message)
 			: base(message)
 		{
 		}
@@ -30,7 +30,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="message">A <see cref="string"/> that describes the error.</param>
 		/// <param name="innerException">The <see cref="Exception"/> that caused this exception.</param>
-		public ZipException(string? message, Exception? innerException)
+		public ZipException(string message, Exception innerException)
 			: base(message, innerException)
 		{
 		}
@@ -46,7 +46,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The System.Runtime.Serialization.StreamingContext that contains contextual information
 		/// about the source or destination.
 		/// </param>
-		protected ZipException(SerializationInfo? info, StreamingContext context)
+		protected ZipException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 		}

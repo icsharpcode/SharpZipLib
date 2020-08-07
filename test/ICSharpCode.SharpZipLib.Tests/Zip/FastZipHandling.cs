@@ -611,7 +611,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				File.Delete(zipName);
 
-				// Check that the empty sub folder exists and has the expected modlfied date
+				// Check that the empty sub folder exists and has the expected modified date
 				string emptyTargetDir = Path.Combine(targetDir, "emptyFolder");
 
 				Assert.That(Directory.Exists(emptyTargetDir), Is.True, "Empty directory should be created");

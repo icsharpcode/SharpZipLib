@@ -2851,7 +2851,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				const int CentralHeaderCommentSizeOffset = 16;
 				updateFile.Position += CentralHeaderCommentSizeOffset;
 
-				byte[] rawComment = newComment_?.RawComment ?? EmptyRefs.ByteArray;
+				byte[] rawComment = newComment_?.RawComment ?? Empty.Array<byte>();
 
 				updateFile.WriteLEShort(rawComment.Length);
 				updateFile.Write(rawComment, 0, rawComment.Length);
@@ -3293,7 +3293,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (isDisposed_) return;
 
 			isDisposed_ = true;
-			entries_ = EmptyRefs.ZipEntryArray;
+			entries_ = Empty.Array<ZipEntry>();
 
 			if (IsStreamOwner && (baseStream_ != null))
 			{
@@ -3729,7 +3729,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private Stream baseStream_;
 		private bool isStreamOwner;
 		private long offsetOfFirstEntry;
-		private ZipEntry[] entries_ = EmptyRefs.ZipEntryArray;
+		private ZipEntry[] entries_ = Empty.Array<ZipEntry>();
 		private byte[]? key;
 		private bool isNewArchive_;
 

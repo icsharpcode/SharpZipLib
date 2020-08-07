@@ -5,7 +5,7 @@ namespace ICSharpCode.SharpZipLib
 {
 	/// <summary>
 	/// Indicates that an error occured during decoding of a input stream due to corrupt
-	/// data or (unintentional) library incompability.
+	/// data or (unintentional) library incompatibility.
 	/// </summary>
 	[Serializable]
 	public class StreamDecodingException : SharpZipBaseException
@@ -21,7 +21,7 @@ namespace ICSharpCode.SharpZipLib
 		/// Initializes a new instance of the StreamDecodingException class with a specified error message.
 		/// </summary>
 		/// <param name="message">A message describing the exception.</param>
-		public StreamDecodingException(string? message) : base(message) { }
+		public StreamDecodingException(string message) : base(message) { }
 
 		/// <summary>
 		/// Initializes a new instance of the StreamDecodingException class with a specified
@@ -29,7 +29,7 @@ namespace ICSharpCode.SharpZipLib
 		/// </summary>
 		/// <param name="message">A message describing the exception.</param>
 		/// <param name="innerException">The inner exception</param>
-		public StreamDecodingException(string? message, Exception? innerException) : base(message, innerException) { }
+		public StreamDecodingException(string message, Exception innerException) : base(message, innerException) { }
 
 		/// <summary>
 		/// Initializes a new instance of the StreamDecodingException class with serialized data.
@@ -42,7 +42,7 @@ namespace ICSharpCode.SharpZipLib
 		/// The System.Runtime.Serialization.StreamingContext that contains contextual information
 		/// about the source or destination.
 		/// </param>
-		protected StreamDecodingException(SerializationInfo? info, StreamingContext context)
+		protected StreamDecodingException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 		}

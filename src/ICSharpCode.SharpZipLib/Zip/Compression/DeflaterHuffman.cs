@@ -67,13 +67,13 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 			public short[] freqs;
 
-			public byte[] length = EmptyRefs.ByteArray;
+			public byte[] length = Empty.Array<byte>();
 
 			public int minNumCodes;
 
 			public int numCodes;
 
-			private short[] codes = EmptyRefs.Int16Array;
+			private short[] codes = Empty.Array<short>();
 			private readonly int[] bl_counts;
 			private readonly int maxLength;
 			private DeflaterHuffman dh;
@@ -102,8 +102,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				{
 					freqs[i] = 0;
 				}
-				codes = EmptyRefs.Int16Array;
-				length = EmptyRefs.ByteArray;
+				codes = Empty.Array<short>();
+				length = Empty.Array<byte>();
 			}
 
 			public void WriteSymbol(int code)

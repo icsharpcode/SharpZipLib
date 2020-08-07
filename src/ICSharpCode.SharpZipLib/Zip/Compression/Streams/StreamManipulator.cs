@@ -287,7 +287,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		#region Instance Fields
 
-		private byte[] window_ = EmptyRefs.ByteArray;
+		private byte[] window_ = Empty.Array<byte>();
 		private int windowStart_;
 		private int windowEnd_;
 

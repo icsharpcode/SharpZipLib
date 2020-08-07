@@ -23,7 +23,7 @@ namespace ICSharpCode.SharpZipLib
 		/// Initializes a new instance of the SharpZipBaseException class with a specified error message.
 		/// </summary>
 		/// <param name="message">A message describing the exception.</param>
-		public SharpZipBaseException(string? message)
+		public SharpZipBaseException(string message)
 			: base(message)
 		{
 		}
@@ -34,7 +34,7 @@ namespace ICSharpCode.SharpZipLib
 		/// </summary>
 		/// <param name="message">A message describing the exception.</param>
 		/// <param name="innerException">The inner exception</param>
-		public SharpZipBaseException(string? message, Exception? innerException)
+		public SharpZipBaseException(string message, Exception innerException)
 			: base(message, innerException)
 		{
 		}
@@ -50,7 +50,7 @@ namespace ICSharpCode.SharpZipLib
 		/// The System.Runtime.Serialization.StreamingContext that contains contextual information
 		/// about the source or destination.
 		/// </param>
-		protected SharpZipBaseException(SerializationInfo? info, StreamingContext context)
+		protected SharpZipBaseException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 		}

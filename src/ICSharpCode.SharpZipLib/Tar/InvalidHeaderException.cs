@@ -18,10 +18,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 
 		/// <summary>
-		/// Initialises a new instance of the InvalidHeaderException class with a specified message.
+		/// Initializes a new instance of the InvalidHeaderException class with a specified message.
 		/// </summary>
 		/// <param name="message">Message describing the exception cause.</param>
-		public InvalidHeaderException(string? message)
+		public InvalidHeaderException(string message)
 			: base(message)
 		{
 		}
@@ -31,7 +31,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <param name="message">Message describing the problem.</param>
 		/// <param name="exception">The exception that is the cause of the current exception.</param>
-		public InvalidHeaderException(string? message, Exception? exception)
+		public InvalidHeaderException(string message, Exception exception)
 			: base(message, exception)
 		{
 		}
@@ -47,7 +47,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// The System.Runtime.Serialization.StreamingContext that contains contextual information
 		/// about the source or destination.
 		/// </param>
-		protected InvalidHeaderException(SerializationInfo? info, StreamingContext context)
+		protected InvalidHeaderException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 		}

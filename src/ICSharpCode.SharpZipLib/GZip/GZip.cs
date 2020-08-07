@@ -18,7 +18,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <param name="outStream">The output stream to receive the decompressed data.</param>
 		/// <param name="isStreamOwner">Both streams are closed on completion if true.</param>
 		/// <exception cref="ArgumentNullException">Input or output stream is null</exception>
-		public static void Decompress(Stream? inStream, Stream? outStream, bool isStreamOwner)
+		public static void Decompress(Stream inStream, Stream outStream, bool isStreamOwner)
 		{
 			if (inStream == null)
 				throw new ArgumentNullException(nameof(inStream), "Input stream is null");
@@ -56,7 +56,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <exception cref="ArgumentNullException">Input or output stream is null</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Buffer Size is smaller than 512</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Compression level outside 0-9</exception>
-		public static void Compress(Stream? inStream, Stream? outStream, bool isStreamOwner, int bufferSize = 512, int level = 6)
+		public static void Compress(Stream inStream, Stream outStream, bool isStreamOwner, int bufferSize = 512, int level = 6)
 		{
 			if (inStream == null)
 				throw new ArgumentNullException(nameof(inStream), "Input stream is null");

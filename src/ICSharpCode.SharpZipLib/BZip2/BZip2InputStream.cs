@@ -56,8 +56,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		private byte[] selector = new byte[BZip2Constants.MaximumSelectors];
 		private byte[] selectorMtf = new byte[BZip2Constants.MaximumSelectors];
 
-		private int[] tt = EmptyRefs.Int32Array;
-		private byte[] ll8 = EmptyRefs.ByteArray;
+		private int[] tt = Empty.Array<int>();
+		private byte[] ll8 = Empty.Array<byte>();
 
 		/*--
 		freq table collected to save a pass over the data

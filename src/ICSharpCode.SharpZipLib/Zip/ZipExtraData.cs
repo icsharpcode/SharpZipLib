@@ -545,7 +545,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			if (_data.Length != 0)
 			{
-				_data = EmptyRefs.ByteArray;
+				_data = Empty.Array<byte>();
 			}
 		}
 
@@ -728,7 +728,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="headerID">The identifier to use for this entry.</param>
 		public void AddNewEntry(int headerID)
 		{
-			byte[] newData = _newEntry?.ToArray() ?? EmptyRefs.ByteArray;
+			byte[] newData = _newEntry?.ToArray() ?? Empty.Array<byte>();
 			_newEntry = null;
 			AddEntry(headerID, newData);
 		}
@@ -954,7 +954,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private int _readValueLength;
 
 		private MemoryStream? _newEntry;
-		private byte[] _data = EmptyRefs.ByteArray;
+		private byte[] _data = Empty.Array<byte>();
 
 		#endregion Instance Fields
 	}

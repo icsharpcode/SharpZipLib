@@ -80,11 +80,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		private char[] selector = new char[BZip2Constants.MaximumSelectors];
 		private char[] selectorMtf = new char[BZip2Constants.MaximumSelectors];
 
-		private byte[] block = EmptyRefs.ByteArray;
-		private int[] quadrant = EmptyRefs.Int32Array;
-		private int[] zptr = EmptyRefs.Int32Array;
-		private short[] szptr = EmptyRefs.Int16Array;
-		private int[] ftab = EmptyRefs.Int32Array;
+		private byte[] block = Empty.Array<byte>();
+		private int[] quadrant = Empty.Array<int>();
+		private int[] zptr = Empty.Array<int>();
+		private short[] szptr = Empty.Array<short>();
+		private int[] ftab = Empty.Array<int>();
 
 		private int nMTF;
 
@@ -1692,7 +1692,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			zptr = new int[n];
 			ftab = new int[65537];
 
-			if (block == EmptyRefs.ByteArray || quadrant == null || zptr == null || ftab == null)
+			if (block == Empty.Array<byte>() || quadrant == null || zptr == null || ftab == null)
 			{
 				//		int totalDraw = (n + 1 + NUM_OVERSHOOT_BYTES) + (n + NUM_OVERSHOOT_BYTES) + n + 65537;
 				//		compressOutOfMemory ( totalDraw, n );

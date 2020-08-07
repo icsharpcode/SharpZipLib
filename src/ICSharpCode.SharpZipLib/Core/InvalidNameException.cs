@@ -20,7 +20,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Initializes a new instance of the InvalidNameException class with a specified error message.
 		/// </summary>
 		/// <param name="message">A message describing the exception.</param>
-		public InvalidNameException(string? message) : base(message)
+		public InvalidNameException(string message) : base(message)
 		{
 		}
 
@@ -30,7 +30,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <param name="message">A message describing the exception.</param>
 		/// <param name="innerException">The inner exception</param>
-		public InvalidNameException(string? message, Exception? innerException) : base(message, innerException)
+		public InvalidNameException(string message, Exception innerException) : base(message, innerException)
 		{
 		}
 
@@ -45,7 +45,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// The System.Runtime.Serialization.StreamingContext that contains contextual information
 		/// about the source or destination.
 		/// </param>
-		protected InvalidNameException(SerializationInfo? info, StreamingContext context)
+		protected InvalidNameException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 		}

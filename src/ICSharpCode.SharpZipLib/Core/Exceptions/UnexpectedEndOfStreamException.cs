@@ -20,7 +20,7 @@ namespace ICSharpCode.SharpZipLib
 		/// Initializes a new instance of the UnexpectedEndOfStreamException class with a specified error message.
 		/// </summary>
 		/// <param name="message">A message describing the exception.</param>
-		public UnexpectedEndOfStreamException(string? message) : base(message) { }
+		public UnexpectedEndOfStreamException(string message) : base(message) { }
 
 		/// <summary>
 		/// Initializes a new instance of the UnexpectedEndOfStreamException class with a specified
@@ -28,7 +28,7 @@ namespace ICSharpCode.SharpZipLib
 		/// </summary>
 		/// <param name="message">A message describing the exception.</param>
 		/// <param name="innerException">The inner exception</param>
-		public UnexpectedEndOfStreamException(string? message, Exception? innerException) : base(message, innerException) { }
+		public UnexpectedEndOfStreamException(string message, Exception innerException) : base(message, innerException) { }
 
 		/// <summary>
 		/// Initializes a new instance of the UnexpectedEndOfStreamException class with serialized data.
@@ -41,7 +41,7 @@ namespace ICSharpCode.SharpZipLib
 		/// The System.Runtime.Serialization.StreamingContext that contains contextual information
 		/// about the source or destination.
 		/// </param>
-		protected UnexpectedEndOfStreamException(SerializationInfo? info, StreamingContext context)
+		protected UnexpectedEndOfStreamException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 		}
