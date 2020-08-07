@@ -81,13 +81,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Gets a flag value of true if the central header has been added for this archive; false if it has not been added.
 		/// </summary>
 		/// <remarks>No further entries can be added once this has been done.</remarks>
-		public bool IsFinished
-		{
-			get
-			{
-				return entries == null;
-			}
-		}
+		public bool IsFinished { get; private set; } = false;
 
 		/// <summary>
 		/// Set the zip file comment.
@@ -216,7 +210,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException(nameof(entry));
 			}
 
-			if (entries == null)
+			if (IsFinished)
 			{
 				throw new InvalidOperationException("ZipOutputStream was finished");
 			}
@@ -744,7 +738,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </exception>
 		public override void Finish()
 		{
-			if (entries == null)
+			if (IsFinished)
 			{
 				return;
 			}
@@ -895,6 +889,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			entries.Clear();
+			IsFinished = true;
 		}
 
 		/// <summary>
