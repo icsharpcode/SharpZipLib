@@ -42,6 +42,42 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			CreateZipWithEncryptedEntries("foo", 0, compressionMethod);
 		}
 
+		/// <summary>
+		/// Test Known zero length encrypted entries with ZipOutputStream.
+		/// These are entries where the entry size is set to 0 ahead of time, so that PutNextEntry will fill in the header and there will be no patching.
+		/// Test with Zip64 on and off, as the logic is different for the two.
+		/// </summary>
+		[Test]
+		public void ZipOutputStreamEncryptEmptyEntries(
+			[Values] UseZip64 useZip64,
+			[Values(0, 128, 256)] int keySize,
+			[Values(CompressionMethod.Stored, CompressionMethod.Deflated)] CompressionMethod compressionMethod)
+		{
+			using (var ms = new MemoryStream())
+			{
+				using (var zipOutputStream = new ZipOutputStream(ms))
+				{
+					zipOutputStream.IsStreamOwner = false;
+					zipOutputStream.Password = "password";
+					zipOutputStream.UseZip64 = useZip64;
+
+					ZipEntry zipEntry = new ZipEntry("emptyEntry")
+					{
+						AESKeySize = keySize,
+						CompressionMethod = compressionMethod,
+						CompressedSize = 0,
+						Crc = 0,
+						Size = 0,
+					};
+
+					zipOutputStream.PutNextEntry(zipEntry);
+					zipOutputStream.CloseEntry();
+				}
+
+				VerifyZipWith7Zip(ms, "password");
+			}
+		}
+
 		[Test]
 		[Category("Encryption")]
 		[Category("Zip")]
