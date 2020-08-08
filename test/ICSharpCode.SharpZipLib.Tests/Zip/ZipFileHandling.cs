@@ -875,13 +875,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			TestDirectoryEntry(new MemoryStreamWithoutSeek());
 		}
 
-		private void TestEncryptedDirectoryEntry(MemoryStream s)
+		private void TestEncryptedDirectoryEntry(MemoryStream s, int aesKeySize)
 		{
 			var outStream = new ZipOutputStream(s);
 			outStream.Password = "Tonto hand me a beer";
 
 			outStream.IsStreamOwner = false;
-			outStream.PutNextEntry(new ZipEntry("YeUnreadableDirectory/"));
+			outStream.PutNextEntry(new ZipEntry("YeUnreadableDirectory/") { AESKeySize = aesKeySize } );
 			outStream.Close();
 
 			var ms2 = new MemoryStream(s.ToArray());
@@ -893,10 +893,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		[Test]
 		[Category("Zip")]
-		public void TestEncryptedDirectoryEntry()
+		public void TestEncryptedDirectoryEntry([Values(0, 128, 256)]int aesKeySize)
 		{
-			TestEncryptedDirectoryEntry(new MemoryStream());
-			TestEncryptedDirectoryEntry(new MemoryStreamWithoutSeek());
+			TestEncryptedDirectoryEntry(new MemoryStream(), aesKeySize);
+			TestEncryptedDirectoryEntry(new MemoryStreamWithoutSeek(), aesKeySize);
 		}
 
 		[Test]
