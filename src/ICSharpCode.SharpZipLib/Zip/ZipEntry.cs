@@ -742,7 +742,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					uint mon = Math.Max(1, Math.Min(12, ((uint)(value >> 21) & 0xf)));
 					uint year = ((dosTime >> 25) & 0x7f) + 1980;
 					int day = Math.Max(1, Math.Min(DateTime.DaysInMonth((int)year, (int)mon), (int)((value >> 16) & 0x1f)));
-					DateTime = new DateTime((int)year, (int)mon, day, (int)hrs, (int)min, (int)sec, DateTimeKind.Utc);
+					DateTime = new DateTime((int)year, (int)mon, day, (int)hrs, (int)min, (int)sec, DateTimeKind.Unspecified);
 				}
 			}
 		}

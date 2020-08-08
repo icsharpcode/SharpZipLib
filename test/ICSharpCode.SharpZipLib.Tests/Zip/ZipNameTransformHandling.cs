@@ -80,10 +80,16 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void FilenameCleaning()
 		{
-			Assert.AreEqual(0, string.Compare(ZipEntry.CleanName("hello"), "hello", StringComparison.Ordinal));
-			Assert.AreEqual(0, string.Compare(ZipEntry.CleanName(@"z:\eccles"), "eccles", StringComparison.Ordinal));
-			Assert.AreEqual(0, string.Compare(ZipEntry.CleanName(@"\\server\share\eccles"), "eccles", StringComparison.Ordinal));
-			Assert.AreEqual(0, string.Compare(ZipEntry.CleanName(@"\\server\share\dir\eccles"), "dir/eccles", StringComparison.Ordinal));
+			Assert.AreEqual(ZipEntry.CleanName("hello"), "hello");
+			if(Environment.OSVersion.Platform == PlatformID.Win32NT) 
+			{
+				Assert.AreEqual(ZipEntry.CleanName(@"z:\eccles"), "eccles");
+				Assert.AreEqual(ZipEntry.CleanName(@"\\server\share\eccles"), "eccles");
+				Assert.AreEqual(ZipEntry.CleanName(@"\\server\share\dir\eccles"), "dir/eccles");
+			}
+			else {
+				Assert.AreEqual(ZipEntry.CleanName(@"/eccles"), "eccles");
+			}
 		}
 
 		[Test]

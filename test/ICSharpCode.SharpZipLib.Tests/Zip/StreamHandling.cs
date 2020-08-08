@@ -244,11 +244,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			using (var dummyZip = Utils.GetDummyFile(0))
 			using (var inputFile = Utils.GetDummyFile(contentLength))
 			{
+				// Filename is manually cleaned here to prevent this test from failing while ZipEntry doesn't automatically clean it
+				var inputFileName = ZipEntry.CleanName(inputFile.Filename);
+
 				using (var zipFileStream = File.OpenWrite(dummyZip.Filename))
 				using (var zipOutputStream = new ZipOutputStream(zipFileStream))
 				using (var inputFileStream = File.OpenRead(inputFile.Filename))
 				{
-					zipOutputStream.PutNextEntry(new ZipEntry(inputFile.Filename)
+					zipOutputStream.PutNextEntry(new ZipEntry(inputFileName)
 					{
 						CompressionMethod = CompressionMethod.Stored,
 					});
@@ -260,7 +263,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				{
 					var inputBytes = File.ReadAllBytes(inputFile.Filename);
 
-					var inputFileName = ZipEntry.CleanName(inputFile.Filename);
 					var entry = zf.GetEntry(inputFileName);
 					Assert.IsNotNull(entry, "No entry matching source file \"{0}\" found in archive, found \"{1}\"", inputFileName, zf[0].Name);
 
@@ -279,6 +281,35 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 
 				
+			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		[Category("KnownBugs")]
+		public void ZipEntryFileNameAutoClean()
+		{
+			using (var dummyZip = Utils.GetDummyFile(0))
+			using (var inputFile = Utils.GetDummyFile()) {
+				using (var zipFileStream = File.OpenWrite(dummyZip.Filename))
+				using (var zipOutputStream = new ZipOutputStream(zipFileStream))
+				using (var inputFileStream = File.OpenRead(inputFile.Filename))
+				{
+					zipOutputStream.PutNextEntry(new ZipEntry(inputFile.Filename)
+					{
+						CompressionMethod = CompressionMethod.Stored,
+					});
+
+					inputFileStream.CopyTo(zipOutputStream);
+				}
+
+				using (var zf = new ZipFile(dummyZip.Filename))
+				{
+					Assert.AreNotEqual(ZipEntry.CleanName(inputFile.Filename), zf[0].Name, 
+						"Entry file name \"{0}\" WAS automatically cleaned, this test should be removed", inputFile.Filename);
+				}
+
+				Assert.Warn("Entry file name \"{0}\" was not automatically cleaned", inputFile.Filename);
 			}
 		}
 

@@ -2,12 +2,20 @@
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
 	[TestFixture]
 	public class WindowsNameTransformHandling : TransformBase
 	{
+		[OneTimeSetUp]
+		public void TestInit() {
+			if (Path.DirectorySeparatorChar != '\\') {
+				Assert.Inconclusive("WindowsNameTransform will not work on platforms not using '\\' directory separators");
+			}
+		}
+
 		[Test]
 		public void BasicFiles()
 		{
