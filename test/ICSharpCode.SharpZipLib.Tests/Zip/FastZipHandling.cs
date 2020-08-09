@@ -238,7 +238,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					nameCount++;
 				}
 
-				zippy.CreateZip(tempZip.Filename, tempDir.Fullpath, true, null, null);
+				zippy.CreateZip(tempZip.Filename, tempDir.Fullpath, true, null);
 
 				using (ZipFile z = new ZipFile(tempZip.Filename))
 				{

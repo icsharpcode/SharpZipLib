@@ -376,6 +376,49 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="leaveOpen">true to leave <paramref name="outputStream"/> open after the zip has been created, false to dispose it.</param>
 		public void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, string fileFilter, string directoryFilter, bool leaveOpen)
 		{
+			var scanner = new FileSystemScanner(fileFilter, directoryFilter);
+			CreateZip(outputStream, sourceDirectory, recurse, scanner, leaveOpen);
+		}
+
+		/// <summary>
+		/// Create a zip file.
+		/// </summary>
+		/// <param name="zipFileName">The name of the zip file to create.</param>
+		/// <param name="sourceDirectory">The directory to source files from.</param>
+		/// <param name="recurse">True to recurse directories, false for no recursion.</param>
+		/// <param name="fileFilter">The <see cref="IScanFilter">file filter</see> to apply.</param>
+		/// <param name="directoryFilter">The <see cref="IScanFilter">directory filter</see> to apply.</param>
+		public void CreateZip(string zipFileName, string sourceDirectory,
+			bool recurse, IScanFilter fileFilter, IScanFilter directoryFilter)
+		{
+			CreateZip(File.Create(zipFileName), sourceDirectory, recurse, fileFilter, directoryFilter, false);
+		}
+
+		/// <summary>
+		/// Create a zip archive sending output to the <paramref name="outputStream"/> passed.
+		/// </summary>
+		/// <param name="outputStream">The stream to write archive data to.</param>
+		/// <param name="sourceDirectory">The directory to source files from.</param>
+		/// <param name="recurse">True to recurse directories, false for no recursion.</param>
+		/// <param name="fileFilter">The <see cref="IScanFilter">file filter</see> to apply.</param>
+		/// <param name="directoryFilter">The <see cref="IScanFilter">directory filter</see> to apply.</param>
+		/// <param name="leaveOpen">true to leave <paramref name="outputStream"/> open after the zip has been created, false to dispose it.</param>
+		public void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, IScanFilter fileFilter, IScanFilter directoryFilter, bool leaveOpen = false)
+		{
+			var scanner = new FileSystemScanner(fileFilter, directoryFilter);
+			CreateZip(outputStream, sourceDirectory, recurse, scanner, leaveOpen);
+		}
+
+		/// <summary>
+		/// Create a zip archive sending output to the <paramref name="outputStream"/> passed.
+		/// </summary>
+		/// <param name="outputStream">The stream to write archive data to.</param>
+		/// <param name="sourceDirectory">The directory to source files from.</param>
+		/// <param name="recurse">True to recurse directories, false for no recursion.</param>
+		/// <param name="scanner">For performing the actual file system scan</param>
+		/// <remarks>The <paramref name="outputStream"/> is closed after creation.</remarks>
+		private void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, FileSystemScanner scanner, bool leaveOpen)
+		{
 			NameTransform = new ZipNameTransform(sourceDirectory);
 			sourceDirectory_ = sourceDirectory;
 
@@ -390,7 +433,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				outputStream_.UseZip64 = UseZip64;
-				var scanner = new FileSystemScanner(fileFilter, directoryFilter);
 				scanner.ProcessFile += ProcessFile;
 				if (this.CreateEmptyDirectories)
 				{
