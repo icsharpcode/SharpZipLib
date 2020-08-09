@@ -105,6 +105,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 						Assert.AreEqual(DummyDataString, content, "Decompressed content does not match input data");
 					}
 				}
+
+				Assert.That(zipFile.TestArchive(false), Is.True, "Encrypted archive should pass validation.");
 			}
 		}
 
