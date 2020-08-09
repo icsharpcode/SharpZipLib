@@ -1,4 +1,5 @@
 using ICSharpCode.SharpZipLib.Checksum;
+using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
@@ -147,6 +148,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Used for transforming the names of entries added by <see cref="PutNextEntry(ZipEntry)"/>.
+		/// Defaults to <see cref="PathTransformer"/>, set to null to disable transforms and use names as supplied.
+		/// </summary>
+		public INameTransform NameTransform { get; set; } = new PathTransformer();
+
+		/// <summary>
 		/// Write an unsigned short in little endian byte order.
 		/// </summary>
 		private void WriteLeShort(int value)
@@ -179,6 +186,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				WriteLeInt((int)value);
 				WriteLeInt((int)(value >> 32));
+			}
+		}
+
+		// Apply any configured transforms/cleaning to the name of the supplied entry.
+		private void TransformEntryName(ZipEntry entry)
+		{
+			if (this.NameTransform != null)
+			{
+				if (entry.IsDirectory)
+				{
+					entry.Name = this.NameTransform.TransformDirectory(entry.Name);
+				}
+				else
+				{
+					entry.Name = this.NameTransform.TransformFile(entry.Name);
+				}
 			}
 		}
 
@@ -367,6 +390,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
+			// Apply any required transforms to the entry name, and then convert to byte array format.
+			TransformEntryName(entry);
 			byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
 
 			if (name.Length > 0xFFFF)
