@@ -425,6 +425,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="sourceDirectory">The directory to source files from.</param>
 		/// <param name="recurse">True to recurse directories, false for no recursion.</param>
 		/// <param name="scanner">For performing the actual file system scan</param>
+		/// <param name="leaveOpen">true to leave <paramref name="outputStream"/> open after the zip has been created, false to dispose it.</param>
 		/// <remarks>The <paramref name="outputStream"/> is closed after creation.</remarks>
 		private void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, FileSystemScanner scanner, bool leaveOpen)
 		{
