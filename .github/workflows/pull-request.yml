@@ -73,7 +73,6 @@ jobs:
       run: dotnet test -c ${{ matrix.configuration }} -f net45
 
   Pack:
-    if: 1 == 2
     needs: [Build, Test]
     runs-on: windows-latest
     env:
@@ -99,7 +98,7 @@ jobs:
       run: dotnet pack src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj --configuration Release --output dist /p:Version=$(git describe --abbrev | % { $_.substring(1) })-PR
       
     - name: Upload nuget package artifact
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: Nuget package
         path: dist/*.nupkg

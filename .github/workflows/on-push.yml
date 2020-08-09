@@ -1,6 +1,8 @@
-name: On Push
+name: Build master on push
 
-on: [push]
+on:
+  push:
+    branches: [ master ]
 
 jobs:
   BuildAndTest:
