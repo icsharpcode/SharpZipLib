@@ -286,7 +286,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		[Test]
 		[Category("Zip")]
-		[Category("KnownBugs")]
 		public void ZipEntryFileNameAutoClean()
 		{
 			using (var dummyZip = Utils.GetDummyFile(0))
@@ -295,6 +294,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				using (var zipOutputStream = new ZipOutputStream(zipFileStream))
 				using (var inputFileStream = File.OpenRead(inputFile.Filename))
 				{
+					// New ZipEntry created with a full file name path as it's name
 					zipOutputStream.PutNextEntry(new ZipEntry(inputFile.Filename)
 					{
 						CompressionMethod = CompressionMethod.Stored,
@@ -305,11 +305,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				using (var zf = new ZipFile(dummyZip.Filename))
 				{
-					Assert.AreNotEqual(ZipEntry.CleanName(inputFile.Filename), zf[0].Name, 
-						"Entry file name \"{0}\" WAS automatically cleaned, this test should be removed", inputFile.Filename);
+					// The ZipEntry name should have been automatically cleaned
+					Assert.AreEqual(ZipEntry.CleanName(inputFile.Filename), zf[0].Name);
 				}
-
-				Assert.Warn("Entry file name \"{0}\" was not automatically cleaned", inputFile.Filename);
 			}
 		}
 
