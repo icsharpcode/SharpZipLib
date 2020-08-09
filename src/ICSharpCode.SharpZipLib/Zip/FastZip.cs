@@ -227,6 +227,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Get / set the method of encrypting entries.
+		/// </summary>
+		/// <remarks>
+		/// Only applies when <see cref="Password"/> is set.
+		/// Defaults to ZipCrypto for backwards compatibility purposes.
+		/// </remarks>
+		public ZipEncryptionMethod EntryEncryptionMethod { get; set; } = ZipEncryptionMethod.ZipCrypto;
+
+		/// <summary>
 		/// Get or set the <see cref="INameTransform"></see> active when creating Zip files.
 		/// </summary>
 		/// <seealso cref="EntryFactory"></seealso>
@@ -428,7 +437,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				outputStream_.IsStreamOwner = !leaveOpen;
 				outputStream_.NameTransform = null; // all required transforms handled by us
 
-				if (password_ != null)
+				if (false == string.IsNullOrEmpty(password_) && EntryEncryptionMethod != ZipEncryptionMethod.None)
 				{
 					outputStream_.Password = password_;
 				}
@@ -597,6 +606,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 					using (FileStream stream = File.Open(e.Name, FileMode.Open, FileAccess.Read, FileShare.Read))
 					{
 						ZipEntry entry = entryFactory_.MakeFileEntry(e.Name);
+
+						// Set up AES encryption for the entry if required.
+						ConfigureEntryEncryption(entry);
+
 						outputStream_.PutNextEntry(entry);
 						AddFileContents(e.Name, stream);
 					}
@@ -612,6 +625,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 						continueRunning_ = false;
 						throw;
 					}
+				}
+			}
+		}
+
+		// Set up the encryption method to use for the specific entry.
+		private void ConfigureEntryEncryption(ZipEntry entry)
+		{
+			// Only alter the entries options if AES isn't already enabled for it
+			// (it might have been set up by the entry factory, and if so we let that take precedence)
+			if (!string.IsNullOrEmpty(Password) && entry.AESEncryptionStrength == 0)
+			{
+				switch (EntryEncryptionMethod)
+				{
+					case ZipEncryptionMethod.AES128:
+						entry.AESKeySize = 128;
+						break;
+
+					case ZipEncryptionMethod.AES256:
+						entry.AESKeySize = 256;
+						break;
 				}
 			}
 		}
