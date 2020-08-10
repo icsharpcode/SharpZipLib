@@ -6,19 +6,19 @@ on:
 
 jobs:
   Build:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
-        configuration: ['Debug', 'Release']
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        configuration: [debug, release]
+        os: [ubuntu, windows, macos]
         target: [netstandard2]
         include:
           - configuration: Debug
-            os: windows-latest
+            os: windows
             target: net45
           - configuration: Release
-            os: windows-latest
+            os: windows
             target: net45
     steps:
     - uses: actions/checkout@v2
@@ -33,19 +33,19 @@ jobs:
       run: dotnet build -c ${{ matrix.configuration }} -f ${{ matrix.target }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
 
   Test:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
-        configuration: ['Debug', 'Release']
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        configuration: [debug, release]
+        os: [ubuntu, windows, macos]
         target: [netcoreapp3.1]
         include:
-          - configuration: Debug
-            os: windows-latest
+          - configuration: debug
+            os: windows
             target: net45
-          - configuration: Release
-            os: windows-latest
+          - configuration: release
+            os: windows
             target: net45
     steps:
     - uses: actions/checkout@v2

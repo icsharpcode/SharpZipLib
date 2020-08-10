@@ -9,21 +9,21 @@ on:
 
 jobs:
   BuildAndTest:
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
-        configuration: ['Debug', 'Release']
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        configuration: [debug, release]
+        os: [ubuntu, windows, macos]
         libtarget: [netstandard2]
         testtarget: [netcoreapp3.1]
         include:
-          - configuration: Debug
-            os: windows-latest
+          - configuration: debug
+            os: windows
             libtarget: net45
             testtarget: net45
-          - configuration: Release
-            os: windows-latest
+          - configuration: release
+            os: windows
             libtarget: net45
             testtarget: net45
     steps:
