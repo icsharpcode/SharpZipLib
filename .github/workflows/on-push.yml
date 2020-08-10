@@ -15,8 +15,8 @@ jobs:
       matrix:
         configuration: ['Debug', 'Release']
         os: [ubuntu-latest, windows-latest, macos-latest]
-        libtarget: netstandard2
-        testtarget: netcoreapp3.1
+        libtarget: [netstandard2]
+        testtarget: [netcoreapp3.1]
         include:
           - os: windows-latest
             libtarget: net45
