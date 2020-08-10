@@ -11,16 +11,14 @@ jobs:
   BuildAndTest:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         configuration: ['Debug', 'Release']
         os: [ubuntu-latest, windows-latest, macos-latest]
+        target: netstandard2
         include:
           - os: windows-latest
-            libframework: net45
-          - os: ubuntu-latest
-            libframework: netstandard2
-          - os: macos-latest
-            libframework: netstandard2
+          target: net45
     steps:
     - uses: actions/checkout@v2
       
@@ -45,7 +43,7 @@ jobs:
         
 
   Package:
-	if: env.PUBLISH_DEV_PACKS != 'disabled'
+    if: env.PUBLISH_DEV_PACKS != 'disabled'
     needs: [BuildAndTest]
     runs-on: windows-latest
     env:
