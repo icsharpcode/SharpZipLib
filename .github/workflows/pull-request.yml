@@ -12,21 +12,21 @@ jobs:
       matrix:
         configuration: ['Debug', 'Release']
         os: [ubuntu-latest, windows-latest, macos-latest]
-        target: netstandard2
+        target-framework: netstandard2
         include:
           - os: windows-latest
-            target: net45
+            target-framework: net45
     steps:
     - uses: actions/checkout@v2
       
     - name: Setup .NET Core
-      if: matrix.target == 'netstandard2'
+      if: matrix.target-framework == 'netstandard2'
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.x'
 
     - name: Build library
-      run: dotnet build -c ${{ matrix.configuration }} -f ${{ matrix.target }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      run: dotnet build -c ${{ matrix.configuration }} -f ${{ matrix.target-framework }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
 
   Test:
     runs-on: ${{ matrix.os }}
@@ -35,15 +35,15 @@ jobs:
       matrix:
         configuration: ['Debug', 'Release']
         os: [ubuntu-latest, windows-latest, macos-latest]
-        target: netstandard2
+        target-framework: netstandard2
         include:
           - os: windows-latest
-            target: net45
+          target-framework: net45
     steps:
     - uses: actions/checkout@v2
       
     - name: Setup .NET Core
-      if: matrix.target == 'netcoreapp3.1'
+      if: matrix.target-framework == 'netcoreapp3.1'
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.x'
@@ -52,7 +52,7 @@ jobs:
       run: dotnet restore
 
     - name: Run tests
-      run: dotnet test -c ${{ matrix.configuration }} -f ${{ matrix.target }} --no-restore
+      run: dotnet test -c ${{ matrix.configuration }} -f ${{ matrix.target-framework }} --no-restore
 
   Pack:
     needs: [Build, Test]
