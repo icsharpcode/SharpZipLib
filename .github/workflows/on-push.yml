@@ -15,31 +15,29 @@ jobs:
       matrix:
         configuration: ['Debug', 'Release']
         os: [ubuntu-latest, windows-latest, macos-latest]
-        target: netstandard2
+        libtarget: netstandard2
+        testtarget: netcoreapp3.1
         include:
           - os: windows-latest
-          target: net45
+          libtarget: net45
+          testtarget: net45
     steps:
     - uses: actions/checkout@v2
       
     - name: Setup .NET Core
-      if: matrix.libframework == 'netstandard2'
+      if: matrix.libtarget == 'netstandard2'
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.x'
 
     - name: Build library
-      run: dotnet build -c ${{ matrix.configuration }} -f ${{ matrix.libframework }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      run: dotnet build -c ${{ matrix.configuration }} -f ${{ matrix.libtarget }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
       
     - name: Restore test dependencies
-      run: dotnet restore test/ICSharpCode.SharpZipLib.Tests/ICSharpCode.SharpZipLib.Tests.csproj
+      run: dotnet restore
 
-    - name: Run tests (.NET Core)
-      run: dotnet test -c ${{ matrix.configuration }} -f netcoreapp2.0
-      
-    - name: Run tests (.NET Framework)
-      if: matrix.os == 'windows'
-      run: dotnet test -c ${{ matrix.configuration }} -f net45
+    - name: Run tests
+      run: dotnet test -c ${{ matrix.configuration }} -f ${{ matrix.testtarget }} --no-restore
         
 
   Package:
