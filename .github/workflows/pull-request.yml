@@ -38,7 +38,7 @@ jobs:
         target-framework: netstandard2
         include:
           - os: windows-latest
-          target-framework: net45
+            target-framework: net45
     steps:
     - uses: actions/checkout@v2
       
