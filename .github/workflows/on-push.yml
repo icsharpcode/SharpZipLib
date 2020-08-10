@@ -18,7 +18,12 @@ jobs:
         libtarget: [netstandard2]
         testtarget: [netcoreapp3.1]
         include:
-          - os: windows-latest
+          - configuration: Debug
+            os: windows-latest
+            libtarget: net45
+            testtarget: net45
+          - configuration: Release
+            os: windows-latest
             libtarget: net45
             testtarget: net45
     steps:

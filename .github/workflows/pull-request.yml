@@ -14,7 +14,11 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         target: [netstandard2]
         include:
-          - os: windows-latest
+          - configuration: Debug
+            os: windows-latest
+            target: net45
+          - configuration: Release
+            os: windows-latest
             target: net45
     steps:
     - uses: actions/checkout@v2
@@ -35,9 +39,13 @@ jobs:
       matrix:
         configuration: ['Debug', 'Release']
         os: [ubuntu-latest, windows-latest, macos-latest]
-        target: [netstandard2]
+        target: [netcoreapp3.1]
         include:
-          - os: windows-latest
+          - configuration: Debug
+            os: windows-latest
+            target: net45
+          - configuration: Release
+            os: windows-latest
             target: net45
     steps:
     - uses: actions/checkout@v2
