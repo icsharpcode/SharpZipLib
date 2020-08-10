@@ -1,5 +1,8 @@
 name: Build master on push
 
+env:
+  PUBLISH_DEV_PACKS: disabled
+
 on:
   push:
     branches: [ master ]
@@ -25,7 +28,7 @@ jobs:
       if: matrix.libframework == 'netstandard2'
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 2.2.108
+        dotnet-version: '3.1.x'
 
     - name: Build library
       run: dotnet build -c ${{ matrix.configuration }} -f ${{ matrix.libframework }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
@@ -42,7 +45,7 @@ jobs:
         
 
   Package:
-    if: 1 == 2
+	if: env.PUBLISH_DEV_PACKS != 'disabled'
     needs: [BuildAndTest]
     runs-on: windows-latest
     env:
@@ -52,16 +55,12 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-     #   ref: v1.2.0
       
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 2.2.108
+        dotnet-version: '3.1.x'
         source-url: https://nuget.pkg.github.com/icsharpcode/index.json
-        
-    #- name: Fix sourcelink
-    #  run: git fetch && git checkout origin/master -- src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj assets/ICSharpCode.SharpZipLib.snk
 
     - name: Build library for .NET Standard 2
       run: dotnet build -c Release -f netstandard2 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
@@ -75,5 +74,5 @@ jobs:
       run: ls dist\*.nupkg
       
     - name: Publish the package to GPR
-      if: false == true
+      if: env.PUBLISH_DEV_PACKS == 'enabled'
       run: dotnet nuget push dist\*.nupkg

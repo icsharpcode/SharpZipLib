@@ -25,7 +25,7 @@ jobs:
       if: matrix.libframework == 'netstandard2'
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 2.2.108
+        dotnet-version: '3.1.x'
 
     - name: Build library
       run: dotnet build -c ${{ matrix.configuration }} -f ${{ matrix.libframework }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
@@ -60,7 +60,7 @@ jobs:
       if: matrix.libframework == 'netstandard2'
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 2.2.108
+        dotnet-version: '3.1.x'
 
     - name: Restore test dependencies
       run: dotnet restore
@@ -86,8 +86,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 2.2.108
-        source-url: https://nuget.pkg.github.com/icsharpcode/index.json
+        dotnet-version: '3.1.x'
         
     - name: Build library for .NET Standard 2
       run: dotnet build -c Release -f netstandard2 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
