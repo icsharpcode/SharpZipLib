@@ -30,7 +30,7 @@ jobs:
 
   Test:
     runs-on: ${{ matrix.os }}
-	  strategy:
+    strategy:
       fail-fast: false
       matrix:
         configuration: ['Debug', 'Release']

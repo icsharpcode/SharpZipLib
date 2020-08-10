@@ -19,8 +19,8 @@ jobs:
         testtarget: netcoreapp3.1
         include:
           - os: windows-latest
-          libtarget: net45
-          testtarget: net45
+            libtarget: net45
+            testtarget: net45
     steps:
     - uses: actions/checkout@v2
       
