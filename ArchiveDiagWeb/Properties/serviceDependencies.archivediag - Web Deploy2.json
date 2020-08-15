@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "storage1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroup')]/providers/Microsoft.Storage/storageAccounts/archivediagstore",
+      "type": "storage.azure",
+      "connectionId": "ArchiveDiagStorage",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

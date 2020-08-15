@@ -1,0 +1,59 @@
+﻿@page
+@model ArchiveDiagWeb.DefaultModel
+@{
+    ViewData["Title"] = "ArhiveDiag";
+}
+<form method="post" enctype="multipart/form-data">
+	<input type="file" asp-for="Upload" />
+
+</form>
+
+<div id="status"></div>
+<a id="reportLink"></a>
+<pre id="error"></pre>
+
+
+<script>
+
+	const checkStatus = jobId => fetch(`https://archivediagstore.blob.core.windows.net/jobs/${jobId}`).then(r => {
+		if (!r.ok) {
+			document.querySelector('#status').innerText = `Status: could not retrieve status... (${r.statusText})`;
+			setTimeout(() => checkStatus(jobId), 1000);
+			return;
+		}
+		r.json().then(job => {
+			if (job.Status === 'done') {
+				const link = document.querySelector('#reportLink');
+				link.href = `https://archivediagstore.blob.core.windows.net/reports/${jobId}.html`;
+				link.text = link.href;
+			} else {
+				document.querySelector('#status').innerText = `Status: ${job.Status}`;
+				setTimeout(() => checkStatus(jobId), 1000);
+			}
+		}), r => {
+			document.querySelector('#status').innerText = `Status: could not retrieve status... (${r})`;
+			setTimeout(() => checkStatus(jobId), 1000);
+	}});
+
+	document.querySelector('input[type=file]').addEventListener('change', () => {
+		const statusText = document.querySelector('#status');
+		const form = document.querySelector('form');
+		statusText.innerText = `Status: Uploading...`;
+		form.disabled = true;
+		const formData = new FormData(form);
+		fetch('/',
+			{
+				method: 'POST',
+				body: formData
+			}).then(r => r.json().then(response => {
+					console.log(response);
+					statusText.innerText = `Status: ${response.result}`;
+					if (response.result !== 'error') {
+						checkStatus(response.id);
+					} else {
+						document.querySelector('#error').innerText = response.error;
+					}
+			}	
+		)).catch(error => console.log(error));
+	}, false);
+</script>

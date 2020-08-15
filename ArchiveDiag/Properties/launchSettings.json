@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ArchiveDiag": {
+      "commandName": "Project",
+      "commandLineArgs": "-e D:\\shared\\testScript.csx"
+    }
+  }
+}
