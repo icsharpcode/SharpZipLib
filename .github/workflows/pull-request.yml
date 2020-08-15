@@ -1,0 +1,93 @@
+name: Build and Test PR
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  Build:
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [debug, release]
+        os: [ubuntu, windows, macos]
+        target: [netstandard2]
+        include:
+          - configuration: Debug
+            os: windows
+            target: net45
+          - configuration: Release
+            os: windows
+            target: net45
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      if: matrix.target == 'netstandard2'
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+
+    - name: Build library
+      run: dotnet build -c ${{ matrix.configuration }} -f ${{ matrix.target }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+
+  Test:
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [debug, release]
+        os: [ubuntu, windows, macos]
+        target: [netcoreapp3.1]
+        include:
+          - configuration: debug
+            os: windows
+            target: net45
+          - configuration: release
+            os: windows
+            target: net45
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      if: matrix.target == 'netcoreapp3.1'
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+
+    - name: Restore test dependencies
+      run: dotnet restore
+
+    - name: Run tests
+      run: dotnet test -c ${{ matrix.configuration }} -f ${{ matrix.target }} --no-restore
+
+  Pack:
+    needs: [Build, Test]
+    runs-on: windows-latest
+    env:
+      NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+        
+    - name: Build library for .NET Standard 2
+      run: dotnet build -c Release -f netstandard2 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+    - name: Build library for .NET Framework 4.5
+      run: dotnet build -c Release -f net45 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+
+    - name: Create nuget package
+      run: dotnet pack src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj --configuration Release --output dist /p:Version=$(git describe --abbrev | % { $_.substring(1) })-PR
+      
+    - name: Upload nuget package artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Nuget package
+        path: dist/*.nupkg
