@@ -400,7 +400,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		/// <summary>
-		/// ZipInputStream can't decrypt AES encrypted entries, but it should repot that to the caller
+		/// ZipInputStream can't decrypt AES encrypted entries, but it should report that to the caller
 		/// rather than just failing.
 		/// </summary>
 		[Test]
