@@ -437,6 +437,40 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+		/// <summary>
+		/// ZipInputStream can't decrypt AES encrypted entries, but it should report that to the caller
+		/// rather than just failing.
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void ZipinputStreamShouldGracefullyFailWithAESStreams()
+		{
+			string password = "password";
+
+			using (var memoryStream = new MemoryStream())
+			{
+				// Try to create a zip stream
+				WriteEncryptedZipToStream(memoryStream, password, 256);
+
+				// reset
+				memoryStream.Seek(0, SeekOrigin.Begin);
+
+				// Try to read
+				using (var inputStream = new ZipInputStream(memoryStream))
+				{
+					inputStream.Password = password;
+					var entry = inputStream.GetNextEntry();
+					Assert.That(entry.AESKeySize, Is.EqualTo(256), "Test entry should be AES256 encrypted.");
+
+					// CanDecompressEntry should be false.
+					Assert.That(inputStream.CanDecompressEntry, Is.False, "CanDecompressEntry should be false for AES encrypted entries");
+
+					// Should throw on read.
+					Assert.Throws<ZipException>(() => inputStream.ReadByte());
+				}
+			}
+		}
+
 		private static readonly string[] possible7zPaths = new[] {
 			// Check in PATH
 			"7z", "7za",
