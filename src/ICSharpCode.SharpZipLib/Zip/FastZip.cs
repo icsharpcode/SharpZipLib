@@ -783,7 +783,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// TODO: Fire delegate/throw exception were compression method not supported, or name is invalid?
 
-			string dirName = null;
+			string dirName = string.Empty;
 
 			if (doExtraction)
 			{
@@ -803,11 +803,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					try
 					{
-						Directory.CreateDirectory(dirName);
-
-						if (entry.IsDirectory && restoreDateTimeOnExtract_)
+						continueRunning_ = events_?.OnProcessDirectory(dirName, true) ?? true;
+						if (continueRunning_)
 						{
-							Directory.SetLastWriteTime(dirName, entry.DateTime);
+							Directory.CreateDirectory(dirName);
+							if (entry.IsDirectory && restoreDateTimeOnExtract_)
+							{
+								Directory.SetLastWriteTime(dirName, entry.DateTime);
+							}
+						}
+						else
+						{
+							doExtraction = false;
 						}
 					}
 					catch (Exception ex)
