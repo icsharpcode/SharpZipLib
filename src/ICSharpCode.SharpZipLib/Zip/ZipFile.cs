@@ -1289,7 +1289,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						// If so until details are known we will be strict.
 						if (entry.IsCrypted)
 						{
-							if (compressedSize > ZipConstants.CryptoHeaderSize + 2)
+							if (compressedSize > entry.EncryptionOverheadSize + 2)
 							{
 								throw new ZipException("Directory compressed size invalid");
 							}
@@ -1297,7 +1297,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						else if (compressedSize > 2)
 						{
 							// When not compressed the directory size can validly be 2 bytes
-							// if the true size wasnt known when data was originally being written.
+							// if the true size wasn't known when data was originally being written.
 							// NOTE: Versions of the library 0.85.4 and earlier always added 2 bytes
 							throw new ZipException("Directory compressed size invalid");
 						}
