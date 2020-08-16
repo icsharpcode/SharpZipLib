@@ -46,7 +46,6 @@ jobs:
         
 
   Package:
-    if: env.PUBLISH_DEV_PACKS != 'disabled'
     needs: [BuildAndTest]
     runs-on: windows-latest
     env:
@@ -69,11 +68,10 @@ jobs:
       run: dotnet build -c Release -f net45 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
 
     - name: Create nuget package
-      run: dotnet pack src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj --configuration Release --output dist /p:Version=$(git describe --abbrev | % { $_.substring(1) })
+      run: dotnet pack src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj --configuration Release --output dist /p:ContinuousIntegrationBuild=true /p:Version=$(git describe --abbrev | % { $_.substring(1) })
       
-    - name: Show package name
-      run: ls dist\*.nupkg
-      
-    - name: Publish the package to GPR
-      if: env.PUBLISH_DEV_PACKS == 'enabled'
-      run: dotnet nuget push dist\*.nupkg
+    - name: Upload nuget package artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Nuget package
+        path: dist/*.nupkg
