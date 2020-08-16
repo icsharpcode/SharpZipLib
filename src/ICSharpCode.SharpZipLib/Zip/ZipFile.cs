@@ -2618,13 +2618,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 			switch (entry.CompressionMethod)
 			{
 				case CompressionMethod.Stored:
-					result = new UncompressedStream(result);
+					if (!entry.IsCrypted)
+					{
+						// If there is an encryption stream in use, that can be returned directly
+						// otherwise, wrap the base stream in an UncompressedStream instead of returning it directly
+						result = new UncompressedStream(result);
+					}
 					break;
 
 				case CompressionMethod.Deflated:
 					var dos = new DeflaterOutputStream(result, new Deflater(9, true))
 					{
-						IsStreamOwner = false
+						// If there is an encryption stream in use, then we want that to be disposed when the deflator stream is disposed
+						// If not, then we don't want it to dispose the base stream
+						IsStreamOwner = entry.IsCrypted
 					};
 					result = dos;
 					break;
