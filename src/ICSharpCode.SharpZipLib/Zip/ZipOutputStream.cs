@@ -262,6 +262,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new NotImplementedException("Compression method not supported");
 			}
 
+			// A password must have been set in order to add AES encrypted entries
+			if (entry.AESKeySize > 0 && string.IsNullOrEmpty(this.Password))
+			{
+				throw new InvalidOperationException("The Password property must be set before AES encrypted entries can be added");
+			}
+
 			int compressionLevel = defaultCompressionLevel;
 
 			// Clear flags that the library manages internally
