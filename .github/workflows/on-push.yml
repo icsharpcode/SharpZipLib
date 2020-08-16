@@ -62,13 +62,8 @@ jobs:
         dotnet-version: '3.1.x'
         source-url: https://nuget.pkg.github.com/icsharpcode/index.json
 
-    - name: Build library for .NET Standard 2
-      run: dotnet build -c Release -f netstandard2 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
-    - name: Build library for .NET Framework 4.5
-      run: dotnet build -c Release -f net45 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
-
-    - name: Create nuget package
-      run: dotnet pack src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj --configuration Release --output dist /p:ContinuousIntegrationBuild=true /p:Version=$(git describe --abbrev | % { $_.substring(1) })
+    - name: Build and pack
+      run: dotnet build -c Release -o dist /p:ContinuousIntegrationBuild=true /p:EmbedUntrackedSources=true /p:Version=$(git describe --abbrev | % { $_.substring(1) }) src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
       
     - name: Upload nuget package artifact
       uses: actions/upload-artifact@v2
