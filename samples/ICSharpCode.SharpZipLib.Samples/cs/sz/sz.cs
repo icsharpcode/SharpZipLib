@@ -294,7 +294,7 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
                                                     try {
                                                         int enc = int.Parse(optArg);
                                                         if (Encoding.GetEncoding(enc) != null) {
-                                                            ZipConstants.DefaultCodePage = enc;
+                                                            ZipStrings.CodePage = enc;
                                                         } else {
                                                             result = false;
                                                             Console.WriteLine("Invalid encoding " + args[argIndex]);
@@ -306,7 +306,7 @@ namespace ICSharpCode.SharpZipLib.Samples.SZ
                                                     }
                                                 } else {
                                                     try {
-                                                        ZipConstants.DefaultCodePage = Encoding.GetEncoding(optArg).CodePage;
+                                                        ZipStrings.CodePage = Encoding.GetEncoding(optArg).CodePage;
                                                     }
                                                     catch (Exception) {
                                                         result = false;
