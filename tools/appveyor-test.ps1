@@ -5,7 +5,7 @@ $resxml = ".\docs\nunit3-test-results-debug.xml";
 #$tester = "nunit3-console .\test\ICSharpCode.SharpZipLib.Tests\bin\$($env:CONFIGURATION)\netcoreapp2.0\ICSharpCode.SharpZipLib.Tests.dll"
 
 # Bootstrapper:
-$tester = "dotnet run -f netcoreapp2 -p $proj -c $env:CONFIGURATION";
+$tester = "dotnet run -f netcoreapp3.1 -p $proj -c $env:CONFIGURATION";
 iex "$tester --explore=tests.xml";
 
 [xml]$xml = Get-Content("tests.xml");
