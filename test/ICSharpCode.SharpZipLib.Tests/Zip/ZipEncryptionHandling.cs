@@ -1,8 +1,6 @@
-﻿using ICSharpCode.SharpZipLib.Core;
-using ICSharpCode.SharpZipLib.Zip;
+﻿using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
@@ -74,7 +72,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					zipOutputStream.CloseEntry();
 				}
 
-				VerifyZipWith7Zip(ms, "password");
+				SevenZipHelper.VerifyZipWith7Zip(ms, "password");
 			}
 		}
 
@@ -315,7 +313,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 
 				// As an extra test, verify the file with 7-zip
-				VerifyZipWith7Zip(memoryStream, password);
+				SevenZipHelper.VerifyZipWith7Zip(memoryStream, password);
 			}
 		}
 
@@ -399,7 +397,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 
 				// As an extra test, verify the file with 7-zip
-				VerifyZipWith7Zip(memoryStream, password);
+				SevenZipHelper.VerifyZipWith7Zip(memoryStream, password);
 			}
 		}
 
@@ -471,54 +469,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
-		private static readonly string[] possible7zPaths = new[] {
-			// Check in PATH
-			"7z", "7za",
-
-			// Check in default install location
-			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "7-Zip", "7z.exe"),
-			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "7-Zip", "7z.exe"),
-		};
-
-		public static bool TryGet7zBinPath(out string path7z)
-		{
-			var runTimeLimit = TimeSpan.FromSeconds(3);
-
-			foreach (var testPath in possible7zPaths)
-			{
-				try
-				{
-					var p = Process.Start(new ProcessStartInfo(testPath, "i")
-					{
-						RedirectStandardOutput = true,
-						UseShellExecute = false
-					});
-					while (!p.StandardOutput.EndOfStream && (DateTime.Now - p.StartTime) < runTimeLimit)
-					{
-						p.StandardOutput.DiscardBufferedData();
-					}
-					if (!p.HasExited)
-					{
-						p.Close();
-						Assert.Warn($"Timed out checking for 7z binary in \"{testPath}\"!");
-						continue;
-					}
-
-					if (p.ExitCode == 0)
-					{
-						path7z = testPath;
-						return true;
-					}
-				}
-				catch (Exception)
-				{
-					continue;
-				}
-			}
-			path7z = null;
-			return false;
-		}
-
 		public void WriteEncryptedZipToStream(Stream stream, string password, int keySize, CompressionMethod compressionMethod = CompressionMethod.Deflated)
 		{
 			using (var zs = new ZipOutputStream(stream))
@@ -572,50 +522,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			using (var ms = new MemoryStream())
 			{
 				WriteEncryptedZipToStream(ms, password, keySize, compressionMethod);
-				VerifyZipWith7Zip(ms, password);
+				SevenZipHelper.VerifyZipWith7Zip(ms, password);
 			}
 		}
-
-		/// <summary>
-		/// Helper function to verify the provided zip stream with 7Zip.
-		/// </summary>
-		/// <param name="zipStream">A stream containing the zip archive to test.</param>
-		/// <param name="password">The password for the archive.</param>
-		private void VerifyZipWith7Zip(Stream zipStream, string password)
-		{
-			if (TryGet7zBinPath(out string path7z))
-			{
-				Console.WriteLine($"Using 7z path: \"{path7z}\"");
-
-				var fileName = Path.GetTempFileName();
-
-				try
-				{
-					using (var fs = File.OpenWrite(fileName))
-					{
-						zipStream.Seek(0, SeekOrigin.Begin);
-						zipStream.CopyTo(fs);
-					}
-
-					var p = Process.Start(path7z, $"t -p{password} \"{fileName}\"");
-					if (!p.WaitForExit(2000))
-					{
-						Assert.Warn("Timed out verifying zip file!");
-					}
-
-					Assert.AreEqual(0, p.ExitCode, "Archive verification failed");
-				}
-				finally
-				{
-					File.Delete(fileName);
-				}
-			}
-			else
-			{
-				Assert.Warn("Skipping file verification since 7za is not in path");
-			}
-		}
-
 
 		private const string DummyDataString = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 Fusce bibendum diam ac nunc rutrum ornare. Maecenas blandit elit ligula, eget suscipit lectus rutrum eu.
