@@ -2050,8 +2050,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// TODO: Local offset will require adjusting for multi-disk zip files.
 			entry.Offset = baseStream_.Position;
 
-			// TODO: Need to clear any entry flags that dont make sense or throw an exception here.
-			if (update.Command != UpdateCommand.Copy)
+			// set flags based on the type of entry being written
+			if (update.Command == UpdateCommand.Copy)
+			{
+				// We're copying an existing entry during an update.
+				// In this case, we won't need descriptors as we should always know the size/CRC fields of the entry directly
+				entry.Flags &= ~(int)GeneralBitFlags.Descriptor;
+			}
+			else
 			{
 				if (entry.CompressionMethod == CompressionMethod.Deflated)
 				{
