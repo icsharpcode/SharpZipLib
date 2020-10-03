@@ -494,6 +494,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Handle attempts to read from this entry by throwing an exception
+		/// </summary>
+		private int StoredDescriptorEntry(byte[] destination, int offset, int count) =>
+			throw new StreamUnsupportedException(
+				"The combination of Stored compression method and Descriptor flag is not possible to read using ZipInputStream");
+		
+
+		/// <summary>
 		/// Perform the initial read on an entry which may include
 		/// reading encryption headers and setting up inflation.
 		/// </summary>
@@ -544,11 +552,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 				inputBuffer.CryptoTransform = null;
 			}
 
-			if ((csize > 0) || ((flags & (int)GeneralBitFlags.Descriptor) != 0))
+			var usesDescriptor = (flags & (int) GeneralBitFlags.Descriptor) != 0;
+
+			if ((csize > 0) || usesDescriptor)
 			{
 				if ((method == CompressionMethod.Deflated) && (inputBuffer.Available > 0))
 				{
 					inputBuffer.SetInflaterInput(inf);
+				}
+
+				// It's not possible to know how many bytes to read when using "Stored" compression (unless using encryption)
+				if (!entry.IsCrypted && method == CompressionMethod.Stored && usesDescriptor)
+				{
+					internalReader = StoredDescriptorEntry;
+					return StoredDescriptorEntry(destination, offset, count);
 				}
 
 				internalReader = new ReadDataHandler(BodyRead);
