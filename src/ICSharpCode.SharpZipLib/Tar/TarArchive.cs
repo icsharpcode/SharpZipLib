@@ -1,6 +1,8 @@
 using System;
 using System.IO;
+using System.Numerics;
 using System.Text;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Tar
 {
@@ -594,12 +596,24 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="destinationDirectory">
 		/// The destination directory into which to extract.
 		/// </param>
-		public void ExtractContents(string destinationDirectory)
+		public void ExtractContents(string destinationDirectory) 
+			=> ExtractContents(destinationDirectory, false);
+
+		/// <summary>
+		/// Perform the "extract" command and extract the contents of the archive.
+		/// </summary>
+		/// <param name="destinationDirectory">
+		/// The destination directory into which to extract.
+		/// </param>
+		/// <param name="allowParentTraversal">Allow parent directory traversal in file paths (e.g. ../file)</param>
+		public void ExtractContents(string destinationDirectory, bool allowParentTraversal)
 		{
 			if (isDisposed)
 			{
 				throw new ObjectDisposedException("TarArchive");
 			}
+
+			var fullDistDir = Path.GetFullPath(destinationDirectory);
 
 			while (true)
 			{
@@ -613,7 +627,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				if (entry.TarHeader.TypeFlag == TarHeader.LF_LINK || entry.TarHeader.TypeFlag == TarHeader.LF_SYMLINK)
 					continue;
 
-				ExtractEntry(destinationDirectory, entry);
+				ExtractEntry(fullDistDir, entry, allowParentTraversal);
 			}
 		}
 
@@ -627,7 +641,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="entry">
 		/// The TarEntry returned by tarIn.GetNextEntry().
 		/// </param>
-		private void ExtractEntry(string destDir, TarEntry entry)
+		/// <param name="allowParentTraversal">Allow parent directory traversal in file paths (e.g. ../file)</param>
+		private void ExtractEntry(string destDir, TarEntry entry, bool allowParentTraversal)
 		{
 			OnProgressMessageEvent(entry, null);
 
@@ -643,6 +658,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 			name = name.Replace('/', Path.DirectorySeparatorChar);
 
 			string destFile = Path.Combine(destDir, name);
+
+			if (!allowParentTraversal && !Path.GetFullPath(destFile).StartsWith(destDir, StringComparison.InvariantCultureIgnoreCase))
+			{
+				throw new InvalidNameException("Parent traversal in paths is not allowed");
+			}
 
 			if (entry.IsDirectory)
 			{
