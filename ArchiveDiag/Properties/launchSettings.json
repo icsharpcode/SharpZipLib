@@ -2,7 +2,7 @@
   "profiles": {
     "ArchiveDiag": {
       "commandName": "Project",
-      "commandLineArgs": "-e D:\\shared\\testScript.csx"
+      "commandLineArgs": "C:\\Users\\nils\\Downloads\\tartest\\IOSFile.tar"
     }
   }
 }

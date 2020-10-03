@@ -94,20 +94,54 @@ namespace ICSharpCode.SharpZipLib.ArchiveDiag
 					}
 
 			        using var outputStream = File.Open(outputFile, FileMode.Create);
-					using var htmlWriter = new HTMLWriter(outputStream);
+			        using var htmlWriter = new HTMLWriter(outputStream);
 
-					var runner = new ArchiveDiagRunner(inputStream, inputFile);
+					new TarArchiveDiagRunner(inputStream, inputFile).Run(new ConsoleWriter(), htmlWriter);
 
-					runner.Run(new ConsoleWriter(), new HTMLWriter(outputStream));
 
-					htmlWriter.Flush();
-					htmlWriter.Dispose();
 
 				});
 
 	        return 0;
         }
-		
+
+		static void Lala()
+		{
+			var dataBytes = new byte[] { 0x34, 0x68, 0xf2, 0x8d };
+
+			using var ms = new MemoryStream(dataBytes);
+			using var fs = File.Create("output.zip");
+			using var zip = new ZipOutputStream(fs);
+			zip.PutNextEntry(new ZipEntry("content-file.bin"));
+			ms.WriteTo(zip);
+
+		}
+
+		public void UseCreateZipFileFromData()
+		{
+			var dataBytes = new byte[] { 0x49, 0xe2, 0x9d, 0xa4, 0x5a, 0x49, 0x50 };
+
+			CreateZipFileFromData(File.Create("output.zip"), dataBytes);
+
+			using (var ms = new MemoryStream())
+			{
+				CreateZipFileFromData(ms, dataBytes, closeStream: false, zipEntryName: "data.bin");
+				var outputBytes = ms.ToArray();
+			}
+		}
+
+		public void CreateZipFileFromData(Stream outputStream, byte[] inputData, bool closeStream = true, string zipEntryName = "-")
+		{
+			using (var zipStream = new ZipOutputStream(outputStream))
+			{
+				// Stop ZipStream.Dispose() from also Closing the underlying stream.
+				zipStream.IsStreamOwner = closeStream;
+
+				zipStream.PutNextEntry(new ZipEntry(zipEntryName));
+				zipStream.Write(inputData);
+			}
+		}
+
 	}
 
 
