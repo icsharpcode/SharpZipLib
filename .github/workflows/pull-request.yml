@@ -73,6 +73,7 @@ jobs:
         with:
           # The current issues needs to be fixed before this can be removed
           max-allowed-issues: 9999
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
         
   Pack:
     needs: [Build, Test]
