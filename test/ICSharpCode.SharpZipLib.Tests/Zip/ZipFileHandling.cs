@@ -1611,5 +1611,194 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			}
 		}
+
+		/// <summary>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/147, when deleting items in a zip
+		/// </summary>
+		/// <param name="useZip64">Whether Zip64 should be used in the test archive</param>
+		/// <param name="updateMode">Whether safe or direct updates should be used</param>
+		[Test]
+		[Category("Zip")]
+		public void TestDescriptorUpdateOnDelete([Values] UseZip64 useZip64, [Values] FileUpdateMode updateMode)
+		{
+			MemoryStream msw = new MemoryStreamWithoutSeek();
+			using (ZipOutputStream outStream = new ZipOutputStream(msw))
+			{
+				outStream.UseZip64 = useZip64;
+				outStream.IsStreamOwner = false;
+				outStream.PutNextEntry(new ZipEntry("StripedMarlin"));
+				outStream.WriteByte(89);
+
+				outStream.PutNextEntry(new ZipEntry("StripedMarlin2"));
+				outStream.WriteByte(91);
+			}
+
+			var zipData = msw.ToArray();
+			Assert.IsTrue(ZipTesting.TestArchive(zipData));
+
+			using (var memoryStream = new MemoryStream(zipData))
+			{
+				using (var zipFile = new ZipFile(memoryStream, leaveOpen: true))
+				{
+					zipFile.BeginUpdate(new MemoryArchiveStorage(updateMode));
+					zipFile.Delete("StripedMarlin");
+					zipFile.CommitUpdate();
+
+					Assert.That(zipFile.TestArchive(true), Is.True);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/147, when adding items to a zip
+		/// </summary>
+		/// <param name="useZip64">Whether Zip64 should be used in the test archive</param>
+		/// <param name="updateMode">Whether safe or direct updates should be used</param>
+		[Test]
+		[Category("Zip")]
+		public void TestDescriptorUpdateOnAdd([Values] UseZip64 useZip64, [Values] FileUpdateMode updateMode)
+		{
+			MemoryStream msw = new MemoryStreamWithoutSeek();
+			using (ZipOutputStream outStream = new ZipOutputStream(msw))
+			{
+				outStream.UseZip64 = useZip64;
+				outStream.IsStreamOwner = false;
+				outStream.PutNextEntry(new ZipEntry("StripedMarlin"));
+				outStream.WriteByte(89);
+			}
+
+			var zipData = msw.ToArray();
+			Assert.IsTrue(ZipTesting.TestArchive(zipData));
+
+			using (var memoryStream = new MemoryStream())
+			{
+				memoryStream.Write(zipData, 0, zipData.Length);
+
+				using (var zipFile = new ZipFile(memoryStream, leaveOpen: true))
+				{
+					zipFile.BeginUpdate(new MemoryArchiveStorage(updateMode));
+					zipFile.Add(new StringMemoryDataSource("stripey"), "Zebra");
+					zipFile.CommitUpdate();
+
+					Assert.That(zipFile.TestArchive(true), Is.True);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/147, when replacing items in a zip
+		/// </summary>
+		/// <param name="useZip64">Whether Zip64 should be used in the test archive</param>
+		/// <param name="updateMode">Whether safe or direct updates should be used</param>
+		[Test]
+		[Category("Zip")]
+		public void TestDescriptorUpdateOnReplace([Values] UseZip64 useZip64, [Values] FileUpdateMode updateMode)
+		{
+			MemoryStream msw = new MemoryStreamWithoutSeek();
+			using (ZipOutputStream outStream = new ZipOutputStream(msw))
+			{
+				outStream.UseZip64 = useZip64;
+				outStream.IsStreamOwner = false;
+				outStream.PutNextEntry(new ZipEntry("StripedMarlin"));
+				outStream.WriteByte(89);
+				outStream.PutNextEntry(new ZipEntry("WhiteMarlin"));
+				outStream.WriteByte(91);
+				outStream.PutNextEntry(new ZipEntry("Sailfish"));
+				outStream.WriteByte(3);
+			}
+
+			var zipData = msw.ToArray();
+			Assert.IsTrue(ZipTesting.TestArchive(zipData));
+
+			using (var memoryStream = new MemoryStream(zipData))
+			{
+				using (var zipFile = new ZipFile(memoryStream, leaveOpen: true))
+				{
+					zipFile.BeginUpdate(new MemoryArchiveStorage(updateMode));
+					zipFile.Delete("WhiteMarlin");
+					zipFile.Add(new StringMemoryDataSource("Kajikia albida"), "WhiteMarlin");
+					zipFile.CommitUpdate();
+
+					Assert.That(zipFile.TestArchive(true), Is.True);
+					Assert.That(zipFile.Count, Is.EqualTo(3));
+
+					// Test for expected descriptor states:
+					// 'StripedMarlin' should still have a descriptor in Direct update mode as the entry data will be kept, but won't have one
+					// in Safe update mode as that recreates the whole archive.
+					// 'WhiteMarlin' should no longer have one because the entry is new and didn't need one
+					// 'Sailfish' should have its descriptor removed.
+					var entry = zipFile.GetEntry("StripedMarlin");
+
+					if (updateMode == FileUpdateMode.Direct)
+						Assert.True(((GeneralBitFlags)entry.Flags).HasFlag(GeneralBitFlags.Descriptor));
+					else
+						Assert.False(((GeneralBitFlags)entry.Flags).HasFlag(GeneralBitFlags.Descriptor));
+
+					entry = zipFile.GetEntry("WhiteMarlin");
+					Assert.False(((GeneralBitFlags)entry.Flags).HasFlag(GeneralBitFlags.Descriptor));
+
+					entry = zipFile.GetEntry("Sailfish");
+					Assert.False(((GeneralBitFlags)entry.Flags).HasFlag(GeneralBitFlags.Descriptor));
+				}
+			}
+		}
+
+		// This is the initial zipfile generated by the 'TestDescriptorUpdateOnReplace' test, but with descriptor
+		// fields that don't have the signature bytes.
+		const string TestZipFileWithSignaturelessDescriptors = @"UEsDBBQACAAIAHO8E1EAAAAAAAAAAAAAAAANAAAA
+			U3RyaXBlZE1hcmxpbosEAN0GtcADAAAAAQAAAFBLAwQUAAgACABzvBNRAAAAAAAAAAAAAAAACwAAAFdoaXRlTWFybGlui
+			wYA8We7LgMAAAABAAAAUEsDBBQACAAIAHO8E1EAAAAAAAAAAAAAAAAIAAAAU2FpbGZpc2hjBgA3vgtLAwAAAAEAAABQSw
+			ECMwAUAAgACABzvBNR3Qa1wAMAAAABAAAADQAAAAAAAAAAAAAAAAAAAAAAU3RyaXBlZE1hcmxpblBLAQIzABQACAAIAHO
+			8E1HxZ7suAwAAAAEAAAALAAAAAAAAAAAAAAAAADoAAABXaGl0ZU1hcmxpblBLAQIzABQACAAIAHO8E1E3vgtLAwAAAAEA
+			AAAIAAAAAAAAAAAAAAAAAHIAAABTYWlsZmlzaFBLBQYAAAAAAwADAKoAAACnAAAAAAA=";
+
+		/// <summary>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/147, when replacing items in a zip, using a file whose descriptors
+		/// don't have signature bytes
+		/// </summary>
+		/// <param name="useZip64">Whether Zip64 should be used in the test archive</param>
+		/// <param name="updateMode">Whether safe or direct updates should be used</param>
+		[Test]
+		[Category("Zip")]
+		public void TestSignaturelessDescriptorUpdateOnReplace([Values] UseZip64 useZip64, [Values] FileUpdateMode updateMode)
+		{
+			var fileBytes = Convert.FromBase64String(TestZipFileWithSignaturelessDescriptors);
+
+			using (var memoryStream = new MemoryStream())
+			{
+				memoryStream.Write(fileBytes, 0, fileBytes.Length);
+				memoryStream.Position = 0;
+
+				using (var zipFile = new ZipFile(memoryStream, leaveOpen: true))
+				{
+					zipFile.BeginUpdate(new MemoryArchiveStorage(updateMode));
+					zipFile.Delete("WhiteMarlin");
+					zipFile.Add(new StringMemoryDataSource("Kajikia albida"), "WhiteMarlin");
+					zipFile.CommitUpdate();
+
+					// @@NOTE@@ TestArchive fails if an entry has a descriptor with no signature.
+					// Assert.That(zipFile.TestArchive(true), Is.True);
+					Assert.That(zipFile.Count, Is.EqualTo(3));
+
+					// Test for expected descriptor states:
+					// 'StripedMarlin' should still have a descriptor in Direct update mode as the entry data will be kept, but won't have one
+					// in Safe update mode as that recreates the whole archive.
+					// 'WhiteMarlin' should no longer have one because the entry is new and didn't need one
+					// 'Sailfish' should have its descriptor removed.
+					var entry = zipFile.GetEntry("StripedMarlin");
+
+					if (updateMode == FileUpdateMode.Direct)
+						Assert.True(((GeneralBitFlags)entry.Flags).HasFlag(GeneralBitFlags.Descriptor));
+					else
+						Assert.False(((GeneralBitFlags)entry.Flags).HasFlag(GeneralBitFlags.Descriptor));
+
+					entry = zipFile.GetEntry("WhiteMarlin");
+					Assert.False(((GeneralBitFlags)entry.Flags).HasFlag(GeneralBitFlags.Descriptor));
+
+					entry = zipFile.GetEntry("Sailfish");
+					Assert.False(((GeneralBitFlags)entry.Flags).HasFlag(GeneralBitFlags.Descriptor));
+				}
+			}
+		}
 	}
 }
