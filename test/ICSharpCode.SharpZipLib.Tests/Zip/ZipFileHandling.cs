@@ -1611,5 +1611,149 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			}
 		}
+
+		/// <summary>
+		/// Test a zip file using BZip2 compression.
+		/// </summary>
+		[TestCase(true)]
+		[TestCase(false)]
+		[Category("Zip")]
+		public void ZipWithBZip2Compression(bool encryptEntries)
+		{
+			string password = "pwd";
+
+			using (var memStream = new MemoryStream())
+			{
+				using (ZipFile f = new ZipFile(memStream, leaveOpen: true))
+				{
+					if (encryptEntries)
+						f.Password = password;
+
+					f.BeginUpdate(new MemoryArchiveStorage());
+
+					var m = new StringMemoryDataSource("BZip2Compressed");
+					f.Add(m, "a.dat", CompressionMethod.BZip2);
+
+					var m2 = new StringMemoryDataSource("DeflateCompressed");
+					f.Add(m2, "b.dat", CompressionMethod.Deflated);
+					f.CommitUpdate();
+					Assert.IsTrue(f.TestArchive(true));
+				}
+
+				memStream.Seek(0, SeekOrigin.Begin);
+
+				using (ZipFile f = new ZipFile(memStream))
+				{
+					if (encryptEntries)
+						f.Password = password;
+
+					{
+						var entry = f.GetEntry("a.dat");
+						Assert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.BZip2), "Compression method should be BZip2");
+						Assert.That(entry.Version, Is.EqualTo(ZipConstants.VersionBZip2), "Entry version should be 46");
+						Assert.That(entry.IsCrypted, Is.EqualTo(encryptEntries));
+
+						using (var reader = new StreamReader(f.GetInputStream(entry)))
+						{
+							string contents = reader.ReadToEnd();
+							Assert.That(contents, Is.EqualTo("BZip2Compressed"), "extract string must match original string");
+						}
+					}
+
+					{
+						var entry = f.GetEntry("b.dat");
+						Assert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.Deflated), "Compression method should be Deflated");
+						Assert.That(entry.IsCrypted, Is.EqualTo(encryptEntries));
+
+						using (var reader = new StreamReader(f.GetInputStream(entry)))
+						{
+							string contents = reader.ReadToEnd();
+							Assert.That(contents, Is.EqualTo("DeflateCompressed"), "extract string must match original string");
+						}
+					}
+				}
+
+				// @@TODO@@ verify the archive with 7-zip?
+			}
+		}
+
+		/// <summary>
+		/// We should be able to read a bzip2 compressed zip file created by 7-zip.
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void ShouldReadBZip2ZipCreatedBy7Zip()
+		{
+			const string BZip2CompressedZipCreatedBy7Zip =
+			"UEsDBC4AAAAMAIa50U4/rHf5qwAAAK8AAAAJAAAASGVsbG8udHh0QlpoOTFBWSZTWTL8pwYAA" +
+			"BWfgEhlUAAiLUgQP+feMCAAiCKaeiaBobU9JiaAMGmoak9GmRNqPUDQ9T1PQsz/t9B6YvEdvF" +
+			"5dhwXzGE1ooO41A6TtATBEFxFUq6trGtUcSJDyWWWj/S2VwY15fy3IqHi3hHUS+K76zdoDzQa" +
+			"VGE/4YkYZe3JAtv1EsIqIsiTnnktIbBo1R4xY3JZEOm2BvwLuSKcKEgZflODAUEsBAj8ALgAA" +
+			"AAwAhrnRTj+sd/mrAAAArwAAAAkAJAAAAAAAAAAgAAAAAAAAAEhlbGxvLnR4dAoAIAAAAAAAA" +
+			"QAYAO97MLZZJdUB73swtlkl1QEK0UTFWCXVAVBLBQYAAAAAAQABAFsAAADSAAAAAAA=";
+
+			const string OriginalText =
+				"SharpZipLib (#ziplib, formerly NZipLib) is a compression library that supports Zip files using both stored and deflate compression methods, PKZIP 2.0 style and AES encryption.";
+
+			var fileBytes = System.Convert.FromBase64String(BZip2CompressedZipCreatedBy7Zip);
+
+			using (var input = new MemoryStream(fileBytes, false))
+			{
+				using (ZipFile f = new ZipFile(input))
+				{
+					var entry = f.GetEntry("Hello.txt");
+					Assert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.BZip2), "Compression method should be BZip2");
+					Assert.That(entry.Version, Is.EqualTo(ZipConstants.VersionBZip2), "Entry version should be 46");
+
+					using (var reader = new StreamReader(f.GetInputStream(entry)))
+					{
+						string contents = reader.ReadToEnd();
+						Assert.That(contents, Is.EqualTo(OriginalText), "extract string must match original string");
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// We should be able to read a bzip2 compressed / AES encrypted zip file created by 7-zip.
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void ShouldReadAESBZip2ZipCreatedBy7Zip()
+		{
+			const string BZip2CompressedZipCreatedBy7Zip =
+			 "UEsDBDMAAQBjAIa50U4AAAAAxwAAAK8AAAAJAAsASGVsbG8udHh0AZkHAAIAQUUDDAAYg6jqf" +
+			"kvZClVMOtgmqKT0/8I9fMPgo96myxw9hLQUhKj1Qczi3fT7QIhAnAKU+u03nA8rCKGWmDI5Qz" +
+			"qPREy95boQVDPwmwEsWksv3GAWzMfzZUhmB/TgIJlA34a4yP0f2ucy3/QCQYo8QcHjBtjWX5b" +
+			"dZn0+fwY9Ci7q8JSI8zNSbgQ0Ert/lIJ9MxQ4lzBxMl4LySkd104cDPh/FslTAcPtHoy8Mf1c" +
+			"vnI1uICMgjWVeTqYrvSvt2uuHnqr4AiehArFiXTnUEsBAj8AMwABAGMAhrnRTgAAAADHAAAAr" +
+			"wAAAAkALwAAAAAAAAAgAAAAAAAAAEhlbGxvLnR4dAoAIAAAAAAAAQAYAO97MLZZJdUBYdnjul" +
+			"kl1QEK0UTFWCXVAQGZBwACAEFFAwwAUEsFBgAAAAABAAEAZgAAAPkAAAAAAA==";
+
+			const string OriginalText =
+				"SharpZipLib (#ziplib, formerly NZipLib) is a compression library that supports Zip files using both stored and deflate compression methods, PKZIP 2.0 style and AES encryption.";
+
+			var fileBytes = System.Convert.FromBase64String(BZip2CompressedZipCreatedBy7Zip);
+
+			using (var input = new MemoryStream(fileBytes, false))
+			{
+				using (ZipFile f = new ZipFile(input))
+				{
+					f.Password = "password";
+
+					var entry = f.GetEntry("Hello.txt");
+					Assert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.BZip2), "Compression method should be BZip2");
+					Assert.That(entry.Version, Is.EqualTo(ZipConstants.VERSION_AES), "Entry version should be 51");
+					Assert.That(entry.IsCrypted, Is.True, "Entry should be encrypted");
+					Assert.That(entry.AESKeySize, Is.EqualTo(256), "AES Keysize should be 256");
+
+					using (var reader = new StreamReader(f.GetInputStream(entry)))
+					{
+						string contents = reader.ReadToEnd();
+						Assert.That(contents, Is.EqualTo(OriginalText), "extract string must match original string");
+					}
+				}
+			}
+		}
 	}
 }

@@ -141,7 +141,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			var ze = new ZipEntry("HumblePie");
 			//ze.CompressionMethod = CompressionMethod.BZip2;
 
-			Assert.That(() => ze.CompressionMethod = CompressionMethod.BZip2,
+			Assert.That(() => ze.CompressionMethod = CompressionMethod.Deflate64,
 				Throws.TypeOf<NotSupportedException>());
 		}
 
