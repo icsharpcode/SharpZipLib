@@ -44,7 +44,15 @@ jobs:
     - name: Run tests
       run: dotnet test -c ${{ matrix.configuration }} -f ${{ matrix.testtarget }} --no-restore
         
-
+  Codacy-Analysis:
+    runs-on: ubuntu-latest
+    name: Codacy Analysis CLI
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run codacy-analysis-cli
+        uses: codacy/codacy-analysis-cli-action@@1.0.1
+        
   Package:
     needs: [BuildAndTest]
     runs-on: windows-latest
