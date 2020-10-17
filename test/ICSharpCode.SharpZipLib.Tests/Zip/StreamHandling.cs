@@ -502,5 +502,23 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			}
 		}
+
+		/// <summary>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/507
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void AddingAnAESEntryWithNoPasswordShouldThrow()
+		{
+			using (var memoryStream = new MemoryStream())
+			{
+				using (var outStream = new ZipOutputStream(memoryStream))
+				{
+					var newEntry = new ZipEntry("test") { AESKeySize = 256 };
+
+					Assert.Throws<InvalidOperationException>(() => outStream.PutNextEntry(newEntry));
+				}
+			}
+		}
 	}
 }
