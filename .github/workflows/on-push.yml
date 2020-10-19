@@ -51,7 +51,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run codacy-analysis-cli
-        uses: codacy/codacy-analysis-cli-action@1.0.1
+        uses: codacy/codacy-analysis-cli-action@1.1.0
         with:
           # The current issues needs to be fixed before this can be removed
           max-allowed-issues: 9999
