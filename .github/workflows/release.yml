@@ -40,4 +40,4 @@ jobs:
     - name: Upload documentation as artifact
       uses: actions/upload-artifact@v2
       with:
-        path: _site
+        path: docs/help/_site
