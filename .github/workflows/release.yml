@@ -1,9 +1,10 @@
-# This is a basic workflow to help you get started with Actions
-
+# Workflow to execute when a new version is released
 name: Release
 
 on:
-#  release:
+  release:
+  
+  # Used for testing and manual execution
   workflow_dispatch:
     inputs:
       tag:
