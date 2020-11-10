@@ -93,7 +93,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				name = name.Replace(@"\", "/");
-				name = WindowsPathUtils.DropPathRoot(name);
+				name = PathUtils.DropPathRoot(name);
 
 				// Drop any leading and trailing slashes.
 				name = name.Trim('/');
@@ -289,7 +289,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				name = name.Replace(@"\", "/");
 
 				// Remove the path root.
-				name = WindowsPathUtils.DropPathRoot(name);
+				name = PathUtils.DropPathRoot(name);
 
 				// Drop any leading and trailing slashes.
 				name = name.Trim('/');
