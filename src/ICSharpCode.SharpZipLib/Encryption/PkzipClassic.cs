@@ -444,8 +444,8 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		public override void GenerateKey()
 		{
 			key_ = new byte[12];
-			var rnd = new Random();
-			rnd.NextBytes(key_);
+			var rng = new RNGCryptoServiceProvider();
+			rng.GetBytes(key_);
 		}
 
 		/// <summary>
