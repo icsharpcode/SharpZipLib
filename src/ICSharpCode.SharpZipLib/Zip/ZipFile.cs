@@ -130,7 +130,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	}
 
 	/// <summary>
-	/// Status returned returned by <see cref="ZipTestResultHandler"/> during testing.
+	/// Status returned by <see cref="ZipTestResultHandler"/> during testing.
 	/// </summary>
 	/// <seealso cref="ZipFile.TestArchive(bool)">TestArchive</seealso>
 	public class TestStatus
@@ -191,7 +191,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get a value indicating wether the last entry test was valid.
+		/// Get a value indicating whether the last entry test was valid.
 		/// </summary>
 		public bool EntryValid
 		{
@@ -318,7 +318,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#region KeyHandling
 
 		/// <summary>
-		/// Delegate for handling keys/password setting during compresion/decompression.
+		/// Delegate for handling keys/password setting during compression/decompression.
 		/// </summary>
 		public delegate void KeysRequiredEventHandler(
 			object sender,
@@ -375,7 +375,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get a value indicating wether encryption keys are currently available.
+		/// Get a value indicating whether encryption keys are currently available.
 		/// </summary>
 		private bool HaveKeys
 		{
@@ -654,7 +654,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get a value indicating wether
+		/// Get a value indicating whether
 		/// this archive is embedded in another file or not.
 		/// </summary>
 		public bool IsEmbeddedArchive
@@ -881,6 +881,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				case CompressionMethod.Deflated:
 					// No need to worry about ownership and closing as underlying stream close does nothing.
 					result = new InflaterInputStream(result, new Inflater(true));
+					break;
+
+				case CompressionMethod.BZip2:
+					result = new BZip2.BZip2InputStream(result);
 					break;
 
 				default:
@@ -1219,7 +1223,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 
 					// Central header compression method matches local entry
-					if (entry.CompressionMethod != (CompressionMethod)compressionMethod)
+					if (entry.CompressionMethodForHeader != (CompressionMethod)compressionMethod)
 					{
 						throw new ZipException("Central header/local header compression method mismatch");
 					}
@@ -1292,7 +1296,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						// If so until details are known we will be strict.
 						if (entry.IsCrypted)
 						{
-							if (compressedSize > ZipConstants.CryptoHeaderSize + 2)
+							if (compressedSize > entry.EncryptionOverheadSize + 2)
 							{
 								throw new ZipException("Directory compressed size invalid");
 							}
@@ -1300,7 +1304,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						else if (compressedSize > 2)
 						{
 							// When not compressed the directory size can validly be 2 bytes
-							// if the true size wasnt known when data was originally being written.
+							// if the true size wasn't known when data was originally being written.
 							// NOTE: Versions of the library 0.85.4 and earlier always added 2 bytes
 							throw new ZipException("Directory compressed size invalid");
 						}
@@ -1629,7 +1633,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			contentsEdited_ = true;
 
-			int index = FindExistingUpdate(update.Entry.Name);
+			int index = FindExistingUpdate(update.Entry.Name, isEntryName: true);
 
 			if (index >= 0)
 			{
@@ -1902,7 +1906,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="compressionMethod">The compression method for the new entry.</param>
 		private void CheckSupportedCompressionMethod(CompressionMethod compressionMethod)
 		{
-			if (compressionMethod != CompressionMethod.Deflated && compressionMethod != CompressionMethod.Stored)
+			if (compressionMethod != CompressionMethod.Deflated && compressionMethod != CompressionMethod.Stored && compressionMethod != CompressionMethod.BZip2)
 			{
 				throw new NotImplementedException("Compression method not supported");
 			}
@@ -2095,7 +2099,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						break;
 
 					case UseZip64.Off:
-						// Do nothing.  The entry itself may be using Zip64 independantly.
+						// Do nothing.  The entry itself may be using Zip64 independently.
 						break;
 				}
 			}
@@ -2572,13 +2576,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private int FindExistingUpdate(ZipEntry entry)
 		{
 			int result = -1;
-			string convertedName = entry.IsDirectory
-				? GetTransformedDirectoryName(entry.Name)
-				: GetTransformedFileName(entry.Name);
-
-			if (updateIndex_.ContainsKey(convertedName))
+			if (updateIndex_.ContainsKey(entry.Name))
 			{
-				result = (int)updateIndex_[convertedName];
+				result = (int)updateIndex_[entry.Name];
 			}
 			/*
 						// This is slow like the coming of the next ice age but takes less storage and may be useful
@@ -2596,11 +2596,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return result;
 		}
 
-		private int FindExistingUpdate(string fileName)
+		private int FindExistingUpdate(string fileName, bool isEntryName = false)
 		{
 			int result = -1;
 
-			string convertedName = GetTransformedFileName(fileName);
+			string convertedName = !isEntryName ? GetTransformedFileName(fileName) : fileName;
 
 			if (updateIndex_.ContainsKey(convertedName))
 			{
@@ -2639,15 +2639,32 @@ namespace ICSharpCode.SharpZipLib.Zip
 			switch (entry.CompressionMethod)
 			{
 				case CompressionMethod.Stored:
-					result = new UncompressedStream(result);
+					if (!entry.IsCrypted)
+					{
+						// If there is an encryption stream in use, that can be returned directly
+						// otherwise, wrap the base stream in an UncompressedStream instead of returning it directly
+						result = new UncompressedStream(result);
+					}
 					break;
 
 				case CompressionMethod.Deflated:
 					var dos = new DeflaterOutputStream(result, new Deflater(9, true))
 					{
-						IsStreamOwner = false
+						// If there is an encryption stream in use, then we want that to be disposed when the deflator stream is disposed
+						// If not, then we don't want it to dispose the base stream
+						IsStreamOwner = entry.IsCrypted
 					};
 					result = dos;
+					break;
+
+				case CompressionMethod.BZip2:
+					var bzos = new BZip2.BZip2OutputStream(result)
+					{
+						// If there is an encryption stream in use, then we want that to be disposed when the BZip2OutputStream stream is disposed
+						// If not, then we don't want it to dispose the base stream
+						IsStreamOwner = entry.IsCrypted
+					};
+					result = bzos;
 					break;
 
 				default:
@@ -3424,7 +3441,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			//
 			// The search is limited to 64K which is the maximum size of a trailing comment field to aid speed.
 			// This should be compatible with both SFX and ZIP files but has only been tested for Zip files
-			// If a SFX file has the Zip data attached as a resource and there are other resources occuring later then
+			// If a SFX file has the Zip data attached as a resource and there are other resources occurring later then
 			// this could be invalid.
 			// Could also speed this up by reading memory in larger blocks.
 
@@ -3739,8 +3756,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private static void WriteEncryptionHeader(Stream stream, long crcValue)
 		{
 			byte[] cryptBuffer = new byte[ZipConstants.CryptoHeaderSize];
-			var rnd = new Random();
-			rnd.NextBytes(cryptBuffer);
+			using (var rng = new RNGCryptoServiceProvider())
+			{
+				rng.GetBytes(cryptBuffer);
+			}
 			cryptBuffer[11] = (byte)(crcValue >> 24);
 			stream.Write(cryptBuffer, 0, cryptBuffer.Length);
 		}
@@ -4410,7 +4429,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	public class StaticDiskDataSource : IStaticDataSource
 	{
 		/// <summary>
-		/// Initialise a new instnace of <see cref="StaticDiskDataSource"/>
+		/// Initialise a new instance of <see cref="StaticDiskDataSource"/>
 		/// </summary>
 		/// <param name="fileName">The name of the file to obtain data from.</param>
 		public StaticDiskDataSource(string fileName)
@@ -4423,7 +4442,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get a <see cref="Stream"/> providing data.
 		/// </summary>
-		/// <returns>Returns a <see cref="Stream"/> provising data.</returns>
+		/// <returns>Returns a <see cref="Stream"/> providing data.</returns>
 		public Stream GetSource()
 		{
 			return File.Open(fileName_, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -4634,18 +4653,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns the temporary output stream.</returns>
 		public override Stream GetTemporaryOutput()
 		{
-			if (temporaryName_ != null)
-			{
-				temporaryName_ = GetTempFileName(temporaryName_, true);
-				temporaryStream_ = File.Open(temporaryName_, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
-			}
-			else
-			{
-				// Determine where to place files based on internal strategy.
-				// Currently this is always done in system temp directory.
-				temporaryName_ = Path.GetTempFileName();
-				temporaryStream_ = File.Open(temporaryName_, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
-			}
+			temporaryName_ = PathUtils.GetTempFileName(temporaryName_);
+			temporaryStream_ = File.Open(temporaryName_, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
 
 			return temporaryStream_;
 		}
@@ -4664,7 +4673,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			Stream result = null;
 
-			string moveTempName = GetTempFileName(fileName_, false);
+			string moveTempName = PathUtils.GetTempFileName(fileName_);
 			bool newFileCreated = false;
 
 			try
@@ -4703,7 +4712,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			stream.Dispose();
 
-			temporaryName_ = GetTempFileName(fileName_, true);
+			temporaryName_ = PathUtils.GetTempFileName(fileName_);
 			File.Copy(fileName_, temporaryName_, true);
 
 			temporaryStream_ = new FileStream(temporaryName_,
@@ -4752,54 +4761,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		#endregion IArchiveStorage Members
-
-		#region Internal routines
-
-		private static string GetTempFileName(string original, bool makeTempFile)
-		{
-			string result = null;
-
-			if (original == null)
-			{
-				result = Path.GetTempFileName();
-			}
-			else
-			{
-				int counter = 0;
-				int suffixSeed = DateTime.Now.Second;
-
-				while (result == null)
-				{
-					counter += 1;
-					string newName = string.Format("{0}.{1}{2}.tmp", original, suffixSeed, counter);
-					if (!File.Exists(newName))
-					{
-						if (makeTempFile)
-						{
-							try
-							{
-								// Try and create the file.
-								using (FileStream stream = File.Create(newName))
-								{
-								}
-								result = newName;
-							}
-							catch
-							{
-								suffixSeed = DateTime.Now.Second;
-							}
-						}
-						else
-						{
-							result = newName;
-						}
-					}
-				}
-			}
-			return result;
-		}
-
-		#endregion Internal routines
 
 		#region Instance Fields
 

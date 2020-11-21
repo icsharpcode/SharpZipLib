@@ -1,9 +1,11 @@
 using ICSharpCode.SharpZipLib.Checksum;
+using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -147,6 +149,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Used for transforming the names of entries added by <see cref="PutNextEntry(ZipEntry)"/>.
+		/// Defaults to <see cref="PathTransformer"/>, set to null to disable transforms and use names as supplied.
+		/// </summary>
+		public INameTransform NameTransform { get; set; } = new PathTransformer();
+
+		/// <summary>
 		/// Write an unsigned short in little endian byte order.
 		/// </summary>
 		private void WriteLeShort(int value)
@@ -179,6 +187,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				WriteLeInt((int)value);
 				WriteLeInt((int)(value >> 32));
+			}
+		}
+
+		// Apply any configured transforms/cleaning to the name of the supplied entry.
+		private void TransformEntryName(ZipEntry entry)
+		{
+			if (this.NameTransform != null)
+			{
+				if (entry.IsDirectory)
+				{
+					entry.Name = this.NameTransform.TransformDirectory(entry.Name);
+				}
+				else
+				{
+					entry.Name = this.NameTransform.TransformFile(entry.Name);
+				}
 			}
 		}
 
@@ -237,6 +261,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (method != CompressionMethod.Deflated && method != CompressionMethod.Stored)
 			{
 				throw new NotImplementedException("Compression method not supported");
+			}
+
+			// A password must have been set in order to add AES encrypted entries
+			if (entry.AESKeySize > 0 && string.IsNullOrEmpty(this.Password))
+			{
+				throw new InvalidOperationException("The Password property must be set before AES encrypted entries can be added");
 			}
 
 			int compressionLevel = defaultCompressionLevel;
@@ -337,7 +367,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					WriteLeInt(entry.IsCrypted ? (int)entry.CompressedSize + ZipConstants.CryptoHeaderSize : (int)entry.CompressedSize);
+					WriteLeInt((int)entry.CompressedSize + entry.EncryptionOverheadSize);
 					WriteLeInt((int)entry.Size);
 				}
 			}
@@ -367,6 +397,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
+			// Apply any required transforms to the entry name, and then convert to byte array format.
+			TransformEntryName(entry);
 			byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
 
 			if (name.Length > 0xFFFF)
@@ -382,7 +414,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if (headerInfoAvailable)
 				{
 					ed.AddLeLong(entry.Size);
-					ed.AddLeLong(entry.CompressedSize);
+					ed.AddLeLong(entry.CompressedSize + entry.EncryptionOverheadSize);
 				}
 				else
 				{
@@ -540,14 +572,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if (curEntry.IsCrypted)
 			{
-				if (curEntry.AESKeySize > 0)
-				{
-					curEntry.CompressedSize += curEntry.AESOverheadSize;
-				}
-				else
-				{
-					curEntry.CompressedSize += ZipConstants.CryptoHeaderSize;
-				}
+				curEntry.CompressedSize += curEntry.EncryptionOverheadSize;
 			}
 
 			// Patch the header if possible
@@ -609,8 +634,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			InitializePassword(Password);
 
 			byte[] cryptBuffer = new byte[ZipConstants.CryptoHeaderSize];
-			var rnd = new Random();
-			rnd.NextBytes(cryptBuffer);
+			using (var rng = new RNGCryptoServiceProvider())
+			{
+				rng.GetBytes(cryptBuffer);
+			}
+
 			cryptBuffer[11] = (byte)(crcValue >> 24);
 
 			EncryptBlock(cryptBuffer, 0, cryptBuffer.Length);

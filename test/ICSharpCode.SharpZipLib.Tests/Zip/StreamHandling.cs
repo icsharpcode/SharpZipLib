@@ -244,11 +244,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			using (var dummyZip = Utils.GetDummyFile(0))
 			using (var inputFile = Utils.GetDummyFile(contentLength))
 			{
+				// Filename is manually cleaned here to prevent this test from failing while ZipEntry doesn't automatically clean it
+				var inputFileName = ZipEntry.CleanName(inputFile.Filename);
+
 				using (var zipFileStream = File.OpenWrite(dummyZip.Filename))
 				using (var zipOutputStream = new ZipOutputStream(zipFileStream))
 				using (var inputFileStream = File.OpenRead(inputFile.Filename))
 				{
-					zipOutputStream.PutNextEntry(new ZipEntry(inputFile.Filename)
+					zipOutputStream.PutNextEntry(new ZipEntry(inputFileName)
 					{
 						CompressionMethod = CompressionMethod.Stored,
 					});
@@ -260,7 +263,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				{
 					var inputBytes = File.ReadAllBytes(inputFile.Filename);
 
-					var inputFileName = ZipEntry.CleanName(inputFile.Filename);
 					var entry = zf.GetEntry(inputFileName);
 					Assert.IsNotNull(entry, "No entry matching source file \"{0}\" found in archive, found \"{1}\"", inputFileName, zf[0].Name);
 
@@ -279,6 +281,33 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 
 				
+			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void ZipEntryFileNameAutoClean()
+		{
+			using (var dummyZip = Utils.GetDummyFile(0))
+			using (var inputFile = Utils.GetDummyFile()) {
+				using (var zipFileStream = File.OpenWrite(dummyZip.Filename))
+				using (var zipOutputStream = new ZipOutputStream(zipFileStream))
+				using (var inputFileStream = File.OpenRead(inputFile.Filename))
+				{
+					// New ZipEntry created with a full file name path as it's name
+					zipOutputStream.PutNextEntry(new ZipEntry(inputFile.Filename)
+					{
+						CompressionMethod = CompressionMethod.Stored,
+					});
+
+					inputFileStream.CopyTo(zipOutputStream);
+				}
+
+				using (var zf = new ZipFile(dummyZip.Filename))
+				{
+					// The ZipEntry name should have been automatically cleaned
+					Assert.AreEqual(ZipEntry.CleanName(inputFile.Filename), zf[0].Name);
+				}
 			}
 		}
 
@@ -470,6 +499,24 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				{
 					var entry = inStream.GetNextEntry();
 					Assert.That(entry.Name, Is.EqualTo(testFileName), "output name must match original name");
+				}
+			}
+		}
+
+		/// <summary>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/507
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void AddingAnAESEntryWithNoPasswordShouldThrow()
+		{
+			using (var memoryStream = new MemoryStream())
+			{
+				using (var outStream = new ZipOutputStream(memoryStream))
+				{
+					var newEntry = new ZipEntry("test") { AESKeySize = 256 };
+
+					Assert.Throws<InvalidOperationException>(() => outStream.PutNextEntry(newEntry));
 				}
 			}
 		}

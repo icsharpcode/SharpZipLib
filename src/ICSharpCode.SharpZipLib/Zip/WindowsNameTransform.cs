@@ -81,7 +81,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Gets or sets a value indicating wether paths on incoming values should be removed.
+		/// Gets or sets a value indicating whether paths on incoming values should be removed.
 		/// </summary>
 		public bool TrimIncomingPaths
 		{
@@ -176,7 +176,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentNullException(nameof(name));
 			}
 
-			name = WindowsPathUtils.DropPathRoot(name.Replace("/", Path.DirectorySeparatorChar.ToString()));
+			name = PathUtils.DropPathRoot(name.Replace("/", Path.DirectorySeparatorChar.ToString()));
 
 			// Drop any leading slashes.
 			while ((name.Length > 0) && (name[0] == Path.DirectorySeparatorChar))

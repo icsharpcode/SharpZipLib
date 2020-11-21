@@ -1,0 +1,43 @@
+# Workflow to execute when a new version is released
+name: Release
+
+on:
+  release:
+  
+  # Used for testing and manual execution
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag Ref'
+        required: true
+
+jobs:
+  docfx:
+    runs-on: ubuntu-latest
+    name: Update DocFX documentation
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.events.inputs.tag }}
+    - uses: nikeee/docfx-action@v1.0.0
+      name: Build Documentation
+      with:
+        args: docs/help/docfx.json
+
+# Disabled until know to be working
+#    - uses: JamesIves/github-pages-deploy-action@3.6.2
+#      name: Publish documentation to Github Pages
+#      with:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        BRANCH: gh-pages
+#        
+#        # The folder the action should deploy.
+#        FOLDER: _site 
+#        
+#        # Automatically remove deleted files from the deploy branch
+#        CLEAN: true 
+
+    - name: Upload documentation as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        path: _site

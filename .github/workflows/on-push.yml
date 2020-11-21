@@ -1,0 +1,85 @@
+name: Build master on push
+
+env:
+  PUBLISH_DEV_PACKS: disabled
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  BuildAndTest:
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [debug, release]
+        os: [ubuntu, windows, macos]
+        libtarget: [netstandard2]
+        testtarget: [netcoreapp3.1]
+        include:
+          - configuration: debug
+            os: windows
+            libtarget: net45
+            testtarget: net45
+          - configuration: release
+            os: windows
+            libtarget: net45
+            testtarget: net45
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      if: matrix.libtarget == 'netstandard2'
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+
+    - name: Build library
+      run: dotnet build -c ${{ matrix.configuration }} -f ${{ matrix.libtarget }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      
+    - name: Restore test dependencies
+      run: dotnet restore
+
+    - name: Run tests
+      run: dotnet test -c ${{ matrix.configuration }} -f ${{ matrix.testtarget }} --no-restore
+        
+  Codacy-Analysis:
+    runs-on: ubuntu-latest
+    name: Codacy Analysis CLI
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run codacy-analysis-cli
+        uses: codacy/codacy-analysis-cli-action@1.1.0
+        with:
+          # The current issues needs to be fixed before this can be removed
+          max-allowed-issues: 9999
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          upload: true
+        
+  Package:
+    needs: [BuildAndTest]
+    runs-on: windows-latest
+    env:
+      NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+        source-url: https://nuget.pkg.github.com/icsharpcode/index.json
+
+    - name: Build and pack
+      run: dotnet build -c Release -o dist /p:ContinuousIntegrationBuild=true /p:EmbedUntrackedSources=true /p:Version=$(git describe --abbrev | % { $_.substring(1) }) src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      
+    - name: Upload nuget package artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Nuget package
+        path: dist/*.nupkg

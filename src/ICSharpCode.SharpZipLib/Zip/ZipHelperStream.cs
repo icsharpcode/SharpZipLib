@@ -95,7 +95,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion Constructors
 
 		/// <summary>
-		/// Get / set a value indicating wether the the underlying stream is owned or not.
+		/// Get / set a value indicating whether the underlying stream is owned or not.
 		/// </summary>
 		/// <remarks>If the stream is owned it is closed when this instance is closed.</remarks>
 		public bool IsStreamOwner
@@ -303,7 +303,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="endLocation">Location, marking the end of block.</param>
 		/// <param name="minimumBlockSize">Minimum size of the block.</param>
 		/// <param name="maximumVariableData">The maximum variable data.</param>
-		/// <returns>Eeturns the offset of the first byte after the signature; -1 if not found</returns>
+		/// <returns>Returns the offset of the first byte after the signature; -1 if not found</returns>
 		public long LocateBlockWithSignature(int signature, long endLocation, int minimumBlockSize, int maximumVariableData)
 		{
 			long pos = endLocation - minimumBlockSize;
@@ -332,7 +332,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="noOfEntries">The number of entries in the central directory.</param>
 		/// <param name="sizeEntries">The size of entries in the central directory.</param>
-		/// <param name="centralDirOffset">The offset of the dentral directory.</param>
+		/// <param name="centralDirOffset">The offset of the central directory.</param>
 		public void WriteZip64EndOfCentralDirectory(long noOfEntries, long sizeEntries, long centralDirOffset)
 		{
 			long centralSignatureOffset = centralDirOffset + sizeEntries;

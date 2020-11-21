@@ -161,7 +161,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		Method = 0x0006,
 
 		/// <summary>
-		/// Bit 3 if set indicates a trailing data desciptor is appended to the entry data
+		/// Bit 3 if set indicates a trailing data descriptor is appended to the entry data
 		/// </summary>
 		Descriptor = 0x0008,
 
@@ -280,6 +280,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The version required for Zip64 extensions (4.5 or higher)
 		/// </summary>
 		public const int VersionZip64 = 45;
+
+		/// <summary>
+		/// The version required for BZip2 compression (4.6 or higher)
+		/// </summary>
+		public const int VersionBZip2 = 46;
 
 		#endregion Versions
 
@@ -443,12 +448,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public const int ArchiveExtraDataSignature = 'P' | ('K' << 8) | (6 << 16) | (7 << 24);
 
 		/// <summary>
-		/// Central header digitial signature
+		/// Central header digital signature
 		/// </summary>
 		public const int CentralHeaderDigitalSignature = 'P' | ('K' << 8) | (5 << 16) | (5 << 24);
 
 		/// <summary>
-		/// Central header digitial signature
+		/// Central header digital signature
 		/// </summary>
 		[Obsolete("Use CentralHeaderDigitalSignaure instead")]
 		public const int CENDIGITALSIG = 'P' | ('K' << 8) | (5 << 16) | (5 << 24);
@@ -468,7 +473,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		/// <summary>
 		/// Default encoding used for string conversion.  0 gives the default system OEM code page.
-		/// Using the default code page isnt the full solution neccessarily
+		/// Using the default code page isnt the full solution necessarily
 		/// there are many variable factors, codepage 850 is often a good choice for
 		/// European users, however be careful about compatability.
 		/// </summary>
@@ -479,32 +484,32 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set => ZipStrings.CodePage = value;
 		}
 
-		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToString(byte[], int)"/></summary>
+		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToString(byte[], int)"/></summary>
 		[Obsolete("Use ZipStrings.ConvertToString instead")]
 		public static string ConvertToString(byte[] data, int count)
 			=> ZipStrings.ConvertToString(data, count);
 
-		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToString(byte[])"/></summary>
+		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToString(byte[])"/></summary>
 		[Obsolete("Use ZipStrings.ConvertToString instead")]
 		public static string ConvertToString(byte[] data)
 			=> ZipStrings.ConvertToString(data);
 
-		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToStringExt(int, byte[], int)"/></summary>
+		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToStringExt(int, byte[], int)"/></summary>
 		[Obsolete("Use ZipStrings.ConvertToStringExt instead")]
 		public static string ConvertToStringExt(int flags, byte[] data, int count)
 			=> ZipStrings.ConvertToStringExt(flags, data, count);
 
-		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToStringExt(int, byte[])"/></summary>
+		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToStringExt(int, byte[])"/></summary>
 		[Obsolete("Use ZipStrings.ConvertToStringExt instead")]
 		public static string ConvertToStringExt(int flags, byte[] data)
 			=> ZipStrings.ConvertToStringExt(flags, data);
 
-		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToArray(string)"/></summary>
+		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToArray(string)"/></summary>
 		[Obsolete("Use ZipStrings.ConvertToArray instead")]
 		public static byte[] ConvertToArray(string str)
 			=> ZipStrings.ConvertToArray(str);
 
-		/// <summary> Depracated wrapper for <see cref="ZipStrings.ConvertToArray(int, string)"/></summary>
+		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToArray(int, string)"/></summary>
 		[Obsolete("Use ZipStrings.ConvertToArray instead")]
 		public static byte[] ConvertToArray(int flags, string str)
 			=> ZipStrings.ConvertToArray(flags, str);

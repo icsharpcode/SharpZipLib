@@ -159,8 +159,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
+		[TestCase(ZipEncryptionMethod.ZipCrypto)]
+		[TestCase(ZipEncryptionMethod.AES128)]
+		[TestCase(ZipEncryptionMethod.AES256)]
 		[Category("Zip")]
-		public void Encryption()
+		public void Encryption(ZipEncryptionMethod encryptionMethod)
 		{
 			const string tempName1 = "a.dat";
 
@@ -174,8 +177,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			try
 			{
-				var fastZip = new FastZip();
-				fastZip.Password = "Ahoy";
+				var fastZip = new FastZip
+				{
+					Password = "Ahoy",
+					EntryEncryptionMethod = encryptionMethod
+				};
 
 				fastZip.CreateZip(target, tempFilePath, false, @"a\.dat", null);
 
@@ -189,6 +195,21 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					Assert.AreEqual(1, entry.Size);
 					Assert.IsTrue(zf.TestArchive(true));
 					Assert.IsTrue(entry.IsCrypted);
+
+					switch (encryptionMethod)
+					{
+						case ZipEncryptionMethod.ZipCrypto:
+							Assert.That(entry.AESKeySize, Is.Zero, "AES key size should be 0 for ZipCrypto encrypted entries");
+							break;
+
+						case ZipEncryptionMethod.AES128:
+							Assert.That(entry.AESKeySize, Is.EqualTo(128), "AES key size should be 128 for AES128 encrypted entries");
+							break;
+
+						case ZipEncryptionMethod.AES256:
+							Assert.That(entry.AESKeySize, Is.EqualTo(256), "AES key size should be 256 for AES256 encrypted entries");
+							break;
+					}
 				}
 			}
 			finally
@@ -238,7 +259,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					nameCount++;
 				}
 
-				zippy.CreateZip(tempZip.Filename, tempDir.Fullpath, true, null, null);
+				zippy.CreateZip(tempZip.Filename, tempDir.Fullpath, true, null);
 
 				using (ZipFile z = new ZipFile(tempZip.Filename))
 				{
@@ -623,6 +644,46 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			{
 				// Tidy up
 				Directory.Delete(targetDir, true);
+			}
+		}
+
+		/// <summary>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/78
+		/// </summary>
+		/// <param name="leaveOpen">if true, the stream given to CreateZip should be left open, if false it should be disposed.</param>
+		[TestCase(true)]
+		[TestCase(false)]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void CreateZipShouldLeaveOutputStreamOpenIfRequested(bool leaveOpen)
+		{
+			const string tempFileName = "a(2).dat";
+
+			using (var tempFolder = new Utils.TempDir())
+			{
+				// Create test input file
+				string addFile = Path.Combine(tempFolder.Fullpath, tempFileName);
+				MakeTempFile(addFile, 16);
+
+				// Create the zip with fast zip
+				var target = new TrackedMemoryStream();
+				var fastZip = new FastZip();
+
+     			fastZip.CreateZip(target, tempFolder.Fullpath, false, @"a\(2\)\.dat", null, leaveOpen: leaveOpen);
+
+				// Check that the output stream was disposed (or not) as expected
+				Assert.That(target.IsDisposed, Is.Not.EqualTo(leaveOpen), "IsDisposed should be the opposite of leaveOpen");
+
+				// Check that the file contents are correct in both cases
+				var archive = new MemoryStream(target.ToArray());
+				using (ZipFile zf = new ZipFile(archive))
+				{
+					Assert.AreEqual(1, zf.Count);
+					ZipEntry entry = zf[0];
+					Assert.AreEqual(tempFileName, entry.Name);
+					Assert.AreEqual(16, entry.Size);
+					Assert.IsTrue(zf.TestArchive(true));
+				}
 			}
 		}
 	}

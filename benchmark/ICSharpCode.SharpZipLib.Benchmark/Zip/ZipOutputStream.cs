@@ -4,6 +4,7 @@ using BenchmarkDotNet.Attributes;
 
 namespace ICSharpCode.SharpZipLib.Benchmark.Zip
 {
+	[MemoryDiagnoser]
 	[Config(typeof(MultipleRuntimes))]
 	public class ZipOutputStream
 	{

@@ -13,6 +13,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Checksum
 				// Represents ASCII string of "123456789"
 				byte[] check = { 49, 50, 51, 52, 53, 54, 55, 56, 57 };
 
+		// Represents string "123456789123456789123456789123456789"
+		private readonly byte[] longCheck = {
+			49, 50, 51, 52, 53, 54, 55, 56, 57,
+			49, 50, 51, 52, 53, 54, 55, 56, 57,
+			49, 50, 51, 52, 53, 54, 55, 56, 57,
+			49, 50, 51, 52, 53, 54, 55, 56, 57
+		};
+
 		[Test]
 		public void Adler_32()
 		{
@@ -71,6 +79,32 @@ namespace ICSharpCode.SharpZipLib.Tests.Checksum
 		}
 
 		[Test]
+		public void CRC_32_BZip2_Long()
+		{
+			var underTestCrc32 = new BZip2Crc();
+			underTestCrc32.Update(longCheck);
+			Assert.AreEqual(0xEE53D2B2, underTestCrc32.Value);
+		}
+
+		[Test]
+		public void CRC_32_BZip2_Unaligned()
+		{
+			// Extract "456" and CRC
+			var underTestCrc32 = new BZip2Crc();
+			underTestCrc32.Update(new ArraySegment<byte>(check, 3, 3));
+			Assert.AreEqual(0x001D0511, underTestCrc32.Value);
+		}
+
+		[Test]
+		public void CRC_32_BZip2_Long_Unaligned()
+		{
+			// Extract "789123456789123456" and CRC
+			var underTestCrc32 = new BZip2Crc();
+			underTestCrc32.Update(new ArraySegment<byte>(longCheck, 15, 18));
+			Assert.AreEqual(0x025846E0, underTestCrc32.Value);
+		}
+
+		[Test]
 		public void CRC_32()
 		{
 			var underTestCrc32 = new Crc32();
@@ -83,6 +117,32 @@ namespace ICSharpCode.SharpZipLib.Tests.Checksum
 			Assert.AreEqual(0x0, underTestCrc32.Value);
 
 			exceptionTesting(underTestCrc32);
+		}
+
+		[Test]
+		public void CRC_32_Long()
+		{
+			var underTestCrc32 = new Crc32();
+			underTestCrc32.Update(longCheck);
+			Assert.AreEqual(0x3E29169C, underTestCrc32.Value);
+		}
+
+		[Test]
+		public void CRC_32_Unaligned()
+		{
+			// Extract "456" and CRC
+			var underTestCrc32 = new Crc32();
+			underTestCrc32.Update(new ArraySegment<byte>(check, 3, 3));
+			Assert.AreEqual(0xB1A8C371, underTestCrc32.Value);
+		}
+
+		[Test]
+		public void CRC_32_Long_Unaligned()
+		{
+			// Extract "789123456789123456" and CRC
+			var underTestCrc32 = new Crc32();
+			underTestCrc32.Update(new ArraySegment<byte>(longCheck, 15, 18));
+			Assert.AreEqual(0x31CA9A2E, underTestCrc32.Value);
 		}
 
 		private void exceptionTesting(IChecksum crcUnderTest)

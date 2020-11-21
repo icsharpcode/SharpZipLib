@@ -66,7 +66,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public static int SystemDefaultCodePage { get; }
 
 		/// <summary>
-		/// Get wether the default codepage is set to UTF-8. Setting this property to false will
+		/// Get whether the default codepage is set to UTF-8. Setting this property to false will
 		/// set the <see cref="CodePage"/> to <see cref="SystemDefaultCodePage"/>
 		/// </summary>
 		/// <remarks>

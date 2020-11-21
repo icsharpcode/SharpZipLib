@@ -93,19 +93,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				name = name.Replace(@"\", "/");
-				name = WindowsPathUtils.DropPathRoot(name);
+				name = PathUtils.DropPathRoot(name);
 
-				// Drop any leading slashes.
-				while ((name.Length > 0) && (name[0] == '/'))
-				{
-					name = name.Remove(0, 1);
-				}
-
-				// Drop any trailing slashes.
-				while ((name.Length > 0) && (name[name.Length - 1] == '/'))
-				{
-					name = name.Remove(name.Length - 1, 1);
-				}
+				// Drop any leading and trailing slashes.
+				name = name.Trim('/');
 
 				// Convert consecutive // characters to /
 				int index = name.IndexOf("//", StringComparison.Ordinal);
@@ -246,5 +237,77 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private static readonly char[] InvalidEntryCharsRelaxed;
 
 		#endregion Class Fields
+	}
+
+	/// <summary>
+	/// An implementation of INameTransform that transforms entry paths as per the Zip file naming convention.
+	/// Strips path roots and puts directory separators in the correct format ('/')
+	/// </summary>
+	public class PathTransformer : INameTransform
+	{
+		/// <summary>
+		/// Initialize a new instance of <see cref="PathTransformer"></see>
+		/// </summary>
+		public PathTransformer()
+		{
+		}
+
+		/// <summary>
+		/// Transform a windows directory name according to the Zip file naming conventions.
+		/// </summary>
+		/// <param name="name">The directory name to transform.</param>
+		/// <returns>The transformed name.</returns>
+		public string TransformDirectory(string name)
+		{
+			name = TransformFile(name);
+			
+			if (name.Length > 0)
+			{
+				if (!name.EndsWith("/", StringComparison.Ordinal))
+				{
+					name += "/";
+				}
+			}
+			else
+			{
+				throw new ZipException("Cannot have an empty directory name");
+			}
+
+			return name;
+		}
+
+		/// <summary>
+		/// Transform a windows file name according to the Zip file naming conventions.
+		/// </summary>
+		/// <param name="name">The file name to transform.</param>
+		/// <returns>The transformed name.</returns>
+		public string TransformFile(string name)
+		{
+			if (name != null)
+			{
+				// Put separators in the expected format.
+				name = name.Replace(@"\", "/");
+
+				// Remove the path root.
+				name = PathUtils.DropPathRoot(name);
+
+				// Drop any leading and trailing slashes.
+				name = name.Trim('/');
+
+				// Convert consecutive // characters to /
+				int index = name.IndexOf("//", StringComparison.Ordinal);
+				while (index >= 0)
+				{
+					name = name.Remove(index, 1);
+					index = name.IndexOf("//", StringComparison.Ordinal);
+				}
+			}
+			else
+			{
+				name = string.Empty;
+			}
+
+			return name;
+		}
 	}
 }

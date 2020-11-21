@@ -42,7 +42,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		#endregion Constructors
 
 		/// <summary>
-		/// Get the length of bytes bytes in the <see cref="RawData"/>
+		/// Get the length of bytes in the <see cref="RawData"/>
 		/// </summary>
 		public int RawLength
 		{
@@ -596,7 +596,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Writes a sequence of bytes to stream and advances the current position
 		/// This method always throws a NotSupportedException
 		/// </summary>
-		/// <param name="buffer">Thew buffer containing data to write.</param>
+		/// <param name="buffer">The buffer containing data to write.</param>
 		/// <param name="offset">The offset of the first byte to write.</param>
 		/// <param name="count">The number of bytes to write.</param>
 		/// <exception cref="NotSupportedException">Any access</exception>
@@ -704,7 +704,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		protected long csize;
 
 		/// <summary>
-		/// Flag indicating wether this instance has been closed or not.
+		/// Flag indicating whether this instance has been closed or not.
 		/// </summary>
 		private bool isClosed;
 
