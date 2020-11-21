@@ -32,7 +32,7 @@ jobs:
 #        BRANCH: gh-pages
 #        
 #        # The folder the action should deploy.
-#        FOLDER: _site 
+#        FOLDER: api 
 #        
 #        # Automatically remove deleted files from the deploy branch
 #        CLEAN: true 
@@ -40,4 +40,4 @@ jobs:
     - name: Upload documentation as artifact
       uses: actions/upload-artifact@v2
       with:
-        path: _site
+        path: api
