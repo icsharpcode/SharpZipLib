@@ -1003,16 +1003,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 							if (this[entryIndex].Crc != data.Crc)
 							{
 								status.AddError();
+								resultHandler?.Invoke(status, "Descriptor CRC mismatch");
 							}
 
 							if (this[entryIndex].CompressedSize != data.CompressedSize)
 							{
 								status.AddError();
+								resultHandler?.Invoke(status, "Descriptor compressed size mismatch");
 							}
 
 							if (this[entryIndex].Size != data.Size)
 							{
 								status.AddError();
+								resultHandler?.Invoke(status, "Descriptor size mismatch");
 							}
 						}
 					}
@@ -1921,11 +1924,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 					if ( original == null ) {
 						throw new ArgumentNullException("original");
 					}
-
 					if ( updated == null ) {
 						throw new ArgumentNullException("updated");
 					}
-
 					CheckUpdating();
 					contentsEdited_ = true;
 					updates_.Add(new ZipUpdate(original, updated));
@@ -2386,26 +2387,37 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private void CopyDescriptorBytes(ZipUpdate update, Stream dest, Stream source)
 		{
-			int bytesToCopy = GetDescriptorSize(update);
+			// Don't include the signature size to allow copy without seeking
+			var bytesToCopy = GetDescriptorSize(update, false);
 
-			if (bytesToCopy > 0)
+			// Don't touch the source stream if no descriptor is present
+			if (bytesToCopy == 0) return;
+
+			var buffer = GetBuffer();
+
+			// Copy the first 4 bytes of the descriptor
+			source.Read(buffer, 0, sizeof(int));
+			dest.Write(buffer, 0, sizeof(int));
+
+			if (BitConverter.ToUInt32(buffer, 0) != ZipConstants.DataDescriptorSignature)
 			{
-				byte[] buffer = GetBuffer();
+				// The initial bytes wasn't the descriptor, reduce the pending byte count
+				bytesToCopy -= buffer.Length;
+			}
 
-				while (bytesToCopy > 0)
+			while (bytesToCopy > 0)
+			{
+				int readSize = Math.Min(buffer.Length, bytesToCopy);
+
+				int bytesRead = source.Read(buffer, 0, readSize);
+				if (bytesRead > 0)
 				{
-					int readSize = Math.Min(buffer.Length, bytesToCopy);
-
-					int bytesRead = source.Read(buffer, 0, readSize);
-					if (bytesRead > 0)
-					{
-						dest.Write(buffer, 0, bytesRead);
-						bytesToCopy -= bytesRead;
-					}
-					else
-					{
-						throw new ZipException("Unxpected end of stream");
-					}
+					dest.Write(buffer, 0, bytesRead);
+					bytesToCopy -= bytesRead;
+				}
+				else
+				{
+					throw new ZipException("Unxpected end of stream");
 				}
 			}
 		}
@@ -2464,32 +2476,37 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get the size of the source descriptor for a <see cref="ZipUpdate"/>.
 		/// </summary>
 		/// <param name="update">The update to get the size for.</param>
-		/// <returns>The descriptor size, zero if there isnt one.</returns>
-		private int GetDescriptorSize(ZipUpdate update)
+		/// <param name="includingSignature">Whether to include the signature size</param>
+		/// <returns>The descriptor size, zero if there isn't one.</returns>
+		private int GetDescriptorSize(ZipUpdate update, bool includingSignature)
 		{
-			int result = 0;
-			if ((update.Entry.Flags & (int)GeneralBitFlags.Descriptor) != 0)
-			{
-				result = ZipConstants.DataDescriptorSize - 4;
-				if (update.Entry.LocalHeaderRequiresZip64)
-				{
-					result = ZipConstants.Zip64DataDescriptorSize - 4;
-				}
-			}
-			return result;
+			if (!((GeneralBitFlags)update.Entry.Flags).HasFlag(GeneralBitFlags.Descriptor)) 
+				return 0;
+			
+			var descriptorWithSignature = update.Entry.LocalHeaderRequiresZip64 
+				? ZipConstants.Zip64DataDescriptorSize 
+				: ZipConstants.DataDescriptorSize;
+
+			return includingSignature 
+				? descriptorWithSignature 
+				: descriptorWithSignature - sizeof(int);
 		}
 
 		private void CopyDescriptorBytesDirect(ZipUpdate update, Stream stream, ref long destinationPosition, long sourcePosition)
 		{
-			int bytesToCopy = GetDescriptorSize(update);
+			var buffer = GetBuffer(); ;
+
+			stream.Position = sourcePosition;
+			stream.Read(buffer, 0, sizeof(int));
+			var sourceHasSignature = BitConverter.ToUInt32(buffer, 0) == ZipConstants.DataDescriptorSignature;
+
+			var bytesToCopy = GetDescriptorSize(update, sourceHasSignature);
 
 			while (bytesToCopy > 0)
 			{
-				var readSize = (int)bytesToCopy;
-				byte[] buffer = GetBuffer();
-
 				stream.Position = sourcePosition;
-				int bytesRead = stream.Read(buffer, 0, readSize);
+
+				var bytesRead = stream.Read(buffer, 0, bytesToCopy);
 				if (bytesRead > 0)
 				{
 					stream.Position = destinationPosition;
@@ -2500,7 +2517,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					throw new ZipException("Unxpected end of stream");
+					throw new ZipException("Unexpected end of stream");
 				}
 			}
 		}
@@ -2757,6 +2774,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// Clumsy way of handling retrieving the original name and extra data length for now.
 			// TODO: Stop re-reading name and data length in CopyEntryDirect.
+			
 			uint nameLength = ReadLEUshort();
 			uint extraLength = ReadLEUshort();
 
@@ -2765,14 +2783,25 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (skipOver)
 			{
 				if (update.OffsetBasedSize != -1)
+				{
 					destinationPosition += update.OffsetBasedSize;
+				}
 				else
-					// TODO: Find out why this calculation comes up 4 bytes short on some entries in ODT (Office Document Text) archives.
-					// WinZip produces a warning on these entries:
-					// "caution: value of lrec.csize (compressed size) changed from ..."
-					destinationPosition +=
-						(sourcePosition - entryDataOffset) + NameLengthOffset + // Header size
-						update.Entry.CompressedSize + GetDescriptorSize(update);
+				{
+					// Skip entry header
+					destinationPosition += (sourcePosition - entryDataOffset) + NameLengthOffset;
+
+					// Skip entry compressed data
+					destinationPosition += update.Entry.CompressedSize;
+
+					// Seek to end of entry to check for descriptor signature
+					baseStream_.Seek(destinationPosition, SeekOrigin.Begin);
+
+					var descriptorHasSignature = ReadLEUint() == ZipConstants.DataDescriptorSignature;
+
+					// Skip descriptor and it's signature (if present)
+					destinationPosition += GetDescriptorSize(update, descriptorHasSignature);
+				}
 			}
 			else
 			{

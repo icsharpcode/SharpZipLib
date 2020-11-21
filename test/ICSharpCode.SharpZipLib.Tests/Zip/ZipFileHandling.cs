@@ -1755,5 +1755,88 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			}
 		}
+
+		/// <summary>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/147, when deleting items in a zip
+		/// </summary>
+		/// <param name="useZip64">Whether Zip64 should be used in the test archive</param>
+		[TestCase(UseZip64.On)]
+		[TestCase(UseZip64.Off)]
+		[Category("Zip")]
+		public void TestDescriptorUpdateOnDelete(UseZip64 useZip64)
+		{
+			MemoryStream msw = new MemoryStreamWithoutSeek();
+			using (ZipOutputStream outStream = new ZipOutputStream(msw))
+			{
+				outStream.UseZip64 = useZip64;
+				outStream.IsStreamOwner = false;
+				outStream.PutNextEntry(new ZipEntry("StripedMarlin"));
+				outStream.WriteByte(89);
+
+				outStream.PutNextEntry(new ZipEntry("StripedMarlin2"));
+				outStream.WriteByte(91);
+			}
+
+			var zipData = msw.ToArray();
+			Assert.IsTrue(ZipTesting.TestArchive(zipData));
+
+			using (var memoryStream = new MemoryStream(zipData))
+			{
+				using (var zipFile = new ZipFile(memoryStream, leaveOpen: true))
+				{
+					zipFile.BeginUpdate();
+					zipFile.Delete("StripedMarlin");
+					zipFile.CommitUpdate();
+				}
+
+				memoryStream.Position = 0;
+
+				using (var zipFile = new ZipFile(memoryStream, leaveOpen: true))
+				{
+					Assert.That(zipFile.TestArchive(true), Is.True);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/147, when adding items to a zip
+		/// </summary>
+		/// <param name="useZip64">Whether Zip64 should be used in the test archive</param>
+		[TestCase(UseZip64.On)]
+		[TestCase(UseZip64.Off)]
+		[Category("Zip")]
+		public void TestDescriptorUpdateOnAdd(UseZip64 useZip64)
+		{
+			MemoryStream msw = new MemoryStreamWithoutSeek();
+			using (ZipOutputStream outStream = new ZipOutputStream(msw))
+			{
+				outStream.UseZip64 = useZip64;
+				outStream.IsStreamOwner = false;
+				outStream.PutNextEntry(new ZipEntry("StripedMarlin"));
+				outStream.WriteByte(89);
+			}
+
+			var zipData = msw.ToArray();
+			Assert.IsTrue(ZipTesting.TestArchive(zipData));
+
+			using (var memoryStream = new MemoryStream())
+			{
+				memoryStream.Write(zipData, 0, zipData.Length);
+
+				using (var zipFile = new ZipFile(memoryStream, leaveOpen: true))
+				{
+					zipFile.BeginUpdate();
+					zipFile.Add(new StringMemoryDataSource("stripey"), "Zebra");
+					zipFile.CommitUpdate();
+				}
+
+				memoryStream.Position = 0;
+
+				using (var zipFile = new ZipFile(memoryStream, leaveOpen: true))
+				{
+					Assert.That(zipFile.TestArchive(true), Is.True);
+				}
+			}
+		}
 	}
 }
