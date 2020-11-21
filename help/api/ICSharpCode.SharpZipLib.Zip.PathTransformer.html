@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Interface INameTransform
+    <title>Class PathTransformer
    | SharpZipLib Help </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Interface INameTransform
+    <meta name="title" content="Class PathTransformer
    | SharpZipLib Help ">
     <meta name="generator" content="docfx 2.45.1.0">
     
@@ -66,37 +66,65 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Core.INameTransform">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Zip.PathTransformer">
   
   
-  <h1 id="ICSharpCode_SharpZipLib_Core_INameTransform" data-uid="ICSharpCode.SharpZipLib.Core.INameTransform" class="text-break">Interface INameTransform
+  <h1 id="ICSharpCode_SharpZipLib_Zip_PathTransformer" data-uid="ICSharpCode.SharpZipLib.Zip.PathTransformer" class="text-break">Class PathTransformer
   </h1>
-  <div class="markdown level0 summary"><p>INameTransform defines how file system names are transformed for use with archives, or vice versa.</p>
+  <div class="markdown level0 summary"><p>An implementation of INameTransform that transforms entry paths as per the Zip file naming convention.
+Strips path roots and puts directory separators in the correct format (&apos;/&apos;)</p>
 </div>
   <div class="markdown level0 conceptual"></div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Core.html">ICSharpCode.SharpZipLib.Core</a></h6>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">PathTransformer</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="ICSharpCode.SharpZipLib.Core.INameTransform.html">INameTransform</a></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.html">ICSharpCode.SharpZipLib.Zip</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
-  <h5 id="ICSharpCode_SharpZipLib_Core_INameTransform_syntax">Syntax</h5>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_PathTransformer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface INameTransform</code></pre>
+    <pre><code class="lang-csharp hljs">public class PathTransformer : object, INameTransform</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_PathTransformer__ctor.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.PathTransformer.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L251">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_PathTransformer__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.PathTransformer.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_PathTransformer__ctor" data-uid="ICSharpCode.SharpZipLib.Zip.PathTransformer.#ctor">PathTransformer()</h4>
+  <div class="markdown level1 summary"><p>Initialize a new instance of <a class="xref" href="ICSharpCode.SharpZipLib.Zip.PathTransformer.html">PathTransformer</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PathTransformer()</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_INameTransform_TransformDirectory_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.INameTransform.TransformDirectory(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_PathTransformer_TransformDirectory_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformDirectory(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Core/INameTransform.cs/#L20">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L260">View Source</a>
   </span>
-  <a id="ICSharpCode_SharpZipLib_Core_INameTransform_TransformDirectory_" data-uid="ICSharpCode.SharpZipLib.Core.INameTransform.TransformDirectory*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Core_INameTransform_TransformDirectory_System_String_" data-uid="ICSharpCode.SharpZipLib.Core.INameTransform.TransformDirectory(System.String)">TransformDirectory(String)</h4>
-  <div class="markdown level1 summary"><p>Given a directory name determine the transformed value.</p>
+  <a id="ICSharpCode_SharpZipLib_Zip_PathTransformer_TransformDirectory_" data-uid="ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformDirectory*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_PathTransformer_TransformDirectory_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformDirectory(System.String)">TransformDirectory(String)</h4>
+  <div class="markdown level1 summary"><p>Transform a windows directory name according to the Zip file naming conventions.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">string TransformDirectory(string name)</code></pre>
+    <pre><code class="lang-csharp hljs">public string TransformDirectory(string name)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -111,7 +139,7 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td><p>The name to transform.</p>
+        <td><p>The directory name to transform.</p>
 </td>
       </tr>
     </tbody>
@@ -127,26 +155,26 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p>The transformed directory name</p>
+        <td><p>The transformed name.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_INameTransform_TransformFile_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.INameTransform.TransformFile(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_PathTransformer_TransformFile_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformFile(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Core/INameTransform.cs/#L13">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L284">View Source</a>
   </span>
-  <a id="ICSharpCode_SharpZipLib_Core_INameTransform_TransformFile_" data-uid="ICSharpCode.SharpZipLib.Core.INameTransform.TransformFile*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Core_INameTransform_TransformFile_System_String_" data-uid="ICSharpCode.SharpZipLib.Core.INameTransform.TransformFile(System.String)">TransformFile(String)</h4>
-  <div class="markdown level1 summary"><p>Given a file name determine the transformed value.</p>
+  <a id="ICSharpCode_SharpZipLib_Zip_PathTransformer_TransformFile_" data-uid="ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformFile*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_PathTransformer_TransformFile_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformFile(System.String)">TransformFile(String)</h4>
+  <div class="markdown level1 summary"><p>Transform a windows file name according to the Zip file naming conventions.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">string TransformFile(string name)</code></pre>
+    <pre><code class="lang-csharp hljs">public string TransformFile(string name)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -161,7 +189,7 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">name</span></td>
-        <td><p>The name to transform.</p>
+        <td><p>The file name to transform.</p>
 </td>
       </tr>
     </tbody>
@@ -177,11 +205,15 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p>The transformed file name.</p>
+        <td><p>The transformed name.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Core.INameTransform.html">INameTransform</a>
+  </div>
 </article>
           </div>
           
@@ -190,10 +222,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_INameTransform.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.INameTransform%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_PathTransformer.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.PathTransformer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Core/INameTransform.cs/#L6" class="contribution-link">View Source</a>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L246" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

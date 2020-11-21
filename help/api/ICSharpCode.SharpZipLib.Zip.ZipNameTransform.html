@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
   
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ZipNameTransform
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.44.0.0">
+    <meta name="generator" content="docfx 2.45.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,35 +83,11 @@
     <h5>Implements</h5>
     <div><a class="xref" href="ICSharpCode.SharpZipLib.Core.INameTransform.html">INameTransform</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.html">ICSharpCode.SharpZipLib.Zip</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ZipNameTransform : INameTransform</code></pre>
+    <pre><code class="lang-csharp hljs">public class ZipNameTransform : object, INameTransform</code></pre>
   </div>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>The use of absolute names is supported although its use is not valid
@@ -124,7 +100,7 @@ according to Zip naming conventions, and should not be used if maximum compatabi
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform__ctor.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L20">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L20">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.#ctor*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform__ctor" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.#ctor">ZipNameTransform()</h4>
@@ -140,7 +116,7 @@ according to Zip naming conventions, and should not be used if maximum compatabi
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform__ctor_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L28">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L28">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.#ctor*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform__ctor_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.#ctor(System.String)">ZipNameTransform(String)</h4>
@@ -176,7 +152,7 @@ according to Zip naming conventions, and should not be used if maximum compatabi
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TrimPrefix.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TrimPrefix%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L132">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L123">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TrimPrefix_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TrimPrefix*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TrimPrefix" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TrimPrefix">TrimPrefix</h4>
@@ -213,7 +189,7 @@ a windows path is done.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform_IsValidName_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform.IsValidName(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L227">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L218">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_IsValidName_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.IsValidName*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_IsValidName_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.IsValidName(System.String)">IsValidName(String)</h4>
@@ -271,7 +247,7 @@ A null name is not considered valid.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform_IsValidName_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform.IsValidName(System.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L194">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L185">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_IsValidName_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.IsValidName*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_IsValidName_System_String_System_Boolean_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.IsValidName(System.String,System.Boolean)">IsValidName(String, Boolean)</h4>
@@ -334,7 +310,7 @@ A null name is not considered valid.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TransformDirectory_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TransformDirectory(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L63">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L63">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TransformDirectory_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TransformDirectory*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TransformDirectory_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TransformDirectory(System.String)">TransformDirectory(String)</h4>
@@ -384,7 +360,7 @@ A null name is not considered valid.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TransformFile_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TransformFile(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L85">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L85">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TransformFile_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TransformFile*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipNameTransform_TransformFile_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.TransformFile(System.String)">TransformFile(String)</h4>
@@ -444,7 +420,7 @@ A null name is not considered valid.</p>
                     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipNameTransform.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipNameTransform%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L13" class="contribution-link">View Source</a>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipNameTransform.cs/#L13" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Namespace ICSharpCode.SharpZipLib.Lzw
+    <title>Enum ZipEncryptionMethod
    | SharpZipLib Help </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Namespace ICSharpCode.SharpZipLib.Lzw
+    <meta name="title" content="Enum ZipEncryptionMethod
    | SharpZipLib Help ">
     <meta name="generator" content="docfx 2.45.1.0">
     
@@ -66,32 +66,52 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Lzw">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod">
   
-  <h1 id="ICSharpCode_SharpZipLib_Lzw" data-uid="ICSharpCode.SharpZipLib.Lzw" class="text-break">Namespace ICSharpCode.SharpZipLib.Lzw
+  
+  <h1 id="ICSharpCode_SharpZipLib_Zip_ZipEncryptionMethod" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod" class="text-break">Enum ZipEncryptionMethod
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>The method of encrypting entries when creating zip archives.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
-  <div class="markdown level0 remarks"></div>
-    <h3 id="classes">Classes
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.html">ICSharpCode.SharpZipLib.Zip</a></h6>
+  <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEncryptionMethod_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public enum ZipEncryptionMethod : int</code></pre>
+  </div>
+  <h3 id="fields">Fields
   </h3>
-      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Lzw.LzwConstants.html">LzwConstants</a></h4>
-      <section><p>This class contains constants used for LZW</p>
-</section>
-      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Lzw.LzwException.html">LzwException</a></h4>
-      <section><p>LzwException represents exceptions specific to LZW classes and code.</p>
-</section>
-      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Lzw.LzwInputStream.html">LzwInputStream</a></h4>
-      <section><p>This filter stream is used to decompress a LZW format stream.
-Specifically, a stream that uses the LZC compression method.
-This file format is usually associated with the .Z file extension.</p>
-<p>See <a href="http://en.wikipedia.org/wiki/Compress">http://en.wikipedia.org/wiki/Compress</a>
-See <a href="http://wiki.wxwidgets.org/Development:_Z_File_Format">http://wiki.wxwidgets.org/Development:_Z_File_Format</a></p>
-<p>The file header consists of 3 (or optionally 4) bytes. The first two bytes
-contain the magic marker &quot;0x1f 0x9d&quot;, followed by a byte of flags.</p>
-<p>Based on Java code by Ronald Tschalar, which in turn was based on the unlzw.c
-code in the gzip package.</p>
-</section>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    <thead>
+    <tbody>
+      <tr>
+        <td id="ICSharpCode_SharpZipLib_Zip_ZipEncryptionMethod_AES128">AES128</td>
+        <td><p>Encrypt entries with AES 128.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="ICSharpCode_SharpZipLib_Zip_ZipEncryptionMethod_AES256">AES256</td>
+        <td><p>Encrypt entries with AES 256.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="ICSharpCode_SharpZipLib_Zip_ZipEncryptionMethod_None">None</td>
+        <td><p>No encryption will be used.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="ICSharpCode_SharpZipLib_Zip_ZipEncryptionMethod_ZipCrypto">ZipCrypto</td>
+        <td><p>Encrypt entries with ZipCrypto.</p>
+</td>
+      </tr>
+    </tbody>
+  </thead></thead></table>
 </article>
           </div>
           
@@ -99,6 +119,12 @@ code in the gzip package.</p>
             <div class="sideaffix">
               <div class="contribution">
                 <ul class="nav">
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEncryptionMethod.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipEncryptionMethod.cs/#L6" class="contribution-link">View Source</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">

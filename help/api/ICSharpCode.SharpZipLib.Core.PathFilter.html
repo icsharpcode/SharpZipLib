@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
   
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class PathFilter
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.44.0.0">
+    <meta name="generator" content="docfx 2.45.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -71,7 +71,7 @@
   
   <h1 id="ICSharpCode_SharpZipLib_Core_PathFilter" data-uid="ICSharpCode.SharpZipLib.Core.PathFilter" class="text-break">Class PathFilter
   </h1>
-  <div class="markdown level0 summary"><p>PathFilter filters directories and files using a form of <span class="xref">System.Text.RegularExpressions.Regex</span>
+  <div class="markdown level0 summary"><p>PathFilter filters directories and files using a form of <see cref="!:System.Text.RegularExpressions.Regex">regular expressions</see>
 by full path name.
 See <a class="xref" href="ICSharpCode.SharpZipLib.Core.NameFilter.html">NameFilter</a> for more detail on filtering.</p>
 </div>
@@ -87,35 +87,11 @@ See <a class="xref" href="ICSharpCode.SharpZipLib.Core.NameFilter.html">NameFilt
     <h5>Implements</h5>
     <div><a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">IScanFilter</a></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Core.html">ICSharpCode.SharpZipLib.Core</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_Core_PathFilter_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class PathFilter : IScanFilter</code></pre>
+    <pre><code class="lang-csharp hljs">public class PathFilter : object, IScanFilter</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -124,7 +100,7 @@ See <a class="xref" href="ICSharpCode.SharpZipLib.Core.NameFilter.html">NameFilt
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_PathFilter__ctor_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.PathFilter.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L19">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L19">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Core_PathFilter__ctor_" data-uid="ICSharpCode.SharpZipLib.Core.PathFilter.#ctor*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Core_PathFilter__ctor_System_String_" data-uid="ICSharpCode.SharpZipLib.Core.PathFilter.#ctor(System.String)">PathFilter(String)</h4>
@@ -160,7 +136,7 @@ See <a class="xref" href="ICSharpCode.SharpZipLib.Core.NameFilter.html">NameFilt
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_PathFilter_IsMatch_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.PathFilter.IsMatch(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L34">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L34">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Core_PathFilter_IsMatch_" data-uid="ICSharpCode.SharpZipLib.Core.PathFilter.IsMatch*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Core_PathFilter_IsMatch_System_String_" data-uid="ICSharpCode.SharpZipLib.Core.PathFilter.IsMatch(System.String)">IsMatch(String)</h4>
@@ -206,7 +182,7 @@ See <a class="xref" href="ICSharpCode.SharpZipLib.Core.NameFilter.html">NameFilt
     </tbody>
   </table>
   <h5 id="ICSharpCode_SharpZipLib_Core_PathFilter_IsMatch_System_String__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p><span class="xref">System.IO.Path.GetFullPath(System.String)</span> is used to get the full path before matching.</p>
+  <div class="markdown level1 remarks"><p><see cref="!:Path.GetFullPath(string)"></see> is used to get the full path before matching.</p>
 </div>
   <h3 id="implements">Implements</h3>
   <div>
@@ -223,7 +199,7 @@ See <a class="xref" href="ICSharpCode.SharpZipLib.Core.NameFilter.html">NameFilt
                     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_PathFilter.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.PathFilter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

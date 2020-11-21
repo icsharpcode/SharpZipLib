@@ -19,11 +19,11 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.BZip2.BZip2
   fullName: ICSharpCode.SharpZipLib.BZip2.BZip2
   nameWithType: BZip2
-- uid: ICSharpCode.SharpZipLib.BZip2.BZip2.Compress(System.IO.Stream,System.IO.Stream,System.Boolean,System.Int32)
+- uid: ICSharpCode.SharpZipLib.BZip2.BZip2.Compress(Stream,Stream,System.Boolean,System.Int32)
   name: Compress(Stream, Stream, Boolean, Int32)
-  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2.html#ICSharpCode_SharpZipLib_BZip2_BZip2_Compress_System_IO_Stream_System_IO_Stream_System_Boolean_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2.Compress(System.IO.Stream,System.IO.Stream,System.Boolean,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2.Compress(System.IO.Stream, System.IO.Stream, System.Boolean, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2.html#ICSharpCode_SharpZipLib_BZip2_BZip2_Compress_Stream_Stream_System_Boolean_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2.Compress(Stream,Stream,System.Boolean,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2.Compress(Stream, Stream, System.Boolean, System.Int32)
   nameWithType: BZip2.Compress(Stream, Stream, Boolean, Int32)
 - uid: ICSharpCode.SharpZipLib.BZip2.BZip2.Compress*
   name: Compress
@@ -32,11 +32,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.BZip2.BZip2.Compress
   nameWithType: BZip2.Compress
-- uid: ICSharpCode.SharpZipLib.BZip2.BZip2.Decompress(System.IO.Stream,System.IO.Stream,System.Boolean)
+- uid: ICSharpCode.SharpZipLib.BZip2.BZip2.Decompress(Stream,Stream,System.Boolean)
   name: Decompress(Stream, Stream, Boolean)
-  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2.html#ICSharpCode_SharpZipLib_BZip2_BZip2_Decompress_System_IO_Stream_System_IO_Stream_System_Boolean_
-  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2.Decompress(System.IO.Stream,System.IO.Stream,System.Boolean)
-  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2.Decompress(System.IO.Stream, System.IO.Stream, System.Boolean)
+  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2.html#ICSharpCode_SharpZipLib_BZip2_BZip2_Decompress_Stream_Stream_System_Boolean_
+  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2.Decompress(Stream,Stream,System.Boolean)
+  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2.Decompress(Stream, Stream, System.Boolean)
   nameWithType: BZip2.Decompress(Stream, Stream, Boolean)
 - uid: ICSharpCode.SharpZipLib.BZip2.BZip2.Decompress*
   name: Decompress
@@ -57,11 +57,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor
   fullName: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.BZip2Exception()
   nameWithType: BZip2Exception.BZip2Exception()
-- uid: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+- uid: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor(SerializationInfo,StreamingContext)
   name: BZip2Exception(SerializationInfo, StreamingContext)
-  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2Exception.html#ICSharpCode_SharpZipLib_BZip2_BZip2Exception__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.BZip2Exception(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2Exception.html#ICSharpCode_SharpZipLib_BZip2_BZip2Exception__ctor_SerializationInfo_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor(SerializationInfo,StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.BZip2Exception(SerializationInfo, StreamingContext)
   nameWithType: BZip2Exception.BZip2Exception(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor(System.String)
   name: BZip2Exception(String)
@@ -69,11 +69,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor(System.String)
   fullName: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.BZip2Exception(System.String)
   nameWithType: BZip2Exception.BZip2Exception(String)
-- uid: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor(System.String,System.Exception)
+- uid: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor(System.String,Exception)
   name: BZip2Exception(String, Exception)
-  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2Exception.html#ICSharpCode_SharpZipLib_BZip2_BZip2Exception__ctor_System_String_System_Exception_
-  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor(System.String,System.Exception)
-  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.BZip2Exception(System.String, System.Exception)
+  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2Exception.html#ICSharpCode_SharpZipLib_BZip2_BZip2Exception__ctor_System_String_Exception_
+  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor(System.String,Exception)
+  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.BZip2Exception(System.String, Exception)
   nameWithType: BZip2Exception.BZip2Exception(String, Exception)
 - uid: ICSharpCode.SharpZipLib.BZip2.BZip2Exception.#ctor*
   name: BZip2Exception
@@ -88,11 +88,11 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream
   fullName: ICSharpCode.SharpZipLib.BZip2.BZip2InputStream
   nameWithType: BZip2InputStream
-- uid: ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.#ctor(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.#ctor(Stream)
   name: BZip2InputStream(Stream)
-  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.html#ICSharpCode_SharpZipLib_BZip2_BZip2InputStream__ctor_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.#ctor(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.BZip2InputStream(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.html#ICSharpCode_SharpZipLib_BZip2_BZip2InputStream__ctor_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.#ctor(Stream)
+  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.BZip2InputStream(Stream)
   nameWithType: BZip2InputStream.BZip2InputStream(Stream)
 - uid: ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.#ctor*
   name: BZip2InputStream
@@ -234,11 +234,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.ReadByte
   nameWithType: BZip2InputStream.ReadByte
-- uid: ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Seek(System.Int64,System.IO.SeekOrigin)
+- uid: ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Seek(System.Int64,SeekOrigin)
   name: Seek(Int64, SeekOrigin)
-  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.html#ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Seek_System_Int64_System_IO_SeekOrigin_
-  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Seek(System.Int64,System.IO.SeekOrigin)
-  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Seek(System.Int64, System.IO.SeekOrigin)
+  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.html#ICSharpCode_SharpZipLib_BZip2_BZip2InputStream_Seek_System_Int64_SeekOrigin_
+  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Seek(System.Int64,SeekOrigin)
+  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Seek(System.Int64, SeekOrigin)
   nameWithType: BZip2InputStream.Seek(Int64, SeekOrigin)
 - uid: ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.Seek*
   name: Seek
@@ -295,17 +295,17 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream
   fullName: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream
   nameWithType: BZip2OutputStream
-- uid: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.#ctor(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.#ctor(Stream)
   name: BZip2OutputStream(Stream)
-  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.html#ICSharpCode_SharpZipLib_BZip2_BZip2OutputStream__ctor_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.#ctor(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.BZip2OutputStream(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.html#ICSharpCode_SharpZipLib_BZip2_BZip2OutputStream__ctor_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.#ctor(Stream)
+  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.BZip2OutputStream(Stream)
   nameWithType: BZip2OutputStream.BZip2OutputStream(Stream)
-- uid: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.#ctor(System.IO.Stream,System.Int32)
+- uid: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.#ctor(Stream,System.Int32)
   name: BZip2OutputStream(Stream, Int32)
-  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.html#ICSharpCode_SharpZipLib_BZip2_BZip2OutputStream__ctor_System_IO_Stream_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.#ctor(System.IO.Stream,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.BZip2OutputStream(System.IO.Stream, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.html#ICSharpCode_SharpZipLib_BZip2_BZip2OutputStream__ctor_Stream_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.#ctor(Stream,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.BZip2OutputStream(Stream, System.Int32)
   nameWithType: BZip2OutputStream.BZip2OutputStream(Stream, Int32)
 - uid: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.#ctor*
   name: BZip2OutputStream
@@ -473,11 +473,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.ReadByte
   nameWithType: BZip2OutputStream.ReadByte
-- uid: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.Seek(System.Int64,System.IO.SeekOrigin)
+- uid: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.Seek(System.Int64,SeekOrigin)
   name: Seek(Int64, SeekOrigin)
-  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.html#ICSharpCode_SharpZipLib_BZip2_BZip2OutputStream_Seek_System_Int64_System_IO_SeekOrigin_
-  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.Seek(System.Int64,System.IO.SeekOrigin)
-  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.Seek(System.Int64, System.IO.SeekOrigin)
+  href: api/ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.html#ICSharpCode_SharpZipLib_BZip2_BZip2OutputStream_Seek_System_Int64_SeekOrigin_
+  commentId: M:ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.Seek(System.Int64,SeekOrigin)
+  fullName: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.Seek(System.Int64, SeekOrigin)
   nameWithType: BZip2OutputStream.Seek(Int64, SeekOrigin)
 - uid: ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.Seek*
   name: Seek
@@ -566,13 +566,13 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Checksum.Adler32.Reset
   nameWithType: Adler32.Reset
-- uid: ICSharpCode.SharpZipLib.Checksum.Adler32.Update(System.ArraySegment{System.Byte})
+- uid: ICSharpCode.SharpZipLib.Checksum.Adler32.Update(ArraySegment{System.Byte})
   name: Update(ArraySegment<Byte>)
-  href: api/ICSharpCode.SharpZipLib.Checksum.Adler32.html#ICSharpCode_SharpZipLib_Checksum_Adler32_Update_System_ArraySegment_System_Byte__
-  commentId: M:ICSharpCode.SharpZipLib.Checksum.Adler32.Update(System.ArraySegment{System.Byte})
+  href: api/ICSharpCode.SharpZipLib.Checksum.Adler32.html#ICSharpCode_SharpZipLib_Checksum_Adler32_Update_ArraySegment_System_Byte__
+  commentId: M:ICSharpCode.SharpZipLib.Checksum.Adler32.Update(ArraySegment{System.Byte})
   name.vb: Update(ArraySegment(Of Byte))
-  fullName: ICSharpCode.SharpZipLib.Checksum.Adler32.Update(System.ArraySegment<System.Byte>)
-  fullName.vb: ICSharpCode.SharpZipLib.Checksum.Adler32.Update(System.ArraySegment(Of System.Byte))
+  fullName: ICSharpCode.SharpZipLib.Checksum.Adler32.Update(ArraySegment<System.Byte>)
+  fullName.vb: ICSharpCode.SharpZipLib.Checksum.Adler32.Update(ArraySegment(Of System.Byte))
   nameWithType: Adler32.Update(ArraySegment<Byte>)
   nameWithType.vb: Adler32.Update(ArraySegment(Of Byte))
 - uid: ICSharpCode.SharpZipLib.Checksum.Adler32.Update(System.Byte[])
@@ -642,13 +642,13 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Reset
   nameWithType: BZip2Crc.Reset
-- uid: ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(System.ArraySegment{System.Byte})
+- uid: ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(ArraySegment{System.Byte})
   name: Update(ArraySegment<Byte>)
-  href: api/ICSharpCode.SharpZipLib.Checksum.BZip2Crc.html#ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Update_System_ArraySegment_System_Byte__
-  commentId: M:ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(System.ArraySegment{System.Byte})
+  href: api/ICSharpCode.SharpZipLib.Checksum.BZip2Crc.html#ICSharpCode_SharpZipLib_Checksum_BZip2Crc_Update_ArraySegment_System_Byte__
+  commentId: M:ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(ArraySegment{System.Byte})
   name.vb: Update(ArraySegment(Of Byte))
-  fullName: ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(System.ArraySegment<System.Byte>)
-  fullName.vb: ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(System.ArraySegment(Of System.Byte))
+  fullName: ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(ArraySegment<System.Byte>)
+  fullName.vb: ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(ArraySegment(Of System.Byte))
   nameWithType: BZip2Crc.Update(ArraySegment<Byte>)
   nameWithType.vb: BZip2Crc.Update(ArraySegment(Of Byte))
 - uid: ICSharpCode.SharpZipLib.Checksum.BZip2Crc.Update(System.Byte[])
@@ -718,13 +718,13 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Checksum.Crc32.Reset
   nameWithType: Crc32.Reset
-- uid: ICSharpCode.SharpZipLib.Checksum.Crc32.Update(System.ArraySegment{System.Byte})
+- uid: ICSharpCode.SharpZipLib.Checksum.Crc32.Update(ArraySegment{System.Byte})
   name: Update(ArraySegment<Byte>)
-  href: api/ICSharpCode.SharpZipLib.Checksum.Crc32.html#ICSharpCode_SharpZipLib_Checksum_Crc32_Update_System_ArraySegment_System_Byte__
-  commentId: M:ICSharpCode.SharpZipLib.Checksum.Crc32.Update(System.ArraySegment{System.Byte})
+  href: api/ICSharpCode.SharpZipLib.Checksum.Crc32.html#ICSharpCode_SharpZipLib_Checksum_Crc32_Update_ArraySegment_System_Byte__
+  commentId: M:ICSharpCode.SharpZipLib.Checksum.Crc32.Update(ArraySegment{System.Byte})
   name.vb: Update(ArraySegment(Of Byte))
-  fullName: ICSharpCode.SharpZipLib.Checksum.Crc32.Update(System.ArraySegment<System.Byte>)
-  fullName.vb: ICSharpCode.SharpZipLib.Checksum.Crc32.Update(System.ArraySegment(Of System.Byte))
+  fullName: ICSharpCode.SharpZipLib.Checksum.Crc32.Update(ArraySegment<System.Byte>)
+  fullName.vb: ICSharpCode.SharpZipLib.Checksum.Crc32.Update(ArraySegment(Of System.Byte))
   nameWithType: Crc32.Update(ArraySegment<Byte>)
   nameWithType.vb: Crc32.Update(ArraySegment(Of Byte))
 - uid: ICSharpCode.SharpZipLib.Checksum.Crc32.Update(System.Byte[])
@@ -781,13 +781,13 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Checksum.IChecksum.Reset
   nameWithType: IChecksum.Reset
-- uid: ICSharpCode.SharpZipLib.Checksum.IChecksum.Update(System.ArraySegment{System.Byte})
+- uid: ICSharpCode.SharpZipLib.Checksum.IChecksum.Update(ArraySegment{System.Byte})
   name: Update(ArraySegment<Byte>)
-  href: api/ICSharpCode.SharpZipLib.Checksum.IChecksum.html#ICSharpCode_SharpZipLib_Checksum_IChecksum_Update_System_ArraySegment_System_Byte__
-  commentId: M:ICSharpCode.SharpZipLib.Checksum.IChecksum.Update(System.ArraySegment{System.Byte})
+  href: api/ICSharpCode.SharpZipLib.Checksum.IChecksum.html#ICSharpCode_SharpZipLib_Checksum_IChecksum_Update_ArraySegment_System_Byte__
+  commentId: M:ICSharpCode.SharpZipLib.Checksum.IChecksum.Update(ArraySegment{System.Byte})
   name.vb: Update(ArraySegment(Of Byte))
-  fullName: ICSharpCode.SharpZipLib.Checksum.IChecksum.Update(System.ArraySegment<System.Byte>)
-  fullName.vb: ICSharpCode.SharpZipLib.Checksum.IChecksum.Update(System.ArraySegment(Of System.Byte))
+  fullName: ICSharpCode.SharpZipLib.Checksum.IChecksum.Update(ArraySegment<System.Byte>)
+  fullName.vb: ICSharpCode.SharpZipLib.Checksum.IChecksum.Update(ArraySegment(Of System.Byte))
   nameWithType: IChecksum.Update(ArraySegment<Byte>)
   nameWithType.vb: IChecksum.Update(ArraySegment(Of Byte))
 - uid: ICSharpCode.SharpZipLib.Checksum.IChecksum.Update(System.Byte[])
@@ -881,11 +881,11 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Core.ExtendedPathFilter
   fullName: ICSharpCode.SharpZipLib.Core.ExtendedPathFilter
   nameWithType: ExtendedPathFilter
-- uid: ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor(System.String,System.DateTime,System.DateTime)
+- uid: ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor(System.String,DateTime,DateTime)
   name: ExtendedPathFilter(String, DateTime, DateTime)
-  href: api/ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.html#ICSharpCode_SharpZipLib_Core_ExtendedPathFilter__ctor_System_String_System_DateTime_System_DateTime_
-  commentId: M:ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor(System.String,System.DateTime,System.DateTime)
-  fullName: ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.ExtendedPathFilter(System.String, System.DateTime, System.DateTime)
+  href: api/ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.html#ICSharpCode_SharpZipLib_Core_ExtendedPathFilter__ctor_System_String_DateTime_DateTime_
+  commentId: M:ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor(System.String,DateTime,DateTime)
+  fullName: ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.ExtendedPathFilter(System.String, DateTime, DateTime)
   nameWithType: ExtendedPathFilter.ExtendedPathFilter(String, DateTime, DateTime)
 - uid: ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor(System.String,System.Int64,System.Int64)
   name: ExtendedPathFilter(String, Int64, Int64)
@@ -893,11 +893,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor(System.String,System.Int64,System.Int64)
   fullName: ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.ExtendedPathFilter(System.String, System.Int64, System.Int64)
   nameWithType: ExtendedPathFilter.ExtendedPathFilter(String, Int64, Int64)
-- uid: ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor(System.String,System.Int64,System.Int64,System.DateTime,System.DateTime)
+- uid: ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor(System.String,System.Int64,System.Int64,DateTime,DateTime)
   name: ExtendedPathFilter(String, Int64, Int64, DateTime, DateTime)
-  href: api/ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.html#ICSharpCode_SharpZipLib_Core_ExtendedPathFilter__ctor_System_String_System_Int64_System_Int64_System_DateTime_System_DateTime_
-  commentId: M:ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor(System.String,System.Int64,System.Int64,System.DateTime,System.DateTime)
-  fullName: ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.ExtendedPathFilter(System.String, System.Int64, System.Int64, System.DateTime, System.DateTime)
+  href: api/ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.html#ICSharpCode_SharpZipLib_Core_ExtendedPathFilter__ctor_System_String_System_Int64_System_Int64_DateTime_DateTime_
+  commentId: M:ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor(System.String,System.Int64,System.Int64,DateTime,DateTime)
+  fullName: ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.ExtendedPathFilter(System.String, System.Int64, System.Int64, DateTime, DateTime)
   nameWithType: ExtendedPathFilter.ExtendedPathFilter(String, Int64, Int64, DateTime, DateTime)
 - uid: ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor*
   name: ExtendedPathFilter
@@ -1101,11 +1101,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor
   fullName: ICSharpCode.SharpZipLib.Core.InvalidNameException.InvalidNameException()
   nameWithType: InvalidNameException.InvalidNameException()
-- uid: ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+- uid: ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor(SerializationInfo,StreamingContext)
   name: InvalidNameException(SerializationInfo, StreamingContext)
-  href: api/ICSharpCode.SharpZipLib.Core.InvalidNameException.html#ICSharpCode_SharpZipLib_Core_InvalidNameException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: ICSharpCode.SharpZipLib.Core.InvalidNameException.InvalidNameException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.Core.InvalidNameException.html#ICSharpCode_SharpZipLib_Core_InvalidNameException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor(SerializationInfo,StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.Core.InvalidNameException.InvalidNameException(SerializationInfo, StreamingContext)
   nameWithType: InvalidNameException.InvalidNameException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor(System.String)
   name: InvalidNameException(String)
@@ -1113,11 +1113,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor(System.String)
   fullName: ICSharpCode.SharpZipLib.Core.InvalidNameException.InvalidNameException(System.String)
   nameWithType: InvalidNameException.InvalidNameException(String)
-- uid: ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor(System.String,System.Exception)
+- uid: ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor(System.String,Exception)
   name: InvalidNameException(String, Exception)
-  href: api/ICSharpCode.SharpZipLib.Core.InvalidNameException.html#ICSharpCode_SharpZipLib_Core_InvalidNameException__ctor_System_String_System_Exception_
-  commentId: M:ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor(System.String,System.Exception)
-  fullName: ICSharpCode.SharpZipLib.Core.InvalidNameException.InvalidNameException(System.String, System.Exception)
+  href: api/ICSharpCode.SharpZipLib.Core.InvalidNameException.html#ICSharpCode_SharpZipLib_Core_InvalidNameException__ctor_System_String_Exception_
+  commentId: M:ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor(System.String,Exception)
+  fullName: ICSharpCode.SharpZipLib.Core.InvalidNameException.InvalidNameException(System.String, Exception)
   nameWithType: InvalidNameException.InvalidNameException(String, Exception)
 - uid: ICSharpCode.SharpZipLib.Core.InvalidNameException.#ctor*
   name: InvalidNameException
@@ -1345,6 +1345,38 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Core.PathFilter.IsMatch
   nameWithType: PathFilter.IsMatch
+- uid: ICSharpCode.SharpZipLib.Core.PathUtils
+  name: PathUtils
+  href: api/ICSharpCode.SharpZipLib.Core.PathUtils.html
+  commentId: T:ICSharpCode.SharpZipLib.Core.PathUtils
+  fullName: ICSharpCode.SharpZipLib.Core.PathUtils
+  nameWithType: PathUtils
+- uid: ICSharpCode.SharpZipLib.Core.PathUtils.DropPathRoot(System.String)
+  name: DropPathRoot(String)
+  href: api/ICSharpCode.SharpZipLib.Core.PathUtils.html#ICSharpCode_SharpZipLib_Core_PathUtils_DropPathRoot_System_String_
+  commentId: M:ICSharpCode.SharpZipLib.Core.PathUtils.DropPathRoot(System.String)
+  fullName: ICSharpCode.SharpZipLib.Core.PathUtils.DropPathRoot(System.String)
+  nameWithType: PathUtils.DropPathRoot(String)
+- uid: ICSharpCode.SharpZipLib.Core.PathUtils.DropPathRoot*
+  name: DropPathRoot
+  href: api/ICSharpCode.SharpZipLib.Core.PathUtils.html#ICSharpCode_SharpZipLib_Core_PathUtils_DropPathRoot_
+  commentId: Overload:ICSharpCode.SharpZipLib.Core.PathUtils.DropPathRoot
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Core.PathUtils.DropPathRoot
+  nameWithType: PathUtils.DropPathRoot
+- uid: ICSharpCode.SharpZipLib.Core.PathUtils.GetTempFileName(System.String)
+  name: GetTempFileName(String)
+  href: api/ICSharpCode.SharpZipLib.Core.PathUtils.html#ICSharpCode_SharpZipLib_Core_PathUtils_GetTempFileName_System_String_
+  commentId: M:ICSharpCode.SharpZipLib.Core.PathUtils.GetTempFileName(System.String)
+  fullName: ICSharpCode.SharpZipLib.Core.PathUtils.GetTempFileName(System.String)
+  nameWithType: PathUtils.GetTempFileName(String)
+- uid: ICSharpCode.SharpZipLib.Core.PathUtils.GetTempFileName*
+  name: GetTempFileName
+  href: api/ICSharpCode.SharpZipLib.Core.PathUtils.html#ICSharpCode_SharpZipLib_Core_PathUtils_GetTempFileName_
+  commentId: Overload:ICSharpCode.SharpZipLib.Core.PathUtils.GetTempFileName
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Core.PathUtils.GetTempFileName
+  nameWithType: PathUtils.GetTempFileName
 - uid: ICSharpCode.SharpZipLib.Core.ProcessFileHandler
   name: ProcessFileHandler
   href: api/ICSharpCode.SharpZipLib.Core.ProcessFileHandler.html
@@ -1492,11 +1524,11 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs
   fullName: ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs
   nameWithType: ScanFailureEventArgs
-- uid: ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs.#ctor(System.String,System.Exception)
+- uid: ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs.#ctor(System.String,Exception)
   name: ScanFailureEventArgs(String, Exception)
-  href: api/ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs.html#ICSharpCode_SharpZipLib_Core_ScanFailureEventArgs__ctor_System_String_System_Exception_
-  commentId: M:ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs.#ctor(System.String,System.Exception)
-  fullName: ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs.ScanFailureEventArgs(System.String, System.Exception)
+  href: api/ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs.html#ICSharpCode_SharpZipLib_Core_ScanFailureEventArgs__ctor_System_String_Exception_
+  commentId: M:ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs.#ctor(System.String,Exception)
+  fullName: ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs.ScanFailureEventArgs(System.String, Exception)
   nameWithType: ScanFailureEventArgs.ScanFailureEventArgs(String, Exception)
 - uid: ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs.#ctor*
   name: ScanFailureEventArgs
@@ -1550,31 +1582,31 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Core.StreamUtils
   fullName: ICSharpCode.SharpZipLib.Core.StreamUtils
   nameWithType: StreamUtils
-- uid: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(System.IO.Stream,System.IO.Stream,System.Byte[])
+- uid: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(Stream,Stream,System.Byte[])
   name: Copy(Stream, Stream, Byte[])
-  href: api/ICSharpCode.SharpZipLib.Core.StreamUtils.html#ICSharpCode_SharpZipLib_Core_StreamUtils_Copy_System_IO_Stream_System_IO_Stream_System_Byte___
-  commentId: M:ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(System.IO.Stream,System.IO.Stream,System.Byte[])
+  href: api/ICSharpCode.SharpZipLib.Core.StreamUtils.html#ICSharpCode_SharpZipLib_Core_StreamUtils_Copy_Stream_Stream_System_Byte___
+  commentId: M:ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(Stream,Stream,System.Byte[])
   name.vb: Copy(Stream, Stream, Byte())
-  fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(System.IO.Stream, System.IO.Stream, System.Byte[])
-  fullName.vb: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(System.IO.Stream, System.IO.Stream, System.Byte())
+  fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(Stream, Stream, System.Byte[])
+  fullName.vb: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(Stream, Stream, System.Byte())
   nameWithType: StreamUtils.Copy(Stream, Stream, Byte[])
   nameWithType.vb: StreamUtils.Copy(Stream, Stream, Byte())
-- uid: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(System.IO.Stream,System.IO.Stream,System.Byte[],ICSharpCode.SharpZipLib.Core.ProgressHandler,System.TimeSpan,System.Object,System.String)
+- uid: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(Stream,Stream,System.Byte[],ICSharpCode.SharpZipLib.Core.ProgressHandler,TimeSpan,System.Object,System.String)
   name: Copy(Stream, Stream, Byte[], ProgressHandler, TimeSpan, Object, String)
-  href: api/ICSharpCode.SharpZipLib.Core.StreamUtils.html#ICSharpCode_SharpZipLib_Core_StreamUtils_Copy_System_IO_Stream_System_IO_Stream_System_Byte___ICSharpCode_SharpZipLib_Core_ProgressHandler_System_TimeSpan_System_Object_System_String_
-  commentId: M:ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(System.IO.Stream,System.IO.Stream,System.Byte[],ICSharpCode.SharpZipLib.Core.ProgressHandler,System.TimeSpan,System.Object,System.String)
+  href: api/ICSharpCode.SharpZipLib.Core.StreamUtils.html#ICSharpCode_SharpZipLib_Core_StreamUtils_Copy_Stream_Stream_System_Byte___ICSharpCode_SharpZipLib_Core_ProgressHandler_TimeSpan_System_Object_System_String_
+  commentId: M:ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(Stream,Stream,System.Byte[],ICSharpCode.SharpZipLib.Core.ProgressHandler,TimeSpan,System.Object,System.String)
   name.vb: Copy(Stream, Stream, Byte(), ProgressHandler, TimeSpan, Object, String)
-  fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(System.IO.Stream, System.IO.Stream, System.Byte[], ICSharpCode.SharpZipLib.Core.ProgressHandler, System.TimeSpan, System.Object, System.String)
-  fullName.vb: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(System.IO.Stream, System.IO.Stream, System.Byte(), ICSharpCode.SharpZipLib.Core.ProgressHandler, System.TimeSpan, System.Object, System.String)
+  fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(Stream, Stream, System.Byte[], ICSharpCode.SharpZipLib.Core.ProgressHandler, TimeSpan, System.Object, System.String)
+  fullName.vb: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(Stream, Stream, System.Byte(), ICSharpCode.SharpZipLib.Core.ProgressHandler, TimeSpan, System.Object, System.String)
   nameWithType: StreamUtils.Copy(Stream, Stream, Byte[], ProgressHandler, TimeSpan, Object, String)
   nameWithType.vb: StreamUtils.Copy(Stream, Stream, Byte(), ProgressHandler, TimeSpan, Object, String)
-- uid: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(System.IO.Stream,System.IO.Stream,System.Byte[],ICSharpCode.SharpZipLib.Core.ProgressHandler,System.TimeSpan,System.Object,System.String,System.Int64)
+- uid: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(Stream,Stream,System.Byte[],ICSharpCode.SharpZipLib.Core.ProgressHandler,TimeSpan,System.Object,System.String,System.Int64)
   name: Copy(Stream, Stream, Byte[], ProgressHandler, TimeSpan, Object, String, Int64)
-  href: api/ICSharpCode.SharpZipLib.Core.StreamUtils.html#ICSharpCode_SharpZipLib_Core_StreamUtils_Copy_System_IO_Stream_System_IO_Stream_System_Byte___ICSharpCode_SharpZipLib_Core_ProgressHandler_System_TimeSpan_System_Object_System_String_System_Int64_
-  commentId: M:ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(System.IO.Stream,System.IO.Stream,System.Byte[],ICSharpCode.SharpZipLib.Core.ProgressHandler,System.TimeSpan,System.Object,System.String,System.Int64)
+  href: api/ICSharpCode.SharpZipLib.Core.StreamUtils.html#ICSharpCode_SharpZipLib_Core_StreamUtils_Copy_Stream_Stream_System_Byte___ICSharpCode_SharpZipLib_Core_ProgressHandler_TimeSpan_System_Object_System_String_System_Int64_
+  commentId: M:ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(Stream,Stream,System.Byte[],ICSharpCode.SharpZipLib.Core.ProgressHandler,TimeSpan,System.Object,System.String,System.Int64)
   name.vb: Copy(Stream, Stream, Byte(), ProgressHandler, TimeSpan, Object, String, Int64)
-  fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(System.IO.Stream, System.IO.Stream, System.Byte[], ICSharpCode.SharpZipLib.Core.ProgressHandler, System.TimeSpan, System.Object, System.String, System.Int64)
-  fullName.vb: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(System.IO.Stream, System.IO.Stream, System.Byte(), ICSharpCode.SharpZipLib.Core.ProgressHandler, System.TimeSpan, System.Object, System.String, System.Int64)
+  fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(Stream, Stream, System.Byte[], ICSharpCode.SharpZipLib.Core.ProgressHandler, TimeSpan, System.Object, System.String, System.Int64)
+  fullName.vb: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy(Stream, Stream, System.Byte(), ICSharpCode.SharpZipLib.Core.ProgressHandler, TimeSpan, System.Object, System.String, System.Int64)
   nameWithType: StreamUtils.Copy(Stream, Stream, Byte[], ProgressHandler, TimeSpan, Object, String, Int64)
   nameWithType.vb: StreamUtils.Copy(Stream, Stream, Byte(), ProgressHandler, TimeSpan, Object, String, Int64)
 - uid: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy*
@@ -1584,22 +1616,22 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.Copy
   nameWithType: StreamUtils.Copy
-- uid: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(System.IO.Stream,System.Byte[])
+- uid: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(Stream,System.Byte[])
   name: ReadFully(Stream, Byte[])
-  href: api/ICSharpCode.SharpZipLib.Core.StreamUtils.html#ICSharpCode_SharpZipLib_Core_StreamUtils_ReadFully_System_IO_Stream_System_Byte___
-  commentId: M:ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(System.IO.Stream,System.Byte[])
+  href: api/ICSharpCode.SharpZipLib.Core.StreamUtils.html#ICSharpCode_SharpZipLib_Core_StreamUtils_ReadFully_Stream_System_Byte___
+  commentId: M:ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(Stream,System.Byte[])
   name.vb: ReadFully(Stream, Byte())
-  fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(System.IO.Stream, System.Byte[])
-  fullName.vb: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(System.IO.Stream, System.Byte())
+  fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(Stream, System.Byte[])
+  fullName.vb: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(Stream, System.Byte())
   nameWithType: StreamUtils.ReadFully(Stream, Byte[])
   nameWithType.vb: StreamUtils.ReadFully(Stream, Byte())
-- uid: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(System.IO.Stream,System.Byte[],System.Int32,System.Int32)
+- uid: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(Stream,System.Byte[],System.Int32,System.Int32)
   name: ReadFully(Stream, Byte[], Int32, Int32)
-  href: api/ICSharpCode.SharpZipLib.Core.StreamUtils.html#ICSharpCode_SharpZipLib_Core_StreamUtils_ReadFully_System_IO_Stream_System_Byte___System_Int32_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(System.IO.Stream,System.Byte[],System.Int32,System.Int32)
+  href: api/ICSharpCode.SharpZipLib.Core.StreamUtils.html#ICSharpCode_SharpZipLib_Core_StreamUtils_ReadFully_Stream_System_Byte___System_Int32_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(Stream,System.Byte[],System.Int32,System.Int32)
   name.vb: ReadFully(Stream, Byte(), Int32, Int32)
-  fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(System.IO.Stream, System.Byte[], System.Int32, System.Int32)
-  fullName.vb: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(System.IO.Stream, System.Byte(), System.Int32, System.Int32)
+  fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(Stream, System.Byte[], System.Int32, System.Int32)
+  fullName.vb: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully(Stream, System.Byte(), System.Int32, System.Int32)
   nameWithType: StreamUtils.ReadFully(Stream, Byte[], Int32, Int32)
   nameWithType.vb: StreamUtils.ReadFully(Stream, Byte(), Int32, Int32)
 - uid: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully*
@@ -1609,13 +1641,13 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadFully
   nameWithType: StreamUtils.ReadFully
-- uid: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes(System.IO.Stream,System.Byte[],System.Int32,System.Int32)
+- uid: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes(Stream,System.Byte[],System.Int32,System.Int32)
   name: ReadRequestedBytes(Stream, Byte[], Int32, Int32)
-  href: api/ICSharpCode.SharpZipLib.Core.StreamUtils.html#ICSharpCode_SharpZipLib_Core_StreamUtils_ReadRequestedBytes_System_IO_Stream_System_Byte___System_Int32_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes(System.IO.Stream,System.Byte[],System.Int32,System.Int32)
+  href: api/ICSharpCode.SharpZipLib.Core.StreamUtils.html#ICSharpCode_SharpZipLib_Core_StreamUtils_ReadRequestedBytes_Stream_System_Byte___System_Int32_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes(Stream,System.Byte[],System.Int32,System.Int32)
   name.vb: ReadRequestedBytes(Stream, Byte(), Int32, Int32)
-  fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes(System.IO.Stream, System.Byte[], System.Int32, System.Int32)
-  fullName.vb: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes(System.IO.Stream, System.Byte(), System.Int32, System.Int32)
+  fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes(Stream, System.Byte[], System.Int32, System.Int32)
+  fullName.vb: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes(Stream, System.Byte(), System.Int32, System.Int32)
   nameWithType: StreamUtils.ReadRequestedBytes(Stream, Byte[], Int32, Int32)
   nameWithType.vb: StreamUtils.ReadRequestedBytes(Stream, Byte(), Int32, Int32)
 - uid: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes*
@@ -1625,25 +1657,6 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Core.StreamUtils.ReadRequestedBytes
   nameWithType: StreamUtils.ReadRequestedBytes
-- uid: ICSharpCode.SharpZipLib.Core.WindowsPathUtils
-  name: WindowsPathUtils
-  href: api/ICSharpCode.SharpZipLib.Core.WindowsPathUtils.html
-  commentId: T:ICSharpCode.SharpZipLib.Core.WindowsPathUtils
-  fullName: ICSharpCode.SharpZipLib.Core.WindowsPathUtils
-  nameWithType: WindowsPathUtils
-- uid: ICSharpCode.SharpZipLib.Core.WindowsPathUtils.DropPathRoot(System.String)
-  name: DropPathRoot(String)
-  href: api/ICSharpCode.SharpZipLib.Core.WindowsPathUtils.html#ICSharpCode_SharpZipLib_Core_WindowsPathUtils_DropPathRoot_System_String_
-  commentId: M:ICSharpCode.SharpZipLib.Core.WindowsPathUtils.DropPathRoot(System.String)
-  fullName: ICSharpCode.SharpZipLib.Core.WindowsPathUtils.DropPathRoot(System.String)
-  nameWithType: WindowsPathUtils.DropPathRoot(String)
-- uid: ICSharpCode.SharpZipLib.Core.WindowsPathUtils.DropPathRoot*
-  name: DropPathRoot
-  href: api/ICSharpCode.SharpZipLib.Core.WindowsPathUtils.html#ICSharpCode_SharpZipLib_Core_WindowsPathUtils_DropPathRoot_
-  commentId: Overload:ICSharpCode.SharpZipLib.Core.WindowsPathUtils.DropPathRoot
-  isSpec: "True"
-  fullName: ICSharpCode.SharpZipLib.Core.WindowsPathUtils.DropPathRoot
-  nameWithType: WindowsPathUtils.DropPathRoot
 - uid: ICSharpCode.SharpZipLib.Encryption
   name: ICSharpCode.SharpZipLib.Encryption
   href: api/ICSharpCode.SharpZipLib.Encryption.html
@@ -1800,11 +1813,11 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.GZip.GZip
   fullName: ICSharpCode.SharpZipLib.GZip.GZip
   nameWithType: GZip
-- uid: ICSharpCode.SharpZipLib.GZip.GZip.Compress(System.IO.Stream,System.IO.Stream,System.Boolean,System.Int32,System.Int32)
+- uid: ICSharpCode.SharpZipLib.GZip.GZip.Compress(Stream,Stream,System.Boolean,System.Int32,System.Int32)
   name: Compress(Stream, Stream, Boolean, Int32, Int32)
-  href: api/ICSharpCode.SharpZipLib.GZip.GZip.html#ICSharpCode_SharpZipLib_GZip_GZip_Compress_System_IO_Stream_System_IO_Stream_System_Boolean_System_Int32_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.GZip.GZip.Compress(System.IO.Stream,System.IO.Stream,System.Boolean,System.Int32,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.GZip.GZip.Compress(System.IO.Stream, System.IO.Stream, System.Boolean, System.Int32, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.GZip.GZip.html#ICSharpCode_SharpZipLib_GZip_GZip_Compress_Stream_Stream_System_Boolean_System_Int32_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.GZip.GZip.Compress(Stream,Stream,System.Boolean,System.Int32,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.GZip.GZip.Compress(Stream, Stream, System.Boolean, System.Int32, System.Int32)
   nameWithType: GZip.Compress(Stream, Stream, Boolean, Int32, Int32)
 - uid: ICSharpCode.SharpZipLib.GZip.GZip.Compress*
   name: Compress
@@ -1813,11 +1826,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.GZip.GZip.Compress
   nameWithType: GZip.Compress
-- uid: ICSharpCode.SharpZipLib.GZip.GZip.Decompress(System.IO.Stream,System.IO.Stream,System.Boolean)
+- uid: ICSharpCode.SharpZipLib.GZip.GZip.Decompress(Stream,Stream,System.Boolean)
   name: Decompress(Stream, Stream, Boolean)
-  href: api/ICSharpCode.SharpZipLib.GZip.GZip.html#ICSharpCode_SharpZipLib_GZip_GZip_Decompress_System_IO_Stream_System_IO_Stream_System_Boolean_
-  commentId: M:ICSharpCode.SharpZipLib.GZip.GZip.Decompress(System.IO.Stream,System.IO.Stream,System.Boolean)
-  fullName: ICSharpCode.SharpZipLib.GZip.GZip.Decompress(System.IO.Stream, System.IO.Stream, System.Boolean)
+  href: api/ICSharpCode.SharpZipLib.GZip.GZip.html#ICSharpCode_SharpZipLib_GZip_GZip_Decompress_Stream_Stream_System_Boolean_
+  commentId: M:ICSharpCode.SharpZipLib.GZip.GZip.Decompress(Stream,Stream,System.Boolean)
+  fullName: ICSharpCode.SharpZipLib.GZip.GZip.Decompress(Stream, Stream, System.Boolean)
   nameWithType: GZip.Decompress(Stream, Stream, Boolean)
 - uid: ICSharpCode.SharpZipLib.GZip.GZip.Decompress*
   name: Decompress
@@ -1880,11 +1893,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.GZip.GZipException.#ctor
   fullName: ICSharpCode.SharpZipLib.GZip.GZipException.GZipException()
   nameWithType: GZipException.GZipException()
-- uid: ICSharpCode.SharpZipLib.GZip.GZipException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+- uid: ICSharpCode.SharpZipLib.GZip.GZipException.#ctor(SerializationInfo,StreamingContext)
   name: GZipException(SerializationInfo, StreamingContext)
-  href: api/ICSharpCode.SharpZipLib.GZip.GZipException.html#ICSharpCode_SharpZipLib_GZip_GZipException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: ICSharpCode.SharpZipLib.GZip.GZipException.GZipException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipException.html#ICSharpCode_SharpZipLib_GZip_GZipException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipException.#ctor(SerializationInfo,StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipException.GZipException(SerializationInfo, StreamingContext)
   nameWithType: GZipException.GZipException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.GZip.GZipException.#ctor(System.String)
   name: GZipException(String)
@@ -1892,11 +1905,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.GZip.GZipException.#ctor(System.String)
   fullName: ICSharpCode.SharpZipLib.GZip.GZipException.GZipException(System.String)
   nameWithType: GZipException.GZipException(String)
-- uid: ICSharpCode.SharpZipLib.GZip.GZipException.#ctor(System.String,System.Exception)
+- uid: ICSharpCode.SharpZipLib.GZip.GZipException.#ctor(System.String,Exception)
   name: GZipException(String, Exception)
-  href: api/ICSharpCode.SharpZipLib.GZip.GZipException.html#ICSharpCode_SharpZipLib_GZip_GZipException__ctor_System_String_System_Exception_
-  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipException.#ctor(System.String,System.Exception)
-  fullName: ICSharpCode.SharpZipLib.GZip.GZipException.GZipException(System.String, System.Exception)
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipException.html#ICSharpCode_SharpZipLib_GZip_GZipException__ctor_System_String_Exception_
+  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipException.#ctor(System.String,Exception)
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipException.GZipException(System.String, Exception)
   nameWithType: GZipException.GZipException(String, Exception)
 - uid: ICSharpCode.SharpZipLib.GZip.GZipException.#ctor*
   name: GZipException
@@ -1911,17 +1924,17 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.GZip.GZipInputStream
   fullName: ICSharpCode.SharpZipLib.GZip.GZipInputStream
   nameWithType: GZipInputStream
-- uid: ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor(Stream)
   name: GZipInputStream(Stream)
-  href: api/ICSharpCode.SharpZipLib.GZip.GZipInputStream.html#ICSharpCode_SharpZipLib_GZip_GZipInputStream__ctor_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.GZip.GZipInputStream.GZipInputStream(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipInputStream.html#ICSharpCode_SharpZipLib_GZip_GZipInputStream__ctor_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor(Stream)
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipInputStream.GZipInputStream(Stream)
   nameWithType: GZipInputStream.GZipInputStream(Stream)
-- uid: ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor(System.IO.Stream,System.Int32)
+- uid: ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor(Stream,System.Int32)
   name: GZipInputStream(Stream, Int32)
-  href: api/ICSharpCode.SharpZipLib.GZip.GZipInputStream.html#ICSharpCode_SharpZipLib_GZip_GZipInputStream__ctor_System_IO_Stream_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor(System.IO.Stream,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.GZip.GZipInputStream.GZipInputStream(System.IO.Stream, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipInputStream.html#ICSharpCode_SharpZipLib_GZip_GZipInputStream__ctor_Stream_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor(Stream,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipInputStream.GZipInputStream(Stream, System.Int32)
   nameWithType: GZipInputStream.GZipInputStream(Stream, Int32)
 - uid: ICSharpCode.SharpZipLib.GZip.GZipInputStream.#ctor*
   name: GZipInputStream
@@ -1958,17 +1971,17 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.GZip.GZipOutputStream
   fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream
   nameWithType: GZipOutputStream
-- uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.#ctor(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.#ctor(Stream)
   name: GZipOutputStream(Stream)
-  href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream__ctor_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.#ctor(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.GZipOutputStream(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream__ctor_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.#ctor(Stream)
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.GZipOutputStream(Stream)
   nameWithType: GZipOutputStream.GZipOutputStream(Stream)
-- uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.#ctor(System.IO.Stream,System.Int32)
+- uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.#ctor(Stream,System.Int32)
   name: GZipOutputStream(Stream, Int32)
-  href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream__ctor_System_IO_Stream_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.#ctor(System.IO.Stream,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.GZipOutputStream(System.IO.Stream, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream__ctor_Stream_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.#ctor(Stream,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.GZipOutputStream(Stream, System.Int32)
   nameWithType: GZipOutputStream.GZipOutputStream(Stream, Int32)
 - uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.#ctor*
   name: GZipOutputStream
@@ -2009,6 +2022,19 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.Finish
   nameWithType: GZipOutputStream.Finish
+- uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.Flush
+  name: Flush()
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream_Flush
+  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.Flush
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.Flush()
+  nameWithType: GZipOutputStream.Flush()
+- uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.Flush*
+  name: Flush
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream_Flush_
+  commentId: Overload:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.Flush
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.Flush
+  nameWithType: GZipOutputStream.Flush
 - uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.GetLevel
   name: GetLevel()
   href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream_GetLevel
@@ -2123,11 +2149,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor
   fullName: ICSharpCode.SharpZipLib.Lzw.LzwException.LzwException()
   nameWithType: LzwException.LzwException()
-- uid: ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+- uid: ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor(SerializationInfo,StreamingContext)
   name: LzwException(SerializationInfo, StreamingContext)
-  href: api/ICSharpCode.SharpZipLib.Lzw.LzwException.html#ICSharpCode_SharpZipLib_Lzw_LzwException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: ICSharpCode.SharpZipLib.Lzw.LzwException.LzwException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.Lzw.LzwException.html#ICSharpCode_SharpZipLib_Lzw_LzwException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor(SerializationInfo,StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.Lzw.LzwException.LzwException(SerializationInfo, StreamingContext)
   nameWithType: LzwException.LzwException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor(System.String)
   name: LzwException(String)
@@ -2135,11 +2161,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor(System.String)
   fullName: ICSharpCode.SharpZipLib.Lzw.LzwException.LzwException(System.String)
   nameWithType: LzwException.LzwException(String)
-- uid: ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor(System.String,System.Exception)
+- uid: ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor(System.String,Exception)
   name: LzwException(String, Exception)
-  href: api/ICSharpCode.SharpZipLib.Lzw.LzwException.html#ICSharpCode_SharpZipLib_Lzw_LzwException__ctor_System_String_System_Exception_
-  commentId: M:ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor(System.String,System.Exception)
-  fullName: ICSharpCode.SharpZipLib.Lzw.LzwException.LzwException(System.String, System.Exception)
+  href: api/ICSharpCode.SharpZipLib.Lzw.LzwException.html#ICSharpCode_SharpZipLib_Lzw_LzwException__ctor_System_String_Exception_
+  commentId: M:ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor(System.String,Exception)
+  fullName: ICSharpCode.SharpZipLib.Lzw.LzwException.LzwException(System.String, Exception)
   nameWithType: LzwException.LzwException(String, Exception)
 - uid: ICSharpCode.SharpZipLib.Lzw.LzwException.#ctor*
   name: LzwException
@@ -2154,11 +2180,11 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Lzw.LzwInputStream
   fullName: ICSharpCode.SharpZipLib.Lzw.LzwInputStream
   nameWithType: LzwInputStream
-- uid: ICSharpCode.SharpZipLib.Lzw.LzwInputStream.#ctor(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Lzw.LzwInputStream.#ctor(Stream)
   name: LzwInputStream(Stream)
-  href: api/ICSharpCode.SharpZipLib.Lzw.LzwInputStream.html#ICSharpCode_SharpZipLib_Lzw_LzwInputStream__ctor_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Lzw.LzwInputStream.#ctor(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Lzw.LzwInputStream.LzwInputStream(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Lzw.LzwInputStream.html#ICSharpCode_SharpZipLib_Lzw_LzwInputStream__ctor_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Lzw.LzwInputStream.#ctor(Stream)
+  fullName: ICSharpCode.SharpZipLib.Lzw.LzwInputStream.LzwInputStream(Stream)
   nameWithType: LzwInputStream.LzwInputStream(Stream)
 - uid: ICSharpCode.SharpZipLib.Lzw.LzwInputStream.#ctor*
   name: LzwInputStream
@@ -2300,11 +2326,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Lzw.LzwInputStream.ReadByte
   nameWithType: LzwInputStream.ReadByte
-- uid: ICSharpCode.SharpZipLib.Lzw.LzwInputStream.Seek(System.Int64,System.IO.SeekOrigin)
+- uid: ICSharpCode.SharpZipLib.Lzw.LzwInputStream.Seek(System.Int64,SeekOrigin)
   name: Seek(Int64, SeekOrigin)
-  href: api/ICSharpCode.SharpZipLib.Lzw.LzwInputStream.html#ICSharpCode_SharpZipLib_Lzw_LzwInputStream_Seek_System_Int64_System_IO_SeekOrigin_
-  commentId: M:ICSharpCode.SharpZipLib.Lzw.LzwInputStream.Seek(System.Int64,System.IO.SeekOrigin)
-  fullName: ICSharpCode.SharpZipLib.Lzw.LzwInputStream.Seek(System.Int64, System.IO.SeekOrigin)
+  href: api/ICSharpCode.SharpZipLib.Lzw.LzwInputStream.html#ICSharpCode_SharpZipLib_Lzw_LzwInputStream_Seek_System_Int64_SeekOrigin_
+  commentId: M:ICSharpCode.SharpZipLib.Lzw.LzwInputStream.Seek(System.Int64,SeekOrigin)
+  fullName: ICSharpCode.SharpZipLib.Lzw.LzwInputStream.Seek(System.Int64, SeekOrigin)
   nameWithType: LzwInputStream.Seek(Int64, SeekOrigin)
 - uid: ICSharpCode.SharpZipLib.Lzw.LzwInputStream.Seek*
   name: Seek
@@ -2367,11 +2393,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor
   fullName: ICSharpCode.SharpZipLib.SharpZipBaseException.SharpZipBaseException()
   nameWithType: SharpZipBaseException.SharpZipBaseException()
-- uid: ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+- uid: ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(SerializationInfo,StreamingContext)
   name: SharpZipBaseException(SerializationInfo, StreamingContext)
-  href: api/ICSharpCode.SharpZipLib.SharpZipBaseException.html#ICSharpCode_SharpZipLib_SharpZipBaseException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: ICSharpCode.SharpZipLib.SharpZipBaseException.SharpZipBaseException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.SharpZipBaseException.html#ICSharpCode_SharpZipLib_SharpZipBaseException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(SerializationInfo,StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.SharpZipBaseException.SharpZipBaseException(SerializationInfo, StreamingContext)
   nameWithType: SharpZipBaseException.SharpZipBaseException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.String)
   name: SharpZipBaseException(String)
@@ -2379,11 +2405,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.String)
   fullName: ICSharpCode.SharpZipLib.SharpZipBaseException.SharpZipBaseException(System.String)
   nameWithType: SharpZipBaseException.SharpZipBaseException(String)
-- uid: ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.String,System.Exception)
+- uid: ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.String,Exception)
   name: SharpZipBaseException(String, Exception)
-  href: api/ICSharpCode.SharpZipLib.SharpZipBaseException.html#ICSharpCode_SharpZipLib_SharpZipBaseException__ctor_System_String_System_Exception_
-  commentId: M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.String,System.Exception)
-  fullName: ICSharpCode.SharpZipLib.SharpZipBaseException.SharpZipBaseException(System.String, System.Exception)
+  href: api/ICSharpCode.SharpZipLib.SharpZipBaseException.html#ICSharpCode_SharpZipLib_SharpZipBaseException__ctor_System_String_Exception_
+  commentId: M:ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor(System.String,Exception)
+  fullName: ICSharpCode.SharpZipLib.SharpZipBaseException.SharpZipBaseException(System.String, Exception)
   nameWithType: SharpZipBaseException.SharpZipBaseException(String, Exception)
 - uid: ICSharpCode.SharpZipLib.SharpZipBaseException.#ctor*
   name: SharpZipBaseException
@@ -2404,11 +2430,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor
   fullName: ICSharpCode.SharpZipLib.StreamDecodingException.StreamDecodingException()
   nameWithType: StreamDecodingException.StreamDecodingException()
-- uid: ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+- uid: ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(SerializationInfo,StreamingContext)
   name: StreamDecodingException(SerializationInfo, StreamingContext)
-  href: api/ICSharpCode.SharpZipLib.StreamDecodingException.html#ICSharpCode_SharpZipLib_StreamDecodingException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: ICSharpCode.SharpZipLib.StreamDecodingException.StreamDecodingException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.StreamDecodingException.html#ICSharpCode_SharpZipLib_StreamDecodingException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(SerializationInfo,StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.StreamDecodingException.StreamDecodingException(SerializationInfo, StreamingContext)
   nameWithType: StreamDecodingException.StreamDecodingException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.String)
   name: StreamDecodingException(String)
@@ -2416,11 +2442,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.String)
   fullName: ICSharpCode.SharpZipLib.StreamDecodingException.StreamDecodingException(System.String)
   nameWithType: StreamDecodingException.StreamDecodingException(String)
-- uid: ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.String,System.Exception)
+- uid: ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.String,Exception)
   name: StreamDecodingException(String, Exception)
-  href: api/ICSharpCode.SharpZipLib.StreamDecodingException.html#ICSharpCode_SharpZipLib_StreamDecodingException__ctor_System_String_System_Exception_
-  commentId: M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.String,System.Exception)
-  fullName: ICSharpCode.SharpZipLib.StreamDecodingException.StreamDecodingException(System.String, System.Exception)
+  href: api/ICSharpCode.SharpZipLib.StreamDecodingException.html#ICSharpCode_SharpZipLib_StreamDecodingException__ctor_System_String_Exception_
+  commentId: M:ICSharpCode.SharpZipLib.StreamDecodingException.#ctor(System.String,Exception)
+  fullName: ICSharpCode.SharpZipLib.StreamDecodingException.StreamDecodingException(System.String, Exception)
   nameWithType: StreamDecodingException.StreamDecodingException(String, Exception)
 - uid: ICSharpCode.SharpZipLib.StreamDecodingException.#ctor*
   name: StreamDecodingException
@@ -2441,11 +2467,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor
   fullName: ICSharpCode.SharpZipLib.StreamUnsupportedException.StreamUnsupportedException()
   nameWithType: StreamUnsupportedException.StreamUnsupportedException()
-- uid: ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+- uid: ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(SerializationInfo,StreamingContext)
   name: StreamUnsupportedException(SerializationInfo, StreamingContext)
-  href: api/ICSharpCode.SharpZipLib.StreamUnsupportedException.html#ICSharpCode_SharpZipLib_StreamUnsupportedException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: ICSharpCode.SharpZipLib.StreamUnsupportedException.StreamUnsupportedException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.StreamUnsupportedException.html#ICSharpCode_SharpZipLib_StreamUnsupportedException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(SerializationInfo,StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.StreamUnsupportedException.StreamUnsupportedException(SerializationInfo, StreamingContext)
   nameWithType: StreamUnsupportedException.StreamUnsupportedException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.String)
   name: StreamUnsupportedException(String)
@@ -2453,11 +2479,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.String)
   fullName: ICSharpCode.SharpZipLib.StreamUnsupportedException.StreamUnsupportedException(System.String)
   nameWithType: StreamUnsupportedException.StreamUnsupportedException(String)
-- uid: ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.String,System.Exception)
+- uid: ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.String,Exception)
   name: StreamUnsupportedException(String, Exception)
-  href: api/ICSharpCode.SharpZipLib.StreamUnsupportedException.html#ICSharpCode_SharpZipLib_StreamUnsupportedException__ctor_System_String_System_Exception_
-  commentId: M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.String,System.Exception)
-  fullName: ICSharpCode.SharpZipLib.StreamUnsupportedException.StreamUnsupportedException(System.String, System.Exception)
+  href: api/ICSharpCode.SharpZipLib.StreamUnsupportedException.html#ICSharpCode_SharpZipLib_StreamUnsupportedException__ctor_System_String_Exception_
+  commentId: M:ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor(System.String,Exception)
+  fullName: ICSharpCode.SharpZipLib.StreamUnsupportedException.StreamUnsupportedException(System.String, Exception)
   nameWithType: StreamUnsupportedException.StreamUnsupportedException(String, Exception)
 - uid: ICSharpCode.SharpZipLib.StreamUnsupportedException.#ctor*
   name: StreamUnsupportedException
@@ -2484,17 +2510,23 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor
   fullName: ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.InvalidHeaderException()
   nameWithType: InvalidHeaderException.InvalidHeaderException()
+- uid: ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor(SerializationInfo,StreamingContext)
+  name: InvalidHeaderException(SerializationInfo, StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.html#ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor(SerializationInfo,StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.InvalidHeaderException(SerializationInfo, StreamingContext)
+  nameWithType: InvalidHeaderException.InvalidHeaderException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor(System.String)
   name: InvalidHeaderException(String)
   href: api/ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.html#ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor_System_String_
   commentId: M:ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor(System.String)
   fullName: ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.InvalidHeaderException(System.String)
   nameWithType: InvalidHeaderException.InvalidHeaderException(String)
-- uid: ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor(System.String,System.Exception)
+- uid: ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor(System.String,Exception)
   name: InvalidHeaderException(String, Exception)
-  href: api/ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.html#ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor_System_String_System_Exception_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor(System.String,System.Exception)
-  fullName: ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.InvalidHeaderException(System.String, System.Exception)
+  href: api/ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.html#ICSharpCode_SharpZipLib_Tar_InvalidHeaderException__ctor_System_String_Exception_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor(System.String,Exception)
+  fullName: ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.InvalidHeaderException(System.String, Exception)
   nameWithType: InvalidHeaderException.InvalidHeaderException(String, Exception)
 - uid: ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.#ctor*
   name: InvalidHeaderException
@@ -2592,18 +2624,30 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.CloseArchive
   nameWithType: TarArchive.CloseArchive
-- uid: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream)
   name: CreateInputTarArchive(Stream)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream)
   nameWithType: TarArchive.CreateInputTarArchive(Stream)
-- uid: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream,System.Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream,Encoding)
+  name: CreateInputTarArchive(Stream, Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_Stream_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream,Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream, Encoding)
+  nameWithType: TarArchive.CreateInputTarArchive(Stream, Encoding)
+- uid: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream,System.Int32)
   name: CreateInputTarArchive(Stream, Int32)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_System_IO_Stream_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_Stream_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream, System.Int32)
   nameWithType: TarArchive.CreateInputTarArchive(Stream, Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream,System.Int32,Encoding)
+  name: CreateInputTarArchive(Stream, Int32, Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_Stream_System_Int32_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream,System.Int32,Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream, System.Int32, Encoding)
+  nameWithType: TarArchive.CreateInputTarArchive(Stream, Int32, Encoding)
 - uid: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive*
   name: CreateInputTarArchive
   href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_
@@ -2611,18 +2655,30 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive
   nameWithType: TarArchive.CreateInputTarArchive
-- uid: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream)
   name: CreateOutputTarArchive(Stream)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream)
   nameWithType: TarArchive.CreateOutputTarArchive(Stream)
-- uid: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream,System.Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream,Encoding)
+  name: CreateOutputTarArchive(Stream, Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_Stream_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream,Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream, Encoding)
+  nameWithType: TarArchive.CreateOutputTarArchive(Stream, Encoding)
+- uid: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream,System.Int32)
   name: CreateOutputTarArchive(Stream, Int32)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_System_IO_Stream_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_Stream_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream, System.Int32)
   nameWithType: TarArchive.CreateOutputTarArchive(Stream, Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream,System.Int32,Encoding)
+  name: CreateOutputTarArchive(Stream, Int32, Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_Stream_System_Int32_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream,System.Int32,Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream, System.Int32, Encoding)
+  nameWithType: TarArchive.CreateOutputTarArchive(Stream, Int32, Encoding)
 - uid: ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive*
   name: CreateOutputTarArchive
   href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_
@@ -2655,6 +2711,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Tar.TarArchive.ExtractContents(System.String)
   fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.ExtractContents(System.String)
   nameWithType: TarArchive.ExtractContents(String)
+- uid: ICSharpCode.SharpZipLib.Tar.TarArchive.ExtractContents(System.String,System.Boolean)
+  name: ExtractContents(String, Boolean)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_ExtractContents_System_String_System_Boolean_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarArchive.ExtractContents(System.String,System.Boolean)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarArchive.ExtractContents(System.String, System.Boolean)
+  nameWithType: TarArchive.ExtractContents(String, Boolean)
 - uid: ICSharpCode.SharpZipLib.Tar.TarArchive.ExtractContents*
   name: ExtractContents
   href: api/ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_ExtractContents_
@@ -2914,17 +2976,17 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Tar.TarBuffer.Close
   nameWithType: TarBuffer.Close
-- uid: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(Stream)
   name: CreateInputTarBuffer(Stream)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarBuffer.html#ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateInputTarBuffer_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarBuffer.html#ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateInputTarBuffer_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(Stream)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(Stream)
   nameWithType: TarBuffer.CreateInputTarBuffer(Stream)
-- uid: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(System.IO.Stream,System.Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(Stream,System.Int32)
   name: CreateInputTarBuffer(Stream, Int32)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarBuffer.html#ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateInputTarBuffer_System_IO_Stream_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(System.IO.Stream,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(System.IO.Stream, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarBuffer.html#ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateInputTarBuffer_Stream_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(Stream,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(Stream, System.Int32)
   nameWithType: TarBuffer.CreateInputTarBuffer(Stream, Int32)
 - uid: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer*
   name: CreateInputTarBuffer
@@ -2933,17 +2995,17 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer
   nameWithType: TarBuffer.CreateInputTarBuffer
-- uid: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(Stream)
   name: CreateOutputTarBuffer(Stream)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarBuffer.html#ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateOutputTarBuffer_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarBuffer.html#ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateOutputTarBuffer_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(Stream)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(Stream)
   nameWithType: TarBuffer.CreateOutputTarBuffer(Stream)
-- uid: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(System.IO.Stream,System.Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(Stream,System.Int32)
   name: CreateOutputTarBuffer(Stream, Int32)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarBuffer.html#ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateOutputTarBuffer_System_IO_Stream_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(System.IO.Stream,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(System.IO.Stream, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarBuffer.html#ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateOutputTarBuffer_Stream_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(Stream,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(Stream, System.Int32)
   nameWithType: TarBuffer.CreateOutputTarBuffer(Stream, Int32)
 - uid: ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer*
   name: CreateOutputTarBuffer
@@ -3172,6 +3234,15 @@ references:
   fullName.vb: ICSharpCode.SharpZipLib.Tar.TarEntry.TarEntry(System.Byte())
   nameWithType: TarEntry.TarEntry(Byte[])
   nameWithType.vb: TarEntry.TarEntry(Byte())
+- uid: ICSharpCode.SharpZipLib.Tar.TarEntry.#ctor(System.Byte[],Encoding)
+  name: TarEntry(Byte[], Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarEntry.html#ICSharpCode_SharpZipLib_Tar_TarEntry__ctor_System_Byte___Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarEntry.#ctor(System.Byte[],Encoding)
+  name.vb: TarEntry(Byte(), Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarEntry.TarEntry(System.Byte[], Encoding)
+  fullName.vb: ICSharpCode.SharpZipLib.Tar.TarEntry.TarEntry(System.Byte(), Encoding)
+  nameWithType: TarEntry.TarEntry(Byte[], Encoding)
+  nameWithType.vb: TarEntry.TarEntry(Byte(), Encoding)
 - uid: ICSharpCode.SharpZipLib.Tar.TarEntry.#ctor*
   name: TarEntry
   href: api/ICSharpCode.SharpZipLib.Tar.TarEntry.html#ICSharpCode_SharpZipLib_Tar_TarEntry__ctor_
@@ -3188,6 +3259,15 @@ references:
   fullName.vb: ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName(System.Byte(), System.String)
   nameWithType: TarEntry.AdjustEntryName(Byte[], String)
   nameWithType.vb: TarEntry.AdjustEntryName(Byte(), String)
+- uid: ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName(System.Byte[],System.String,Encoding)
+  name: AdjustEntryName(Byte[], String, Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarEntry.html#ICSharpCode_SharpZipLib_Tar_TarEntry_AdjustEntryName_System_Byte___System_String_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName(System.Byte[],System.String,Encoding)
+  name.vb: AdjustEntryName(Byte(), String, Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName(System.Byte[], System.String, Encoding)
+  fullName.vb: ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName(System.Byte(), System.String, Encoding)
+  nameWithType: TarEntry.AdjustEntryName(Byte[], String, Encoding)
+  nameWithType.vb: TarEntry.AdjustEntryName(Byte(), String, Encoding)
 - uid: ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName*
   name: AdjustEntryName
   href: api/ICSharpCode.SharpZipLib.Tar.TarEntry.html#ICSharpCode_SharpZipLib_Tar_TarEntry_AdjustEntryName_
@@ -3477,6 +3557,15 @@ references:
   fullName.vb: ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader(System.Byte())
   nameWithType: TarEntry.WriteEntryHeader(Byte[])
   nameWithType.vb: TarEntry.WriteEntryHeader(Byte())
+- uid: ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader(System.Byte[],Encoding)
+  name: WriteEntryHeader(Byte[], Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarEntry.html#ICSharpCode_SharpZipLib_Tar_TarEntry_WriteEntryHeader_System_Byte___Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader(System.Byte[],Encoding)
+  name.vb: WriteEntryHeader(Byte(), Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader(System.Byte[], Encoding)
+  fullName.vb: ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader(System.Byte(), Encoding)
+  nameWithType: TarEntry.WriteEntryHeader(Byte[], Encoding)
+  nameWithType.vb: TarEntry.WriteEntryHeader(Byte(), Encoding)
 - uid: ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader*
   name: WriteEntryHeader
   href: api/ICSharpCode.SharpZipLib.Tar.TarEntry.html#ICSharpCode_SharpZipLib_Tar_TarEntry_WriteEntryHeader_
@@ -3496,11 +3585,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Tar.TarException.#ctor
   fullName: ICSharpCode.SharpZipLib.Tar.TarException.TarException()
   nameWithType: TarException.TarException()
-- uid: ICSharpCode.SharpZipLib.Tar.TarException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+- uid: ICSharpCode.SharpZipLib.Tar.TarException.#ctor(SerializationInfo,StreamingContext)
   name: TarException(SerializationInfo, StreamingContext)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarException.html#ICSharpCode_SharpZipLib_Tar_TarException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarException.TarException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarException.html#ICSharpCode_SharpZipLib_Tar_TarException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarException.#ctor(SerializationInfo,StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarException.TarException(SerializationInfo, StreamingContext)
   nameWithType: TarException.TarException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.Tar.TarException.#ctor(System.String)
   name: TarException(String)
@@ -3508,11 +3597,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Tar.TarException.#ctor(System.String)
   fullName: ICSharpCode.SharpZipLib.Tar.TarException.TarException(System.String)
   nameWithType: TarException.TarException(String)
-- uid: ICSharpCode.SharpZipLib.Tar.TarException.#ctor(System.String,System.Exception)
+- uid: ICSharpCode.SharpZipLib.Tar.TarException.#ctor(System.String,Exception)
   name: TarException(String, Exception)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarException.html#ICSharpCode_SharpZipLib_Tar_TarException__ctor_System_String_System_Exception_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarException.#ctor(System.String,System.Exception)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarException.TarException(System.String, System.Exception)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarException.html#ICSharpCode_SharpZipLib_Tar_TarException__ctor_System_String_Exception_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarException.#ctor(System.String,Exception)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarException.TarException(System.String, Exception)
   nameWithType: TarException.TarException(String, Exception)
 - uid: ICSharpCode.SharpZipLib.Tar.TarException.#ctor*
   name: TarException
@@ -3680,6 +3769,15 @@ references:
   fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.GetAsciiBytes(System.String, System.Int32, System.Byte(), System.Int32, System.Int32)
   nameWithType: TarHeader.GetAsciiBytes(String, Int32, Byte[], Int32, Int32)
   nameWithType.vb: TarHeader.GetAsciiBytes(String, Int32, Byte(), Int32, Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarHeader.GetAsciiBytes(System.String,System.Int32,System.Byte[],System.Int32,System.Int32,Encoding)
+  name: GetAsciiBytes(String, Int32, Byte[], Int32, Int32, Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_GetAsciiBytes_System_String_System_Int32_System_Byte___System_Int32_System_Int32_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarHeader.GetAsciiBytes(System.String,System.Int32,System.Byte[],System.Int32,System.Int32,Encoding)
+  name.vb: GetAsciiBytes(String, Int32, Byte(), Int32, Int32, Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarHeader.GetAsciiBytes(System.String, System.Int32, System.Byte[], System.Int32, System.Int32, Encoding)
+  fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.GetAsciiBytes(System.String, System.Int32, System.Byte(), System.Int32, System.Int32, Encoding)
+  nameWithType: TarHeader.GetAsciiBytes(String, Int32, Byte[], Int32, Int32, Encoding)
+  nameWithType.vb: TarHeader.GetAsciiBytes(String, Int32, Byte(), Int32, Int32, Encoding)
 - uid: ICSharpCode.SharpZipLib.Tar.TarHeader.GetAsciiBytes*
   name: GetAsciiBytes
   href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_GetAsciiBytes_
@@ -3713,6 +3811,33 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Tar.TarHeader.GetName
   nameWithType: TarHeader.GetName
+- uid: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder,System.Byte[],System.Int32,System.Int32)
+  name: GetNameBytes(StringBuilder, Byte[], Int32, Int32)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_StringBuilder_System_Byte___System_Int32_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder,System.Byte[],System.Int32,System.Int32)
+  name.vb: GetNameBytes(StringBuilder, Byte(), Int32, Int32)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder, System.Byte[], System.Int32, System.Int32)
+  fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder, System.Byte(), System.Int32, System.Int32)
+  nameWithType: TarHeader.GetNameBytes(StringBuilder, Byte[], Int32, Int32)
+  nameWithType.vb: TarHeader.GetNameBytes(StringBuilder, Byte(), Int32, Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder,System.Byte[],System.Int32,System.Int32,Encoding)
+  name: GetNameBytes(StringBuilder, Byte[], Int32, Int32, Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_StringBuilder_System_Byte___System_Int32_System_Int32_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder,System.Byte[],System.Int32,System.Int32,Encoding)
+  name.vb: GetNameBytes(StringBuilder, Byte(), Int32, Int32, Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder, System.Byte[], System.Int32, System.Int32, Encoding)
+  fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder, System.Byte(), System.Int32, System.Int32, Encoding)
+  nameWithType: TarHeader.GetNameBytes(StringBuilder, Byte[], Int32, Int32, Encoding)
+  nameWithType.vb: TarHeader.GetNameBytes(StringBuilder, Byte(), Int32, Int32, Encoding)
+- uid: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder,System.Int32,System.Byte[],System.Int32,System.Int32)
+  name: GetNameBytes(StringBuilder, Int32, Byte[], Int32, Int32)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_StringBuilder_System_Int32_System_Byte___System_Int32_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder,System.Int32,System.Byte[],System.Int32,System.Int32)
+  name.vb: GetNameBytes(StringBuilder, Int32, Byte(), Int32, Int32)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder, System.Int32, System.Byte[], System.Int32, System.Int32)
+  fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder, System.Int32, System.Byte(), System.Int32, System.Int32)
+  nameWithType: TarHeader.GetNameBytes(StringBuilder, Int32, Byte[], Int32, Int32)
+  nameWithType.vb: TarHeader.GetNameBytes(StringBuilder, Int32, Byte(), Int32, Int32)
 - uid: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String,System.Byte[],System.Int32,System.Int32)
   name: GetNameBytes(String, Byte[], Int32, Int32)
   href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_String_System_Byte___System_Int32_System_Int32_
@@ -3722,6 +3847,15 @@ references:
   fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String, System.Byte(), System.Int32, System.Int32)
   nameWithType: TarHeader.GetNameBytes(String, Byte[], Int32, Int32)
   nameWithType.vb: TarHeader.GetNameBytes(String, Byte(), Int32, Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String,System.Byte[],System.Int32,System.Int32,Encoding)
+  name: GetNameBytes(String, Byte[], Int32, Int32, Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_String_System_Byte___System_Int32_System_Int32_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String,System.Byte[],System.Int32,System.Int32,Encoding)
+  name.vb: GetNameBytes(String, Byte(), Int32, Int32, Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String, System.Byte[], System.Int32, System.Int32, Encoding)
+  fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String, System.Byte(), System.Int32, System.Int32, Encoding)
+  nameWithType: TarHeader.GetNameBytes(String, Byte[], Int32, Int32, Encoding)
+  nameWithType.vb: TarHeader.GetNameBytes(String, Byte(), Int32, Int32, Encoding)
 - uid: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String,System.Int32,System.Byte[],System.Int32,System.Int32)
   name: GetNameBytes(String, Int32, Byte[], Int32, Int32)
   href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_String_System_Int32_System_Byte___System_Int32_System_Int32_
@@ -3731,24 +3865,15 @@ references:
   fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String, System.Int32, System.Byte(), System.Int32, System.Int32)
   nameWithType: TarHeader.GetNameBytes(String, Int32, Byte[], Int32, Int32)
   nameWithType.vb: TarHeader.GetNameBytes(String, Int32, Byte(), Int32, Int32)
-- uid: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder,System.Byte[],System.Int32,System.Int32)
-  name: GetNameBytes(StringBuilder, Byte[], Int32, Int32)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_Text_StringBuilder_System_Byte___System_Int32_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder,System.Byte[],System.Int32,System.Int32)
-  name.vb: GetNameBytes(StringBuilder, Byte(), Int32, Int32)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder, System.Byte[], System.Int32, System.Int32)
-  fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder, System.Byte(), System.Int32, System.Int32)
-  nameWithType: TarHeader.GetNameBytes(StringBuilder, Byte[], Int32, Int32)
-  nameWithType.vb: TarHeader.GetNameBytes(StringBuilder, Byte(), Int32, Int32)
-- uid: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder,System.Int32,System.Byte[],System.Int32,System.Int32)
-  name: GetNameBytes(StringBuilder, Int32, Byte[], Int32, Int32)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_Text_StringBuilder_System_Int32_System_Byte___System_Int32_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder,System.Int32,System.Byte[],System.Int32,System.Int32)
-  name.vb: GetNameBytes(StringBuilder, Int32, Byte(), Int32, Int32)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder, System.Int32, System.Byte[], System.Int32, System.Int32)
-  fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder, System.Int32, System.Byte(), System.Int32, System.Int32)
-  nameWithType: TarHeader.GetNameBytes(StringBuilder, Int32, Byte[], Int32, Int32)
-  nameWithType.vb: TarHeader.GetNameBytes(StringBuilder, Int32, Byte(), Int32, Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String,System.Int32,System.Byte[],System.Int32,System.Int32,Encoding)
+  name: GetNameBytes(String, Int32, Byte[], Int32, Int32, Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_String_System_Int32_System_Byte___System_Int32_System_Int32_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String,System.Int32,System.Byte[],System.Int32,System.Int32,Encoding)
+  name.vb: GetNameBytes(String, Int32, Byte(), Int32, Int32, Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String, System.Int32, System.Byte[], System.Int32, System.Int32, Encoding)
+  fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String, System.Int32, System.Byte(), System.Int32, System.Int32, Encoding)
+  nameWithType: TarHeader.GetNameBytes(String, Int32, Byte[], Int32, Int32, Encoding)
+  nameWithType.vb: TarHeader.GetNameBytes(String, Int32, Byte(), Int32, Int32, Encoding)
 - uid: ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes*
   name: GetNameBytes
   href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_
@@ -4053,6 +4178,15 @@ references:
   fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.ParseBuffer(System.Byte())
   nameWithType: TarHeader.ParseBuffer(Byte[])
   nameWithType.vb: TarHeader.ParseBuffer(Byte())
+- uid: ICSharpCode.SharpZipLib.Tar.TarHeader.ParseBuffer(System.Byte[],Encoding)
+  name: ParseBuffer(Byte[], Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_ParseBuffer_System_Byte___Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarHeader.ParseBuffer(System.Byte[],Encoding)
+  name.vb: ParseBuffer(Byte(), Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarHeader.ParseBuffer(System.Byte[], Encoding)
+  fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.ParseBuffer(System.Byte(), Encoding)
+  nameWithType: TarHeader.ParseBuffer(Byte[], Encoding)
+  nameWithType.vb: TarHeader.ParseBuffer(Byte(), Encoding)
 - uid: ICSharpCode.SharpZipLib.Tar.TarHeader.ParseBuffer*
   name: ParseBuffer
   href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_ParseBuffer_
@@ -4069,6 +4203,15 @@ references:
   fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.ParseName(System.Byte(), System.Int32, System.Int32)
   nameWithType: TarHeader.ParseName(Byte[], Int32, Int32)
   nameWithType.vb: TarHeader.ParseName(Byte(), Int32, Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarHeader.ParseName(System.Byte[],System.Int32,System.Int32,Encoding)
+  name: ParseName(Byte[], Int32, Int32, Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_ParseName_System_Byte___System_Int32_System_Int32_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarHeader.ParseName(System.Byte[],System.Int32,System.Int32,Encoding)
+  name.vb: ParseName(Byte(), Int32, Int32, Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarHeader.ParseName(System.Byte[], System.Int32, System.Int32, Encoding)
+  fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.ParseName(System.Byte(), System.Int32, System.Int32, Encoding)
+  nameWithType: TarHeader.ParseName(Byte[], Int32, Int32, Encoding)
+  nameWithType.vb: TarHeader.ParseName(Byte(), Int32, Int32, Encoding)
 - uid: ICSharpCode.SharpZipLib.Tar.TarHeader.ParseName*
   name: ParseName
   href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_ParseName_
@@ -4202,6 +4345,15 @@ references:
   fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.WriteHeader(System.Byte())
   nameWithType: TarHeader.WriteHeader(Byte[])
   nameWithType.vb: TarHeader.WriteHeader(Byte())
+- uid: ICSharpCode.SharpZipLib.Tar.TarHeader.WriteHeader(System.Byte[],Encoding)
+  name: WriteHeader(Byte[], Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_WriteHeader_System_Byte___Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarHeader.WriteHeader(System.Byte[],Encoding)
+  name.vb: WriteHeader(Byte(), Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarHeader.WriteHeader(System.Byte[], Encoding)
+  fullName.vb: ICSharpCode.SharpZipLib.Tar.TarHeader.WriteHeader(System.Byte(), Encoding)
+  nameWithType: TarHeader.WriteHeader(Byte[], Encoding)
+  nameWithType.vb: TarHeader.WriteHeader(Byte(), Encoding)
 - uid: ICSharpCode.SharpZipLib.Tar.TarHeader.WriteHeader*
   name: WriteHeader
   href: api/ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_WriteHeader_
@@ -4215,18 +4367,30 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Tar.TarInputStream
   fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream
   nameWithType: TarInputStream
-- uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(Stream)
   name: TarInputStream(Stream)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.html#ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.TarInputStream(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.html#ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(Stream)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.TarInputStream(Stream)
   nameWithType: TarInputStream.TarInputStream(Stream)
-- uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(System.IO.Stream,System.Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(Stream,Encoding)
+  name: TarInputStream(Stream, Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.html#ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_Stream_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(Stream,Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.TarInputStream(Stream, Encoding)
+  nameWithType: TarInputStream.TarInputStream(Stream, Encoding)
+- uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(Stream,System.Int32)
   name: TarInputStream(Stream, Int32)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.html#ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_System_IO_Stream_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(System.IO.Stream,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.TarInputStream(System.IO.Stream, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.html#ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_Stream_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(Stream,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.TarInputStream(Stream, System.Int32)
   nameWithType: TarInputStream.TarInputStream(Stream, Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(Stream,System.Int32,Encoding)
+  name: TarInputStream(Stream, Int32, Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.html#ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_Stream_System_Int32_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(Stream,System.Int32,Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.TarInputStream(Stream, System.Int32, Encoding)
+  nameWithType: TarInputStream.TarInputStream(Stream, Int32, Encoding)
 - uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor*
   name: TarInputStream
   href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.html#ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_
@@ -4286,11 +4450,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.CanWrite
   nameWithType: TarInputStream.CanWrite
-- uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents(Stream)
   name: CopyEntryContents(Stream)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.html#ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContents_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.html#ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContents_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents(Stream)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents(Stream)
   nameWithType: TarInputStream.CopyEntryContents(Stream)
 - uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents*
   name: CopyEntryContents
@@ -4324,6 +4488,25 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter
   fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter
   nameWithType: TarInputStream.EntryFactoryAdapter
+- uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.#ctor
+  name: EntryFactoryAdapter()
+  href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.html#ICSharpCode_SharpZipLib_Tar_TarInputStream_EntryFactoryAdapter__ctor
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.#ctor
+  fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.EntryFactoryAdapter()
+  nameWithType: TarInputStream.EntryFactoryAdapter.EntryFactoryAdapter()
+- uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.#ctor(Encoding)
+  name: EntryFactoryAdapter(Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.html#ICSharpCode_SharpZipLib_Tar_TarInputStream_EntryFactoryAdapter__ctor_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.#ctor(Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.EntryFactoryAdapter(Encoding)
+  nameWithType: TarInputStream.EntryFactoryAdapter.EntryFactoryAdapter(Encoding)
+- uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.#ctor*
+  name: EntryFactoryAdapter
+  href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.html#ICSharpCode_SharpZipLib_Tar_TarInputStream_EntryFactoryAdapter__ctor_
+  commentId: Overload:ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.#ctor
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.EntryFactoryAdapter
+  nameWithType: TarInputStream.EntryFactoryAdapter.EntryFactoryAdapter
 - uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.CreateEntry(System.Byte[])
   name: CreateEntry(Byte[])
   href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.html#ICSharpCode_SharpZipLib_Tar_TarInputStream_EntryFactoryAdapter_CreateEntry_System_Byte___
@@ -4583,11 +4766,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.Reset
   nameWithType: TarInputStream.Reset
-- uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.Seek(System.Int64,System.IO.SeekOrigin)
+- uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.Seek(System.Int64,SeekOrigin)
   name: Seek(Int64, SeekOrigin)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.html#ICSharpCode_SharpZipLib_Tar_TarInputStream_Seek_System_Int64_System_IO_SeekOrigin_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarInputStream.Seek(System.Int64,System.IO.SeekOrigin)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.Seek(System.Int64, System.IO.SeekOrigin)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarInputStream.html#ICSharpCode_SharpZipLib_Tar_TarInputStream_Seek_System_Int64_SeekOrigin_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarInputStream.Seek(System.Int64,SeekOrigin)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarInputStream.Seek(System.Int64, SeekOrigin)
   nameWithType: TarInputStream.Seek(Int64, SeekOrigin)
 - uid: ICSharpCode.SharpZipLib.Tar.TarInputStream.Seek*
   name: Seek
@@ -4676,18 +4859,30 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Tar.TarOutputStream
   fullName: ICSharpCode.SharpZipLib.Tar.TarOutputStream
   nameWithType: TarOutputStream
-- uid: ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor(Stream)
   name: TarOutputStream(Stream)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.html#ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarOutputStream.TarOutputStream(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.html#ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor(Stream)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarOutputStream.TarOutputStream(Stream)
   nameWithType: TarOutputStream.TarOutputStream(Stream)
-- uid: ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor(System.IO.Stream,System.Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor(Stream,Encoding)
+  name: TarOutputStream(Stream, Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.html#ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_Stream_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor(Stream,Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarOutputStream.TarOutputStream(Stream, Encoding)
+  nameWithType: TarOutputStream.TarOutputStream(Stream, Encoding)
+- uid: ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor(Stream,System.Int32)
   name: TarOutputStream(Stream, Int32)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.html#ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_System_IO_Stream_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor(System.IO.Stream,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarOutputStream.TarOutputStream(System.IO.Stream, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.html#ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_Stream_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor(Stream,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarOutputStream.TarOutputStream(Stream, System.Int32)
   nameWithType: TarOutputStream.TarOutputStream(Stream, Int32)
+- uid: ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor(Stream,System.Int32,Encoding)
+  name: TarOutputStream(Stream, Int32, Encoding)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.html#ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_Stream_System_Int32_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor(Stream,System.Int32,Encoding)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarOutputStream.TarOutputStream(Stream, System.Int32, Encoding)
+  nameWithType: TarOutputStream.TarOutputStream(Stream, Int32, Encoding)
 - uid: ICSharpCode.SharpZipLib.Tar.TarOutputStream.#ctor*
   name: TarOutputStream
   href: api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.html#ICSharpCode_SharpZipLib_Tar_TarOutputStream__ctor_
@@ -4849,6 +5044,12 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Tar.TarOutputStream.Length
   nameWithType: TarOutputStream.Length
+- uid: ICSharpCode.SharpZipLib.Tar.TarOutputStream.nameEncoding
+  name: nameEncoding
+  href: api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.html#ICSharpCode_SharpZipLib_Tar_TarOutputStream_nameEncoding
+  commentId: F:ICSharpCode.SharpZipLib.Tar.TarOutputStream.nameEncoding
+  fullName: ICSharpCode.SharpZipLib.Tar.TarOutputStream.nameEncoding
+  nameWithType: TarOutputStream.nameEncoding
 - uid: ICSharpCode.SharpZipLib.Tar.TarOutputStream.outputStream
   name: outputStream
   href: api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.html#ICSharpCode_SharpZipLib_Tar_TarOutputStream_outputStream
@@ -4923,11 +5124,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Tar.TarOutputStream.RecordSize
   nameWithType: TarOutputStream.RecordSize
-- uid: ICSharpCode.SharpZipLib.Tar.TarOutputStream.Seek(System.Int64,System.IO.SeekOrigin)
+- uid: ICSharpCode.SharpZipLib.Tar.TarOutputStream.Seek(System.Int64,SeekOrigin)
   name: Seek(Int64, SeekOrigin)
-  href: api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.html#ICSharpCode_SharpZipLib_Tar_TarOutputStream_Seek_System_Int64_System_IO_SeekOrigin_
-  commentId: M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.Seek(System.Int64,System.IO.SeekOrigin)
-  fullName: ICSharpCode.SharpZipLib.Tar.TarOutputStream.Seek(System.Int64, System.IO.SeekOrigin)
+  href: api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.html#ICSharpCode_SharpZipLib_Tar_TarOutputStream_Seek_System_Int64_SeekOrigin_
+  commentId: M:ICSharpCode.SharpZipLib.Tar.TarOutputStream.Seek(System.Int64,SeekOrigin)
+  fullName: ICSharpCode.SharpZipLib.Tar.TarOutputStream.Seek(System.Int64, SeekOrigin)
   nameWithType: TarOutputStream.Seek(Int64, SeekOrigin)
 - uid: ICSharpCode.SharpZipLib.Tar.TarOutputStream.Seek*
   name: Seek
@@ -4990,11 +5191,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor
   fullName: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.UnexpectedEndOfStreamException()
   nameWithType: UnexpectedEndOfStreamException.UnexpectedEndOfStreamException()
-- uid: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+- uid: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(SerializationInfo,StreamingContext)
   name: UnexpectedEndOfStreamException(SerializationInfo, StreamingContext)
-  href: api/ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.html#ICSharpCode_SharpZipLib_UnexpectedEndOfStreamException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.UnexpectedEndOfStreamException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.html#ICSharpCode_SharpZipLib_UnexpectedEndOfStreamException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(SerializationInfo,StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.UnexpectedEndOfStreamException(SerializationInfo, StreamingContext)
   nameWithType: UnexpectedEndOfStreamException.UnexpectedEndOfStreamException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.String)
   name: UnexpectedEndOfStreamException(String)
@@ -5002,11 +5203,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.String)
   fullName: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.UnexpectedEndOfStreamException(System.String)
   nameWithType: UnexpectedEndOfStreamException.UnexpectedEndOfStreamException(String)
-- uid: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.String,System.Exception)
+- uid: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.String,Exception)
   name: UnexpectedEndOfStreamException(String, Exception)
-  href: api/ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.html#ICSharpCode_SharpZipLib_UnexpectedEndOfStreamException__ctor_System_String_System_Exception_
-  commentId: M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.String,System.Exception)
-  fullName: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.UnexpectedEndOfStreamException(System.String, System.Exception)
+  href: api/ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.html#ICSharpCode_SharpZipLib_UnexpectedEndOfStreamException__ctor_System_String_Exception_
+  commentId: M:ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor(System.String,Exception)
+  fullName: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.UnexpectedEndOfStreamException(System.String, Exception)
   nameWithType: UnexpectedEndOfStreamException.UnexpectedEndOfStreamException(String, Exception)
 - uid: ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.#ctor*
   name: UnexpectedEndOfStreamException
@@ -5021,11 +5222,11 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.ValueOutOfRangeException
   fullName: ICSharpCode.SharpZipLib.ValueOutOfRangeException
   nameWithType: ValueOutOfRangeException
-- uid: ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+- uid: ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(SerializationInfo,StreamingContext)
   name: ValueOutOfRangeException(SerializationInfo, StreamingContext)
-  href: api/ICSharpCode.SharpZipLib.ValueOutOfRangeException.html#ICSharpCode_SharpZipLib_ValueOutOfRangeException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: ICSharpCode.SharpZipLib.ValueOutOfRangeException.ValueOutOfRangeException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.ValueOutOfRangeException.html#ICSharpCode_SharpZipLib_ValueOutOfRangeException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(SerializationInfo,StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.ValueOutOfRangeException.ValueOutOfRangeException(SerializationInfo, StreamingContext)
   nameWithType: ValueOutOfRangeException.ValueOutOfRangeException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.ValueOutOfRangeException.#ctor(System.String)
   name: ValueOutOfRangeException(String)
@@ -5116,11 +5317,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.GetTemporaryOutput
   nameWithType: BaseArchiveStorage.GetTemporaryOutput
-- uid: ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.MakeTemporaryCopy(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.MakeTemporaryCopy(Stream)
   name: MakeTemporaryCopy(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_MakeTemporaryCopy_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.MakeTemporaryCopy(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.MakeTemporaryCopy(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_MakeTemporaryCopy_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.MakeTemporaryCopy(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.MakeTemporaryCopy(Stream)
   nameWithType: BaseArchiveStorage.MakeTemporaryCopy(Stream)
 - uid: ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.MakeTemporaryCopy*
   name: MakeTemporaryCopy
@@ -5129,11 +5330,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.MakeTemporaryCopy
   nameWithType: BaseArchiveStorage.MakeTemporaryCopy
-- uid: ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.OpenForDirectUpdate(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.OpenForDirectUpdate(Stream)
   name: OpenForDirectUpdate(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_OpenForDirectUpdate_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.OpenForDirectUpdate(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.OpenForDirectUpdate(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_OpenForDirectUpdate_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.OpenForDirectUpdate(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.OpenForDirectUpdate(Stream)
   nameWithType: BaseArchiveStorage.OpenForDirectUpdate(Stream)
 - uid: ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.OpenForDirectUpdate*
   name: OpenForDirectUpdate
@@ -6219,13 +6420,13 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree
   fullName: ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree
   nameWithType: InflaterHuffmanTree
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.#ctor(System.Collections.Generic.IList{System.Byte})
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.#ctor(IList{System.Byte})
   name: InflaterHuffmanTree(IList<Byte>)
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.html#ICSharpCode_SharpZipLib_Zip_Compression_InflaterHuffmanTree__ctor_System_Collections_Generic_IList_System_Byte__
-  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.#ctor(System.Collections.Generic.IList{System.Byte})
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.html#ICSharpCode_SharpZipLib_Zip_Compression_InflaterHuffmanTree__ctor_IList_System_Byte__
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.#ctor(IList{System.Byte})
   name.vb: InflaterHuffmanTree(IList(Of Byte))
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.InflaterHuffmanTree(System.Collections.Generic.IList<System.Byte>)
-  fullName.vb: ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.InflaterHuffmanTree(System.Collections.Generic.IList(Of System.Byte))
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.InflaterHuffmanTree(IList<System.Byte>)
+  fullName.vb: ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.InflaterHuffmanTree(IList(Of System.Byte))
   nameWithType: InflaterHuffmanTree.InflaterHuffmanTree(IList<Byte>)
   nameWithType.vb: InflaterHuffmanTree.InflaterHuffmanTree(IList(Of Byte))
 - uid: ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.#ctor*
@@ -6459,23 +6660,23 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream
   fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream
   nameWithType: DeflaterOutputStream
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(Stream)
   name: DeflaterOutputStream(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream__ctor_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.DeflaterOutputStream(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream__ctor_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.DeflaterOutputStream(Stream)
   nameWithType: DeflaterOutputStream.DeflaterOutputStream(Stream)
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.Compression.Deflater)
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(Stream,ICSharpCode.SharpZipLib.Zip.Compression.Deflater)
   name: DeflaterOutputStream(Stream, Deflater)
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream__ctor_System_IO_Stream_ICSharpCode_SharpZipLib_Zip_Compression_Deflater_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.Compression.Deflater)
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.DeflaterOutputStream(System.IO.Stream, ICSharpCode.SharpZipLib.Zip.Compression.Deflater)
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream__ctor_Stream_ICSharpCode_SharpZipLib_Zip_Compression_Deflater_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(Stream,ICSharpCode.SharpZipLib.Zip.Compression.Deflater)
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.DeflaterOutputStream(Stream, ICSharpCode.SharpZipLib.Zip.Compression.Deflater)
   nameWithType: DeflaterOutputStream.DeflaterOutputStream(Stream, Deflater)
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.Compression.Deflater,System.Int32)
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(Stream,ICSharpCode.SharpZipLib.Zip.Compression.Deflater,System.Int32)
   name: DeflaterOutputStream(Stream, Deflater, Int32)
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream__ctor_System_IO_Stream_ICSharpCode_SharpZipLib_Zip_Compression_Deflater_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.Compression.Deflater,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.DeflaterOutputStream(System.IO.Stream, ICSharpCode.SharpZipLib.Zip.Compression.Deflater, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream__ctor_Stream_ICSharpCode_SharpZipLib_Zip_Compression_Deflater_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor(Stream,ICSharpCode.SharpZipLib.Zip.Compression.Deflater,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.DeflaterOutputStream(Stream, ICSharpCode.SharpZipLib.Zip.Compression.Deflater, System.Int32)
   nameWithType: DeflaterOutputStream.DeflaterOutputStream(Stream, Deflater, Int32)
 - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.#ctor*
   name: DeflaterOutputStream
@@ -6745,11 +6946,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.ReadByte
   nameWithType: DeflaterOutputStream.ReadByte
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Seek(System.Int64,System.IO.SeekOrigin)
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Seek(System.Int64,SeekOrigin)
   name: Seek(Int64, SeekOrigin)
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Seek_System_Int64_System_IO_SeekOrigin_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Seek(System.Int64,System.IO.SeekOrigin)
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Seek(System.Int64, System.IO.SeekOrigin)
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Seek_System_Int64_SeekOrigin_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Seek(System.Int64,SeekOrigin)
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Seek(System.Int64, SeekOrigin)
   nameWithType: DeflaterOutputStream.Seek(Int64, SeekOrigin)
 - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Seek*
   name: Seek
@@ -6806,17 +7007,17 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer
   fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer
   nameWithType: InflaterInputBuffer
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.#ctor(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.#ctor(Stream)
   name: InflaterInputBuffer(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer__ctor_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.#ctor(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.InflaterInputBuffer(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer__ctor_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.#ctor(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.InflaterInputBuffer(Stream)
   nameWithType: InflaterInputBuffer.InflaterInputBuffer(Stream)
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.#ctor(System.IO.Stream,System.Int32)
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.#ctor(Stream,System.Int32)
   name: InflaterInputBuffer(Stream, Int32)
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer__ctor_System_IO_Stream_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.#ctor(System.IO.Stream,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.InflaterInputBuffer(System.IO.Stream, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputBuffer__ctor_Stream_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.#ctor(Stream,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.InflaterInputBuffer(Stream, System.Int32)
   nameWithType: InflaterInputBuffer.InflaterInputBuffer(Stream, Int32)
 - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.#ctor*
   name: InflaterInputBuffer
@@ -7028,23 +7229,23 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream
   fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream
   nameWithType: InflaterInputStream
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(Stream)
   name: InflaterInputStream(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream__ctor_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.InflaterInputStream(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream__ctor_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.InflaterInputStream(Stream)
   nameWithType: InflaterInputStream.InflaterInputStream(Stream)
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.Compression.Inflater)
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(Stream,ICSharpCode.SharpZipLib.Zip.Compression.Inflater)
   name: InflaterInputStream(Stream, Inflater)
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream__ctor_System_IO_Stream_ICSharpCode_SharpZipLib_Zip_Compression_Inflater_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.Compression.Inflater)
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.InflaterInputStream(System.IO.Stream, ICSharpCode.SharpZipLib.Zip.Compression.Inflater)
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream__ctor_Stream_ICSharpCode_SharpZipLib_Zip_Compression_Inflater_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(Stream,ICSharpCode.SharpZipLib.Zip.Compression.Inflater)
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.InflaterInputStream(Stream, ICSharpCode.SharpZipLib.Zip.Compression.Inflater)
   nameWithType: InflaterInputStream.InflaterInputStream(Stream, Inflater)
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.Compression.Inflater,System.Int32)
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(Stream,ICSharpCode.SharpZipLib.Zip.Compression.Inflater,System.Int32)
   name: InflaterInputStream(Stream, Inflater, Int32)
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream__ctor_System_IO_Stream_ICSharpCode_SharpZipLib_Zip_Compression_Inflater_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.Compression.Inflater,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.InflaterInputStream(System.IO.Stream, ICSharpCode.SharpZipLib.Zip.Compression.Inflater, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream__ctor_Stream_ICSharpCode_SharpZipLib_Zip_Compression_Inflater_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor(Stream,ICSharpCode.SharpZipLib.Zip.Compression.Inflater,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.InflaterInputStream(Stream, ICSharpCode.SharpZipLib.Zip.Compression.Inflater, System.Int32)
   nameWithType: InflaterInputStream.InflaterInputStream(Stream, Inflater, Int32)
 - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.#ctor*
   name: InflaterInputStream
@@ -7217,11 +7418,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Read
   nameWithType: InflaterInputStream.Read
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Seek(System.Int64,System.IO.SeekOrigin)
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Seek(System.Int64,SeekOrigin)
   name: Seek(Int64, SeekOrigin)
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Seek_System_Int64_System_IO_SeekOrigin_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Seek(System.Int64,System.IO.SeekOrigin)
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Seek(System.Int64, System.IO.SeekOrigin)
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Seek_System_Int64_SeekOrigin_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Seek(System.Int64,SeekOrigin)
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Seek(System.Int64, SeekOrigin)
   nameWithType: InflaterInputStream.Seek(Int64, SeekOrigin)
 - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.Seek*
   name: Seek
@@ -7738,11 +7939,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.GetTemporaryOutput
   nameWithType: DiskArchiveStorage.GetTemporaryOutput
-- uid: ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.MakeTemporaryCopy(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.MakeTemporaryCopy(Stream)
   name: MakeTemporaryCopy(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_DiskArchiveStorage_MakeTemporaryCopy_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.MakeTemporaryCopy(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.MakeTemporaryCopy(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_DiskArchiveStorage_MakeTemporaryCopy_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.MakeTemporaryCopy(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.MakeTemporaryCopy(Stream)
   nameWithType: DiskArchiveStorage.MakeTemporaryCopy(Stream)
 - uid: ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.MakeTemporaryCopy*
   name: MakeTemporaryCopy
@@ -7751,11 +7952,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.MakeTemporaryCopy
   nameWithType: DiskArchiveStorage.MakeTemporaryCopy
-- uid: ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.OpenForDirectUpdate(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.OpenForDirectUpdate(Stream)
   name: OpenForDirectUpdate(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_DiskArchiveStorage_OpenForDirectUpdate_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.OpenForDirectUpdate(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.OpenForDirectUpdate(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_DiskArchiveStorage_OpenForDirectUpdate_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.OpenForDirectUpdate(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.OpenForDirectUpdate(Stream)
   nameWithType: DiskArchiveStorage.OpenForDirectUpdate(Stream)
 - uid: ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.OpenForDirectUpdate*
   name: OpenForDirectUpdate
@@ -7955,11 +8156,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.Include
   nameWithType: ExtendedUnixData.Include
-- uid: ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.IsValidValue(System.DateTime)
+- uid: ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.IsValidValue(DateTime)
   name: IsValidValue(DateTime)
-  href: api/ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.html#ICSharpCode_SharpZipLib_Zip_ExtendedUnixData_IsValidValue_System_DateTime_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.IsValidValue(System.DateTime)
-  fullName: ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.IsValidValue(System.DateTime)
+  href: api/ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.html#ICSharpCode_SharpZipLib_Zip_ExtendedUnixData_IsValidValue_DateTime_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.IsValidValue(DateTime)
+  fullName: ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.IsValidValue(DateTime)
   nameWithType: ExtendedUnixData.IsValidValue(DateTime)
 - uid: ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.IsValidValue*
   name: IsValidValue
@@ -8067,12 +8268,30 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.FastZip.CreateEmptyDirectories
   nameWithType: FastZip.CreateEmptyDirectories
-- uid: ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(System.IO.Stream,System.String,System.Boolean,System.String,System.String)
+- uid: ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(Stream,System.String,System.Boolean,ICSharpCode.SharpZipLib.Core.IScanFilter,ICSharpCode.SharpZipLib.Core.IScanFilter,System.Boolean)
+  name: CreateZip(Stream, String, Boolean, IScanFilter, IScanFilter, Boolean)
+  href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_Stream_System_String_System_Boolean_ICSharpCode_SharpZipLib_Core_IScanFilter_ICSharpCode_SharpZipLib_Core_IScanFilter_System_Boolean_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(Stream,System.String,System.Boolean,ICSharpCode.SharpZipLib.Core.IScanFilter,ICSharpCode.SharpZipLib.Core.IScanFilter,System.Boolean)
+  fullName: ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(Stream, System.String, System.Boolean, ICSharpCode.SharpZipLib.Core.IScanFilter, ICSharpCode.SharpZipLib.Core.IScanFilter, System.Boolean)
+  nameWithType: FastZip.CreateZip(Stream, String, Boolean, IScanFilter, IScanFilter, Boolean)
+- uid: ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(Stream,System.String,System.Boolean,System.String,System.String)
   name: CreateZip(Stream, String, Boolean, String, String)
-  href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_System_IO_Stream_System_String_System_Boolean_System_String_System_String_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(System.IO.Stream,System.String,System.Boolean,System.String,System.String)
-  fullName: ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(System.IO.Stream, System.String, System.Boolean, System.String, System.String)
+  href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_Stream_System_String_System_Boolean_System_String_System_String_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(Stream,System.String,System.Boolean,System.String,System.String)
+  fullName: ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(Stream, System.String, System.Boolean, System.String, System.String)
   nameWithType: FastZip.CreateZip(Stream, String, Boolean, String, String)
+- uid: ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(Stream,System.String,System.Boolean,System.String,System.String,System.Boolean)
+  name: CreateZip(Stream, String, Boolean, String, String, Boolean)
+  href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_Stream_System_String_System_Boolean_System_String_System_String_System_Boolean_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(Stream,System.String,System.Boolean,System.String,System.String,System.Boolean)
+  fullName: ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(Stream, System.String, System.Boolean, System.String, System.String, System.Boolean)
+  nameWithType: FastZip.CreateZip(Stream, String, Boolean, String, String, Boolean)
+- uid: ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(System.String,System.String,System.Boolean,ICSharpCode.SharpZipLib.Core.IScanFilter,ICSharpCode.SharpZipLib.Core.IScanFilter)
+  name: CreateZip(String, String, Boolean, IScanFilter, IScanFilter)
+  href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_System_String_System_String_System_Boolean_ICSharpCode_SharpZipLib_Core_IScanFilter_ICSharpCode_SharpZipLib_Core_IScanFilter_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(System.String,System.String,System.Boolean,ICSharpCode.SharpZipLib.Core.IScanFilter,ICSharpCode.SharpZipLib.Core.IScanFilter)
+  fullName: ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(System.String, System.String, System.Boolean, ICSharpCode.SharpZipLib.Core.IScanFilter, ICSharpCode.SharpZipLib.Core.IScanFilter)
+  nameWithType: FastZip.CreateZip(String, String, Boolean, IScanFilter, IScanFilter)
 - uid: ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip(System.String,System.String,System.Boolean,System.String)
   name: CreateZip(String, String, Boolean, String)
   href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip_CreateZip_System_String_System_String_System_Boolean_System_String_
@@ -8092,6 +8311,19 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.FastZip.CreateZip
   nameWithType: FastZip.CreateZip
+- uid: ICSharpCode.SharpZipLib.Zip.FastZip.EntryEncryptionMethod
+  name: EntryEncryptionMethod
+  href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip_EntryEncryptionMethod
+  commentId: P:ICSharpCode.SharpZipLib.Zip.FastZip.EntryEncryptionMethod
+  fullName: ICSharpCode.SharpZipLib.Zip.FastZip.EntryEncryptionMethod
+  nameWithType: FastZip.EntryEncryptionMethod
+- uid: ICSharpCode.SharpZipLib.Zip.FastZip.EntryEncryptionMethod*
+  name: EntryEncryptionMethod
+  href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip_EntryEncryptionMethod_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.FastZip.EntryEncryptionMethod
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.FastZip.EntryEncryptionMethod
+  nameWithType: FastZip.EntryEncryptionMethod
 - uid: ICSharpCode.SharpZipLib.Zip.FastZip.EntryFactory
   name: EntryFactory
   href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip_EntryFactory
@@ -8105,11 +8337,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.FastZip.EntryFactory
   nameWithType: FastZip.EntryFactory
-- uid: ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(System.IO.Stream,System.String,ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite,ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate,System.String,System.String,System.Boolean,System.Boolean,System.Boolean)
+- uid: ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(Stream,System.String,ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite,ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate,System.String,System.String,System.Boolean,System.Boolean,System.Boolean)
   name: ExtractZip(Stream, String, FastZip.Overwrite, FastZip.ConfirmOverwriteDelegate, String, String, Boolean, Boolean, Boolean)
-  href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip_ExtractZip_System_IO_Stream_System_String_ICSharpCode_SharpZipLib_Zip_FastZip_Overwrite_ICSharpCode_SharpZipLib_Zip_FastZip_ConfirmOverwriteDelegate_System_String_System_String_System_Boolean_System_Boolean_System_Boolean_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(System.IO.Stream,System.String,ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite,ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate,System.String,System.String,System.Boolean,System.Boolean,System.Boolean)
-  fullName: ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(System.IO.Stream, System.String, ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite, ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate, System.String, System.String, System.Boolean, System.Boolean, System.Boolean)
+  href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip_ExtractZip_Stream_System_String_ICSharpCode_SharpZipLib_Zip_FastZip_Overwrite_ICSharpCode_SharpZipLib_Zip_FastZip_ConfirmOverwriteDelegate_System_String_System_String_System_Boolean_System_Boolean_System_Boolean_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(Stream,System.String,ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite,ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate,System.String,System.String,System.Boolean,System.Boolean,System.Boolean)
+  fullName: ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(Stream, System.String, ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite, ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate, System.String, System.String, System.Boolean, System.Boolean, System.Boolean)
   nameWithType: FastZip.ExtractZip(Stream, String, FastZip.Overwrite, FastZip.ConfirmOverwriteDelegate, String, String, Boolean, Boolean, Boolean)
 - uid: ICSharpCode.SharpZipLib.Zip.FastZip.ExtractZip(System.String,System.String,ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite,ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate,System.String,System.String,System.Boolean,System.Boolean)
   name: ExtractZip(String, String, FastZip.Overwrite, FastZip.ConfirmOverwriteDelegate, String, String, Boolean, Boolean)
@@ -8256,11 +8488,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnCompletedFile
   nameWithType: FastZipEvents.OnCompletedFile
-- uid: ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnDirectoryFailure(System.String,System.Exception)
+- uid: ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnDirectoryFailure(System.String,Exception)
   name: OnDirectoryFailure(String, Exception)
-  href: api/ICSharpCode.SharpZipLib.Zip.FastZipEvents.html#ICSharpCode_SharpZipLib_Zip_FastZipEvents_OnDirectoryFailure_System_String_System_Exception_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnDirectoryFailure(System.String,System.Exception)
-  fullName: ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnDirectoryFailure(System.String, System.Exception)
+  href: api/ICSharpCode.SharpZipLib.Zip.FastZipEvents.html#ICSharpCode_SharpZipLib_Zip_FastZipEvents_OnDirectoryFailure_System_String_Exception_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnDirectoryFailure(System.String,Exception)
+  fullName: ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnDirectoryFailure(System.String, Exception)
   nameWithType: FastZipEvents.OnDirectoryFailure(String, Exception)
 - uid: ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnDirectoryFailure*
   name: OnDirectoryFailure
@@ -8269,11 +8501,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnDirectoryFailure
   nameWithType: FastZipEvents.OnDirectoryFailure
-- uid: ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnFileFailure(System.String,System.Exception)
+- uid: ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnFileFailure(System.String,Exception)
   name: OnFileFailure(String, Exception)
-  href: api/ICSharpCode.SharpZipLib.Zip.FastZipEvents.html#ICSharpCode_SharpZipLib_Zip_FastZipEvents_OnFileFailure_System_String_System_Exception_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnFileFailure(System.String,System.Exception)
-  fullName: ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnFileFailure(System.String, System.Exception)
+  href: api/ICSharpCode.SharpZipLib.Zip.FastZipEvents.html#ICSharpCode_SharpZipLib_Zip_FastZipEvents_OnFileFailure_System_String_Exception_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnFileFailure(System.String,Exception)
+  fullName: ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnFileFailure(System.String, Exception)
   nameWithType: FastZipEvents.OnFileFailure(String, Exception)
 - uid: ICSharpCode.SharpZipLib.Zip.FastZipEvents.OnFileFailure*
   name: OnFileFailure
@@ -8630,11 +8862,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.IArchiveStorage.GetTemporaryOutput
   nameWithType: IArchiveStorage.GetTemporaryOutput
-- uid: ICSharpCode.SharpZipLib.Zip.IArchiveStorage.MakeTemporaryCopy(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.IArchiveStorage.MakeTemporaryCopy(Stream)
   name: MakeTemporaryCopy(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.IArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_IArchiveStorage_MakeTemporaryCopy_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.IArchiveStorage.MakeTemporaryCopy(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.IArchiveStorage.MakeTemporaryCopy(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.IArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_IArchiveStorage_MakeTemporaryCopy_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.IArchiveStorage.MakeTemporaryCopy(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.IArchiveStorage.MakeTemporaryCopy(Stream)
   nameWithType: IArchiveStorage.MakeTemporaryCopy(Stream)
 - uid: ICSharpCode.SharpZipLib.Zip.IArchiveStorage.MakeTemporaryCopy*
   name: MakeTemporaryCopy
@@ -8643,11 +8875,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.IArchiveStorage.MakeTemporaryCopy
   nameWithType: IArchiveStorage.MakeTemporaryCopy
-- uid: ICSharpCode.SharpZipLib.Zip.IArchiveStorage.OpenForDirectUpdate(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.IArchiveStorage.OpenForDirectUpdate(Stream)
   name: OpenForDirectUpdate(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.IArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_IArchiveStorage_OpenForDirectUpdate_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.IArchiveStorage.OpenForDirectUpdate(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.IArchiveStorage.OpenForDirectUpdate(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.IArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_IArchiveStorage_OpenForDirectUpdate_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.IArchiveStorage.OpenForDirectUpdate(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.IArchiveStorage.OpenForDirectUpdate(Stream)
   nameWithType: IArchiveStorage.OpenForDirectUpdate(Stream)
 - uid: ICSharpCode.SharpZipLib.Zip.IArchiveStorage.OpenForDirectUpdate*
   name: OpenForDirectUpdate
@@ -8949,11 +9181,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.GetTemporaryOutput
   nameWithType: MemoryArchiveStorage.GetTemporaryOutput
-- uid: ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.MakeTemporaryCopy(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.MakeTemporaryCopy(Stream)
   name: MakeTemporaryCopy(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_MemoryArchiveStorage_MakeTemporaryCopy_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.MakeTemporaryCopy(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.MakeTemporaryCopy(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_MemoryArchiveStorage_MakeTemporaryCopy_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.MakeTemporaryCopy(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.MakeTemporaryCopy(Stream)
   nameWithType: MemoryArchiveStorage.MakeTemporaryCopy(Stream)
 - uid: ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.MakeTemporaryCopy*
   name: MakeTemporaryCopy
@@ -8962,11 +9194,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.MakeTemporaryCopy
   nameWithType: MemoryArchiveStorage.MakeTemporaryCopy
-- uid: ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.OpenForDirectUpdate(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.OpenForDirectUpdate(Stream)
   name: OpenForDirectUpdate(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_MemoryArchiveStorage_OpenForDirectUpdate_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.OpenForDirectUpdate(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.OpenForDirectUpdate(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_MemoryArchiveStorage_OpenForDirectUpdate_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.OpenForDirectUpdate(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.OpenForDirectUpdate(Stream)
   nameWithType: MemoryArchiveStorage.OpenForDirectUpdate(Stream)
 - uid: ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.OpenForDirectUpdate*
   name: OpenForDirectUpdate
@@ -9007,11 +9239,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.NTTaggedData.GetData
   nameWithType: NTTaggedData.GetData
-- uid: ICSharpCode.SharpZipLib.Zip.NTTaggedData.IsValidValue(System.DateTime)
+- uid: ICSharpCode.SharpZipLib.Zip.NTTaggedData.IsValidValue(DateTime)
   name: IsValidValue(DateTime)
-  href: api/ICSharpCode.SharpZipLib.Zip.NTTaggedData.html#ICSharpCode_SharpZipLib_Zip_NTTaggedData_IsValidValue_System_DateTime_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.NTTaggedData.IsValidValue(System.DateTime)
-  fullName: ICSharpCode.SharpZipLib.Zip.NTTaggedData.IsValidValue(System.DateTime)
+  href: api/ICSharpCode.SharpZipLib.Zip.NTTaggedData.html#ICSharpCode_SharpZipLib_Zip_NTTaggedData_IsValidValue_DateTime_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.NTTaggedData.IsValidValue(DateTime)
+  fullName: ICSharpCode.SharpZipLib.Zip.NTTaggedData.IsValidValue(DateTime)
   nameWithType: NTTaggedData.IsValidValue(DateTime)
 - uid: ICSharpCode.SharpZipLib.Zip.NTTaggedData.IsValidValue*
   name: IsValidValue
@@ -9075,6 +9307,51 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.NTTaggedData.TagID
   nameWithType: NTTaggedData.TagID
+- uid: ICSharpCode.SharpZipLib.Zip.PathTransformer
+  name: PathTransformer
+  href: api/ICSharpCode.SharpZipLib.Zip.PathTransformer.html
+  commentId: T:ICSharpCode.SharpZipLib.Zip.PathTransformer
+  fullName: ICSharpCode.SharpZipLib.Zip.PathTransformer
+  nameWithType: PathTransformer
+- uid: ICSharpCode.SharpZipLib.Zip.PathTransformer.#ctor
+  name: PathTransformer()
+  href: api/ICSharpCode.SharpZipLib.Zip.PathTransformer.html#ICSharpCode_SharpZipLib_Zip_PathTransformer__ctor
+  commentId: M:ICSharpCode.SharpZipLib.Zip.PathTransformer.#ctor
+  fullName: ICSharpCode.SharpZipLib.Zip.PathTransformer.PathTransformer()
+  nameWithType: PathTransformer.PathTransformer()
+- uid: ICSharpCode.SharpZipLib.Zip.PathTransformer.#ctor*
+  name: PathTransformer
+  href: api/ICSharpCode.SharpZipLib.Zip.PathTransformer.html#ICSharpCode_SharpZipLib_Zip_PathTransformer__ctor_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.PathTransformer.#ctor
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.PathTransformer.PathTransformer
+  nameWithType: PathTransformer.PathTransformer
+- uid: ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformDirectory(System.String)
+  name: TransformDirectory(String)
+  href: api/ICSharpCode.SharpZipLib.Zip.PathTransformer.html#ICSharpCode_SharpZipLib_Zip_PathTransformer_TransformDirectory_System_String_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformDirectory(System.String)
+  fullName: ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformDirectory(System.String)
+  nameWithType: PathTransformer.TransformDirectory(String)
+- uid: ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformDirectory*
+  name: TransformDirectory
+  href: api/ICSharpCode.SharpZipLib.Zip.PathTransformer.html#ICSharpCode_SharpZipLib_Zip_PathTransformer_TransformDirectory_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformDirectory
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformDirectory
+  nameWithType: PathTransformer.TransformDirectory
+- uid: ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformFile(System.String)
+  name: TransformFile(String)
+  href: api/ICSharpCode.SharpZipLib.Zip.PathTransformer.html#ICSharpCode_SharpZipLib_Zip_PathTransformer_TransformFile_System_String_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformFile(System.String)
+  fullName: ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformFile(System.String)
+  nameWithType: PathTransformer.TransformFile(String)
+- uid: ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformFile*
+  name: TransformFile
+  href: api/ICSharpCode.SharpZipLib.Zip.PathTransformer.html#ICSharpCode_SharpZipLib_Zip_PathTransformer_TransformFile_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformFile
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.PathTransformer.TransformFile
+  nameWithType: PathTransformer.TransformFile
 - uid: ICSharpCode.SharpZipLib.Zip.RawTaggedData
   name: RawTaggedData
   href: api/ICSharpCode.SharpZipLib.Zip.RawTaggedData.html
@@ -9753,6 +10030,12 @@ references:
   commentId: F:ICSharpCode.SharpZipLib.Zip.ZipConstants.VERSION_STRONG_ENCRYPTION
   fullName: ICSharpCode.SharpZipLib.Zip.ZipConstants.VERSION_STRONG_ENCRYPTION
   nameWithType: ZipConstants.VERSION_STRONG_ENCRYPTION
+- uid: ICSharpCode.SharpZipLib.Zip.ZipConstants.VersionBZip2
+  name: VersionBZip2
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipConstants.html#ICSharpCode_SharpZipLib_Zip_ZipConstants_VersionBZip2
+  commentId: F:ICSharpCode.SharpZipLib.Zip.ZipConstants.VersionBZip2
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipConstants.VersionBZip2
+  nameWithType: ZipConstants.VersionBZip2
 - uid: ICSharpCode.SharpZipLib.Zip.ZipConstants.VersionMadeBy
   name: VersionMadeBy
   href: api/ICSharpCode.SharpZipLib.Zip.ZipConstants.html#ICSharpCode_SharpZipLib_Zip_ZipConstants_VersionMadeBy
@@ -9789,6 +10072,42 @@ references:
   commentId: F:ICSharpCode.SharpZipLib.Zip.ZipConstants.Zip64DataDescriptorSize
   fullName: ICSharpCode.SharpZipLib.Zip.ZipConstants.Zip64DataDescriptorSize
   nameWithType: ZipConstants.Zip64DataDescriptorSize
+- uid: ICSharpCode.SharpZipLib.Zip.ZipConstants.Zip64EndOfCentralDirectoryLocatorSize
+  name: Zip64EndOfCentralDirectoryLocatorSize
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipConstants.html#ICSharpCode_SharpZipLib_Zip_ZipConstants_Zip64EndOfCentralDirectoryLocatorSize
+  commentId: F:ICSharpCode.SharpZipLib.Zip.ZipConstants.Zip64EndOfCentralDirectoryLocatorSize
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipConstants.Zip64EndOfCentralDirectoryLocatorSize
+  nameWithType: ZipConstants.Zip64EndOfCentralDirectoryLocatorSize
+- uid: ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod
+  name: ZipEncryptionMethod
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.html
+  commentId: T:ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod
+  nameWithType: ZipEncryptionMethod
+- uid: ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.AES128
+  name: AES128
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.html#ICSharpCode_SharpZipLib_Zip_ZipEncryptionMethod_AES128
+  commentId: F:ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.AES128
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.AES128
+  nameWithType: ZipEncryptionMethod.AES128
+- uid: ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.AES256
+  name: AES256
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.html#ICSharpCode_SharpZipLib_Zip_ZipEncryptionMethod_AES256
+  commentId: F:ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.AES256
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.AES256
+  nameWithType: ZipEncryptionMethod.AES256
+- uid: ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.None
+  name: None
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.html#ICSharpCode_SharpZipLib_Zip_ZipEncryptionMethod_None
+  commentId: F:ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.None
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.None
+  nameWithType: ZipEncryptionMethod.None
+- uid: ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.ZipCrypto
+  name: ZipCrypto
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.html#ICSharpCode_SharpZipLib_Zip_ZipEncryptionMethod_ZipCrypto
+  commentId: F:ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.ZipCrypto
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.ZipCrypto
+  nameWithType: ZipEncryptionMethod.ZipCrypto
 - uid: ICSharpCode.SharpZipLib.Zip.ZipEntry
   name: ZipEntry
   href: api/ICSharpCode.SharpZipLib.Zip.ZipEntry.html
@@ -10248,18 +10567,18 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.#ctor
   fullName: ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.ZipEntryFactory()
   nameWithType: ZipEntryFactory.ZipEntryFactory()
+- uid: ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.#ctor(DateTime)
+  name: ZipEntryFactory(DateTime)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.html#ICSharpCode_SharpZipLib_Zip_ZipEntryFactory__ctor_DateTime_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.#ctor(DateTime)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.ZipEntryFactory(DateTime)
+  nameWithType: ZipEntryFactory.ZipEntryFactory(DateTime)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.#ctor(ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting)
   name: ZipEntryFactory(ZipEntryFactory.TimeSetting)
   href: api/ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.html#ICSharpCode_SharpZipLib_Zip_ZipEntryFactory__ctor_ICSharpCode_SharpZipLib_Zip_ZipEntryFactory_TimeSetting_
   commentId: M:ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.#ctor(ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting)
   fullName: ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.ZipEntryFactory(ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting)
   nameWithType: ZipEntryFactory.ZipEntryFactory(ZipEntryFactory.TimeSetting)
-- uid: ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.#ctor(System.DateTime)
-  name: ZipEntryFactory(DateTime)
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.html#ICSharpCode_SharpZipLib_Zip_ZipEntryFactory__ctor_System_DateTime_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.#ctor(System.DateTime)
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.ZipEntryFactory(System.DateTime)
-  nameWithType: ZipEntryFactory.ZipEntryFactory(DateTime)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.#ctor*
   name: ZipEntryFactory
   href: api/ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.html#ICSharpCode_SharpZipLib_Zip_ZipEntryFactory__ctor_
@@ -10449,11 +10768,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Zip.ZipException.#ctor
   fullName: ICSharpCode.SharpZipLib.Zip.ZipException.ZipException()
   nameWithType: ZipException.ZipException()
-- uid: ICSharpCode.SharpZipLib.Zip.ZipException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipException.#ctor(SerializationInfo,StreamingContext)
   name: ZipException(SerializationInfo, StreamingContext)
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipException.html#ICSharpCode_SharpZipLib_Zip_ZipException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipException.ZipException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipException.html#ICSharpCode_SharpZipLib_Zip_ZipException__ctor_SerializationInfo_StreamingContext_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipException.#ctor(SerializationInfo,StreamingContext)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipException.ZipException(SerializationInfo, StreamingContext)
   nameWithType: ZipException.ZipException(SerializationInfo, StreamingContext)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipException.#ctor(System.String)
   name: ZipException(String)
@@ -10461,11 +10780,11 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Zip.ZipException.#ctor(System.String)
   fullName: ICSharpCode.SharpZipLib.Zip.ZipException.ZipException(System.String)
   nameWithType: ZipException.ZipException(String)
-- uid: ICSharpCode.SharpZipLib.Zip.ZipException.#ctor(System.String,System.Exception)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipException.#ctor(System.String,Exception)
   name: ZipException(String, Exception)
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipException.html#ICSharpCode_SharpZipLib_Zip_ZipException__ctor_System_String_System_Exception_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipException.#ctor(System.String,System.Exception)
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipException.ZipException(System.String, System.Exception)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipException.html#ICSharpCode_SharpZipLib_Zip_ZipException__ctor_System_String_Exception_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipException.#ctor(System.String,Exception)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipException.ZipException(System.String, Exception)
   nameWithType: ZipException.ZipException(String, Exception)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipException.#ctor*
   name: ZipException
@@ -10828,29 +11147,29 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Zip.ZipFile
   fullName: ICSharpCode.SharpZipLib.Zip.ZipFile
   nameWithType: ZipFile
-- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.FileStream)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(FileStream)
   name: ZipFile(FileStream)
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_System_IO_FileStream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.FileStream)
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(System.IO.FileStream)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_FileStream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(FileStream)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(FileStream)
   nameWithType: ZipFile.ZipFile(FileStream)
-- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.FileStream,System.Boolean)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(FileStream,System.Boolean)
   name: ZipFile(FileStream, Boolean)
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_System_IO_FileStream_System_Boolean_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.FileStream,System.Boolean)
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(System.IO.FileStream, System.Boolean)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_FileStream_System_Boolean_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(FileStream,System.Boolean)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(FileStream, System.Boolean)
   nameWithType: ZipFile.ZipFile(FileStream, Boolean)
-- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(Stream)
   name: ZipFile(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(Stream)
   nameWithType: ZipFile.ZipFile(Stream)
-- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.Stream,System.Boolean)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(Stream,System.Boolean)
   name: ZipFile(Stream, Boolean)
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_System_IO_Stream_System_Boolean_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.Stream,System.Boolean)
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(System.IO.Stream, System.Boolean)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_Stream_System_Boolean_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(Stream,System.Boolean)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(Stream, System.Boolean)
   nameWithType: ZipFile.ZipFile(Stream, Boolean)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.String)
   name: ZipFile(String)
@@ -11029,11 +11348,11 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.Count
   nameWithType: ZipFile.Count
-- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.Create(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.Create(Stream)
   name: Create(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile_Create_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.Create(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.Create(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile_Create_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.Create(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.Create(Stream)
   nameWithType: ZipFile.Create(Stream)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipFile.Create(System.String)
   name: Create(String)
@@ -11080,22 +11399,6 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.Dispose
   nameWithType: ZipFile.Dispose
-- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.EntryByIndex(System.Int32)
-  name: EntryByIndex[Int32]
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile_EntryByIndex_System_Int32_
-  commentId: P:ICSharpCode.SharpZipLib.Zip.ZipFile.EntryByIndex(System.Int32)
-  name.vb: EntryByIndex(Int32)
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.EntryByIndex[System.Int32]
-  fullName.vb: ICSharpCode.SharpZipLib.Zip.ZipFile.EntryByIndex(System.Int32)
-  nameWithType: ZipFile.EntryByIndex[Int32]
-  nameWithType.vb: ZipFile.EntryByIndex(Int32)
-- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.EntryByIndex*
-  name: EntryByIndex
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile_EntryByIndex_
-  commentId: Overload:ICSharpCode.SharpZipLib.Zip.ZipFile.EntryByIndex
-  isSpec: "True"
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.EntryByIndex
-  nameWithType: ZipFile.EntryByIndex
 - uid: ICSharpCode.SharpZipLib.Zip.ZipFile.EntryFactory
   name: EntryFactory
   href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile_EntryFactory
@@ -11232,6 +11535,22 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.IsUpdating
   nameWithType: ZipFile.IsUpdating
+- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.Item(System.Int32)
+  name: Item[Int32]
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile_Item_System_Int32_
+  commentId: P:ICSharpCode.SharpZipLib.Zip.ZipFile.Item(System.Int32)
+  name.vb: Item(Int32)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.Item[System.Int32]
+  fullName.vb: ICSharpCode.SharpZipLib.Zip.ZipFile.Item(System.Int32)
+  nameWithType: ZipFile.Item[Int32]
+  nameWithType.vb: ZipFile.Item(Int32)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.Item*
+  name: Item
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile_Item_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.ZipFile.Item
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.Item
+  nameWithType: ZipFile.Item
 - uid: ICSharpCode.SharpZipLib.Zip.ZipFile.KeysRequired
   name: KeysRequired
   href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile_KeysRequired
@@ -11309,23 +11628,6 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.Size
   nameWithType: ZipFile.Size
-- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.System#IDisposable#Dispose
-  name: IDisposable.Dispose()
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile_System_IDisposable_Dispose
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.System#IDisposable#Dispose
-  name.vb: System.IDisposable.Dispose()
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.System.IDisposable.Dispose()
-  nameWithType: ZipFile.IDisposable.Dispose()
-  nameWithType.vb: ZipFile.System.IDisposable.Dispose()
-- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.System#IDisposable#Dispose*
-  name: IDisposable.Dispose
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile_System_IDisposable_Dispose_
-  commentId: Overload:ICSharpCode.SharpZipLib.Zip.ZipFile.System#IDisposable#Dispose
-  isSpec: "True"
-  name.vb: System.IDisposable.Dispose
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.System.IDisposable.Dispose
-  nameWithType: ZipFile.IDisposable.Dispose
-  nameWithType.vb: ZipFile.System.IDisposable.Dispose
 - uid: ICSharpCode.SharpZipLib.Zip.ZipFile.TestArchive(System.Boolean)
   name: TestArchive(Boolean)
   href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile_TestArchive_System_Boolean_
@@ -11377,17 +11679,17 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Zip.ZipInputStream
   fullName: ICSharpCode.SharpZipLib.Zip.ZipInputStream
   nameWithType: ZipInputStream
-- uid: ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(Stream)
   name: ZipInputStream(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipInputStream.html#ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipInputStream.ZipInputStream(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipInputStream.html#ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipInputStream.ZipInputStream(Stream)
   nameWithType: ZipInputStream.ZipInputStream(Stream)
-- uid: ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(System.IO.Stream,System.Int32)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(Stream,System.Int32)
   name: ZipInputStream(Stream, Int32)
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipInputStream.html#ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_System_IO_Stream_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(System.IO.Stream,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipInputStream.ZipInputStream(System.IO.Stream, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipInputStream.html#ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_Stream_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(Stream,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipInputStream.ZipInputStream(Stream, System.Int32)
   nameWithType: ZipInputStream.ZipInputStream(Stream, Int32)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor*
   name: ZipInputStream
@@ -11605,17 +11907,17 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Zip.ZipOutputStream
   fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream
   nameWithType: ZipOutputStream
-- uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(System.IO.Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(Stream)
   name: ZipOutputStream(Stream)
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream__ctor_System_IO_Stream_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(System.IO.Stream)
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.ZipOutputStream(System.IO.Stream)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream__ctor_Stream_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(Stream)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.ZipOutputStream(Stream)
   nameWithType: ZipOutputStream.ZipOutputStream(Stream)
-- uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(System.IO.Stream,System.Int32)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(Stream,System.Int32)
   name: ZipOutputStream(Stream, Int32)
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream__ctor_System_IO_Stream_System_Int32_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(System.IO.Stream,System.Int32)
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.ZipOutputStream(System.IO.Stream, System.Int32)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream__ctor_Stream_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(Stream,System.Int32)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.ZipOutputStream(Stream, System.Int32)
   nameWithType: ZipOutputStream.ZipOutputStream(Stream, Int32)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor*
   name: ZipOutputStream
@@ -11650,6 +11952,19 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Finish
   nameWithType: ZipOutputStream.Finish
+- uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Flush
+  name: Flush()
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Flush
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Flush
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Flush()
+  nameWithType: ZipOutputStream.Flush()
+- uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Flush*
+  name: Flush
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Flush_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Flush
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Flush
+  nameWithType: ZipOutputStream.Flush
 - uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.GetLevel
   name: GetLevel()
   href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream_GetLevel
@@ -11676,6 +11991,19 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.IsFinished
   nameWithType: ZipOutputStream.IsFinished
+- uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.NameTransform
+  name: NameTransform
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream_NameTransform
+  commentId: P:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.NameTransform
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.NameTransform
+  nameWithType: ZipOutputStream.NameTransform
+- uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.NameTransform*
+  name: NameTransform
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream_NameTransform_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.NameTransform
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.NameTransform
+  nameWithType: ZipOutputStream.NameTransform
 - uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.PutNextEntry(ICSharpCode.SharpZipLib.Zip.ZipEntry)
   name: PutNextEntry(ZipEntry)
   href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream_PutNextEntry_ICSharpCode_SharpZipLib_Zip_ZipEntry_

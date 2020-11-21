@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
   
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class GZip
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.44.0.0">
+    <meta name="generator" content="docfx 2.45.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -79,47 +79,23 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">GZip</span></div>
   </div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.MemberwiseClone()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ToString()</span>
-    </div>
-  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.GZip.html">ICSharpCode.SharpZipLib.GZip</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_GZip_GZip_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class GZip</code></pre>
+    <pre><code class="lang-csharp hljs">public static class GZip : object</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_GZip_GZip_Compress_System_IO_Stream_System_IO_Stream_System_Boolean_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.GZip.GZip.Compress(System.IO.Stream%2CSystem.IO.Stream%2CSystem.Boolean%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_GZip_GZip_Compress_Stream_Stream_System_Boolean_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.GZip.GZip.Compress(Stream%2CStream%2CSystem.Boolean%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/GZip/GZip.cs/#L59">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/GZip/GZip.cs/#L59">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_GZip_GZip_Compress_" data-uid="ICSharpCode.SharpZipLib.GZip.GZip.Compress*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_GZip_GZip_Compress_System_IO_Stream_System_IO_Stream_System_Boolean_System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.GZip.GZip.Compress(System.IO.Stream,System.IO.Stream,System.Boolean,System.Int32,System.Int32)">Compress(Stream, Stream, Boolean, Int32, Int32)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_GZip_GZip_Compress_Stream_Stream_System_Boolean_System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.GZip.GZip.Compress(Stream,Stream,System.Boolean,System.Int32,System.Int32)">Compress(Stream, Stream, Boolean, Int32, Int32)</h4>
   <div class="markdown level1 summary"><p>Compress the <code data-dev-comment-type="paramref" class="paramref">inStream</code> sending
 result data to <code data-dev-comment-type="paramref" class="paramref">outStream</code></p>
 </div>
@@ -139,13 +115,13 @@ result data to <code data-dev-comment-type="paramref" class="paramref">outStream
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="xref">Stream</span></td>
         <td><span class="parametername">inStream</span></td>
         <td><p>The readable stream to compress.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="xref">Stream</span></td>
         <td><span class="parametername">outStream</span></td>
         <td><p>The output stream to receive the compressed data.</p>
 </td>
@@ -170,41 +146,15 @@ result data to <code data-dev-comment-type="paramref" class="paramref">outStream
       </tr>
     </tbody>
   </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p>Input or output stream is null</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Buffer Size is smaller than 512</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
-        <td><p>Compression level outside 0-9</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_GZip_GZip_Decompress_System_IO_Stream_System_IO_Stream_System_Boolean_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.GZip.GZip.Decompress(System.IO.Stream%2CSystem.IO.Stream%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_GZip_GZip_Decompress_Stream_Stream_System_Boolean_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.GZip.GZip.Decompress(Stream%2CStream%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/GZip/GZip.cs/#L21">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/GZip/GZip.cs/#L21">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_GZip_GZip_Decompress_" data-uid="ICSharpCode.SharpZipLib.GZip.GZip.Decompress*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_GZip_GZip_Decompress_System_IO_Stream_System_IO_Stream_System_Boolean_" data-uid="ICSharpCode.SharpZipLib.GZip.GZip.Decompress(System.IO.Stream,System.IO.Stream,System.Boolean)">Decompress(Stream, Stream, Boolean)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_GZip_GZip_Decompress_Stream_Stream_System_Boolean_" data-uid="ICSharpCode.SharpZipLib.GZip.GZip.Decompress(Stream,Stream,System.Boolean)">Decompress(Stream, Stream, Boolean)</h4>
   <div class="markdown level1 summary"><p>Decompress the <code data-dev-comment-type="paramref" class="paramref">inStream</code> writing
 uncompressed data to the <code data-dev-comment-type="paramref" class="paramref">outStream</code></p>
 </div>
@@ -224,13 +174,13 @@ uncompressed data to the <code data-dev-comment-type="paramref" class="paramref"
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="xref">Stream</span></td>
         <td><span class="parametername">inStream</span></td>
         <td><p>The readable stream containing data to decompress.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="xref">Stream</span></td>
         <td><span class="parametername">outStream</span></td>
         <td><p>The output stream to receive the decompressed data.</p>
 </td>
@@ -239,22 +189,6 @@ uncompressed data to the <code data-dev-comment-type="paramref" class="paramref"
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">isStreamOwner</span></td>
         <td><p>Both streams are closed on completion if true.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="exceptions">Exceptions</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Condition</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.ArgumentNullException</span></td>
-        <td><p>Input or output stream is null</p>
 </td>
       </tr>
     </tbody>
@@ -270,7 +204,7 @@ uncompressed data to the <code data-dev-comment-type="paramref" class="paramref"
                     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_GZip_GZip.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.GZip.GZip%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/icsharpcode/sharpziplib/blob/master/src/ICSharpCode.SharpZipLib/GZip/GZip.cs/#L11" class="contribution-link">View Source</a>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/GZip/GZip.cs/#L11" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

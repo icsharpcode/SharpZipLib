@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
   
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace ICSharpCode.SharpZipLib.Zip
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.44.0.0">
+    <meta name="generator" content="docfx 2.45.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -105,6 +105,10 @@
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.NTTaggedData.html">NTTaggedData</a></h4>
       <section><p>Class handling NT date time values.</p>
 </section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.PathTransformer.html">PathTransformer</a></h4>
+      <section><p>An implementation of INameTransform that transforms entry paths as per the Zip file naming convention.
+Strips path roots and puts directory separators in the correct format (&apos;/&apos;)</p>
+</section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.RawTaggedData.html">RawTaggedData</a></h4>
       <section><p>A raw binary tagged value</p>
 </section>
@@ -112,7 +116,7 @@
       <section><p>Default implementation of a <a class="xref" href="ICSharpCode.SharpZipLib.Zip.IStaticDataSource.html">IStaticDataSource</a> for use with files stored on disk.</p>
 </section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.TestStatus.html">TestStatus</a></h4>
-      <section><p>Status returned returned by <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipTestResultHandler.html">ZipTestResultHandler</a> during testing.</p>
+      <section><p>Status returned by <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipTestResultHandler.html">ZipTestResultHandler</a> during testing.</p>
 </section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.WindowsNameTransform.html">WindowsNameTransform</a></h4>
       <section><p>WindowsNameTransform transforms <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipFile.html">ZipFile</a> names to windows compatible ones.</p>
@@ -180,7 +184,7 @@ This class is not thread safe.
 </section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.IDynamicDataSource.html">IDynamicDataSource</a></h4>
       <section><p>Represents a source of data that can dynamically provide
-multiple <span class="xref">System.IO.Stream</span> based on the parameters passed.</p>
+multiple <see cref="!:Stream">data sources</see> based on the parameters passed.</p>
 </section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.IEntryFactory.html">IEntryFactory</a></h4>
       <section><p>Defines factory methods for creating new <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html">ZipEntry</a> values.</p>
@@ -223,6 +227,9 @@ multiple <span class="xref">System.IO.Stream</span> based on the parameters pass
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.UseZip64.html">UseZip64</a></h4>
       <section><p>Determines how entries are tested to see if they should use Zip64 extensions or not.</p>
 </section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.html">ZipEncryptionMethod</a></h4>
+      <section><p>The method of encrypting entries when creating zip archives.</p>
+</section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting.html">ZipEntryFactory.TimeSetting</a></h4>
       <section><p>Defines the possible values to be used for the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_DateTime">DateTime</a>.</p>
 </section>
@@ -232,7 +239,7 @@ multiple <span class="xref">System.IO.Stream</span> based on the parameters pass
       <section><p>Delegate called when confirming overwriting of files.</p>
 </section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipFile.KeysRequiredEventHandler.html">ZipFile.KeysRequiredEventHandler</a></h4>
-      <section><p>Delegate for handling keys/password setting during compresion/decompression.</p>
+      <section><p>Delegate for handling keys/password setting during compression/decompression.</p>
 </section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipTestResultHandler.html">ZipTestResultHandler</a></h4>
       <section><p>Delegate invoked during <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile_TestArchive_System_Boolean_ICSharpCode_SharpZipLib_Zip_TestStrategy_ICSharpCode_SharpZipLib_Zip_ZipTestResultHandler_">TestArchive(Boolean, TestStrategy, ZipTestResultHandler)</a> if supplied indicating current progress and status.</p>

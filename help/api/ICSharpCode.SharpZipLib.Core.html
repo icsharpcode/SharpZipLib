@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html>
   
@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace ICSharpCode.SharpZipLib.Core
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.44.0.0">
+    <meta name="generator" content="docfx 2.45.1.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -93,7 +93,7 @@
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.NameFilter.html">NameFilter</a></h4>
       <section><p>NameFilter is a string matching class which allows for both positive and negative
 matching.
-A filter is a sequence of independant <span class="xref">System.Text.RegularExpressions.Regex</span> separated by semi-colons &apos;;&apos;.
+A filter is a sequence of independant <see cref="!:Regex">regular expressions</see> separated by semi-colons &apos;;&apos;.
 To include a semi-colon it may be quoted as in ;. Each expression can be prefixed by a plus &apos;+&apos; sign or
 a minus &apos;-&apos; sign to denote the expression is intended to include or exclude names.
 If neither a plus or minus sign is found include is the default.
@@ -102,9 +102,12 @@ and not matching an exclude spec are deemed to match the filter.
 An empty filter matches any name.</p>
 </section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.PathFilter.html">PathFilter</a></h4>
-      <section><p>PathFilter filters directories and files using a form of <span class="xref">System.Text.RegularExpressions.Regex</span>
+      <section><p>PathFilter filters directories and files using a form of <see cref="!:System.Text.RegularExpressions.Regex">regular expressions</see>
 by full path name.
 See <a class="xref" href="ICSharpCode.SharpZipLib.Core.NameFilter.html">NameFilter</a> for more detail on filtering.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.PathUtils.html">PathUtils</a></h4>
+      <section><p>PathUtils provides simple utilities for handling paths.</p>
 </section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.ProgressEventArgs.html">ProgressEventArgs</a></h4>
       <section><p>Event arguments during processing of a single file or directory.</p>
@@ -116,10 +119,7 @@ See <a class="xref" href="ICSharpCode.SharpZipLib.Core.NameFilter.html">NameFilt
       <section><p>Arguments passed when scan failures are detected.</p>
 </section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.StreamUtils.html">StreamUtils</a></h4>
-      <section><p>Provides simple <span class="xref">System.IO.Stream</span>&quot; utilities.</p>
-</section>
-      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.WindowsPathUtils.html">WindowsPathUtils</a></h4>
-      <section><p>WindowsPathUtils provides simple utilities for handling windows paths.</p>
+      <section><p>Provides simple <see cref="!:Stream"></see>&quot; utilities.</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>

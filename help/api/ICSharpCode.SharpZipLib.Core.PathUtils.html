@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class StaticDiskDataSource
+    <title>Class PathUtils
    | SharpZipLib Help </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class StaticDiskDataSource
+    <meta name="title" content="Class PathUtils
    | SharpZipLib Help ">
     <meta name="generator" content="docfx 2.45.1.0">
     
@@ -66,46 +66,42 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Core.PathUtils">
   
   
-  <h1 id="ICSharpCode_SharpZipLib_Zip_StaticDiskDataSource" data-uid="ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource" class="text-break">Class StaticDiskDataSource
+  <h1 id="ICSharpCode_SharpZipLib_Core_PathUtils" data-uid="ICSharpCode.SharpZipLib.Core.PathUtils" class="text-break">Class PathUtils
   </h1>
-  <div class="markdown level0 summary"><p>Default implementation of a <a class="xref" href="ICSharpCode.SharpZipLib.Zip.IStaticDataSource.html">IStaticDataSource</a> for use with files stored on disk.</p>
+  <div class="markdown level0 summary"><p>PathUtils provides simple utilities for handling paths.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">StaticDiskDataSource</span></div>
+    <div class="level1"><span class="xref">PathUtils</span></div>
   </div>
-  <div classs="implements">
-    <h5>Implements</h5>
-    <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.IStaticDataSource.html">IStaticDataSource</a></div>
-  </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.html">ICSharpCode.SharpZipLib.Zip</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Core.html">ICSharpCode.SharpZipLib.Core</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
-  <h5 id="ICSharpCode_SharpZipLib_Zip_StaticDiskDataSource_syntax">Syntax</h5>
+  <h5 id="ICSharpCode_SharpZipLib_Core_PathUtils_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class StaticDiskDataSource : object, IStaticDataSource</code></pre>
+    <pre><code class="lang-csharp hljs">public static class PathUtils : object</code></pre>
   </div>
-  <h3 id="constructors">Constructors
+  <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StaticDiskDataSource__ctor_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_PathUtils_DropPathRoot_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.PathUtils.DropPathRoot(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipFile.cs/#L4435">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Core/PathUtils.cs/#L16">View Source</a>
   </span>
-  <a id="ICSharpCode_SharpZipLib_Zip_StaticDiskDataSource__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource.#ctor*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Zip_StaticDiskDataSource__ctor_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource.#ctor(System.String)">StaticDiskDataSource(String)</h4>
-  <div class="markdown level1 summary"><p>Initialise a new instance of <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource.html">StaticDiskDataSource</a></p>
+  <a id="ICSharpCode_SharpZipLib_Core_PathUtils_DropPathRoot_" data-uid="ICSharpCode.SharpZipLib.Core.PathUtils.DropPathRoot*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Core_PathUtils_DropPathRoot_System_String_" data-uid="ICSharpCode.SharpZipLib.Core.PathUtils.DropPathRoot(System.String)">DropPathRoot(String)</h4>
+  <div class="markdown level1 summary"><p>Remove any path root present in the path</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public StaticDiskDataSource(string fileName)</code></pre>
+    <pre><code class="lang-csharp hljs">public static string DropPathRoot(string path)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -119,30 +115,12 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">fileName</span></td>
-        <td><p>The name of the file to obtain data from.</p>
+        <td><span class="parametername">path</span></td>
+        <td><p>A <see cref="!:System.String"></see> containing path information.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h3 id="methods">Methods
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StaticDiskDataSource_GetSource.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource.GetSource%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipFile.cs/#L4446">View Source</a>
-  </span>
-  <a id="ICSharpCode_SharpZipLib_Zip_StaticDiskDataSource_GetSource_" data-uid="ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource.GetSource*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Zip_StaticDiskDataSource_GetSource" data-uid="ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource.GetSource">GetSource()</h4>
-  <div class="markdown level1 summary"><p>Get a <see cref="!:Stream"></see> providing data.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Stream GetSource()</code></pre>
-  </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -153,16 +131,65 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><p>Returns a <see cref="!:Stream"></see> providing data.</p>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The path with the root removed if it was present; path otherwise.</p>
 </td>
       </tr>
     </tbody>
   </table>
-  <h3 id="implements">Implements</h3>
-  <div>
-      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.IStaticDataSource.html">IStaticDataSource</a>
+  <h5 id="ICSharpCode_SharpZipLib_Core_PathUtils_DropPathRoot_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Unlike the <see cref="!:System.IO.Path"></see> class the path isn&apos;t otherwise checked for validity.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_PathUtils_GetTempFileName_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.PathUtils.GetTempFileName(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Core/PathUtils.cs/#L67">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Core_PathUtils_GetTempFileName_" data-uid="ICSharpCode.SharpZipLib.Core.PathUtils.GetTempFileName*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Core_PathUtils_GetTempFileName_System_String_" data-uid="ICSharpCode.SharpZipLib.Core.PathUtils.GetTempFileName(System.String)">GetTempFileName(String)</h4>
+  <div class="markdown level1 summary"><p>Returns a random file name in the users temporary directory, or in directory of <code data-dev-comment-type="paramref" class="paramref">original</code> if specified</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetTempFileName(string original)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">original</span></td>
+        <td><p>If specified, used as the base file name for the temporary file</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>Returns a temporary file name</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
 </article>
           </div>
           
@@ -171,10 +198,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StaticDiskDataSource.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_PathUtils.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.PathUtils%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Zip/ZipFile.cs/#L4429" class="contribution-link">View Source</a>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/ci/fix-release-action/src/ICSharpCode.SharpZipLib/Core/PathUtils.cs/#L8" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
