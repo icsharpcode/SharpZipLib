@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -362,6 +364,41 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Write Zip64 end of central directory records (File header and locator).
+		/// </summary>
+		/// <param name="noOfEntries">The number of entries in the central directory.</param>
+		/// <param name="sizeEntries">The size of entries in the central directory.</param>
+		/// <param name="centralDirOffset">The offset of the central directory.</param>
+		/// <param name="cancellationToken">The <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
+		public async Task WriteZip64EndOfCentralDirectoryAsync(long noOfEntries, long sizeEntries, long centralDirOffset, CancellationToken cancellationToken)
+		{
+			long centralSignatureOffset = centralDirOffset + sizeEntries;
+			await WriteLEIntAsync(ZipConstants.Zip64CentralFileHeaderSignature, cancellationToken);
+			await WriteLELongAsync(44, cancellationToken);    // Size of this record (total size of remaining fields in header or full size - 12)
+			await WriteLEShortAsync(ZipConstants.VersionMadeBy, cancellationToken);   // Version made by
+			await WriteLEShortAsync(ZipConstants.VersionZip64, cancellationToken);   // Version to extract
+			await WriteLEIntAsync(0, cancellationToken);      // Number of this disk
+			await WriteLEIntAsync(0, cancellationToken);      // number of the disk with the start of the central directory
+			await WriteLELongAsync(noOfEntries, cancellationToken);       // No of entries on this disk
+			await WriteLELongAsync(noOfEntries, cancellationToken);       // Total No of entries in central directory
+			await WriteLELongAsync(sizeEntries, cancellationToken);       // Size of the central directory
+			await WriteLELongAsync(centralDirOffset, cancellationToken);  // offset of start of central directory
+											// zip64 extensible data sector not catered for here (variable size)
+
+			// Write the Zip64 end of central directory locator
+			await WriteLEIntAsync(ZipConstants.Zip64CentralDirLocatorSignature, cancellationToken);
+
+			// no of the disk with the start of the zip64 end of central directory
+			await WriteLEIntAsync(0, cancellationToken);
+
+			// relative offset of the zip64 end of central directory record
+			await WriteLELongAsync(centralSignatureOffset, cancellationToken);
+
+			// total number of disks
+			await WriteLEIntAsync(1, cancellationToken);
+		}
+
+		/// <summary>
 		/// Write the required records to end the central directory.
 		/// </summary>
 		/// <param name="noOfEntries">The number of entries in the directory.</param>
@@ -431,6 +468,77 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
+		/// <summary>
+		/// Write the required records to end the central directory.
+		/// </summary>
+		/// <param name="noOfEntries">The number of entries in the directory.</param>
+		/// <param name="sizeEntries">The size of the entries in the directory.</param>
+		/// <param name="startOfCentralDirectory">The start of the central directory.</param>
+		/// <param name="comment">The archive comment.  (This can be null).</param>
+		/// <param name="cancellationToken">The <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
+		public async Task WriteEndOfCentralDirectoryAsync(long noOfEntries, long sizeEntries,
+			long startOfCentralDirectory, byte[] comment, CancellationToken cancellationToken)
+		{
+			if ((noOfEntries >= 0xffff) ||
+				(startOfCentralDirectory >= 0xffffffff) ||
+				(sizeEntries >= 0xffffffff))
+			{
+				await WriteZip64EndOfCentralDirectoryAsync(noOfEntries, sizeEntries, startOfCentralDirectory, cancellationToken);
+			}
+
+			await WriteLEIntAsync(ZipConstants.EndOfCentralDirectorySignature, cancellationToken);
+
+			// TODO: ZipFile Multi disk handling not done
+			await WriteLEShortAsync(0, cancellationToken);                    // number of this disk
+			await WriteLEShortAsync(0, cancellationToken);                    // no of disk with start of central dir
+
+			// Number of entries
+			if (noOfEntries >= 0xffff)
+			{
+				await WriteLEUshortAsync(0xffff, cancellationToken);  // Zip64 marker
+				await WriteLEUshortAsync(0xffff, cancellationToken);
+			}
+			else
+			{
+				await WriteLEShortAsync((short)noOfEntries, cancellationToken);          // entries in central dir for this disk
+				await WriteLEShortAsync((short)noOfEntries, cancellationToken);          // total entries in central directory
+			}
+
+			// Size of the central directory
+			if (sizeEntries >= 0xffffffff)
+			{
+				await WriteLEUintAsync(0xffffffff, cancellationToken);    // Zip64 marker
+			}
+			else
+			{
+				await WriteLEIntAsync((int)sizeEntries, cancellationToken);
+			}
+
+			// offset of start of central directory
+			if (startOfCentralDirectory >= 0xffffffff)
+			{
+				await WriteLEUintAsync(0xffffffff, cancellationToken);    // Zip64 marker
+			}
+			else
+			{
+				await WriteLEIntAsync((int)startOfCentralDirectory, cancellationToken);
+			}
+
+			int commentLength = (comment != null) ? comment.Length : 0;
+
+			if (commentLength > 0xffff)
+			{
+				throw new ZipException(string.Format("Comment length({0}) is too long can only be 64K", commentLength));
+			}
+
+			await WriteLEShortAsync(commentLength, cancellationToken);
+
+			if (commentLength > 0)
+			{
+				await WriteAsync(comment, 0, comment.Length, cancellationToken);
+			}
+		}
+
 		#region LE value reading/writing
 
 		/// <summary>
@@ -496,6 +604,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Write an unsigned short in little endian byte order.
+		/// </summary>
+		/// <param name="value">The value to write.</param>
+		/// <param name="cancellationToken">The <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
+		public async Task WriteLEShortAsync(int value, CancellationToken cancellationToken)
+		{
+			await stream_.WriteAsync(new[] { (byte)(value & 0xff), (byte)((value >> 8) & 0xff) }, 0, 2, cancellationToken);
+		}
+
+		/// <summary>
 		/// Write a ushort in little endian byte order.
 		/// </summary>
 		/// <param name="value">The value to write.</param>
@@ -503,6 +621,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			stream_.WriteByte((byte)(value & 0xff));
 			stream_.WriteByte((byte)(value >> 8));
+		}
+
+		/// <summary>
+		/// Write a ushort in little endian byte order.
+		/// </summary>
+		/// <param name="value">The value to write.</param>
+		/// <param name="cancellationToken">The <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
+		public async Task WriteLEUshortAsync(ushort value, CancellationToken cancellationToken)
+		{
+			await stream_.WriteAsync(new[] { (byte)(value & 0xff), (byte)(value >> 8) }, 0, 2, cancellationToken);
 		}
 
 		/// <summary>
@@ -516,6 +644,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Write an int in little endian byte order.
+		/// </summary>
+		/// <param name="value">The value to write.</param>
+		/// <param name="cancellationToken">The <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
+		public async Task WriteLEIntAsync(int value, CancellationToken cancellationToken)
+		{
+			await WriteLEShortAsync(value, cancellationToken);
+			await WriteLEShortAsync(value >> 16, cancellationToken);
+		}
+
+		/// <summary>
 		/// Write a uint in little endian byte order.
 		/// </summary>
 		/// <param name="value">The value to write.</param>
@@ -523,6 +662,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			WriteLEUshort((ushort)(value & 0xffff));
 			WriteLEUshort((ushort)(value >> 16));
+		}
+
+		/// <summary>
+		/// Write a uint in little endian byte order.
+		/// </summary>
+		/// <param name="value">The value to write.</param>
+		/// <param name="cancellationToken">The <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
+		public async Task WriteLEUintAsync(uint value, CancellationToken cancellationToken)
+		{
+			await WriteLEUshortAsync((ushort)(value & 0xffff), cancellationToken);
+			await WriteLEUshortAsync((ushort)(value >> 16), cancellationToken);
 		}
 
 		/// <summary>
@@ -536,6 +686,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Write a long in little endian byte order.
+		/// </summary>
+		/// <param name="value">The value to write.</param>
+		/// <param name="cancellationToken">The <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
+		public async Task WriteLELongAsync(long value, CancellationToken cancellationToken)
+		{
+			await WriteLEIntAsync((int)value, cancellationToken);
+			await WriteLEIntAsync((int)(value >> 32), cancellationToken);
+		}
+
+		/// <summary>
 		/// Write a ulong in little endian byte order.
 		/// </summary>
 		/// <param name="value">The value to write.</param>
@@ -543,6 +704,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			WriteLEUint((uint)(value & 0xffffffff));
 			WriteLEUint((uint)(value >> 32));
+		}
+
+		/// <summary>
+		/// Write a ulong in little endian byte order.
+		/// </summary>
+		/// <param name="value">The value to write.</param>
+		/// <param name="cancellationToken">The <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
+		public async Task WriteLEUlongAsync(ulong value, CancellationToken cancellationToken)
+		{
+			await WriteLEUintAsync((uint)(value & 0xffffffff), cancellationToken);
+			await WriteLEUintAsync((uint)(value >> 32), cancellationToken);
 		}
 
 		#endregion LE value reading/writing
