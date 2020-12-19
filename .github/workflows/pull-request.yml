@@ -61,21 +61,7 @@ jobs:
 
     - name: Run tests
       run: dotnet test -c ${{ matrix.configuration }} -f ${{ matrix.target }} --no-restore
-      
-  Codacy-Analysis:
-    runs-on: ubuntu-latest
-    name: Codacy Analysis CLI
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run codacy-analysis-cli
-        uses: codacy/codacy-analysis-cli-action@1.1.0
-        with:
-          # The current issues needs to be fixed before this can be removed
-          max-allowed-issues: 9999
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          upload: true
-        
+
   Pack:
     needs: [Build, Test]
     runs-on: windows-latest
