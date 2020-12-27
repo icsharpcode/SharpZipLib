@@ -1,4 +1,6 @@
+using System;
 using ICSharpCode.SharpZipLib.Core;
+using static ICSharpCode.SharpZipLib.Zip.ZipEntryFactory;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -50,5 +52,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Get/set the <see cref="INameTransform"></see> applicable.
 		/// </summary>
 		INameTransform NameTransform { get; set; }
+
+		/// <summary>
+		/// Get the <see cref="TimeSetting"/> in use.
+		/// </summary>
+		TimeSetting Setting { get; }
+
+		/// <summary>
+		/// Get the <see cref="DateTime"/> value to use when <see cref="Setting"/> is set to <see cref="TimeSetting.Fixed"/>
+		/// </summary>
+		DateTime FixedDateTime { get; }
 	}
 }
