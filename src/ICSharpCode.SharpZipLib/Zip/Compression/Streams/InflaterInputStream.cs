@@ -459,7 +459,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Clear any cryptographic state.
 		/// </summary>
-		protected void StopDecrypting()
+		protected virtual void StopDecrypting()
 		{
 			inputBuffer.CryptoTransform = null;
 		}
