@@ -764,6 +764,32 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		[Category("Tar")]
 		[Category("Performance")]
 		[Explicit("Long Running")]
+		public void WriteThroughputDisk([Values(true, false)]bool skipFlush)
+		{
+			const string EntryName = "LargeTarEntry";
+
+			PerformanceTesting.TestWrite(TestDataSize.Huge, bs =>
+			{
+				var tos = new TarOutputStream(bs, null);
+				tos.SkipFlushOnEveryBlock = skipFlush;
+				tos.PutNextEntry(new TarEntry(new TarHeader()
+				{
+					Name = EntryName,
+					Size = (int)TestDataSize.Huge,
+				}));
+				return tos;
+			},
+			stream =>
+			{
+				((TarOutputStream)stream).CloseEntry();
+			}, useTempFile: true);
+			
+		}
+
+		[Test]
+		[Category("Tar")]
+		[Category("Performance")]
+		[Explicit("Long Running")]
 		public void SingleLargeEntry()
 		{
 			const string EntryName = "LargeTarEntry";
