@@ -399,6 +399,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <remarks>The default value is true.</remarks>
 		public bool IsStreamOwner { get; set; } = true;
+		
+		/// <summary>
+		/// If enabled, skips flushing of output stream after every written block
+		/// </summary>
+		/// <remarks>The default value is true.</remarks>
+		public bool SkipFlushOnEveryBlock { get; set; } = false;
 
 		/// <summary>
 		/// Get the current block number, within the current record, zero based.
@@ -528,7 +534,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 
 			outputStream.Write(recordBuffer, 0, RecordSize);
-			outputStream.Flush();
+			if (!SkipFlushOnEveryBlock)
+			{
+				outputStream.Flush();
+			}
 
 			currentBlockIndex = 0;
 			currentRecordIndex++;

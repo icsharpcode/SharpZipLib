@@ -90,6 +90,16 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 
 		/// <summary>
+		/// If enabled, skips flushing of output stream after every written block
+		/// </summary>
+		/// <remarks>The default value is false.</remarks>
+		public bool SkipFlushOnEveryBlock
+		{
+			get => buffer.SkipFlushOnEveryBlock;
+			set => buffer.SkipFlushOnEveryBlock = value;
+		}
+
+		/// <summary>
 		/// true if the stream supports reading; otherwise, false.
 		/// </summary>
 		public override bool CanRead
