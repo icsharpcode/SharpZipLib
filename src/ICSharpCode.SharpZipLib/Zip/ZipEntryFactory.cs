@@ -364,7 +364,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private INameTransform nameTransform_;
 		private DateTime fixedDateTime_ = DateTime.Now;
-		private TimeSetting timeSetting_;
+		private TimeSetting timeSetting_ = TimeSetting.LastWriteTime;
 		private bool isUnicodeText_;
 
 		private int getAttributes_ = -1;

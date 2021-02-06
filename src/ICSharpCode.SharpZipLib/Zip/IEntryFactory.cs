@@ -59,7 +59,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		TimeSetting Setting { get; }
 
 		/// <summary>
-		/// Get the <see cref="DateTime"/> value to use when <see cref="Setting"/> is set to <see cref="TimeSetting.Fixed"/>
+		/// Get the <see cref="DateTime"/> value to use when <see cref="Setting"/> is set to <see cref="TimeSetting.Fixed"/>,
+		/// or if not specified, the value of <see cref="DateTime.Now"/> when the class was the initialized
 		/// </summary>
 		DateTime FixedDateTime { get; }
 	}

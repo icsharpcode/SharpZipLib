@@ -200,6 +200,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Initialise a new instance of <see cref="FastZip"/> using the specified <see cref="TimeSetting"/>
 		/// </summary>
 		/// <param name="timeSetting">The <see cref="TimeSetting">time setting</see> to use when creating or extracting <see cref="ZipEntry">Zip entries</see>.</param>
+		/// <remarks>Using <see cref="TimeSetting.LastAccessTime">TimeSetting.LastAccessTime</see><see cref="TimeSetting.LastAccessTimeUtc">[Utc]</see> when
+		/// creating an archive will set the file time to the moment of reading.
+		/// </remarks>
 		public FastZip(TimeSetting timeSetting)
 		{
 			entryFactory_ = new ZipEntryFactory(timeSetting);
@@ -209,7 +212,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Initialise a new instance of <see cref="FastZip"/> using the specified <see cref="DateTime"/>
 		/// </summary>
-		/// <param name="time">The time to set all <see cref="ZipEntry.DateTime"/> values to created or extracted <see cref="ZipEntry">Zip Entries</see>.</param>
+		/// <param name="time">The time to set all <see cref="ZipEntry.DateTime"/> values for created or extracted <see cref="ZipEntry">Zip Entries</see>.</param>
 		public FastZip(DateTime time)
 		{
 			entryFactory_ = new ZipEntryFactory(time);
