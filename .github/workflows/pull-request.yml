@@ -12,7 +12,7 @@ jobs:
       matrix:
         configuration: [debug, release]
         os: [ubuntu, windows, macos]
-        target: [netstandard2]
+        target: [netstandard2.0, netstandard2.1]
         include:
           - configuration: Debug
             os: windows
@@ -24,7 +24,6 @@ jobs:
     - uses: actions/checkout@v2
       
     - name: Setup .NET Core
-      if: matrix.target == 'netstandard2'
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.x'
@@ -78,8 +77,10 @@ jobs:
       with:
         dotnet-version: '3.1.x'
         
-    - name: Build library for .NET Standard 2
-      run: dotnet build -c Release -f netstandard2 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+    - name: Build library for .NET Standard 2.0
+      run: dotnet build -c Release -f netstandard2.0 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+    - name: Build library for .NET Standard 2.1
+      run: dotnet build -c Release -f netstandard2.1 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
     - name: Build library for .NET Framework 4.5
       run: dotnet build -c Release -f net45 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
 
