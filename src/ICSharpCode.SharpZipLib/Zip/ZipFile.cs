@@ -1911,7 +1911,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Check if the specified compression method is supported for adding a new entry.
 		/// </summary>
 		/// <param name="compressionMethod">The compression method for the new entry.</param>
-		private void CheckSupportedCompressionMethod(CompressionMethod compressionMethod)
+		private static void CheckSupportedCompressionMethod(CompressionMethod compressionMethod)
 		{
 			if (compressionMethod != CompressionMethod.Deflated && compressionMethod != CompressionMethod.Stored && compressionMethod != CompressionMethod.BZip2)
 			{
