@@ -16,31 +16,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 	[TestFixture]
 	public class InflaterDeflaterTestSuite
 	{
-		private void VerifyInflatedData(byte[] original, byte[] buf2, int level, bool zlib)
-		{
-			for (int i = 0; i < original.Length; ++i)
-			{
-				if (buf2[i] != original[i])
-				{
-					string description = string.Format("Difference at {0} level {1} zlib {2} ", i, level, zlib);
-					if (original.Length < 2048)
-					{
-						var builder = new StringBuilder(description);
-						for (int d = 0; d < original.Length; ++d)
-						{
-							builder.AppendFormat("{0} ", original[d]);
-						}
-
-						Assert.Fail(builder.ToString());
-					}
-					else
-					{
-						Assert.Fail(description);
-					}
-				}
-			}
-		}
-
 		private static InflaterInputStream GetInflaterInputStream(Stream compressedStream, bool zlib)
 		{
 			compressedStream.Seek(0, SeekOrigin.Begin);
@@ -156,6 +131,31 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 
 			MemoryStream ms = await DeflateAsync(buffer, level, zlib);
 			await InflateAsync(ms, buffer, level, zlib);
+		}
+		
+		private void VerifyInflatedData(byte[] original, byte[] buf2, int level, bool zlib)
+		{
+			for (int i = 0; i < original.Length; ++i)
+			{
+				if (buf2[i] != original[i])
+				{
+					string description = string.Format("Difference at {0} level {1} zlib {2} ", i, level, zlib);
+					if (original.Length < 2048)
+					{
+						var builder = new StringBuilder(description);
+						for (int d = 0; d < original.Length; ++d)
+						{
+							builder.AppendFormat("{0} ", original[d]);
+						}
+
+						Assert.Fail(builder.ToString());
+					}
+					else
+					{
+						Assert.Fail(description);
+					}
+				}
+			}
 		}
 
 		/// <summary>
