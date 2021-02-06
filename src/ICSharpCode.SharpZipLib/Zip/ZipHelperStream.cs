@@ -565,7 +565,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if ((entry.Flags & (int)GeneralBitFlags.Descriptor) != 0)
 			{
 				// The signature is not PKZIP originally but is now described as optional
-				// in the PKZIP Appnote documenting trhe format.
+				// in the PKZIP Appnote documenting the format.
 				WriteLEInt(ZipConstants.DataDescriptorSignature);
 				WriteLEInt(unchecked((int)(entry.Crc)));
 
@@ -599,7 +599,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			int intValue = ReadLEInt();
 
 			// In theory this may not be a descriptor according to PKZIP appnote.
-			// In practise its always there.
+			// In practice its always there.
 			if (intValue != ZipConstants.DataDescriptorSignature)
 			{
 				throw new ZipException("Data descriptor signature not found");

@@ -960,6 +960,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					if (testing && testData && this[entryIndex].IsFile)
 					{
+						// Don't check CRC for AES encrypted archives
+						var checkCRC = this[entryIndex].AESKeySize == 0;
+
 						if (resultHandler != null)
 						{
 							status.SetOperation(TestOperation.EntryData);
@@ -975,7 +978,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 							int bytesRead;
 							while ((bytesRead = entryStream.Read(buffer, 0, buffer.Length)) > 0)
 							{
-								crc.Update(new ArraySegment<byte>(buffer, 0, bytesRead));
+								if (checkCRC)
+								{
+									crc.Update(new ArraySegment<byte>(buffer, 0, bytesRead));
+								}
 
 								if (resultHandler != null)
 								{
@@ -986,7 +992,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 							}
 						}
 
-						if (this[entryIndex].Crc != crc.Value)
+						if (checkCRC && this[entryIndex].Crc != crc.Value)
 						{
 							status.AddError();
 
@@ -1000,7 +1006,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 							var helper = new ZipHelperStream(baseStream_);
 							var data = new DescriptorData();
 							helper.ReadDataDescriptor(this[entryIndex].LocalHeaderRequiresZip64, data);
-							if (this[entryIndex].Crc != data.Crc)
+
+							if (checkCRC && this[entryIndex].Crc != data.Crc)
 							{
 								status.AddError();
 								resultHandler?.Invoke(status, "Descriptor CRC mismatch");
@@ -2687,6 +2694,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
+			var useCrc = update.Entry.AESKeySize == 0;
+
 			if (source != null)
 			{
 				using (source)
@@ -2711,7 +2720,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					using (Stream output = workFile.GetOutputStream(update.OutEntry))
 					{
-						CopyBytes(update, output, source, sourceStreamLength, true);
+						CopyBytes(update, output, source, sourceStreamLength, useCrc);
 					}
 
 					long dataEnd = workFile.baseStream_.Position;
