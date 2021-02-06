@@ -15,10 +15,10 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		public static void TestReadWrite(TestDataSize size, Func<Stream, Stream> input, Func<Stream, Stream> output, Action<Stream> outputClose = null)
 			=> TestReadWrite((int)size, input, output);
 
-		public static void TestWrite(TestDataSize size, Func<Stream, Stream> output, Action<Stream> outputClose = null)
-			=> TestWrite((int)size, output, outputClose);
+		public static void TestWrite(TestDataSize size, Func<Stream, Stream> output, Action<Stream> outputClose = null, bool useTempFile = false)
+			=> TestWrite((int)size, output, outputClose, useTempFile);
 
-		public static void TestReadWrite(int size, Func<Stream, Stream> input, Func<Stream, Stream> output, Action<Stream> outputClose = null)
+		public static void TestReadWrite(int size, Func<Stream, Stream> input, Func<Stream, Stream> output, Action<Stream> outputClose = null, bool useTempFile = false)
 		{
 			var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1));
 			var window = new WindowedStream(size, cts.Token);
@@ -129,29 +129,35 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			Console.WriteLine($"Time {elapsed:mm\\:ss\\.fff} throughput {testSize / elapsed.TotalSeconds:f2} MB/s (using test size: {testSize:f2} MB)");
 		}
 
-		public static void TestWrite(int size, Func<Stream, Stream> output, Action<Stream> outputClose = null)
+		public static void TestWrite(int size, Func<Stream, Stream> output, Action<Stream> outputClose = null, bool useTempFile = false)
 		{
 			var cts = new CancellationTokenSource(TimeSpan.FromMinutes(1));
 
-			var sw = Stopwatch.StartNew();
-			var writerState = new PerfWorkerState()
+			using (var dummyFile = new Utils.TempFile())
+			using (var baseStream = useTempFile ? (Stream)File.Create(dummyFile.Filename, 8*1048576, FileOptions.WriteThrough) : new NullStream())
 			{
-				bytesLeft = size,
-				token = cts.Token,
-				baseStream = new NullStream(),
-				streamCtr = output,
-			};
+				var sw = Stopwatch.StartNew();
+				var writerState = new PerfWorkerState()
+				{
+					bytesLeft = size,
+					token = cts.Token,
+					baseStream = baseStream,
+					streamCtr = output,
+				};
 
-			writerState.InitStream();
-			WriteTargetBytes(ref writerState);
+				writerState.InitStream();
+				WriteTargetBytes(ref writerState);
 
-			writerState.DeinitStream();
+				writerState.DeinitStream();
 
-			writerState.stream.Close();
+				writerState.stream.Close();
 
-			var elapsed = sw.Elapsed;
-			var testSize = size / ByteToMB;
-			Console.WriteLine($"Time {elapsed:mm\\:ss\\.fff} throughput {testSize / elapsed.TotalSeconds:f2} MB/s (using test size: {testSize:f2} MB)");
+				var elapsed = sw.Elapsed;
+				var testSize = size / ByteToMB;
+
+				Console.WriteLine(
+					$"Time {elapsed:mm\\:ss\\.fff} throughput {testSize / elapsed.TotalSeconds:f2} MB/s (using test size: {testSize:f2} MB)");
+			}
 		}
 
 		internal static void WriteTargetBytes(ref PerfWorkerState state)
@@ -220,6 +226,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 	public enum TestDataSize : int
 	{
+		Huge = 0x70000000,
 		Large = 0x10000000,
 		Medium = 0x5000000,
 		Small = 0x1400000,
