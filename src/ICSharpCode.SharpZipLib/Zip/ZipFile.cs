@@ -997,9 +997,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 						if ((this[entryIndex].Flags & (int)GeneralBitFlags.Descriptor) != 0)
 						{
-							var helper = new ZipHelperStream(baseStream_);
 							var data = new DescriptorData();
-							helper.ReadDataDescriptor(this[entryIndex].LocalHeaderRequiresZip64, data);
+							ZipFormat.ReadDataDescriptor(baseStream_, this[entryIndex].LocalHeaderRequiresZip64, data);
 							if (this[entryIndex].Crc != data.Crc)
 							{
 								status.AddError();
@@ -1575,10 +1574,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					if (entries_.Length == 0)
 					{
 						byte[] theComment = (newComment_ != null) ? newComment_.RawComment : ZipStrings.ConvertToArray(comment_);
-						using (ZipHelperStream zhs = new ZipHelperStream(baseStream_))
-						{
-							zhs.WriteEndOfCentralDirectory(0, 0, 0, theComment);
-						}
+						ZipFormat.WriteEndOfCentralDirectory(baseStream_, 0, 0, 0, theComment);
 					}
 				}
 			}
@@ -2719,8 +2715,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					if ((update.OutEntry.Flags & (int)GeneralBitFlags.Descriptor) == (int)GeneralBitFlags.Descriptor)
 					{
-						var helper = new ZipHelperStream(workFile.baseStream_);
-						helper.WriteDataDescriptor(update.OutEntry);
+						ZipFormat.WriteDataDescriptor(workFile.baseStream_, update.OutEntry);
 					}
 				}
 			}
@@ -2857,15 +2852,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			long baseLength = baseStream_.Length;
 
-			ZipHelperStream updateFile = null;
+			Stream updateFile;
 
 			if (archiveStorage_.UpdateMode == FileUpdateMode.Safe)
 			{
-				Stream copyStream = archiveStorage_.MakeTemporaryCopy(baseStream_);
-				updateFile = new ZipHelperStream(copyStream)
-				{
-					IsStreamOwner = true
-				};
+				updateFile = archiveStorage_.MakeTemporaryCopy(baseStream_);
 
 				baseStream_.Dispose();
 				baseStream_ = null;
@@ -2882,21 +2873,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					// Need to tidy up the archive storage interface and contract basically.
 					baseStream_ = archiveStorage_.OpenForDirectUpdate(baseStream_);
-					updateFile = new ZipHelperStream(baseStream_);
+					updateFile = baseStream_;
 				}
 				else
 				{
 					baseStream_.Dispose();
 					baseStream_ = null;
-					updateFile = new ZipHelperStream(Name);
+					updateFile = new FileStream(Name, FileMode.Open, FileAccess.ReadWrite);
 				}
 			}
 
-			using (updateFile)
+			try
 			{
 				long locatedCentralDirOffset =
-					updateFile.LocateBlockWithSignature(ZipConstants.EndOfCentralDirectorySignature,
-														baseLength, ZipConstants.EndOfCentralRecordBaseSize, 0xffff);
+					ZipFormat.LocateBlockWithSignature(updateFile, ZipConstants.EndOfCentralDirectorySignature,
+						baseLength, ZipConstants.EndOfCentralRecordBaseSize, 0xffff);
 				if (locatedCentralDirOffset < 0)
 				{
 					throw new ZipException("Cannot find central directory");
@@ -2910,6 +2901,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				updateFile.WriteLEShort(rawComment.Length);
 				updateFile.Write(rawComment, 0, rawComment.Length);
 				updateFile.SetLength(updateFile.Position);
+			}
+			finally
+			{
+				if(updateFile != baseStream_)
+					updateFile.Dispose();
 			}
 
 			if (archiveStorage_.UpdateMode == FileUpdateMode.Safe)
@@ -3073,10 +3069,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				byte[] theComment = (newComment_ != null) ? newComment_.RawComment : ZipStrings.ConvertToArray(comment_);
-				using (ZipHelperStream zhs = new ZipHelperStream(workFile.baseStream_))
-				{
-					zhs.WriteEndOfCentralDirectory(updateCount_, sizeEntries, centralDirOffset, theComment);
-				}
+				ZipFormat.WriteEndOfCentralDirectory(workFile.baseStream_, updateCount_, 
+					sizeEntries, centralDirOffset, theComment);
 
 				endOfStream = workFile.baseStream_.Position;
 
@@ -3417,13 +3411,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion Reading
 
 		// NOTE this returns the offset of the first byte after the signature.
-		private long LocateBlockWithSignature(int signature, long endLocation, int minimumBlockSize, int maximumVariableData)
-		{
-			using (ZipHelperStream les = new ZipHelperStream(baseStream_))
-			{
-				return les.LocateBlockWithSignature(signature, endLocation, minimumBlockSize, maximumVariableData);
-			}
-		}
+		private long LocateBlockWithSignature(int signature, long endLocation, int minimumBlockSize, int maximumVariableData) 
+			=> ZipFormat.LocateBlockWithSignature(baseStream_, signature, endLocation, minimumBlockSize, maximumVariableData);
 
 		/// <summary>
 		/// Search for and read the central directory of a zip file filling the entries array.
