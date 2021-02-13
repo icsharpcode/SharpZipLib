@@ -126,14 +126,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>
 		/// The entry can only be decompressed if the library supports the zip features required to extract it.
 		/// See the <see cref="ZipEntry.Version">ZipEntry Version</see> property for more details.
+		///
+		/// Since <see cref="ZipInputStream"/> uses the local headers for extraction, entries with no compression combined with the
+		/// <see cref="GeneralBitFlags.Descriptor"/> flag set, cannot be extracted as the end of the entry data cannot be deduced.
 		/// </remarks>
-		public bool CanDecompressEntry
-		{
-			get
-			{
-				return (entry != null) && IsEntryCompressionMethodSupported(entry) && entry.CanDecompress;
-			}
-		}
+		public bool CanDecompressEntry 
+			=> entry != null
+			&& IsEntryCompressionMethodSupported(entry)
+			&& entry.CanDecompress
+			&& (!entry.HasFlag(GeneralBitFlags.Descriptor) || entry.CompressionMethod != CompressionMethod.Stored || entry.IsCrypted);
 
 		/// <summary>
 		/// Is the compression method for the specified entry supported?
@@ -142,7 +143,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Uses entry.CompressionMethodForHeader so that entries of type WinZipAES will be rejected. 
 		/// </remarks>
 		/// <param name="entry">the entry to check.</param>
-		/// <returns>true if the compression methiod is supported, false if not.</returns>
+		/// <returns>true if the compression method is supported, false if not.</returns>
 		private static bool IsEntryCompressionMethodSupported(ZipEntry entry)
 		{
 			var entryCompressionMethod = entry.CompressionMethodForHeader;
