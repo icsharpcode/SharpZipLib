@@ -1,23 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using ArchiveDiag;
 using CommandLine;
-using ConLib;
 using ConLib.Console;
 using ConLib.HTML;
-using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
-using static ConLib.PrettyConsole;
 
 namespace ICSharpCode.SharpZipLib.ArchiveDiag
 {

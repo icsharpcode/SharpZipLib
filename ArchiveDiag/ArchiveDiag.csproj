@@ -7,8 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+		<Compile Remove="wasm\**\*.cs" />
+	  <Compile Remove="wasm\dependency.cs" />
+    <Compile Remove="wasm\Options.cs" />
+    <Compile Remove="wasm\sample.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="testfile1.png" />
     <None Remove="testfile2.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+		<None Include="wasm\*.cs" />
+		<None Include="wasm\**\*.cs" />
+		<None Include="wasm\dependency.cs" />
+    <None Include="wasm\Options.cs" />
+    <None Include="wasm\sample.cs" />
   </ItemGroup>
 
   <ItemGroup>
