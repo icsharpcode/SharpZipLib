@@ -10,7 +10,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        configuration: [debug, release]
         os: [ubuntu, windows, macos]
         target: [netstandard2.0, netstandard2.1]
         include:
@@ -28,15 +27,17 @@ jobs:
       with:
         dotnet-version: '3.1.x'
 
-    - name: Build library
-      run: dotnet build -c ${{ matrix.configuration }} -f ${{ matrix.target }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+    - name: Build library (Debug)
+      run: dotnet build -c debug -f ${{ matrix.target }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      
+    - name: Build library (Release)
+      run: dotnet build -c release -f ${{ matrix.target }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
 
   Test:
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
-        configuration: [debug, release]
         os: [ubuntu, windows, macos]
         target: [netcoreapp3.1]
         include:
@@ -56,15 +57,18 @@ jobs:
         dotnet-version: '3.1.x'
 
     # NOTE: This is the temporary fix for https://github.com/actions/virtual-environments/issues/1090
-    - name: Cleanup before restor
+    - name: Cleanup before restore
       if: ${{ matrix.os == 'windows' }}
-      run: dotnet clean ICSharpCode.SharpZipLib.sln -c ${{ matrix.configuration }} && dotnet nuget locals all --clear
+      run: dotnet clean ICSharpCode.SharpZipLib.sln && dotnet nuget locals all --clear
 
     - name: Restore test dependencies
       run: dotnet restore
 
-    - name: Run tests
-      run: dotnet test -c ${{ matrix.configuration }} -f ${{ matrix.target }} --no-restore
+    - name: Run tests (Debug)
+      run: dotnet test -c debug -f ${{ matrix.target }} --no-restore
+      
+    - name: Run tests (Release)
+      run: dotnet test -c release -f ${{ matrix.target }} --no-restore
 
   Pack:
     needs: [Build, Test]
