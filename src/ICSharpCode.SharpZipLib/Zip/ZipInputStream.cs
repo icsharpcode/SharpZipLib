@@ -512,11 +512,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The actual number of bytes read.</returns>
 		private int InitialRead(byte[] destination, int offset, int count)
 		{
-			if (entry == null)
-			{
-				throw new ZipException("Current entry is null");
-			}
-
 			var usesDescriptor = (entry.Flags & (int)GeneralBitFlags.Descriptor) != 0;
 
 			// Handle encryption if required.
