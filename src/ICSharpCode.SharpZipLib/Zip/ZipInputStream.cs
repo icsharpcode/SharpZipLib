@@ -512,10 +512,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The actual number of bytes read.</returns>
 		private int InitialRead(byte[] destination, int offset, int count)
 		{
-			if (!CanDecompressEntry)
+			if (entry == null)
 			{
-				throw new ZipException("Library cannot extract this entry. Version required is (" + entry.Version + ")");
+				throw new ZipException("Current entry is null");
 			}
+
+			var usesDescriptor = (entry.Flags & (int)GeneralBitFlags.Descriptor) != 0;
 
 			// Handle encryption if required.
 			if (entry.IsCrypted)
@@ -543,9 +545,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					csize -= ZipConstants.CryptoHeaderSize;
 				}
-				else if ((entry.Flags & (int)GeneralBitFlags.Descriptor) == 0)
+				else if (!usesDescriptor)
 				{
-					throw new ZipException(string.Format("Entry compressed size {0} too small for encryption", csize));
+					throw new ZipException($"Entry compressed size {csize} too small for encryption");
 				}
 			}
 			else
@@ -553,11 +555,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				inputBuffer.CryptoTransform = null;
 			}
 
-			var usesDescriptor = (flags & (int) GeneralBitFlags.Descriptor) != 0;
-
-			if ((csize > 0) || usesDescriptor)
+			if (csize > 0 || usesDescriptor)
 			{
-				if ((method == CompressionMethod.Deflated) && (inputBuffer.Available > 0))
+				if (method == CompressionMethod.Deflated && inputBuffer.Available > 0)
 				{
 					inputBuffer.SetInflaterInput(inf);
 				}
@@ -569,14 +569,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 					return StoredDescriptorEntry(destination, offset, count);
 				}
 
-				internalReader = new ReadDataHandler(BodyRead);
+				if (!CanDecompressEntry)
+				{
+					internalReader = ReadingNotSupported;
+					return ReadingNotSupported(destination, offset, count);
+				}
+
+				internalReader = BodyRead;
 				return BodyRead(destination, offset, count);
 			}
-			else
-			{
-				internalReader = new ReadDataHandler(ReadingNotAvailable);
-				return 0;
-			}
+			
+
+			internalReader = ReadingNotAvailable;
+			return 0;
 		}
 
 		/// <summary>
