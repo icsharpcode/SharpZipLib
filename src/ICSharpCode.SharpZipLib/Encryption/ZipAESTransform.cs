@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Encryption
 {
@@ -163,7 +164,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			{
 				throw new NotImplementedException("TransformFinalBlock is not implemented and inputCount is greater than 0");
 			}
-			return new byte[0];
+			return Empty.Array<byte>();
 		}
 
 		/// <summary>
