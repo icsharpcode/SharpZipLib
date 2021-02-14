@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Text;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -174,6 +175,53 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					using (var sr = new StreamReader(zis, Encoding.UTF8))
 					{
 						var content = sr.ReadToEnd();
+						Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match input data");
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// As <see cref="ZipFileStoreAes"/>, but with Async reads
+		/// </summary>
+		[Test]
+		[Category("Encryption")]
+		[Category("Zip")]
+		public async Task ZipFileStoreAesAsync()
+		{
+			string password = "password";
+
+			using (var memoryStream = new MemoryStream())
+			{
+				// Try to create a zip stream
+				WriteEncryptedZipToStream(memoryStream, password, 256, CompressionMethod.Stored);
+
+				// reset
+				memoryStream.Seek(0, SeekOrigin.Begin);
+
+				// try to read it
+				var zipFile = new ZipFile(memoryStream, leaveOpen: true)
+				{
+					Password = password
+				};
+
+				foreach (ZipEntry entry in zipFile)
+				{
+					if (!entry.IsFile) continue;
+
+					// Should be stored rather than deflated
+					Assert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.Stored), "Entry should be stored");
+
+					using (var zis = zipFile.GetInputStream(entry))
+					{
+						var buffer = new byte[entry.Size];
+
+						using (var inputStream = zipFile.GetInputStream(entry))
+						{
+							await zis.ReadAsync(buffer, 0, buffer.Length);
+						}
+
+						var content = Encoding.UTF8.GetString(buffer);
 						Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match input data");
 					}
 				}
