@@ -10,9 +10,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        configuration: [debug, release]
         os: [ubuntu, windows, macos]
-        target: [netstandard2]
+        target: [netstandard2.0, netstandard2.1]
         include:
           - configuration: Debug
             os: windows
@@ -24,20 +23,21 @@ jobs:
     - uses: actions/checkout@v2
       
     - name: Setup .NET Core
-      if: matrix.target == 'netstandard2'
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.x'
 
-    - name: Build library
-      run: dotnet build -c ${{ matrix.configuration }} -f ${{ matrix.target }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+    - name: Build library (Debug)
+      run: dotnet build -c debug -f ${{ matrix.target }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      
+    - name: Build library (Release)
+      run: dotnet build -c release -f ${{ matrix.target }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
 
   Test:
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
       matrix:
-        configuration: [debug, release]
         os: [ubuntu, windows, macos]
         target: [netcoreapp3.1]
         include:
@@ -56,26 +56,20 @@ jobs:
       with:
         dotnet-version: '3.1.x'
 
+    # NOTE: This is the temporary fix for https://github.com/actions/virtual-environments/issues/1090
+    - name: Cleanup before restore
+      if: ${{ matrix.os == 'windows' }}
+      run: dotnet clean ICSharpCode.SharpZipLib.sln && dotnet nuget locals all --clear
+
     - name: Restore test dependencies
       run: dotnet restore
 
-    - name: Run tests
-      run: dotnet test -c ${{ matrix.configuration }} -f ${{ matrix.target }} --no-restore
+    - name: Run tests (Debug)
+      run: dotnet test -c debug -f ${{ matrix.target }} --no-restore
       
-  Codacy-Analysis:
-    runs-on: ubuntu-latest
-    name: Codacy Analysis CLI
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Run codacy-analysis-cli
-        uses: codacy/codacy-analysis-cli-action@1.1.0
-        with:
-          # The current issues needs to be fixed before this can be removed
-          max-allowed-issues: 9999
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          upload: true
-        
+    - name: Run tests (Release)
+      run: dotnet test -c release -f ${{ matrix.target }} --no-restore
+
   Pack:
     needs: [Build, Test]
     runs-on: windows-latest
@@ -92,8 +86,10 @@ jobs:
       with:
         dotnet-version: '3.1.x'
         
-    - name: Build library for .NET Standard 2
-      run: dotnet build -c Release -f netstandard2 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+    - name: Build library for .NET Standard 2.0
+      run: dotnet build -c Release -f netstandard2.0 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+    - name: Build library for .NET Standard 2.1
+      run: dotnet build -c Release -f netstandard2.1 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
     - name: Build library for .NET Framework 4.5
       run: dotnet build -c Release -f net45 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
 

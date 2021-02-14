@@ -16,7 +16,7 @@ jobs:
       matrix:
         configuration: [debug, release]
         os: [ubuntu, windows, macos]
-        libtarget: [netstandard2]
+        libtarget: [netstandard2.0, netstandard2.1]
         testtarget: [netcoreapp3.1]
         include:
           - configuration: debug
@@ -31,7 +31,6 @@ jobs:
     - uses: actions/checkout@v2
       
     - name: Setup .NET Core
-      if: matrix.libtarget == 'netstandard2'
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.x'

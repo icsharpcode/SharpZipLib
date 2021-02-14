@@ -1125,7 +1125,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
-		private DateTime? GetDateTime(ZipExtraData extraData)
+		private static DateTime? GetDateTime(ZipExtraData extraData)
 		{
 			// Check for NT timestamp
 			// NOTE: Disable by default to match behavior of InfoZIP

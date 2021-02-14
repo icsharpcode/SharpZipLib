@@ -193,7 +193,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					ZipEntry entry = zf[0];
 					Assert.AreEqual(tempName1, entry.Name);
 					Assert.AreEqual(1, entry.Size);
-					Assert.IsTrue(zf.TestArchive(true));
+					Assert.IsTrue(zf.TestArchive(true, TestStrategy.FindFirstError, (status, message) =>
+					{
+						if(!string.IsNullOrEmpty(message)) {
+							Console.WriteLine($"{message} ({status.Entry?.Name ?? "-"})");
+						}
+					}));
 					Assert.IsTrue(entry.IsCrypted);
 
 					switch (encryptionMethod)
