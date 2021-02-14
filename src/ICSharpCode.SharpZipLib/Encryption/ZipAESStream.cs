@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Encryption
@@ -70,22 +72,36 @@ namespace ICSharpCode.SharpZipLib.Encryption
 				return 0;
 
 			// If we have buffered data, read that first
-			int nBytes = 0;
-			if (HasBufferedData)
-			{
-				nBytes = ReadBufferedData(buffer, offset, count);
+			int nBytes = ReadBufferedData(buffer, ref offset, ref count);
 
-				// Read all requested data from the buffer
-				if (nBytes == count)
-					return nBytes;
-
-				offset += nBytes;
-				count -= nBytes;
-			}
+			// Read all requested data from the buffer
+			if (nBytes == count)
+				return nBytes;
 
 			// Read more data from the input, if available
 			if (_slideBuffer != null)
 				nBytes += ReadAndTransform(buffer, offset, count);
+
+			return nBytes;
+		}
+
+		/// <inheritdoc/>
+		public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+		{
+			// Nothing to do
+			if (count == 0)
+				return 0;
+
+			// If we have buffered data, read that first
+			int nBytes = ReadBufferedData(buffer, ref offset, ref count);
+
+			// Read all requested data from the buffer
+			if (nBytes == count)
+				return nBytes;
+
+			// Read more data from the input, if available
+			if (_slideBuffer != null)
+				nBytes += await ReadAndTransformAsync(buffer, offset, count);
 
 			return nBytes;
 		}
@@ -105,68 +121,127 @@ namespace ICSharpCode.SharpZipLib.Encryption
 				// Maintain a read-ahead equal to the length of (crypto block + Auth Code).
 				// When that runs out we can detect these final sections.
 				int lengthToRead = BLOCK_AND_AUTH - byteCount;
-				if (_slideBuffer.Length - _slideBufFreePos < lengthToRead)
-				{
-					// Shift the data to the beginning of the buffer
-					int iTo = 0;
-					for (int iFrom = _slideBufStartPos; iFrom < _slideBufFreePos; iFrom++, iTo++)
-					{
-						_slideBuffer[iTo] = _slideBuffer[iFrom];
-					}
-					_slideBufFreePos -= _slideBufStartPos;      // Note the -=
-					_slideBufStartPos = 0;
-				}
+				UpdateSlideBufferIfNeeded(lengthToRead);
+				
 				int obtained = StreamUtils.ReadRequestedBytes(_stream, _slideBuffer, _slideBufFreePos, lengthToRead);
 				_slideBufFreePos += obtained;
 
-				// Recalculate how much data we now have
-				byteCount = _slideBufFreePos - _slideBufStartPos;
-				if (byteCount >= BLOCK_AND_AUTH)
+				// Transform data from the slide buffer
+				if (TransformFromSlideBuffer(buffer, ref offset, bytesLeftToRead, ref nBytes))
 				{
-					var read = TransformAndBufferBlock(buffer, offset, bytesLeftToRead, CRYPTO_BLOCK_SIZE);
-					nBytes += read;
-					offset += read;
-				}
-				else
-				{
-					// Last round.
-					if (byteCount > AUTH_CODE_LENGTH)
-					{
-						// At least one byte of data plus auth code
-						int finalBlock = byteCount - AUTH_CODE_LENGTH;
-						nBytes += TransformAndBufferBlock(buffer, offset, bytesLeftToRead, finalBlock);
-					}
-					else if (byteCount < AUTH_CODE_LENGTH)
-						throw new Exception("Internal error missed auth code"); // Coding bug
-																				// Final block done. Check Auth code.
-					byte[] calcAuthCode = _transform.GetAuthCode();
-					for (int i = 0; i < AUTH_CODE_LENGTH; i++)
-					{
-						if (calcAuthCode[i] != _slideBuffer[_slideBufStartPos + i])
-						{
-							throw new Exception("AES Authentication Code does not match. This is a super-CRC check on the data in the file after compression and encryption. \r\n"
-								+ "The file may be damaged.");
-						}
-					}
-
-					// don't need this any more, so use it as a 'complete' flag
-					_slideBuffer = null;
-
-					break;  // Reached the auth code
+					// Reached the auth code
+					break; 
 				}
 			}
 			return nBytes;
 		}
 
-		// read some buffered data
-		private int ReadBufferedData(byte[] buffer, int offset, int count)
+		// Read data from the underlying stream asynchronously and decrypt it
+		private async Task<int> ReadAndTransformAsync(byte[] buffer, int offset, int count)
 		{
-			int copyCount = Math.Min(count, _transformBufferFreePos - _transformBufferStartPos);
+			int nBytes = 0;
+			while (nBytes < count)
+			{
+				int bytesLeftToRead = count - nBytes;
 
-			Array.Copy(_transformBuffer, _transformBufferStartPos, buffer, offset, copyCount);
-			_transformBufferStartPos += copyCount;
+				// Calculate buffer quantities vs read-ahead size, and check for sufficient free space
+				int byteCount = _slideBufFreePos - _slideBufStartPos;
 
-			return copyCount;
+				// Need to handle final block and Auth Code specially, but don't know total data length.
+				// Maintain a read-ahead equal to the length of (crypto block + Auth Code).
+				// When that runs out we can detect these final sections.
+				int lengthToRead = BLOCK_AND_AUTH - byteCount;
+				UpdateSlideBufferIfNeeded(lengthToRead);
+
+				int obtained = await StreamUtils.ReadRequestedBytesAsync(_stream, _slideBuffer, _slideBufFreePos, lengthToRead);
+				_slideBufFreePos += obtained;
+
+				// Transform data from the slide buffer
+				if (TransformFromSlideBuffer(buffer, ref offset, bytesLeftToRead, ref nBytes))
+				{
+					// Reached the auth code
+					break;
+				}
+			}
+			return nBytes;
+		}
+
+		// Helper function to update the slide buffer, if we need to
+		private void UpdateSlideBufferIfNeeded(int lengthToRead)
+		{
+			if (_slideBuffer.Length - _slideBufFreePos < lengthToRead)
+			{
+				// Shift the data to the beginning of the buffer
+				int iTo = 0;
+				for (int iFrom = _slideBufStartPos; iFrom < _slideBufFreePos; iFrom++, iTo++)
+				{
+					_slideBuffer[iTo] = _slideBuffer[iFrom];
+				}
+				_slideBufFreePos -= _slideBufStartPos;      // Note the -=
+				_slideBufStartPos = 0;
+			}
+		}
+
+		// A helper to do the non-async crypto transform, using data from the in-memory slide buffer
+		// Returns true if the auth code has been reached, false if not.
+		private bool TransformFromSlideBuffer(byte[] buffer, ref int offset, int bytesLeftToRead, ref int nBytes)
+		{
+			// Recalculate how much data we now have
+			int byteCount = _slideBufFreePos - _slideBufStartPos;
+			if (byteCount >= BLOCK_AND_AUTH)
+			{
+				var read = TransformAndBufferBlock(buffer, offset, bytesLeftToRead, CRYPTO_BLOCK_SIZE);
+				nBytes += read;
+				offset += read;
+
+				return false;
+			}
+			else
+			{
+				// Last round.
+				if (byteCount > AUTH_CODE_LENGTH)
+				{
+					// At least one byte of data plus auth code
+					int finalBlock = byteCount - AUTH_CODE_LENGTH;
+					nBytes += TransformAndBufferBlock(buffer, offset, bytesLeftToRead, finalBlock);
+				}
+				else if (byteCount < AUTH_CODE_LENGTH)
+					throw new Exception("Internal error missed auth code"); // Coding bug
+																			// Final block done. Check Auth code.
+				byte[] calcAuthCode = _transform.GetAuthCode();
+				for (int i = 0; i < AUTH_CODE_LENGTH; i++)
+				{
+					if (calcAuthCode[i] != _slideBuffer[_slideBufStartPos + i])
+					{
+						throw new Exception("AES Authentication Code does not match. This is a super-CRC check on the data in the file after compression and encryption. \r\n"
+							+ "The file may be damaged.");
+					}
+				}
+
+				// don't need this any more, so use it as a 'complete' flag
+				_slideBuffer = null;
+
+				return true;  // Reached the auth code
+			}
+		}
+
+		// read some buffered data
+		private int ReadBufferedData(byte[] buffer, ref int offset, ref int count)
+		{
+			if (HasBufferedData)
+			{
+				int copyCount = Math.Min(count, _transformBufferFreePos - _transformBufferStartPos);
+
+				Array.Copy(_transformBuffer, _transformBufferStartPos, buffer, offset, copyCount);
+				_transformBufferStartPos += copyCount;
+
+				offset += copyCount;
+				count -= copyCount;
+
+				return copyCount;
+			}
+
+			return 0;
 		}
 
 		// Perform the crypto transform, and buffer the data if less than one block has been requested.
