@@ -899,6 +899,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 				File.WriteAllBytes(Path.Combine(Path.GetTempPath(), $"jpnametest_{length}_{encodingName}.tar"), memoryStream.ToArray());
 			}
 		}
+		/// <summary>
+		/// This test could be considered integration test. it creates a tar archive with the root directory specified
+		/// Then extracts it and compares the two folders. This used to fail on unix due to issues with root folder handling
+		/// in the tar archive.
+		/// </summary>
 		[Test]
 		[Category("Tar")]
 		public void rootPathIsRespected()
@@ -906,7 +911,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			// create dummy folder structure
 			var tempDirectory = Path.Combine(Path.GetTempPath(), "sharpziplib_tar_test_folder");
 			CreateAndClearDirectory(tempDirectory);
-			using (var dummyfile = File.Create("dummyfile"))
+			using (var dummyfile = File.Create(Path.Combine(tempDirectory, "dummyfile"))) 
 			{
 				using (var randomStream = new ChaosStream())
 				{
@@ -956,7 +961,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 
 		public class ChaosStream : MemoryStream
 		{
-			private readonly int length = new Random().Next() % 5000 + 200;
+			private readonly int length = new Random().Next() % 500000 + 200;
 
 			// Create constructors as needed to match desired MemoryStream construction
 
