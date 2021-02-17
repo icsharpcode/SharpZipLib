@@ -944,7 +944,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			var expectationDirectory = new DirectoryInfo(tempDirectory);
 			foreach (var checkFile in expectationDirectory.GetFiles("", SearchOption.AllDirectories))
 			{
-				var relativePath = expectationDirectory.FullName.Substring(expectationDirectory.FullName.Length);
+				var relativePath = checkFile.FullName.Substring(expectationDirectory.FullName.Length + 1);
 				FileAssert.Exists(Path.Combine(extractDirectory, relativePath));
 				FileAssert.AreEqual(checkFile.FullName, Path.Combine(extractDirectory, relativePath));
 			}
@@ -954,7 +954,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		{
 			if (Directory.Exists(path))
 			{
-				Directory.Delete(path);
+				Directory.Delete(path, true);
 			}
 			Directory.CreateDirectory(path);
 		}

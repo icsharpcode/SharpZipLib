@@ -6,9 +6,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 	{
 		public static string ClearTarPath(this string s)
 		{
-			if (Path.GetPathRoot(s) != null)
+			var pathRoot = Path.GetPathRoot(s);
+			if (!string.IsNullOrEmpty(pathRoot))
 			{
-				s = s.Substring(Path.GetPathRoot(s).Length);
+				s = s.Substring(pathRoot.Length);
 			}
 			return s.Replace(Path.DirectorySeparatorChar, '/');
 		}
