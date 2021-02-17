@@ -358,6 +358,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 				}
 				// Convert to forward slashes for matching. Trim trailing / for correct final path
 				rootPath = value.Replace('\\', '/').TrimEnd('/');
+				// Fix rooted paths on linux
+				while (rootPath.StartsWith("/", StringComparison.Ordinal))
+				{
+					rootPath = rootPath.Substring(1);
+				}
 			}
 		}
 
