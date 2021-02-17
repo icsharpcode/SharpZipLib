@@ -356,13 +356,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				{
 					throw new ObjectDisposedException("TarArchive");
 				}
-				// Convert to forward slashes for matching. Trim trailing / for correct final path
-				rootPath = value.Replace('\\', '/').TrimEnd('/');
-				// Fix rooted paths on linux
-				while (rootPath.StartsWith("/", StringComparison.Ordinal))
-				{
-					rootPath = rootPath.Substring(1);
-				}
+				rootPath = value.ClearTarPath().TrimEnd('/');
 			}
 		}
 
