@@ -859,7 +859,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			reparseHeader.ParseBuffer(headerbytes, enc);
 			Assert.AreEqual(name, reparseHeader.Name);
 			// top 100 bytes are name field in tar header
-			for (int i = 0;i < encodedName.Length;i++)
+			for (int i = 0; i < encodedName.Length; i++)
 			{
 				Assert.AreEqual(encodedName[i], headerbytes[i]);
 			}
@@ -878,17 +878,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			var entryName = new string((char)0x3042, length);
 			var data = new byte[32];
 			var encoding = Encoding.GetEncoding(encodingName);
-			using(var memoryStream = new MemoryStream())
+			using (var memoryStream = new MemoryStream())
 			{
-				using(var tarOutput = new TarOutputStream(memoryStream, encoding))
+				using (var tarOutput = new TarOutputStream(memoryStream, encoding))
 				{
 					var entry = TarEntry.CreateTarEntry(entryName);
 					entry.Size = 32;
 					tarOutput.PutNextEntry(entry);
 					tarOutput.Write(data, 0, data.Length);
 				}
-				using(var memInput = new MemoryStream(memoryStream.ToArray()))
-				using(var inputStream = new TarInputStream(memInput, encoding))
+				using (var memInput = new MemoryStream(memoryStream.ToArray()))
+				using (var inputStream = new TarInputStream(memInput, encoding))
 				{
 					var buf = new byte[64];
 					var entry = inputStream.GetNextEntry();
@@ -897,6 +897,73 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					Assert.AreEqual(data.Length, bytesread);
 				}
 				File.WriteAllBytes(Path.Combine(Path.GetTempPath(), $"jpnametest_{length}_{encodingName}.tar"), memoryStream.ToArray());
+			}
+		}
+		[Test]
+		[Category("Tar")]
+		public void rootPathIsRespected()
+		{
+			// create dummy folder structure
+			var tempDirectory = Path.Combine(Path.GetTempPath(), "sharpziplib_tar_test_folder");
+			CreateAndClearDirectory(tempDirectory);
+			using (var dummyfile = File.Create("dummyfile"))
+			{
+				using (var randomStream = new ChaosStream())
+				{
+					randomStream.CopyTo(dummyfile);
+				}
+			}
+
+			var tarFileName = Path.Combine(Path.GetTempPath(), "sharpziplib_tar_test_folder_archive.tar");
+
+			using (var tarFile = File.Open(tarFileName, FileMode.Create))
+			{
+				using (var tarOutputStream = TarArchive.CreateOutputTarArchive(tarFile))
+				{
+					tarOutputStream.RootPath = tempDirectory;
+					var entry = TarEntry.CreateEntryFromFile(tempDirectory);
+					tarOutputStream.WriteEntry(entry, true);
+				}
+			}
+
+			var extractDirectory = Path.Combine(Path.GetTempPath(), "sharpziplib_tar_extract_folder");
+			CreateAndClearDirectory(extractDirectory);
+			using (var file = File.OpenRead(tarFileName))
+			{
+				using (var archive = TarArchive.CreateInputTarArchive(file, Encoding.UTF8))
+				{
+					archive.ExtractContents(extractDirectory);
+				}
+			}
+
+			var expectationDirectory = new DirectoryInfo(tempDirectory);
+			foreach (var checkFile in expectationDirectory.GetFiles("", SearchOption.AllDirectories))
+			{
+				var relativePath = expectationDirectory.FullName.Substring(expectationDirectory.FullName.Length);
+				FileAssert.Exists(Path.Combine(extractDirectory, relativePath));
+				FileAssert.AreEqual(checkFile.FullName, Path.Combine(extractDirectory, relativePath));
+			}
+		}
+
+		private void CreateAndClearDirectory(string path)
+		{
+			if (Directory.Exists(path))
+			{
+				Directory.Delete(path);
+			}
+			Directory.CreateDirectory(path);
+		}
+
+		public class ChaosStream : MemoryStream
+		{
+			private readonly int length = new Random().Next() % 5000 + 200;
+
+			// Create constructors as needed to match desired MemoryStream construction
+
+			public override int Read(byte[] buffer, int offset, int count)
+			{
+				int readCount = Math.Max(0, Math.Min(length - offset, count));
+				return base.Read(buffer, offset, readCount);
 			}
 		}
 	}
