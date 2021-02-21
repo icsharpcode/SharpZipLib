@@ -126,14 +126,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>
 		/// The entry can only be decompressed if the library supports the zip features required to extract it.
 		/// See the <see cref="ZipEntry.Version">ZipEntry Version</see> property for more details.
+		///
+		/// Since <see cref="ZipInputStream"/> uses the local headers for extraction, entries with no compression combined with the
+		/// <see cref="GeneralBitFlags.Descriptor"/> flag set, cannot be extracted as the end of the entry data cannot be deduced.
 		/// </remarks>
-		public bool CanDecompressEntry
-		{
-			get
-			{
-				return (entry != null) && IsEntryCompressionMethodSupported(entry) && entry.CanDecompress;
-			}
-		}
+		public bool CanDecompressEntry 
+			=> entry != null
+			&& IsEntryCompressionMethodSupported(entry)
+			&& entry.CanDecompress
+			&& (!entry.HasFlag(GeneralBitFlags.Descriptor) || entry.CompressionMethod != CompressionMethod.Stored || entry.IsCrypted);
 
 		/// <summary>
 		/// Is the compression method for the specified entry supported?
@@ -142,7 +143,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Uses entry.CompressionMethodForHeader so that entries of type WinZipAES will be rejected. 
 		/// </remarks>
 		/// <param name="entry">the entry to check.</param>
-		/// <returns>true if the compression methiod is supported, false if not.</returns>
+		/// <returns>true if the compression method is supported, false if not.</returns>
 		private static bool IsEntryCompressionMethodSupported(ZipEntry entry)
 		{
 			var entryCompressionMethod = entry.CompressionMethodForHeader;
@@ -494,6 +495,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Handle attempts to read from this entry by throwing an exception
+		/// </summary>
+		private int StoredDescriptorEntry(byte[] destination, int offset, int count) =>
+			throw new StreamUnsupportedException(
+				"The combination of Stored compression method and Descriptor flag is not possible to read using ZipInputStream");
+		
+
+		/// <summary>
 		/// Perform the initial read on an entry which may include
 		/// reading encryption headers and setting up inflation.
 		/// </summary>
@@ -503,10 +512,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The actual number of bytes read.</returns>
 		private int InitialRead(byte[] destination, int offset, int count)
 		{
-			if (!CanDecompressEntry)
-			{
-				throw new ZipException("Library cannot extract this entry. Version required is (" + entry.Version + ")");
-			}
+			var usesDescriptor = (entry.Flags & (int)GeneralBitFlags.Descriptor) != 0;
 
 			// Handle encryption if required.
 			if (entry.IsCrypted)
@@ -534,9 +540,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					csize -= ZipConstants.CryptoHeaderSize;
 				}
-				else if ((entry.Flags & (int)GeneralBitFlags.Descriptor) == 0)
+				else if (!usesDescriptor)
 				{
-					throw new ZipException(string.Format("Entry compressed size {0} too small for encryption", csize));
+					throw new ZipException($"Entry compressed size {csize} too small for encryption");
 				}
 			}
 			else
@@ -544,21 +550,33 @@ namespace ICSharpCode.SharpZipLib.Zip
 				inputBuffer.CryptoTransform = null;
 			}
 
-			if ((csize > 0) || ((flags & (int)GeneralBitFlags.Descriptor) != 0))
+			if (csize > 0 || usesDescriptor)
 			{
-				if ((method == CompressionMethod.Deflated) && (inputBuffer.Available > 0))
+				if (method == CompressionMethod.Deflated && inputBuffer.Available > 0)
 				{
 					inputBuffer.SetInflaterInput(inf);
 				}
 
-				internalReader = new ReadDataHandler(BodyRead);
+				// It's not possible to know how many bytes to read when using "Stored" compression (unless using encryption)
+				if (!entry.IsCrypted && method == CompressionMethod.Stored && usesDescriptor)
+				{
+					internalReader = StoredDescriptorEntry;
+					return StoredDescriptorEntry(destination, offset, count);
+				}
+
+				if (!CanDecompressEntry)
+				{
+					internalReader = ReadingNotSupported;
+					return ReadingNotSupported(destination, offset, count);
+				}
+
+				internalReader = BodyRead;
 				return BodyRead(destination, offset, count);
 			}
-			else
-			{
-				internalReader = new ReadDataHandler(ReadingNotAvailable);
-				return 0;
-			}
+			
+
+			internalReader = ReadingNotAvailable;
+			return 0;
 		}
 
 		/// <summary>

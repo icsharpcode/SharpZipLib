@@ -520,5 +520,41 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			}
 		}
+
+		[Test]
+		[Category("Zip")]
+		public void ShouldThrowDescriptiveExceptionOnUncompressedDescriptorEntry()
+		{
+			using (var ms = new MemoryStreamWithoutSeek())
+			{
+				using (var zos = new ZipOutputStream(ms))
+				{
+					zos.IsStreamOwner = false;
+					var entry = new ZipEntry("testentry");
+					entry.CompressionMethod = CompressionMethod.Stored;
+					entry.Flags |= (int)GeneralBitFlags.Descriptor;
+					zos.PutNextEntry(entry);
+					zos.Write(new byte[1], 0, 1);
+					zos.CloseEntry();
+				}
+
+				// Patch the Compression Method, since ZipOutputStream automatically changes it to Deflate when descriptors are used
+				ms.Seek(8, SeekOrigin.Begin);
+				ms.WriteByte((byte)CompressionMethod.Stored);
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var zis = new ZipInputStream(ms))
+				{
+					zis.IsStreamOwner = false;
+					var buf = new byte[32];
+					zis.GetNextEntry();
+
+					Assert.Throws(typeof(StreamUnsupportedException), () =>
+					{
+						zis.Read(buf, 0, buf.Length);
+					});
+				}
+			}
+		}
 	}
 }

@@ -227,20 +227,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void CreateExceptions()
 		{
-			var fastZip = new FastZip();
-			string tempFilePath = GetTempFilePath();
-			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
-
 			Assert.Throws<DirectoryNotFoundException>(() =>
 			{
-				string addFile = Path.Combine(tempFilePath, "test.zip");
-				try
+				using (var tempDir = new Utils.TempDir())
 				{
-					fastZip.CreateZip(addFile, @"z:\doesnt exist", false, null);
-				}
-				finally
-				{
-					File.Delete(addFile);
+					var fastZip = new FastZip();
+					var badPath = Path.Combine(Path.GetTempPath(), Utils.GetDummyFileName());
+					var addFile = Path.Combine(tempDir.Fullpath, "test.zip");
+					fastZip.CreateZip(addFile, badPath, false, null);
 				}
 			});
 		}
