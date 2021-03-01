@@ -133,18 +133,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			return att;
 		}
 
-		[Test]
-		[Category("Zip")]
-		//[ExpectedException(typeof(NotSupportedException))]
-		public void UnsupportedCompressionMethod()
-		{
-			var ze = new ZipEntry("HumblePie");
-			//ze.CompressionMethod = CompressionMethod.BZip2;
-
-			Assert.That(() => ze.CompressionMethod = CompressionMethod.Deflate64,
-				Throws.TypeOf<NotSupportedException>());
-		}
-
 		/// <summary>
 		/// Invalid passwords should be detected early if possible, seekable stream
 		/// </summary>
