@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -579,6 +580,29 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					CheckKnownEntry(instream, 1024);
 				}
 				zipFile.Close();
+			}
+		}
+
+		/// <summary>
+		/// Simple async round trip test for ZipFile class
+		/// </summary>
+		[TestCase(CompressionMethod.Stored)]
+		[TestCase(CompressionMethod.Deflated)]
+		[TestCase(CompressionMethod.BZip2)]
+		[Category("Zip")]
+		[Category("Async")]
+		public async Task RoundTripInMemoryAsync(CompressionMethod compressionMethod)
+		{
+			var storage = new MemoryStream();
+			MakeZipFile(storage, compressionMethod, false, "", 10, 1024, "");
+
+			using (ZipFile zipFile = new ZipFile(storage))
+			{
+				foreach (ZipEntry e in zipFile)
+				{
+					Stream instream = zipFile.GetInputStream(e);
+					await CheckKnownEntryAsync(instream, 1024);
+				}
 			}
 		}
 
