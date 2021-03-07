@@ -2,6 +2,7 @@ using ICSharpCode.SharpZipLib.Encryption;
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 {
@@ -185,6 +186,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 		}
 
+		/// <inheritdoc cref="StringCodec.ZipCryptoEncoding"/>
+		public Encoding ZipCryptoEncoding { get; set; } = StringCodec.DefaultZipCryptoEncoding;
+
 		/// <summary>
 		/// Encrypt a block of data
 		/// </summary>
@@ -209,7 +213,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		protected void InitializePassword(string password)
 		{
 			var pkManaged = new PkzipClassicManaged();
-			byte[] key = PkzipClassic.GenerateKeys(ZipStrings.ConvertToArray(password));
+			byte[] key = PkzipClassic.GenerateKeys(ZipCryptoEncoding.GetBytes(password));
 			cryptoTransform_ = pkManaged.CreateEncryptor(key, null);
 		}
 

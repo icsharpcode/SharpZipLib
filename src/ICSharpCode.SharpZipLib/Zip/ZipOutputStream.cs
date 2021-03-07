@@ -102,8 +102,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </exception>
 		public void SetComment(string comment)
 		{
-			// TODO: Its not yet clear how to handle unicode comments here.
-			byte[] commentBytes = ZipStrings.ConvertToArray(comment);
+			byte[] commentBytes = _stringCodec.ZipArchiveCommentEncoding.GetBytes(comment);
 			if (commentBytes.Length > 0xffff)
 			{
 				throw new ArgumentOutOfRangeException(nameof(comment));
@@ -399,7 +398,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// Apply any required transforms to the entry name, and then convert to byte array format.
 			TransformEntryName(entry);
-			byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
+			byte[] name = _stringCodec.ZipOutputEncoding.GetBytes(entry.Name);
 
 			if (name.Length > 0xFFFF)
 			{
@@ -827,7 +826,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 					WriteLeInt((int)entry.Size);
 				}
 
-				byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
+				var entryEncoding = _stringCodec.ZipInputEncoding(entry.Flags);
+				byte[] name = entryEncoding.GetBytes(entry.Name);
 
 				if (name.Length > 0xffff)
 				{
@@ -869,10 +869,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				byte[] extra = ed.GetEntryData();
 
-				byte[] entryComment =
-					(entry.Comment != null) ?
-					ZipStrings.ConvertToArray(entry.Flags, entry.Comment) :
-					Empty.Array<byte>();
+				byte[] entryComment = entry.Comment != null 
+					? entryEncoding.GetBytes(entry.Comment) 
+					: Empty.Array<byte>();
 
 				if (entryComment.Length > 0xffff)
 				{
@@ -1009,6 +1008,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		// However it does avoid the situation were a large file is added and cannot be completed correctly.
 		// NOTE: Setting the size for entries before they are added is the best solution!
 		private UseZip64 useZip64_ = UseZip64.Dynamic;
+
+		private readonly StringCodec _stringCodec = new StringCodec();
 
 		#endregion Instance Fields
 	}

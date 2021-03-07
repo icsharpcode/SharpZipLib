@@ -236,7 +236,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
-			byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
+			// TODO: This should be class instanced if used!
+			var stringCodec = new StringCodec();
+			byte[] name = stringCodec.ZipInputEncoding(entry.Flags).GetBytes(entry.Name);
 
 			if (name.Length > 0xFFFF)
 			{
