@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using TimeSetting = ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -684,6 +685,180 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					Assert.IsTrue(zf.TestArchive(true));
 				}
 			}
+		}
+
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		[Test]
+		public void CreateZipShouldSetTimeOnEntriesFromConstructorDateTime()
+		{
+			var targetTime = TestTargetTime(TimeSetting.Fixed);
+			var fastZip = new FastZip(targetTime);
+			var target = CreateFastZipTestArchiveWithAnEntry(fastZip);
+			var archive = new MemoryStream(target.ToArray());
+			using (var zf = new ZipFile(archive))
+			{
+				Assert.AreEqual(targetTime, zf[0].DateTime);
+			}
+		}
+
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		[TestCase(TimeSetting.CreateTimeUtc), TestCase(TimeSetting.LastWriteTimeUtc), TestCase(TimeSetting.LastAccessTimeUtc)]
+		[TestCase(TimeSetting.CreateTime),    TestCase(TimeSetting.LastWriteTime),    TestCase(TimeSetting.LastAccessTime)]
+		public void CreateZipShouldSetTimeOnEntriesFromConstructorTimeSetting(TimeSetting timeSetting)
+		{
+			var targetTime = TestTargetTime(timeSetting);
+			var fastZip = new FastZip(timeSetting);
+
+			var alterTime = (Action<FileInfo>) null;
+			switch(timeSetting)
+			{
+				case TimeSetting.LastWriteTime: alterTime = fi => fi.LastWriteTime = targetTime; break;
+				case TimeSetting.LastWriteTimeUtc: alterTime = fi => fi.LastWriteTimeUtc = targetTime; break;
+				case TimeSetting.CreateTime: alterTime =  fi => fi.CreationTime = targetTime; break;
+				case TimeSetting.CreateTimeUtc: alterTime =  fi => fi.CreationTimeUtc = targetTime; break;
+			}
+
+			var target = CreateFastZipTestArchiveWithAnEntry(fastZip, alterTime);
+			// Check that the file contents are correct in both cases
+			var archive = new MemoryStream(target.ToArray());
+			using (var zf = new ZipFile(archive))
+			{
+				Assert.AreEqual(TestTargetTime(timeSetting), zf[0].DateTime);
+			}
+		}
+
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		[TestCase(TimeSetting.CreateTimeUtc), TestCase(TimeSetting.LastWriteTimeUtc), TestCase(TimeSetting.LastAccessTimeUtc)]
+		[TestCase(TimeSetting.CreateTime),    TestCase(TimeSetting.LastWriteTime),    TestCase(TimeSetting.LastAccessTime)]
+		[TestCase(TimeSetting.Fixed)]
+		public void ExtractZipShouldSetTimeOnFilesFromConstructorTimeSetting(TimeSetting timeSetting)
+		{
+			var targetTime = ExpectedFixedTime();
+			var archiveStream = CreateFastZipTestArchiveWithAnEntry(new FastZip(targetTime));
+
+			if (timeSetting == TimeSetting.Fixed)
+			{
+				Assert.Ignore("Fixed time without specifying a time is undefined");
+			}
+
+			var fastZip = new FastZip(timeSetting);
+			using (var extractDir = new Utils.TempDir())
+			{
+				fastZip.ExtractZip(archiveStream, extractDir.Fullpath, FastZip.Overwrite.Always, 
+					_ => true, "", "", true, true, false);
+				var fi = new FileInfo(Path.Combine(extractDir.Fullpath, SingleEntryFileName));
+				Assert.AreEqual(targetTime, FileTimeFromTimeSetting(fi, timeSetting));
+			}
+		}
+
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		[TestCase(DateTimeKind.Local), TestCase(DateTimeKind.Utc)]
+		public void ExtractZipShouldSetTimeOnFilesFromConstructorDateTime(DateTimeKind dtk)
+		{
+			// Create the archive with a fixed "bad" datetime
+			var target = CreateFastZipTestArchiveWithAnEntry(new FastZip(UnexpectedFixedTime(dtk)));
+
+			// Extract the archive with a fixed time override
+			var targetTime = ExpectedFixedTime(dtk);
+			var fastZip = new FastZip(targetTime);
+			using (var extractDir = new Utils.TempDir())
+			{
+				fastZip.ExtractZip(target, extractDir.Fullpath, FastZip.Overwrite.Always,
+					_ => true, "", "", true, true, false);
+				var fi = new FileInfo(Path.Combine(extractDir.Fullpath, SingleEntryFileName));
+				var fileTime = FileTimeFromTimeSetting(fi, TimeSetting.Fixed);
+				if (fileTime.Kind != dtk) fileTime = fileTime.ToUniversalTime();
+				Assert.AreEqual(targetTime, fileTime);
+			}
+		}
+
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		[TestCase(DateTimeKind.Local), TestCase(DateTimeKind.Utc)]
+		public void ExtractZipShouldSetTimeOnFilesWithEmptyConstructor(DateTimeKind dtk)
+		{
+			// Create the archive with a fixed datetime
+			var targetTime = ExpectedFixedTime(dtk);
+			var target = CreateFastZipTestArchiveWithAnEntry(new FastZip(targetTime));
+
+			// Extract the archive with an empty constructor
+			var fastZip = new FastZip();
+			using (var extractDir = new Utils.TempDir())
+			{
+				fastZip.ExtractZip(target, extractDir.Fullpath, FastZip.Overwrite.Always,
+					_ => true, "", "", true, true, false);
+				var fi = new FileInfo(Path.Combine(extractDir.Fullpath, SingleEntryFileName));
+				Assert.AreEqual(targetTime, FileTimeFromTimeSetting(fi, TimeSetting.Fixed));
+			}
+		}
+
+		private static bool IsLastAccessTime(TimeSetting ts) 
+			=> ts == TimeSetting.LastAccessTime || ts == TimeSetting.LastAccessTimeUtc;
+
+		private static DateTime FileTimeFromTimeSetting(FileInfo fi, TimeSetting timeSetting)
+		{
+			switch (timeSetting)
+			{
+				case TimeSetting.LastWriteTime: return fi.LastWriteTime;
+				case TimeSetting.LastWriteTimeUtc: return fi.LastWriteTimeUtc;
+				case TimeSetting.CreateTime: return fi.CreationTime;
+				case TimeSetting.CreateTimeUtc: return fi.CreationTimeUtc;
+				case TimeSetting.LastAccessTime: return fi.LastAccessTime;
+				case TimeSetting.LastAccessTimeUtc: return fi.LastAccessTimeUtc;
+				case TimeSetting.Fixed: return fi.LastWriteTime;
+			}
+
+			throw new ArgumentException("Invalid TimeSetting", nameof(timeSetting));
+		}
+
+		private static DateTime TestTargetTime(TimeSetting ts)
+		{
+			var dtk = ts == TimeSetting.CreateTimeUtc 
+			       || ts == TimeSetting.LastWriteTimeUtc
+			       || ts == TimeSetting.LastAccessTimeUtc
+				? DateTimeKind.Utc
+				: DateTimeKind.Local;
+
+			return IsLastAccessTime(ts)
+				// AccessTime will be altered by reading/writing the file entry
+				? CurrentTime(dtk) 
+				: ExpectedFixedTime(dtk);
+		}
+
+		private static DateTime CurrentTime(DateTimeKind kind)
+		{
+			var now = kind == DateTimeKind.Utc ? DateTime.UtcNow : DateTime.Now;
+			return new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, (now.Second / 2) * 2, kind);
+		}
+
+		private static DateTime ExpectedFixedTime(DateTimeKind dtk = DateTimeKind.Unspecified) 
+			=> new DateTime(2010, 5, 30, 16, 22, 50, dtk);
+		private static DateTime UnexpectedFixedTime(DateTimeKind dtk = DateTimeKind.Unspecified)
+			=> new DateTime(1980, 10, 11, 22, 39, 30, dtk);
+
+		private const string SingleEntryFileName = "testEntry.dat";
+
+		private static TrackedMemoryStream CreateFastZipTestArchiveWithAnEntry(FastZip fastZip, Action<FileInfo> alterFile = null)
+		{
+			var target = new TrackedMemoryStream();
+
+			using (var tempFolder = new Utils.TempDir())
+			{
+
+				// Create test input file
+				var addFile = Path.Combine(tempFolder.Fullpath, SingleEntryFileName);
+				MakeTempFile(addFile, 16);
+				var fi = new FileInfo(addFile);
+				alterFile?.Invoke(fi);
+
+				fastZip.CreateZip(target, tempFolder.Fullpath, false, SingleEntryFileName, null, leaveOpen: true);
+			}
+
+			return target;
 		}
 	}
 }

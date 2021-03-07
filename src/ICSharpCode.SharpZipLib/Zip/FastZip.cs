@@ -3,6 +3,7 @@ using ICSharpCode.SharpZipLib.Zip.Compression;
 using System;
 using System.IO;
 using static ICSharpCode.SharpZipLib.Zip.Compression.Deflater;
+using static ICSharpCode.SharpZipLib.Zip.ZipEntryFactory;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -193,6 +194,29 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public FastZip()
 		{
+		}
+
+		/// <summary>
+		/// Initialise a new instance of <see cref="FastZip"/> using the specified <see cref="TimeSetting"/>
+		/// </summary>
+		/// <param name="timeSetting">The <see cref="TimeSetting">time setting</see> to use when creating or extracting <see cref="ZipEntry">Zip entries</see>.</param>
+		/// <remarks>Using <see cref="TimeSetting.LastAccessTime">TimeSetting.LastAccessTime</see><see cref="TimeSetting.LastAccessTimeUtc">[Utc]</see> when
+		/// creating an archive will set the file time to the moment of reading.
+		/// </remarks>
+		public FastZip(TimeSetting timeSetting)
+		{
+			entryFactory_ = new ZipEntryFactory(timeSetting);
+			restoreDateTimeOnExtract_ = true;
+		}
+
+		/// <summary>
+		/// Initialise a new instance of <see cref="FastZip"/> using the specified <see cref="DateTime"/>
+		/// </summary>
+		/// <param name="time">The time to set all <see cref="ZipEntry.DateTime"/> values for created or extracted <see cref="ZipEntry">Zip Entries</see>.</param>
+		public FastZip(DateTime time)
+		{
+			entryFactory_ = new ZipEntryFactory(time);
+			restoreDateTimeOnExtract_ = true;
 		}
 
 		/// <summary>
@@ -735,7 +759,39 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 						if (restoreDateTimeOnExtract_)
 						{
-							File.SetLastWriteTime(targetName, entry.DateTime);
+							switch (entryFactory_.Setting)
+							{
+								case TimeSetting.CreateTime:
+									File.SetCreationTime(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.CreateTimeUtc:
+									File.SetCreationTimeUtc(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.LastAccessTime:
+									File.SetLastAccessTime(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.LastAccessTimeUtc:
+									File.SetLastAccessTimeUtc(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.LastWriteTime:
+									File.SetLastWriteTime(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.LastWriteTimeUtc:
+									File.SetLastWriteTimeUtc(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.Fixed:
+									File.SetLastWriteTime(targetName, entryFactory_.FixedDateTime);
+									break;
+
+								default:
+									throw new ZipException("Unhandled time setting in ExtractFileEntry");
+							}
 						}
 
 						if (RestoreAttributesOnExtract && entry.IsDOSEntry && (entry.ExternalFileAttributes != -1))
@@ -809,7 +865,39 @@ namespace ICSharpCode.SharpZipLib.Zip
 							Directory.CreateDirectory(dirName);
 							if (entry.IsDirectory && restoreDateTimeOnExtract_)
 							{
-								Directory.SetLastWriteTime(dirName, entry.DateTime);
+								switch (entryFactory_.Setting)
+								{
+									case TimeSetting.CreateTime:
+										Directory.SetCreationTime(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.CreateTimeUtc:
+										Directory.SetCreationTimeUtc(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.LastAccessTime:
+										Directory.SetLastAccessTime(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.LastAccessTimeUtc:
+										Directory.SetLastAccessTimeUtc(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.LastWriteTime:
+										Directory.SetLastWriteTime(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.LastWriteTimeUtc:
+										Directory.SetLastWriteTimeUtc(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.Fixed:
+										Directory.SetLastWriteTime(dirName, entryFactory_.FixedDateTime);
+										break;
+
+									default:
+										throw new ZipException("Unhandled time setting in ExtractEntry");
+								}
 							}
 						}
 						else
