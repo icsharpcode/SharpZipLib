@@ -74,9 +74,6 @@
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=1.3.0.8, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SharpZipLib.1.3.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Drawing" />
@@ -113,7 +110,11 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="SharpZipLib">
+      <Version>1.3.1</Version>
+    </PackageReference>
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
@@ -124,7 +125,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="My Project\app.manifest" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="My Project\Application.myapp">
