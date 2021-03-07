@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Tar
 {
@@ -465,7 +466,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			if ((file == null) || !Directory.Exists(file))
 			{
-				return new TarEntry[0];
+				return Empty.Array<TarEntry>();
 			}
 
 			string[] list = Directory.GetFileSystemEntries(file);
