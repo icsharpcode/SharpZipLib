@@ -1,3 +1,4 @@
+using System;
 using ICSharpCode.SharpZipLib.Core;
 using NUnit.Framework;
 
@@ -53,6 +54,19 @@ namespace ICSharpCode.SharpZipLib.Tests.Core
 
 			Assert.IsFalse(NameFilter.IsValidFilterExpression(@"\,)"));
 			Assert.IsFalse(NameFilter.IsValidFilterExpression(@"[]"));
+		}
+		
+		[Test]
+		[Category("Core")]
+		public void DropPathRoot()
+		{
+			Func<string, string> testPath = PathUtils.DropPathRoot;
+			Assert.AreEqual("file.txt", testPath(@"\\server\share\file.txt"));
+			Assert.AreEqual("file.txt", testPath(@"c:\file.txt"));
+			Assert.AreEqual(@"subdir with spaces\file.txt", testPath(@"z:\subdir with spaces\file.txt"));
+			Assert.AreEqual("", testPath(@"\\server\share\"));
+			Assert.AreEqual(@"server\share\file.txt", testPath(@"\server\share\file.txt"));
+			Assert.AreEqual(@"path\file.txt", testPath(@"\\server\share\\path\file.txt"));
 		}
 	}
 }

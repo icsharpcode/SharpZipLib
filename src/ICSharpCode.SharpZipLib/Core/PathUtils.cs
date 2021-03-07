@@ -15,48 +15,9 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <remarks>Unlike the <see cref="System.IO.Path"/> class the path isn't otherwise checked for validity.</remarks>
 		public static string DropPathRoot(string path)
 		{
-			string result = path;
-
-			if (!string.IsNullOrEmpty(path))
-			{
-				if ((path[0] == '\\') || (path[0] == '/'))
-				{
-					// UNC name ?
-					if ((path.Length > 1) && ((path[1] == '\\') || (path[1] == '/')))
-					{
-						int index = 2;
-						int elements = 2;
-
-						// Scan for two separate elements \\machine\share\restofpath
-						while ((index <= path.Length) &&
-							(((path[index] != '\\') && (path[index] != '/')) || (--elements > 0)))
-						{
-							index++;
-						}
-
-						index++;
-
-						if (index < path.Length)
-						{
-							result = path.Substring(index);
-						}
-						else
-						{
-							result = "";
-						}
-					}
-				}
-				else if ((path.Length > 1) && (path[1] == ':'))
-				{
-					int dropCount = 2;
-					if ((path.Length > 2) && ((path[2] == '\\') || (path[2] == '/')))
-					{
-						dropCount = 3;
-					}
-					result = result.Remove(0, dropCount);
-				}
-			}
-			return result;
+			var stripLength = Path.GetPathRoot(path).Length;
+			while (path.Length > stripLength && (path[stripLength] == '/' || path[stripLength] == '\\')) stripLength++;
+			return path.Substring(stripLength);
 		}
 
 		/// <summary>
