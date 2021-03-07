@@ -159,17 +159,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		// Apply any configured transforms/cleaning to the name of the supplied entry.
 		private void TransformEntryName(ZipEntry entry)
 		{
-			if (this.NameTransform != null)
-			{
-				if (entry.IsDirectory)
-				{
-					entry.Name = this.NameTransform.TransformDirectory(entry.Name);
-				}
-				else
-				{
-					entry.Name = this.NameTransform.TransformFile(entry.Name);
-				}
-			}
+			if (NameTransform == null) return;
+			entry.Name = entry.IsDirectory 
+				? NameTransform.TransformDirectory(entry.Name) 
+				: NameTransform.TransformFile(entry.Name);
 		}
 
 		/// <summary>
@@ -310,128 +303,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 			entry.CompressionMethod = (CompressionMethod)method;
 
 			curMethod = method;
-			sizePatchPos = -1;
 
 			if ((useZip64_ == UseZip64.On) || ((entry.Size < 0) && (useZip64_ == UseZip64.Dynamic)))
 			{
 				entry.ForceZip64();
 			}
 
-			// Write the local file header
-			stream.WriteLEInt(ZipConstants.LocalHeaderSignature);
-
-			stream.WriteLEShort(entry.Version);
-			stream.WriteLEShort(entry.Flags);
-			stream.WriteLEShort((byte)entry.CompressionMethodForHeader);
-			stream.WriteLEInt((int)entry.DosTime);
-
-			// TODO: Refactor header writing.  Its done in several places.
-			if (headerInfoAvailable)
-			{
-				stream.WriteLEInt((int)entry.Crc);
-				if (entry.LocalHeaderRequiresZip64)
-				{
-					stream.WriteLEInt(-1);
-					stream.WriteLEInt(-1);
-				}
-				else
-				{
-					stream.WriteLEInt((int)entry.CompressedSize + entry.EncryptionOverheadSize);
-					stream.WriteLEInt((int)entry.Size);
-				}
-			}
-			else
-			{
-				if (patchEntryHeader)
-				{
-					crcPatchPos = stream.Position + streamOffset;
-				}
-				stream.WriteLEInt(0);  // Crc
-
-				if (patchEntryHeader)
-				{
-					sizePatchPos = stream.Position + streamOffset;
-				}
-
-				// For local header both sizes appear in Zip64 Extended Information
-				if (entry.LocalHeaderRequiresZip64 || patchEntryHeader)
-				{
-					stream.WriteLEInt(-1);
-					stream.WriteLEInt(-1);
-				}
-				else
-				{
-					stream.WriteLEInt(0);  // Compressed size
-					stream.WriteLEInt(0);  // Uncompressed size
-				}
-			}
-
-			// Apply any required transforms to the entry name, and then convert to byte array format.
+			// Apply any required transforms to the entry name
 			TransformEntryName(entry);
-			byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
 
-			if (name.Length > 0xFFFF)
-			{
-				throw new ZipException("Entry name too long.");
-			}
+			// Write the local file header
+			offset += ZipFormat.WriteLocalHeader(stream, entry, out var entryPatchData, 
+				headerInfoAvailable, patchEntryHeader, streamOffset);
 
-			var ed = new ZipExtraData(entry.ExtraData);
+			patchData = entryPatchData;
 
-			if (entry.LocalHeaderRequiresZip64)
-			{
-				ed.StartNewEntry();
-				if (headerInfoAvailable)
-				{
-					ed.AddLeLong(entry.Size);
-					ed.AddLeLong(entry.CompressedSize + entry.EncryptionOverheadSize);
-				}
-				else
-				{
-					ed.AddLeLong(-1);
-					ed.AddLeLong(-1);
-				}
-				ed.AddNewEntry(1);
-
-				if (!ed.Find(1))
-				{
-					throw new ZipException("Internal error cant find extra data");
-				}
-
-				if (patchEntryHeader)
-				{
-					sizePatchPos = ed.CurrentReadIndex;
-				}
-			}
-			else
-			{
-				ed.Delete(1);
-			}
-
-			if (entry.AESKeySize > 0)
-			{
-				AddExtraDataAES(entry, ed);
-			}
-			byte[] extra = ed.GetEntryData();
-
-			stream.WriteLEShort(name.Length);
-			stream.WriteLEShort(extra.Length);
-
-			if (name.Length > 0)
-			{
-				baseOutputStream_.Write(name, 0, name.Length);
-			}
-
-			if (entry.LocalHeaderRequiresZip64 && patchEntryHeader)
-			{
-				sizePatchPos += stream.Position + streamOffset;
-			}
-
-			if (extra.Length > 0)
-			{
-				baseOutputStream_.Write(extra, 0, extra.Length);
-			}
-
-			offset += ZipConstants.LocalHeaderBaseSize + name.Length + extra.Length;
 			// Fix offsetOfCentraldir for AES
 			if (entry.AESKeySize > 0)
 				offset += entry.AESOverheadSize;
@@ -446,23 +332,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			size = 0;
 
-			if (entry.IsCrypted)
+			if (!entry.IsCrypted) 
+				return;
+
+			if (entry.AESKeySize > 0)
 			{
-				if (entry.AESKeySize > 0)
-				{
-					WriteAESHeader(entry);
-				}
-				else
-				{
-					if (entry.Crc < 0)
-					{            // so testing Zip will says its ok
-						WriteEncryptionHeader(entry.DosTime << 16);
-					}
-					else
-					{
-						WriteEncryptionHeader(entry.Crc);
-					}
-				}
+				WriteAESHeader(entry);
+			}
+			else
+			{
+				// Use entry time if CRC is missing
+				WriteEncryptionHeader(entry.Crc < 0 ? entry.DosTime << 16 : entry.Crc);
 			}
 		}
 
@@ -517,17 +397,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </exception>
 		public void CloseEntry()
 		{
-			CloseEntry(baseOutputStream_);
+			WriteEntryFooter(baseOutputStream_);
 
 			// Patch the header if possible
 			if (patchEntryHeader)
 			{
 				patchEntryHeader = false;
-
-				long curPos = baseOutputStream_.Position;
-				baseOutputStream_.Seek(crcPatchPos, SeekOrigin.Begin);
-				PatchLocalHeader(baseOutputStream_);
-				baseOutputStream_.Seek(curPos, SeekOrigin.Begin);
+				ZipFormat.PatchLocalHeaderSync(baseOutputStream_, curEntry, patchData);
 			}
 
 			entries.Add(curEntry);
@@ -535,34 +411,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <inheritdoc cref="CloseEntry"/>
-		public async Task CloseEntryAsync(CancellationToken cancellationToken)
+		public async Task CloseEntryAsync(CancellationToken ct)
 		{
 			using (var ms = new MemoryStream())
 			{
-				CloseEntry(ms);
-				await ms.CopyToAsync(baseOutputStream_, 81920, cancellationToken);
-				
-				// Patch the header if possible
-				if (patchEntryHeader)
-				{
-					ms.Position = 0;
-					ms.SetLength(0);
-					PatchLocalHeader(ms);
+				WriteEntryFooter(ms);
+				await ms.CopyToAsync(baseOutputStream_, 81920, ct);
+			}
 
-					patchEntryHeader = false;
-
-					long curPos = baseOutputStream_.Position;
-					baseOutputStream_.Seek(crcPatchPos, SeekOrigin.Begin);
-					await ms.CopyToAsync(baseOutputStream_, 81920, cancellationToken);
-					baseOutputStream_.Seek(curPos, SeekOrigin.Begin);
-				}
+			// Patch the header if possible
+			if (patchEntryHeader)
+			{
+				patchEntryHeader = false;
+				await ZipFormat.PatchLocalHeaderAsync(baseOutputStream_, curEntry, patchData, ct);
 			}
 
 			entries.Add(curEntry);
 			curEntry = null;
 		}
 
-		internal void CloseEntry(Stream stream)
+		internal void WriteEntryFooter(Stream stream)
 		{
 			if (curEntry == null)
 			{
@@ -655,29 +523,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 		}
-
-		private void PatchLocalHeader(Stream stream)
-		{
-			stream.WriteLEInt((int)curEntry.Crc);
-
-			if (curEntry.LocalHeaderRequiresZip64)
-			{
-				if (sizePatchPos == -1)
-				{
-					throw new ZipException("Entry requires zip64 but this has been turned off");
-				}
-
-				baseOutputStream_.Seek(sizePatchPos, SeekOrigin.Begin);
-				stream.WriteLELong(curEntry.Size);
-				stream.WriteLELong(curEntry.CompressedSize);
-			}
-			else
-			{
-				stream.WriteLEInt((int)curEntry.CompressedSize);
-				stream.WriteLEInt((int)curEntry.Size);
-			}
-		}
-
+		
 		private byte[] CreateEncryptionHeader(long crcValue)
 		{
 			offset += ZipConstants.CryptoHeaderSize;
@@ -709,50 +555,27 @@ namespace ICSharpCode.SharpZipLib.Zip
 			await baseOutputStream_.WriteAsync(cryptBuffer, 0, cryptBuffer.Length, cancellationToken);
 		}
 
-		private static void AddExtraDataAES(ZipEntry entry, ZipExtraData extraData)
-		{
-			// Vendor Version: AE-1 IS 1. AE-2 is 2. With AE-2 no CRC is required and 0 is stored.
-			const int VENDOR_VERSION = 2;
-			// Vendor ID is the two ASCII characters "AE".
-			const int VENDOR_ID = 0x4541; //not 6965;
-			extraData.StartNewEntry();
-			// Pack AES extra data field see http://www.winzip.com/aes_info.htm
-			//extraData.AddLeShort(7);							// Data size (currently 7)
-			extraData.AddLeShort(VENDOR_VERSION);               // 2 = AE-2
-			extraData.AddLeShort(VENDOR_ID);                    // "AE"
-			extraData.AddData(entry.AESEncryptionStrength);     //  1 = 128, 2 = 192, 3 = 256
-			extraData.AddLeShort((int)entry.CompressionMethod); // The actual compression method used to compress the file
-			extraData.AddNewEntry(0x9901);
-		}
-
-		private byte[] CreateAESHeader(ZipEntry entry)
-		{
-			InitializeAESPassword(entry, Password, out var salt, out var pwdVerifier);
-			// File format for AES:
-			// Size (bytes)   Content
-			// ------------   -------
-			// Variable       Salt value
-			// 2              Password verification value
-			// Variable       Encrypted file data
-			// 10             Authentication code
-			//
-			// Value in the "compressed size" fields of the local file header and the central directory entry
-			// is the total size of all the items listed above. In other words, it is the total size of the
-			// salt value, password verification value, encrypted data, and authentication code.
-			Array.Resize(ref salt, salt.Length + 2);
-			Array.Copy(pwdVerifier, 0, salt, salt.Length - 2, 2);
-			return salt;
-		}
+		// File format for AES:
+		// Size (bytes)   Content
+		// ------------   -------
+		// Variable       Salt value
+		// 2              Password verification value
+		// Variable       Encrypted file data
+		// 10             Authentication code
+		//
+		// Value in the "compressed size" fields of the local file header and the central directory entry
+		// is the total size of all the items listed above. In other words, it is the total size of the
+		// salt value, password verification value, encrypted data, and authentication code.
 
 		private void WriteAESHeader(ZipEntry entry)
 		{
-			var header = CreateAESHeader(entry);
+			var header = InitializeAESPassword(entry, Password);
 			baseOutputStream_.Write(header, 0, header.Length);
 		}
 
 		private async Task WriteAESHeaderAsync(ZipEntry entry, CancellationToken cancellationToken)
 		{
-			var header = CreateAESHeader(entry);
+			var header = InitializeAESPassword(entry, Password);
 			await baseOutputStream_.WriteAsync(header, 0, header.Length, cancellationToken);
 		}
 
@@ -865,144 +688,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			foreach (var entry in entries)
 			{
-				sizeEntries += WriteEndEntry(baseOutputStream_, entry);
+				sizeEntries += ZipFormat.WriteEndEntry(baseOutputStream_, entry);
 			}
 
 			ZipFormat.WriteEndOfCentralDirectory(baseOutputStream_, numEntries, sizeEntries, offset, zipComment);
 
 			entries = null;
-		}
-
-		private int WriteEndEntry(Stream stream, ZipEntry entry)
-		{
-			stream.WriteLEInt(ZipConstants.CentralHeaderSignature);
-			stream.WriteLEShort((entry.HostSystem << 8) | entry.VersionMadeBy);
-			stream.WriteLEShort(entry.Version);
-			stream.WriteLEShort(entry.Flags);
-			stream.WriteLEShort((short)entry.CompressionMethodForHeader);
-			stream.WriteLEInt((int)entry.DosTime);
-			stream.WriteLEInt((int)entry.Crc);
-
-			if (entry.IsZip64Forced() ||
-				(entry.CompressedSize >= uint.MaxValue))
-			{
-				stream.WriteLEInt(-1);
-			}
-			else
-			{
-				stream.WriteLEInt((int)entry.CompressedSize);
-			}
-
-			if (entry.IsZip64Forced() ||
-				(entry.Size >= uint.MaxValue))
-			{
-				stream.WriteLEInt(-1);
-			}
-			else
-			{
-				stream.WriteLEInt((int)entry.Size);
-			}
-
-			byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
-
-			if (name.Length > 0xffff)
-			{
-				throw new ZipException("Name too long.");
-			}
-
-			var ed = new ZipExtraData(entry.ExtraData);
-
-			if (entry.CentralHeaderRequiresZip64)
-			{
-				ed.StartNewEntry();
-				if (entry.IsZip64Forced() ||
-					(entry.Size >= 0xffffffff))
-				{
-					ed.AddLeLong(entry.Size);
-				}
-
-				if (entry.IsZip64Forced() ||
-					(entry.CompressedSize >= 0xffffffff))
-				{
-					ed.AddLeLong(entry.CompressedSize);
-				}
-
-				if (entry.Offset >= 0xffffffff)
-				{
-					ed.AddLeLong(entry.Offset);
-				}
-
-				ed.AddNewEntry(1);
-			}
-			else
-			{
-				ed.Delete(1);
-			}
-
-			if (entry.AESKeySize > 0)
-			{
-				AddExtraDataAES(entry, ed);
-			}
-			byte[] extra = ed.GetEntryData();
-
-			byte[] entryComment =
-				(entry.Comment != null) ?
-				ZipStrings.ConvertToArray(entry.Flags, entry.Comment) :
-				new byte[0];
-
-			if (entryComment.Length > 0xffff)
-			{
-				throw new ZipException("Comment too long.");
-			}
-
-			stream.WriteLEShort(name.Length);
-			stream.WriteLEShort(extra.Length);
-			stream.WriteLEShort(entryComment.Length);
-			stream.WriteLEShort(0);    // disk number
-			stream.WriteLEShort(0);    // internal file attributes
-									   // external file attributes
-
-			if (entry.ExternalFileAttributes != -1)
-			{
-				stream.WriteLEInt(entry.ExternalFileAttributes);
-			}
-			else
-			{
-				if (entry.IsDirectory)
-				{                         // mark entry as directory (from nikolam.AT.perfectinfo.com)
-					stream.WriteLEInt(16);
-				}
-				else
-				{
-					stream.WriteLEInt(0);
-				}
-			}
-
-			if (entry.Offset >= uint.MaxValue)
-			{
-				stream.WriteLEInt(-1);
-			}
-			else
-			{
-				stream.WriteLEInt((int)entry.Offset);
-			}
-
-			if (name.Length > 0)
-			{
-				stream.Write(name, 0, name.Length);
-			}
-
-			if (extra.Length > 0)
-			{
-				stream.Write(extra, 0, extra.Length);
-			}
-
-			if (entryComment.Length > 0)
-			{
-				stream.Write(entryComment, 0, entryComment.Length);
-			}
-
-			return ZipConstants.CentralHeaderBaseSize + name.Length + extra.Length + entryComment.Length;
 		}
 
 		/// <inheritdoc cref="Finish"/>>
@@ -1025,7 +716,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				foreach (var entry in entries)
 				{
-					sizeEntries += WriteEndEntry(ms, entry);
+					sizeEntries += ZipFormat.WriteEndEntry(ms, entry);
 					await ms.CopyToAsync(baseOutputStream_, 81920, cancellationToken);
 					ms.SetLength(0);
 				}
@@ -1095,14 +786,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private bool patchEntryHeader;
 
 		/// <summary>
-		/// Position to patch crc
+		/// The values to patch in the entry local header
 		/// </summary>
-		private long crcPatchPos = -1;
-
-		/// <summary>
-		/// Position to patch size.
-		/// </summary>
-		private long sizePatchPos = -1;
+		private EntryPatchData patchData;
 
 		// Default is dynamic which is not backwards compatible and can cause problems
 		// with XP's built in compression which cant read Zip64 archives.

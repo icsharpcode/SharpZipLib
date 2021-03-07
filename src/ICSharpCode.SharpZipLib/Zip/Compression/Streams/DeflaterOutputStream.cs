@@ -262,10 +262,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Initializes encryption keys based on given password.
 		/// </summary>
-		protected void InitializeAESPassword(ZipEntry entry, string rawPassword,
-											out byte[] salt, out byte[] pwdVerifier)
+		protected byte[] InitializeAESPassword(ZipEntry entry, string rawPassword)
 		{
-			salt = new byte[entry.AESSaltLen];
+			var salt = new byte[entry.AESSaltLen];
 			// Salt needs to be cryptographically random, and unique per file
 			if (_aesRnd == null)
 				_aesRnd = RandomNumberGenerator.Create();
@@ -273,7 +272,14 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			int blockSize = entry.AESKeySize / 8;   // bits to bytes
 
 			cryptoTransform_ = new ZipAESTransform(rawPassword, salt, blockSize, true);
-			pwdVerifier = ((ZipAESTransform)cryptoTransform_).PwdVerifier;
+
+			var headBytes = new byte[salt.Length + 2];
+
+			Array.Copy(salt, headBytes, salt.Length);
+			Array.Copy(((ZipAESTransform)cryptoTransform_).PwdVerifier, 0,
+				headBytes, headBytes.Length - 2, 2);
+
+			return headBytes;
 		}
 
 		#endregion Encryption

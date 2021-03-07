@@ -33,7 +33,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 	}
 
-	internal class EntryPatchData
+	internal struct EntryPatchData
 	{
 		public long SizePatchOffset { get; set; }
 
@@ -47,16 +47,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 	{
 		// Write the local file header
 		// TODO: ZipFormat.WriteLocalHeader is not yet used and needs checking for ZipFile and ZipOuptutStream usage
-		private static void WriteLocalHeader(Stream stream, ZipEntry entry, EntryPatchData patchData, 
-			bool headerInfoAvailable, bool patchEntryHeader, int offset)
+		internal static int WriteLocalHeader(Stream stream, ZipEntry entry, out EntryPatchData patchData, 
+			bool headerInfoAvailable, bool patchEntryHeader, long streamOffset)
 		{
-			CompressionMethod method = entry.CompressionMethod;
-			
-			stream.WriteLEInt(ZipConstants.LocalHeaderSignature);
+			patchData = new EntryPatchData();
 
+			stream.WriteLEInt(ZipConstants.LocalHeaderSignature);
 			stream.WriteLEShort(entry.Version);
 			stream.WriteLEShort(entry.Flags);
-			stream.WriteLEShort((byte)method);
+			stream.WriteLEShort((byte)entry.CompressionMethodForHeader);
 			stream.WriteLEInt((int)entry.DosTime);
 
 			if (headerInfoAvailable)
@@ -69,22 +68,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					stream.WriteLEInt(entry.IsCrypted ? (int)entry.CompressedSize + ZipConstants.CryptoHeaderSize : (int)entry.CompressedSize);
+					stream.WriteLEInt((int)entry.CompressedSize + entry.EncryptionOverheadSize);
 					stream.WriteLEInt((int)entry.Size);
 				}
 			}
 			else
 			{
-				if (patchData != null)
-				{
-					patchData.CrcPatchOffset = offset + stream.Position;
-				}
+				if (patchEntryHeader)
+					patchData.CrcPatchOffset = streamOffset + stream.Position;
+				
 				stream.WriteLEInt(0);  // Crc
 
-				if (patchData != null)
-				{
-					patchData.SizePatchOffset = offset + stream.Position;
-				}
+				if (patchEntryHeader)
+					patchData.SizePatchOffset = streamOffset + stream.Position;
 
 				// For local header both sizes appear in Zip64 Extended Information
 				if (entry.LocalHeaderRequiresZip64 && patchEntryHeader)
@@ -108,13 +104,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			var ed = new ZipExtraData(entry.ExtraData);
 
-			if (entry.LocalHeaderRequiresZip64 && (headerInfoAvailable || patchEntryHeader))
+			if (entry.LocalHeaderRequiresZip64)
 			{
 				ed.StartNewEntry();
 				if (headerInfoAvailable)
 				{
 					ed.AddLeLong(entry.Size);
-					ed.AddLeLong(entry.CompressedSize);
+					ed.AddLeLong(entry.CompressedSize + entry.EncryptionOverheadSize);
 				}
 				else
 				{
@@ -128,16 +124,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 					throw new ZipException("Internal error cant find extra data");
 				}
 
-				if (patchData != null)
-				{
-					patchData.SizePatchOffset = ed.CurrentReadIndex;
-				}
+				patchData.SizePatchOffset = ed.CurrentReadIndex;
 			}
 			else
 			{
 				ed.Delete(1);
 			}
 
+			if (entry.AESKeySize > 0)
+			{
+				AddExtraDataAES(entry, ed);
+			}
 			byte[] extra = ed.GetEntryData();
 
 			stream.WriteLEShort(name.Length);
@@ -148,15 +145,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 				stream.Write(name, 0, name.Length);
 			}
 
-			if (entry.LocalHeaderRequiresZip64 && patchEntryHeader && patchData != null)
+			if (entry.LocalHeaderRequiresZip64 && patchEntryHeader)
 			{
-				patchData.SizePatchOffset += offset + stream.Position;
+				patchData.SizePatchOffset += streamOffset + stream.Position;
 			}
 
 			if (extra.Length > 0)
 			{
 				stream.Write(extra, 0, extra.Length);
 			}
+
+			return ZipConstants.LocalHeaderBaseSize + name.Length + extra.Length;
 		}
 
 		/// <summary>
@@ -394,6 +393,213 @@ namespace ICSharpCode.SharpZipLib.Zip
 				data.CompressedSize = stream.ReadLEInt();
 				data.Size = stream.ReadLEInt();
 			}
+		}
+
+		internal static int WriteEndEntry(Stream stream, ZipEntry entry)
+		{
+			stream.WriteLEInt(ZipConstants.CentralHeaderSignature);
+			stream.WriteLEShort((entry.HostSystem << 8) | entry.VersionMadeBy);
+			stream.WriteLEShort(entry.Version);
+			stream.WriteLEShort(entry.Flags);
+			stream.WriteLEShort((short)entry.CompressionMethodForHeader);
+			stream.WriteLEInt((int)entry.DosTime);
+			stream.WriteLEInt((int)entry.Crc);
+
+			if (entry.IsZip64Forced() ||
+				(entry.CompressedSize >= uint.MaxValue))
+			{
+				stream.WriteLEInt(-1);
+			}
+			else
+			{
+				stream.WriteLEInt((int)entry.CompressedSize);
+			}
+
+			if (entry.IsZip64Forced() ||
+				(entry.Size >= uint.MaxValue))
+			{
+				stream.WriteLEInt(-1);
+			}
+			else
+			{
+				stream.WriteLEInt((int)entry.Size);
+			}
+
+			byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
+
+			if (name.Length > 0xffff)
+			{
+				throw new ZipException("Name too long.");
+			}
+
+			var ed = new ZipExtraData(entry.ExtraData);
+
+			if (entry.CentralHeaderRequiresZip64)
+			{
+				ed.StartNewEntry();
+				if (entry.IsZip64Forced() ||
+					(entry.Size >= 0xffffffff))
+				{
+					ed.AddLeLong(entry.Size);
+				}
+
+				if (entry.IsZip64Forced() ||
+					(entry.CompressedSize >= 0xffffffff))
+				{
+					ed.AddLeLong(entry.CompressedSize);
+				}
+
+				if (entry.Offset >= 0xffffffff)
+				{
+					ed.AddLeLong(entry.Offset);
+				}
+
+				ed.AddNewEntry(1);
+			}
+			else
+			{
+				ed.Delete(1);
+			}
+
+			if (entry.AESKeySize > 0)
+			{
+				AddExtraDataAES(entry, ed);
+			}
+			byte[] extra = ed.GetEntryData();
+
+			byte[] entryComment =
+				(entry.Comment != null) ?
+				ZipStrings.ConvertToArray(entry.Flags, entry.Comment) :
+				new byte[0];
+
+			if (entryComment.Length > 0xffff)
+			{
+				throw new ZipException("Comment too long.");
+			}
+
+			stream.WriteLEShort(name.Length);
+			stream.WriteLEShort(extra.Length);
+			stream.WriteLEShort(entryComment.Length);
+			stream.WriteLEShort(0);    // disk number
+			stream.WriteLEShort(0);    // internal file attributes
+									   // external file attributes
+
+			if (entry.ExternalFileAttributes != -1)
+			{
+				stream.WriteLEInt(entry.ExternalFileAttributes);
+			}
+			else
+			{
+				if (entry.IsDirectory)
+				{                         // mark entry as directory (from nikolam.AT.perfectinfo.com)
+					stream.WriteLEInt(16);
+				}
+				else
+				{
+					stream.WriteLEInt(0);
+				}
+			}
+
+			if (entry.Offset >= uint.MaxValue)
+			{
+				stream.WriteLEInt(-1);
+			}
+			else
+			{
+				stream.WriteLEInt((int)entry.Offset);
+			}
+
+			if (name.Length > 0)
+			{
+				stream.Write(name, 0, name.Length);
+			}
+
+			if (extra.Length > 0)
+			{
+				stream.Write(extra, 0, extra.Length);
+			}
+
+			if (entryComment.Length > 0)
+			{
+				stream.Write(entryComment, 0, entryComment.Length);
+			}
+
+			return ZipConstants.CentralHeaderBaseSize + name.Length + extra.Length + entryComment.Length;
+		}
+
+		internal static void AddExtraDataAES(ZipEntry entry, ZipExtraData extraData)
+		{
+			// Vendor Version: AE-1 IS 1. AE-2 is 2. With AE-2 no CRC is required and 0 is stored.
+			const int VENDOR_VERSION = 2;
+			// Vendor ID is the two ASCII characters "AE".
+			const int VENDOR_ID = 0x4541; //not 6965;
+			extraData.StartNewEntry();
+			// Pack AES extra data field see http://www.winzip.com/aes_info.htm
+			//extraData.AddLeShort(7);							// Data size (currently 7)
+			extraData.AddLeShort(VENDOR_VERSION);               // 2 = AE-2
+			extraData.AddLeShort(VENDOR_ID);                    // "AE"
+			extraData.AddData(entry.AESEncryptionStrength);     //  1 = 128, 2 = 192, 3 = 256
+			extraData.AddLeShort((int)entry.CompressionMethod); // The actual compression method used to compress the file
+			extraData.AddNewEntry(0x9901);
+		}
+
+		internal static async Task PatchLocalHeaderAsync(Stream stream, ZipEntry entry, 
+			EntryPatchData patchData, CancellationToken ct)
+		{
+			var initialPos = stream.Position;
+			
+			// Update CRC
+			stream.Seek(patchData.CrcPatchOffset, SeekOrigin.Begin);
+			await stream.WriteLEIntAsync((int)entry.Crc, ct);
+
+			// Update Sizes
+			if (entry.LocalHeaderRequiresZip64)
+			{
+				if (patchData.SizePatchOffset == -1)
+				{
+					throw new ZipException("Entry requires zip64 but this has been turned off");
+				}
+
+				stream.Seek(patchData.SizePatchOffset, SeekOrigin.Begin);
+
+				await stream.WriteLELongAsync(entry.Size, ct);
+				await stream.WriteLELongAsync(entry.CompressedSize, ct);
+			}
+			else
+			{
+				await stream.WriteLEIntAsync((int)entry.CompressedSize, ct);
+				await stream.WriteLEIntAsync((int)entry.Size, ct);
+			}
+
+			stream.Seek(initialPos, SeekOrigin.Begin);
+		}
+
+		internal static void PatchLocalHeaderSync(Stream stream, ZipEntry entry,
+			EntryPatchData patchData)
+		{
+			var initialPos = stream.Position;
+			stream.Seek(patchData.CrcPatchOffset, SeekOrigin.Begin);
+			stream.WriteLEInt((int)entry.Crc);
+
+			if (entry.LocalHeaderRequiresZip64)
+			{
+				if (patchData.SizePatchOffset == -1)
+				{
+					throw new ZipException("Entry requires zip64 but this has been turned off");
+				}
+
+				stream.Seek(patchData.SizePatchOffset, SeekOrigin.Begin);
+
+				stream.WriteLELong(entry.Size);
+				stream.WriteLELong(entry.CompressedSize);
+			}
+			else
+			{
+				stream.WriteLEInt((int)entry.CompressedSize);
+				stream.WriteLEInt((int)entry.Size);
+			}
+
+			stream.Seek(initialPos, SeekOrigin.Begin);
 		}
 	}
 }

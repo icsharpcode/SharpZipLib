@@ -77,11 +77,18 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 						zipStream.CopyTo(fs);
 					}
 
-					var p = Process.Start(path7z, $"t -p{password} \"{fileName}\"");
+					var p = Process.Start(new ProcessStartInfo()
+					{
+						FileName = path7z,
+						Arguments = $"t -p{password} \"{fileName}\"",
+						RedirectStandardError = true
+					});
 					if (!p.WaitForExit(2000))
 					{
 						Assert.Warn("Timed out verifying zip file!");
 					}
+
+					Console.Write(p.StandardError.ReadToEnd());
 
 					Assert.AreEqual(0, p.ExitCode, "Archive verification failed");
 				}
