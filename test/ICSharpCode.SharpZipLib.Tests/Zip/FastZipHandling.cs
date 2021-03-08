@@ -242,9 +242,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		#region String testing helper
 
-		private void TestFileNames(int codePage, params string[] names)
-			=> TestFileNames(codePage, names);
-
 		private void TestFileNames(int codePage, IEnumerable<string> names)
 		{
 			var zippy = new FastZip();
@@ -266,7 +263,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				zippy.CreateZip(tempZip.Filename, tempDir.Fullpath, true, null);
 
-				using (ZipFile z = new ZipFile(tempZip.Filename))
+				using (ZipFile z = new ZipFile(tempZip.Filename, zippy.StringCodec))
 				{
 					Assert.AreEqual(nameCount, z.Count);
 					foreach (var name in names)
@@ -330,7 +327,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					continue;
 				}
 
-				TestFileNames(Encoding.GetEncoding(encoding).CodePage, filename);
+				TestFileNames(Encoding.GetEncoding(encoding).CodePage, new [] { filename });
 			}
 		}
 

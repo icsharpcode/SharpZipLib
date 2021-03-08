@@ -397,12 +397,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ZipException">
 		/// The file doesn't contain a valid zip archive.
 		/// </exception>
-		public ZipFile(string name)
+		public ZipFile(string name, StringCodec stringCodec = null)
 		{
 			name_ = name ?? throw new ArgumentNullException(nameof(name));
 
 			baseStream_ = File.Open(name, FileMode.Open, FileAccess.Read, FileShare.Read);
 			isStreamOwner = true;
+
+			if (stringCodec != null)
+			{
+				_stringCodec = stringCodec;
+			}
 
 			try
 			{
@@ -731,6 +736,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			get => _stringCodec.ZipCryptoEncoding;
 			set => _stringCodec.ZipCryptoEncoding = value;
+		}
+
+		/// <inheritdoc cref="StringCodec"/>
+		public StringCodec StringCodec
+		{
+			get => _stringCodec;
+			set => _stringCodec = value;
 		}
 
 		#endregion Properties
@@ -3793,7 +3805,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private bool isDisposed_;
 		private string name_;
-		private string comment_;
+		private string comment_ = string.Empty;
 		private string rawPassword_;
 		private Stream baseStream_;
 		private bool isStreamOwner;
@@ -3801,7 +3813,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private ZipEntry[] entries_;
 		private byte[] key;
 		private bool isNewArchive_;
-		private readonly StringCodec _stringCodec = new StringCodec();
+		private StringCodec _stringCodec = new StringCodec();
 
 		// Default is dynamic which is not backwards compatible and can cause problems
 		// with XP's built in compression which cant read Zip64 archives.

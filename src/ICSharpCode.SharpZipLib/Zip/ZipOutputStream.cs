@@ -77,6 +77,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 		}
 
+		internal ZipOutputStream(Stream baseOutputStream, StringCodec stringCodec) : this(baseOutputStream)
+		{
+			_stringCodec = stringCodec;
+		}
+
 		#endregion Constructors
 
 		/// <summary>

@@ -360,6 +360,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get => _stringCodec.CodePage;
 			set => _stringCodec.CodePage = value;
 		}
+		
+		/// <inheritdoc cref="StringCodec"/>
+		public StringCodec StringCodec
+		{
+			get => _stringCodec;
+			set => _stringCodec = value;
+		}
 
 		#endregion Properties
 
@@ -472,7 +479,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			NameTransform = new ZipNameTransform(sourceDirectory);
 			sourceDirectory_ = sourceDirectory;
 
-			using (outputStream_ = new ZipOutputStream(outputStream))
+			using (outputStream_ = new ZipOutputStream(outputStream, _stringCodec))
 			{
 				outputStream_.SetLevel((int)CompressionLevel);
 				outputStream_.IsStreamOwner = !leaveOpen;
@@ -647,6 +654,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 					using (FileStream stream = File.Open(e.Name, FileMode.Open, FileAccess.Read, FileShare.Read))
 					{
 						ZipEntry entry = entryFactory_.MakeFileEntry(e.Name);
+						if (_stringCodec.ForceZipLegacyEncoding)
+						{
+							entry.IsUnicodeText = false;
+						}
 
 						// Set up AES encryption for the entry if required.
 						ConfigureEntryEncryption(entry);
@@ -983,7 +994,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private INameTransform extractNameTransform_;
 		private UseZip64 useZip64_ = UseZip64.Dynamic;
 		private CompressionLevel compressionLevel_ = CompressionLevel.DEFAULT_COMPRESSION;
-		private readonly StringCodec _stringCodec = new StringCodec();
+		private StringCodec _stringCodec = new StringCodec();
 
 		private string password_;
 
