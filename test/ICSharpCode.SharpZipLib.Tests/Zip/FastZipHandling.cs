@@ -750,7 +750,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				fastZip.ExtractZip(archiveStream, extractDir.Fullpath, FastZip.Overwrite.Always, 
 					_ => true, "", "", true, true, false);
 				var fi = new FileInfo(Path.Combine(extractDir.Fullpath, SingleEntryFileName));
-				Assert.AreEqual(targetTime, FileTimeFromTimeSetting(fi, timeSetting));
+				var actualTime = FileTimeFromTimeSetting(fi, timeSetting);
+				// Assert that the time is within +/- 2s of the target time to allow for timing/rounding discrepancies
+				Assert.LessOrEqual(Math.Abs((targetTime - actualTime).TotalSeconds), 2);
 			}
 		}
 
