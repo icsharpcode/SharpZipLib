@@ -60,7 +60,12 @@ jobs:
       run: dotnet test -c debug -f ${{ matrix.target }} --no-restore
       
     - name: Run tests (Release)
-      run: dotnet test -c release -f ${{ matrix.target }} --no-restore
+      run: dotnet test -c release -f ${{ matrix.target }} --no-restore --collect="XPlat Code Coverage"
+      
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1.2.2
+      with:
+        fail_ci_if_error: false
 
   Pack:
     needs: [Build, Test]
