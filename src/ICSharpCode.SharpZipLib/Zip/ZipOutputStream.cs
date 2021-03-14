@@ -155,6 +155,29 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public INameTransform NameTransform { get; set; } = new PathTransformer();
 
 		/// <summary>
+		/// Get/set the password used for encryption.
+		/// </summary>
+		/// <remarks>When set to null or if the password is empty no encryption is performed</remarks>
+		public string Password
+		{
+			get
+			{
+				return password;
+			}
+			set
+			{
+				if ((value != null) && (value.Length == 0))
+				{
+					password = null;
+				}
+				else
+				{
+					password = value;
+				}
+			}
+		}
+
+		/// <summary>
 		/// Write an unsigned short in little endian byte order.
 		/// </summary>
 		private void WriteLeShort(int value)
@@ -1009,6 +1032,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		// However it does avoid the situation were a large file is added and cannot be completed correctly.
 		// NOTE: Setting the size for entries before they are added is the best solution!
 		private UseZip64 useZip64_ = UseZip64.Dynamic;
+
+		/// <summary>
+		/// The password to use when encrypting archive entries.
+		/// </summary>
+		private string password;
 
 		#endregion Instance Fields
 	}

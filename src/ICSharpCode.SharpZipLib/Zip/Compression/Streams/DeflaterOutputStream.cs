@@ -153,37 +153,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		#region Encryption
 
-		private string password;
-
 		private ICryptoTransform cryptoTransform_;
 
 		/// <summary>
 		/// Returns the 10 byte AUTH CODE to be appended immediately following the AES data stream.
 		/// </summary>
 		protected byte[] AESAuthCode;
-
-		/// <summary>
-		/// Get/set the password used for encryption.
-		/// </summary>
-		/// <remarks>When set to null or if the password is empty no encryption is performed</remarks>
-		public string Password
-		{
-			get
-			{
-				return password;
-			}
-			set
-			{
-				if ((value != null) && (value.Length == 0))
-				{
-					password = null;
-				}
-				else
-				{
-					password = value;
-				}
-			}
-		}
 
 		/// <summary>
 		/// Encrypt a block of data
