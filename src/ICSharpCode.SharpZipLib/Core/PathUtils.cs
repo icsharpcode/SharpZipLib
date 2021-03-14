@@ -10,23 +10,22 @@ namespace ICSharpCode.SharpZipLib.Core
 	public static class PathUtils
 	{
 		/// <summary>
-		/// Remove any path root present in the path and optionally replaces invalid path chars,
-		/// as indicated by <see cref="Path.GetInvalidPathChars"/>, with <c>'_'</c>
+		/// Remove any path root present in the path
 		/// </summary>
 		/// <param name="path">A <see cref="string"/> containing path information.</param>
-		/// <param name="replaceInvalidChars">Replaces any invalid path chars</param>
 		/// <returns>The path with the root removed if it was present; path otherwise.</returns>
-		public static string DropPathRoot(string path, bool replaceInvalidChars = false)
+		public static string DropPathRoot(string path)
 		{
-			// Replace any invalid path characters with '_' to prevent Path.GetPathRoot throwing
 			var invalidChars = Path.GetInvalidPathChars();
-			var cleanPath = new string(path.Select(c => invalidChars.Contains(c) ? '_' : c).ToArray());
-
-			if (replaceInvalidChars)
-			{
-				path = cleanPath;
-			}
+			// If the first character after the root is a ':', .NET < 4.6.2 throws
+			var cleanRootSep = path.Length >= 3 && path[1] == ':' && path[2] == ':';
 			
+			// Replace any invalid path characters with '_' to prevent Path.GetPathRoot from throwing.
+			// Only pass the first 258 (should be 260, but that still throws for some reason) characters
+			// as .NET < 4.6.2 throws on longer paths
+			var cleanPath = new string(path.Take(258)
+				.Select( (c, i) => invalidChars.Contains(c) || (i == 2 && cleanRootSep) ? '_' : c).ToArray());
+
 			var stripLength = Path.GetPathRoot(cleanPath).Length;
 			while (path.Length > stripLength && (path[stripLength] == '/' || path[stripLength] == '\\')) stripLength++;
 			return path.Substring(stripLength);

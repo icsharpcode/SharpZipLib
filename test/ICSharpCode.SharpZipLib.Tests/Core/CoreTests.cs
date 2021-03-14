@@ -56,7 +56,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Core
 			Assert.IsFalse(NameFilter.IsValidFilterExpression(@"[]"));
 		}
 
-		private static string DropRoot(string s) => PathUtils.DropPathRoot(s, replaceInvalidChars: false);
+		// Use a shorter name wrapper to make tests more legible
+		private static string DropRoot(string s) => PathUtils.DropPathRoot(s);
 		
 		[Test]
 		[Category("Core")]
@@ -90,6 +91,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Core
 		[TestCase(@"c:\file*?")]
 		[TestCase("c:\\file|\"")]
 		[TestCase(@"c:\file<>")]
+		[TestCase(@"c:file")]
+		[TestCase(@"c::file")]
+		[TestCase(@"c:?file")]
+		[TestCase(@"c:+file")]
+		[TestCase(@"cc:file")]
 		[Category("Core")]
 		public void DropPathRoot_DoesNotThrowForInvalidPath(string path)
 		{
