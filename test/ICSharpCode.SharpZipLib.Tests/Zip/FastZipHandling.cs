@@ -725,7 +725,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			var archive = new MemoryStream(target.ToArray());
 			using (var zf = new ZipFile(archive))
 			{
-				Assert.AreEqual(TestTargetTime(timeSetting), zf[0].DateTime);
+				var expectedTime = TestTargetTime(timeSetting);
+				var actualTime = zf[0].DateTime;
+				// Assert that the time is within +/- 2s of the target time to allow for timing/rounding discrepancies
+				Assert.LessOrEqual(Math.Abs((expectedTime - actualTime).TotalSeconds), 2);
 			}
 		}
 
