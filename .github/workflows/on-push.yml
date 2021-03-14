@@ -22,11 +22,11 @@ jobs:
           - configuration: debug
             os: windows
             libtarget: net45
-            testtarget: net45
+            testtarget: net46
           - configuration: release
             os: windows
             libtarget: net45
-            testtarget: net45
+            testtarget: net46
     steps:
     - uses: actions/checkout@v2
       
