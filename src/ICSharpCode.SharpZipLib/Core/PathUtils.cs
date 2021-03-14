@@ -1,4 +1,6 @@
+using System;
 using System.IO;
+using System.Linq;
 
 namespace ICSharpCode.SharpZipLib.Core
 {
@@ -8,14 +10,24 @@ namespace ICSharpCode.SharpZipLib.Core
 	public static class PathUtils
 	{
 		/// <summary>
-		/// Remove any path root present in the path
+		/// Remove any path root present in the path and optionally replaces invalid path chars,
+		/// as indicated by <see cref="Path.GetInvalidPathChars"/>, with <c>'_'</c>
 		/// </summary>
 		/// <param name="path">A <see cref="string"/> containing path information.</param>
+		/// <param name="replaceInvalidChars">Replaces any invalid path chars</param>
 		/// <returns>The path with the root removed if it was present; path otherwise.</returns>
-		/// <remarks>Unlike the <see cref="System.IO.Path"/> class the path isn't otherwise checked for validity.</remarks>
-		public static string DropPathRoot(string path)
+		public static string DropPathRoot(string path, bool replaceInvalidChars = false)
 		{
-			var stripLength = Path.GetPathRoot(path).Length;
+			// Replace any invalid path characters with '_' to prevent Path.GetPathRoot throwing
+			var invalidChars = Path.GetInvalidPathChars();
+			var cleanPath = new string(path.Select(c => invalidChars.Contains(c) ? '_' : c).ToArray());
+
+			if (replaceInvalidChars)
+			{
+				path = cleanPath;
+			}
+			
+			var stripLength = Path.GetPathRoot(cleanPath).Length;
 			while (path.Length > stripLength && (path[stripLength] == '/' || path[stripLength] == '\\')) stripLength++;
 			return path.Substring(stripLength);
 		}

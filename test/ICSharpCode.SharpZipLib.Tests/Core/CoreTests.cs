@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using ICSharpCode.SharpZipLib.Core;
 using NUnit.Framework;
 
@@ -60,13 +61,28 @@ namespace ICSharpCode.SharpZipLib.Tests.Core
 		[Category("Core")]
 		public void DropPathRoot()
 		{
-			Func<string, string> testPath = PathUtils.DropPathRoot;
-			Assert.AreEqual("file.txt", testPath(@"\\server\share\file.txt"));
-			Assert.AreEqual("file.txt", testPath(@"c:\file.txt"));
-			Assert.AreEqual(@"subdir with spaces\file.txt", testPath(@"z:\subdir with spaces\file.txt"));
-			Assert.AreEqual("", testPath(@"\\server\share\"));
-			Assert.AreEqual(@"server\share\file.txt", testPath(@"\server\share\file.txt"));
-			Assert.AreEqual(@"path\file.txt", testPath(@"\\server\share\\path\file.txt"));
+			string TestPath(string s) => PathUtils.DropPathRoot(s, replaceInvalidChars: false);
+			Assert.AreEqual("file.txt", TestPath(@"\\server\share\file.txt"));
+			Assert.AreEqual("file.txt", TestPath(@"c:\file.txt"));
+			Assert.AreEqual(@"subdir with spaces\file.txt", TestPath(@"z:\subdir with spaces\file.txt"));
+			Assert.AreEqual("", TestPath(@"\\server\share\"));
+			Assert.AreEqual(@"server\share\file.txt", TestPath(@"\server\share\file.txt"));
+			Assert.AreEqual(@"path\file.txt", TestPath(@"\\server\share\\path\file.txt"));
+			Assert.DoesNotThrow(() => Console.WriteLine(TestPath(@"c:\file:+/")));
+			Assert.DoesNotThrow(() => Console.WriteLine(TestPath(@"c:\file*?")));
+			Assert.DoesNotThrow(() => Console.WriteLine(TestPath("c:\\file|\"")));
+			Assert.DoesNotThrow(() => Console.WriteLine(TestPath(@"c:\file<>")));
+		}
+
+		[Test]
+		[TestCase(@"c:\file:+/")]
+		[TestCase(@"c:\file*?")]
+		[TestCase("c:\\file|\"")]
+		[TestCase(@"c:\file<>")]
+		[Category("Core")]
+		public void DropPathRoot_DoesNotThrowForInvalidPath(string path)
+		{
+			Assert.DoesNotThrow(() => Console.WriteLine(PathUtils.DropPathRoot(path)));
 		}
 	}
 }
