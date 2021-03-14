@@ -23,6 +23,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			try
 			{
+				// ReSharper disable once ExpressionIsAlwaysNull
 				bad = new ZipFile(nullStream);
 			}
 			catch
@@ -439,17 +440,21 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				f.IsStreamOwner = false;
 
 				f.BeginUpdate(new MemoryArchiveStorage());
-				f.Add(new StringMemoryDataSource("Hello world"), @"z:\a\a.dat");
+				f.Add(new StringMemoryDataSource("Hello world"), Utils.SystemRoot + @"a\a.dat");
 				f.Add(new StringMemoryDataSource("Another"), @"\b\b.dat");
 				f.Add(new StringMemoryDataSource("Mr C"), @"c\c.dat");
 				f.Add(new StringMemoryDataSource("Mrs D was a star"), @"d\d.dat");
 				f.CommitUpdate();
 				Assert.IsTrue(f.TestArchive(true));
+				foreach (ZipEntry entry in f)
+				{
+					Console.WriteLine($" - {entry.Name}");
+				}
 			}
 
 			byte[] master = memStream.ToArray();
 
-			TryDeleting(master, 4, 1, @"z:\a\a.dat");
+			TryDeleting(master, 4, 1, Utils.SystemRoot + @"a\a.dat");
 			TryDeleting(master, 4, 1, @"\a\a.dat");
 			TryDeleting(master, 4, 1, @"a/a.dat");
 

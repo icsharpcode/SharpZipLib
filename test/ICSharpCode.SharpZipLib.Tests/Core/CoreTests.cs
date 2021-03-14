@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using ICSharpCode.SharpZipLib.Core;
 using NUnit.Framework;
 
@@ -56,22 +55,34 @@ namespace ICSharpCode.SharpZipLib.Tests.Core
 			Assert.IsFalse(NameFilter.IsValidFilterExpression(@"\,)"));
 			Assert.IsFalse(NameFilter.IsValidFilterExpression(@"[]"));
 		}
+
+		private static string DropRoot(string s) => PathUtils.DropPathRoot(s, replaceInvalidChars: false);
 		
 		[Test]
 		[Category("Core")]
-		public void DropPathRoot()
+		[Platform("Win")]
+		public void DropPathRoot_Windows()
 		{
-			string TestPath(string s) => PathUtils.DropPathRoot(s, replaceInvalidChars: false);
-			Assert.AreEqual("file.txt", TestPath(@"\\server\share\file.txt"));
-			Assert.AreEqual("file.txt", TestPath(@"c:\file.txt"));
-			Assert.AreEqual(@"subdir with spaces\file.txt", TestPath(@"z:\subdir with spaces\file.txt"));
-			Assert.AreEqual("", TestPath(@"\\server\share\"));
-			Assert.AreEqual(@"server\share\file.txt", TestPath(@"\server\share\file.txt"));
-			Assert.AreEqual(@"path\file.txt", TestPath(@"\\server\share\\path\file.txt"));
-			Assert.DoesNotThrow(() => Console.WriteLine(TestPath(@"c:\file:+/")));
-			Assert.DoesNotThrow(() => Console.WriteLine(TestPath(@"c:\file*?")));
-			Assert.DoesNotThrow(() => Console.WriteLine(TestPath("c:\\file|\"")));
-			Assert.DoesNotThrow(() => Console.WriteLine(TestPath(@"c:\file<>")));
+			Assert.AreEqual("file.txt", DropRoot(@"\\server\share\file.txt"));
+			Assert.AreEqual("file.txt", DropRoot(@"c:\file.txt"));
+			Assert.AreEqual(@"subdir with spaces\file.txt", DropRoot(@"z:\subdir with spaces\file.txt"));
+			Assert.AreEqual("", DropRoot(@"\\server\share\"));
+			Assert.AreEqual(@"server\share\file.txt", DropRoot(@"\server\share\file.txt"));
+			Assert.AreEqual(@"path\file.txt", DropRoot(@"\\server\share\\path\file.txt"));
+		}
+
+		[Test]
+		[Category("Core")]
+		[Platform(Exclude="Win")]
+		public void DropPathRoot_Posix()
+		{
+			Assert.AreEqual("file.txt", DropRoot("/file.txt"));
+			Assert.AreEqual(@"tmp/file.txt", DropRoot(@"/tmp/file.txt"));
+			Assert.AreEqual(@"tmp\file.txt", DropRoot(@"\tmp\file.txt"));
+			Assert.AreEqual(@"tmp/file.txt", DropRoot(@"\tmp/file.txt"));
+			Assert.AreEqual(@"tmp\file.txt", DropRoot(@"/tmp\file.txt"));
+			Assert.AreEqual("", DropRoot("/"));
+
 		}
 
 		[Test]

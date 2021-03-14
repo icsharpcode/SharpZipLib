@@ -13,9 +13,16 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		public static int DummyContentLength = 16;
 
 		private static Random random = new Random();
+		
+		/// <summary>
+		/// Returns the system root for the current platform (usually c:\ for windows and / for others)
+		/// </summary>
+		public static string SystemRoot { get; } = 
+			Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData));
 
 		private static void Compare(byte[] a, byte[] b)
 		{
+			
 			if (a == null)
 			{
 				throw new ArgumentNullException(nameof(a));
