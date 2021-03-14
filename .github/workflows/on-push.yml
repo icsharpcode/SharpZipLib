@@ -42,7 +42,12 @@ jobs:
       run: dotnet restore
 
     - name: Run tests
-      run: dotnet test -c ${{ matrix.configuration }} -f ${{ matrix.testtarget }} --no-restore
+      run: dotnet test -c ${{ matrix.configuration }} -f ${{ matrix.testtarget }} --no-restore --collect="XPlat Code Coverage"
+      
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1.2.2
+      with:
+        fail_ci_if_error: false
         
   Codacy-Analysis:
     runs-on: ubuntu-latest
