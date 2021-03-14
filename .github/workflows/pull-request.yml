@@ -13,11 +13,7 @@ jobs:
         os: [ubuntu, windows, macos]
         target: [netstandard2.0, netstandard2.1]
         include:
-          - configuration: Debug
-            os: windows
-            target: net45
-          - configuration: Release
-            os: windows
+          - os: windows
             target: net45
     steps:
     - uses: actions/checkout@v2
@@ -41,12 +37,8 @@ jobs:
         os: [ubuntu, windows, macos]
         target: [netcoreapp3.1]
         include:
-          - configuration: debug
-            os: windows
-            target: net45
-          - configuration: release
-            os: windows
-            target: net45
+          - os: windows
+            target: net46
     steps:
     - uses: actions/checkout@v2
       
