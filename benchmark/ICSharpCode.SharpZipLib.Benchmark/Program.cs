@@ -13,7 +13,7 @@ namespace ICSharpCode.SharpZipLib.Benchmark
 		{
 			AddJob(Job.Default.WithToolchain(CsProjClassicNetToolchain.Net461).AsBaseline()); // NET 4.6.1
 			AddJob(Job.Default.WithToolchain(CsProjCoreToolchain.NetCoreApp21)); // .NET Core 2.1
-			//Add(Job.Default.With(CsProjCoreToolchain.NetCoreApp30)); // .NET Core 3.0
+			AddJob(Job.Default.WithToolchain(CsProjCoreToolchain.NetCoreApp31)); // .NET Core 3.1
 		}
 	}
 
