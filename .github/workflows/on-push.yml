@@ -40,9 +40,14 @@ jobs:
       
     - name: Restore test dependencies
       run: dotnet restore
-
-    - name: Run tests
-      run: dotnet test -c ${{ matrix.configuration }} -f ${{ matrix.testtarget }} --no-restore --collect="XPlat Code Coverage"
+      
+    - name: Run tests (Debug)
+      if: ${{ matrix.configuration == 'debug' }}
+      run: dotnet test -c debug -f ${{ matrix.testtarget }} --no-restore
+      
+    - name: Run tests (Release)
+      if: ${{ matrix.configuration == 'release' }}
+      run: dotnet test -c release -f ${{ matrix.testtarget }} --no-restore --collect="XPlat Code Coverage"
       
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1.2.2
