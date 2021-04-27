@@ -147,9 +147,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		/// <summary>
 		/// Invalid passwords should be detected early if possible, seekable stream
+		/// Note: Have a 1/255 chance of failing due to CRC collision (hence retried once)
 		/// </summary>
 		[Test]
 		[Category("Zip")]
+		[Retry(2)]
 		public void InvalidPasswordSeekable()
 		{
 			byte[] originalData = null;
@@ -216,9 +218,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		/// <summary>
 		/// Invalid passwords should be detected early if possible, non seekable stream
+		/// Note: Have a 1/255 chance of failing due to CRC collision (hence retried once)
 		/// </summary>
 		[Test]
 		[Category("Zip")]
+		[Retry(2)]
 		public void InvalidPasswordNonSeekable()
 		{
 			byte[] originalData = null;
