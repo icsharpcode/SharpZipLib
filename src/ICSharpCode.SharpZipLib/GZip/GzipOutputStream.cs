@@ -3,6 +3,7 @@ using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.IO;
+using System.Text;
 
 namespace ICSharpCode.SharpZipLib.GZip
 {
@@ -52,6 +53,10 @@ namespace ICSharpCode.SharpZipLib.GZip
 		protected Crc32 crc = new Crc32();
 
 		private OutputState state_ = OutputState.Header;
+
+		private string fileName;
+
+		private GZipFlags flags = 0;
 
 		#endregion Instance Fields
 
@@ -109,6 +114,26 @@ namespace ICSharpCode.SharpZipLib.GZip
 		public int GetLevel()
 		{
 			return deflater_.GetLevel();
+		}
+
+		/// <summary>
+		/// Original filename
+		/// </summary>
+		public string FileName
+		{
+			get => fileName;
+			set
+			{
+				fileName = CleanFilename(value);
+				if (string.IsNullOrEmpty(fileName))
+				{
+					flags &= ~GZipFlags.FNAME;
+				}
+				else
+				{
+					flags |= GZipFlags.FNAME;
+				}
+			}
 		}
 
 		#endregion Public API
@@ -218,6 +243,9 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 		#region Support Routines
 
+		private string CleanFilename(string path)
+			=> path.Substring(path.LastIndexOf('/') + 1);
+
 		private void WriteHeader()
 		{
 			if (state_ == OutputState.Header)
@@ -227,13 +255,14 @@ namespace ICSharpCode.SharpZipLib.GZip
 				var mod_time = (int)((DateTime.Now.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000L);  // Ticks give back 100ns intervals
 				byte[] gzipHeader = {
 					// The two magic bytes
-					(byte) (GZipConstants.GZIP_MAGIC >> 8), (byte) (GZipConstants.GZIP_MAGIC & 0xff),
+					GZipConstants.ID1, 
+					GZipConstants.ID2,
 
 					// The compression type
-					(byte) Deflater.DEFLATED,
+					GZipConstants.CompressionMethodDeflate,
 
 					// The flags (not set)
-					0,
+					(byte)flags,
 
 					// The modification time
 					(byte) mod_time, (byte) (mod_time >> 8),
@@ -243,9 +272,19 @@ namespace ICSharpCode.SharpZipLib.GZip
 					0,
 
 					// The OS type (unknown)
-					(byte) 255
+					255
 				};
+
 				baseOutputStream_.Write(gzipHeader, 0, gzipHeader.Length);
+
+				if (flags.HasFlag(GZipFlags.FNAME))
+				{
+					var fname = GZipConstants.Encoding.GetBytes(fileName);
+					baseOutputStream_.Write(fname, 0, fname.Length);
+
+					// End filename string with a \0
+					baseOutputStream_.Write(new byte[] { 0 }, 0, 1);
+				}
 			}
 		}
 
