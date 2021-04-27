@@ -1,0 +1,39 @@
+# Workflow to execute when a new version is released
+name: Release
+
+on:
+  release:
+  
+  # Used for testing and manual execution
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag Ref'
+        required: true
+
+jobs:
+  docfx:
+    runs-on: ubuntu-latest
+    name: Update DocFX documentation
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.events.inputs.tag }}
+    - uses: nikeee/docfx-action@v1.0.0
+      name: Build Documentation
+      with:
+        args: docs/help/docfx.json
+
+    - uses: JamesIves/github-pages-deploy-action@3.6.2
+      name: Publish documentation to Github Pages
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: docs/help/_site 
+        TARGET_FOLDER: help
+        CLEAN: false
+
+    - name: Upload documentation as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        path: docs/help/_site

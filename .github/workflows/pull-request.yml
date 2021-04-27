@@ -1,0 +1,100 @@
+name: Build and Test PR
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  Build:
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu, windows, macos]
+        target: [netstandard2.0, netstandard2.1]
+        include:
+          - os: windows
+            target: net45
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+
+    - name: Build library (Debug)
+      run: dotnet build -c debug -f ${{ matrix.target }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      
+    - name: Build library (Release)
+      run: dotnet build -c release -f ${{ matrix.target }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+
+  Test:
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu, windows, macos]
+        target: [netcoreapp3.1]
+        include:
+          - os: windows
+            target: net46
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      if: matrix.target == 'netcoreapp3.1'
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+
+    # NOTE: This is the temporary fix for https://github.com/actions/virtual-environments/issues/1090
+    - name: Cleanup before restore
+      if: ${{ matrix.os == 'windows' }}
+      run: dotnet clean ICSharpCode.SharpZipLib.sln && dotnet nuget locals all --clear
+
+    - name: Restore test dependencies
+      run: dotnet restore
+
+    - name: Run tests (Debug)
+      run: dotnet test -c debug -f ${{ matrix.target }} --no-restore
+      
+    - name: Run tests (Release)
+      run: dotnet test -c release -f ${{ matrix.target }} --no-restore --collect="XPlat Code Coverage"
+      
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1.2.2
+      with:
+        fail_ci_if_error: false
+
+  Pack:
+    needs: [Build, Test]
+    runs-on: windows-latest
+    env:
+      NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.x'
+        
+    - name: Build library for .NET Standard 2.0
+      run: dotnet build -c Release -f netstandard2.0 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+    - name: Build library for .NET Standard 2.1
+      run: dotnet build -c Release -f netstandard2.1 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+    - name: Build library for .NET Framework 4.5
+      run: dotnet build -c Release -f net45 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+
+    - name: Create nuget package
+      run: dotnet pack src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj --configuration Release --output dist /p:Version=$(git describe --abbrev | % { $_.substring(1) })-PR
+      
+    - name: Upload nuget package artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Nuget package
+        path: dist/*.nupkg

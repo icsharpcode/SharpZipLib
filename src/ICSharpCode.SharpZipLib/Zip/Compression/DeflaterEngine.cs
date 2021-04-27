@@ -56,7 +56,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		/// <summary>
 		/// Construct instance with pending buffer
-		/// Adler calculation will be peformed
+		/// Adler calculation will be performed
 		/// </summary>
 		/// <param name="pending">
 		/// Pending buffer to use
@@ -643,7 +643,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 				huffman.FlushStoredBlock(window, blockStart, storedLength, lastBlock);
 				blockStart += storedLength;
-				return !lastBlock;
+				return !(lastBlock || storedLength == 0);
 			}
 			return true;
 		}

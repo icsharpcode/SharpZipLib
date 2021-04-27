@@ -345,7 +345,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			if (inputStream == null)
 			{
-				throw new TarException("no input stream stream defined");
+				throw new TarException("no input stream defined");
 			}
 
 			currentBlockIndex = 0;
@@ -492,7 +492,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			if (outputStream == null)
 			{
-				throw new TarException("TarBuffer.WriteBlock - no output stream stream defined");
+				throw new TarException("TarBuffer.WriteBlock - no output stream defined");
 			}
 
 			if ((offset < 0) || (offset >= buffer.Length))

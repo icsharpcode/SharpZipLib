@@ -1,6 +1,8 @@
-﻿using ICSharpCode.SharpZipLib.Tests.TestSupport;
+﻿using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
+using System;
 using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
@@ -187,7 +189,126 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			}
 			inStream.Close();
-			Assert.AreEqual(extractCount, 0, "No data should be read from empty entries");
+			Assert.Zero(extractCount, "No data should be read from empty entries");
+		}
+
+		/// <summary>
+		/// Test that calling Write with 0 bytes behaves.
+		/// See issue @ https://github.com/icsharpcode/SharpZipLib/issues/123.
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void TestZeroByteWrite()
+		{
+			using (var ms = new MemoryStreamWithoutSeek())
+			{
+				using (var outStream = new ZipOutputStream(ms) { IsStreamOwner = false })
+				{
+					var ze = new ZipEntry("Striped Marlin");
+					outStream.PutNextEntry(ze);
+
+					var buffer = Array.Empty<byte>();
+					outStream.Write(buffer, 0, 0);
+				}
+
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var inStream = new ZipInputStream(ms) { IsStreamOwner = false })
+				{
+					int extractCount = 0;
+					byte[] decompressedData = new byte[100];
+
+					while (inStream.GetNextEntry() != null)
+					{
+						while (true)
+						{
+							int numRead = inStream.Read(decompressedData, extractCount, decompressedData.Length);
+							if (numRead <= 0)
+							{
+								break;
+							}
+							extractCount += numRead;
+						}
+					}
+					Assert.Zero(extractCount, "No data should be read from empty entries");
+				}
+			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void WriteZipStreamWithNoCompression([Values(0, 1, 256)] int contentLength)
+		{
+			var buffer = new byte[255];
+
+			using (var dummyZip = Utils.GetDummyFile(0))
+			using (var inputFile = Utils.GetDummyFile(contentLength))
+			{
+				// Filename is manually cleaned here to prevent this test from failing while ZipEntry doesn't automatically clean it
+				var inputFileName = ZipEntry.CleanName(inputFile.Filename);
+
+				using (var zipFileStream = File.OpenWrite(dummyZip.Filename))
+				using (var zipOutputStream = new ZipOutputStream(zipFileStream))
+				using (var inputFileStream = File.OpenRead(inputFile.Filename))
+				{
+					zipOutputStream.PutNextEntry(new ZipEntry(inputFileName)
+					{
+						CompressionMethod = CompressionMethod.Stored,
+					});
+
+					StreamUtils.Copy(inputFileStream, zipOutputStream, buffer);
+				}
+
+				using (var zf = new ZipFile(dummyZip.Filename))
+				{
+					var inputBytes = File.ReadAllBytes(inputFile.Filename);
+
+					var entry = zf.GetEntry(inputFileName);
+					Assert.IsNotNull(entry, "No entry matching source file \"{0}\" found in archive, found \"{1}\"", inputFileName, zf[0].Name);
+
+					Assert.DoesNotThrow(() =>
+					{
+						using (var entryStream = zf.GetInputStream(entry))
+						{
+							var outputBytes = new byte[entryStream.Length];
+							entryStream.Read(outputBytes, 0, outputBytes.Length);
+
+							Assert.AreEqual(inputBytes, outputBytes, "Archive content does not match the source content");
+						}
+					}, "Failed to locate entry stream in archive");
+
+					Assert.IsTrue(zf.TestArchive(testData: true), "Archive did not pass TestArchive");
+				}
+
+				
+			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void ZipEntryFileNameAutoClean()
+		{
+			using (var dummyZip = Utils.GetDummyFile(0))
+			using (var inputFile = Utils.GetDummyFile()) {
+				using (var zipFileStream = File.OpenWrite(dummyZip.Filename))
+				using (var zipOutputStream = new ZipOutputStream(zipFileStream))
+				using (var inputFileStream = File.OpenRead(inputFile.Filename))
+				{
+					// New ZipEntry created with a full file name path as it's name
+					zipOutputStream.PutNextEntry(new ZipEntry(inputFile.Filename)
+					{
+						CompressionMethod = CompressionMethod.Stored,
+					});
+
+					inputFileStream.CopyTo(zipOutputStream);
+				}
+
+				using (var zf = new ZipFile(dummyZip.Filename))
+				{
+					// The ZipEntry name should have been automatically cleaned
+					Assert.AreEqual(ZipEntry.CleanName(inputFile.Filename), zf[0].Name);
+				}
+			}
 		}
 
 		/// <summary>
@@ -312,7 +433,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					var zis = new ZipInputStream(bs);
 					var entry = zis.GetNextEntry();
 
-					Assert.AreEqual(entry.Name, EntryName);
+					Assert.AreEqual(EntryName, entry.Name);
 					Assert.IsTrue((entry.Flags & (int)GeneralBitFlags.Descriptor) != 0);
 					return zis;
 				},
@@ -323,6 +444,117 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					return zos;
 				}
 			);
+		}
+
+		const string BZip2CompressedZip =
+			"UEsDBC4AAAAMAEyxgU5p3ou9JwAAAAcAAAAFAAAAYS5kYXRCWmg5MUFZJlNZ0buMcAAAAkgACABA" +
+			"ACAAIQCCCxdyRThQkNG7jHBQSwECMwAuAAAADABMsYFOad6LvScAAAAHAAAABQAAAAAAAAAAAAAA" +
+			"AAAAAAAAYS5kYXRQSwUGAAAAAAEAAQAzAAAASgAAAAAA";
+
+		/// <summary>
+		/// Should fail to read a zip with BZip2 compression
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void ShouldReadBZip2EntryButNotDecompress()
+		{
+			var fileBytes = System.Convert.FromBase64String(BZip2CompressedZip);
+
+			using (var input = new MemoryStream(fileBytes, false))
+			{
+				var zis = new ZipInputStream(input);
+				var entry = zis.GetNextEntry();
+
+				Assert.That(entry.Name, Is.EqualTo("a.dat"), "Should be able to get entry name");
+				Assert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.BZip2), "Entry should be BZip2 compressed");
+				Assert.That(zis.CanDecompressEntry, Is.False, "Should not be able to decompress BZip2 entry");
+
+				var buffer = new byte[1];
+				Assert.Throws<ZipException>(() => zis.Read(buffer, 0, 1), "Trying to read the stream should throw");
+			}
+		}
+
+		/// <summary>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/341
+		/// Should be able to read entries whose names contain invalid filesystem
+		/// characters
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void ShouldBeAbleToReadEntriesWithInvalidFileNames()
+		{
+			var testFileName = "<A|B?C>.txt";
+
+			using (var memoryStream = new MemoryStream())
+			{
+				using (var outStream = new ZipOutputStream(memoryStream))
+				{
+					outStream.IsStreamOwner = false;
+					outStream.PutNextEntry(new ZipEntry(testFileName));
+				}
+
+				memoryStream.Seek(0, SeekOrigin.Begin);
+
+				using (var inStream = new ZipInputStream(memoryStream))
+				{
+					var entry = inStream.GetNextEntry();
+					Assert.That(entry.Name, Is.EqualTo(testFileName), "output name must match original name");
+				}
+			}
+		}
+
+		/// <summary>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/507
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void AddingAnAESEntryWithNoPasswordShouldThrow()
+		{
+			using (var memoryStream = new MemoryStream())
+			{
+				using (var outStream = new ZipOutputStream(memoryStream))
+				{
+					var newEntry = new ZipEntry("test") { AESKeySize = 256 };
+
+					Assert.Throws<InvalidOperationException>(() => outStream.PutNextEntry(newEntry));
+				}
+			}
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void ShouldThrowDescriptiveExceptionOnUncompressedDescriptorEntry()
+		{
+			using (var ms = new MemoryStreamWithoutSeek())
+			{
+				using (var zos = new ZipOutputStream(ms))
+				{
+					zos.IsStreamOwner = false;
+					var entry = new ZipEntry("testentry");
+					entry.CompressionMethod = CompressionMethod.Stored;
+					entry.Flags |= (int)GeneralBitFlags.Descriptor;
+					zos.PutNextEntry(entry);
+					zos.Write(new byte[1], 0, 1);
+					zos.CloseEntry();
+				}
+
+				// Patch the Compression Method, since ZipOutputStream automatically changes it to Deflate when descriptors are used
+				ms.Seek(8, SeekOrigin.Begin);
+				ms.WriteByte((byte)CompressionMethod.Stored);
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var zis = new ZipInputStream(ms))
+				{
+					zis.IsStreamOwner = false;
+					var buf = new byte[32];
+					zis.GetNextEntry();
+
+					Assert.Throws(typeof(StreamUnsupportedException), () =>
+					{
+						zis.Read(buf, 0, buf.Length);
+					});
+				}
+			}
 		}
 	}
 }

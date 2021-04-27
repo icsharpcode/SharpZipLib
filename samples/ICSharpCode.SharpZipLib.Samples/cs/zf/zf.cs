@@ -205,7 +205,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 	#if OPTIONTEST
 															Console.WriteLine("Encoding set to {0}", enc);
 	#endif
-															ZipConstants.DefaultCodePage = enc;
+															ZipStrings.CodePage = enc;
 														} 
 														else 
 														{
@@ -223,7 +223,7 @@ namespace ICSharpCode.SharpZipLib.Samples.CS.ZF
 												{
 													try 
 													{
-														ZipConstants.DefaultCodePage = Encoding.GetEncoding(optArg).CodePage;
+														ZipStrings.CodePage = Encoding.GetEncoding(optArg).CodePage;
 													}
 													catch (Exception) 
 													{

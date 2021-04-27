@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using TimeSetting = ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -93,9 +94,77 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsTrue(Directory.Exists(targetDir), "Empty directory should be created");
 		}
 
+		/// <summary>
+		/// Test that FastZip can create empty directory entries in archives.
+		/// </summary>
+		[TestCase(null)]
+		[TestCase("password")]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void CreateEmptyDirectories(string password)
+		{
+			using (var tempFilePath = new Utils.TempDir())
+			{
+				string name = Path.Combine(tempFilePath.Fullpath, "x.zip");
+
+				// Create empty test folders (The folder that we'll zip, and the test sub folder).
+				string archiveRootDir = Path.Combine(tempFilePath.Fullpath, ZipTempDir);
+				string targetDir = Path.Combine(archiveRootDir, "floyd");
+				Directory.CreateDirectory(targetDir);
+
+				// Create the archive with FastZip
+				var fastZip = new FastZip
+				{
+					CreateEmptyDirectories = true,
+					Password = password,
+				};
+				fastZip.CreateZip(name, archiveRootDir, true, null);
+
+				// Test that the archive contains the empty folder entry
+				using (var zipFile = new ZipFile(name))
+				{
+					Assert.That(zipFile.Count, Is.EqualTo(1), "Should only be one entry in the file");
+
+					var folderEntry = zipFile.GetEntry("floyd/");
+					Assert.That(folderEntry.IsDirectory, Is.True, "The entry must be a folder");
+
+					Assert.IsTrue(zipFile.TestArchive(true));
+				}
+			}
+		}
+
 		[Test]
 		[Category("Zip")]
-		public void Encryption()
+		[Category("CreatesTempFile")]
+		public void ContentEqualAfterAfterArchived([Values(0, 1, 64)]int contentSize)
+		{
+			using(var sourceDir = new Utils.TempDir())
+			using(var targetDir = new Utils.TempDir())
+			using(var zipFile = Utils.GetDummyFile(0))
+			{
+				var sourceFile = sourceDir.CreateDummyFile(contentSize);
+				var sourceContent = File.ReadAllBytes(sourceFile);
+				new FastZip().CreateZip(zipFile.Filename, sourceDir.Fullpath, true, null);
+
+				Assert.DoesNotThrow(() =>
+				{
+					new FastZip().ExtractZip(zipFile.Filename, targetDir.Fullpath, null);
+				}, "Exception during extraction of test archive");
+				
+				var targetFile = Path.Combine(targetDir.Fullpath, Path.GetFileName(sourceFile));
+				var targetContent = File.ReadAllBytes(targetFile);
+
+				Assert.AreEqual(sourceContent.Length, targetContent.Length, "Extracted file size does not match source file size");
+				Assert.AreEqual(sourceContent, targetContent, "Extracted content does not match source content");
+			}
+		}
+
+		[Test]
+		[TestCase(ZipEncryptionMethod.ZipCrypto)]
+		[TestCase(ZipEncryptionMethod.AES128)]
+		[TestCase(ZipEncryptionMethod.AES256)]
+		[Category("Zip")]
+		public void Encryption(ZipEncryptionMethod encryptionMethod)
 		{
 			const string tempName1 = "a.dat";
 
@@ -109,8 +178,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			try
 			{
-				var fastZip = new FastZip();
-				fastZip.Password = "Ahoy";
+				var fastZip = new FastZip
+				{
+					Password = "Ahoy",
+					EntryEncryptionMethod = encryptionMethod
+				};
 
 				fastZip.CreateZip(target, tempFilePath, false, @"a\.dat", null);
 
@@ -122,8 +194,28 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					ZipEntry entry = zf[0];
 					Assert.AreEqual(tempName1, entry.Name);
 					Assert.AreEqual(1, entry.Size);
-					Assert.IsTrue(zf.TestArchive(true));
+					Assert.IsTrue(zf.TestArchive(true, TestStrategy.FindFirstError, (status, message) =>
+					{
+						if(!string.IsNullOrEmpty(message)) {
+							Console.WriteLine($"{message} ({status.Entry?.Name ?? "-"})");
+						}
+					}));
 					Assert.IsTrue(entry.IsCrypted);
+
+					switch (encryptionMethod)
+					{
+						case ZipEncryptionMethod.ZipCrypto:
+							Assert.That(entry.AESKeySize, Is.Zero, "AES key size should be 0 for ZipCrypto encrypted entries");
+							break;
+
+						case ZipEncryptionMethod.AES128:
+							Assert.That(entry.AESKeySize, Is.EqualTo(128), "AES key size should be 128 for AES128 encrypted entries");
+							break;
+
+						case ZipEncryptionMethod.AES256:
+							Assert.That(entry.AESKeySize, Is.EqualTo(256), "AES key size should be 256 for AES256 encrypted entries");
+							break;
+					}
 				}
 			}
 			finally
@@ -136,20 +228,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void CreateExceptions()
 		{
-			var fastZip = new FastZip();
-			string tempFilePath = GetTempFilePath();
-			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
-
 			Assert.Throws<DirectoryNotFoundException>(() =>
 			{
-				string addFile = Path.Combine(tempFilePath, "test.zip");
-				try
+				using (var tempDir = new Utils.TempDir())
 				{
-					fastZip.CreateZip(addFile, @"z:\doesnt exist", false, null);
-				}
-				finally
-				{
-					File.Delete(addFile);
+					var fastZip = new FastZip();
+					var badPath = Path.Combine(Path.GetTempPath(), Utils.GetDummyFileName());
+					var addFile = Path.Combine(tempDir.Fullpath, "test.zip");
+					fastZip.CreateZip(addFile, badPath, false, null);
 				}
 			});
 		}
@@ -173,7 +259,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					nameCount++;
 				}
 
-				zippy.CreateZip(tempZip.Filename, tempDir.Fullpath, true, null, null);
+				zippy.CreateZip(tempZip.Filename, tempDir.Fullpath, true, null);
 
 				using (ZipFile z = new ZipFile(tempZip.Filename))
 				{
@@ -197,7 +283,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 						Assert.AreEqual(name, entry.Name);
 
-						var nameBytes = string.Join(' ', Encoding.BigEndianUnicode.GetBytes(entry.Name).Select(b => b.ToString("x2")));
+						var nameBytes = string.Join(" ", Encoding.BigEndianUnicode.GetBytes(entry.Name).Select(b => b.ToString("x2")));
 
 						Console.WriteLine($" - Zip entry: {entry.Name} ({nameBytes})");
 					}
@@ -502,6 +588,282 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			// test folder should not have been created on error
 			Assert.That(Directory.Exists(tempFolderPath), Is.False, "Temp folder path should still not exist");
+		}
+
+		/// <summary>
+		/// #426 - set the modified date for created directory entries if the RestoreDateTimeOnExtract option is enabled
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void SetDirectoryModifiedDate()
+		{
+			string tempFilePath = GetTempFilePath();
+			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
+
+			string zipName = Path.Combine(tempFilePath, $"{nameof(SetDirectoryModifiedDate)}.zip");
+
+			EnsureTestDirectoryIsEmpty(tempFilePath);
+
+			var modifiedTime = new DateTime(2001, 1, 2);
+			string targetDir = Path.Combine(tempFilePath, ZipTempDir, nameof(SetDirectoryModifiedDate));
+			using (FileStream fs = File.Create(zipName))
+			{
+				using (ZipOutputStream zOut = new ZipOutputStream(fs))
+				{
+					// Add an empty directory entry, with a specified time field
+					var entry = new ZipEntry("emptyFolder/")
+					{
+						DateTime = modifiedTime
+					};
+					zOut.PutNextEntry(entry);
+				}
+			}
+
+			try
+			{
+				// extract the zip
+				var fastZip = new FastZip
+				{
+					CreateEmptyDirectories = true,
+					RestoreDateTimeOnExtract = true
+				};
+				fastZip.ExtractZip(zipName, targetDir, "zz");
+
+				File.Delete(zipName);
+
+				// Check that the empty sub folder exists and has the expected modlfied date
+				string emptyTargetDir = Path.Combine(targetDir, "emptyFolder");
+
+				Assert.That(Directory.Exists(emptyTargetDir), Is.True, "Empty directory should be created");
+
+				var extractedFolderTime = Directory.GetLastWriteTime(emptyTargetDir);
+				Assert.That(extractedFolderTime, Is.EqualTo(modifiedTime));
+			}
+			finally
+			{
+				// Tidy up
+				Directory.Delete(targetDir, true);
+			}
+		}
+
+		/// <summary>
+		/// Test for https://github.com/icsharpcode/SharpZipLib/issues/78
+		/// </summary>
+		/// <param name="leaveOpen">if true, the stream given to CreateZip should be left open, if false it should be disposed.</param>
+		[TestCase(true)]
+		[TestCase(false)]
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		public void CreateZipShouldLeaveOutputStreamOpenIfRequested(bool leaveOpen)
+		{
+			const string tempFileName = "a(2).dat";
+
+			using (var tempFolder = new Utils.TempDir())
+			{
+				// Create test input file
+				string addFile = Path.Combine(tempFolder.Fullpath, tempFileName);
+				MakeTempFile(addFile, 16);
+
+				// Create the zip with fast zip
+				var target = new TrackedMemoryStream();
+				var fastZip = new FastZip();
+
+     			fastZip.CreateZip(target, tempFolder.Fullpath, false, @"a\(2\)\.dat", null, leaveOpen: leaveOpen);
+
+				// Check that the output stream was disposed (or not) as expected
+				Assert.That(target.IsDisposed, Is.Not.EqualTo(leaveOpen), "IsDisposed should be the opposite of leaveOpen");
+
+				// Check that the file contents are correct in both cases
+				var archive = new MemoryStream(target.ToArray());
+				using (ZipFile zf = new ZipFile(archive))
+				{
+					Assert.AreEqual(1, zf.Count);
+					ZipEntry entry = zf[0];
+					Assert.AreEqual(tempFileName, entry.Name);
+					Assert.AreEqual(16, entry.Size);
+					Assert.IsTrue(zf.TestArchive(true));
+				}
+			}
+		}
+
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		[Test]
+		public void CreateZipShouldSetTimeOnEntriesFromConstructorDateTime()
+		{
+			var targetTime = TestTargetTime(TimeSetting.Fixed);
+			var fastZip = new FastZip(targetTime);
+			var target = CreateFastZipTestArchiveWithAnEntry(fastZip);
+			var archive = new MemoryStream(target.ToArray());
+			using (var zf = new ZipFile(archive))
+			{
+				Assert.AreEqual(targetTime, zf[0].DateTime);
+			}
+		}
+
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		[TestCase(TimeSetting.CreateTimeUtc), TestCase(TimeSetting.LastWriteTimeUtc), TestCase(TimeSetting.LastAccessTimeUtc)]
+		[TestCase(TimeSetting.CreateTime),    TestCase(TimeSetting.LastWriteTime),    TestCase(TimeSetting.LastAccessTime)]
+		public void CreateZipShouldSetTimeOnEntriesFromConstructorTimeSetting(TimeSetting timeSetting)
+		{
+			var targetTime = TestTargetTime(timeSetting);
+			var fastZip = new FastZip(timeSetting);
+
+			var alterTime = (Action<FileInfo>) null;
+			switch(timeSetting)
+			{
+				case TimeSetting.LastWriteTime: alterTime = fi => fi.LastWriteTime = targetTime; break;
+				case TimeSetting.LastWriteTimeUtc: alterTime = fi => fi.LastWriteTimeUtc = targetTime; break;
+				case TimeSetting.CreateTime: alterTime =  fi => fi.CreationTime = targetTime; break;
+				case TimeSetting.CreateTimeUtc: alterTime =  fi => fi.CreationTimeUtc = targetTime; break;
+			}
+
+			var target = CreateFastZipTestArchiveWithAnEntry(fastZip, alterTime);
+			// Check that the file contents are correct in both cases
+			var archive = new MemoryStream(target.ToArray());
+			using (var zf = new ZipFile(archive))
+			{
+				var expectedTime = TestTargetTime(timeSetting);
+				var actualTime = zf[0].DateTime;
+				// Assert that the time is within +/- 2s of the target time to allow for timing/rounding discrepancies
+				Assert.LessOrEqual(Math.Abs((expectedTime - actualTime).TotalSeconds), 2);
+			}
+		}
+
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		[TestCase(TimeSetting.CreateTimeUtc), TestCase(TimeSetting.LastWriteTimeUtc), TestCase(TimeSetting.LastAccessTimeUtc)]
+		[TestCase(TimeSetting.CreateTime),    TestCase(TimeSetting.LastWriteTime),    TestCase(TimeSetting.LastAccessTime)]
+		[TestCase(TimeSetting.Fixed)]
+		public void ExtractZipShouldSetTimeOnFilesFromConstructorTimeSetting(TimeSetting timeSetting)
+		{
+			var targetTime = ExpectedFixedTime();
+			var archiveStream = CreateFastZipTestArchiveWithAnEntry(new FastZip(targetTime));
+
+			if (timeSetting == TimeSetting.Fixed)
+			{
+				Assert.Ignore("Fixed time without specifying a time is undefined");
+			}
+
+			var fastZip = new FastZip(timeSetting);
+			using (var extractDir = new Utils.TempDir())
+			{
+				fastZip.ExtractZip(archiveStream, extractDir.Fullpath, FastZip.Overwrite.Always, 
+					_ => true, "", "", true, true, false);
+				var fi = new FileInfo(Path.Combine(extractDir.Fullpath, SingleEntryFileName));
+				var actualTime = FileTimeFromTimeSetting(fi, timeSetting);
+				// Assert that the time is within +/- 2s of the target time to allow for timing/rounding discrepancies
+				Assert.LessOrEqual(Math.Abs((targetTime - actualTime).TotalSeconds), 2);
+			}
+		}
+
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		[TestCase(DateTimeKind.Local), TestCase(DateTimeKind.Utc)]
+		public void ExtractZipShouldSetTimeOnFilesFromConstructorDateTime(DateTimeKind dtk)
+		{
+			// Create the archive with a fixed "bad" datetime
+			var target = CreateFastZipTestArchiveWithAnEntry(new FastZip(UnexpectedFixedTime(dtk)));
+
+			// Extract the archive with a fixed time override
+			var targetTime = ExpectedFixedTime(dtk);
+			var fastZip = new FastZip(targetTime);
+			using (var extractDir = new Utils.TempDir())
+			{
+				fastZip.ExtractZip(target, extractDir.Fullpath, FastZip.Overwrite.Always,
+					_ => true, "", "", true, true, false);
+				var fi = new FileInfo(Path.Combine(extractDir.Fullpath, SingleEntryFileName));
+				var fileTime = FileTimeFromTimeSetting(fi, TimeSetting.Fixed);
+				if (fileTime.Kind != dtk) fileTime = fileTime.ToUniversalTime();
+				Assert.AreEqual(targetTime, fileTime);
+			}
+		}
+
+		[Category("Zip")]
+		[Category("CreatesTempFile")]
+		[TestCase(DateTimeKind.Local), TestCase(DateTimeKind.Utc)]
+		public void ExtractZipShouldSetTimeOnFilesWithEmptyConstructor(DateTimeKind dtk)
+		{
+			// Create the archive with a fixed datetime
+			var targetTime = ExpectedFixedTime(dtk);
+			var target = CreateFastZipTestArchiveWithAnEntry(new FastZip(targetTime));
+
+			// Extract the archive with an empty constructor
+			var fastZip = new FastZip();
+			using (var extractDir = new Utils.TempDir())
+			{
+				fastZip.ExtractZip(target, extractDir.Fullpath, FastZip.Overwrite.Always,
+					_ => true, "", "", true, true, false);
+				var fi = new FileInfo(Path.Combine(extractDir.Fullpath, SingleEntryFileName));
+				Assert.AreEqual(targetTime, FileTimeFromTimeSetting(fi, TimeSetting.Fixed));
+			}
+		}
+
+		private static bool IsLastAccessTime(TimeSetting ts) 
+			=> ts == TimeSetting.LastAccessTime || ts == TimeSetting.LastAccessTimeUtc;
+
+		private static DateTime FileTimeFromTimeSetting(FileInfo fi, TimeSetting timeSetting)
+		{
+			switch (timeSetting)
+			{
+				case TimeSetting.LastWriteTime: return fi.LastWriteTime;
+				case TimeSetting.LastWriteTimeUtc: return fi.LastWriteTimeUtc;
+				case TimeSetting.CreateTime: return fi.CreationTime;
+				case TimeSetting.CreateTimeUtc: return fi.CreationTimeUtc;
+				case TimeSetting.LastAccessTime: return fi.LastAccessTime;
+				case TimeSetting.LastAccessTimeUtc: return fi.LastAccessTimeUtc;
+				case TimeSetting.Fixed: return fi.LastWriteTime;
+			}
+
+			throw new ArgumentException("Invalid TimeSetting", nameof(timeSetting));
+		}
+
+		private static DateTime TestTargetTime(TimeSetting ts)
+		{
+			var dtk = ts == TimeSetting.CreateTimeUtc 
+			       || ts == TimeSetting.LastWriteTimeUtc
+			       || ts == TimeSetting.LastAccessTimeUtc
+				? DateTimeKind.Utc
+				: DateTimeKind.Local;
+
+			return IsLastAccessTime(ts)
+				// AccessTime will be altered by reading/writing the file entry
+				? CurrentTime(dtk) 
+				: ExpectedFixedTime(dtk);
+		}
+
+		private static DateTime CurrentTime(DateTimeKind kind)
+		{
+			var now = kind == DateTimeKind.Utc ? DateTime.UtcNow : DateTime.Now;
+			return new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, (now.Second / 2) * 2, kind);
+		}
+
+		private static DateTime ExpectedFixedTime(DateTimeKind dtk = DateTimeKind.Unspecified) 
+			=> new DateTime(2010, 5, 30, 16, 22, 50, dtk);
+		private static DateTime UnexpectedFixedTime(DateTimeKind dtk = DateTimeKind.Unspecified)
+			=> new DateTime(1980, 10, 11, 22, 39, 30, dtk);
+
+		private const string SingleEntryFileName = "testEntry.dat";
+
+		private static TrackedMemoryStream CreateFastZipTestArchiveWithAnEntry(FastZip fastZip, Action<FileInfo> alterFile = null)
+		{
+			var target = new TrackedMemoryStream();
+
+			using (var tempFolder = new Utils.TempDir())
+			{
+
+				// Create test input file
+				var addFile = Path.Combine(tempFolder.Fullpath, SingleEntryFileName);
+				MakeTempFile(addFile, 16);
+				var fi = new FileInfo(addFile);
+				alterFile?.Invoke(fi);
+
+				fastZip.CreateZip(target, tempFolder.Fullpath, false, SingleEntryFileName, null, leaveOpen: true);
+			}
+
+			return target;
 		}
 	}
 }

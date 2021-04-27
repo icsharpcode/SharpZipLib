@@ -132,7 +132,7 @@ class Cmd_Checksum
 				case Command.Crc32:
 					var currentCrc = new Crc32();
 					while ((bytesRead = checksumStream.Read(buffer, 0, buffer.Length)) > 0) {
-						currentCrc.Update(buffer, 0, bytesRead);
+						currentCrc.Update(new ArraySegment<byte>(buffer, 0, bytesRead));
 					}
 					Console.WriteLine("CRC32 for {0} is 0x{1:X8}", args[0], currentCrc.Value);
 					break;
@@ -140,7 +140,7 @@ class Cmd_Checksum
 				case Command.BZip2:
 					var currentBZip2Crc = new BZip2Crc();
 					while ((bytesRead = checksumStream.Read(buffer, 0, buffer.Length)) > 0) {
-						currentBZip2Crc.Update(buffer, 0, bytesRead);
+						currentBZip2Crc.Update(new ArraySegment<byte>(buffer, 0, bytesRead));
 					}
 					Console.WriteLine("BZip2CRC32 for {0} is 0x{1:X8}", args[0], currentBZip2Crc.Value);
 					break;
@@ -148,7 +148,7 @@ class Cmd_Checksum
 				case Command.Adler:
 					var currentAdler = new Adler32();
 					while ((bytesRead = checksumStream.Read(buffer, 0, buffer.Length)) > 0) {
-						currentAdler.Update(buffer, 0, bytesRead);
+						currentAdler.Update(new ArraySegment<byte>(buffer, 0, bytesRead));
 					}
 					Console.WriteLine("Adler32 for {0} is 0x{1:X8}", args[0], currentAdler.Value);
 					break;

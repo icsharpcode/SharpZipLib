@@ -18,8 +18,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Construct a TarInputStream with default block factor
 		/// </summary>
 		/// <param name="inputStream">stream to source data from</param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public TarInputStream(Stream inputStream)
-			: this(inputStream, TarBuffer.DefaultBlockFactor)
+			: this(inputStream, TarBuffer.DefaultBlockFactor, null)
+		{
+		}
+		/// <summary>
+		/// Construct a TarInputStream with default block factor
+		/// </summary>
+		/// <param name="inputStream">stream to source data from</param>
+		/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
+		public TarInputStream(Stream inputStream, Encoding nameEncoding)
+			: this(inputStream, TarBuffer.DefaultBlockFactor, nameEncoding)
 		{
 		}
 
@@ -28,10 +38,25 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		/// <param name="inputStream">stream to source data from</param>
 		/// <param name="blockFactor">block factor to apply to archive</param>
+		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
 		public TarInputStream(Stream inputStream, int blockFactor)
 		{
 			this.inputStream = inputStream;
 			tarBuffer = TarBuffer.CreateInputTarBuffer(inputStream, blockFactor);
+			encoding = null;
+		}
+
+		/// <summary>
+		/// Construct a TarInputStream with user specified block factor
+		/// </summary>
+		/// <param name="inputStream">stream to source data from</param>
+		/// <param name="blockFactor">block factor to apply to archive</param>
+		/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
+		public TarInputStream(Stream inputStream, int blockFactor, Encoding nameEncoding)
+		{
+			this.inputStream = inputStream;
+			tarBuffer = TarBuffer.CreateInputTarBuffer(inputStream, blockFactor);
+			encoding = nameEncoding;
 		}
 
 		#endregion Constructors
@@ -452,7 +477,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				try
 				{
 					var header = new TarHeader();
-					header.ParseBuffer(headerBuf);
+					header.ParseBuffer(headerBuf, encoding);
 					if (!header.IsChecksumValid)
 					{
 						throw new TarException("Header checksum is invalid");
@@ -478,7 +503,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 								throw new InvalidHeaderException("Failed to read long name entry");
 							}
 
-							longName.Append(TarHeader.ParseName(nameBuffer, 0, numRead).ToString());
+							longName.Append(TarHeader.ParseName(nameBuffer, 0, numRead, encoding).ToString());
 							numToRead -= numRead;
 						}
 
@@ -538,7 +563,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 					if (entryFactory == null)
 					{
-						currentEntry = new TarEntry(headerBuf);
+						currentEntry = new TarEntry(headerBuf, encoding);
 						if (longName != null)
 						{
 							currentEntry.Name = longName.ToString();
@@ -611,6 +636,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public interface IEntryFactory
 		{
+			// This interface does not considering name encoding.
+			// How this interface should be?
 			/// <summary>
 			/// Create an entry based on name alone
 			/// </summary>
@@ -635,7 +662,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			/// Create a tar entry based on the header information passed
 			/// </summary>
 			/// <param name="headerBuffer">
-			/// Buffer containing header information to create an an entry from.
+			/// Buffer containing header information to create an entry from.
 			/// </param>
 			/// <returns>
 			/// Created TarEntry or descendant class
@@ -648,6 +675,22 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public class EntryFactoryAdapter : IEntryFactory
 		{
+			Encoding nameEncoding;
+			/// <summary>
+			/// Construct standard entry factory class with ASCII name encoding
+			/// </summary>
+			[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
+			public EntryFactoryAdapter()
+			{
+			}
+			/// <summary>
+			/// Construct standard entry factory with name encoding
+			/// </summary>
+			/// <param name="nameEncoding">The <see cref="Encoding"/> used for the Name fields, or null for ASCII only</param>
+			public EntryFactoryAdapter(Encoding nameEncoding)
+			{
+				this.nameEncoding = nameEncoding;
+			}
 			/// <summary>
 			/// Create a <see cref="TarEntry"/> based on named
 			/// </summary>
@@ -675,7 +718,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			/// <returns>A new <see cref="TarEntry"/></returns>
 			public TarEntry CreateEntry(byte[] headerBuffer)
 			{
-				return new TarEntry(headerBuffer);
+				return new TarEntry(headerBuffer, nameEncoding);
 			}
 		}
 
@@ -720,6 +763,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Stream used as the source of input data.
 		/// </summary>
 		private readonly Stream inputStream;
+
+		private readonly Encoding encoding;
 
 		#endregion Instance Fields
 	}

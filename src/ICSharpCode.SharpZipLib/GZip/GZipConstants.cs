@@ -6,7 +6,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 	/// <summary>
 	/// This class contains constants used for gzip.
 	/// </summary>
-	public static class GZipConstants
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "kept for backwards compatibility")]
+	sealed public class GZipConstants
 	{
 		/// <summary>
 		/// First GZip identification byte

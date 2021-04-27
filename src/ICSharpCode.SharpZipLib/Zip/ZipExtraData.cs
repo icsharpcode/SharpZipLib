@@ -1,9 +1,10 @@
 using System;
 using System.IO;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
-	// TODO: Sort out wether tagged data is useful and what a good implementation might look like.
+	// TODO: Sort out whether tagged data is useful and what a good implementation might look like.
 	// Its just a sketch of an idea at the moment.
 
 	/// <summary>
@@ -521,7 +522,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			if (data == null)
 			{
-				_data = new byte[0];
+				_data = Empty.Array<byte>();
 			}
 			else
 			{
@@ -552,7 +553,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			if ((_data == null) || (_data.Length != 0))
 			{
-				_data = new byte[0];
+				_data = Empty.Array<byte>();
 			}
 		}
 

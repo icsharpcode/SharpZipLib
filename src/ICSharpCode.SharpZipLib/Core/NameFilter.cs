@@ -106,7 +106,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Split a string into its component pieces
 		/// </summary>
 		/// <param name="original">The original string</param>
-		/// <returns>Returns an array of <see cref="T:System.String"/> values containing the individual filter elements.</returns>
+		/// <returns>Returns an array of <see cref="System.String"/> values containing the individual filter elements.</returns>
 		public static string[] SplitQuoted(string original)
 		{
 			char escape = '\\';

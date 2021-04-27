@@ -195,10 +195,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			// Over the limit are set to max.
 			ze.DateTime = new DateTime(2108, 1, 1);
+			ze.DosTime = ze.DosTime;
 			Assert.AreEqual(new DateTime(2107, 12, 31, 23, 59, 58), ze.DateTime);
 
 			// Under the limit are set to min.
 			ze.DateTime = new DateTime(1906, 12, 4);
+			ze.DosTime = ze.DosTime;
 			Assert.AreEqual(new DateTime(1980, 1, 1, 0, 0, 0), ze.DateTime);
 		}
 

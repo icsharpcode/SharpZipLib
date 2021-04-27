@@ -3,6 +3,7 @@ using ICSharpCode.SharpZipLib.Zip.Compression;
 using System;
 using System.IO;
 using static ICSharpCode.SharpZipLib.Zip.Compression.Deflater;
+using static ICSharpCode.SharpZipLib.Zip.ZipEntryFactory;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -196,6 +197,29 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Initialise a new instance of <see cref="FastZip"/> using the specified <see cref="TimeSetting"/>
+		/// </summary>
+		/// <param name="timeSetting">The <see cref="TimeSetting">time setting</see> to use when creating or extracting <see cref="ZipEntry">Zip entries</see>.</param>
+		/// <remarks>Using <see cref="TimeSetting.LastAccessTime">TimeSetting.LastAccessTime</see><see cref="TimeSetting.LastAccessTimeUtc">[Utc]</see> when
+		/// creating an archive will set the file time to the moment of reading.
+		/// </remarks>
+		public FastZip(TimeSetting timeSetting)
+		{
+			entryFactory_ = new ZipEntryFactory(timeSetting);
+			restoreDateTimeOnExtract_ = true;
+		}
+
+		/// <summary>
+		/// Initialise a new instance of <see cref="FastZip"/> using the specified <see cref="DateTime"/>
+		/// </summary>
+		/// <param name="time">The time to set all <see cref="ZipEntry.DateTime"/> values for created or extracted <see cref="ZipEntry">Zip Entries</see>.</param>
+		public FastZip(DateTime time)
+		{
+			entryFactory_ = new ZipEntryFactory(time);
+			restoreDateTimeOnExtract_ = true;
+		}
+
+		/// <summary>
 		/// Initialise a new instance of <see cref="FastZip"/>
 		/// </summary>
 		/// <param name="events">The <see cref="FastZipEvents">events</see> to use during operations.</param>
@@ -209,7 +233,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#region Properties
 
 		/// <summary>
-		/// Get/set a value indicating wether empty directories should be created.
+		/// Get/set a value indicating whether empty directories should be created.
 		/// </summary>
 		public bool CreateEmptyDirectories
 		{
@@ -225,6 +249,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get { return password_; }
 			set { password_ = value; }
 		}
+
+		/// <summary>
+		/// Get / set the method of encrypting entries.
+		/// </summary>
+		/// <remarks>
+		/// Only applies when <see cref="Password"/> is set.
+		/// Defaults to ZipCrypto for backwards compatibility purposes.
+		/// </remarks>
+		public ZipEncryptionMethod EntryEncryptionMethod { get; set; } = ZipEncryptionMethod.ZipCrypto;
 
 		/// <summary>
 		/// Get or set the <see cref="INameTransform"></see> active when creating Zip files.
@@ -267,7 +300,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// read Zip64 archives. However it does avoid the situation were a large file
 		/// is added and cannot be completed correctly.
 		/// NOTE: Setting the size for entries before they are added is the best solution!
-		/// By default the EntryFactory used by FastZip will set fhe file size.
+		/// By default the EntryFactory used by FastZip will set the file size.
 		/// </remarks>
 		public UseZip64 UseZip64
 		{
@@ -276,7 +309,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get/set a value indicating wether file dates and times should
+		/// Get/set a value indicating whether file dates and times should
 		/// be restored when extracting files from an archive.
 		/// </summary>
 		/// <remarks>The default value is false.</remarks>
@@ -362,20 +395,79 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>The <paramref name="outputStream"/> is closed after creation.</remarks>
 		public void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, string fileFilter, string directoryFilter)
 		{
+			CreateZip(outputStream, sourceDirectory, recurse, fileFilter, directoryFilter, false);
+		}
+
+		/// <summary>
+		/// Create a zip archive sending output to the <paramref name="outputStream"/> passed.
+		/// </summary>
+		/// <param name="outputStream">The stream to write archive data to.</param>
+		/// <param name="sourceDirectory">The directory to source files from.</param>
+		/// <param name="recurse">True to recurse directories, false for no recursion.</param>
+		/// <param name="fileFilter">The <see cref="PathFilter">file filter</see> to apply.</param>
+		/// <param name="directoryFilter">The <see cref="PathFilter">directory filter</see> to apply.</param>
+		/// <param name="leaveOpen">true to leave <paramref name="outputStream"/> open after the zip has been created, false to dispose it.</param>
+		public void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, string fileFilter, string directoryFilter, bool leaveOpen)
+		{
+			var scanner = new FileSystemScanner(fileFilter, directoryFilter);
+			CreateZip(outputStream, sourceDirectory, recurse, scanner, leaveOpen);
+		}
+
+		/// <summary>
+		/// Create a zip file.
+		/// </summary>
+		/// <param name="zipFileName">The name of the zip file to create.</param>
+		/// <param name="sourceDirectory">The directory to source files from.</param>
+		/// <param name="recurse">True to recurse directories, false for no recursion.</param>
+		/// <param name="fileFilter">The <see cref="IScanFilter">file filter</see> to apply.</param>
+		/// <param name="directoryFilter">The <see cref="IScanFilter">directory filter</see> to apply.</param>
+		public void CreateZip(string zipFileName, string sourceDirectory,
+			bool recurse, IScanFilter fileFilter, IScanFilter directoryFilter)
+		{
+			CreateZip(File.Create(zipFileName), sourceDirectory, recurse, fileFilter, directoryFilter, false);
+		}
+
+		/// <summary>
+		/// Create a zip archive sending output to the <paramref name="outputStream"/> passed.
+		/// </summary>
+		/// <param name="outputStream">The stream to write archive data to.</param>
+		/// <param name="sourceDirectory">The directory to source files from.</param>
+		/// <param name="recurse">True to recurse directories, false for no recursion.</param>
+		/// <param name="fileFilter">The <see cref="IScanFilter">file filter</see> to apply.</param>
+		/// <param name="directoryFilter">The <see cref="IScanFilter">directory filter</see> to apply.</param>
+		/// <param name="leaveOpen">true to leave <paramref name="outputStream"/> open after the zip has been created, false to dispose it.</param>
+		public void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, IScanFilter fileFilter, IScanFilter directoryFilter, bool leaveOpen = false)
+		{
+			var scanner = new FileSystemScanner(fileFilter, directoryFilter);
+			CreateZip(outputStream, sourceDirectory, recurse, scanner, leaveOpen);
+		}
+
+		/// <summary>
+		/// Create a zip archive sending output to the <paramref name="outputStream"/> passed.
+		/// </summary>
+		/// <param name="outputStream">The stream to write archive data to.</param>
+		/// <param name="sourceDirectory">The directory to source files from.</param>
+		/// <param name="recurse">True to recurse directories, false for no recursion.</param>
+		/// <param name="scanner">For performing the actual file system scan</param>
+		/// <param name="leaveOpen">true to leave <paramref name="outputStream"/> open after the zip has been created, false to dispose it.</param>
+		/// <remarks>The <paramref name="outputStream"/> is closed after creation.</remarks>
+		private void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, FileSystemScanner scanner, bool leaveOpen)
+		{
 			NameTransform = new ZipNameTransform(sourceDirectory);
 			sourceDirectory_ = sourceDirectory;
 
 			using (outputStream_ = new ZipOutputStream(outputStream))
 			{
 				outputStream_.SetLevel((int)CompressionLevel);
+				outputStream_.IsStreamOwner = !leaveOpen;
+				outputStream_.NameTransform = null; // all required transforms handled by us
 
-				if (password_ != null)
+				if (false == string.IsNullOrEmpty(password_) && EntryEncryptionMethod != ZipEncryptionMethod.None)
 				{
 					outputStream_.Password = password_;
 				}
 
 				outputStream_.UseZip64 = UseZip64;
-				var scanner = new FileSystemScanner(fileFilter, directoryFilter);
 				scanner.ProcessFile += ProcessFile;
 				if (this.CreateEmptyDirectories)
 				{
@@ -533,12 +625,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				try
 				{
-					// The open below is equivalent to OpenRead which gaurantees that if opened the
+					// The open below is equivalent to OpenRead which guarantees that if opened the
 					// file will not be changed by subsequent openers, but precludes opening in some cases
 					// were it could succeed. ie the open may fail as its already open for writing and the share mode should reflect that.
 					using (FileStream stream = File.Open(e.Name, FileMode.Open, FileAccess.Read, FileShare.Read))
 					{
 						ZipEntry entry = entryFactory_.MakeFileEntry(e.Name);
+
+						// Set up AES encryption for the entry if required.
+						ConfigureEntryEncryption(entry);
+
 						outputStream_.PutNextEntry(entry);
 						AddFileContents(e.Name, stream);
 					}
@@ -554,6 +650,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 						continueRunning_ = false;
 						throw;
 					}
+				}
+			}
+		}
+
+		// Set up the encryption method to use for the specific entry.
+		private void ConfigureEntryEncryption(ZipEntry entry)
+		{
+			// Only alter the entries options if AES isn't already enabled for it
+			// (it might have been set up by the entry factory, and if so we let that take precedence)
+			if (!string.IsNullOrEmpty(Password) && entry.AESEncryptionStrength == 0)
+			{
+				switch (EntryEncryptionMethod)
+				{
+					case ZipEncryptionMethod.AES128:
+						entry.AESKeySize = 128;
+						break;
+
+					case ZipEncryptionMethod.AES256:
+						entry.AESKeySize = 256;
+						break;
 				}
 			}
 		}
@@ -621,14 +737,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 							{
 								buffer_ = new byte[4096];
 							}
-							if ((events_ != null) && (events_.Progress != null))
+
+							using (var inputStream = zipFile_.GetInputStream(entry))
 							{
-								StreamUtils.Copy(zipFile_.GetInputStream(entry), outputStream, buffer_,
-									events_.Progress, events_.ProgressInterval, this, entry.Name, entry.Size);
-							}
-							else
-							{
-								StreamUtils.Copy(zipFile_.GetInputStream(entry), outputStream, buffer_);
+								if ((events_ != null) && (events_.Progress != null))
+								{
+									StreamUtils.Copy(inputStream, outputStream, buffer_,
+										events_.Progress, events_.ProgressInterval, this, entry.Name, entry.Size);
+								}
+								else
+								{
+									StreamUtils.Copy(inputStream, outputStream, buffer_);
+								}
 							}
 
 							if (events_ != null)
@@ -639,7 +759,39 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 						if (restoreDateTimeOnExtract_)
 						{
-							File.SetLastWriteTime(targetName, entry.DateTime);
+							switch (entryFactory_.Setting)
+							{
+								case TimeSetting.CreateTime:
+									File.SetCreationTime(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.CreateTimeUtc:
+									File.SetCreationTimeUtc(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.LastAccessTime:
+									File.SetLastAccessTime(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.LastAccessTimeUtc:
+									File.SetLastAccessTimeUtc(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.LastWriteTime:
+									File.SetLastWriteTime(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.LastWriteTimeUtc:
+									File.SetLastWriteTimeUtc(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.Fixed:
+									File.SetLastWriteTime(targetName, entryFactory_.FixedDateTime);
+									break;
+
+								default:
+									throw new ZipException("Unhandled time setting in ExtractFileEntry");
+							}
 						}
 
 						if (RestoreAttributesOnExtract && entry.IsDOSEntry && (entry.ExternalFileAttributes != -1))
@@ -687,7 +839,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// TODO: Fire delegate/throw exception were compression method not supported, or name is invalid?
 
-			string dirName = null;
+			string dirName = string.Empty;
 
 			if (doExtraction)
 			{
@@ -707,7 +859,51 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					try
 					{
-						Directory.CreateDirectory(dirName);
+						continueRunning_ = events_?.OnProcessDirectory(dirName, true) ?? true;
+						if (continueRunning_)
+						{
+							Directory.CreateDirectory(dirName);
+							if (entry.IsDirectory && restoreDateTimeOnExtract_)
+							{
+								switch (entryFactory_.Setting)
+								{
+									case TimeSetting.CreateTime:
+										Directory.SetCreationTime(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.CreateTimeUtc:
+										Directory.SetCreationTimeUtc(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.LastAccessTime:
+										Directory.SetLastAccessTime(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.LastAccessTimeUtc:
+										Directory.SetLastAccessTimeUtc(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.LastWriteTime:
+										Directory.SetLastWriteTime(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.LastWriteTimeUtc:
+										Directory.SetLastWriteTimeUtc(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.Fixed:
+										Directory.SetLastWriteTime(dirName, entryFactory_.FixedDateTime);
+										break;
+
+									default:
+										throw new ZipException("Unhandled time setting in ExtractEntry");
+								}
+							}
+						}
+						else
+						{
+							doExtraction = false;
+						}
 					}
 					catch (Exception ex)
 					{

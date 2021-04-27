@@ -539,4 +539,52 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			return base.Read(buffer, offset, count);
 		}
 	}
+
+	/// <summary>
+	/// A stream that closes itself when all of its data is read.
+	/// </summary>
+	/// <remarks>
+	/// Useful for testing issues such as https://github.com/icsharpcode/SharpZipLib/issues/379
+	/// </remarks>
+	internal class SelfClosingStream : MemoryStream
+	{
+		private bool isFullyRead = false;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SelfClosingStream"/> class.
+		/// </summary>
+		public SelfClosingStream()
+		{
+		}
+
+		// <inheritdoc/>
+		public override int Read(byte[] buffer, int offset, int count)
+		{
+			var read = base.Read(buffer, offset, count);
+
+			if (read == 0)
+			{
+				isFullyRead = true;
+				Close();
+			}
+
+			return read;
+		}
+
+		/// <summary>
+		/// CanRead is false if we're closed, or base.CanRead otherwise.
+		/// </summary>
+		public override bool CanRead
+		{
+			get
+			{
+				if (isFullyRead)
+				{
+					return false;
+				}
+
+				return base.CanRead;
+			}
+		}
+	}
 }
