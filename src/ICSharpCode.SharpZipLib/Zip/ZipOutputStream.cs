@@ -676,10 +676,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 											out byte[] salt, out byte[] pwdVerifier)
 		{
 			salt = new byte[entry.AESSaltLen];
+
 			// Salt needs to be cryptographically random, and unique per file
-			if (_aesRnd == null)
-				_aesRnd = RandomNumberGenerator.Create();
 			_aesRnd.GetBytes(salt);
+
 			int blockSize = entry.AESKeySize / 8;   // bits to bytes
 
 			cryptoTransform_ = new ZipAESTransform(rawPassword, salt, blockSize, true);
