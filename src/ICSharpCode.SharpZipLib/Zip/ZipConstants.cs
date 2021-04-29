@@ -352,6 +352,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public const int CRYPTO_HEADER_SIZE = 12;
 
 		/// <summary>
+		/// The number of bytes in the WinZipAes Auth Code.
+		/// </summary>
+		internal const int AESAuthCodeLength = 10;
+
+		/// <summary>
+		/// The number of bytes in the password verifier for WinZipAes.
+		/// </summary>
+		internal const int AESPasswordVerifyLength = 2;
+
+		/// <summary>
 		/// The size of the Zip64 central directory locator.
 		/// </summary>
 		public const int Zip64EndOfCentralDirectoryLocatorSize = 20;

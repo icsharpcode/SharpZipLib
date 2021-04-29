@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using ICSharpCode.SharpZipLib.Encryption;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 {
@@ -92,8 +93,24 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		public int Available
 		{
 			get { return available; }
-			set { available = value; }
+			set
+			{
+				if (cryptoTransform is ZipAESTransform ct)
+				{
+					ct.AppendFinal(value);
+				}
+				
+				available = value;
+			}
 		}
+
+		/// <summary>
+		/// A limitation how much data is decrypted. If null all the data in the input buffer will be decrypted.
+		/// Setting limit is important in case the HMAC has to be calculated for each zip entry. In that case
+		/// it is not possible to decrypt all available data in the input buffer, and only the data
+		/// belonging to the current zip entry must be decrypted so that the HMAC is correctly calculated. 
+		/// </summary>
+		internal int? DecryptionLimit { get; set; }
 
 		/// <summary>
 		/// Call <see cref="Inflater.SetInput(byte[], int, int)"/> passing the current clear text buffer contents.
@@ -113,6 +130,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		public void Fill()
 		{
+			if (cryptoTransform is ZipAESTransform ct)
+			{
+				ct.AppendAllPending();
+			}
+
 			rawLength = 0;
 			int toRead = rawData.Length;
 
@@ -127,13 +149,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				toRead -= count;
 			}
 
+			clearTextLength = rawLength;
 			if (cryptoTransform != null)
 			{
-				clearTextLength = cryptoTransform.TransformBlock(rawData, 0, rawLength, clearText, 0);
-			}
-			else
-			{
-				clearTextLength = rawLength;
+				var size = CalculateDecryptionSize(rawLength);
+				cryptoTransform.TransformBlock(rawData, 0, size, clearText, 0);
 			}
 
 			available = clearTextLength;
@@ -290,7 +310,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					clearTextLength = rawLength;
 					if (available > 0)
 					{
-						cryptoTransform.TransformBlock(rawData, rawLength - available, available, clearText, rawLength - available);
+						var size = CalculateDecryptionSize(available);
+
+						cryptoTransform.TransformBlock(rawData, rawLength - available, size, clearText, rawLength - available);
 					}
 				}
 				else
@@ -299,6 +321,19 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					clearTextLength = rawLength;
 				}
 			}
+		}
+
+		private int CalculateDecryptionSize(int availableBufferSize)
+		{
+			int size = DecryptionLimit ?? availableBufferSize;
+			size = Math.Min(size, availableBufferSize);
+			
+			if (DecryptionLimit.HasValue)
+			{
+				DecryptionLimit -= size;
+			}
+
+			return size;
 		}
 
 		#region Instance Fields
@@ -459,9 +494,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Clear any cryptographic state.
 		/// </summary>
-		protected void StopDecrypting()
+		protected virtual void StopDecrypting()
 		{
 			inputBuffer.CryptoTransform = null;
+			inputBuffer.DecryptionLimit = null;
 		}
 
 		/// <summary>

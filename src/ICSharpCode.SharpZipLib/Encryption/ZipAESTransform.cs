@@ -34,8 +34,6 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		}
 #endif
 
-		private const int PWD_VER_LENGTH = 2;
-
 		// WinZip use iteration count of 1000 for PBKDF2 key generation
 		private const int KEY_ROUNDS = 1000;
 
@@ -54,6 +52,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		private byte[] _authCode = null;
 
 		private bool _writeMode;
+		private Action<int> _appendHmac = remaining => { };
 
 		/// <summary>
 		/// Constructor.
@@ -85,11 +84,28 @@ namespace ICSharpCode.SharpZipLib.Encryption
 
 			// Use empty IV for AES
 			_encryptor = rm.CreateEncryptor(key1bytes, new byte[16]);
-			_pwdVerifier = pdb.GetBytes(PWD_VER_LENGTH);
+			_pwdVerifier = pdb.GetBytes(Zip.ZipConstants.AESPasswordVerifyLength);
 			//
 			_hmacsha1 = IncrementalHash.CreateHMAC(HashAlgorithmName.SHA1, key2bytes);
 			_writeMode = writeMode;
 		}
+
+		/// <summary>
+		/// Append all of the last transformed input data to the HMAC.
+		/// </summary>
+		public void AppendAllPending()
+		{
+			_appendHmac(0);
+		}
+		
+		/// <summary>
+		/// Append all except the number of bytes specified by remaining of the last transformed input data to the HMAC.
+		/// </summary>
+		/// <param name="remaining">The number of bytes not to be added to the HMAC. The excluded bytes are form the end.</param>
+		public void AppendFinal(int remaining)
+		{
+			_appendHmac(remaining);
+		}		
 
 		/// <summary>
 		/// Implement the ICryptoTransform method.
@@ -100,8 +116,16 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			// This does not change the inputBuffer. Do this before decryption for read mode.
 			if (!_writeMode)
 			{
-				_hmacsha1.AppendData(inputBuffer, inputOffset, inputCount);
+				if (!ManualHmac)
+				{
+					_hmacsha1.AppendData(inputBuffer, inputOffset, inputCount);
+				}
+				else
+				{
+					_appendHmac = remaining => _hmacsha1.AppendData(inputBuffer, inputOffset, inputCount - remaining);
+				}
 			}
+
 			// Encrypt with AES in CTR mode. Regards to Dr Brian Gladman for this.
 			int ix = 0;
 			while (ix < inputCount)
@@ -210,6 +234,13 @@ namespace ICSharpCode.SharpZipLib.Encryption
 				return true;
 			}
 		}
+
+		/// <summary>
+		/// Gets of sets a value indicating if the HMAC is updates on every read of if updating the HMAC has to be controlled manually
+		/// Manual control of HMAC is needed in case not all the Transformed data should be automatically added to the HMAC.
+		/// E.g. because its not know how much data belongs to the current entry before the data is decrypted and analyzed. 
+		/// </summary>
+		public bool ManualHmac { get; set; }
 
 		/// <summary>
 		/// Cleanup internal state.
