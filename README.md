@@ -1,4 +1,4 @@
-# SharpZipLib [![Build status](https://ci.appveyor.com/api/projects/status/wuf8l79mypqsbor3/branch/master?svg=true)](https://ci.appveyor.com/project/icsharpcode/sharpziplib/branch/master) [![NuGet Version](https://img.shields.io/nuget/v/SharpZipLib.svg)](https://www.nuget.org/packages/SharpZipLib/)
+# SharpZipLib [![Build Status](https://github.com/icsharpcode/SharpZipLib/actions/workflows/on-push.yml/badge.svg?branch=master)](https://github.com/icsharpcode/SharpZipLib/actions/workflows/on-push.yml) [![NuGet Version](https://img.shields.io/nuget/v/SharpZipLib.svg)](https://www.nuget.org/packages/SharpZipLib/)
 
 Introduction
 ------------
