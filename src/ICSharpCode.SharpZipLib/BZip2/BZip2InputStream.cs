@@ -718,6 +718,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 					var j = nextSym - 1;
 
 #if !NETSTANDARD2_0 && !NETFRAMEWORK
+					// This is vectorized memory move. Going from the back, we're taking chunks of array
+					// and write them at the new location shifted by one. Since chunks are VectorSize long,
+					// at the end we have to move "tail" (or head actually) of the array using a plain loop.
+					// If System.Numerics.Vector API is not available, the plain loop is used to do the whole copying.
+
 					while(j >= VectorSize)
 					{
 						var arrayPart = new System.Numerics.Vector<byte>(yy, j - VectorSize);
