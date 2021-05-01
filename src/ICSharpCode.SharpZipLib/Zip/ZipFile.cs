@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -4215,6 +4217,35 @@ namespace ICSharpCode.SharpZipLib.Zip
 						baseStream_.Seek(readPos_, SeekOrigin.Begin);
 					}
 					int readCount = baseStream_.Read(buffer, offset, count);
+					if (readCount > 0)
+					{
+						readPos_ += readCount;
+					}
+					return readCount;
+				}
+			}
+
+			///<inheritdoc/>
+			public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+			{
+				// lock (baseStream_)
+				{
+					if (count > end_ - readPos_)
+					{
+						count = (int)(end_ - readPos_);
+						if (count == 0)
+						{
+							return 0;
+						}
+					}
+					// Protect against Stream implementations that throw away their buffer on every Seek
+					// (for example, Mono FileStream)
+					if (baseStream_.Position != readPos_)
+					{
+						baseStream_.Seek(readPos_, SeekOrigin.Begin);
+					}
+
+					int readCount = await baseStream_.ReadAsync(buffer, offset, count, cancellationToken);
 					if (readCount > 0)
 					{
 						readPos_ += readCount;
