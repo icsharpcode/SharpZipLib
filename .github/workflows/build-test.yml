@@ -18,6 +18,8 @@ jobs:
         include:
           - os: windows
             target: net45
+    env:
+      LIB_PROJ: src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
     steps:
     - uses: actions/checkout@v2
       
@@ -27,10 +29,10 @@ jobs:
         dotnet-version: '3.1.x'
 
     - name: Build library (Debug)
-      run: dotnet build -c debug -f ${{ matrix.target }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      run: dotnet build -c debug -f ${{ matrix.target }} ${{ env.LIB_PROJ }}
       
     - name: Build library (Release)
-      run: dotnet build -c release -f ${{ matrix.target }} src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      run: dotnet build -c release -f ${{ matrix.target }} ${{ env.LIB_PROJ }}
 
   Test:
     runs-on: ${{ matrix.os }}-latest
@@ -73,6 +75,8 @@ jobs:
     runs-on: windows-latest
     env:
       PKG_SUFFIX: ''
+      PKG_PROJ: src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      PKG_PROPS: '/p:ContinuousIntegrationBuild=true /p:EmbedUntrackedSources=true'
 
     steps:
     - uses: actions/checkout@v2
@@ -85,18 +89,18 @@ jobs:
         dotnet-version: '5.0.x'
         
     - name: Build library for .NET Standard 2.0
-      run: dotnet build -c Release -f netstandard2.0 /p:ContinuousIntegrationBuild=true src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      run: dotnet build -c Release -f netstandard2.0 ${{ env.PKG_PROPS }} ${{ env.PKG_PROJ }}
     - name: Build library for .NET Standard 2.1
-      run: dotnet build -c Release -f netstandard2.1 /p:ContinuousIntegrationBuild=true src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      run: dotnet build -c Release -f netstandard2.1 ${{ env.PKG_PROPS }} ${{ env.PKG_PROJ }}
     - name: Build library for .NET Framework 4.5
-      run: dotnet build -c Release -f net45 /p:ContinuousIntegrationBuild=true src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
+      run: dotnet build -c Release -f net45  ${{ env.PKG_PROPS }} ${{ env.PKG_PROJ }}
 
     - name: Add PR suffix to package
       if: ${{ github.event_name == 'pull_request' }}
       run: echo "PKG_SUFFIX=-PR" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
     - name: Create nuget package
-      run: dotnet pack src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj --configuration Release --output dist /p:ContinuousIntegrationBuild=true /p:EmbedUntrackedSources=true /p:Version=$(git describe --abbrev | % { $_.substring(1) })${{ env.PKG_SUFFIX }}
+      run: dotnet pack ${{ env.PKG_PROJ }} -c Release --output dist ${{ env.PKG_PROPS }} /p:Version=$(git describe --abbrev | % { $_.substring(1) })${{ env.PKG_SUFFIX }}
 
     - name: Upload nuget package artifact
       uses: actions/upload-artifact@v2
