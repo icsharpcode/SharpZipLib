@@ -1,6 +1,7 @@
 using ICSharpCode.SharpZipLib.Core;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Zip
@@ -133,7 +134,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					name = Path.Combine(_baseDirectory, name);
 
-					if (!_allowParentTraversal && !Path.GetFullPath(name).StartsWith(_baseDirectory, StringComparison.InvariantCultureIgnoreCase))
+					var pathBase = Path.GetFullPath(_baseDirectory) + Path.DirectorySeparatorChar;
+
+					if (!_allowParentTraversal && !Path.GetFullPath(name).StartsWith(pathBase, StringComparison.InvariantCultureIgnoreCase))
 					{
 						throw new InvalidNameException("Parent traversal in paths is not allowed");
 					}
