@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
 
@@ -89,6 +91,13 @@ namespace ICSharpCode.SharpZipLib.Encryption
 				nBytes += ReadAndTransform(buffer, offset, count);
 
 			return nBytes;
+		}
+
+		/// <inheritdoc/>
+		public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+		{
+			var readCount = Read(buffer, offset, count);
+			return Task.FromResult(readCount);
 		}
 
 		// Read data from the underlying stream and decrypt it
