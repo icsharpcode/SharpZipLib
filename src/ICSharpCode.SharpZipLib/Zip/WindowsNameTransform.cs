@@ -134,7 +134,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					name = Path.Combine(_baseDirectory, name);
 
-					var pathBase = Path.GetFullPath(_baseDirectory) + Path.DirectorySeparatorChar;
+					// Ensure base directory ends with directory separator ('/' or '\' depending on OS)
+					var pathBase = Path.GetFullPath(_baseDirectory);
+					if (pathBase[pathBase.Length - 1] != Path.DirectorySeparatorChar)
+					{
+						pathBase += Path.DirectorySeparatorChar;
+					}
 
 					if (!_allowParentTraversal && !Path.GetFullPath(name).StartsWith(pathBase, StringComparison.InvariantCultureIgnoreCase))
 					{
