@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Core
 {
@@ -64,16 +66,8 @@ namespace ICSharpCode.SharpZipLib.Core
 			}
 		}
 
-		/// <summary>
-		/// Read as much data as possible from a <see cref="Stream"/>", up to the requested number of bytes
-		/// </summary>
-		/// <param name="stream">The stream to read data from.</param>
-		/// <param name="buffer">The buffer to store data in.</param>
-		/// <param name="offset">The offset at which to begin storing data.</param>
-		/// <param name="count">The number of bytes of data to store.</param>
-		/// <exception cref="ArgumentNullException">Required parameter is null</exception>
-		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> and or <paramref name="count"/> are invalid.</exception>
-		static public int ReadRequestedBytes(Stream stream, byte[] buffer, int offset, int count)
+		// A helper function to share between the async and sync versions of ReadRequestedBytes
+		private static void ValidateArgumentsForRead(Stream stream, byte[] buffer, int offset, int count)
 		{
 			if (stream == null)
 			{
@@ -95,11 +89,59 @@ namespace ICSharpCode.SharpZipLib.Core
 			{
 				throw new ArgumentOutOfRangeException(nameof(count));
 			}
+		}
 
+		/// <summary>
+		/// Read as much data as possible from a <see cref="Stream"/>", up to the requested number of bytes
+		/// </summary>
+		/// <param name="stream">The stream to read data from.</param>
+		/// <param name="buffer">The buffer to store data in.</param>
+		/// <param name="offset">The offset at which to begin storing data.</param>
+		/// <param name="count">The number of bytes of data to store.</param>
+		/// <exception cref="ArgumentNullException">Required parameter is null</exception>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> and or <paramref name="count"/> are invalid.</exception>
+		static public int ReadRequestedBytes(Stream stream, byte[] buffer, int offset, int count)
+		{
+			// Common validation function
+			ValidateArgumentsForRead(stream, buffer, offset, count);
+
+			// read the data using Read
 			int totalReadCount = 0;
 			while (count > 0)
 			{
 				int readCount = stream.Read(buffer, offset, count);
+				if (readCount <= 0)
+				{
+					break;
+				}
+				offset += readCount;
+				count -= readCount;
+				totalReadCount += readCount;
+			}
+
+			return totalReadCount;
+		}
+
+		/// <summary>
+		/// Read as much data as possible from a <see cref="Stream"/>", up to the requested number of bytes
+		/// </summary>
+		/// <param name="stream">The stream to read data from.</param>
+		/// <param name="buffer">The buffer to store data in.</param>
+		/// <param name="offset">The offset at which to begin storing data.</param>
+		/// <param name="count">The number of bytes of data to store.</param>
+		/// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+		/// <exception cref="ArgumentNullException">Required parameter is null</exception>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> and or <paramref name="count"/> are invalid.</exception>
+		static public async Task<int> ReadRequestedBytesAsync(Stream stream, byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+		{
+			// Common validation function
+			ValidateArgumentsForRead(stream, buffer, offset, count);
+
+			// read the data using ReadAsync
+			int totalReadCount = 0;
+			while (count > 0)
+			{
+				int readCount = await stream.ReadAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
 				if (readCount <= 0)
 				{
 					break;

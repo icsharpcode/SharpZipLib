@@ -68,6 +68,44 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public override int Read(byte[] buffer, int offset, int count)
 		{
+			// If we have buffered data, read that first
+			int nBytes = ReadDataFromBuffer(buffer, ref offset, ref count);
+
+			// If we've read the requested amount of data, return just that
+			if (count == 0)
+				return nBytes;
+
+			// Read more data from the input, if available
+			if (_slideBuffer != null)
+			{
+				nBytes += ReadAndTransformAsync(buffer, offset, count, false, default).GetAwaiter().GetResult();
+			}
+
+			return nBytes;
+		}
+
+		/// <inheritdoc/>
+		public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+		{
+			// If we have buffered data, read that first
+			int nBytes = ReadDataFromBuffer(buffer, ref offset, ref count);
+
+			// If we've read the requested amount of data, return just that
+			if (count == 0)
+				return nBytes;
+
+			// Read more data from the input, if available
+			if (_slideBuffer != null)
+			{
+				nBytes += await ReadAndTransformAsync(buffer, offset, count, true, cancellationToken).ConfigureAwait(false);
+			}
+
+			return nBytes;
+		}
+
+		// Read up to the requested amount of data from the buffer
+		private int ReadDataFromBuffer(byte[] buffer, ref int offset, ref int count)
+		{
 			// Nothing to do
 			if (count == 0)
 				return 0;
@@ -78,30 +116,15 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			{
 				nBytes = ReadBufferedData(buffer, offset, count);
 
-				// Read all requested data from the buffer
-				if (nBytes == count)
-					return nBytes;
-
 				offset += nBytes;
 				count -= nBytes;
 			}
 
-			// Read more data from the input, if available
-			if (_slideBuffer != null)
-				nBytes += ReadAndTransform(buffer, offset, count);
-
 			return nBytes;
 		}
 
-		/// <inheritdoc/>
-		public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
-		{
-			var readCount = Read(buffer, offset, count);
-			return Task.FromResult(readCount);
-		}
-
 		// Read data from the underlying stream and decrypt it
-		private int ReadAndTransform(byte[] buffer, int offset, int count)
+		private async Task<int> ReadAndTransformAsync(byte[] buffer, int offset, int count, bool useAsync, CancellationToken cancellationToken)
 		{
 			int nBytes = 0;
 			while (nBytes < count)
@@ -126,7 +149,11 @@ namespace ICSharpCode.SharpZipLib.Encryption
 					_slideBufFreePos -= _slideBufStartPos;      // Note the -=
 					_slideBufStartPos = 0;
 				}
-				int obtained = StreamUtils.ReadRequestedBytes(_stream, _slideBuffer, _slideBufFreePos, lengthToRead);
+				
+				int obtained = useAsync ?
+						await StreamUtils.ReadRequestedBytesAsync(_stream, _slideBuffer, _slideBufFreePos, lengthToRead, cancellationToken).ConfigureAwait(false) :
+						StreamUtils.ReadRequestedBytes(_stream, _slideBuffer, _slideBufFreePos, lengthToRead);
+				
 				_slideBufFreePos += obtained;
 
 				// Recalculate how much data we now have
