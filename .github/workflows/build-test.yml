@@ -82,7 +82,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1.x'
+        dotnet-version: '5.0.x'
         
     - name: Build library for .NET Standard 2.0
       run: dotnet build -c Release -f netstandard2.0 /p:ContinuousIntegrationBuild=true src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
