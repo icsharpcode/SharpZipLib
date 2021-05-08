@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2.html",
-          "hash": "lIRZPcx8iSqWNWpEiaIFhA=="
+          "hash": "Fo+kWmubp1JgHFt4NhPxhg=="
         }
       },
       "is_incremental": false,
@@ -21,7 +21,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2Exception.html",
-          "hash": "AqIvZbcYIZKL7tzVwPboBw=="
+          "hash": "YXhjYjdZb/mbiV+f/JipXg=="
         }
       },
       "is_incremental": false,
@@ -33,7 +33,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2InputStream.html",
-          "hash": "vQQfwL/sOq4QbT+ddC9bVQ=="
+          "hash": "0K6vS90+iRzuPDWX06PtiQ=="
         }
       },
       "is_incremental": false,
@@ -45,7 +45,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.BZip2OutputStream.html",
-          "hash": "v1Q+db+4BHTtuoH/omz7vg=="
+          "hash": "MKyYbDzKlPtfg3VmBnz3Zw=="
         }
       },
       "is_incremental": false,
@@ -57,7 +57,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.BZip2.html",
-          "hash": "mZelU1fy/1rYh3jDCXkurg=="
+          "hash": "TsKwAVJB6/ikPcG9QA7HWQ=="
         }
       },
       "is_incremental": false,
@@ -69,7 +69,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.Adler32.html",
-          "hash": "Gwikv5TIZG7FdY4ihpjGEg=="
+          "hash": "SetecxE1BtS+PLpB2B5Pqw=="
         }
       },
       "is_incremental": false,
@@ -81,7 +81,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.BZip2Crc.html",
-          "hash": "bEPMfZjAGxl8eoBoQZ47uA=="
+          "hash": "yraU6sjm3GzeWrXtPLT8PA=="
         }
       },
       "is_incremental": false,
@@ -93,7 +93,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.Crc32.html",
-          "hash": "9YL1QE2Vo4nnZ7cNFWItNA=="
+          "hash": "5CJX9mKFmVPRC+JGGfuNow=="
         }
       },
       "is_incremental": false,
@@ -105,7 +105,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.IChecksum.html",
-          "hash": "LCVEqvSQwiSCxJJkhax1HQ=="
+          "hash": "TAsHLMVRacgCpi9EIE+gBg=="
         }
       },
       "is_incremental": false,
@@ -117,7 +117,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Checksum.html",
-          "hash": "ozlVfnHV/zDHtzqyYzuwQg=="
+          "hash": "9E+FXfcZFcs78GrDLJIIGQ=="
         }
       },
       "is_incremental": false,
@@ -129,7 +129,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.CompletedFileHandler.html",
-          "hash": "GzHXfywR2dI0josWH1Q3eQ=="
+          "hash": "cYnj6A+TSMemLXqsCQbXuA=="
         }
       },
       "is_incremental": false,
@@ -141,7 +141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.DirectoryEventArgs.html",
-          "hash": "EzDdCB1iCbyNpjnew/jqKg=="
+          "hash": "Su5mzAzJ+asX57Xl0FgB4g=="
         }
       },
       "is_incremental": false,
@@ -153,7 +153,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.DirectoryFailureHandler.html",
-          "hash": "TCm5ijMgkqQ9aWW0fNorYA=="
+          "hash": "bbdBTBXXexwynQarVvdNAQ=="
         }
       },
       "is_incremental": false,
@@ -165,7 +165,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.html",
-          "hash": "bhN0WB2ICQP0AueJaK8nbQ=="
+          "hash": "uNbvxlrjj512B5tPZGTmwg=="
         }
       },
       "is_incremental": false,
@@ -177,7 +177,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.FileFailureHandler.html",
-          "hash": "gvReRuhDLlMUA5gGFZ72ag=="
+          "hash": "395DnI6ypfXRSiptzIXODA=="
         }
       },
       "is_incremental": false,
@@ -189,7 +189,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.FileSystemScanner.html",
-          "hash": "1ycveUPGeq3nD4Eky+Eing=="
+          "hash": "hef86bKgQbZRUK1CwMMTYw=="
         }
       },
       "is_incremental": false,
@@ -201,7 +201,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.INameTransform.html",
-          "hash": "ghiyDrYsQfpiRcG8G2ZECQ=="
+          "hash": "B98GUzPv+9XkyW6dcSFwTw=="
         }
       },
       "is_incremental": false,
@@ -213,7 +213,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.IScanFilter.html",
-          "hash": "R5N7W7MkYLaMeENEqmYgpw=="
+          "hash": "66cOSz0FIIqtr9ZDxcRLQg=="
         }
       },
       "is_incremental": false,
@@ -225,7 +225,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.InvalidNameException.html",
-          "hash": "6bLwfHY5MclHUfIGD57YBA=="
+          "hash": "39WB1WgDsT+ltco5T3SIdg=="
         }
       },
       "is_incremental": false,
@@ -237,7 +237,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.NameAndSizeFilter.html",
-          "hash": "nbAvKjDd33islUUSu/f2hw=="
+          "hash": "QKOlepAwh9PWQd9uucdxWA=="
         }
       },
       "is_incremental": false,
@@ -249,7 +249,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.NameFilter.html",
-          "hash": "NrAvJuh2D8c0ctCsOkTJJA=="
+          "hash": "ckMfdRg81/zFjp93nQUEZQ=="
         }
       },
       "is_incremental": false,
@@ -261,7 +261,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.PathFilter.html",
-          "hash": "DfbDlVZil4x6bhHC6eBr8g=="
+          "hash": "W/COFDw2G8ddPIOH3d0uhA=="
         }
       },
       "is_incremental": false,
@@ -273,7 +273,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.PathUtils.html",
-          "hash": "LNZT4iQAswqLa3RctHhXhw=="
+          "hash": "vwuj2F4/KQxIXnjeQ67XCQ=="
         }
       },
       "is_incremental": false,
@@ -285,7 +285,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.ProcessFileHandler.html",
-          "hash": "v2iJkmB8/2Jnxb+3c0dJCA=="
+          "hash": "GPlVaUXrUdkkktxnwfY4fw=="
         }
       },
       "is_incremental": false,
@@ -297,7 +297,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.ProgressEventArgs.html",
-          "hash": "vMXoji4N1CS5Fu5kEaxZPg=="
+          "hash": "NpUprRC8Ll0JRE/Hdk88jA=="
         }
       },
       "is_incremental": false,
@@ -309,7 +309,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.ProgressHandler.html",
-          "hash": "0FFkco2EIA7dcrmpWnN1iw=="
+          "hash": "5mcQyBLSlkGf3FdTU5njcw=="
         }
       },
       "is_incremental": false,
@@ -321,7 +321,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.ScanEventArgs.html",
-          "hash": "lJsyLdz5BQ65QN1WaEtc7Q=="
+          "hash": "jpW7pD52Fo0J1bRFp9vR7g=="
         }
       },
       "is_incremental": false,
@@ -333,7 +333,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs.html",
-          "hash": "h6+FDa3vJDnqWhjGz0R9rg=="
+          "hash": "qS0DNVKqNgUejS19bdQ3CA=="
         }
       },
       "is_incremental": false,
@@ -345,7 +345,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.StreamUtils.html",
-          "hash": "OUeIYMTHr502PIHRWHH0kg=="
+          "hash": "KRW+JL+IMppaWkpPwArEwg=="
         }
       },
       "is_incremental": false,
@@ -357,7 +357,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Core.html",
-          "hash": "Ch/4cearHe7GkeWpyFbVMA=="
+          "hash": "BrufRkQCDGOfVKQPtc4CJQ=="
         }
       },
       "is_incremental": false,
@@ -369,7 +369,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Encryption.PkzipClassic.html",
-          "hash": "0nr6Unp2Z7dEJ1w0i+G7QA=="
+          "hash": "GNVhiKH5q1EfSKcnWqs+hg=="
         }
       },
       "is_incremental": false,
@@ -381,7 +381,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Encryption.PkzipClassicManaged.html",
-          "hash": "jpzo2fUNodIG0LGHj/wygg=="
+          "hash": "MMRMRPoe2ubEh64fqTfdAw=="
         }
       },
       "is_incremental": false,
@@ -393,7 +393,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Encryption.html",
-          "hash": "V7UQ2hiP4JPpPKx1rVn76w=="
+          "hash": "hyUBufB3k3fUK/C+/4lesA=="
         }
       },
       "is_incremental": false,
@@ -405,7 +405,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZip.html",
-          "hash": "aUqdLqWNGx7mEdhS0pc8CQ=="
+          "hash": "8pUu8SgwOIYRhzAsZAaQhw=="
         }
       },
       "is_incremental": false,
@@ -417,7 +417,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipConstants.html",
-          "hash": "rFO9J/CN2P3fT9OP49l1CA=="
+          "hash": "f7UJmjUMGnnVTdmMlDOTVg=="
         }
       },
       "is_incremental": false,
@@ -429,7 +429,19 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipException.html",
-          "hash": "gMXYM5aXrVbwDJSv1lsXFQ=="
+          "hash": "bQBHE03r3jfB0xZwswLimQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipFlags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipFlags.html",
+          "hash": "hirpxlC0ouAJ5KhdlTzCRw=="
         }
       },
       "is_incremental": false,
@@ -441,7 +453,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipInputStream.html",
-          "hash": "n8hJbexMfWgYoqjVg5dkBQ=="
+          "hash": "d5N/Hc2a5VYqYZaKXKEBog=="
         }
       },
       "is_incremental": false,
@@ -453,7 +465,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html",
-          "hash": "B5Sr6uXjNbfpt0p0iCSr1Q=="
+          "hash": "ve0U3Z4eFb3f/KZ9p8aEig=="
         }
       },
       "is_incremental": false,
@@ -465,7 +477,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.GZip.html",
-          "hash": "MlJTzpNIRh+/IdLoI+7mXw=="
+          "hash": "WDCrd/fG9dHvYCKKvDCKmQ=="
         }
       },
       "is_incremental": false,
@@ -477,7 +489,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Lzw.LzwConstants.html",
-          "hash": "fSIzhSjHhUZWC2ZMdULl2g=="
+          "hash": "851nNDvGrSYenMeGH+tMNA=="
         }
       },
       "is_incremental": false,
@@ -489,7 +501,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Lzw.LzwException.html",
-          "hash": "wwOlHB0gc4m/OS5CT4x0yg=="
+          "hash": "uxj6g3wTNMAofhsknK2otg=="
         }
       },
       "is_incremental": false,
@@ -501,7 +513,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Lzw.LzwInputStream.html",
-          "hash": "1P6VCYFw4QcTukYjegIMeg=="
+          "hash": "/a06s+NMa4Znicj6GitvaA=="
         }
       },
       "is_incremental": false,
@@ -513,7 +525,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Lzw.html",
-          "hash": "COvnp7Gf/1IOupFz1mA4YQ=="
+          "hash": "q/0K0FSxWaje2ijjq4A0QQ=="
         }
       },
       "is_incremental": false,
@@ -525,7 +537,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.SharpZipBaseException.html",
-          "hash": "5VTWzzwvYC6SPAgmXTCZrQ=="
+          "hash": "gSNnATHUPyBQ6CCd3375ZQ=="
         }
       },
       "is_incremental": false,
@@ -537,7 +549,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.StreamDecodingException.html",
-          "hash": "NNU+BEKg14OMgI7RwXL9lg=="
+          "hash": "CLiCcVwggk0WCd8CwpBSXQ=="
         }
       },
       "is_incremental": false,
@@ -549,7 +561,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.StreamUnsupportedException.html",
-          "hash": "TBP7s+n9q8u7/XeMJkErAQ=="
+          "hash": "Z5Con4WgQxGbqFt0aJbXVw=="
         }
       },
       "is_incremental": false,
@@ -561,7 +573,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.html",
-          "hash": "n0FgVN+OPMxWwxbCELXNNw=="
+          "hash": "LoSileiwooNI5CaY/s5nvg=="
         }
       },
       "is_incremental": false,
@@ -573,7 +585,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.ProgressMessageHandler.html",
-          "hash": "vhITuGTn+58J6h3P7+6UyQ=="
+          "hash": "rpvhTNnri6KsJ73Q4yOB7A=="
         }
       },
       "is_incremental": false,
@@ -585,7 +597,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarArchive.html",
-          "hash": "CDLjBI5+ET7aBHNv9edMwA=="
+          "hash": "vHyvTtp6PcN2NVrSinbIYA=="
         }
       },
       "is_incremental": false,
@@ -597,7 +609,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarBuffer.html",
-          "hash": "JwleU0Yr3EgLPkAxattdyA=="
+          "hash": "I35ZjgSTYi84pw8AoL6ZfA=="
         }
       },
       "is_incremental": false,
@@ -609,7 +621,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarEntry.html",
-          "hash": "j9UXkO/EPCyZvD1uXYMt+w=="
+          "hash": "uOJ3GvgrDrCQ3wc+EURdGw=="
         }
       },
       "is_incremental": false,
@@ -621,7 +633,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarException.html",
-          "hash": "FD0GiKh1awzEvpmYFPFxnw=="
+          "hash": "OekrDKUZOW/uU83bpk15+w=="
         }
       },
       "is_incremental": false,
@@ -633,7 +645,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarExtendedHeaderReader.html",
-          "hash": "tBQaqLp3AeyZ2c2/oFzaJw=="
+          "hash": "Jm5Me3vzYWugI9mJ0chuKA=="
         }
       },
       "is_incremental": false,
@@ -645,7 +657,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarHeader.html",
-          "hash": "X5u9qkSozWd+H+0jkvfmfw=="
+          "hash": "nYeKAtDdB1Ie6Mp9W1yjmA=="
         }
       },
       "is_incremental": false,
@@ -657,7 +669,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.html",
-          "hash": "KF9k8SHjsxSf8fnN1uXg2w=="
+          "hash": "Ljy7k1SNpYdCrjLRjDmdzg=="
         }
       },
       "is_incremental": false,
@@ -669,7 +681,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarInputStream.IEntryFactory.html",
-          "hash": "JQy8IKIiMjOEtWIcRL90xA=="
+          "hash": "aqND+pPZEr8kIFBzEkavAg=="
         }
       },
       "is_incremental": false,
@@ -681,7 +693,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarInputStream.html",
-          "hash": "zSI5HfbBwEN5+7Bge5l/Hg=="
+          "hash": "2TqOIQrGW9OeG1yUdpCh/w=="
         }
       },
       "is_incremental": false,
@@ -693,7 +705,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.TarOutputStream.html",
-          "hash": "Wo/yYg/dHf2CdwvvrQ9Vvg=="
+          "hash": "G66+d0d7j1doPDyAJ5nOTg=="
         }
       },
       "is_incremental": false,
@@ -705,7 +717,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Tar.html",
-          "hash": "Um9yzGfnQYy4u/PAOevWMg=="
+          "hash": "Jn+Hr8K4Ei7iXUnP4+oPVA=="
         }
       },
       "is_incremental": false,
@@ -717,7 +729,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.UnexpectedEndOfStreamException.html",
-          "hash": "0MonuP/gGwp5Jw1ySeL8Lw=="
+          "hash": "h56KyhcwwE2adbnT2Qs+xQ=="
         }
       },
       "is_incremental": false,
@@ -729,7 +741,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.ValueOutOfRangeException.html",
-          "hash": "CQK2liDKiiRzgbrRGoE2Nw=="
+          "hash": "YR1PHp4TU+rA3Yr9VoqUwg=="
         }
       },
       "is_incremental": false,
@@ -741,7 +753,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.html",
-          "hash": "iDHXl9tcXmJV2wSGA3FykA=="
+          "hash": "C788MVjYhgh14Nm7HPeC0w=="
         }
       },
       "is_incremental": false,
@@ -753,7 +765,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflateStrategy.html",
-          "hash": "m3EnXwAAkK1Xt7B5frl4Fw=="
+          "hash": "udy7V9nRfaD9KuEMiWrFxQ=="
         }
       },
       "is_incremental": false,
@@ -765,7 +777,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Deflater.CompressionLevel.html",
-          "hash": "Q6z/8WJcExhO8N9M2H8qQw=="
+          "hash": "jfbt+C3XQFAxpQEfaY0YOA=="
         }
       },
       "is_incremental": false,
@@ -777,7 +789,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Deflater.html",
-          "hash": "ujLLHPxssBGYKVhxrTS0yw=="
+          "hash": "ne839CYCYJXFC8SvkqqV0A=="
         }
       },
       "is_incremental": false,
@@ -789,7 +801,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterConstants.html",
-          "hash": "rgW+hZcBxPPfnE3E3aQpaA=="
+          "hash": "fXDbfd5KUb9MQHKPRHm5vQ=="
         }
       },
       "is_incremental": false,
@@ -801,7 +813,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.html",
-          "hash": "u5jycBWvOfk1oI+LGjPgtw=="
+          "hash": "GbKNixcJjU29YO9K0b0v+w=="
         }
       },
       "is_incremental": false,
@@ -813,7 +825,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterHuffman.html",
-          "hash": "QjBNAtmyxAoFqpNt8CKP3g=="
+          "hash": "K/57ZKugE9dVU3PNh8ysyQ=="
         }
       },
       "is_incremental": false,
@@ -825,7 +837,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending.html",
-          "hash": "j60YWNcfeJK0U6nSETTkzA=="
+          "hash": "RaR/djUJRXPA7icVKdksvw=="
         }
       },
       "is_incremental": false,
@@ -837,7 +849,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Inflater.html",
-          "hash": "MXsCg2WMHYMc8CQ/xE64xg=="
+          "hash": "X2K8wwd1zLzzGJJEuQLLMQ=="
         }
       },
       "is_incremental": false,
@@ -849,7 +861,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.html",
-          "hash": "ypJgUGjYAcKVlQff3+tBfQ=="
+          "hash": "8ZC+4nUmcz8HDVhyMAUNAQ=="
         }
       },
       "is_incremental": false,
@@ -861,7 +873,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.html",
-          "hash": "DXW4b7HrtQkOgBPn5zky/A=="
+          "hash": "HRGtolNaCwBoLPj/+jnAjg=="
         }
       },
       "is_incremental": false,
@@ -873,7 +885,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html",
-          "hash": "8sy+FlFErNNOyQSsOe/WHw=="
+          "hash": "QPA+HzpUQMXOJjcFKj6Kbw=="
         }
       },
       "is_incremental": false,
@@ -885,7 +897,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputBuffer.html",
-          "hash": "Us7Fc8I3X1GA2TyrVB8ieQ=="
+          "hash": "fdZ5poe6fVbHa2Jd/eF6ag=="
         }
       },
       "is_incremental": false,
@@ -897,7 +909,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html",
-          "hash": "ykosQWiqT3e1hzWtA+HKVw=="
+          "hash": "qHpcWWEiDkDfJMuDoAbsxw=="
         }
       },
       "is_incremental": false,
@@ -909,7 +921,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.OutputWindow.html",
-          "hash": "WoJhe8j1yWzmDER3C7UJtQ=="
+          "hash": "EwVcvWljx6zXk4w1rqagGQ=="
         }
       },
       "is_incremental": false,
@@ -921,7 +933,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.StreamManipulator.html",
-          "hash": "Lk5g0eOryBrcC6aJEvnKig=="
+          "hash": "6Hs27LC745Z4WD2Goj84Hg=="
         }
       },
       "is_incremental": false,
@@ -933,7 +945,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.html",
-          "hash": "WTEM3LjZ9zd9/IefhJjfkg=="
+          "hash": "H9JdA0JMNJ5LJf87PIP+Qg=="
         }
       },
       "is_incremental": false,
@@ -945,7 +957,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.Compression.html",
-          "hash": "uw3Nv4xCQuTMlcQCOtWQJA=="
+          "hash": "vlKAB2SwcNvYJ0XKaDA0vw=="
         }
       },
       "is_incremental": false,
@@ -957,7 +969,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.CompressionMethod.html",
-          "hash": "LsEooixyntO8eHLwd2aDkg=="
+          "hash": "YvONx7CkSXpBcqGxTmou+Q=="
         }
       },
       "is_incremental": false,
@@ -969,7 +981,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.DescriptorData.html",
-          "hash": "r+aepPtQ7xBJjPIEln5a8w=="
+          "hash": "O+V7BiaD8HV21uAmgINWfw=="
         }
       },
       "is_incremental": false,
@@ -981,7 +993,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.html",
-          "hash": "ZSzPkg7MN7DV9JDEqWyOQQ=="
+          "hash": "5jj4SUmYv9CTsph8PFwhHQ=="
         }
       },
       "is_incremental": false,
@@ -993,7 +1005,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.DynamicDiskDataSource.html",
-          "hash": "Z1qc6dg7JoOipD+6CFJjPg=="
+          "hash": "uGQs6U4HdQan/Hdwac9J8A=="
         }
       },
       "is_incremental": false,
@@ -1005,7 +1017,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.EncryptionAlgorithm.html",
-          "hash": "gZKyLky/f4eaxmmZGrpvUA=="
+          "hash": "aVaX3SDttoKR6Vxonodz8g=="
         }
       },
       "is_incremental": false,
@@ -1017,7 +1029,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.Flags.html",
-          "hash": "S5z5fOwntNpbjCld0cHlEw=="
+          "hash": "uT87hMeUV2PvoghjjM+djQ=="
         }
       },
       "is_incremental": false,
@@ -1029,7 +1041,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ExtendedUnixData.html",
-          "hash": "nfMTVpyMS2xV1Lrav34kVg=="
+          "hash": "6QSbQLHM8ubq0qp9wkhFJA=="
         }
       },
       "is_incremental": false,
@@ -1041,7 +1053,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZip.ConfirmOverwriteDelegate.html",
-          "hash": "GYl5iGFJruo3mgHwhtH70A=="
+          "hash": "R+8m7P6CjI/IFzL0ym5BBg=="
         }
       },
       "is_incremental": false,
@@ -1053,7 +1065,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZip.Overwrite.html",
-          "hash": "ZS4KjeK7rlApYZpB/PHFqA=="
+          "hash": "J9RxG+TQj0gcNEZSVxQzvA=="
         }
       },
       "is_incremental": false,
@@ -1065,7 +1077,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZip.html",
-          "hash": "F2WMSa197mcC+hnDY3pyHg=="
+          "hash": "gs7Zjdw9s1oN8maVo4PMWg=="
         }
       },
       "is_incremental": false,
@@ -1077,7 +1089,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FastZipEvents.html",
-          "hash": "Vx6bSrww7rzeeHFM6BuzMA=="
+          "hash": "zlSTdEqvZ2fSSDMVgpFENA=="
         }
       },
       "is_incremental": false,
@@ -1089,7 +1101,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.FileUpdateMode.html",
-          "hash": "NfEiBYTdRxJeGMDBJaaKRg=="
+          "hash": "uLfuklPYoXM8o74pucddbA=="
         }
       },
       "is_incremental": false,
@@ -1101,7 +1113,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.GeneralBitFlags.html",
-          "hash": "ifLuK8ecjzH6mljfQhAtdQ=="
+          "hash": "r2D4MzM4UUQTTkgl8yoIEQ=="
         }
       },
       "is_incremental": false,
@@ -1113,7 +1125,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.HostSystemID.html",
-          "hash": "1H0ntkRc31cihqjqGkFYyg=="
+          "hash": "19PWqCMv6uTl/oEErePsYg=="
         }
       },
       "is_incremental": false,
@@ -1125,7 +1137,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.IArchiveStorage.html",
-          "hash": "kqU2rbrWTqgjmA36cxCftw=="
+          "hash": "hT4YMkDgl1qp/jVkdqhYKg=="
         }
       },
       "is_incremental": false,
@@ -1137,7 +1149,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.IDynamicDataSource.html",
-          "hash": "M0+zKe8vY1qgZxWhudsOHw=="
+          "hash": "ncEw1oYmC89Fjs41hn5O7w=="
         }
       },
       "is_incremental": false,
@@ -1149,7 +1161,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.IEntryFactory.html",
-          "hash": "nuAT5rOQ4ZBQoSb9N6pF2A=="
+          "hash": "uza3WT5ZvdN4DNKnMMwgkQ=="
         }
       },
       "is_incremental": false,
@@ -1161,7 +1173,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.IStaticDataSource.html",
-          "hash": "CMp3rfQ4aSj8ytSSgXljuw=="
+          "hash": "VZJHrcY2z8boKx5MVosOZg=="
         }
       },
       "is_incremental": false,
@@ -1173,7 +1185,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ITaggedData.html",
-          "hash": "TyLNmJtM/ajg7IHrf/7RBA=="
+          "hash": "PK85Fkm4m9oL2jm7Evf9rQ=="
         }
       },
       "is_incremental": false,
@@ -1185,7 +1197,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.KeysRequiredEventArgs.html",
-          "hash": "RuuBNmohNNKr1crMJ2TtBw=="
+          "hash": "lYR08CRLkk5wLh+grwqz4Q=="
         }
       },
       "is_incremental": false,
@@ -1197,7 +1209,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.html",
-          "hash": "UwuCjm3vfLJyPXDH7mYHLQ=="
+          "hash": "QvtGqle9lgcr130FNTaCCA=="
         }
       },
       "is_incremental": false,
@@ -1209,7 +1221,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.NTTaggedData.html",
-          "hash": "IYiCA8hrxu9SwmuqoRDbWA=="
+          "hash": "CA3pmqAjDFsJoWBdeL+R4w=="
         }
       },
       "is_incremental": false,
@@ -1221,7 +1233,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.PathTransformer.html",
-          "hash": "HYaCbgKhlDeeWv1v9G3ZUA=="
+          "hash": "2a6eNBtvZ7/OGC6O57SxNQ=="
         }
       },
       "is_incremental": false,
@@ -1233,7 +1245,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.RawTaggedData.html",
-          "hash": "MQYBpasmrPpYiQnb9TeUGg=="
+          "hash": "uFQP5byYJqVfNgDOLugUPQ=="
         }
       },
       "is_incremental": false,
@@ -1245,7 +1257,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource.html",
-          "hash": "npNRfpE1t6G6q7Xt3DKerw=="
+          "hash": "qXjKHjdXHFPiAttjqAICCg=="
         }
       },
       "is_incremental": false,
@@ -1257,7 +1269,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.TestOperation.html",
-          "hash": "WScQaXkUENNQOh64YQDaYw=="
+          "hash": "oO2/GysYAYuKReEvNRK8sg=="
         }
       },
       "is_incremental": false,
@@ -1269,7 +1281,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.TestStatus.html",
-          "hash": "dygmSDHESNiTE7YHJ7EPyQ=="
+          "hash": "3akgHVSOvM5aYLZIJV/7tA=="
         }
       },
       "is_incremental": false,
@@ -1281,7 +1293,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.TestStrategy.html",
-          "hash": "Zo5bZbaLnhRAMk5fZ4IyIw=="
+          "hash": "/lq8DWd7w+16M2jSj7xkJQ=="
         }
       },
       "is_incremental": false,
@@ -1293,7 +1305,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.UseZip64.html",
-          "hash": "ocN7dp3NArGjuMiBmt8viA=="
+          "hash": "T0uwrNwODAmWJZrTSjP2UQ=="
         }
       },
       "is_incremental": false,
@@ -1305,7 +1317,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.WindowsNameTransform.html",
-          "hash": "W6POqLDVjnogZmNpN76WlQ=="
+          "hash": "nJx8zN5dZLZgUOi9T+zSsw=="
         }
       },
       "is_incremental": false,
@@ -1317,7 +1329,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipConstants.html",
-          "hash": "eH/PBjYqYSFUcX1C/URwKw=="
+          "hash": "Iqx55jGjQKGdt9XWSgRHCA=="
         }
       },
       "is_incremental": false,
@@ -1329,7 +1341,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEncryptionMethod.html",
-          "hash": "KE360kB9Pb8ZRxnJmyWGyg=="
+          "hash": "91zT7KBiw4ywy3igpflrLg=="
         }
       },
       "is_incremental": false,
@@ -1341,7 +1353,19 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEntry.html",
-          "hash": "4WPDCF5BUSPLk1LYU9991w=="
+          "hash": "heon6gt45BpQdIr/9+q8OA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.html",
+          "hash": "cMzMLmf10znLNXZTbW3I4g=="
         }
       },
       "is_incremental": false,
@@ -1353,7 +1377,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting.html",
-          "hash": "jQwTbniSpyN7IcJXY5k9Jg=="
+          "hash": "WQ3uEdtzi3xbiJq6TmcgQg=="
         }
       },
       "is_incremental": false,
@@ -1365,7 +1389,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.html",
-          "hash": "6J0EMwmEIVVb7P6oSTBPiA=="
+          "hash": "dlCPQCWQ9DJzDbb0CriaQQ=="
         }
       },
       "is_incremental": false,
@@ -1377,7 +1401,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipException.html",
-          "hash": "hleW4xWOO1uimWJwoj8lEQ=="
+          "hash": "aJKWyl445ESt/1b0yABhIA=="
         }
       },
       "is_incremental": false,
@@ -1389,7 +1413,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipExtraData.html",
-          "hash": "OK6wy5Z2Hb+ZJafGgKZ3zQ=="
+          "hash": "TieE0NQX6KuyU9iVoLh/Ig=="
         }
       },
       "is_incremental": false,
@@ -1401,7 +1425,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipFile.KeysRequiredEventHandler.html",
-          "hash": "Duiw0+kmXP5K5rgXBY3BBg=="
+          "hash": "EuqODL3eYcbvvV6L9JH0vg=="
         }
       },
       "is_incremental": false,
@@ -1413,7 +1437,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipFile.html",
-          "hash": "pJTQjrwZrrqP4bXejCLnOg=="
+          "hash": "IoTDo5MJUDWCUQgsTYTrLg=="
         }
       },
       "is_incremental": false,
@@ -1425,7 +1449,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipInputStream.html",
-          "hash": "QpSrgquEhmj+w/5ARQCFLw=="
+          "hash": "CtABm1RpkGRrUHIRDuZIDg=="
         }
       },
       "is_incremental": false,
@@ -1437,7 +1461,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipNameTransform.html",
-          "hash": "DNkb3/JYdsnbindiaYv/GA=="
+          "hash": "zyNQuKXjtY9F0ZLPgw/k2A=="
         }
       },
       "is_incremental": false,
@@ -1449,7 +1473,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html",
-          "hash": "YctjuO/GyH3JAaztOrTSOQ=="
+          "hash": "tiFRtivsjkAkP8szd1R4wg=="
         }
       },
       "is_incremental": false,
@@ -1461,7 +1485,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipStrings.html",
-          "hash": "r5dGqyCFp0OSGIJYDx46DQ=="
+          "hash": "/yVZMQ3DKfmUpTXXslJrcg=="
         }
       },
       "is_incremental": false,
@@ -1473,7 +1497,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.ZipTestResultHandler.html",
-          "hash": "i+GpZ+XJJyvSezRFWHS2ow=="
+          "hash": "czrwguQBb5Cjdl5FZHiF/w=="
         }
       },
       "is_incremental": false,
@@ -1485,7 +1509,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.Zip.html",
-          "hash": "GQHk/NfjwmGH6+KH+N9k3g=="
+          "hash": "5m9meyionoINFh+Vrf+sUg=="
         }
       },
       "is_incremental": false,
@@ -1497,7 +1521,7 @@
       "output": {
         ".html": {
           "relative_path": "api/ICSharpCode.SharpZipLib.html",
-          "hash": "xsW8xia5KbiS5UNrQeJSRA=="
+          "hash": "RUYS4dru3L5JMdECjeGLcg=="
         }
       },
       "is_incremental": false,
@@ -1509,7 +1533,7 @@
       "output": {
         ".html": {
           "relative_path": "api/index.html",
-          "hash": "3eDyVhkeL39tThjZzqE4ig=="
+          "hash": "Nmobx4LDfvER5bW8i4k7eQ=="
         }
       },
       "is_incremental": false,
@@ -1521,7 +1545,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "a+gVmgCC+VbQWYvOs0E0+A=="
+          "hash": "EOxt2dZhTRB+dsH0rj4Y3g=="
         }
       },
       "is_incremental": false,
@@ -1533,7 +1557,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/intro.html",
-          "hash": "mIYlZD4/V1h/mFJAIhmDHg=="
+          "hash": "dkBURsNMct7iOQLqLY3tog=="
         }
       },
       "is_incremental": false,
@@ -1545,7 +1569,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/toc.html",
-          "hash": "t7iiFrmuYmrKWisdq+lN6Q=="
+          "hash": "gB8AESyvNru97tzIZofEEg=="
         }
       },
       "is_incremental": false,
@@ -1557,7 +1581,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "BHnjscRrmveorqTnV0IlWA=="
+          "hash": "66sXH3iPGrjMZe7cONpDZw=="
         }
       },
       "is_incremental": false,
@@ -1569,7 +1593,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "k+/dkjFuwAVS32HduMpmBw=="
+          "hash": "+rHUkRZHZRi5gd1aTU6lJA=="
         }
       },
       "is_incremental": false,
@@ -1596,7 +1620,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 125,
+          "total_file_count": 127,
           "skipped_file_count": 0
         },
         "TocDocumentProcessor": {

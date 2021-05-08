@@ -1845,42 +1845,37 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.GZip.GZipConstants
   fullName: ICSharpCode.SharpZipLib.GZip.GZipConstants
   nameWithType: GZipConstants
-- uid: ICSharpCode.SharpZipLib.GZip.GZipConstants.FCOMMENT
-  name: FCOMMENT
-  href: api/ICSharpCode.SharpZipLib.GZip.GZipConstants.html#ICSharpCode_SharpZipLib_GZip_GZipConstants_FCOMMENT
-  commentId: F:ICSharpCode.SharpZipLib.GZip.GZipConstants.FCOMMENT
-  fullName: ICSharpCode.SharpZipLib.GZip.GZipConstants.FCOMMENT
-  nameWithType: GZipConstants.FCOMMENT
-- uid: ICSharpCode.SharpZipLib.GZip.GZipConstants.FEXTRA
-  name: FEXTRA
-  href: api/ICSharpCode.SharpZipLib.GZip.GZipConstants.html#ICSharpCode_SharpZipLib_GZip_GZipConstants_FEXTRA
-  commentId: F:ICSharpCode.SharpZipLib.GZip.GZipConstants.FEXTRA
-  fullName: ICSharpCode.SharpZipLib.GZip.GZipConstants.FEXTRA
-  nameWithType: GZipConstants.FEXTRA
-- uid: ICSharpCode.SharpZipLib.GZip.GZipConstants.FHCRC
-  name: FHCRC
-  href: api/ICSharpCode.SharpZipLib.GZip.GZipConstants.html#ICSharpCode_SharpZipLib_GZip_GZipConstants_FHCRC
-  commentId: F:ICSharpCode.SharpZipLib.GZip.GZipConstants.FHCRC
-  fullName: ICSharpCode.SharpZipLib.GZip.GZipConstants.FHCRC
-  nameWithType: GZipConstants.FHCRC
-- uid: ICSharpCode.SharpZipLib.GZip.GZipConstants.FNAME
-  name: FNAME
-  href: api/ICSharpCode.SharpZipLib.GZip.GZipConstants.html#ICSharpCode_SharpZipLib_GZip_GZipConstants_FNAME
-  commentId: F:ICSharpCode.SharpZipLib.GZip.GZipConstants.FNAME
-  fullName: ICSharpCode.SharpZipLib.GZip.GZipConstants.FNAME
-  nameWithType: GZipConstants.FNAME
-- uid: ICSharpCode.SharpZipLib.GZip.GZipConstants.FTEXT
-  name: FTEXT
-  href: api/ICSharpCode.SharpZipLib.GZip.GZipConstants.html#ICSharpCode_SharpZipLib_GZip_GZipConstants_FTEXT
-  commentId: F:ICSharpCode.SharpZipLib.GZip.GZipConstants.FTEXT
-  fullName: ICSharpCode.SharpZipLib.GZip.GZipConstants.FTEXT
-  nameWithType: GZipConstants.FTEXT
-- uid: ICSharpCode.SharpZipLib.GZip.GZipConstants.GZIP_MAGIC
-  name: GZIP_MAGIC
-  href: api/ICSharpCode.SharpZipLib.GZip.GZipConstants.html#ICSharpCode_SharpZipLib_GZip_GZipConstants_GZIP_MAGIC
-  commentId: F:ICSharpCode.SharpZipLib.GZip.GZipConstants.GZIP_MAGIC
-  fullName: ICSharpCode.SharpZipLib.GZip.GZipConstants.GZIP_MAGIC
-  nameWithType: GZipConstants.GZIP_MAGIC
+- uid: ICSharpCode.SharpZipLib.GZip.GZipConstants.CompressionMethodDeflate
+  name: CompressionMethodDeflate
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipConstants.html#ICSharpCode_SharpZipLib_GZip_GZipConstants_CompressionMethodDeflate
+  commentId: F:ICSharpCode.SharpZipLib.GZip.GZipConstants.CompressionMethodDeflate
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipConstants.CompressionMethodDeflate
+  nameWithType: GZipConstants.CompressionMethodDeflate
+- uid: ICSharpCode.SharpZipLib.GZip.GZipConstants.Encoding
+  name: Encoding
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipConstants.html#ICSharpCode_SharpZipLib_GZip_GZipConstants_Encoding
+  commentId: P:ICSharpCode.SharpZipLib.GZip.GZipConstants.Encoding
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipConstants.Encoding
+  nameWithType: GZipConstants.Encoding
+- uid: ICSharpCode.SharpZipLib.GZip.GZipConstants.Encoding*
+  name: Encoding
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipConstants.html#ICSharpCode_SharpZipLib_GZip_GZipConstants_Encoding_
+  commentId: Overload:ICSharpCode.SharpZipLib.GZip.GZipConstants.Encoding
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipConstants.Encoding
+  nameWithType: GZipConstants.Encoding
+- uid: ICSharpCode.SharpZipLib.GZip.GZipConstants.ID1
+  name: ID1
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipConstants.html#ICSharpCode_SharpZipLib_GZip_GZipConstants_ID1
+  commentId: F:ICSharpCode.SharpZipLib.GZip.GZipConstants.ID1
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipConstants.ID1
+  nameWithType: GZipConstants.ID1
+- uid: ICSharpCode.SharpZipLib.GZip.GZipConstants.ID2
+  name: ID2
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipConstants.html#ICSharpCode_SharpZipLib_GZip_GZipConstants_ID2
+  commentId: F:ICSharpCode.SharpZipLib.GZip.GZipConstants.ID2
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipConstants.ID2
+  nameWithType: GZipConstants.ID2
 - uid: ICSharpCode.SharpZipLib.GZip.GZipException
   name: GZipException
   href: api/ICSharpCode.SharpZipLib.GZip.GZipException.html
@@ -1918,6 +1913,42 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.GZip.GZipException.GZipException
   nameWithType: GZipException.GZipException
+- uid: ICSharpCode.SharpZipLib.GZip.GZipFlags
+  name: GZipFlags
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipFlags.html
+  commentId: T:ICSharpCode.SharpZipLib.GZip.GZipFlags
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipFlags
+  nameWithType: GZipFlags
+- uid: ICSharpCode.SharpZipLib.GZip.GZipFlags.FCOMMENT
+  name: FCOMMENT
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipFlags.html#ICSharpCode_SharpZipLib_GZip_GZipFlags_FCOMMENT
+  commentId: F:ICSharpCode.SharpZipLib.GZip.GZipFlags.FCOMMENT
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipFlags.FCOMMENT
+  nameWithType: GZipFlags.FCOMMENT
+- uid: ICSharpCode.SharpZipLib.GZip.GZipFlags.FEXTRA
+  name: FEXTRA
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipFlags.html#ICSharpCode_SharpZipLib_GZip_GZipFlags_FEXTRA
+  commentId: F:ICSharpCode.SharpZipLib.GZip.GZipFlags.FEXTRA
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipFlags.FEXTRA
+  nameWithType: GZipFlags.FEXTRA
+- uid: ICSharpCode.SharpZipLib.GZip.GZipFlags.FHCRC
+  name: FHCRC
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipFlags.html#ICSharpCode_SharpZipLib_GZip_GZipFlags_FHCRC
+  commentId: F:ICSharpCode.SharpZipLib.GZip.GZipFlags.FHCRC
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipFlags.FHCRC
+  nameWithType: GZipFlags.FHCRC
+- uid: ICSharpCode.SharpZipLib.GZip.GZipFlags.FNAME
+  name: FNAME
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipFlags.html#ICSharpCode_SharpZipLib_GZip_GZipFlags_FNAME
+  commentId: F:ICSharpCode.SharpZipLib.GZip.GZipFlags.FNAME
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipFlags.FNAME
+  nameWithType: GZipFlags.FNAME
+- uid: ICSharpCode.SharpZipLib.GZip.GZipFlags.FTEXT
+  name: FTEXT
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipFlags.html#ICSharpCode_SharpZipLib_GZip_GZipFlags_FTEXT
+  commentId: F:ICSharpCode.SharpZipLib.GZip.GZipFlags.FTEXT
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipFlags.FTEXT
+  nameWithType: GZipFlags.FTEXT
 - uid: ICSharpCode.SharpZipLib.GZip.GZipInputStream
   name: GZipInputStream
   href: api/ICSharpCode.SharpZipLib.GZip.GZipInputStream.html
@@ -1949,6 +1980,19 @@ references:
   commentId: F:ICSharpCode.SharpZipLib.GZip.GZipInputStream.crc
   fullName: ICSharpCode.SharpZipLib.GZip.GZipInputStream.crc
   nameWithType: GZipInputStream.crc
+- uid: ICSharpCode.SharpZipLib.GZip.GZipInputStream.GetFilename
+  name: GetFilename()
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipInputStream.html#ICSharpCode_SharpZipLib_GZip_GZipInputStream_GetFilename
+  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipInputStream.GetFilename
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipInputStream.GetFilename()
+  nameWithType: GZipInputStream.GetFilename()
+- uid: ICSharpCode.SharpZipLib.GZip.GZipInputStream.GetFilename*
+  name: GetFilename
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipInputStream.html#ICSharpCode_SharpZipLib_GZip_GZipInputStream_GetFilename_
+  commentId: Overload:ICSharpCode.SharpZipLib.GZip.GZipInputStream.GetFilename
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipInputStream.GetFilename
+  nameWithType: GZipInputStream.GetFilename
 - uid: ICSharpCode.SharpZipLib.GZip.GZipInputStream.Read(System.Byte[],System.Int32,System.Int32)
   name: Read(Byte[], Int32, Int32)
   href: api/ICSharpCode.SharpZipLib.GZip.GZipInputStream.html#ICSharpCode_SharpZipLib_GZip_GZipInputStream_Read_System_Byte___System_Int32_System_Int32_
@@ -2009,6 +2053,19 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.Dispose
   nameWithType: GZipOutputStream.Dispose
+- uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.FileName
+  name: FileName
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream_FileName
+  commentId: P:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.FileName
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.FileName
+  nameWithType: GZipOutputStream.FileName
+- uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.FileName*
+  name: FileName
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream_FileName_
+  commentId: Overload:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.FileName
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.FileName
+  nameWithType: GZipOutputStream.FileName
 - uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.Finish
   name: Finish()
   href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream_Finish
@@ -8223,12 +8280,24 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Zip.FastZip.#ctor
   fullName: ICSharpCode.SharpZipLib.Zip.FastZip.FastZip()
   nameWithType: FastZip.FastZip()
+- uid: ICSharpCode.SharpZipLib.Zip.FastZip.#ctor(DateTime)
+  name: FastZip(DateTime)
+  href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip__ctor_DateTime_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.FastZip.#ctor(DateTime)
+  fullName: ICSharpCode.SharpZipLib.Zip.FastZip.FastZip(DateTime)
+  nameWithType: FastZip.FastZip(DateTime)
 - uid: ICSharpCode.SharpZipLib.Zip.FastZip.#ctor(ICSharpCode.SharpZipLib.Zip.FastZipEvents)
   name: FastZip(FastZipEvents)
   href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip__ctor_ICSharpCode_SharpZipLib_Zip_FastZipEvents_
   commentId: M:ICSharpCode.SharpZipLib.Zip.FastZip.#ctor(ICSharpCode.SharpZipLib.Zip.FastZipEvents)
   fullName: ICSharpCode.SharpZipLib.Zip.FastZip.FastZip(ICSharpCode.SharpZipLib.Zip.FastZipEvents)
   nameWithType: FastZip.FastZip(FastZipEvents)
+- uid: ICSharpCode.SharpZipLib.Zip.FastZip.#ctor(ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting)
+  name: FastZip(ZipEntryFactory.TimeSetting)
+  href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip__ctor_ICSharpCode_SharpZipLib_Zip_ZipEntryFactory_TimeSetting_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.FastZip.#ctor(ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting)
+  fullName: ICSharpCode.SharpZipLib.Zip.FastZip.FastZip(ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting)
+  nameWithType: FastZip.FastZip(ZipEntryFactory.TimeSetting)
 - uid: ICSharpCode.SharpZipLib.Zip.FastZip.#ctor*
   name: FastZip
   href: api/ICSharpCode.SharpZipLib.Zip.FastZip.html#ICSharpCode_SharpZipLib_Zip_FastZip__ctor_
@@ -8926,6 +8995,19 @@ references:
   commentId: T:ICSharpCode.SharpZipLib.Zip.IEntryFactory
   fullName: ICSharpCode.SharpZipLib.Zip.IEntryFactory
   nameWithType: IEntryFactory
+- uid: ICSharpCode.SharpZipLib.Zip.IEntryFactory.FixedDateTime
+  name: FixedDateTime
+  href: api/ICSharpCode.SharpZipLib.Zip.IEntryFactory.html#ICSharpCode_SharpZipLib_Zip_IEntryFactory_FixedDateTime
+  commentId: P:ICSharpCode.SharpZipLib.Zip.IEntryFactory.FixedDateTime
+  fullName: ICSharpCode.SharpZipLib.Zip.IEntryFactory.FixedDateTime
+  nameWithType: IEntryFactory.FixedDateTime
+- uid: ICSharpCode.SharpZipLib.Zip.IEntryFactory.FixedDateTime*
+  name: FixedDateTime
+  href: api/ICSharpCode.SharpZipLib.Zip.IEntryFactory.html#ICSharpCode_SharpZipLib_Zip_IEntryFactory_FixedDateTime_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.IEntryFactory.FixedDateTime
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.IEntryFactory.FixedDateTime
+  nameWithType: IEntryFactory.FixedDateTime
 - uid: ICSharpCode.SharpZipLib.Zip.IEntryFactory.MakeDirectoryEntry(System.String)
   name: MakeDirectoryEntry(String)
   href: api/ICSharpCode.SharpZipLib.Zip.IEntryFactory.html#ICSharpCode_SharpZipLib_Zip_IEntryFactory_MakeDirectoryEntry_System_String_
@@ -8983,6 +9065,19 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.IEntryFactory.NameTransform
   nameWithType: IEntryFactory.NameTransform
+- uid: ICSharpCode.SharpZipLib.Zip.IEntryFactory.Setting
+  name: Setting
+  href: api/ICSharpCode.SharpZipLib.Zip.IEntryFactory.html#ICSharpCode_SharpZipLib_Zip_IEntryFactory_Setting
+  commentId: P:ICSharpCode.SharpZipLib.Zip.IEntryFactory.Setting
+  fullName: ICSharpCode.SharpZipLib.Zip.IEntryFactory.Setting
+  nameWithType: IEntryFactory.Setting
+- uid: ICSharpCode.SharpZipLib.Zip.IEntryFactory.Setting*
+  name: Setting
+  href: api/ICSharpCode.SharpZipLib.Zip.IEntryFactory.html#ICSharpCode_SharpZipLib_Zip_IEntryFactory_Setting_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.IEntryFactory.Setting
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.IEntryFactory.Setting
+  nameWithType: IEntryFactory.Setting
 - uid: ICSharpCode.SharpZipLib.Zip.IStaticDataSource
   name: IStaticDataSource
   href: api/ICSharpCode.SharpZipLib.Zip.IStaticDataSource.html
@@ -10555,6 +10650,38 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.ZipEntry.ZipFileIndex
   nameWithType: ZipEntry.ZipFileIndex
+- uid: ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions
+  name: ZipEntryExtensions
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.html
+  commentId: T:ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions
+  nameWithType: ZipEntryExtensions
+- uid: ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.HasFlag(ICSharpCode.SharpZipLib.Zip.ZipEntry,ICSharpCode.SharpZipLib.Zip.GeneralBitFlags)
+  name: HasFlag(ZipEntry, GeneralBitFlags)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.html#ICSharpCode_SharpZipLib_Zip_ZipEntryExtensions_HasFlag_ICSharpCode_SharpZipLib_Zip_ZipEntry_ICSharpCode_SharpZipLib_Zip_GeneralBitFlags_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.HasFlag(ICSharpCode.SharpZipLib.Zip.ZipEntry,ICSharpCode.SharpZipLib.Zip.GeneralBitFlags)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.HasFlag(ICSharpCode.SharpZipLib.Zip.ZipEntry, ICSharpCode.SharpZipLib.Zip.GeneralBitFlags)
+  nameWithType: ZipEntryExtensions.HasFlag(ZipEntry, GeneralBitFlags)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.HasFlag*
+  name: HasFlag
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.html#ICSharpCode_SharpZipLib_Zip_ZipEntryExtensions_HasFlag_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.HasFlag
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.HasFlag
+  nameWithType: ZipEntryExtensions.HasFlag
+- uid: ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.SetFlag(ICSharpCode.SharpZipLib.Zip.ZipEntry,ICSharpCode.SharpZipLib.Zip.GeneralBitFlags,System.Boolean)
+  name: SetFlag(ZipEntry, GeneralBitFlags, Boolean)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.html#ICSharpCode_SharpZipLib_Zip_ZipEntryExtensions_SetFlag_ICSharpCode_SharpZipLib_Zip_ZipEntry_ICSharpCode_SharpZipLib_Zip_GeneralBitFlags_System_Boolean_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.SetFlag(ICSharpCode.SharpZipLib.Zip.ZipEntry,ICSharpCode.SharpZipLib.Zip.GeneralBitFlags,System.Boolean)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.SetFlag(ICSharpCode.SharpZipLib.Zip.ZipEntry, ICSharpCode.SharpZipLib.Zip.GeneralBitFlags, System.Boolean)
+  nameWithType: ZipEntryExtensions.SetFlag(ZipEntry, GeneralBitFlags, Boolean)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.SetFlag*
+  name: SetFlag
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.html#ICSharpCode_SharpZipLib_Zip_ZipEntryExtensions_SetFlag_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.SetFlag
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.SetFlag
+  nameWithType: ZipEntryExtensions.SetFlag
 - uid: ICSharpCode.SharpZipLib.Zip.ZipEntryFactory
   name: ZipEntryFactory
   href: api/ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.html
