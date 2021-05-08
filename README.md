@@ -1,4 +1,4 @@
-# SharpZipLib [![Build Status](https://github.com/icsharpcode/SharpZipLib/actions/workflows/on-push.yml/badge.svg?branch=master)](https://github.com/icsharpcode/SharpZipLib/actions/workflows/on-push.yml) [![NuGet Version](https://img.shields.io/nuget/v/SharpZipLib.svg)](https://www.nuget.org/packages/SharpZipLib/)
+# SharpZipLib [![Build Status](https://github.com/icsharpcode/SharpZipLib/actions/workflows/build-test.yml/badge.svg?branch=master)](https://github.com/icsharpcode/SharpZipLib/actions/workflows/build-test.yml) [![NuGet Version](https://img.shields.io/nuget/v/SharpZipLib.svg)](https://www.nuget.org/packages/SharpZipLib/)
 
 Introduction
 ------------
