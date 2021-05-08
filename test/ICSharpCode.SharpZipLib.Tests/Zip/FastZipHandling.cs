@@ -474,7 +474,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			tempPath = Path.Combine(tempPath, uniqueName);
 			var extractPath = Path.Combine(tempPath, "output");
 
-			const string contentFile = "content.txt";
+			const string contentFile = "output.txt";
 
 			var contentFilePathBad = Path.Combine("..", contentFile);
 			var extractFilePathBad = Path.Combine(tempPath, contentFile);
