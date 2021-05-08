@@ -724,17 +724,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Gets/Sets the compression method.
 		/// </summary>
-		/// <remarks>Throws exception when set if the method is not valid as per <see cref="IsCompressionMethodSupported()"/></remarks>
-		/// <exception cref="NotSupportedException"/>
 		/// <returns>
 		/// The compression method for this entry
 		/// </returns>
 		public CompressionMethod CompressionMethod
 		{
 			get => method;
-			set => method = !IsCompressionMethodSupported(value)
-					? throw new NotSupportedException("Compression method not supported")
-					: value;
+			set => method = value;
 		}
 
 		/// <summary>
