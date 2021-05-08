@@ -3,6 +3,7 @@ using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tests.BZip2
 {
@@ -50,6 +51,55 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 					Assert.AreEqual(buf2[i], buf[i]);
 				}
 			}
+		}
+
+		/// <summary>
+		/// MultiStream support
+		/// </summary>
+		[Test]
+		[Category("BZip2")]
+		public void MultiStream()
+		{
+			var firstData = "first";
+			var secondData = "second";
+			using (var ms = new MemoryStream())
+			{
+				using (var outStreamA = new BZip2OutputStream(ms))
+				{
+					outStreamA.IsStreamOwner = false;
+					var data = Encoding.ASCII.GetBytes(firstData);
+					outStreamA.Write(data, 0, data.Length);
+				}
+
+				using (var outStreamB = new BZip2OutputStream(ms))
+				{
+					outStreamB.IsStreamOwner = false;
+					var data = Encoding.ASCII.GetBytes(secondData);
+					outStreamB.Write(data, 0, data.Length);
+				}
+
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var inStream = new BZip2InputStream(ms, false))
+				using (var sr = new StreamReader(inStream, Encoding.ASCII, false, 1024, true))
+				{
+					inStream.IsStreamOwner = false;
+					var data = sr.ReadToEnd();
+					Assert.AreEqual(firstData, data, "When decompressing the data without multistream support, the output data did not match the contents of the first data stream");
+				}
+
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var inStream = new BZip2InputStream(ms, true))
+				using (var sr = new StreamReader(inStream, Encoding.ASCII, false, 1024, true))
+				{
+					inStream.IsStreamOwner = false;
+					var data = sr.ReadToEnd();
+					Assert.AreEqual(firstData + secondData, data, "When decompressing the data with multistream support, the output data did not match the combined contents of input data streams");
+				}
+
+			}
+
 		}
 
 		/// <summary>

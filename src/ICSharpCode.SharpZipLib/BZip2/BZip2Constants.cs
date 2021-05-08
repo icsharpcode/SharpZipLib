@@ -3,7 +3,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 	/// <summary>
 	/// Defines internal values for both compression and decompression
 	/// </summary>
-	internal sealed class BZip2Constants
+	internal static class BZip2Constants
 	{
 		/// <summary>
 		/// Random numbers used to randomise repetitive blocks
@@ -114,8 +114,16 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		public const int OvershootBytes = 20;
 
-		private BZip2Constants()
-		{
-		}
+		/// <summary>
+		/// 48 bit magic number used to identify stream footer
+		/// </summary>
+		/// <remarks>Square root of Pi in BCD</remarks>
+		public const ulong MagicFooter = 0x177245385090UL;
+
+		/// <summary>
+		/// 48 bit magic number used to identify stream header
+		/// </summary>
+		/// <remarks>Pi in BCD</remarks>
+		public const ulong MagicHeader = 0x314159265359UL;
 	}
 }
