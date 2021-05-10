@@ -917,7 +917,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			using (ZipFile zf = new ZipFile(ms2))
 			{
 				Assert.IsTrue(zf.TestArchive(true, TestStrategy.FindAllErrors, 
-					(status, message) => Console.WriteLine(message)));
+					(status, message) => {
+						if (!string.IsNullOrWhiteSpace(message)) TestContext.Out.WriteLine(message);
+					}));
 			}
 		}
 
