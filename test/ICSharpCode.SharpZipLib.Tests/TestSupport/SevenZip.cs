@@ -17,7 +17,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "7-Zip", "7z.exe"),
 		};
 
-		public static bool TryGet7zBinPath(out string path7z)
+		private static bool TryGet7zBinPath(out string path7z)
 		{
 			var runTimeLimit = TimeSpan.FromSeconds(3);
 
@@ -77,19 +77,25 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 						zipStream.CopyTo(fs);
 					}
 
-					var p = Process.Start(new ProcessStartInfo()
+					var p = Process.Start(new ProcessStartInfo(path7z, $"t -p{password} \"{fileName}\"")
 					{
-						FileName = path7z,
-						Arguments = $"t -p{password} \"{fileName}\"",
-						RedirectStandardError = true
+						RedirectStandardOutput = true,
+						RedirectStandardError = true,
+						UseShellExecute = false,
 					});
+					
+					if (p == null)
+					{
+						Assert.Inconclusive("Failed to start 7z process. Skipping!");
+					}
 					if (!p.WaitForExit(2000))
 					{
 						Assert.Warn("Timed out verifying zip file!");
 					}
 
-					Console.Write(p.StandardError.ReadToEnd());
-
+					TestContext.Out.Write(p.StandardOutput.ReadToEnd());
+					var errors = p.StandardError.ReadToEnd();
+					Assert.IsEmpty(errors, "7z reported errors");
 					Assert.AreEqual(0, p.ExitCode, "Archive verification failed");
 				}
 				finally

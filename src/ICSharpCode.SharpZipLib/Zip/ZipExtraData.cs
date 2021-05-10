@@ -516,7 +516,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			if (data == null)
 			{
-				_data = new byte[0];
+				_data = Empty.Array<byte>();
 			}
 			else
 			{
@@ -547,7 +547,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 			if ((_data == null) || (_data.Length != 0))
 			{
-				_data = new byte[0];
+				_data = Empty.Array<byte>();
 			}
 		}
 

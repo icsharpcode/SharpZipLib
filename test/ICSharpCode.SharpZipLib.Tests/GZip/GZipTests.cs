@@ -3,6 +3,7 @@ using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tests.GZip
 {
@@ -513,6 +514,42 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 				input: w => new GZipInputStream(w),
 				output: w => new GZipOutputStream(w)
 			);
+		}
+
+		/// <summary>
+		/// Basic compress/decompress test
+		/// </summary>
+		[Test]
+		[Category("GZip")]
+		public void OriginalFilename()
+		{
+			var content = "FileContents";
+
+
+			using (var ms = new MemoryStream())
+			{
+				using (var outStream = new GZipOutputStream(ms) { IsStreamOwner = false })
+				{
+					outStream.FileName = "/path/to/file.ext";
+
+					var writeBuffer = Encoding.ASCII.GetBytes(content);
+					outStream.Write(writeBuffer, 0, writeBuffer.Length);
+					outStream.Flush();
+					outStream.Finish();
+				}
+
+				ms.Seek(0, SeekOrigin.Begin);
+
+				using (var inStream = new GZipInputStream(ms))
+				{
+					var readBuffer = new byte[content.Length];
+					inStream.Read(readBuffer, 0, readBuffer.Length);
+					Assert.AreEqual(content, Encoding.ASCII.GetString(readBuffer));
+					Assert.AreEqual("file.ext", inStream.GetFilename());
+				}
+	
+			}
+
 		}
 	}
 }

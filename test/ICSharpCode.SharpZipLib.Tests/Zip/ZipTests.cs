@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Security;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -288,7 +289,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			return (byte)((rhs * 253 + 7) & 0xff);
 		}
 
-		private static void AddKnownDataToEntry(ZipOutputStream zipStream, int size)
+		private static void AddKnownDataToEntry(Stream zipStream, int size)
 		{
 			if (size > 0)
 			{
@@ -387,6 +388,27 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
+		protected void MakeZipFile(Stream storage, CompressionMethod compressionMethod,  bool isOwner,
+			string entryNamePrefix, int entries, int size, string comment)
+		{
+			using (ZipFile f = new ZipFile(storage, leaveOpen: !isOwner))
+			{
+				f.BeginUpdate();
+				f.SetComment(comment);
+
+				for (int i = 0; i < entries; ++i)
+				{
+					var data = new MemoryStream();
+					AddKnownDataToEntry(data, size);
+
+					var m = new MemoryDataSource(data.ToArray());
+					f.Add(m, entryNamePrefix + (i + 1), compressionMethod);
+				}
+
+				f.CommitUpdate();
+			}
+		}
+
 		#endregion MakeZipFile Entries
 
 		protected static void CheckKnownEntry(Stream inStream, int expectedCount)
@@ -397,6 +419,25 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			int total = 0;
 			byte nextValue = 0;
 			while ((bytesRead = inStream.Read(buffer, 0, buffer.Length)) > 0)
+			{
+				total += bytesRead;
+				for (int i = 0; i < bytesRead; ++i)
+				{
+					Assert.AreEqual(nextValue, buffer[i], "Wrong value read from entry");
+					nextValue = ScatterValue(nextValue);
+				}
+			}
+			Assert.AreEqual(expectedCount, total, "Wrong number of bytes read from entry");
+		}
+
+		protected static async Task CheckKnownEntryAsync(Stream inStream, int expectedCount)
+		{
+			byte[] buffer = new byte[1024];
+
+			int bytesRead;
+			int total = 0;
+			byte nextValue = 0;
+			while ((bytesRead = await inStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
 			{
 				total += bytesRead;
 				for (int i = 0; i < bytesRead; ++i)

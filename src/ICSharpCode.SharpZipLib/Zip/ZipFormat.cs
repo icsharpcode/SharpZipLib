@@ -467,10 +467,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			byte[] extra = ed.GetEntryData();
 
-			byte[] entryComment =
-				(entry.Comment != null) ?
-				ZipStrings.ConvertToArray(entry.Flags, entry.Comment) :
-				new byte[0];
+			byte[] entryComment = !(entry.Comment is null)
+				? ZipStrings.ConvertToArray(entry.Flags, entry.Comment) 
+				: Empty.Array<byte>();
 
 			if (entryComment.Length > 0xffff)
 			{
