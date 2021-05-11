@@ -102,15 +102,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void FilenameCleaning()
 		{
-			Assert.AreEqual(ZipEntry.CleanName("hello"), "hello");
+			Assert.AreEqual("hello", ZipEntry.CleanName("hello"));
 			if(Environment.OSVersion.Platform == PlatformID.Win32NT) 
 			{
-				Assert.AreEqual(ZipEntry.CleanName(@"z:\eccles"), "eccles");
-				Assert.AreEqual(ZipEntry.CleanName(@"\\server\share\eccles"), "eccles");
-				Assert.AreEqual(ZipEntry.CleanName(@"\\server\share\dir\eccles"), "dir/eccles");
+				Assert.AreEqual("eccles", ZipEntry.CleanName(@"z:\eccles"));
+				Assert.AreEqual("eccles", ZipEntry.CleanName(@"\\server\share\eccles"));
+				Assert.AreEqual("dir/eccles", ZipEntry.CleanName(@"\\server\share\dir\eccles"));
 			}
 			else {
-				Assert.AreEqual(ZipEntry.CleanName(@"/eccles"), "eccles");
+				Assert.AreEqual("eccles", ZipEntry.CleanName(@"/eccles"));
 			}
 		}
 
