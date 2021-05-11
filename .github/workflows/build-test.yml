@@ -65,7 +65,14 @@ jobs:
       run: dotnet test -c debug -f ${{ matrix.target }} --no-restore
       
     - name: Run tests (Release)
+      # Only upload code coverage for windows in an attempt to fix the broken code coverage
+      if: ${{ matrix.os == 'windows' }}
       run: dotnet test -c release -f ${{ matrix.target }} --no-restore --collect="XPlat Code Coverage"
+      
+    - name: Run tests with coverage (Release)
+      # Only upload code coverage for windows in an attempt to fix the broken code coverage
+      if: ${{ matrix.os != 'windows' }}
+      run: dotnet test -c release -f ${{ matrix.target }} --no-restore
       
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1.2.2
