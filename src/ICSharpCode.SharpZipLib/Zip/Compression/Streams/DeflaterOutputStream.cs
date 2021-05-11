@@ -2,6 +2,8 @@ using ICSharpCode.SharpZipLib.Encryption;
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 {
@@ -132,6 +134,50 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 
 		/// <summary>
+		/// Finishes the stream by calling finish() on the deflater.
+		/// </summary>
+		/// <param name="cancellationToken">The <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
+		/// <exception cref="SharpZipBaseException">
+		/// Not all input is deflated
+		/// </exception>
+		public virtual async Task FinishAsync(CancellationToken cancellationToken)
+		{
+			deflater_.Finish();
+			while (!deflater_.IsFinished)
+			{
+				int len = deflater_.Deflate(buffer_, 0, buffer_.Length);
+				if (len <= 0)
+				{
+					break;
+				}
+
+				if (cryptoTransform_ != null)
+				{
+					EncryptBlock(buffer_, 0, len);
+				}
+
+				await baseOutputStream_.WriteAsync(buffer_, 0, len, cancellationToken);
+			}
+
+			if (!deflater_.IsFinished)
+			{
+				throw new SharpZipBaseException("Can't deflate all input?");
+			}
+
+			await baseOutputStream_.FlushAsync(cancellationToken);
+
+			if (cryptoTransform_ != null)
+			{
+				if (cryptoTransform_ is ZipAESTransform)
+				{
+					AESAuthCode = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
+				}
+				cryptoTransform_.Dispose();
+				cryptoTransform_ = null;
+			}
+		}
+
+		/// <summary>
 		/// Gets or sets a flag indicating ownership of underlying stream.
 		/// When the flag is true <see cref="Stream.Dispose()" /> will close the underlying stream also.
 		/// </summary>
@@ -216,10 +262,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Initializes encryption keys based on given password.
 		/// </summary>
-		protected void InitializeAESPassword(ZipEntry entry, string rawPassword,
-											out byte[] salt, out byte[] pwdVerifier)
+		protected byte[] InitializeAESPassword(ZipEntry entry, string rawPassword)
 		{
-			salt = new byte[entry.AESSaltLen];
+			var salt = new byte[entry.AESSaltLen];
 			// Salt needs to be cryptographically random, and unique per file
 			if (_aesRnd == null)
 				_aesRnd = RandomNumberGenerator.Create();
@@ -227,7 +272,14 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			int blockSize = entry.AESKeySize / 8;   // bits to bytes
 
 			cryptoTransform_ = new ZipAESTransform(rawPassword, salt, blockSize, true);
-			pwdVerifier = ((ZipAESTransform)cryptoTransform_).PwdVerifier;
+
+			var headBytes = new byte[salt.Length + 2];
+
+			Array.Copy(salt, headBytes, salt.Length);
+			Array.Copy(((ZipAESTransform)cryptoTransform_).PwdVerifier, 0,
+				headBytes, headBytes.Length - 2, 2);
+
+			return headBytes;
 		}
 
 		#endregion Encryption
@@ -418,6 +470,38 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				}
 			}
 		}
+
+#if NETSTANDARD2_1
+		/// <summary>
+		/// Calls <see cref="FinishAsync"/> and closes the underlying
+		/// stream when <see cref="IsStreamOwner"></see> is true.
+		/// </summary>
+		public override async ValueTask DisposeAsync()
+		{
+			if (!isClosed_)
+			{
+				isClosed_ = true;
+
+				try
+				{
+					await FinishAsync(CancellationToken.None);
+					if (cryptoTransform_ != null)
+					{
+						GetAuthCodeIfAES();
+						cryptoTransform_.Dispose();
+						cryptoTransform_ = null;
+					}
+				}
+				finally
+				{
+					if (IsStreamOwner)
+					{
+						await baseOutputStream_.DisposeAsync();
+					}
+				}
+			}
+		}
+#endif
 
 		/// <summary>
 		/// Get the Auth code for AES encrypted entries
