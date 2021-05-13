@@ -25,12 +25,15 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>ZipSFX.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -58,6 +61,16 @@
       <DependentUpon>SfxForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="ILMerge" Version="3.0.29">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+	<Target Name="ILMerge" AfterTargets="Build">
+		<!-- the ILMergePath property points to the location of ILMerge.exe console application -->
+		<Exec Command="$(ILMergeConsolePath) $(OutputPath)\ZipSFX.exe /ndebug /out:$(OutputPath)\ZipSFX-merged.exe $(OutputPath)\ICSharpCode.SharpZipLib.dll" />
+	</Target>
+
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>

@@ -16,7 +16,9 @@ namespace ZipSFX
         [STAThread]
         static void Main(string[] args)
         {
-			if (args.Length > 2 && args[0] == "--sfx")
+	        // If launched with the arguments "--sfx", an input zip file, and an output exe file,
+	        // create a self-extracting binary using a copy of the current binary with the zip-file appended
+	        if (args.Length > 2 && args[0] == "--sfx")
 			{
 				using (var outStream = File.Open(args[2], FileMode.Create))
 				{
