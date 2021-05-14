@@ -1,6 +1,6 @@
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 	#define VECTORIZE_MEMORY_MOVE
-#endif // !NETSTANDARD2_0 && !NETFRAMEWORK
+#endif
 
 using ICSharpCode.SharpZipLib.Checksum;
 using System;
@@ -25,7 +25,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 #if VECTORIZE_MEMORY_MOVE
 		private static readonly int VectorSize = System.Numerics.Vector<byte>.Count;
-#endif
+#endif // VECTORIZE_MEMORY_MOVE
 
 #endregion Constants
 
@@ -733,7 +733,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 						arrayPart.CopyTo(yy, j - VectorSize + 1);
 						j -= VectorSize;
 					}
-#endif
+#endif // VECTORIZE_MEMORY_MOVE
 
 					while(j > 0)
 					{
