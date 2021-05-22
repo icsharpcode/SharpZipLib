@@ -356,7 +356,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				{
 					throw new ObjectDisposedException("TarArchive");
 				}
-				rootPath = value.ClearTarPath().TrimEnd('/');
+				rootPath = value.ToTarArchivePath().TrimEnd('/');
 			}
 		}
 
