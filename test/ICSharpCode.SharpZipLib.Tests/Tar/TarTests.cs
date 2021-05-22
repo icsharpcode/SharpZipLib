@@ -931,8 +931,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 				}
 			}
 
-			var extractDirectory = Path.Combine(Path.GetTempPath(), "sharpziplib_tar_extract_folder");
-			CreateAndClearDirectory(extractDirectory);
+			using var extractDirectory = new Utils.TempDir();
 			using (var file = File.OpenRead(tarFileName))
 			{
 				using (var archive = TarArchive.CreateInputTarArchive(file, Encoding.UTF8))
