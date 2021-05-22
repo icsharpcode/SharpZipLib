@@ -906,40 +906,40 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		/// </summary>
 		[Test]
 		[Category("Tar")]
-		public void rootPathIsRespected()
+		public void RootPathIsRespected()
 		{
-			using var tempDirectory = new Utils.TempDir();
-			tempDirectory.CreateDummyFile();
-
-			using var tarFileName = new Utils.TempFile();
-
-			using (var tarFile = File.Open(tarFileName, FileMode.Create))
+			using (var extractDirectory = new Utils.TempDir())
+			using (var tarFileName = new Utils.TempFile())
+			using (var tempDirectory = new Utils.TempDir())
 			{
-				using (var tarOutputStream = TarArchive.CreateOutputTarArchive(tarFile))
+				tempDirectory.CreateDummyFile();
+
+				using (var tarFile = File.Open(tarFileName.Filename, FileMode.Create))
 				{
-					tarOutputStream.RootPath = tempDirectory;
-					var entry = TarEntry.CreateEntryFromFile(tempDirectory);
-					tarOutputStream.WriteEntry(entry, true);
+					using (var tarOutputStream = TarArchive.CreateOutputTarArchive(tarFile))
+					{
+						tarOutputStream.RootPath = tempDirectory.Fullpath;
+						var entry = TarEntry.CreateEntryFromFile(tempDirectory.Fullpath);
+						tarOutputStream.WriteEntry(entry, true);
+					}
 				}
-			}
 
-			using var extractDirectory = new Utils.TempDir();
-			using (var file = File.OpenRead(tarFileName))
-			{
-				using (var archive = TarArchive.CreateInputTarArchive(file, Encoding.UTF8))
+				using (var file = File.OpenRead(tarFileName.Filename))
 				{
-					archive.ExtractContents(extractDirectory);
+					using (var archive = TarArchive.CreateInputTarArchive(file, Encoding.UTF8))
+					{
+						archive.ExtractContents(extractDirectory.Fullpath);
+					}
 				}
-			}
 
-			var expectationDirectory = new DirectoryInfo(tempDirectory);
-			foreach (var checkFile in expectationDirectory.GetFiles("", SearchOption.AllDirectories))
-			{
-				var relativePath = checkFile.FullName.Substring(expectationDirectory.FullName.Length + 1);
-				FileAssert.Exists(Path.Combine(extractDirectory, relativePath));
-				FileAssert.AreEqual(checkFile.FullName, Path.Combine(extractDirectory, relativePath));
+				var expectationDirectory = new DirectoryInfo(tempDirectory.Fullpath);
+				foreach (var checkFile in expectationDirectory.GetFiles("", SearchOption.AllDirectories))
+				{
+					var relativePath = checkFile.FullName.Substring(expectationDirectory.FullName.Length + 1);
+					FileAssert.Exists(Path.Combine(extractDirectory.Fullpath, relativePath));
+					FileAssert.AreEqual(checkFile.FullName, Path.Combine(extractDirectory.Fullpath, relativePath));
+				}
 			}
 		}
-
 	}
 }
