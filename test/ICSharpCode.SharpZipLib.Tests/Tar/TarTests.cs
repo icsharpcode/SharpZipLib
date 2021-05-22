@@ -908,18 +908,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		[Category("Tar")]
 		public void rootPathIsRespected()
 		{
-			// create dummy folder structure
-			var tempDirectory = Path.Combine(Path.GetTempPath(), "sharpziplib_tar_test_folder");
-			CreateAndClearDirectory(tempDirectory);
-			using (var dummyfile = File.Create(Path.Combine(tempDirectory, "dummyfile"))) 
-			{
-				using (var randomStream = new ChaosStream())
-				{
-					randomStream.CopyTo(dummyfile);
-				}
-			}
+			using var tempDirectory = new Utils.TempDir();
+			tempDirectory.CreateDummyFile();
 
-			var tarFileName = Path.Combine(Path.GetTempPath(), "sharpziplib_tar_test_folder_archive.tar");
+			using var tarFileName = new Utils.TempFile();
 
 			using (var tarFile = File.Open(tarFileName, FileMode.Create))
 			{
