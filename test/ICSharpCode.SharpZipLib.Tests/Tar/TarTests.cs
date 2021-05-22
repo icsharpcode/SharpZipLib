@@ -950,26 +950,5 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			}
 		}
 
-		private void CreateAndClearDirectory(string path)
-		{
-			if (Directory.Exists(path))
-			{
-				Directory.Delete(path, true);
-			}
-			Directory.CreateDirectory(path);
-		}
-
-		public class ChaosStream : MemoryStream
-		{
-			private readonly int length = new Random().Next() % 500000 + 200;
-
-			// Create constructors as needed to match desired MemoryStream construction
-
-			public override int Read(byte[] buffer, int offset, int count)
-			{
-				int readCount = Math.Max(0, Math.Min(length - offset, count));
-				return base.Read(buffer, offset, readCount);
-			}
-		}
 	}
 }
