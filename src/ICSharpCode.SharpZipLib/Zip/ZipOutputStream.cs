@@ -1,5 +1,6 @@
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Encryption;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
@@ -153,6 +154,29 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Defaults to <see cref="PathTransformer"/>, set to null to disable transforms and use names as supplied.
 		/// </summary>
 		public INameTransform NameTransform { get; set; } = new PathTransformer();
+
+		/// <summary>
+		/// Get/set the password used for encryption.
+		/// </summary>
+		/// <remarks>When set to null or if the password is empty no encryption is performed</remarks>
+		public string Password
+		{
+			get
+			{
+				return password;
+			}
+			set
+			{
+				if ((value != null) && (value.Length == 0))
+				{
+					password = null;
+				}
+				else
+				{
+					password = value;
+				}
+			}
+		}
 
 		/// <summary>
 		/// Write an unsigned short in little endian byte order.
@@ -634,6 +658,34 @@ namespace ICSharpCode.SharpZipLib.Zip
 			curEntry = null;
 		}
 
+		/// <summary>
+		/// Initializes encryption keys based on given <paramref name="password"/>.
+		/// </summary>
+		/// <param name="password">The password.</param>
+		private void InitializePassword(string password)
+		{
+			var pkManaged = new PkzipClassicManaged();
+			byte[] key = PkzipClassic.GenerateKeys(ZipStrings.ConvertToArray(password));
+			cryptoTransform_ = pkManaged.CreateEncryptor(key, null);
+		}
+
+		/// <summary>
+		/// Initializes encryption keys based on given password.
+		/// </summary>
+		private void InitializeAESPassword(ZipEntry entry, string rawPassword,
+											out byte[] salt, out byte[] pwdVerifier)
+		{
+			salt = new byte[entry.AESSaltLen];
+
+			// Salt needs to be cryptographically random, and unique per file
+			_aesRnd.GetBytes(salt);
+
+			int blockSize = entry.AESKeySize / 8;   // bits to bytes
+
+			cryptoTransform_ = new ZipAESTransform(rawPassword, salt, blockSize, true);
+			pwdVerifier = ((ZipAESTransform)cryptoTransform_).PwdVerifier;
+		}
+
 		private void WriteEncryptionHeader(long crcValue)
 		{
 			offset += ZipConstants.CryptoHeaderSize;
@@ -1010,6 +1062,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 		// NOTE: Setting the size for entries before they are added is the best solution!
 		private UseZip64 useZip64_ = UseZip64.Dynamic;
 
+		/// <summary>
+		/// The password to use when encrypting archive entries.
+		/// </summary>
+		private string password;
+
 		#endregion Instance Fields
+
+		#region Static Fields
+
+		// Static to help ensure that multiple files within a zip will get different random salt
+		private static RandomNumberGenerator _aesRnd = RandomNumberGenerator.Create();
+
+		#endregion Static Fields
 	}
 }

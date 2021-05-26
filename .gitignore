@@ -253,3 +253,4 @@ paket-files/
 /test/ICSharpCode.SharpZipLib.TestBootstrapper/Properties/launchSettings.json
 _testRunner/
 docs/help/api/.manifest
+/benchmark/ICSharpCode.SharpZipLib.Benchmark/BenchmarkDotNet.Artifacts/results
