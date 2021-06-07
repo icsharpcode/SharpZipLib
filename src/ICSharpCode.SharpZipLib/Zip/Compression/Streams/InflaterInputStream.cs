@@ -691,7 +691,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// <see cref="InflaterInputBuffer">Input buffer</see> for this stream.
 		/// </summary>
-		protected InflaterInputBuffer inputBuffer;
+		public InflaterInputBuffer inputBuffer;
 
 		/// <summary>
 		/// Base stream the inflater reads from.

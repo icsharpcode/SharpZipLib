@@ -11,7 +11,7 @@ namespace ArchiveDiag
 	class ZipArchiveDiagRunner: ArchiveDiagRunner
 	{
 		protected override string Parser => "ArchiveDiag.ZipParser";
-		protected override string Tester => "ICSharpCode.SharpZipLib.ZipFile";
+		protected override string Tester => "ICSharpCode.SharpZipLib.ZipFile+ZipInputStream";
 
 		public int MaxNameHex {get; set;} = 32;
 		public int MaxNameString {get; set;} = 128;
@@ -27,24 +27,49 @@ namespace ArchiveDiag
 
 		protected override bool TestArchive(Stream archiveStream)
 		{
-			return new ZipFile(archiveStream).TestArchive(true, TestStrategy.FindAllErrors, (status, message) =>
-			{
-				if (status.Operation == TestOperation.EntryData) return;
-				var pad = "";//.PadLeft(18 - status.Operation.ToString().Length);
-				if (status.Entry is { } entry)
+			var zipFileTest = false;
+			PrettyConsole.DoChore("[TEST] ZipFile.Test", () => {
+				zipFileTest = new ZipFile(archiveStream).TestArchive(true, TestStrategy.FindAllErrors, (status, message) =>
 				{
-					PrettyConsole.WriteLine($"[{status.Operation}{pad}] #{entry.ZipFileIndex} {entry.Name}");
-				}
-				else
-				{
-					PrettyConsole.WriteLine($"[{status.Operation}{pad}]");
-				}
+					if (status.Operation == TestOperation.EntryData) return;
+					var pad = "";//.PadLeft(18 - status.Operation.ToString().Length);
+					if (status.Entry is { } entry)
+					{
+						PrettyConsole.WriteLine($"[{status.Operation}{pad}] #{entry.ZipFileIndex} {entry.Name}");
+					}
+					else
+					{
+						PrettyConsole.WriteLine($"[{status.Operation}{pad}]");
+					}
 
-				if (!string.IsNullOrEmpty(message))
-				{
-					PrettyConsole.WriteLine($"[{status.Operation}{pad}] {message}");
-				}
+					if (!string.IsNullOrEmpty(message))
+					{
+						PrettyConsole.WriteLine($"[{status.Operation}{pad}] {message}");
+					}
+				});
 			});
+
+			var zisIterTest = false;
+			zisIterTest = PrettyConsole.DoChore("[TEST] ZipInputStream.Iterate", () => {
+				archiveStream.Seek(0, SeekOrigin.Begin);
+				using(var zis = new ZipInputStream(archiveStream)) {
+					ZipEntry entry;
+					var startEntry = 0l;
+					var entryNum = 0;
+					while ((entry = zis.GetNextEntry()) != null) {
+						entryNum++;
+						var startData = archiveStream.Position + (zis.inputBuffer.RawLength - zis.inputBuffer.Available);
+						var entryName = entry.Name;
+						zis.CloseEntry();
+						var endEntry = archiveStream.Position + (zis.inputBuffer.RawLength - zis.inputBuffer.Available);
+						var headSize = startData - startEntry;
+						var dataSize = endEntry - startData;
+						PrettyConsole.WriteLine($"- Entry #{entryNum,3} @ {startEntry,8}: {entryName} ({headSize} + {dataSize} byte(s))");
+						startEntry = endEntry;
+					}
+				}
+			}, continueOnFail: true);
+			return zisIterTest && zipFileTest;
 		}
 
 		protected override void ParseArchive(Stream transportStream)
@@ -347,10 +372,19 @@ namespace ArchiveDiag
 						PrettyConsole.PushGroup("extra-zip64");
 						using (var br = new BinaryReader(extraData.GetStreamForTag((int)tag)))
 						{
+							if (length < 16)
+							{
+								PrettyConsole.WriteLine($" Extra data length too small!", ConCol.Red);
+								PrettyConsole.WriteLine($" Zip64 should be {16} bytes, but {length} was indicated!");
+							}
+							
+							if (length < 8) break; 
 							var usize64 = br.ReadUInt64();
+							PrettyConsole.WriteLine($" Uncompressed Size: {usize64} (0x{usize64:x16})");
+							
+							if (length < 16) break;
 							var csize64 = br.ReadUInt64();
 							PrettyConsole.WriteLine($" Compressed Size: {csize64} (0x{csize64:x16})");
-							PrettyConsole.WriteLine($" Uncompressed Size: {usize64} (0x{usize64:x16})");
 						}
 
 						PrettyConsole.PopGroup();

@@ -15,7 +15,7 @@ namespace ICSharpCode.SharpZipLib.ArchiveDiag
 	{
 		public class Options
 		{
-			[Value(0, HelpText = "Input filename")]
+			[Value(0, HelpText = "Input filename", Required = true)]
 			public string Filename { get; set; }
 
 			[Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages")]
@@ -29,6 +29,9 @@ namespace ICSharpCode.SharpZipLib.ArchiveDiag
 
 			[Option('e', "eval", HelpText = "Run the input file as a C# script and create a report from the resulting stream")]
 			public bool Evaluate { get; set; }
+			
+			[Option('t', "tar")]
+			public bool Tar { get; set; }
 		}
 
 
@@ -86,7 +89,14 @@ namespace ICSharpCode.SharpZipLib.ArchiveDiag
 			        using var outputStream = File.Open(outputFile, FileMode.Create);
 			        using var htmlWriter = new HTMLWriter(outputStream);
 
-					new TarArchiveDiagRunner(inputStream, inputFile).Run(new ConsoleWriter(), htmlWriter);
+					if(o.Tar) {
+						new TarArchiveDiagRunner(inputStream, inputFile).Run(new ConsoleWriter(), htmlWriter);
+					} else {
+						new ZipArchiveDiagRunner(inputStream, inputFile)
+						{
+							WarnUnknownSigns = false,
+						}.Run(new ConsoleWriter(), htmlWriter);
+					}
 
 
 
