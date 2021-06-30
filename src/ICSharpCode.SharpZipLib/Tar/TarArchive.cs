@@ -824,7 +824,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			{
 				if (!IsBinary(entryFilename))
 				{
-					tempFileName = Path.GetRandomFileName();
+					tempFileName = PathUtils.GetTempFileName();
 
 					using (StreamReader inStream = File.OpenText(entryFilename))
 					{
