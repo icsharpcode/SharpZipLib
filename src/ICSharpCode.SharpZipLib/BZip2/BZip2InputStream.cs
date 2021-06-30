@@ -1,3 +1,7 @@
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+	#define VECTORIZE_MEMORY_MOVE
+#endif
+
 using ICSharpCode.SharpZipLib.Checksum;
 using System;
 using System.IO;
@@ -19,9 +23,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		private const int NO_RAND_PART_B_STATE = 6;
 		private const int NO_RAND_PART_C_STATE = 7;
 
-#if NETSTANDARD2_1
+#if VECTORIZE_MEMORY_MOVE
 		private static readonly int VectorSize = System.Numerics.Vector<byte>.Count;
-#endif
+#endif // VECTORIZE_MEMORY_MOVE
 
 #endregion Constants
 
@@ -717,7 +721,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 					var j = nextSym - 1;
 
-#if !NETSTANDARD2_0 && !NETFRAMEWORK
+#if VECTORIZE_MEMORY_MOVE
 					// This is vectorized memory move. Going from the back, we're taking chunks of array
 					// and write them at the new location shifted by one. Since chunks are VectorSize long,
 					// at the end we have to move "tail" (or head actually) of the array using a plain loop.
@@ -729,7 +733,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 						arrayPart.CopyTo(yy, j - VectorSize + 1);
 						j -= VectorSize;
 					}
-#endif
+#endif // VECTORIZE_MEMORY_MOVE
 
 					while(j > 0)
 					{
