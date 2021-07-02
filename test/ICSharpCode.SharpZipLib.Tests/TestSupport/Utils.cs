@@ -1,7 +1,9 @@
 using NUnit.Framework;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
+using ICSharpCode.SharpZipLib.Tests.Zip;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
@@ -12,7 +14,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	{
 		public static int DummyContentLength = 16;
 
-		private static Random random = new Random();
+		private static Random random = new Random(5);
 		
 		/// <summary>
 		/// Returns the system root for the current platform (usually c:\ for windows and / for others)
@@ -160,5 +162,29 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 			#endregion IDisposable Support
 		}
+
+		public static void PatchFirstEntrySize(Stream stream, int newSize)
+		{
+			using(stream)
+			{
+				var sizeBytes = BitConverter.GetBytes(newSize);
+
+				stream.Seek(18, SeekOrigin.Begin);
+				stream.Write(sizeBytes, 0, 4);
+				stream.Write(sizeBytes, 0, 4);
+			}
+		}
+	}
+	
+	public class TestTraceListener : TraceListener
+	{
+		private readonly TextWriter _writer;
+		public TestTraceListener(TextWriter writer)
+		{
+			_writer = writer;
+		}
+
+		public override void WriteLine(string message) => _writer.WriteLine(message);
+		public override void Write(string message) => _writer.Write(message);
 	}
 }
