@@ -859,7 +859,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			reparseHeader.ParseBuffer(headerbytes, enc);
 			Assert.AreEqual(name, reparseHeader.Name);
 			// top 100 bytes are name field in tar header
-			for (int i = 0;i < encodedName.Length;i++)
+			for (int i = 0; i < encodedName.Length; i++)
 			{
 				Assert.AreEqual(encodedName[i], headerbytes[i]);
 			}
@@ -878,17 +878,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			var entryName = new string((char)0x3042, length);
 			var data = new byte[32];
 			var encoding = Encoding.GetEncoding(encodingName);
-			using(var memoryStream = new MemoryStream())
+			using (var memoryStream = new MemoryStream())
 			{
-				using(var tarOutput = new TarOutputStream(memoryStream, encoding))
+				using (var tarOutput = new TarOutputStream(memoryStream, encoding))
 				{
 					var entry = TarEntry.CreateTarEntry(entryName);
 					entry.Size = 32;
 					tarOutput.PutNextEntry(entry);
 					tarOutput.Write(data, 0, data.Length);
 				}
-				using(var memInput = new MemoryStream(memoryStream.ToArray()))
-				using(var inputStream = new TarInputStream(memInput, encoding))
+				using (var memInput = new MemoryStream(memoryStream.ToArray()))
+				using (var inputStream = new TarInputStream(memInput, encoding))
 				{
 					var buf = new byte[64];
 					var entry = inputStream.GetNextEntry();
@@ -897,6 +897,48 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					Assert.AreEqual(data.Length, bytesread);
 				}
 				File.WriteAllBytes(Path.Combine(Path.GetTempPath(), $"jpnametest_{length}_{encodingName}.tar"), memoryStream.ToArray());
+			}
+		}
+		/// <summary>
+		/// This test could be considered integration test. it creates a tar archive with the root directory specified
+		/// Then extracts it and compares the two folders. This used to fail on unix due to issues with root folder handling
+		/// in the tar archive.
+		/// </summary>
+		[Test]
+		[Category("Tar")]
+		public void RootPathIsRespected()
+		{
+			using (var extractDirectory = new Utils.TempDir())
+			using (var tarFileName = new Utils.TempFile())
+			using (var tempDirectory = new Utils.TempDir())
+			{
+				tempDirectory.CreateDummyFile();
+
+				using (var tarFile = File.Open(tarFileName.Filename, FileMode.Create))
+				{
+					using (var tarOutputStream = TarArchive.CreateOutputTarArchive(tarFile))
+					{
+						tarOutputStream.RootPath = tempDirectory.Fullpath;
+						var entry = TarEntry.CreateEntryFromFile(tempDirectory.Fullpath);
+						tarOutputStream.WriteEntry(entry, true);
+					}
+				}
+
+				using (var file = File.OpenRead(tarFileName.Filename))
+				{
+					using (var archive = TarArchive.CreateInputTarArchive(file, Encoding.UTF8))
+					{
+						archive.ExtractContents(extractDirectory.Fullpath);
+					}
+				}
+
+				var expectationDirectory = new DirectoryInfo(tempDirectory.Fullpath);
+				foreach (var checkFile in expectationDirectory.GetFiles("", SearchOption.AllDirectories))
+				{
+					var relativePath = checkFile.FullName.Substring(expectationDirectory.FullName.Length + 1);
+					FileAssert.Exists(Path.Combine(extractDirectory.Fullpath, relativePath));
+					FileAssert.AreEqual(checkFile.FullName, Path.Combine(extractDirectory.Fullpath, relativePath));
+				}
 			}
 		}
 	}
