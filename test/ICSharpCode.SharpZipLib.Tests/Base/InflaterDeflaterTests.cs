@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Security;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Tests.Base
 {
@@ -17,17 +18,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 	{
 		private void Inflate(MemoryStream ms, byte[] original, int level, bool zlib)
 		{
-			ms.Seek(0, SeekOrigin.Begin);
-
-			var inflater = new Inflater(!zlib);
-			var inStream = new InflaterInputStream(ms, inflater);
 			byte[] buf2 = new byte[original.Length];
 
-			int currentIndex = 0;
-			int count = buf2.Length;
-
-			try
+			using (var inStream = GetInflaterInputStream(ms, zlib))
 			{
+				int currentIndex = 0;
+				int count = buf2.Length;
+
 				while (true)
 				{
 					int numRead = inStream.Read(buf2, currentIndex, count);
@@ -38,19 +35,106 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 					currentIndex += numRead;
 					count -= numRead;
 				}
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine("Unexpected exception - '{0}'", ex.Message);
-				throw;
+
+				Assert.That(currentIndex, Is.EqualTo(original.Length), "Decompressed data must have the same length as the original data");
 			}
 
-			if (currentIndex != original.Length)
+			VerifyInflatedData(original, buf2, level, zlib);
+		}
+
+		private MemoryStream Deflate(byte[] data, int level, bool zlib)
+		{
+			var memoryStream = new MemoryStream();
+
+			var deflater = new Deflater(level, !zlib);
+			using (DeflaterOutputStream outStream = new DeflaterOutputStream(memoryStream, deflater))
 			{
-				Console.WriteLine("Original {0}, new {1}", original.Length, currentIndex);
-				Assert.Fail("Lengths different");
+				outStream.IsStreamOwner = false;
+				outStream.Write(data, 0, data.Length);
+				outStream.Flush();
+				outStream.Finish();
+			}
+			return memoryStream;
+		}
+
+		private static byte[] GetRandomTestData(int size)
+		{
+			byte[] buffer = new byte[size];
+			var rnd = new Random();
+			rnd.NextBytes(buffer);
+
+			return buffer;
+		}
+
+		private void RandomDeflateInflate(int size, int level, bool zlib)
+		{
+			byte[] buffer = GetRandomTestData(size);
+
+			MemoryStream ms = Deflate(buffer, level, zlib);
+			Inflate(ms, buffer, level, zlib);
+		}
+		
+		private static InflaterInputStream GetInflaterInputStream(Stream compressedStream, bool zlib)
+		{
+			compressedStream.Seek(0, SeekOrigin.Begin);
+
+			var inflater = new Inflater(!zlib);
+			var inStream = new InflaterInputStream(compressedStream, inflater);
+
+			return inStream;
+		}
+		
+		private async Task InflateAsync(MemoryStream ms, byte[] original, int level, bool zlib)
+		{
+			byte[] buf2 = new byte[original.Length];
+
+			using (var inStream = GetInflaterInputStream(ms, zlib))
+			{
+				int currentIndex = 0;
+				int count = buf2.Length;
+
+				while (true)
+				{
+					int numRead = await inStream.ReadAsync(buf2, currentIndex, count);
+					if (numRead <= 0)
+					{
+						break;
+					}
+					currentIndex += numRead;
+					count -= numRead;
+				}
+
+				Assert.That(currentIndex, Is.EqualTo(original.Length), "Decompressed data must have the same length as the original data");
 			}
 
+			VerifyInflatedData(original, buf2, level, zlib);
+		}
+		
+		private async Task<MemoryStream> DeflateAsync(byte[] data, int level, bool zlib)
+		{
+			var memoryStream = new MemoryStream();
+
+			var deflater = new Deflater(level, !zlib);
+			using (DeflaterOutputStream outStream = new DeflaterOutputStream(memoryStream, deflater))
+			{
+				outStream.IsStreamOwner = false;
+				await outStream.WriteAsync(data, 0, data.Length);
+				await outStream.FlushAsync();
+				outStream.Finish();
+			}
+			return memoryStream;
+		}
+		
+		private async Task RandomDeflateInflateAsync(int size, int level, bool zlib)
+		{
+			byte[] buffer = GetRandomTestData(size);
+
+			MemoryStream ms = await DeflateAsync(buffer, level, zlib);
+			await InflateAsync(ms, buffer, level, zlib);
+		}
+		
+		private void VerifyInflatedData(byte[] original, byte[] buf2, int level, bool zlib)
+		{
 			for (int i = 0; i < original.Length; ++i)
 			{
 				if (buf2[i] != original[i])
@@ -74,31 +158,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			}
 		}
 
-		private MemoryStream Deflate(byte[] data, int level, bool zlib)
-		{
-			var memoryStream = new MemoryStream();
-
-			var deflater = new Deflater(level, !zlib);
-			using (DeflaterOutputStream outStream = new DeflaterOutputStream(memoryStream, deflater))
-			{
-				outStream.IsStreamOwner = false;
-				outStream.Write(data, 0, data.Length);
-				outStream.Flush();
-				outStream.Finish();
-			}
-			return memoryStream;
-		}
-
-		private void RandomDeflateInflate(int size, int level, bool zlib)
-		{
-			byte[] buffer = new byte[size];
-			var rnd = new Random();
-			rnd.NextBytes(buffer);
-
-			MemoryStream ms = Deflate(buffer, level, zlib);
-			Inflate(ms, buffer, level, zlib);
-		}
-
 		/// <summary>
 		/// Basic inflate/deflate test
 		/// </summary>
@@ -109,12 +168,23 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			RandomDeflateInflate(100000, level, true);
 		}
 
+		/// <summary>
+		/// Basic async inflate/deflate test
+		/// </summary>
+		[Test]
+		[Category("Base")]
+		[Category("Async")]
+		public async Task InflateDeflateZlibAsync([Range(0, 9)] int level)
+		{
+			await RandomDeflateInflateAsync(100000, level, true);
+		}
+
 		private delegate void RunCompress(byte[] buffer);
 
 		private int runLevel;
 		private bool runZlib;
 		private long runCount;
-		private Random runRandom = new Random(5);
+		private readonly Random runRandom = new Random(5);
 
 		private void DeflateAndInflate(byte[] buffer)
 		{
@@ -167,6 +237,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		public void InflateDeflateNonZlib([Range(0, 9)] int level)
 		{
 			RandomDeflateInflate(100000, level, false);
+		}
+
+		/// <summary>
+		/// Basic async inflate/deflate test
+		/// </summary>
+		[Test]
+		[Category("Base")]
+		[Category("Async")]
+		public async Task InflateDeflateNonZlibAsync([Range(0, 9)] int level)
+		{
+			await RandomDeflateInflateAsync(100000, level, false);
 		}
 
 

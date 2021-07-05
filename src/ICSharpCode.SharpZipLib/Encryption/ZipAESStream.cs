@@ -1,7 +1,10 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading;
+using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace ICSharpCode.SharpZipLib.Encryption
 {
@@ -90,6 +93,13 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			return nBytes;
 		}
 
+		/// <inheritdoc/>
+		public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+		{
+			var readCount = Read(buffer, offset, count);
+			return Task.FromResult(readCount);
+		}
+
 		// Read data from the underlying stream and decrypt it
 		private int ReadAndTransform(byte[] buffer, int offset, int count)
 		{
@@ -137,14 +147,14 @@ namespace ICSharpCode.SharpZipLib.Encryption
 						nBytes += TransformAndBufferBlock(buffer, offset, bytesLeftToRead, finalBlock);
 					}
 					else if (byteCount < AUTH_CODE_LENGTH)
-						throw new Exception("Internal error missed auth code"); // Coding bug
+						throw new ZipException("Internal error missed auth code"); // Coding bug
 																				// Final block done. Check Auth code.
 					byte[] calcAuthCode = _transform.GetAuthCode();
 					for (int i = 0; i < AUTH_CODE_LENGTH; i++)
 					{
 						if (calcAuthCode[i] != _slideBuffer[_slideBufStartPos + i])
 						{
-							throw new Exception("AES Authentication Code does not match. This is a super-CRC check on the data in the file after compression and encryption. \r\n"
+							throw new ZipException("AES Authentication Code does not match. This is a super-CRC check on the data in the file after compression and encryption. \r\n"
 								+ "The file may be damaged.");
 						}
 					}

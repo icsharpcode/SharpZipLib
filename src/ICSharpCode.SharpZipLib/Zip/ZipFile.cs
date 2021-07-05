@@ -539,7 +539,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			else
 			{
-				entries_ = new ZipEntry[0];
+				entries_ = Empty.Array<ZipEntry>();
 				isNewArchive_ = true;
 			}
 		}
@@ -549,7 +549,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		internal ZipFile()
 		{
-			entries_ = new ZipEntry[0];
+			entries_ = Empty.Array<ZipEntry>();
 			isNewArchive_ = true;
 		}
 
@@ -960,6 +960,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					if (testing && testData && this[entryIndex].IsFile)
 					{
+						// Don't check CRC for AES encrypted archives
+						var checkCRC = this[entryIndex].AESKeySize == 0;
+
 						if (resultHandler != null)
 						{
 							status.SetOperation(TestOperation.EntryData);
@@ -975,7 +978,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 							int bytesRead;
 							while ((bytesRead = entryStream.Read(buffer, 0, buffer.Length)) > 0)
 							{
-								crc.Update(new ArraySegment<byte>(buffer, 0, bytesRead));
+								if (checkCRC)
+								{
+									crc.Update(new ArraySegment<byte>(buffer, 0, bytesRead));
+								}
 
 								if (resultHandler != null)
 								{
@@ -986,7 +992,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 							}
 						}
 
-						if (this[entryIndex].Crc != crc.Value)
+						if (checkCRC && this[entryIndex].Crc != crc.Value)
 						{
 							status.AddError();
 
@@ -1000,7 +1006,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 							var helper = new ZipHelperStream(baseStream_);
 							var data = new DescriptorData();
 							helper.ReadDataDescriptor(this[entryIndex].LocalHeaderRequiresZip64, data);
-							if (this[entryIndex].Crc != data.Crc)
+
+							if (checkCRC && this[entryIndex].Crc != data.Crc)
 							{
 								status.AddError();
 								resultHandler?.Invoke(status, "Descriptor CRC mismatch");
@@ -1904,7 +1911,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Check if the specified compression method is supported for adding a new entry.
 		/// </summary>
 		/// <param name="compressionMethod">The compression method for the new entry.</param>
-		private void CheckSupportedCompressionMethod(CompressionMethod compressionMethod)
+		private static void CheckSupportedCompressionMethod(CompressionMethod compressionMethod)
 		{
 			if (compressionMethod != CompressionMethod.Deflated && compressionMethod != CompressionMethod.Stored && compressionMethod != CompressionMethod.BZip2)
 			{
@@ -2331,7 +2338,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				baseStream_.Write(centralExtraData, 0, centralExtraData.Length);
 			}
 
-			byte[] rawComment = (entry.Comment != null) ? Encoding.ASCII.GetBytes(entry.Comment) : new byte[0];
+			byte[] rawComment = (entry.Comment != null) ? Encoding.ASCII.GetBytes(entry.Comment) : Empty.Array<byte>();
 
 			if (rawComment.Length > 0)
 			{
@@ -2687,6 +2694,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
+			var useCrc = update.Entry.AESKeySize == 0;
+
 			if (source != null)
 			{
 				using (source)
@@ -2711,7 +2720,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 					using (Stream output = workFile.GetOutputStream(update.OutEntry))
 					{
-						CopyBytes(update, output, source, sourceStreamLength, true);
+						CopyBytes(update, output, source, sourceStreamLength, useCrc);
 					}
 
 					long dataEnd = workFile.baseStream_.Position;
@@ -3338,7 +3347,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (!isDisposed_)
 			{
 				isDisposed_ = true;
-				entries_ = new ZipEntry[0];
+				entries_ = Empty.Array<ZipEntry>();
 
 				if (IsStreamOwner && (baseStream_ != null))
 				{

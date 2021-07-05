@@ -24,20 +24,16 @@ jobs:
       with:
         args: docs/help/docfx.json
 
-# Disabled until know to be working
-#    - uses: JamesIves/github-pages-deploy-action@3.6.2
-#      name: Publish documentation to Github Pages
-#      with:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        BRANCH: gh-pages
-#        
-#        # The folder the action should deploy.
-#        FOLDER: _site 
-#        
-#        # Automatically remove deleted files from the deploy branch
-#        CLEAN: true 
+    - uses: JamesIves/github-pages-deploy-action@3.6.2
+      name: Publish documentation to Github Pages
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: docs/help/_site 
+        TARGET_FOLDER: help
+        CLEAN: false
 
     - name: Upload documentation as artifact
       uses: actions/upload-artifact@v2
       with:
-        path: _site
+        path: docs/help/_site

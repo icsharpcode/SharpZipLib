@@ -500,6 +500,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Closes the current entry, updating header and footer information as required
 		/// </summary>
+		/// <exception cref="ZipException">
+		/// Invalid entry field values.
+		/// </exception>
 		/// <exception cref="System.IO.IOException">
 		/// An I/O error occurs.
 		/// </exception>
@@ -530,7 +533,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			else if (curMethod == CompressionMethod.Stored)
 			{
-				// This is done by Finsh() for Deflated entries, but we need to do it
+				// This is done by Finish() for Deflated entries, but we need to do it
 				// ourselves for Stored ones
 				base.GetAuthCodeIfAES();
 			}
@@ -539,6 +542,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (curEntry.AESKeySize > 0)
 			{
 				baseOutputStream_.Write(AESAuthCode, 0, 10);
+				// Always use 0 as CRC for AE-2 format
+				curEntry.Crc = 0;
+			}
+			else
+			{
+				if (curEntry.Crc < 0)
+				{
+					curEntry.Crc = crc.Value;
+				}
+				else if (curEntry.Crc != crc.Value)
+				{
+					throw new ZipException($"crc was {crc.Value}, but {curEntry.Crc} was expected");
+				}
 			}
 
 			if (curEntry.Size < 0)
@@ -547,7 +563,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			else if (curEntry.Size != size)
 			{
-				throw new ZipException("size was " + size + ", but I expected " + curEntry.Size);
+				throw new ZipException($"size was {size}, but {curEntry.Size} was expected");
 			}
 
 			if (curEntry.CompressedSize < 0)
@@ -556,16 +572,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			else if (curEntry.CompressedSize != csize)
 			{
-				throw new ZipException("compressed size was " + csize + ", but I expected " + curEntry.CompressedSize);
-			}
-
-			if (curEntry.Crc < 0)
-			{
-				curEntry.Crc = crc.Value;
-			}
-			else if (curEntry.Crc != crc.Value)
-			{
-				throw new ZipException("crc was " + crc.Value + ", but I expected " + curEntry.Crc);
+				throw new ZipException($"compressed size was {csize}, but {curEntry.CompressedSize} expected");
 			}
 
 			offset += csize;
@@ -718,7 +725,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentException("Invalid offset/count combination");
 			}
 
-			crc.Update(new ArraySegment<byte>(buffer, offset, count));
+			if (curEntry.AESKeySize == 0)
+			{
+				// Only update CRC if AES is not enabled
+				crc.Update(new ArraySegment<byte>(buffer, offset, count));
+			}
+
 			size += count;
 
 			switch (curMethod)
@@ -860,7 +872,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				byte[] entryComment =
 					(entry.Comment != null) ?
 					ZipStrings.ConvertToArray(entry.Flags, entry.Comment) :
-					new byte[0];
+					Empty.Array<byte>();
 
 				if (entryComment.Length > 0xffff)
 				{
@@ -975,7 +987,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Comment for the entire archive recorded in central header.
 		/// </summary>
-		private byte[] zipComment = new byte[0];
+		private byte[] zipComment = Empty.Array<byte>();
 
 		/// <summary>
 		/// Flag indicating that header patching is required for the current entry.

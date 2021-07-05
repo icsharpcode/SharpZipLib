@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Text;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -149,14 +150,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			string password = "password";
 
-			using (var memoryStream = new MemoryStream())
+			// Make an encrypted zip file
+			using (var memoryStream = MakeAESEncryptedZipStream(password))
 			{
-				// Try to create a zip stream
-				WriteEncryptedZipToStream(memoryStream, password, 256, CompressionMethod.Stored);
-
-				// reset
-				memoryStream.Seek(0, SeekOrigin.Begin);
-
 				// try to read it
 				var zipFile = new ZipFile(memoryStream, leaveOpen: true)
 				{
@@ -178,6 +174,57 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					}
 				}
 			}
+		}
+
+		/// <summary>
+		/// As <see cref="ZipFileStoreAes"/>, but with Async reads
+		/// </summary>
+		[Test]
+		[Category("Encryption")]
+		[Category("Zip")]
+		public async Task ZipFileStoreAesAsync()
+		{
+			string password = "password";
+
+			// Make an encrypted zip file
+			using (var memoryStream = MakeAESEncryptedZipStream(password))
+			{
+				// try to read it
+				var zipFile = new ZipFile(memoryStream, leaveOpen: true)
+				{
+					Password = password
+				};
+
+				foreach (ZipEntry entry in zipFile)
+				{
+					// Should be stored rather than deflated
+					Assert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.Stored), "Entry should be stored");
+
+					using (var zis = zipFile.GetInputStream(entry))
+					{
+						using (var inputStream = zipFile.GetInputStream(entry))
+						using (var sr = new StreamReader(zis, Encoding.UTF8))
+						{
+							var content = await sr.ReadToEndAsync();
+							Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match input data");
+						}
+					}
+				}
+			}
+		}
+
+		// Shared helper for the ZipFileStoreAes tests
+		private static Stream MakeAESEncryptedZipStream(string password)
+		{
+			var memoryStream = new MemoryStream();
+
+			// Try to create a zip stream
+			WriteEncryptedZipToStream(memoryStream, password, 256, CompressionMethod.Stored);
+
+			// reset
+			memoryStream.Seek(0, SeekOrigin.Begin);
+
+			return memoryStream;
 		}
 
 		/// <summary>
@@ -469,7 +516,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
-		public void WriteEncryptedZipToStream(Stream stream, string password, int keySize, CompressionMethod compressionMethod = CompressionMethod.Deflated)
+		public static void WriteEncryptedZipToStream(Stream stream, string password, int keySize, CompressionMethod compressionMethod = CompressionMethod.Deflated)
 		{
 			using (var zs = new ZipOutputStream(stream))
 			{
@@ -496,7 +543,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
-		private void AddEncrypedEntryToStream(ZipOutputStream zipOutputStream, string entryName, int keySize, CompressionMethod compressionMethod)
+		private static void AddEncrypedEntryToStream(ZipOutputStream zipOutputStream, string entryName, int keySize, CompressionMethod compressionMethod)
 		{
 			ZipEntry zipEntry = new ZipEntry(entryName)
 			{
