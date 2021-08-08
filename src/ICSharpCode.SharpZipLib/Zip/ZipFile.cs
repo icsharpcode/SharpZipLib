@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -1079,8 +1081,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The offset of the entries data in the file</returns>
 		private long TestLocalHeader(ZipEntry entry, HeaderTest tests)
 		{
-			lock (baseStream_)
+			try
 			{
+				this.baseStreamSemaphore.Wait();
+
 				bool testHeader = (tests & HeaderTest.Header) != 0;
 				bool testData = (tests & HeaderTest.Extract) != 0;
 
@@ -1349,6 +1353,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				int extraLength = storedNameLength + extraDataLength;
 				return offsetOfFirstEntry + entry.Offset + ZipConstants.LocalHeaderBaseSize + extraLength;
+			}
+			finally
+			{
+				this.baseStreamSemaphore.Release();
 			}
 		}
 
@@ -3349,11 +3357,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 				isDisposed_ = true;
 				entries_ = Empty.Array<ZipEntry>();
 
-				if (IsStreamOwner && (baseStream_ != null))
+				if (disposing)
 				{
-					lock (baseStream_)
+					try
 					{
-						baseStream_.Dispose();
+						this.baseStreamSemaphore.Wait();
+
+						if (IsStreamOwner)
+						{
+							baseStream_?.Dispose();
+						}
+					}
+					finally
+					{
+						this.baseStreamSemaphore.Release();
+						this.baseStreamSemaphore.Dispose();
 					}
 				}
 
@@ -3787,6 +3805,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private ZipEntry[] entries_;
 		private byte[] key;
 		private bool isNewArchive_;
+		private readonly SemaphoreSlim baseStreamSemaphore = new SemaphoreSlim(1, 1);
 
 		// Default is dynamic which is not backwards compatible and can cause problems
 		// with XP's built in compression which cant read Zip64 archives.
@@ -4156,16 +4175,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// uses reader here....
 				zipFile_ = zipFile;
 				baseStream_ = zipFile_.baseStream_;
+				this.semaphore = zipFile.baseStreamSemaphore;
 				readPos_ = start;
 				end_ = start + length;
 			}
 
 			#endregion Constructors
 
-			/// <summary>
-			/// Read a byte from this stream.
-			/// </summary>
-			/// <returns>Returns the byte read or -1 on end of stream.</returns>
+			/// <inheritdoc/>
 			public override int ReadByte()
 			{
 				if (readPos_ >= end_)
@@ -4174,32 +4191,40 @@ namespace ICSharpCode.SharpZipLib.Zip
 					return -1;
 				}
 
-				lock (baseStream_)
+				try 
 				{
+					this.semaphore.Wait();
+
 					baseStream_.Seek(readPos_++, SeekOrigin.Begin);
 					return baseStream_.ReadByte();
 				}
+				finally
+				{
+					this.semaphore.Release();
+				}
 			}
 
-			/// <summary>
-			/// Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.
-			/// </summary>
-			/// <param name="buffer">An array of bytes. When this method returns, the buffer contains the specified byte array with the values between offset and (offset + count - 1) replaced by the bytes read from the current source.</param>
-			/// <param name="offset">The zero-based byte offset in buffer at which to begin storing the data read from the current stream.</param>
-			/// <param name="count">The maximum number of bytes to be read from the current stream.</param>
-			/// <returns>
-			/// The total number of bytes read into the buffer. This can be less than the number of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.
-			/// </returns>
-			/// <exception cref="System.ArgumentException">The sum of offset and count is larger than the buffer length. </exception>
-			/// <exception cref="System.ObjectDisposedException">Methods were called after the stream was closed. </exception>
-			/// <exception cref="System.NotSupportedException">The stream does not support reading. </exception>
-			/// <exception cref="System.ArgumentNullException">buffer is null. </exception>
-			/// <exception cref="System.IO.IOException">An I/O error occurs. </exception>
-			/// <exception cref="System.ArgumentOutOfRangeException">offset or count is negative. </exception>
+			/// <inheritdoc/>
 			public override int Read(byte[] buffer, int offset, int count)
 			{
-				lock (baseStream_)
+				return ReadAsyncCore(buffer, offset, count, false, default).GetAwaiter().GetResult();
+			}
+
+			/// <inheritdoc/>
+			public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+			{
+				return ReadAsyncCore(buffer, offset, count, true, cancellationToken);
+			}
+
+			private async Task<int> ReadAsyncCore(byte[] buffer, int offset, int count, bool useAsync, CancellationToken cancellationToken)
+			{
+				try
 				{
+					if (useAsync)
+						await this.semaphore.WaitAsync(cancellationToken);
+					else
+						this.semaphore.Wait();
+
 					if (count > end_ - readPos_)
 					{
 						count = (int)(end_ - readPos_);
@@ -4208,18 +4233,28 @@ namespace ICSharpCode.SharpZipLib.Zip
 							return 0;
 						}
 					}
+
 					// Protect against Stream implementations that throw away their buffer on every Seek
 					// (for example, Mono FileStream)
 					if (baseStream_.Position != readPos_)
 					{
 						baseStream_.Seek(readPos_, SeekOrigin.Begin);
 					}
-					int readCount = baseStream_.Read(buffer, offset, count);
+
+					var readCount = useAsync ? 
+						await baseStream_.ReadAsync(buffer, offset, count, cancellationToken) :
+						baseStream_.Read(buffer, offset, count);
+
 					if (readCount > 0)
 					{
 						readPos_ += readCount;
 					}
+
 					return readCount;
+				}
+				finally
+				{
+					this.semaphore.Release();
 				}
 			}
 
@@ -4386,12 +4421,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			#region Instance Fields
 
-			private ZipFile zipFile_;
-			private Stream baseStream_;
+			private readonly ZipFile zipFile_;
+			private readonly Stream baseStream_;
 			private readonly long start_;
 			private readonly long length_;
 			private long readPos_;
 			private readonly long end_;
+			private readonly SemaphoreSlim semaphore;
 
 			#endregion Instance Fields
 		}
