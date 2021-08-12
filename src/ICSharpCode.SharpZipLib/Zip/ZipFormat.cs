@@ -194,11 +194,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public static async Task WriteZip64EndOfCentralDirectoryAsync(Stream stream, long noOfEntries, 
 			long sizeEntries, long centralDirOffset, CancellationToken cancellationToken)
 		{
-			using (var ms = new MemoryStream())
-			{
-				WriteZip64EndOfCentralDirectory(ms, noOfEntries, sizeEntries, centralDirOffset);
-				await ms.CopyToAsync(stream, 81920, cancellationToken);
-			}
+			await stream.WriteProcToStreamAsync(s => WriteZip64EndOfCentralDirectory(s, noOfEntries, sizeEntries, centralDirOffset), cancellationToken);
 		}
 
 		/// <summary>
@@ -238,16 +234,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		/// <inheritdoc cref="WriteEndOfCentralDirectory"/>
 		public static  async Task WriteEndOfCentralDirectoryAsync(Stream stream, long noOfEntries, long sizeEntries, 
-			long start, byte[] comment, CancellationToken cancellationToken)
-		{
-			using (var ms = new MemoryStream())
-			{
-				WriteEndOfCentralDirectory(ms, noOfEntries, sizeEntries, start, comment);
-				await ms.CopyToAsync(stream, 81920, cancellationToken);
-			}
-		}
-
-
+			long start, byte[] comment, CancellationToken cancellationToken) 
+			=> await stream.WriteProcToStreamAsync(s 
+				=> WriteEndOfCentralDirectory(s, noOfEntries, sizeEntries, start, comment), cancellationToken);
+		
 		/// <summary>
 		/// Write the required records to end the central directory.
 		/// </summary>
@@ -558,9 +548,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					throw new ZipException("Entry requires zip64 but this has been turned off");
 				}
-
+				// Seek to the Zip64 Extra Data
 				stream.Seek(patchData.SizePatchOffset, SeekOrigin.Begin);
 
+				// Note: The order of the size fields is reversed when compared to the local header!
 				await stream.WriteLELongAsync(entry.Size, ct);
 				await stream.WriteLELongAsync(entry.CompressedSize, ct);
 			}
@@ -587,8 +578,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 					throw new ZipException("Entry requires zip64 but this has been turned off");
 				}
 
+				// Seek to the Zip64 Extra Data
 				stream.Seek(patchData.SizePatchOffset, SeekOrigin.Begin);
 
+				// Note: The order of the size fields is reversed when compared to the local header!
 				stream.WriteLELong(entry.Size);
 				stream.WriteLELong(entry.CompressedSize);
 			}

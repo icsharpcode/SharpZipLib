@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
@@ -48,18 +49,28 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			}
 		}
 
+		public static byte[] GetDummyData(int size = -1)
+		{
+			if (size < 0)
+			{
+				return Encoding.ASCII.GetBytes(DateTime.UtcNow.Ticks.ToString("x16"));
+			}
+			
+			var bytes = new byte[size];
+			random.NextBytes(bytes);
+			return bytes;
+		}
+		
 		public static void WriteDummyData(Stream stream, int size = -1)
 		{
-			var bytes = (size < 0)
-				? Encoding.ASCII.GetBytes(DateTime.UtcNow.Ticks.ToString("x16"))
-				: new byte[size];
-
-			if(size > 0)
-			{
-				random.NextBytes(bytes);
-			}
-
+			var bytes = GetDummyData(size);
 			stream.Write(bytes, 0, bytes.Length);
+		}
+		
+		public static async Task WriteDummyDataAsync(Stream stream, int size = -1)
+		{
+			var bytes = GetDummyData(size);
+			await stream.WriteAsync(bytes, 0, bytes.Length);
 		}
 
 		public static TempFile GetDummyFile(int size = -1)

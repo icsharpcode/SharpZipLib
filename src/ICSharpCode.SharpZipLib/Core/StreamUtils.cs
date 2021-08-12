@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Core
 {
@@ -270,6 +272,23 @@ namespace ICSharpCode.SharpZipLib.Core
 			{
 				args = new ProgressEventArgs(name, processed, target);
 				progressHandler(sender, args);
+			}
+		}
+		
+		internal static async Task WriteProcToStreamAsync(this Stream targetStream, MemoryStream bufferStream, Action<Stream> writeProc, CancellationToken ct)
+		{
+			bufferStream.SetLength(0);
+			writeProc(bufferStream);
+			bufferStream.Position = 0;
+			await bufferStream.CopyToAsync(targetStream, 81920, ct);
+			bufferStream.SetLength(0);
+		}
+		
+		internal static async Task WriteProcToStreamAsync(this Stream targetStream, Action<Stream> writeProc, CancellationToken ct)
+		{
+			using (var ms = new MemoryStream())
+			{
+				await WriteProcToStreamAsync(targetStream, ms, writeProc, ct);
 			}
 		}
 	}

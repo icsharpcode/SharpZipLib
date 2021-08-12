@@ -253,7 +253,30 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The Compression method specified for the entry is unsupported.
 		/// </exception>
 		public void PutNextEntry(ZipEntry entry)
-			=> PutNextEntry(baseOutputStream_, entry);
+		{
+			if (curEntry != null)
+			{
+				CloseEntry();
+			}
+
+			PutNextEntry(baseOutputStream_, entry);
+			
+			if (entry.IsCrypted)
+			{
+				WriteOutput(GetEntryEncryptionHeader(entry));
+			}
+		}
+		
+		private void WriteOutput(byte[] bytes) 
+			=> baseOutputStream_.Write(bytes, 0, bytes.Length);
+		
+		private Task WriteOutputAsync(byte[] bytes)
+			=> baseOutputStream_.WriteAsync(bytes, 0, bytes.Length);
+
+		private byte[] GetEntryEncryptionHeader(ZipEntry entry) => 
+			entry.AESKeySize > 0 
+				? InitializeAESPassword(entry, Password)
+				: CreateZipCryptoHeader(entry.Crc < 0 ? entry.DosTime << 16 : entry.Crc);
 
 		internal void PutNextEntry(Stream stream, ZipEntry entry, long streamOffset = 0)
 		{
@@ -265,11 +288,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (entries == null)
 			{
 				throw new InvalidOperationException("ZipOutputStream was finished");
-			}
-
-			if (curEntry != null)
-			{
-				CloseEntry();
 			}
 
 			if (entries.Count == int.MaxValue)
@@ -391,19 +409,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				deflater_.SetLevel(compressionLevel);
 			}
 			size = 0;
-
-			if (!entry.IsCrypted) 
-				return;
-
-			if (entry.AESKeySize > 0)
-			{
-				WriteAESHeader(entry);
-			}
-			else
-			{
-				// Use entry time if CRC is missing
-				WriteEncryptionHeader(entry.Crc < 0 ? entry.DosTime << 16 : entry.Crc);
-			}
+			
 		}
 
 		/// <summary>
@@ -416,7 +422,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="entry">
 		/// the entry.
 		/// </param>
-		/// <param name="cancellationToken">The <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
+		/// <param name="ct">The <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
 		/// <exception cref="System.ArgumentNullException">
 		/// if entry passed is null.
 		/// </exception>
@@ -434,13 +440,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="System.NotImplementedException">
 		/// The Compression method specified for the entry is unsupported.
 		/// </exception>
-		public async Task PutNextEntryAsync(ZipEntry entry, CancellationToken cancellationToken = default)
+		public async Task PutNextEntryAsync(ZipEntry entry, CancellationToken ct = default)
 		{
-			using (var ms = new MemoryStream())
+			if (curEntry != null) await CloseEntryAsync(ct);
+			await baseOutputStream_.WriteProcToStreamAsync(s =>
 			{
-				PutNextEntry(ms, entry, baseOutputStream_.Position);
-				await ms.CopyToAsync(baseOutputStream_, 81920, cancellationToken);
-			}
+				PutNextEntry(s, entry, baseOutputStream_.Position);
+			}, ct);
+			
+			if (!entry.IsCrypted) return;
+			await WriteOutputAsync(GetEntryEncryptionHeader(entry));
 		}
 
 		/// <summary>
@@ -473,11 +482,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <inheritdoc cref="CloseEntry"/>
 		public async Task CloseEntryAsync(CancellationToken ct)
 		{
-			using (var ms = new MemoryStream())
-			{
-				WriteEntryFooter(ms);
-				await ms.CopyToAsync(baseOutputStream_, 81920, ct);
-			}
+			await baseOutputStream_.WriteProcToStreamAsync(WriteEntryFooter, ct);
 
 			// Patch the header if possible
 			if (patchEntryHeader)
@@ -584,17 +589,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
-		/// <summary>
-		/// Initializes encryption keys based on given <paramref name="password"/>.
-		/// </summary>
-		/// <param name="password">The password.</param>
-		private void InitializePassword(string password)
-		{
-			var pkManaged = new PkzipClassicManaged();
-			byte[] key = PkzipClassic.GenerateKeys(ZipStrings.ConvertToArray(password));
-			cryptoTransform_ = pkManaged.CreateEncryptor(key, null);
-		}
 
+		
+		// File format for AES:
+        // Size (bytes)   Content
+        // ------------   -------
+        // Variable       Salt value
+        // 2              Password verification value
+        // Variable       Encrypted file data
+        // 10             Authentication code
+        //
+        // Value in the "compressed size" fields of the local file header and the central directory entry
+        // is the total size of all the items listed above. In other words, it is the total size of the
+        // salt value, password verification value, encrypted data, and authentication code.
+        		
 		/// <summary>
 		/// Initializes encryption keys based on given password.
 		/// </summary>
@@ -618,11 +626,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			return headBytes;
 		}
 		
-		private byte[] CreateEncryptionHeader(long crcValue)
+		private byte[] CreateZipCryptoHeader(long crcValue)
 		{
 			offset += ZipConstants.CryptoHeaderSize;
 
-			InitializePassword(Password);
+			InitializeZipCryptoPassword(Password);
 
 			byte[] cryptBuffer = new byte[ZipConstants.CryptoHeaderSize];
 			using (var rng = new RNGCryptoServiceProvider())
@@ -636,43 +644,18 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			return cryptBuffer;
 		}
-
-		private void WriteEncryptionHeader(long crcValue)
+		
+		/// <summary>
+		/// Initializes encryption keys based on given <paramref name="password"/>.
+		/// </summary>
+		/// <param name="password">The password.</param>
+		private void InitializeZipCryptoPassword(string password)
 		{
-			var cryptBuffer = CreateEncryptionHeader(crcValue);
-			baseOutputStream_.Write(cryptBuffer, 0, cryptBuffer.Length);
+			var pkManaged = new PkzipClassicManaged();
+			byte[] key = PkzipClassic.GenerateKeys(ZipStrings.ConvertToArray(password));
+			cryptoTransform_ = pkManaged.CreateEncryptor(key, null);
 		}
-
-		private async Task WriteEncryptionHeaderAsync(long crcValue, CancellationToken cancellationToken)
-		{
-			var cryptBuffer = CreateEncryptionHeader(crcValue);
-			await baseOutputStream_.WriteAsync(cryptBuffer, 0, cryptBuffer.Length, cancellationToken);
-		}
-
-		// File format for AES:
-		// Size (bytes)   Content
-		// ------------   -------
-		// Variable       Salt value
-		// 2              Password verification value
-		// Variable       Encrypted file data
-		// 10             Authentication code
-		//
-		// Value in the "compressed size" fields of the local file header and the central directory entry
-		// is the total size of all the items listed above. In other words, it is the total size of the
-		// salt value, password verification value, encrypted data, and authentication code.
-
-		private void WriteAESHeader(ZipEntry entry)
-		{
-			var header = InitializeAESPassword(entry, Password);
-			baseOutputStream_.Write(header, 0, header.Length);
-		}
-
-		private async Task WriteAESHeaderAsync(ZipEntry entry, CancellationToken cancellationToken)
-		{
-			var header = InitializeAESPassword(entry, Password);
-			await baseOutputStream_.WriteAsync(header, 0, header.Length, cancellationToken);
-		}
-
+		
 		/// <summary>
 		/// Writes the given buffer to the current entry.
 		/// </summary>
@@ -791,7 +774,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <inheritdoc cref="Finish"/>>
-		public override async Task FinishAsync(CancellationToken cancellationToken)
+		public override async Task FinishAsync(CancellationToken ct)
 		{
 			using (var ms = new MemoryStream())
 			{
@@ -802,7 +785,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				if (curEntry != null)
 				{
-					await CloseEntryAsync(cancellationToken);
+					await CloseEntryAsync(ct);
 				}
 
 				long numEntries = entries.Count;
@@ -810,13 +793,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				foreach (var entry in entries)
 				{
-					sizeEntries += ZipFormat.WriteEndEntry(ms, entry);
-					await ms.CopyToAsync(baseOutputStream_, 81920, cancellationToken);
-					ms.SetLength(0);
+					await baseOutputStream_.WriteProcToStreamAsync(ms, s =>
+					{
+						sizeEntries += ZipFormat.WriteEndEntry(s, entry);
+					}, ct);
 				}
 
-				ZipFormat.WriteEndOfCentralDirectory(ms, numEntries, sizeEntries, offset, zipComment);
-				await ms.CopyToAsync(baseOutputStream_, 81920, cancellationToken);
+				await baseOutputStream_.WriteProcToStreamAsync(ms, s 
+						=> ZipFormat.WriteEndOfCentralDirectory(s, numEntries, sizeEntries, offset, zipComment),
+					ct);
 
 				entries = null;
 			}

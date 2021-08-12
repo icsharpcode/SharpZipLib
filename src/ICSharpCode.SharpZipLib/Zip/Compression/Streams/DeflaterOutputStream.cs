@@ -107,10 +107,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					break;
 				}
 
-				if (cryptoTransform_ != null)
-				{
-					EncryptBlock(buffer_, 0, len);
-				}
+				EncryptBlock(buffer_, 0, len);
 
 				baseOutputStream_.Write(buffer_, 0, len);
 			}
@@ -136,11 +133,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Finishes the stream by calling finish() on the deflater.
 		/// </summary>
-		/// <param name="cancellationToken">The <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
+		/// <param name="ct">The <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
 		/// <exception cref="SharpZipBaseException">
 		/// Not all input is deflated
 		/// </exception>
-		public virtual async Task FinishAsync(CancellationToken cancellationToken)
+		public virtual async Task FinishAsync(CancellationToken ct)
 		{
 			deflater_.Finish();
 			while (!deflater_.IsFinished)
@@ -151,12 +148,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					break;
 				}
 
-				if (cryptoTransform_ != null)
-				{
-					EncryptBlock(buffer_, 0, len);
-				}
+				EncryptBlock(buffer_, 0, len);
 
-				await baseOutputStream_.WriteAsync(buffer_, 0, len, cancellationToken);
+				await baseOutputStream_.WriteAsync(buffer_, 0, len, ct);
 			}
 
 			if (!deflater_.IsFinished)
@@ -164,7 +158,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				throw new SharpZipBaseException("Can't deflate all input?");
 			}
 
-			await baseOutputStream_.FlushAsync(cancellationToken);
+			await baseOutputStream_.FlushAsync(ct);
 
 			if (cryptoTransform_ != null)
 			{
@@ -223,6 +217,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </param>
 		protected void EncryptBlock(byte[] buffer, int offset, int length)
 		{
+		    if(cryptoTransform_ is null) return;
 			cryptoTransform_.TransformBlock(buffer, 0, length, buffer, 0);
 		}
 
@@ -250,10 +245,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				{
 					break;
 				}
-				if (cryptoTransform_ != null)
-				{
-					EncryptBlock(buffer_, 0, deflateCount);
-				}
+
+				EncryptBlock(buffer_, 0, deflateCount);
 
 				baseOutputStream_.Write(buffer_, 0, deflateCount);
 			}
