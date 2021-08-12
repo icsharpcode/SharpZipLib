@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
@@ -567,7 +568,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		
 		[Test]
 		[Category("Zip")]
-		public void IteratingOverEntriesInDirectUpdatedArchive()
+		public void IteratingOverEntriesInDirectUpdatedArchive([Values(0x0, 0x80)] byte padding)
 		{
 			using (var tempFile = new Utils.TempFile())
 			{
@@ -576,8 +577,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				using (var zf = ZipFile.Create(tempFile.Filename))
 				{
 					zf.BeginUpdate();
-					// Add a "large" file
-					zf.Add(new MemoryDataSource(new byte[1024]), "FirstFile", CompressionMethod.Stored);
+					// Add a "large" file, where the bottom 1023 bytes will become padding
+					var contentsAndPadding = Enumerable.Repeat(padding, count: 1024).ToArray();
+					zf.Add(new MemoryDataSource(contentsAndPadding), "FirstFile", CompressionMethod.Stored);
 					// Add a second file after the first one
 					zf.Add(new StringMemoryDataSource("fileContents"), "SecondFile", CompressionMethod.Stored);
 					zf.CommitUpdate();
