@@ -16,6 +16,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 	[TestFixture]
 	public class InflaterDeflaterTestSuite
 	{
+		// Use the same random seed to guarantee all the code paths are followed
+		const int RandomSeed = 5;
+		
 		private void Inflate(MemoryStream ms, byte[] original, int level, bool zlib)
 		{
 			byte[] buf2 = new byte[original.Length];
@@ -60,7 +63,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		private static byte[] GetRandomTestData(int size)
 		{
 			byte[] buffer = new byte[size];
-			var rnd = new Random();
+			var rnd = new Random(RandomSeed);
 			rnd.NextBytes(buffer);
 
 			return buffer;
@@ -184,7 +187,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		private int runLevel;
 		private bool runZlib;
 		private long runCount;
-		private readonly Random runRandom = new Random(5);
+		private readonly Random runRandom = new Random(RandomSeed);
 
 		private void DeflateAndInflate(byte[] buffer)
 		{

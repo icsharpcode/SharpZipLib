@@ -199,37 +199,15 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		#region Encryption
 
-		private string password;
-
-		private ICryptoTransform cryptoTransform_;
+		/// <summary>
+		/// The CryptoTransform currently being used to encrypt the compressed data.
+		/// </summary>
+		protected ICryptoTransform cryptoTransform_;
 
 		/// <summary>
 		/// Returns the 10 byte AUTH CODE to be appended immediately following the AES data stream.
 		/// </summary>
 		protected byte[] AESAuthCode;
-
-		/// <summary>
-		/// Get/set the password used for encryption.
-		/// </summary>
-		/// <remarks>When set to null or if the password is empty no encryption is performed</remarks>
-		public string Password
-		{
-			get
-			{
-				return password;
-			}
-			set
-			{
-				if ((value != null) && (value.Length == 0))
-				{
-					password = null;
-				}
-				else
-				{
-					password = value;
-				}
-			}
-		}
 
 		/// <summary>
 		/// Encrypt a block of data
@@ -246,40 +224,6 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		protected void EncryptBlock(byte[] buffer, int offset, int length)
 		{
 			cryptoTransform_.TransformBlock(buffer, 0, length, buffer, 0);
-		}
-
-		/// <summary>
-		/// Initializes encryption keys based on given <paramref name="password"/>.
-		/// </summary>
-		/// <param name="password">The password.</param>
-		protected void InitializePassword(string password)
-		{
-			var pkManaged = new PkzipClassicManaged();
-			byte[] key = PkzipClassic.GenerateKeys(ZipStrings.ConvertToArray(password));
-			cryptoTransform_ = pkManaged.CreateEncryptor(key, null);
-		}
-
-		/// <summary>
-		/// Initializes encryption keys based on given password.
-		/// </summary>
-		protected byte[] InitializeAESPassword(ZipEntry entry, string rawPassword)
-		{
-			var salt = new byte[entry.AESSaltLen];
-			// Salt needs to be cryptographically random, and unique per file
-			if (_aesRnd == null)
-				_aesRnd = RandomNumberGenerator.Create();
-			_aesRnd.GetBytes(salt);
-			int blockSize = entry.AESKeySize / 8;   // bits to bytes
-
-			cryptoTransform_ = new ZipAESTransform(rawPassword, salt, blockSize, true);
-
-			var headBytes = new byte[salt.Length + 2];
-
-			Array.Copy(salt, headBytes, salt.Length);
-			Array.Copy(((ZipAESTransform)cryptoTransform_).PwdVerifier, 0,
-				headBytes, headBytes.Length - 2, 2);
-
-			return headBytes;
 		}
 
 		#endregion Encryption
@@ -568,12 +512,5 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		private bool isClosed_;
 
 		#endregion Instance Fields
-
-		#region Static Fields
-
-		// Static to help ensure that multiple files within a zip will get different random salt
-		private static RandomNumberGenerator _aesRnd = RandomNumberGenerator.Create();
-
-		#endregion Static Fields
 	}
 }

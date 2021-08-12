@@ -268,7 +268,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					{
 						var index = z.FindEntry(name, true);
 
-						Assert.AreNotEqual(index, -1, "Zip entry \"{0}\" not found", name);
+						Assert.AreNotEqual(-1, index, "Zip entry \"{0}\" not found", name);
 
 						var entry = z[index];
 

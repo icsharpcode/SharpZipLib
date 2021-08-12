@@ -71,7 +71,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// set the <see cref="CodePage"/> to <see cref="SystemDefaultCodePage"/>
 		/// </summary>
 		/// <remarks>
-		/// /// Get OEM codepage from NetFX, which parses the NLP file with culture info table etc etc.
+		/// Get OEM codepage from NetFX, which parses the NLP file with culture info table etc etc.
 		/// But sometimes it yields the special value of 1 which is nicknamed <c>CodePageNoOEM</c> in <see cref="Encoding"/> sources (might also mean <c>CP_OEMCP</c>, but Encoding puts it so).
 		/// This was observed on Ukranian and Hindu systems.
 		/// Given this value, <see cref="Encoding.GetEncoding(int)"/> throws an <see cref="ArgumentException"/>.
