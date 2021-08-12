@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Security;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Tests.Base
@@ -123,7 +124,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 				outStream.IsStreamOwner = false;
 				await outStream.WriteAsync(data, 0, data.Length);
 				await outStream.FlushAsync();
-				outStream.Finish();
+				await outStream.FinishAsync(CancellationToken.None);
 			}
 			return memoryStream;
 		}

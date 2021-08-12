@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
@@ -9,11 +10,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	[TestFixture]
 	public class ZipStreamAsyncTests
 	{
-#if NETCOREAPP3_1_OR_GREATER
+
 		[Test]
 		[Category("Zip")]
-		public async Task WriteZipStreamAsync ()
+		[Category("Async")]
+		public async Task WriteZipStreamUsingAsync()
 		{
+#if NETCOREAPP3_1_OR_GREATER
 			await using var ms = new MemoryStream();
 			
 			await using (var outStream = new ZipOutputStream(ms){IsStreamOwner = false})
@@ -26,22 +29,48 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 
 			ZipTesting.AssertValidZip(ms);
+#endif
 		}
+
+		[Test]
+		[Category("Zip")]
+		[Category("Async")]
+		public async Task WriteZipStreamAsync ()
+		{
+			using var ms = new MemoryStream();
+
+			using(var outStream = new ZipOutputStream(ms) { IsStreamOwner = false })
+			{
+				await outStream.PutNextEntryAsync(new ZipEntry("FirstFile"));
+				await Utils.WriteDummyDataAsync(outStream, 12);
+
+				await outStream.PutNextEntryAsync(new ZipEntry("SecondFile"));
+				await Utils.WriteDummyDataAsync(outStream, 12);
+
+				await outStream.FinishAsync(CancellationToken.None);
+			}
+
+			ZipTesting.AssertValidZip(ms);
+		}
+		
 		
 		[Test]
 		[Category("Zip")]
+		[Category("Async")]
 		public async Task WriteZipStreamWithAesAsync()
 		{
-			await using var ms = new MemoryStream();
+			using var ms = new MemoryStream();
 			var password = "f4ls3p0s1t1v3";
 			
-			await using (var outStream = new ZipOutputStream(ms){IsStreamOwner = false, Password = password})
+			using (var outStream = new ZipOutputStream(ms){IsStreamOwner = false, Password = password})
 			{
 				await outStream.PutNextEntryAsync(new ZipEntry("FirstFile"){AESKeySize = 256});
 				await Utils.WriteDummyDataAsync(outStream, 12);
 
 				await outStream.PutNextEntryAsync(new ZipEntry("SecondFile"){AESKeySize = 256});
 				await Utils.WriteDummyDataAsync(outStream, 12);
+				
+				await outStream.FinishAsync(CancellationToken.None);
 			}
 			
 			ZipTesting.AssertValidZip(ms, password);
@@ -49,22 +78,25 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		
 		[Test]
 		[Category("Zip")]
+		[Category("Async")]
 		public async Task WriteZipStreamWithZipCryptoAsync()
 		{
-			await using var ms = new MemoryStream();
+			using var ms = new MemoryStream();
 			var password = "f4ls3p0s1t1v3";
 			
-			await using (var outStream = new ZipOutputStream(ms){IsStreamOwner = false, Password = password})
+			using (var outStream = new ZipOutputStream(ms){IsStreamOwner = false, Password = password})
 			{
 				await outStream.PutNextEntryAsync(new ZipEntry("FirstFile"){AESKeySize = 0});
 				await Utils.WriteDummyDataAsync(outStream, 12);
 
 				await outStream.PutNextEntryAsync(new ZipEntry("SecondFile"){AESKeySize = 0});
 				await Utils.WriteDummyDataAsync(outStream, 12);
+				
+				await outStream.FinishAsync(CancellationToken.None);
 			}
 			
 			ZipTesting.AssertValidZip(ms, password, false);
 		}
-#endif
+
 	}
 }
