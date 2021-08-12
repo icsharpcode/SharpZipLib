@@ -3,46 +3,49 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CT = System.Threading.CancellationToken;
 
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable InconsistentNaming
+
 namespace ICSharpCode.SharpZipLib.Core
 {
 	internal static class ByteOrderStreamExtensions
 	{
-		static byte[] SwappedBytes(ushort value) => new[] {(byte)value, (byte)(value >> 8)};
-		static byte[] SwappedBytes(short  value) => new[] {(byte)value, (byte)(value >> 8)};
-		static byte[] SwappedBytes(uint   value) => new[] {(byte)value, (byte)(value >> 8), (byte)(value >> 16), (byte)(value >> 24)};
-		static byte[] SwappedBytes(int    value) => new[] {(byte)value, (byte)(value >> 8), (byte)(value >> 16), (byte)(value >> 24)};
+		internal static byte[] SwappedBytes(ushort value) => new[] {(byte)value, (byte)(value >> 8)};
+		internal static byte[] SwappedBytes(short  value) => new[] {(byte)value, (byte)(value >> 8)};
+		internal static byte[] SwappedBytes(uint   value) => new[] {(byte)value, (byte)(value >> 8), (byte)(value >> 16), (byte)(value >> 24)};
+		internal static byte[] SwappedBytes(int    value) => new[] {(byte)value, (byte)(value >> 8), (byte)(value >> 16), (byte)(value >> 24)};
 
-		static byte[] SwappedBytes(long value) => new[] {
+		internal static byte[] SwappedBytes(long value) => new[] {
 			(byte)value,         (byte)(value >>  8), (byte)(value >> 16), (byte)(value >> 24),
-			(byte)(value << 32), (byte)(value << 40), (byte)(value << 48), (byte)(value << 56)
+			(byte)(value >> 32), (byte)(value >> 40), (byte)(value >> 48), (byte)(value >> 56)
 		};
 
-		static byte[] SwappedBytes(ulong value) => new[] {
+		internal static byte[] SwappedBytes(ulong value) => new[] {
 			(byte)value,         (byte)(value >>  8), (byte)(value >> 16), (byte)(value >> 24),
-			(byte)(value << 32), (byte)(value << 40), (byte)(value << 48), (byte)(value << 56)
+			(byte)(value >> 32), (byte)(value >> 40), (byte)(value >> 48), (byte)(value >> 56)
 		};
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		static long SwappedS64(byte[] bytes) => (
+		internal static long SwappedS64(byte[] bytes) => (
 			(long)bytes[0] <<  0 | (long)bytes[1] <<  8 | (long)bytes[2] << 16 | (long)bytes[3] << 24 |
 			(long)bytes[4] << 32 | (long)bytes[5] << 40 | (long)bytes[6] << 48 | (long)bytes[7] << 56);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		static ulong SwappedU64(byte[] bytes) => (
+		internal static ulong SwappedU64(byte[] bytes) => (
 			(ulong)bytes[0] <<  0 | (ulong)bytes[1] <<  8 | (ulong)bytes[2] << 16 | (ulong)bytes[3] << 24 |
 			(ulong)bytes[4] << 32 | (ulong)bytes[5] << 40 | (ulong)bytes[6] << 48 | (ulong)bytes[7] << 56);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		static int SwappedS32(byte[] bytes) => bytes[0] | bytes[1] << 8 | bytes[2] << 16 | bytes[3] << 24;
+		internal static int SwappedS32(byte[] bytes) => bytes[0] | bytes[1] << 8 | bytes[2] << 16 | bytes[3] << 24;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		static uint SwappedU32(byte[] bytes) => (uint) SwappedS32(bytes);
+		internal static uint SwappedU32(byte[] bytes) => (uint) SwappedS32(bytes);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		static short SwappedS16(byte[] bytes) => (short)(bytes[0] | bytes[1] << 8);
+		internal static short SwappedS16(byte[] bytes) => (short)(bytes[0] | bytes[1] << 8);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		static ushort SwappedU16(byte[] bytes) => (ushort) SwappedS16(bytes);
+		internal static ushort SwappedU16(byte[] bytes) => (ushort) SwappedS16(bytes);
 
 		internal static byte[] ReadBytes(this Stream stream, int count)
 		{
