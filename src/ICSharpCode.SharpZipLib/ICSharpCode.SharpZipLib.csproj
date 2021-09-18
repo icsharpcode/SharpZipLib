@@ -11,9 +11,9 @@
   
   <!-- Nuget specific tags -->
   <PropertyGroup>
-    <AssemblyVersion>1.3.2.10</AssemblyVersion>
-    <FileVersion>1.3.2.10</FileVersion>
-    <Version>1.3.2</Version>
+    <Version>1.3.3</Version>
+    <FileVersion>$(Version).11</FileVersion>
+    <AssemblyVersion>$(FileVersion)</AssemblyVersion>
     <PackageId>SharpZipLib</PackageId>
     <Company>ICSharpCode</Company>
     <Authors>ICSharpCode</Authors>
@@ -26,7 +26,7 @@
     <PackageTags>Compression Library Zip GZip BZip2 LZW Tar</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageReleaseNotes>
-Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.3.2 for more information.</PackageReleaseNotes>
+Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.3.3 for more information.</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/icsharpcode/SharpZipLib</PackageProjectUrl> 
   </PropertyGroup>
 
