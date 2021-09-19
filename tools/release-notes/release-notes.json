@@ -1,0 +1,5 @@
+{
+    "title" : "^([a-z]+)(?:\\(([\\w\\$\\.]*)\\))?\\: (.*?)(?: \\(#(\\d+)\\))?$",
+    "meaning": ["type", "scope", "title", "issue"],
+	"script": "release-notes.js"
+}
