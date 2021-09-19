@@ -12,6 +12,9 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 	[TestFixture]
 	public class BZip2Suite
 	{
+		// Use the same random seed to guarantee all the code paths are followed
+		const int RandomSeed = 4;
+		
 		/// <summary>
 		/// Basic compress/decompress test BZip2
 		/// </summary>
@@ -23,7 +26,7 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 			var outStream = new BZip2OutputStream(ms);
 
 			byte[] buf = new byte[10000];
-			var rnd = new Random();
+			var rnd = new Random(RandomSeed);
 			rnd.NextBytes(buf);
 
 			outStream.Write(buf, 0, buf.Length);

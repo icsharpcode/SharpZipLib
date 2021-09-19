@@ -2485,7 +2485,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="update">The update to get the size for.</param>
 		/// <param name="includingSignature">Whether to include the signature size</param>
 		/// <returns>The descriptor size, zero if there isn't one.</returns>
-		private int GetDescriptorSize(ZipUpdate update, bool includingSignature)
+		private static int GetDescriptorSize(ZipUpdate update, bool includingSignature)
 		{
 			if (!((GeneralBitFlags)update.Entry.Flags).HasFlag(GeneralBitFlags.Descriptor)) 
 				return 0;

@@ -243,7 +243,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 		#region Support Routines
 
-		private string CleanFilename(string path)
+		private static string CleanFilename(string path)
 			=> path.Substring(path.LastIndexOf('/') + 1);
 
 		private void WriteHeader()
