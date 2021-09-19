@@ -141,7 +141,8 @@ jobs:
 
     # NOTE: Should be used in next step as well, but only used for debugging for now
     - name: Set package version
-      run: >-
+      continue-on-error: true
+      run: |-
         $PKG_GIT_VERSION="$(git describe --abbrev | % { $_.substring(1) })"
         Write-Output "Git describe: $PKG_GIT_VERSION" 
         Write-Output "Package suffix: $env:PKG_SUFFIX"
