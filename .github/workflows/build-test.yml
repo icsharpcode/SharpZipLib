@@ -1,6 +1,7 @@
 name: Build and Test
 
 on:
+  workflow_dispatch:
   pull_request:
     branches: [ master ]
   push:
@@ -137,6 +138,16 @@ jobs:
     - name: Add PR suffix to package
       if: ${{ github.event_name == 'pull_request' }}
       run: echo "PKG_SUFFIX=-PR" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+    # NOTE: Should be used in next step as well, but only used for debugging for now
+    - name: Set package version
+      run: >-
+        $PKG_GIT_VERSION="$(git describe --abbrev | % { $_.substring(1) })"
+        Write-Output "Git describe: $PKG_GIT_VERSION" 
+        Write-Output "Package suffix: $env:PKG_SUFFIX"
+        $PKG_VERSION = "${PKG_GIT_VERSION}${env:PKG_SUFFIX}"
+        Write-Output "Package version: $PKG_VERSION"
+        Write-Output "PKG_VERSION=$PKG_VERSION" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
     - name: Create nuget package
       run: dotnet pack ${{ env.PKG_PROJ }} -c Release --output dist ${{ env.PKG_PROPS }} /p:Version=$(git describe --abbrev | % { $_.substring(1) })${{ env.PKG_SUFFIX }}
