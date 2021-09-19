@@ -13,9 +13,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		[Test]
 		[Category("Tar")]
 		[Category("CreatesTempFile")]
-		public void ExtractingContentsWithNonTraversalPathSucceeds()
+		[TestCase("output")]
+		[TestCase("output/")]
+		[TestCase(@"output\", IncludePlatform = "Win")]
+		public void ExtractingContentsWithNonTraversalPathSucceeds(string outputDir)
 		{
-			Assert.DoesNotThrow(() => ExtractTarOK("output", "test-good", allowTraverse: false));
+			Assert.DoesNotThrow(() => ExtractTarOK(outputDir, "file", allowTraverse: false));
 		}
 		
 		[Test]
@@ -30,8 +33,22 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		[Category("Tar")]
 		[Category("CreatesTempFile")]
 		[TestCase("output", "../file")]
+		[TestCase("output/", "../file")]
 		[TestCase("output", "../output.txt")]
 		public void ExtractingContentsWithDisallowedPathsFails(string outputDir, string fileName)
+		{
+			Assert.Throws<InvalidNameException>(() => ExtractTarOK(outputDir, fileName, allowTraverse: false));
+		}
+		
+		[Test]
+		[Category("Tar")]
+		[Category("CreatesTempFile")]
+		[Platform(Include = "Win", Reason = "Backslashes are only treated as path separators on windows")]
+		[TestCase(@"output\", @"..\file")]
+		[TestCase(@"output/", @"..\file")]
+		[TestCase("output", @"..\output.txt")]
+		[TestCase(@"output\", @"..\output.txt")]
+		public void ExtractingContentsOnWindowsWithDisallowedPathsFails(string outputDir, string fileName)
 		{
 			Assert.Throws<InvalidNameException>(() => ExtractTarOK(outputDir, fileName, allowTraverse: false));
 		}

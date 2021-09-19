@@ -613,7 +613,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ObjectDisposedException("TarArchive");
 			}
 
-			var fullDistDir = Path.GetFullPath(destinationDirectory);
+			var fullDistDir = Path.GetFullPath(destinationDirectory).TrimEnd('/', '\\');
 
 			while (true)
 			{
