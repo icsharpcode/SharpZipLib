@@ -6806,6 +6806,12 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.CanWrite
   nameWithType: DeflaterOutputStream.CanWrite
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.cryptoTransform_
+  name: cryptoTransform_
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_cryptoTransform_
+  commentId: F:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.cryptoTransform_
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.cryptoTransform_
+  nameWithType: DeflaterOutputStream.cryptoTransform_
 - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Deflate
   name: Deflate()
   href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Deflate
@@ -6893,35 +6899,6 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.GetAuthCodeIfAES
   nameWithType: DeflaterOutputStream.GetAuthCodeIfAES
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializeAESPassword(ICSharpCode.SharpZipLib.Zip.ZipEntry,System.String,System.Byte[]@,System.Byte[]@)
-  name: InitializeAESPassword(ZipEntry, String, out Byte[], out Byte[])
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_InitializeAESPassword_ICSharpCode_SharpZipLib_Zip_ZipEntry_System_String_System_Byte____System_Byte____
-  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializeAESPassword(ICSharpCode.SharpZipLib.Zip.ZipEntry,System.String,System.Byte[]@,System.Byte[]@)
-  name.vb: InitializeAESPassword(ZipEntry, String, ByRef Byte(), ByRef Byte())
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializeAESPassword(ICSharpCode.SharpZipLib.Zip.ZipEntry, System.String, out System.Byte[], out System.Byte[])
-  fullName.vb: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializeAESPassword(ICSharpCode.SharpZipLib.Zip.ZipEntry, System.String, ByRef System.Byte(), ByRef System.Byte())
-  nameWithType: DeflaterOutputStream.InitializeAESPassword(ZipEntry, String, out Byte[], out Byte[])
-  nameWithType.vb: DeflaterOutputStream.InitializeAESPassword(ZipEntry, String, ByRef Byte(), ByRef Byte())
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializeAESPassword*
-  name: InitializeAESPassword
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_InitializeAESPassword_
-  commentId: Overload:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializeAESPassword
-  isSpec: "True"
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializeAESPassword
-  nameWithType: DeflaterOutputStream.InitializeAESPassword
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializePassword(System.String)
-  name: InitializePassword(String)
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_InitializePassword_System_String_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializePassword(System.String)
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializePassword(System.String)
-  nameWithType: DeflaterOutputStream.InitializePassword(String)
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializePassword*
-  name: InitializePassword
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_InitializePassword_
-  commentId: Overload:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializePassword
-  isSpec: "True"
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.InitializePassword
-  nameWithType: DeflaterOutputStream.InitializePassword
 - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.IsStreamOwner
   name: IsStreamOwner
   href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_IsStreamOwner
@@ -6948,19 +6925,6 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Length
   nameWithType: DeflaterOutputStream.Length
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Password
-  name: Password
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Password
-  commentId: P:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Password
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Password
-  nameWithType: DeflaterOutputStream.Password
-- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Password*
-  name: Password
-  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Password_
-  commentId: Overload:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Password
-  isSpec: "True"
-  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Password
-  nameWithType: DeflaterOutputStream.Password
 - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Position
   name: Position
   href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Position
@@ -12131,6 +12095,19 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.NameTransform
   nameWithType: ZipOutputStream.NameTransform
+- uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Password
+  name: Password
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Password
+  commentId: P:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Password
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Password
+  nameWithType: ZipOutputStream.Password
+- uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Password*
+  name: Password
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Password_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Password
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Password
+  nameWithType: ZipOutputStream.Password
 - uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.PutNextEntry(ICSharpCode.SharpZipLib.Zip.ZipEntry)
   name: PutNextEntry(ZipEntry)
   href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream_PutNextEntry_ICSharpCode_SharpZipLib_Zip_ZipEntry_
