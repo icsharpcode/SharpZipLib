@@ -1089,7 +1089,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Cleans a name making it conform to Zip file conventions.
 		/// Devices names ('c:\') and UNC share names ('\\server\share') are removed
-		/// and forward slashes ('\') are converted to back slashes ('/').
+		/// and back slashes ('\') are converted to forward slashes ('/').
 		/// Names are made relative by trimming leading slashes which is compatible
 		/// with the ZIP naming convention.
 		/// </summary>
