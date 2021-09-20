@@ -616,6 +616,28 @@ namespace ICSharpCode.SharpZipLib.Tar
 				outputStream.Write(tempBuffer, 0, numRead);
 			}
 		}
+		
+		/// <summary>
+		/// Copies the contents of the current tar archive entry directly into
+		/// an output stream asynchronously.
+		/// </summary>
+		/// <param name="outputStream">
+		/// The OutputStream into which to write the entry's data.
+		/// </param>
+        public async Task CopyEntryContentsAsync(Stream outputStream)
+		{
+			byte[] tempBuffer = new byte[32 * 1024];
+
+			while (true)
+			{
+				int numRead = await ReadAsync(tempBuffer, 0, tempBuffer.Length);
+				if (numRead <= 0)
+				{
+					break;
+				}
+				await outputStream.WriteAsync(tempBuffer, 0, numRead);
+			}
+		}
 
 		private void SkipToNextEntry()
 		{
