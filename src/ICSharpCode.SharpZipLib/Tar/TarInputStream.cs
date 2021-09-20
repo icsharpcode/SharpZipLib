@@ -624,7 +624,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="outputStream">
 		/// The OutputStream into which to write the entry's data.
 		/// </param>
-        public async Task CopyEntryContentsAsync(Stream outputStream)
+		public async Task CopyEntryContentsAsync(Stream outputStream)
 		{
 			byte[] tempBuffer = new byte[32 * 1024];
 
