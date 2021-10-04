@@ -962,26 +962,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		// For AES the method in the entry is 99, and the real compression method is in the extradata
 		private void ProcessAESExtraData(ZipExtraData extraData)
 		{
-			if (extraData.Find(0x9901))
+			var aesData = extraData.GetData<WinZipAESTaggedData>();
+
+			if (aesData != null)
 			{
 				// Set version for Zipfile.CreateAndInitDecryptionStream
 				versionToExtract = ZipConstants.VERSION_AES;            // Ver 5.1 = AES see "Version" getter
 
-				//
-				// Unpack AES extra data field see http://www.winzip.com/aes_info.htm
-				int length = extraData.ValueLength;         // Data size currently 7
-				if (length < 7)
-					throw new ZipException("AES Extra Data Length " + length + " invalid.");
-				int ver = extraData.ReadShort();            // Version number (1=AE-1 2=AE-2)
-				int vendorId = extraData.ReadShort();       // 2-character vendor ID 0x4541 = "AE"
-				int encrStrength = extraData.ReadByte();    // encryption strength 1 = 128 2 = 192 3 = 256
-				int actualCompress = extraData.ReadShort(); // The actual compression method used to compress the file
-				_aesVer = ver;
-				_aesEncryptionStrength = encrStrength;
-				method = (CompressionMethod)actualCompress;
+				_aesVer = (int)aesData.Version;
+				_aesEncryptionStrength = aesData.EncryptionStrength;
+				method = aesData.CompressionMethod;
 			}
 			else
+			{
 				throw new ZipException("AES Extra Data missing");
+			}
 		}
 
 		/// <summary>

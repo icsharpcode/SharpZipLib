@@ -706,18 +706,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private static void AddExtraDataAES(ZipEntry entry, ZipExtraData extraData)
 		{
-			// Vendor Version: AE-1 IS 1. AE-2 is 2. With AE-2 no CRC is required and 0 is stored.
-			const int VENDOR_VERSION = 2;
-			// Vendor ID is the two ASCII characters "AE".
-			const int VENDOR_ID = 0x4541; //not 6965;
-			extraData.StartNewEntry();
-			// Pack AES extra data field see http://www.winzip.com/aes_info.htm
-			//extraData.AddLeShort(7);							// Data size (currently 7)
-			extraData.AddLeShort(VENDOR_VERSION);               // 2 = AE-2
-			extraData.AddLeShort(VENDOR_ID);                    // "AE"
-			extraData.AddData(entry.AESEncryptionStrength);     //  1 = 128, 2 = 192, 3 = 256
-			extraData.AddLeShort((int)entry.CompressionMethod); // The actual compression method used to compress the file
-			extraData.AddNewEntry(0x9901);
+			var aesData = new WinZipAESTaggedData
+			{
+				CompressionMethod = entry.CompressionMethod,
+				EncryptionStrength = entry.AESEncryptionStrength,
+			};
+
+			extraData.AddEntry(aesData);
 		}
 
 		// Replaces WriteEncryptionHeader for AES
