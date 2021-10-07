@@ -15,7 +15,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the ID for this tagged data value.
 		/// </summary>
-		short TagID { get; }
+		ushort TagID { get; }
 
 		/// <summary>
 		/// Set the contents of this instance from the data passed.
@@ -41,7 +41,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Initialise a new instance.
 		/// </summary>
 		/// <param name="tag">The tag ID.</param>
-		public RawTaggedData(short tag)
+		public RawTaggedData(ushort tag)
 		{
 			_tag = tag;
 		}
@@ -51,7 +51,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the ID for this tagged data value.
 		/// </summary>
-		public short TagID
+		public ushort TagID
 		{
 			get { return _tag; }
 			set { _tag = value; }
@@ -100,7 +100,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// The tag ID for this instance.
 		/// </summary>
-		private short _tag;
+		private ushort _tag;
 
 		private byte[] _data;
 
@@ -139,7 +139,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the ID
 		/// </summary>
-		public short TagID
+		public ushort TagID
 		{
 			get { return 0x5455; }
 		}
@@ -328,7 +328,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the ID for this tagged data value.
 		/// </summary>
-		public short TagID
+		public ushort TagID
 		{
 			get { return 10; }
 		}
