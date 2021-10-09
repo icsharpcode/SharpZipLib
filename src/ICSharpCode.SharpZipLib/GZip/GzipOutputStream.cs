@@ -3,7 +3,9 @@ using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.IO;
-using System.Text;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.GZip
 {
@@ -162,6 +164,26 @@ namespace ICSharpCode.SharpZipLib.GZip
 			base.Write(buffer, offset, count);
 		}
 
+#if NETSTANDARD2_1_OR_GREATER
+		/// <inheritdoc cref="DeflaterOutputStream.WriteAsync(byte[],int,int,CancellationToken)"/>
+		public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+		{
+
+			if (state_ == OutputState.Header)
+			{
+				await WriteHeaderAsync();
+			}
+
+			if (state_ != OutputState.Footer)
+			{
+				throw new InvalidOperationException("Write not permitted in current state");
+			}
+
+			crc.Update(new ArraySegment<byte>(buffer, offset, count));
+			await base.WriteAsync(buffer, offset, count, cancellationToken);
+		}
+#endif
+
 		/// <summary>
 		/// Writes remaining compressed output data to the output stream
 		/// and closes it.
@@ -184,6 +206,30 @@ namespace ICSharpCode.SharpZipLib.GZip
 				}
 			}
 		}
+		
+#if NETSTANDARD2_1_OR_GREATER
+		/// <inheritdoc cref="DeflaterOutputStream.DisposeAsync"/>
+		public override async ValueTask DisposeAsync()
+		{
+			try
+			{
+				await FinishAsync(CancellationToken.None);
+			}
+			finally
+			{
+				if (state_ != OutputState.Closed)
+				{
+					state_ = OutputState.Closed;
+					if (IsStreamOwner)
+					{
+						await baseOutputStream_.DisposeAsync();
+					}
+				}
+
+				await base.DisposeAsync();
+			}
+		}
+#endif
 
 		/// <summary>
 		/// Flushes the stream by ensuring the header is written, and then calling <see cref="DeflaterOutputStream.Flush">Flush</see>
@@ -218,75 +264,117 @@ namespace ICSharpCode.SharpZipLib.GZip
 			{
 				state_ = OutputState.Finished;
 				base.Finish();
-
-				var totalin = (uint)(deflater_.TotalIn & 0xffffffff);
-				var crcval = (uint)(crc.Value & 0xffffffff);
-
-				byte[] gzipFooter;
-
-				unchecked
-				{
-					gzipFooter = new byte[] {
-					(byte) crcval, (byte) (crcval >> 8),
-					(byte) (crcval >> 16), (byte) (crcval >> 24),
-
-					(byte) totalin, (byte) (totalin >> 8),
-					(byte) (totalin >> 16), (byte) (totalin >> 24)
-				};
-				}
+				
+				byte[] gzipFooter = GetFooter();
 
 				baseOutputStream_.Write(gzipFooter, 0, gzipFooter.Length);
 			}
 		}
 
+#if NETSTANDARD2_1_OR_GREATER
+		/// <inheritdoc cref="Finish"/>
+		public override async Task FinishAsync(CancellationToken ct)
+		{
+			// If no data has been written a header should be added.
+			if (state_ == OutputState.Header)
+			{
+				await WriteHeaderAsync();
+			}
+
+			if (state_ == OutputState.Footer)
+			{
+				state_ = OutputState.Finished;
+				await base.FinishAsync(ct);
+				await baseOutputStream_.WriteAsync(GetFooter(), ct);
+			}
+		}
+#endif
+
 		#endregion DeflaterOutputStream overrides
 
 		#region Support Routines
+
+		private byte[] GetFooter()
+		{
+			var totalin = (uint)(deflater_.TotalIn & 0xffffffff);
+			var crcval = (uint)(crc.Value & 0xffffffff);
+
+			byte[] gzipFooter;
+
+			unchecked
+			{
+				gzipFooter = new [] {
+					(byte) crcval, 
+					(byte) (crcval >> 8),
+					(byte) (crcval >> 16), 
+					(byte) (crcval >> 24),
+					(byte) totalin, 
+					(byte) (totalin >> 8),
+					(byte) (totalin >> 16), 
+					(byte) (totalin >> 24),
+				};
+			}
+
+			return gzipFooter;
+		}
+
+		private byte[] GetHeader()
+		{
+			var modTime = (int)((DateTime.Now.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000L);  // Ticks give back 100ns intervals
+			byte[] gzipHeader = {
+				// The two magic bytes
+				GZipConstants.ID1, 
+				GZipConstants.ID2,
+
+				// The compression type
+				GZipConstants.CompressionMethodDeflate,
+
+				// The flags (not set)
+				(byte)flags,
+
+				// The modification time
+				(byte) modTime, (byte) (modTime >> 8),
+				(byte) (modTime >> 16), (byte) (modTime >> 24),
+
+				// The extra flags
+				0,
+
+				// The OS type (unknown)
+				255
+			};
+
+			if (!flags.HasFlag(GZipFlags.FNAME))
+			{
+				return gzipHeader;
+			}
+			
+			
+			return gzipHeader
+				.Concat(GZipConstants.Encoding.GetBytes(fileName))
+				.Concat(new byte []{0}) // End filename string with a \0
+				.ToArray();
+		}
 
 		private static string CleanFilename(string path)
 			=> path.Substring(path.LastIndexOf('/') + 1);
 
 		private void WriteHeader()
 		{
-			if (state_ == OutputState.Header)
-			{
-				state_ = OutputState.Footer;
+			if (state_ != OutputState.Header) return;
+			state_ = OutputState.Footer;
 
-				var mod_time = (int)((DateTime.Now.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000L);  // Ticks give back 100ns intervals
-				byte[] gzipHeader = {
-					// The two magic bytes
-					GZipConstants.ID1, 
-					GZipConstants.ID2,
-
-					// The compression type
-					GZipConstants.CompressionMethodDeflate,
-
-					// The flags (not set)
-					(byte)flags,
-
-					// The modification time
-					(byte) mod_time, (byte) (mod_time >> 8),
-					(byte) (mod_time >> 16), (byte) (mod_time >> 24),
-
-					// The extra flags
-					0,
-
-					// The OS type (unknown)
-					255
-				};
-
-				baseOutputStream_.Write(gzipHeader, 0, gzipHeader.Length);
-
-				if (flags.HasFlag(GZipFlags.FNAME))
-				{
-					var fname = GZipConstants.Encoding.GetBytes(fileName);
-					baseOutputStream_.Write(fname, 0, fname.Length);
-
-					// End filename string with a \0
-					baseOutputStream_.Write(new byte[] { 0 }, 0, 1);
-				}
-			}
+			var gzipHeader = GetHeader();
+			baseOutputStream_.Write(gzipHeader, 0, gzipHeader.Length);
 		}
+		
+		#if NETSTANDARD2_1_OR_GREATER
+		private async ValueTask WriteHeaderAsync()
+		{
+			if (state_ != OutputState.Header) return;
+			state_ = OutputState.Footer;
+			await baseOutputStream_.WriteAsync(GetHeader());
+		}
+		#endif
 
 		#endregion Support Routines
 	}
