@@ -244,9 +244,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			{
 				state_ = OutputState.Finished;
 				base.Finish();
-				
-				byte[] gzipFooter = GetFooter();
-
+				var gzipFooter = GetFooter();
 				baseOutputStream_.Write(gzipFooter, 0, gzipFooter.Length);
 			}
 		}
@@ -272,7 +270,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 			{
 				state_ = OutputState.Finished;
 				await base.FinishAsync(ct);
-				await baseOutputStream_.WriteAsync(GetFooter(), ct);
+				var gzipFooter = GetFooter();
+				await baseOutputStream_.WriteAsync(gzipFooter, 0, gzipFooter.Length, ct);
 			}
 		}
 
@@ -352,7 +351,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			baseOutputStream_.Write(gzipHeader, 0, gzipHeader.Length);
 		}
 		
-		private async ValueTask WriteHeaderAsync()
+		private async Task WriteHeaderAsync()
 		{
 			if (state_ != OutputState.Header) return;
 			state_ = OutputState.Footer;
