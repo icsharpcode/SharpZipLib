@@ -1,0 +1,31 @@
+<%
+const typeGroups = {
+	feats: { title: 'Features:', types: ['feat'] },
+	fixes: { title: 'Fixes:', types: ['fix'] },
+	etc: {
+		title: 'Other changes (not related to library code):', 
+		types: ['docs','style','refactor','perf','test','build','ci','chore']
+	},
+	unknown: { title: 'Unknown:', types: ['?'] },
+}
+
+const commitTypes = {
+  feat: '✨', fix: '🐛', docs: '📚', style: '💎', 
+  refactor: '🔨',  perf: '🚀',  test: '🚨',  build: '📦',
+  ci: '⚙️',  chore: '🔧',  ['?']: '❓',
+}
+
+for(const group of Object.values(typeGroups)){
+	const groupCommits = commits.filter(c => group.types.includes(c.type));
+	if (groupCommits.length < 1) continue;
+%>
+## <%=group.title%>
+<%	for (const {issue, title, authorName, authorUser, scope, type} of groupCommits) { %>
+* <%=commitTypes[type]%>
+<%=issue ? `  [[#${issue}](https://github.com/icsharpcode/SharpZipLib/pull/${issue})]\n` : ''-%>
+<%=scope ? `  \`${scope}\`\n` : ''-%>
+  __<%=title-%>__ 
+  by <%=authorUser ? `[_${authorName}_](https://github.com/${authorUser})` : `_${authorName}_`%>
+<%   } %>
+
+<% } %>

@@ -1,7 +1,6 @@
 using ICSharpCode.SharpZipLib.BZip2;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
-using System;
 using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tests.BZip2
@@ -24,34 +23,30 @@ namespace ICSharpCode.SharpZipLib.Tests.BZip2
 		{
 			var ms = new MemoryStream();
 			var outStream = new BZip2OutputStream(ms);
+			
+			var buf = Utils.GetDummyBytes(size: 10000, RandomSeed);
 
-			byte[] buf = new byte[10000];
-			var rnd = new Random(RandomSeed);
-			rnd.NextBytes(buf);
-
-			outStream.Write(buf, 0, buf.Length);
+			outStream.Write(buf, offset: 0, buf.Length);
 			outStream.Close();
 			ms = new MemoryStream(ms.GetBuffer());
-			ms.Seek(0, SeekOrigin.Begin);
+			ms.Seek(offset: 0, SeekOrigin.Begin);
 
-			using (BZip2InputStream inStream = new BZip2InputStream(ms))
+			using BZip2InputStream inStream = new BZip2InputStream(ms);
+			var buf2 = new byte[buf.Length];
+			var pos = 0;
+			while (true)
 			{
-				byte[] buf2 = new byte[buf.Length];
-				int pos = 0;
-				while (true)
+				var numRead = inStream.Read(buf2, pos, count: 4096);
+				if (numRead <= 0)
 				{
-					int numRead = inStream.Read(buf2, pos, 4096);
-					if (numRead <= 0)
-					{
-						break;
-					}
-					pos += numRead;
+					break;
 				}
+				pos += numRead;
+			}
 
-				for (int i = 0; i < buf.Length; ++i)
-				{
-					Assert.AreEqual(buf2[i], buf[i]);
-				}
+			for (var i = 0; i < buf.Length; ++i)
+			{
+				Assert.AreEqual(buf2[i], buf[i]);
 			}
 		}
 
