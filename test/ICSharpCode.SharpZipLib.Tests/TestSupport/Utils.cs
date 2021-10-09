@@ -2,6 +2,8 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
@@ -75,6 +77,12 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			var bytes = new byte[size];
 			random.NextBytes(bytes);
 			return bytes;
+		}
+		
+		public static async Task WriteDummyDataAsync(Stream stream, int size = -1)
+		{
+			var bytes = GetDummyBytes(size);
+			await stream.WriteAsync(bytes, 0, bytes.Length);
 		}
 
 		/// <summary>

@@ -913,7 +913,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			var ms2 = new MemoryStream(s.ToArray());
 			using (ZipFile zf = new ZipFile(ms2))
 			{
-				Assert.IsTrue(zf.TestArchive(true));
+				Assert.IsTrue(zf.TestArchive(true, TestStrategy.FindAllErrors, 
+					(status, message) => {
+						if (!string.IsNullOrWhiteSpace(message)) TestContext.Out.WriteLine(message);
+					}));
 			}
 		}
 

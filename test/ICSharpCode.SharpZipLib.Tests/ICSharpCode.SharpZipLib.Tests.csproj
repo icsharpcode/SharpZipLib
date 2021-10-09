@@ -5,7 +5,10 @@
 		<TargetFrameworks>netcoreapp3.1;net46</TargetFrameworks>
     <ApplicationIcon />
     <StartupObject />
-		<LangVersion>8</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\assets\ICSharpCode.SharpZipLib.snk</AssemblyOriginatorKeyFile>
+    <PublicSign>true</PublicSign>
+		<LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +26,12 @@
 
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\ICSharpCode.SharpZipLib.snk">
+      <Link>ICSharpCode.SharpZipLib.snk</Link>
+    </None>
   </ItemGroup>
 
 </Project>

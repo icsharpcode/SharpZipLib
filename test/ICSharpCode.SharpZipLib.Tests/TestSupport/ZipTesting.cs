@@ -1,5 +1,7 @@
+using System;
 using ICSharpCode.SharpZipLib.Zip;
 using System.IO;
+using NUnit.Framework;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
@@ -8,14 +10,25 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	/// </summary>
 	internal static class ZipTesting
 	{
-		/// <summary>
-		/// Tests the archive.
-		/// </summary>
-		/// <param name="data">The data.</param>
-		/// <returns></returns>
-		public static bool TestArchive(byte[] data)
+		public static void AssertValidZip(Stream stream, string password = null, bool usesAes = true)
 		{
-			return TestArchive(data, null);
+			Assert.That(TestArchive(stream, password), "Archive did not pass ZipFile.TestArchive");
+
+			if (!string.IsNullOrEmpty(password) && usesAes)
+			{
+				Assert.Ignore("ZipInputStream does not support AES");
+			}
+			
+			stream.Seek(0, SeekOrigin.Begin);
+
+			Assert.DoesNotThrow(() =>
+			{
+				using var zis = new ZipInputStream(stream){Password = password};
+				while (zis.GetNextEntry() != null)
+				{
+					new StreamReader(zis).ReadToEnd();
+				}
+			}, "Archive could not be read by ZipInputStream");
 		}
 
 		/// <summary>
@@ -23,15 +36,31 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// </summary>
 		/// <param name="data">The data.</param>
 		/// <param name="password">The password.</param>
-		/// <returns>true if archive tests ok; false otherwise.</returns>
-		public static bool TestArchive(byte[] data, string password)
+		/// <returns></returns>
+		public static bool TestArchive(byte[] data, string password = null)
 		{
-			using (MemoryStream ms = new MemoryStream(data))
-			using (ZipFile zipFile = new ZipFile(ms))
+			using var ms = new MemoryStream(data);
+			return TestArchive(new MemoryStream(data), password);
+		}
+
+		/// <summary>
+		/// Tests the archive.
+		/// </summary>
+		/// <param name="stream">The data.</param>
+		/// <param name="password">The password.</param>
+		/// <returns>true if archive tests ok; false otherwise.</returns>
+		public static bool TestArchive(Stream stream, string password = null)
+		{
+			using var zipFile = new ZipFile(stream)
 			{
-				zipFile.Password = password;
-				return zipFile.TestArchive(true);
-			}
+				IsStreamOwner = false,
+				Password = password,
+			};
+			
+			return zipFile.TestArchive(true, TestStrategy.FindAllErrors, (status, message) => 
+			{
+				if (!string.IsNullOrWhiteSpace(message)) TestContext.Out.WriteLine(message);
+			});
 		}
 	}
 }
