@@ -226,7 +226,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Read a <see cref="byte"/> from the input stream.
 		/// </summary>
 		/// <returns>Returns the byte read.</returns>
-		public int ReadLeByte()
+		public byte ReadLeByte()
 		{
 			if (available <= 0)
 			{

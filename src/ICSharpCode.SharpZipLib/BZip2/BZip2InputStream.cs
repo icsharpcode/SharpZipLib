@@ -1,3 +1,7 @@
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+	#define VECTORIZE_MEMORY_MOVE
+#endif
+
 using ICSharpCode.SharpZipLib.Checksum;
 using System;
 using System.IO;
@@ -19,7 +23,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		private const int NO_RAND_PART_B_STATE = 6;
 		private const int NO_RAND_PART_C_STATE = 7;
 
-		#endregion Constants
+#if VECTORIZE_MEMORY_MOVE
+		private static readonly int VectorSize = System.Numerics.Vector<byte>.Count;
+#endif // VECTORIZE_MEMORY_MOVE
+
+#endregion Constants
 
 		#region Instance Fields
 
@@ -711,10 +719,27 @@ namespace ICSharpCode.SharpZipLib.BZip2
 					unzftab[seqToUnseq[tmp]]++;
 					ll8[last] = seqToUnseq[tmp];
 
-					for (int j = nextSym - 1; j > 0; --j)
+					var j = nextSym - 1;
+
+#if VECTORIZE_MEMORY_MOVE
+					// This is vectorized memory move. Going from the back, we're taking chunks of array
+					// and write them at the new location shifted by one. Since chunks are VectorSize long,
+					// at the end we have to move "tail" (or head actually) of the array using a plain loop.
+					// If System.Numerics.Vector API is not available, the plain loop is used to do the whole copying.
+
+					while(j >= VectorSize)
 					{
-						yy[j] = yy[j - 1];
+						var arrayPart = new System.Numerics.Vector<byte>(yy, j - VectorSize);
+						arrayPart.CopyTo(yy, j - VectorSize + 1);
+						j -= VectorSize;
 					}
+#endif // VECTORIZE_MEMORY_MOVE
+
+					while(j > 0)
+					{
+						yy[j] = yy[--j];
+					}
+
 					yy[0] = tmp;
 
 					if (groupPos == 0)

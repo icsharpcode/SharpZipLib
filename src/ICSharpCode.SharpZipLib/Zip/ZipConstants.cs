@@ -237,6 +237,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// <summary>
 	/// This class contains constants used for Zip format files
 	/// </summary>
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "kept for backwards compatibility")]
 	public static class ZipConstants
 	{
 		#region Versions

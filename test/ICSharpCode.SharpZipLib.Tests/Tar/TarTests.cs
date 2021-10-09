@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Text;
+using NUnit.Framework.Internal;
 
 namespace ICSharpCode.SharpZipLib.Tests.Tar
 {
@@ -35,8 +36,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		public void EmptyTar()
 		{
 			var ms = new MemoryStream();
-			int recordSize = 0;
-			using (TarArchive tarOut = TarArchive.CreateOutputTarArchive(ms))
+			int recordSize;
+			using (var tarOut = TarArchive.CreateOutputTarArchive(ms))
 			{
 				recordSize = tarOut.RecordSize;
 			}
@@ -48,12 +49,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 
-			using (TarArchive tarIn = TarArchive.CreateInputTarArchive(ms2, null))
+			using (var tarIn = TarArchive.CreateInputTarArchive(ms2, nameEncoding: null))
 			{
 				entryCount = 0;
 				tarIn.ProgressMessageEvent += EntryCounter;
 				tarIn.ListContents();
-				Assert.AreEqual(0, entryCount, "Expected 0 tar entries");
+				Assert.Zero(entryCount, "Expected 0 tar entries");
 			}
 		}
 
@@ -64,27 +65,24 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		[Category("Tar")]
 		public void BlockFactorHandling()
 		{
-			const int MinimumBlockFactor = 1;
-			const int MaximumBlockFactor = 64;
-			const int FillFactor = 2;
+			const int minimumBlockFactor = 1;
+			const int maximumBlockFactor = 64;
+			const int fillFactor = 2;
 
-			for (int factor = MinimumBlockFactor; factor < MaximumBlockFactor; ++factor)
+			for (var factor = minimumBlockFactor; factor < maximumBlockFactor; ++factor)
 			{
 				var ms = new MemoryStream();
 
-				using (TarOutputStream tarOut = new TarOutputStream(ms, factor, null))
+				using (var tarOut = new TarOutputStream(ms, factor, nameEncoding: null))
 				{
-					TarEntry entry = TarEntry.CreateTarEntry("TestEntry");
-					entry.Size = (TarBuffer.BlockSize * factor * FillFactor);
+					var entry = TarEntry.CreateTarEntry("TestEntry");
+					entry.Size = TarBuffer.BlockSize * factor * fillFactor;
 					tarOut.PutNextEntry(entry);
 
-					byte[] buffer = new byte[TarBuffer.BlockSize];
-
-					var r = new Random();
-					r.NextBytes(buffer);
+					var buffer = Utils.GetDummyBytes(TarBuffer.BlockSize);
 
 					// Last block is a partial one
-					for (int i = 0; i < factor * FillFactor; ++i)
+					for (var i = 0; i < factor * fillFactor; ++i)
 					{
 						tarOut.Write(buffer, 0, buffer.Length);
 					}
@@ -94,7 +92,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 				Assert.IsNotNull(tarData, "Data written is null");
 
 				// Blocks = Header + Data Blocks + Zero block + Record trailer
-				int usedBlocks = 1 + (factor * FillFactor) + 2;
+				int usedBlocks = 1 + (factor * fillFactor) + 2;
 				int totalBlocks = usedBlocks + (factor - 1);
 				totalBlocks /= factor;
 				totalBlocks *= factor;
@@ -102,20 +100,18 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 				Assert.AreEqual(TarBuffer.BlockSize * totalBlocks, tarData.Length, "Tar file should contain {0} blocks in length",
 					totalBlocks);
 
-				if (usedBlocks < totalBlocks)
+				if (usedBlocks >= totalBlocks) continue;
+				
+				// Start at first byte after header.
+				var byteIndex = TarBuffer.BlockSize * ((factor * fillFactor) + 1);
+				while (byteIndex < tarData.Length)
 				{
-					// Start at first byte after header.
-					int byteIndex = TarBuffer.BlockSize * ((factor * FillFactor) + 1);
-					while (byteIndex < tarData.Length)
-					{
-						int blockNumber = byteIndex / TarBuffer.BlockSize;
-						int offset = blockNumber % TarBuffer.BlockSize;
-						Assert.AreEqual(0, tarData[byteIndex],
-							string.Format("Trailing block data should be null iteration {0} block {1} offset {2}  index {3}",
-							factor,
-							blockNumber, offset, byteIndex));
-						byteIndex += 1;
-					}
+					var blockNumber = byteIndex / TarBuffer.BlockSize;
+					var offset = blockNumber % TarBuffer.BlockSize;
+					Assert.AreEqual(0, tarData[byteIndex],
+						"Trailing block data should be null iteration {0} block {1} offset {2}  index {3}",
+							factor, blockNumber, offset, byteIndex);
+					byteIndex += 1;
 				}
 			}
 		}
@@ -127,13 +123,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		[Category("Tar")]
 		public void TrailerContainsNulls()
 		{
-			const int TestBlockFactor = 3;
+			const int testBlockFactor = 3;
 
-			for (int iteration = 0; iteration < TestBlockFactor * 2; ++iteration)
+			for (int iteration = 0; iteration < testBlockFactor * 2; ++iteration)
 			{
 				var ms = new MemoryStream();
 
-				using (TarOutputStream tarOut = new TarOutputStream(ms, TestBlockFactor, null))
+				using (TarOutputStream tarOut = new TarOutputStream(ms, testBlockFactor, null))
 				{
 					TarEntry entry = TarEntry.CreateTarEntry("TestEntry");
 					if (iteration > 0)
@@ -167,9 +163,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 
 				// Blocks = Header + Data Blocks + Zero block + Record trailer
 				int usedBlocks = 1 + iteration + 2;
-				int totalBlocks = usedBlocks + (TestBlockFactor - 1);
-				totalBlocks /= TestBlockFactor;
-				totalBlocks *= TestBlockFactor;
+				int totalBlocks = usedBlocks + (testBlockFactor - 1);
+				totalBlocks /= testBlockFactor;
+				totalBlocks *= testBlockFactor;
 
 				Assert.AreEqual(TarBuffer.BlockSize * totalBlocks, tarData.Length,
 					string.Format("Tar file should be {0} blocks in length", totalBlocks));
@@ -195,7 +191,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		private void TryLongName(string name)
 		{
 			var ms = new MemoryStream();
-			using (TarOutputStream tarOut = new TarOutputStream(ms, null))
+			using (TarOutputStream tarOut = new TarOutputStream(ms, nameEncoding: null))
 			{
 				DateTime modTime = DateTime.Now;
 
@@ -207,7 +203,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			ms2.Write(ms.GetBuffer(), 0, ms.GetBuffer().Length);
 			ms2.Seek(0, SeekOrigin.Begin);
 
-			using (TarInputStream tarIn = new TarInputStream(ms2, null))
+			using (TarInputStream tarIn = new TarInputStream(ms2,  nameEncoding: null))
 			{
 				TarEntry nextEntry = tarIn.GetNextEntry();
 
@@ -290,20 +286,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			var buffer = new byte[2560];
 			var truncated = Convert.FromBase64String(input64);
 			Array.Copy(truncated, buffer, truncated.Length);
-			truncated = null;
 
-			using (var ms = new MemoryStream(buffer))
-			using (var tis = new TarInputStream(ms, null))
-			{
-				var entry = tis.GetNextEntry();
-				Assert.IsNotNull(entry, "Entry is null");
-
-				Assert.IsNotNull(entry.Name, "Entry name is null");
-
-				Assert.AreEqual(expectedName.Length, entry.Name.Length, $"Entry name is truncated to {entry.Name.Length} bytes.");
-
-				Assert.AreEqual(expectedName, entry.Name, "Entry name does not match expected value");
-			}
+			using var ms = new MemoryStream(buffer);
+			using var tis = new TarInputStream(ms, nameEncoding: null);
+			var entry = tis.GetNextEntry();
+			
+			Assert.IsNotNull(entry, "Entry is null");
+			Assert.IsNotNull(entry.Name, "Entry name is null");
+			Assert.AreEqual(expectedName.Length, entry.Name.Length, $"Entry name is truncated to {entry.Name.Length} bytes.");
+			Assert.AreEqual(expectedName, entry.Name, "Entry name does not match expected value");
 		}
 
 		/// <summary>
@@ -394,11 +385,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		public void Checksum()
 		{
 			var ms = new MemoryStream();
-			using (TarOutputStream tarOut = new TarOutputStream(ms, null))
+			using (var tarOut = new TarOutputStream(ms,  nameEncoding: null))
 			{
-				DateTime modTime = DateTime.Now;
-
-				TarEntry entry = TarEntry.CreateTarEntry("TestEntry");
+				var entry = TarEntry.CreateTarEntry("TestEntry");
 				entry.TarHeader.Mode = 12345;
 
 				tarOut.PutNextEntry(entry);
@@ -409,7 +398,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			ms2.Seek(0, SeekOrigin.Begin);
 			TarEntry nextEntry;
 
-			using (TarInputStream tarIn = new TarInputStream(ms2, null))
+			using (var tarIn = new TarInputStream(ms2, nameEncoding: null))
 			{
 				nextEntry = tarIn.GetNextEntry();
 				Assert.IsTrue(nextEntry.TarHeader.IsChecksumValid, "Checksum should be valid");
@@ -421,20 +410,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			ms3.Write(new byte[] { 34 }, 0, 1);
 			ms3.Seek(0, SeekOrigin.Begin);
 
-			using (TarInputStream tarIn = new TarInputStream(ms3, null))
+			using (var tarIn = new TarInputStream(ms3, nameEncoding: null))
 			{
-				bool trapped = false;
-
-				try
-				{
-					nextEntry = tarIn.GetNextEntry();
-				}
-				catch (TarException)
-				{
-					trapped = true;
-				}
-
-				Assert.IsTrue(trapped, "Checksum should be invalid");
+				Assert.Throws<TarException>(() => tarIn.GetNextEntry(), "Checksum should be invalid");
 			}
 		}
 
@@ -703,37 +681,35 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 
 			long outCount, inCount;
 
-			using (var ms = new MemoryStream())
+			using var ms = new MemoryStream();
+			using (var tarOut = TarArchive.CreateOutputTarArchive(ms))
+			using (var dummyFile = Utils.GetDummyFile(dummySize))
 			{
-				using (var tarOut = TarArchive.CreateOutputTarArchive(ms))
-				using (var dummyFile = Utils.GetDummyFile(dummySize))
-				{
-					tarOut.IsStreamOwner = false;
-					tarOut.WriteEntry(TarEntry.CreateEntryFromFile(dummyFile.Filename), false);
-				}
-
-				outCount = ms.Position;
-				ms.Seek(0, SeekOrigin.Begin);
-
-				using (var tarIn = TarArchive.CreateInputTarArchive(ms, null))
-				using (var tempDir = new Utils.TempDir())
-				{
-					tarIn.IsStreamOwner = false;
-					tarIn.ExtractContents(tempDir.Fullpath);
-
-					foreach (var file in Directory.GetFiles(tempDir.Fullpath, "*", SearchOption.AllDirectories))
-					{
-						Console.WriteLine($"Extracted \"{file}\"");
-					}
-				}
-
-				inCount = ms.Position;
-
-				Console.WriteLine($"Output count: {outCount}");
-				Console.WriteLine($"Input count: {inCount}");
-
-				Assert.AreEqual(inCount, outCount, "Bytes read and bytes written should be equal");
+				tarOut.IsStreamOwner = false;
+				tarOut.WriteEntry(TarEntry.CreateEntryFromFile(dummyFile), recurse: false);
 			}
+
+			outCount = ms.Position;
+			ms.Seek(0, SeekOrigin.Begin);
+
+			using (var tarIn = TarArchive.CreateInputTarArchive(ms, nameEncoding: null))
+			using (var tempDir = Utils.GetTempDir())
+			{
+				tarIn.IsStreamOwner = false;
+				tarIn.ExtractContents(tempDir);
+
+				foreach (var file in Directory.GetFiles(tempDir, "*", SearchOption.AllDirectories))
+				{
+					Console.WriteLine($"Extracted \"{file}\"");
+				}
+			}
+
+			inCount = ms.Position;
+
+			Console.WriteLine($"Output count: {outCount}");
+			Console.WriteLine($"Input count: {inCount}");
+
+			Assert.AreEqual(inCount, outCount, "Bytes read and bytes written should be equal");
 		}
 
 		[Test]
@@ -742,14 +718,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		[Explicit("Long Running")]
 		public void WriteThroughput()
 		{
-			const string EntryName = "LargeTarEntry";
+			const string entryName = "LargeTarEntry";
 
 			PerformanceTesting.TestWrite(TestDataSize.Large, bs =>
 			{
-				var tos = new TarOutputStream(bs, null);
+				var tos = new TarOutputStream(bs, nameEncoding: null);
 				tos.PutNextEntry(new TarEntry(new TarHeader()
 				{
-					Name = EntryName,
+					Name = entryName,
 					Size = (int)TestDataSize.Large,
 				}));
 				return tos;
@@ -766,7 +742,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		[Explicit("Long Running")]
 		public void SingleLargeEntry()
 		{
-			const string EntryName = "LargeTarEntry";
+			const string entryName = "LargeTarEntry";
 			const TestDataSize dataSize = TestDataSize.Large;
 
 			PerformanceTesting.TestReadWrite(
@@ -776,7 +752,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					var tis = new TarInputStream(bs, null);
 					var entry = tis.GetNextEntry();
 
-					Assert.AreEqual(EntryName, entry.Name);
+					Assert.AreEqual(entryName, entry.Name);
 					return tis;
 				},
 				output: bs =>
@@ -784,7 +760,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					var tos = new TarOutputStream(bs, null);
 					tos.PutNextEntry(new TarEntry(new TarHeader()
 					{
-						Name = EntryName,
+						Name = entryName,
 						Size = (int)dataSize,
 					}));
 					return tos;
@@ -801,44 +777,40 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		[Category("Tar")]
 		public void ExtractingCorruptTarShouldntLeakFiles()
 		{
-			using (var memoryStream = new MemoryStream())
+			using var memoryStream = new MemoryStream();
+			//Create a tar.gz in the output stream
+			using (var gzipStream = new GZipOutputStream(memoryStream))
 			{
-				//Create a tar.gz in the output stream
-				using (var gzipStream = new GZipOutputStream(memoryStream))
+				gzipStream.IsStreamOwner = false;
+
+				using (var tarOut = TarArchive.CreateOutputTarArchive(gzipStream))
+				using (var dummyFile = Utils.GetDummyFile(size: 32000))
 				{
-					gzipStream.IsStreamOwner = false;
-
-					using (var tarOut = TarArchive.CreateOutputTarArchive(gzipStream))
-					using (var dummyFile = Utils.GetDummyFile(32000))
-					{
-						tarOut.IsStreamOwner = false;
-						tarOut.WriteEntry(TarEntry.CreateEntryFromFile(dummyFile.Filename), false);
-					}
+					tarOut.IsStreamOwner = false;
+					tarOut.WriteEntry(TarEntry.CreateEntryFromFile(dummyFile), recurse: false);
 				}
+			}
 
-				// corrupt archive - make sure the file still has more than one block
-				memoryStream.SetLength(16000);
-				memoryStream.Seek(0, SeekOrigin.Begin);
+			// corrupt archive - make sure the file still has more than one block
+			memoryStream.SetLength(16000);
+			memoryStream.Seek(0, SeekOrigin.Begin);
 
-				// try to extract
-				using (var gzipStream = new GZipInputStream(memoryStream))
+			// try to extract
+			using (var gzipStream = new GZipInputStream(memoryStream))
+			{
+				gzipStream.IsStreamOwner = false;
+
+				using var tempDir = Utils.GetTempDir();
+				using (var tarIn = TarArchive.CreateInputTarArchive(gzipStream, nameEncoding: null))
 				{
-					string tempDirName;
-					gzipStream.IsStreamOwner = false;
-
-					using (var tempDir = new Utils.TempDir())
-					{
-						tempDirName = tempDir.Fullpath;
-
-						using (var tarIn = TarArchive.CreateInputTarArchive(gzipStream, null))
-						{
-							tarIn.IsStreamOwner = false;
-							Assert.Throws<SharpZipBaseException>(() => tarIn.ExtractContents(tempDir.Fullpath));
-						}
-					}
-
-					Assert.That(Directory.Exists(tempDirName), Is.False, "Temporary folder should have been removed");
+					tarIn.IsStreamOwner = false;
+					Assert.Throws<SharpZipBaseException>(() => tarIn.ExtractContents(tempDir));
 				}
+				
+				// Try to remove the output directory to check if any file handles are still being held
+				Assert.DoesNotThrow(() => tempDir.Delete());
+				
+				Assert.That(tempDir.Exists, Is.False, "Temporary folder should have been removed");
 			}
 		}
 		[TestCase(10, "utf-8")]
