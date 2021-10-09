@@ -238,30 +238,30 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void BasicEncryption()
 		{
-			const string TestValue = "0001000";
+			const string testValue = "0001000";
 			var memStream = new MemoryStream();
-			using (ZipFile f = new ZipFile(memStream))
+			using (var zf = new ZipFile(memStream))
 			{
-				f.IsStreamOwner = false;
-				f.Password = "Hello";
+				zf.IsStreamOwner = false;
+				zf.Password = "Hello";
 
-				var m = new StringMemoryDataSource(TestValue);
-				f.BeginUpdate(new MemoryArchiveStorage());
-				f.Add(m, "a.dat");
-				f.CommitUpdate();
-				Assert.IsTrue(f.TestArchive(true), "Archive test should pass");
+				var m = new StringMemoryDataSource(testValue);
+				zf.BeginUpdate(new MemoryArchiveStorage());
+				zf.Add(m, "a.dat");
+				zf.CommitUpdate();
+				Assert.IsTrue(zf.TestArchive(testData: true), "Archive test should pass");
 			}
 
-			using (ZipFile g = new ZipFile(memStream))
+			using (var zf = new ZipFile(memStream))
 			{
-				g.Password = "Hello";
-				ZipEntry ze = g[0];
+				zf.Password = "Hello";
+				var ze = zf[0];
 
 				Assert.IsTrue(ze.IsCrypted, "Entry should be encrypted");
-				using (StreamReader r = new StreamReader(g.GetInputStream(0)))
+				using (var r = new StreamReader(zf.GetInputStream(entryIndex: 0)))
 				{
-					string data = r.ReadToEnd();
-					Assert.AreEqual(TestValue, data);
+					var data = r.ReadToEnd();
+					Assert.AreEqual(testValue, data);
 				}
 			}
 		}
@@ -271,38 +271,38 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("CreatesTempFile")]
 		public void BasicEncryptionToDisk()
 		{
-			const string TestValue = "0001000";
-			string tempFile = GetTempFilePath();
+			const string testValue = "0001000";
+			var tempFile = GetTempFilePath();
 			Assert.IsNotNull(tempFile, "No permission to execute this test?");
 
 			tempFile = Path.Combine(tempFile, "SharpZipTest.Zip");
 
-			using (ZipFile f = ZipFile.Create(tempFile))
+			using (var zf = ZipFile.Create(tempFile))
 			{
-				f.Password = "Hello";
+				zf.Password = "Hello";
 
-				var m = new StringMemoryDataSource(TestValue);
-				f.BeginUpdate();
-				f.Add(m, "a.dat");
-				f.CommitUpdate();
+				var m = new StringMemoryDataSource(testValue);
+				zf.BeginUpdate();
+				zf.Add(m, "a.dat");
+				zf.CommitUpdate();
 			}
 
-			using (ZipFile f = new ZipFile(tempFile))
+			using (var zf = new ZipFile(tempFile))
 			{
-				f.Password = "Hello";
-				Assert.IsTrue(f.TestArchive(true), "Archive test should pass");
+				zf.Password = "Hello";
+				Assert.IsTrue(zf.TestArchive(testData: true), "Archive test should pass");
 			}
 
-			using (ZipFile g = new ZipFile(tempFile))
+			using (var zf = new ZipFile(tempFile))
 			{
-				g.Password = "Hello";
-				ZipEntry ze = g[0];
+				zf.Password = "Hello";
+				ZipEntry ze = zf[0];
 
 				Assert.IsTrue(ze.IsCrypted, "Entry should be encrypted");
-				using (StreamReader r = new StreamReader(g.GetInputStream(0)))
+				using (var r = new StreamReader(zf.GetInputStream(entryIndex: 0)))
 				{
-					string data = r.ReadToEnd();
-					Assert.AreEqual(TestValue, data);
+					var data = r.ReadToEnd();
+					Assert.AreEqual(testValue, data);
 				}
 			}
 
@@ -313,14 +313,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void AddEncryptedEntriesToExistingArchive()
 		{
-			const string TestValue = "0001000";
+			const string testValue = "0001000";
 			var memStream = new MemoryStream();
 			using (ZipFile f = new ZipFile(memStream))
 			{
 				f.IsStreamOwner = false;
 				f.UseZip64 = UseZip64.Off;
 
-				var m = new StringMemoryDataSource(TestValue);
+				var m = new StringMemoryDataSource(testValue);
 				f.BeginUpdate(new MemoryArchiveStorage());
 				f.Add(m, "a.dat");
 				f.CommitUpdate();
@@ -335,10 +335,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				using (StreamReader r = new StreamReader(g.GetInputStream(0)))
 				{
 					string data = r.ReadToEnd();
-					Assert.AreEqual(TestValue, data);
+					Assert.AreEqual(testValue, data);
 				}
 
-				var n = new StringMemoryDataSource(TestValue);
+				var n = new StringMemoryDataSource(testValue);
 
 				g.Password = "Axolotyl";
 				g.UseZip64 = UseZip64.Off;
@@ -353,7 +353,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				using (StreamReader r = new StreamReader(g.GetInputStream(0)))
 				{
 					string data = r.ReadToEnd();
-					Assert.AreEqual(TestValue, data);
+					Assert.AreEqual(testValue, data);
 				}
 			}
 		}
@@ -684,28 +684,25 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("CreatesTempFile")]
 		public void CreateArchiveWithNoCompression()
 		{
-
-			using (var sourceFile = Utils.GetDummyFile())
-			using (var zipFile = Utils.GetDummyFile(0))
+			using var sourceFile = Utils.GetDummyFile();
+			using var zipFile = Utils.GetDummyFile(0);
+			var inputContent = File.ReadAllText(sourceFile);
+			using (var zf = ZipFile.Create(zipFile))
 			{
-				var inputContent = File.ReadAllText(sourceFile.Filename);
-				using (ZipFile f = ZipFile.Create(zipFile.Filename))
-				{
-					f.BeginUpdate();
-					f.Add(sourceFile.Filename, CompressionMethod.Stored);
-					f.CommitUpdate();
-					Assert.IsTrue(f.TestArchive(true));
-					f.Close();
-				}
+				zf.BeginUpdate();
+				zf.Add(sourceFile, CompressionMethod.Stored);
+				zf.CommitUpdate();
+				Assert.IsTrue(zf.TestArchive(testData: true));
+				zf.Close();
+			}
 
-				using (ZipFile f = new ZipFile(zipFile.Filename))
+			using (var zf = new ZipFile(zipFile))
+			{
+				Assert.AreEqual(1, zf.Count);
+				using (var sr = new StreamReader(zf.GetInputStream(zf[0])))
 				{
-					Assert.AreEqual(1, f.Count);
-					using (var sr = new StreamReader(f.GetInputStream(f[0])))
-					{
-						var outputContent = sr.ReadToEnd();
-						Assert.AreEqual(inputContent, outputContent, "extracted content does not match source content");
-					}
+					var outputContent = sr.ReadToEnd();
+					Assert.AreEqual(inputContent, outputContent, "extracted content does not match source content");
 				}
 			}
 		}
@@ -1009,45 +1006,40 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Unicode")]
 		public void UnicodeNames()
 		{
-			using (var memStream = new MemoryStream())
+			using var memStream = new MemoryStream();
+			using (var f = new ZipFile(memStream))
 			{
-				using (ZipFile f = new ZipFile(memStream))
+				f.IsStreamOwner = false;
+
+				f.BeginUpdate(new MemoryArchiveStorage());
+				foreach (var (language, name, _) in StringTesting.TestSamples)
 				{
-					f.IsStreamOwner = false;
-
-					f.BeginUpdate(new MemoryArchiveStorage());
-					foreach ((string language, string name, _) in StringTesting.GetTestSamples())
-					{
-						f.Add(new StringMemoryDataSource(language), name,
-							  CompressionMethod.Deflated, true);
-					}
-					f.CommitUpdate();
-
-					Assert.IsTrue(f.TestArchive(true));
+					f.Add(new StringMemoryDataSource(language), name,
+						CompressionMethod.Deflated, useUnicodeText: true);
 				}
-				memStream.Seek(0, SeekOrigin.Begin);
-				using (var zf = new ZipFile(memStream))
+				f.CommitUpdate();
+
+				Assert.IsTrue(f.TestArchive(testData: true));
+			}
+			memStream.Seek(0, SeekOrigin.Begin);
+			using (var zf = new ZipFile(memStream))
+			{
+				foreach (var name in StringTesting.Filenames)
 				{
-					foreach (string name in StringTesting.Filenames)
+					string content;
+					var index = zf.FindEntry(name, ignoreCase: true);
+					var entry = zf[index];
+
+					using (var entryStream = zf.GetInputStream(entry))
+					using (var sr = new StreamReader(entryStream))
 					{
-						//int index = zf.FindEntry(name, true);
-						var content = "";
-						var index = zf.FindEntry(name, true);
-						var entry = zf[index];
-
-						using (var entryStream = zf.GetInputStream(entry))
-						using (var sr = new StreamReader(entryStream))
-						{
-							content = sr.ReadToEnd();
-						}
-
-						//var content =
-
-						Console.WriteLine($"Entry #{index}: {name}, Content: {content}");
-
-						Assert.IsTrue(index >= 0);
-						Assert.AreEqual(name, entry.Name);
+						content = sr.ReadToEnd();
 					}
+
+					TestContext.WriteLine($"Entry #{index}: {name}, Content: {content}");
+
+					Assert.IsTrue(index >= 0);
+					Assert.AreEqual(name, entry.Name);
 				}
 			}
 		}
@@ -1463,57 +1455,28 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		/// <summary>
-		/// Check that input stream is closed when construction fails and leaveOpen is false
+		/// Check that input stream is only closed when construction fails and leaveOpen is false
 		/// </summary>
 		[Test]
 		[Category("Zip")]
-		public void StreamClosedOnError()
+		public void StreamClosedOnError([Values(true, false)] bool leaveOpen)
 		{
 			var ms = new TrackedMemoryStream(new byte[32]);
 
 			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed initially");
-			bool blewUp = false;
-			try
+			Assert.Throws<ZipException>(() =>
 			{
-				using (var zipFile = new ZipFile(ms, false))
-				{
-					Assert.Fail("Exception not thrown");
-				}
-			}
-			catch
+				using var zf = new ZipFile(ms, leaveOpen);
+			}, "Should have failed to load the file");
+
+			if (leaveOpen)
 			{
-				blewUp = true;
+				Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed");
 			}
-
-			Assert.IsTrue(blewUp, "Should have failed to load the file");
-			Assert.IsTrue(ms.IsClosed, "Underlying stream should be closed");
-		}
-
-		/// <summary>
-		/// Check that input stream is not closed when construction fails and leaveOpen is true
-		/// </summary>
-		[Test]
-		[Category("Zip")]
-		public void StreamNotClosedOnError()
-		{
-			var ms = new TrackedMemoryStream(new byte[32]);
-
-			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed initially");
-			bool blewUp = false;
-			try
+			else
 			{
-				using (var zipFile = new ZipFile(ms, true))
-				{
-					Assert.Fail("Exception not thrown");
-				}
+				Assert.IsTrue(ms.IsClosed, "Underlying stream should be closed");
 			}
-			catch
-			{
-				blewUp = true;
-			}
-
-			Assert.IsTrue(blewUp, "Should have failed to load the file");
-			Assert.IsFalse(ms.IsClosed, "Underlying stream should NOT be closed");
 		}
 
 		[Test]
@@ -1586,17 +1549,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		public void AddingAnAESEncryptedEntryShouldThrow()
 		{
 			var memStream = new MemoryStream();
-			using (ZipFile zof = new ZipFile(memStream))
+			using var zof = new ZipFile(memStream);
+			var entry = new ZipEntry("test")
 			{
-				var entry = new ZipEntry("test")
-				{
-					AESKeySize = 256
-				};
+				AESKeySize = 256,
+			};
 
-				zof.BeginUpdate();
-				var exception = Assert.Throws<NotSupportedException>(() => zof.Add(new StringMemoryDataSource("foo"), entry));
-				Assert.That(exception.Message, Is.EqualTo("Creation of AES encrypted entries is not supported"));
-			}
+			zof.BeginUpdate();
+			var exception = Assert.Throws<NotSupportedException>(() => zof.Add(new StringMemoryDataSource("foo"), entry));
+			Assert.That(exception?.Message, Is.EqualTo("Creation of AES encrypted entries is not supported"));
 		}
 
 		/// <summary>
@@ -1608,35 +1569,33 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		public void AddFileWithAlternateName()
 		{
 			// Create a unique name that will be different from the file name
-			string fileName = Guid.NewGuid().ToString();
+			var fileName = Utils.GetDummyFileName();
 
-			using (var sourceFile = Utils.GetDummyFile())
-			using (var outputFile = Utils.GetDummyFile(0))
+			using var sourceFile = Utils.GetDummyFile(size: 16);
+			using var outputFile = Utils.GetTempFile();
+			var inputContent = File.ReadAllText(sourceFile);
+			using (var zf = ZipFile.Create(outputFile))
 			{
-				var inputContent = File.ReadAllText(sourceFile.Filename);
-				using (ZipFile f = ZipFile.Create(outputFile.Filename))
-				{
-					f.BeginUpdate();
+				zf.BeginUpdate();
 
-					// Add a file with the unique display name
-					f.Add(sourceFile.Filename, fileName);
+				// Add a file with the unique display name
+				zf.Add(sourceFile, fileName);
 					
-					f.CommitUpdate();
-					f.Close();
-				}
+				zf.CommitUpdate();
+				zf.Close();
+			}
 
-				using (ZipFile zipFile = new ZipFile(outputFile.Filename))
+			using (var zipFile = new ZipFile(outputFile))
+			{
+				Assert.That(zipFile.Count, Is.EqualTo(1));
+
+				var fileEntry = zipFile.GetEntry(fileName);
+				Assert.That(fileEntry, Is.Not.Null);
+
+				using (var sr = new StreamReader(zipFile.GetInputStream(fileEntry)))
 				{
-					Assert.That(zipFile.Count, Is.EqualTo(1));
-
-					var fileEntry = zipFile.GetEntry(fileName);
-					Assert.That(fileEntry, Is.Not.Null);
-
-					using (var sr = new StreamReader(zipFile.GetInputStream(fileEntry)))
-					{
-						var outputContent = sr.ReadToEnd();
-						Assert.AreEqual(inputContent, outputContent, "extracted content does not match source content");
-					}
+					var outputContent = sr.ReadToEnd();
+					Assert.AreEqual(inputContent, outputContent, "extracted content does not match source content");
 				}
 			}
 		}
@@ -1713,7 +1672,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void ShouldReadBZip2ZipCreatedBy7Zip()
 		{
-			const string BZip2CompressedZipCreatedBy7Zip =
+			const string bZip2CompressedZipCreatedBy7Zip =
 			"UEsDBC4AAAAMAIa50U4/rHf5qwAAAK8AAAAJAAAASGVsbG8udHh0QlpoOTFBWSZTWTL8pwYAA" +
 			"BWfgEhlUAAiLUgQP+feMCAAiCKaeiaBobU9JiaAMGmoak9GmRNqPUDQ9T1PQsz/t9B6YvEdvF" +
 			"5dhwXzGE1ooO41A6TtATBEFxFUq6trGtUcSJDyWWWj/S2VwY15fy3IqHi3hHUS+K76zdoDzQa" +
@@ -1721,26 +1680,20 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			"AAwAhrnRTj+sd/mrAAAArwAAAAkAJAAAAAAAAAAgAAAAAAAAAEhlbGxvLnR4dAoAIAAAAAAAA" +
 			"QAYAO97MLZZJdUB73swtlkl1QEK0UTFWCXVAVBLBQYAAAAAAQABAFsAAADSAAAAAAA=";
 
-			const string OriginalText =
+			const string originalText =
 				"SharpZipLib (#ziplib, formerly NZipLib) is a compression library that supports Zip files using both stored and deflate compression methods, PKZIP 2.0 style and AES encryption.";
 
-			var fileBytes = System.Convert.FromBase64String(BZip2CompressedZipCreatedBy7Zip);
+			var fileBytes = Convert.FromBase64String(bZip2CompressedZipCreatedBy7Zip);
 
-			using (var input = new MemoryStream(fileBytes, false))
-			{
-				using (ZipFile f = new ZipFile(input))
-				{
-					var entry = f.GetEntry("Hello.txt");
-					Assert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.BZip2), "Compression method should be BZip2");
-					Assert.That(entry.Version, Is.EqualTo(ZipConstants.VersionBZip2), "Entry version should be 46");
+			using var input = new MemoryStream(fileBytes, writable: false);
+			using var zf = new ZipFile(input);
+			var entry = zf.GetEntry("Hello.txt");
+			Assert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.BZip2), "Compression method should be BZip2");
+			Assert.That(entry.Version, Is.EqualTo(ZipConstants.VersionBZip2), "Entry version should be 46");
 
-					using (var reader = new StreamReader(f.GetInputStream(entry)))
-					{
-						string contents = reader.ReadToEnd();
-						Assert.That(contents, Is.EqualTo(OriginalText), "extract string must match original string");
-					}
-				}
-			}
+			using var reader = new StreamReader(zf.GetInputStream(entry));
+			var contents = reader.ReadToEnd();
+			Assert.That(contents, Is.EqualTo(originalText), "extract string must match original string");
 		}
 
 		/// <summary>
@@ -1750,7 +1703,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void ShouldReadAESBZip2ZipCreatedBy7Zip()
 		{
-			const string BZip2CompressedZipCreatedBy7Zip =
+			const string bZip2CompressedZipCreatedBy7Zip =
 			 "UEsDBDMAAQBjAIa50U4AAAAAxwAAAK8AAAAJAAsASGVsbG8udHh0AZkHAAIAQUUDDAAYg6jqf" +
 			"kvZClVMOtgmqKT0/8I9fMPgo96myxw9hLQUhKj1Qczi3fT7QIhAnAKU+u03nA8rCKGWmDI5Qz" +
 			"qPREy95boQVDPwmwEsWksv3GAWzMfzZUhmB/TgIJlA34a4yP0f2ucy3/QCQYo8QcHjBtjWX5b" +
@@ -1759,30 +1712,24 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			"wAAAAkALwAAAAAAAAAgAAAAAAAAAEhlbGxvLnR4dAoAIAAAAAAAAQAYAO97MLZZJdUBYdnjul" +
 			"kl1QEK0UTFWCXVAQGZBwACAEFFAwwAUEsFBgAAAAABAAEAZgAAAPkAAAAAAA==";
 
-			const string OriginalText =
+			const string originalText =
 				"SharpZipLib (#ziplib, formerly NZipLib) is a compression library that supports Zip files using both stored and deflate compression methods, PKZIP 2.0 style and AES encryption.";
 
-			var fileBytes = System.Convert.FromBase64String(BZip2CompressedZipCreatedBy7Zip);
+			var fileBytes = Convert.FromBase64String(bZip2CompressedZipCreatedBy7Zip);
 
-			using (var input = new MemoryStream(fileBytes, false))
-			{
-				using (ZipFile f = new ZipFile(input))
-				{
-					f.Password = "password";
+			using var input = new MemoryStream(fileBytes, writable: false);
+			using var zf = new ZipFile(input);
+			zf.Password = "password";
 
-					var entry = f.GetEntry("Hello.txt");
-					Assert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.BZip2), "Compression method should be BZip2");
-					Assert.That(entry.Version, Is.EqualTo(ZipConstants.VERSION_AES), "Entry version should be 51");
-					Assert.That(entry.IsCrypted, Is.True, "Entry should be encrypted");
-					Assert.That(entry.AESKeySize, Is.EqualTo(256), "AES Keysize should be 256");
+			var entry = zf.GetEntry("Hello.txt");
+			Assert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.BZip2), "Compression method should be BZip2");
+			Assert.That(entry.Version, Is.EqualTo(ZipConstants.VERSION_AES), "Entry version should be 51");
+			Assert.That(entry.IsCrypted, Is.True, "Entry should be encrypted");
+			Assert.That(entry.AESKeySize, Is.EqualTo(256), "AES Keysize should be 256");
 
-					using (var reader = new StreamReader(f.GetInputStream(entry)))
-					{
-						string contents = reader.ReadToEnd();
-						Assert.That(contents, Is.EqualTo(OriginalText), "extract string must match original string");
-					}
-				}
-			}
+			using var reader = new StreamReader(zf.GetInputStream(entry));
+			var contents = reader.ReadToEnd();
+			Assert.That(contents, Is.EqualTo(originalText), "extract string must match original string");
 		}
 
 		/// <summary>

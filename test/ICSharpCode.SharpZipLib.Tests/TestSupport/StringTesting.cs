@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
@@ -6,36 +7,20 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	{
 		static StringTesting()
 		{
-			AddLanguage("Chinese", "測試.txt", "big5");
-			AddLanguage("Greek", "Ϗΰ.txt", "windows-1253");
-			AddLanguage("Nordic", "Åæ.txt", "windows-1252");
-			AddLanguage("Arabic", "ڀڅ.txt", "windows-1256");
-			AddLanguage("Russian", "Прйвёт.txt", "windows-1251");
-		}
-
-		private static void AddLanguage(string language, string filename, string encoding)
-		{
-			languages.Add(language);
-			filenames.Add(filename);
-			encodings.Add(encoding);
-			entries++;
-		}
-
-		private static int entries = 0;
-		private static List<string> languages = new List<string>();
-		private static List<string> filenames = new List<string>();
-		private static List<string> encodings = new List<string>();
-
-		public static IEnumerable<string> Languages => filenames.AsReadOnly();
-		public static IEnumerable<string> Filenames => filenames.AsReadOnly();
-		public static IEnumerable<string> Encodings => filenames.AsReadOnly();
-
-		public static IEnumerable<(string language, string filename, string encoding)> GetTestSamples()
-		{
-			for (int i = 0; i < entries; i++)
+			TestSamples = new []
 			{
-				yield return (languages[i], filenames[i], encodings[i]);
-			}
+				("Chinese", "測試.txt", "big5"),
+				("Greek", "Ϗΰ.txt", "windows-1253"),
+				("Nordic", "Åæ.txt", "windows-1252"),
+				("Arabic", "ڀڅ.txt", "windows-1256"),
+				("Russian", "Прйвёт.txt", "windows-1251"),
+			};
 		}
+
+		public static (string language, string filename, string encoding)[] TestSamples { get; }
+
+		public static IEnumerable<string> Languages => TestSamples.Select(s => s.language);
+		public static IEnumerable<string> Filenames => TestSamples.Select(s => s.filename);
+		public static IEnumerable<string> Encodings => TestSamples.Select(s => s.encoding);
 	}
 }
