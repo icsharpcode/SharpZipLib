@@ -2,6 +2,7 @@
 using System.Text;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Tar;
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using static ICSharpCode.SharpZipLib.Tests.TestSupport.Utils;
 using NUnit.Framework;
 
@@ -56,9 +57,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		public void ExtractTarOK(string outputDir, string fileName, bool allowTraverse)
 		{
 			var fileContent = Encoding.UTF8.GetBytes("file content");
-			using var tempDir = new TempDir();
+			using var tempDir = GetTempDir();
 			
-			var tempPath = tempDir.Fullpath;
+			var tempPath = tempDir.FullName;
 			var extractPath = Path.Combine(tempPath, outputDir);
 			var expectedOutputFile = Path.Combine(extractPath, fileName);
 
