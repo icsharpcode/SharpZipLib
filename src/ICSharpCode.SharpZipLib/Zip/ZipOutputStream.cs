@@ -884,7 +884,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		private string password;
 
-		private readonly StringCodec _stringCodec = new StringCodec();
+		private readonly StringCodec _stringCodec = ZipStrings.GetStringCodec();
 
 		#endregion Instance Fields
 

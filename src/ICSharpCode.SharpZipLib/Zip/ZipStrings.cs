@@ -14,17 +14,33 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// Deprecated way of setting zip encoding provided for backwards compability.
 	/// Use <see cref="StringCodec"/> when possible.
 	/// </summary>
-	[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
+	/// <remarks>
+	/// If any ZipStrings properties are being modified, it will enter a backwards compatibility mode, mimicking the
+	/// old behaviour where a single instance was shared between all Zip* instances.
+	/// </remarks>
 	public static class ZipStrings
 	{
-		static StringCodec _compatCodec = new StringCodec();
+		static readonly StringCodec CompatCodec = new StringCodec();
+
+		private static bool compatibilityMode;
 		
+		/// <summary>
+		/// Returns a new <see cref="StringCodec"/> instance or the shared backwards compatible instance.
+		/// </summary>
+		/// <returns></returns>
+		public static StringCodec GetStringCodec() 
+			=> compatibilityMode ? CompatCodec : new StringCodec();
+
 		/// <inheritdoc cref="ZipStrings"/>
 		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
 		public static int CodePage
 		{
-			get => _compatCodec.CodePage;
-			set => _compatCodec.CodePage = value;
+			get => CompatCodec.CodePage;
+			set
+			{
+				CompatCodec.CodePage = value;
+				compatibilityMode = true;
+			}
 		}
 
 		/// <inheritdoc cref="ZipStrings"/>
@@ -35,10 +51,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
 		public static bool UseUnicode
 		{
-			get => !_compatCodec.ForceZipLegacyEncoding;
-			set => _compatCodec.ForceZipLegacyEncoding = !value;
+			get => !CompatCodec.ForceZipLegacyEncoding;
+			set
+			{
+				CompatCodec.ForceZipLegacyEncoding = !value;
+				compatibilityMode = true;
+			}
 		}
-		
+
 		/// <inheritdoc cref="ZipStrings"/>
 		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
 		private static bool HasUnicodeFlag(int flags)
@@ -47,22 +67,22 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <inheritdoc cref="ZipStrings"/>
 		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
 		public static string ConvertToString(byte[] data, int count)
-			=> _compatCodec.ZipOutputEncoding.GetString(data, 0, count);
+			=> CompatCodec.ZipOutputEncoding.GetString(data, 0, count);
 
 		/// <inheritdoc cref="ZipStrings"/>
 		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
 		public static string ConvertToString(byte[] data)
-			=> _compatCodec.ZipOutputEncoding.GetString(data);
+			=> CompatCodec.ZipOutputEncoding.GetString(data);
 		
 		/// <inheritdoc cref="ZipStrings"/>
 		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
 		public static string ConvertToStringExt(int flags, byte[] data, int count)
-			=> _compatCodec.ZipEncoding(HasUnicodeFlag(flags)).GetString(data, 0, count);
+			=> CompatCodec.ZipEncoding(HasUnicodeFlag(flags)).GetString(data, 0, count);
 
 		/// <inheritdoc cref="ZipStrings"/>
 		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
 		public static string ConvertToStringExt(int flags, byte[] data)
-			=> _compatCodec.ZipEncoding(HasUnicodeFlag(flags)).GetString(data);
+			=> CompatCodec.ZipEncoding(HasUnicodeFlag(flags)).GetString(data);
 
 		/// <inheritdoc cref="ZipStrings"/>
 		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
@@ -74,7 +94,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public static byte[] ConvertToArray(int flags, string str)
 			=> (string.IsNullOrEmpty(str))
 				? Empty.Array<byte>()
-				: _compatCodec.ZipEncoding(HasUnicodeFlag(flags)).GetBytes(str);
+				: CompatCodec.ZipEncoding(HasUnicodeFlag(flags)).GetBytes(str);
 	}
 
 	/// <summary>

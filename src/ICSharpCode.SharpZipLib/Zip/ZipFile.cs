@@ -3802,7 +3802,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private ZipEntry[] entries_;
 		private byte[] key;
 		private bool isNewArchive_;
-		private StringCodec _stringCodec = new StringCodec();
+		private StringCodec _stringCodec = ZipStrings.GetStringCodec();
 
 		// Default is dynamic which is not backwards compatible and can cause problems
 		// with XP's built in compression which cant read Zip64 archives.
