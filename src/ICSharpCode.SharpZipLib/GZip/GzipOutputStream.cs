@@ -164,26 +164,6 @@ namespace ICSharpCode.SharpZipLib.GZip
 			base.Write(buffer, offset, count);
 		}
 
-#if NETSTANDARD2_1_OR_GREATER
-		/// <inheritdoc cref="DeflaterOutputStream.WriteAsync(byte[],int,int,CancellationToken)"/>
-		public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
-		{
-
-			if (state_ == OutputState.Header)
-			{
-				await WriteHeaderAsync();
-			}
-
-			if (state_ != OutputState.Footer)
-			{
-				throw new InvalidOperationException("Write not permitted in current state");
-			}
-
-			crc.Update(new ArraySegment<byte>(buffer, offset, count));
-			await base.WriteAsync(buffer, offset, count, cancellationToken);
-		}
-#endif
-
 		/// <summary>
 		/// Writes remaining compressed output data to the output stream
 		/// and closes it.
@@ -270,8 +250,15 @@ namespace ICSharpCode.SharpZipLib.GZip
 				baseOutputStream_.Write(gzipFooter, 0, gzipFooter.Length);
 			}
 		}
-
-#if NETSTANDARD2_1_OR_GREATER
+		
+		/// <inheritdoc cref="Flush"/>
+		public override async Task FlushAsync(CancellationToken ct)
+		{
+			await WriteHeaderAsync();
+			await base.FlushAsync(ct);
+		}
+		
+		
 		/// <inheritdoc cref="Finish"/>
 		public override async Task FinishAsync(CancellationToken ct)
 		{
@@ -288,7 +275,6 @@ namespace ICSharpCode.SharpZipLib.GZip
 				await baseOutputStream_.WriteAsync(GetFooter(), ct);
 			}
 		}
-#endif
 
 		#endregion DeflaterOutputStream overrides
 
@@ -362,19 +348,17 @@ namespace ICSharpCode.SharpZipLib.GZip
 		{
 			if (state_ != OutputState.Header) return;
 			state_ = OutputState.Footer;
-
 			var gzipHeader = GetHeader();
 			baseOutputStream_.Write(gzipHeader, 0, gzipHeader.Length);
 		}
 		
-		#if NETSTANDARD2_1_OR_GREATER
 		private async ValueTask WriteHeaderAsync()
 		{
 			if (state_ != OutputState.Header) return;
 			state_ = OutputState.Footer;
-			await baseOutputStream_.WriteAsync(GetHeader());
+			var gzipHeader = GetHeader();
+			await baseOutputStream_.WriteAsync(gzipHeader, 0, gzipHeader.Length);
 		}
-		#endif
 
 		#endregion Support Routines
 	}
