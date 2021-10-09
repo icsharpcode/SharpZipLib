@@ -38,7 +38,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The default encoding used for ZipCrypto passwords in zip files, set to <see cref="SystemDefaultEncoding"/>
 		/// for greatest compability.
 		/// </summary>
-		public static Encoding DefaultZipCryptoEncoding => SystemDefaultEncoding;
+		public static Encoding DefaultZipCryptoEncoding => Encoding.Default;
 
 		/// <summary>
 		/// Returns the encoding for an output <see cref="ZipEntry"/>.
@@ -72,6 +72,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private Encoding _legacyEncoding = SystemDefaultEncoding;
 
 		private Encoding _zipArchiveCommentEncoding;
+		private Encoding _zipCryptoEncoding;
 
 		/// <summary>
 		/// Returns the UTF-8 code page (65001) used for zip entries with unicode flag set
@@ -117,8 +118,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public Encoding ZipCryptoEncoding
 		{
-			get => _zipArchiveCommentEncoding ?? DefaultZipCryptoEncoding;
-			set => _zipArchiveCommentEncoding = value;
+			get => _zipCryptoEncoding ?? DefaultZipCryptoEncoding;
+			set => _zipCryptoEncoding = value;
 		}
 	}
 }
