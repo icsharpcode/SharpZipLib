@@ -48,7 +48,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		// Write the local file header
 		// TODO: ZipFormat.WriteLocalHeader is not yet used and needs checking for ZipFile and ZipOuptutStream usage
 		internal static int WriteLocalHeader(Stream stream, ZipEntry entry, out EntryPatchData patchData, 
-			bool headerInfoAvailable, bool patchEntryHeader, long streamOffset)
+			bool headerInfoAvailable, bool patchEntryHeader, long streamOffset, StringCodec stringCodec)
 		{
 			patchData = new EntryPatchData();
 
@@ -95,7 +95,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
-			byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
+			byte[] name = stringCodec.ZipOutputEncoding.GetBytes(entry.Name);
 
 			if (name.Length > 0xFFFF)
 			{
@@ -385,7 +385,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 		}
 
-		internal static int WriteEndEntry(Stream stream, ZipEntry entry)
+		internal static int WriteEndEntry(Stream stream, ZipEntry entry, StringCodec stringCodec)
 		{
 			stream.WriteLEInt(ZipConstants.CentralHeaderSignature);
 			stream.WriteLEShort((entry.HostSystem << 8) | entry.VersionMadeBy);
@@ -415,7 +415,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				stream.WriteLEInt((int)entry.Size);
 			}
 
-			byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
+			byte[] name = stringCodec.ZipOutputEncoding.GetBytes(entry.Name);
 
 			if (name.Length > 0xffff)
 			{
@@ -458,7 +458,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			byte[] extra = ed.GetEntryData();
 
 			byte[] entryComment = !(entry.Comment is null)
-				? ZipStrings.ConvertToArray(entry.Flags, entry.Comment) 
+				? stringCodec.ZipOutputEncoding.GetBytes(entry.Comment) 
 				: Empty.Array<byte>();
 
 			if (entryComment.Length > 0xffff)

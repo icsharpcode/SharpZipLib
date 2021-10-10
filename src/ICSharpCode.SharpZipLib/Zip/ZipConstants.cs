@@ -471,48 +471,5 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public const int ENDSIG = 'P' | ('K' << 8) | (5 << 16) | (6 << 24);
 
 		#endregion Header Signatures
-
-		/// <summary>
-		/// Default encoding used for string conversion.  0 gives the default system OEM code page.
-		/// Using the default code page isnt the full solution necessarily
-		/// there are many variable factors, codepage 850 is often a good choice for
-		/// European users, however be careful about compatability.
-		/// </summary>
-		[Obsolete("Use ZipStrings instead")]
-		public static int DefaultCodePage
-		{
-			get => ZipStrings.CodePage;
-			set => ZipStrings.CodePage = value;
-		}
-
-		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToString(byte[], int)"/></summary>
-		[Obsolete("Use ZipStrings.ConvertToString instead")]
-		public static string ConvertToString(byte[] data, int count)
-			=> ZipStrings.ConvertToString(data, count);
-
-		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToString(byte[])"/></summary>
-		[Obsolete("Use ZipStrings.ConvertToString instead")]
-		public static string ConvertToString(byte[] data)
-			=> ZipStrings.ConvertToString(data);
-
-		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToStringExt(int, byte[], int)"/></summary>
-		[Obsolete("Use ZipStrings.ConvertToStringExt instead")]
-		public static string ConvertToStringExt(int flags, byte[] data, int count)
-			=> ZipStrings.ConvertToStringExt(flags, data, count);
-
-		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToStringExt(int, byte[])"/></summary>
-		[Obsolete("Use ZipStrings.ConvertToStringExt instead")]
-		public static string ConvertToStringExt(int flags, byte[] data)
-			=> ZipStrings.ConvertToStringExt(flags, data);
-
-		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToArray(string)"/></summary>
-		[Obsolete("Use ZipStrings.ConvertToArray instead")]
-		public static byte[] ConvertToArray(string str)
-			=> ZipStrings.ConvertToArray(str);
-
-		/// <summary> Deprecated wrapper for <see cref="ZipStrings.ConvertToArray(int, string)"/></summary>
-		[Obsolete("Use ZipStrings.ConvertToArray instead")]
-		public static byte[] ConvertToArray(int flags, string str)
-			=> ZipStrings.ConvertToArray(flags, str);
 	}
 }

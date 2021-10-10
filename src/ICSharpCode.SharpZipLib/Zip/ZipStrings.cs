@@ -4,191 +4,210 @@ using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
+	internal static class EncodingExtensions
+	{
+		public static bool IsZipUnicode(this Encoding e)
+			=> e.Equals(StringCodec.UnicodeZipEncoding);
+	}
+	
 	/// <summary>
-	/// This static class contains functions for encoding and decoding zip file strings
+	/// Deprecated way of setting zip encoding provided for backwards compability.
+	/// Use <see cref="StringCodec"/> when possible.
 	/// </summary>
+	/// <remarks>
+	/// If any ZipStrings properties are being modified, it will enter a backwards compatibility mode, mimicking the
+	/// old behaviour where a single instance was shared between all Zip* instances.
+	/// </remarks>
 	public static class ZipStrings
 	{
-		static ZipStrings()
+		static readonly StringCodec CompatCodec = new StringCodec();
+
+		private static bool compatibilityMode;
+		
+		/// <summary>
+		/// Returns a new <see cref="StringCodec"/> instance or the shared backwards compatible instance.
+		/// </summary>
+		/// <returns></returns>
+		public static StringCodec GetStringCodec() 
+			=> compatibilityMode ? CompatCodec : new StringCodec();
+
+		/// <inheritdoc cref="ZipStrings"/>
+		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
+		public static int CodePage
+		{
+			get => CompatCodec.CodePage;
+			set
+			{
+				CompatCodec.CodePage = value;
+				compatibilityMode = true;
+			}
+		}
+
+		/// <inheritdoc cref="ZipStrings"/>
+		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
+		public static int SystemDefaultCodePage => StringCodec.SystemDefaultCodePage;
+
+		/// <inheritdoc cref="ZipStrings"/>
+		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
+		public static bool UseUnicode
+		{
+			get => !CompatCodec.ForceZipLegacyEncoding;
+			set
+			{
+				CompatCodec.ForceZipLegacyEncoding = !value;
+				compatibilityMode = true;
+			}
+		}
+
+		/// <inheritdoc cref="ZipStrings"/>
+		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
+		private static bool HasUnicodeFlag(int flags)
+			=> ((GeneralBitFlags)flags).HasFlag(GeneralBitFlags.UnicodeText);
+		
+		/// <inheritdoc cref="ZipStrings"/>
+		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
+		public static string ConvertToString(byte[] data, int count)
+			=> CompatCodec.ZipOutputEncoding.GetString(data, 0, count);
+
+		/// <inheritdoc cref="ZipStrings"/>
+		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
+		public static string ConvertToString(byte[] data)
+			=> CompatCodec.ZipOutputEncoding.GetString(data);
+		
+		/// <inheritdoc cref="ZipStrings"/>
+		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
+		public static string ConvertToStringExt(int flags, byte[] data, int count)
+			=> CompatCodec.ZipEncoding(HasUnicodeFlag(flags)).GetString(data, 0, count);
+
+		/// <inheritdoc cref="ZipStrings"/>
+		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
+		public static string ConvertToStringExt(int flags, byte[] data)
+			=> CompatCodec.ZipEncoding(HasUnicodeFlag(flags)).GetString(data);
+
+		/// <inheritdoc cref="ZipStrings"/>
+		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
+		public static byte[] ConvertToArray(string str)
+			=> ConvertToArray(0, str);
+		
+		/// <inheritdoc cref="ZipStrings"/>
+		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
+		public static byte[] ConvertToArray(int flags, string str)
+			=> (string.IsNullOrEmpty(str))
+				? Empty.Array<byte>()
+				: CompatCodec.ZipEncoding(HasUnicodeFlag(flags)).GetBytes(str);
+	}
+
+	/// <summary>
+	/// Utility class for resolving the encoding used for reading and writing strings
+	/// </summary>
+	public class StringCodec
+	{
+		static StringCodec()
 		{
 			try
 			{
-				var platformCodepage = Encoding.GetEncoding(0).CodePage;
+				var platformCodepage = Encoding.Default.CodePage;
 				SystemDefaultCodePage = (platformCodepage == 1 || platformCodepage == 2 || platformCodepage == 3 || platformCodepage == 42) ? FallbackCodePage : platformCodepage;
 			}
 			catch
 			{
 				SystemDefaultCodePage = FallbackCodePage;
 			}
+
+			SystemDefaultEncoding = Encoding.GetEncoding(SystemDefaultCodePage);
 		}
 
-		/// <summary>Code page backing field</summary>
+		/// <summary>
+		/// If set, use the encoding set by <see cref="CodePage"/> for zip entries instead of the defaults
+		/// </summary>
+		public bool ForceZipLegacyEncoding { get; set; }
+
+		/// <summary>
+		/// The default encoding used for ZipCrypto passwords in zip files, set to <see cref="SystemDefaultEncoding"/>
+		/// for greatest compability.
+		/// </summary>
+		public static Encoding DefaultZipCryptoEncoding => SystemDefaultEncoding;
+
+		/// <summary>
+		/// Returns the encoding for an output <see cref="ZipEntry"/>.
+		/// Unless overriden by <see cref="ForceZipLegacyEncoding"/> it returns <see cref="UnicodeZipEncoding"/>.
+		/// </summary>
+		public Encoding ZipOutputEncoding => ZipEncoding(!ForceZipLegacyEncoding);
+
+		/// <summary>
+		/// Returns <see cref="UnicodeZipEncoding"/> if <paramref name="unicode"/> is set, otherwise it returns the encoding indicated by <see cref="CodePage"/>
+		/// </summary>
+		public Encoding ZipEncoding(bool unicode) => unicode ? UnicodeZipEncoding : _legacyEncoding;
+
+		/// <summary>
+		/// Returns the appropriate encoding for an input <see cref="ZipEntry"/> according to <paramref name="flags"/>.
+		/// If overridden by <see cref="ForceZipLegacyEncoding"/>, it always returns the encoding indicated by <see cref="CodePage"/>.
+		/// </summary>
+		/// <param name="flags"></param>
+		/// <returns></returns>
+		public Encoding ZipInputEncoding(GeneralBitFlags flags) => ZipInputEncoding((int)flags);
+
+		/// <inheritdoc cref="ZipInputEncoding(GeneralBitFlags)"/>
+		public Encoding ZipInputEncoding(int flags) => ZipEncoding(!ForceZipLegacyEncoding && (flags & (int)GeneralBitFlags.UnicodeText) != 0);
+
+		/// <summary>Code page encoding, used for non-unicode strings</summary>
 		/// <remarks>
 		/// The original Zip specification (https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT) states
 		/// that file names should only be encoded with IBM Code Page 437 or UTF-8.
 		/// In practice, most zip apps use OEM or system encoding (typically cp437 on Windows).
 		/// Let's be good citizens and default to UTF-8 http://utf8everywhere.org/
 		/// </remarks>
-		private static int codePage = AutomaticCodePage;
+		private Encoding _legacyEncoding = SystemDefaultEncoding;
 
-		/// Automatically select codepage while opening archive
-		/// see https://github.com/icsharpcode/SharpZipLib/pull/280#issuecomment-433608324
-		/// 
-		private const int AutomaticCodePage = -1;
+		private Encoding _zipArchiveCommentEncoding;
+		private Encoding _zipCryptoEncoding;
 
 		/// <summary>
-		/// Encoding used for string conversion. Setting this to 65001 (UTF-8) will
-		/// also set the Language encoding flag to indicate UTF-8 encoded file names.
+		/// Returns the UTF-8 code page (65001) used for zip entries with unicode flag set
 		/// </summary>
-		public static int CodePage
-		{
-			get
-			{
-				return codePage == AutomaticCodePage? Encoding.UTF8.CodePage:codePage;
-			}
-			set
-			{
-				if ((value < 0) || (value > 65535) ||
-					(value == 1) || (value == 2) || (value == 3) || (value == 42))
-				{
-					throw new ArgumentOutOfRangeException(nameof(value));
-				}
+		public static readonly Encoding UnicodeZipEncoding = Encoding.UTF8;
 
-				codePage = value;
-			}
+		/// <summary>
+		/// Code page used for non-unicode strings and legacy zip encoding (if <see cref="ForceZipLegacyEncoding"/> is set).
+		/// Default value is <see cref="SystemDefaultCodePage"/>
+		/// </summary>
+		public int CodePage
+		{
+			get => _legacyEncoding.CodePage;
+			set => _legacyEncoding = (value < 4 || value > 65535 || value == 42)
+				? throw new ArgumentOutOfRangeException(nameof(value))
+				: Encoding.GetEncoding(value);
 		}
 
 		private const int FallbackCodePage = 437;
 
 		/// <summary>
-		/// Attempt to get the operating system default codepage, or failing that, to
-		/// the fallback code page IBM 437.
+		/// Operating system default codepage, or if it could not be retrieved, the fallback code page IBM 437.
 		/// </summary>
 		public static int SystemDefaultCodePage { get; }
 
 		/// <summary>
-		/// Get whether the default codepage is set to UTF-8. Setting this property to false will
-		/// set the <see cref="CodePage"/> to <see cref="SystemDefaultCodePage"/>
+		/// The system default encoding, based on <see cref="SystemDefaultCodePage"/>
 		/// </summary>
-		/// <remarks>
-		/// Get OEM codepage from NetFX, which parses the NLP file with culture info table etc etc.
-		/// But sometimes it yields the special value of 1 which is nicknamed <c>CodePageNoOEM</c> in <see cref="Encoding"/> sources (might also mean <c>CP_OEMCP</c>, but Encoding puts it so).
-		/// This was observed on Ukranian and Hindu systems.
-		/// Given this value, <see cref="Encoding.GetEncoding(int)"/> throws an <see cref="ArgumentException"/>.
-		/// So replace it with <see cref="FallbackCodePage"/>, (IBM 437 which is the default code page in a default Windows installation console.
-		/// </remarks>
-		public static bool UseUnicode
+		public static Encoding SystemDefaultEncoding { get; }
+
+		/// <summary>
+		/// The encoding used for the zip archive comment. Defaults to the encoding for <see cref="CodePage"/>, since
+		/// no unicode flag can be set for it in the files.
+		/// </summary>
+		public Encoding ZipArchiveCommentEncoding
 		{
-			get
-			{
-				return codePage == Encoding.UTF8.CodePage;
-			}
-			set
-			{
-				if (value)
-				{
-					codePage = Encoding.UTF8.CodePage;
-				}
-				else
-				{
-					codePage = SystemDefaultCodePage;
-				}
-			}
+			get => _zipArchiveCommentEncoding ?? _legacyEncoding;
+			set => _zipArchiveCommentEncoding = value;
 		}
 
 		/// <summary>
-		/// Convert a portion of a byte array to a string using <see cref="CodePage"/>
+		/// The encoding used for the ZipCrypto passwords. Defaults to <see cref="DefaultZipCryptoEncoding"/>.
 		/// </summary>
-		/// <param name="data">
-		/// Data to convert to string
-		/// </param>
-		/// <param name="count">
-		/// Number of bytes to convert starting from index 0
-		/// </param>
-		/// <returns>
-		/// data[0]..data[count - 1] converted to a string
-		/// </returns>
-		public static string ConvertToString(byte[] data, int count)
-			=> data == null
-			? string.Empty
-			: Encoding.GetEncoding(CodePage).GetString(data, 0, count);
-
-		/// <summary>
-		/// Convert a byte array to a string using <see cref="CodePage"/>
-		/// </summary>
-		/// <param name="data">
-		/// Byte array to convert
-		/// </param>
-		/// <returns>
-		/// <paramref name="data">data</paramref>converted to a string
-		/// </returns>
-		public static string ConvertToString(byte[] data)
-			=> ConvertToString(data, data.Length);
-
-		private static Encoding EncodingFromFlag(int flags)
-			=> ((flags & (int)GeneralBitFlags.UnicodeText) != 0)
-				? Encoding.UTF8
-				: Encoding.GetEncoding(
-					// if CodePage wasn't set manually and no utf flag present
-					// then we must use SystemDefault (old behavior)
-					// otherwise, CodePage should be preferred over SystemDefault
-					// see https://github.com/icsharpcode/SharpZipLib/issues/274
-					codePage == AutomaticCodePage? 
-						SystemDefaultCodePage:
-						codePage);
-
-		/// <summary>
-		/// Convert a byte array to a string  using <see cref="CodePage"/>
-		/// </summary>
-		/// <param name="flags">The applicable general purpose bits flags</param>
-		/// <param name="data">
-		/// Byte array to convert
-		/// </param>
-		/// <param name="count">The number of bytes to convert.</param>
-		/// <returns>
-		/// <paramref name="data">data</paramref>converted to a string
-		/// </returns>
-		public static string ConvertToStringExt(int flags, byte[] data, int count)
-			=> (data == null)
-				? string.Empty
-				: EncodingFromFlag(flags).GetString(data, 0, count);
-
-		/// <summary>
-		/// Convert a byte array to a string using <see cref="CodePage"/>
-		/// </summary>
-		/// <param name="data">
-		/// Byte array to convert
-		/// </param>
-		/// <param name="flags">The applicable general purpose bits flags</param>
-		/// <returns>
-		/// <paramref name="data">data</paramref>converted to a string
-		/// </returns>
-		public static string ConvertToStringExt(int flags, byte[] data)
-			=> ConvertToStringExt(flags, data, data.Length);
-
-		/// <summary>
-		/// Convert a string to a byte array using <see cref="CodePage"/>
-		/// </summary>
-		/// <param name="str">
-		/// String to convert to an array
-		/// </param>
-		/// <returns>Converted array</returns>
-		public static byte[] ConvertToArray(string str)
-			=> str == null
-			? Empty.Array<byte>()
-			: Encoding.GetEncoding(CodePage).GetBytes(str);
-
-		/// <summary>
-		/// Convert a string to a byte array using <see cref="CodePage"/>
-		/// </summary>
-		/// <param name="flags">The applicable <see cref="GeneralBitFlags">general purpose bits flags</see></param>
-		/// <param name="str">
-		/// String to convert to an array
-		/// </param>
-		/// <returns>Converted array</returns>
-		public static byte[] ConvertToArray(int flags, string str)
-			=> (string.IsNullOrEmpty(str))
-				? Empty.Array<byte>()
-				: EncodingFromFlag(flags).GetBytes(str);
+		public Encoding ZipCryptoEncoding
+		{
+			get => _zipCryptoEncoding ?? DefaultZipCryptoEncoding;
+			set => _zipCryptoEncoding = value;
+		}
 	}
 }

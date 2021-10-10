@@ -856,20 +856,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			return result;
 		}
 
-		private void CheckNameConversion(string toCheck)
-		{
-			byte[] intermediate = ZipStrings.ConvertToArray(toCheck);
-			string final = ZipStrings.ConvertToString(intermediate);
-
-			Assert.AreEqual(toCheck, final, "Expected identical result");
-		}
-
 		[Test]
 		[Category("Zip")]
-		public void NameConversion()
+		[TestCase("Hello")]
+		[TestCase("a/b/c/d/e/f/g/h/SomethingLikeAnArchiveName.txt")]
+		public void LegacyNameConversion(string name)
 		{
-			CheckNameConversion("Hello");
-			CheckNameConversion("a/b/c/d/e/f/g/h/SomethingLikeAnArchiveName.txt");
+			var encoding = new StringCodec().ZipEncoding(false);
+			byte[] intermediate = encoding.GetBytes(name);
+			string final = encoding.GetString(intermediate);
+
+			Assert.AreEqual(name, final, "Expected identical result");
 		}
 
 		[Test]
@@ -878,22 +875,22 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-			ZipStrings.CodePage = 850;
+			var codec = new StringCodec() {CodePage = 850};
 			string sample = "Hello world";
 
 			byte[] rawData = Encoding.ASCII.GetBytes(sample);
 
-			string converted = ZipStrings.ConvertToStringExt(0, rawData);
+			var converted = codec.ZipInputEncoding(0).GetString(rawData);
 			Assert.AreEqual(sample, converted);
 
-			converted = ZipStrings.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
+			converted = codec.ZipInputEncoding((int)GeneralBitFlags.UnicodeText).GetString(rawData);
 			Assert.AreEqual(sample, converted);
 
 			// This time use some greek characters
 			sample = "\u03A5\u03d5\u03a3";
 			rawData = Encoding.UTF8.GetBytes(sample);
 
-			converted = ZipStrings.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
+			converted = codec.ZipInputEncoding((int)GeneralBitFlags.UnicodeText).GetString(rawData);
 			Assert.AreEqual(sample, converted);
 		}
 

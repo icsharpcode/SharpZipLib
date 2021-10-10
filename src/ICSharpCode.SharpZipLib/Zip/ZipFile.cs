@@ -367,7 +367,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					key = PkzipClassic.GenerateKeys(ZipStrings.ConvertToArray(value));
+					key = PkzipClassic.GenerateKeys(ZipCryptoEncoding.GetBytes(value));
 				}
 
 				rawPassword_ = value;
@@ -390,6 +390,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Opens a Zip file with the given name for reading.
 		/// </summary>
 		/// <param name="name">The name of the file to open.</param>
+		/// <param name="stringCodec"></param>
 		/// <exception cref="ArgumentNullException">The argument supplied is null.</exception>
 		/// <exception cref="IOException">
 		/// An i/o error occurs
@@ -397,12 +398,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ZipException">
 		/// The file doesn't contain a valid zip archive.
 		/// </exception>
-		public ZipFile(string name)
+		public ZipFile(string name, StringCodec stringCodec = null)
 		{
 			name_ = name ?? throw new ArgumentNullException(nameof(name));
 
 			baseStream_ = File.Open(name, FileMode.Open, FileAccess.Read, FileShare.Read);
 			isStreamOwner = true;
+
+			if (stringCodec != null)
+			{
+				_stringCodec = stringCodec;
+			}
 
 			try
 			{
@@ -723,6 +729,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				return (ZipEntry)entries_[index].Clone();
 			}
+		}
+
+
+		/// <inheritdoc cref="StringCodec.ZipCryptoEncoding"/>
+		public Encoding ZipCryptoEncoding
+		{
+			get => _stringCodec.ZipCryptoEncoding;
+			set => _stringCodec.ZipCryptoEncoding = value;
+		}
+
+		/// <inheritdoc cref="StringCodec"/>
+		public StringCodec StringCodec
+		{
+			get => _stringCodec;
+			set => _stringCodec = value;
 		}
 
 		#endregion Properties
@@ -1189,6 +1210,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 						throw new ZipException(string.Format("Version required to extract this entry is invalid ({0})", extractVersion));
 					}
 
+					var localEncoding = _stringCodec.ZipInputEncoding(localFlags);
+
 					// Local entry flags dont have reserved bit set on.
 					if ((localFlags & (int)(GeneralBitFlags.ReservedPKware4 | GeneralBitFlags.ReservedPkware14 | GeneralBitFlags.ReservedPkware15)) != 0)
 					{
@@ -1281,7 +1304,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 
 					// Name data has already been read convert it and compare.
-					string localName = ZipStrings.ConvertToStringExt(localFlags, nameData);
+					string localName = localEncoding.GetString(nameData);
 
 					// Central directory and local entry name match
 					if (localName != entry.Name)
@@ -1577,11 +1600,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				else
 				{
 					// Create an empty archive if none existed originally.
-					if (entries_.Length == 0)
-					{
-						byte[] theComment = (newComment_ != null) ? newComment_.RawComment : ZipStrings.ConvertToArray(comment_);
-						ZipFormat.WriteEndOfCentralDirectory(baseStream_, 0, 0, 0, theComment);
-					}
+					if (entries_.Length != 0) return;
+					byte[] theComment = (newComment_ != null) 
+						? newComment_.RawComment 
+						: _stringCodec.ZipArchiveCommentEncoding.GetBytes(comment_);
+					ZipFormat.WriteEndOfCentralDirectory(baseStream_, 0, 0, 0, theComment);
 				}
 			}
 			finally
@@ -1614,7 +1637,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			CheckUpdating();
 
-			newComment_ = new ZipString(comment);
+			newComment_ = new ZipString(comment, _stringCodec.ZipArchiveCommentEncoding);
 
 			if (newComment_.RawLength > 0xffff)
 			{
@@ -2142,7 +2165,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLEInt((int)entry.Size);
 			}
 
-			byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
+			var entryEncoding = _stringCodec.ZipInputEncoding(entry.Flags);
+			byte[] name = entryEncoding.GetBytes(entry.Name);
 
 			if (name.Length > 0xFFFF)
 			{
@@ -2249,7 +2273,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteLEInt((int)entry.Size);
 			}
 
-			byte[] name = ZipStrings.ConvertToArray(entry.Flags, entry.Name);
+			var entryEncoding = _stringCodec.ZipInputEncoding(entry.Flags);
+			byte[] name = entryEncoding.GetBytes(entry.Name);
 
 			if (name.Length > 0xFFFF)
 			{
@@ -3076,7 +3101,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 				}
 
-				byte[] theComment = (newComment_ != null) ? newComment_.RawComment : ZipStrings.ConvertToArray(comment_);
+				byte[] theComment = newComment_?.RawComment ?? _stringCodec.ZipArchiveCommentEncoding.GetBytes(comment_);
 				ZipFormat.WriteEndOfCentralDirectory(workFile.baseStream_, updateCount_, 
 					sizeEntries, centralDirOffset, theComment);
 
@@ -3469,7 +3494,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				byte[] comment = new byte[commentSize];
 
 				StreamUtils.ReadFully(baseStream_, comment);
-				comment_ = ZipStrings.ConvertToString(comment);
+				comment_ = _stringCodec.ZipArchiveCommentEncoding.GetString(comment);
 			}
 			else
 			{
@@ -3586,11 +3611,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 				long offset = ReadLEUint();
 
 				byte[] buffer = new byte[Math.Max(nameLen, commentLen)];
+				var entryEncoding = _stringCodec.ZipInputEncoding(bitFlags);
 
 				StreamUtils.ReadFully(baseStream_, buffer, 0, nameLen);
-				string name = ZipStrings.ConvertToStringExt(bitFlags, buffer, nameLen);
+				string name = entryEncoding.GetString(buffer, 0, nameLen);
+				var unicode = entryEncoding.IsZipUnicode();
 
-				var entry = new ZipEntry(name, versionToExtract, versionMadeBy, (CompressionMethod)method)
+				var entry = new ZipEntry(name, versionToExtract, versionMadeBy, (CompressionMethod)method, unicode)
 				{
 					Crc = crc & 0xffffffffL,
 					Size = size & 0xffffffffL,
@@ -3623,7 +3650,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if (commentLen > 0)
 				{
 					StreamUtils.ReadFully(baseStream_, buffer, 0, commentLen);
-					entry.Comment = ZipStrings.ConvertToStringExt(bitFlags, buffer, commentLen);
+					entry.Comment = entryEncoding.GetString(buffer, 0, commentLen);
 				}
 
 				entries_[i] = entry;
@@ -3767,7 +3794,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private bool isDisposed_;
 		private string name_;
-		private string comment_;
+		private string comment_ = string.Empty;
 		private string rawPassword_;
 		private Stream baseStream_;
 		private bool isStreamOwner;
@@ -3775,6 +3802,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private ZipEntry[] entries_;
 		private byte[] key;
 		private bool isNewArchive_;
+		private StringCodec _stringCodec = ZipStrings.GetStringCodec();
 
 		// Default is dynamic which is not backwards compatible and can cause problems
 		// with XP's built in compression which cant read Zip64 archives.
@@ -3813,19 +3841,23 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// Initialise a <see cref="ZipString"/> with a string.
 			/// </summary>
 			/// <param name="comment">The textual string form.</param>
-			public ZipString(string comment)
+			/// <param name="encoding"></param>
+			public ZipString(string comment, Encoding encoding)
 			{
 				comment_ = comment;
 				isSourceString_ = true;
+				_encoding = encoding;
 			}
 
 			/// <summary>
 			/// Initialise a <see cref="ZipString"/> using a string in its binary 'raw' form.
 			/// </summary>
 			/// <param name="rawString"></param>
-			public ZipString(byte[] rawString)
+			/// <param name="encoding"></param>
+			public ZipString(byte[] rawString, Encoding encoding)
 			{
 				rawComment_ = rawString;
+				_encoding = encoding;
 			}
 
 			#endregion Constructors
@@ -3834,10 +3866,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// Get a value indicating the original source of data for this instance.
 			/// True if the source was a string; false if the source was binary data.
 			/// </summary>
-			public bool IsSourceString
-			{
-				get { return isSourceString_; }
-			}
+			public bool IsSourceString => isSourceString_;
 
 			/// <summary>
 			/// Get the length of the comment when represented as raw bytes.
@@ -3882,7 +3911,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				if (comment_ == null)
 				{
-					comment_ = ZipStrings.ConvertToString(rawComment_);
+					comment_ = _encoding.GetString(rawComment_);
 				}
 			}
 
@@ -3890,7 +3919,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				if (rawComment_ == null)
 				{
-					rawComment_ = ZipStrings.ConvertToArray(comment_);
+					rawComment_ = _encoding.GetBytes(comment_);
 				}
 			}
 
@@ -3899,7 +3928,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			/// </summary>
 			/// <param name="zipString">The <see cref="ZipString"/> to convert to a string.</param>
 			/// <returns>The textual equivalent for the input value.</returns>
-			static public implicit operator string(ZipString zipString)
+			public static implicit operator string(ZipString zipString)
 			{
 				zipString.MakeTextAvailable();
 				return zipString.comment_;
@@ -3910,6 +3939,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			private string comment_;
 			private byte[] rawComment_;
 			private readonly bool isSourceString_;
+			private readonly Encoding _encoding;
 
 			#endregion Instance Fields
 		}

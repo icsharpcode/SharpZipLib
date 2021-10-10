@@ -2,6 +2,7 @@ using ICSharpCode.SharpZipLib.Encryption;
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -202,6 +203,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Returns the 10 byte AUTH CODE to be appended immediately following the AES data stream.
 		/// </summary>
 		protected byte[] AESAuthCode;
+
+		/// <inheritdoc cref="StringCodec.ZipCryptoEncoding"/>
+		public Encoding ZipCryptoEncoding { get; set; } = StringCodec.DefaultZipCryptoEncoding;
 
 		/// <summary>
 		/// Encrypt a block of data

@@ -239,9 +239,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		#region String testing helper
 
-		private void TestFileNames(IReadOnlyList<string> names)
+		private void TestFileNames(int codePage, IReadOnlyList<string> names)
 		{
 			var zippy = new FastZip();
+			if (codePage > 0)
+			{
+				zippy.UseUnicode = false;
+				zippy.LegacyCodePage = codePage;
+			}
 
 			using var tempDir = Utils.GetTempDir();
 			using var tempZip = Utils.GetTempFile();
@@ -254,7 +259,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			zippy.CreateZip(tempZip, tempDir, recurse: true, fileFilter: null);
 
-			using var zf = new ZipFile(tempZip);
+			using var zf = new ZipFile(tempZip, zippy.StringCodec);
 			Assert.AreEqual(nameCount, zf.Count);
 			foreach (var name in names)
 			{
@@ -264,7 +269,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				var entry = zf[index];
 
-				if (ZipStrings.UseUnicode)
+				if (zippy.UseUnicode)
 				{
 					Assert.IsTrue(entry.IsUnicodeText, "Zip entry #{0} not marked as unicode", index);
 				}
@@ -288,15 +293,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Unicode")]
 		public void UnicodeText()
 		{
-			var preCp = ZipStrings.CodePage;
-			try
-			{
-				TestFileNames(StringTesting.Filenames.ToArray());
-			}
-			finally
-			{
-				ZipStrings.CodePage = preCp;
-			}
+			TestFileNames(0, StringTesting.Filenames.ToArray());
 		}
 
 		[Test]
@@ -304,35 +301,26 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Unicode")]
 		public void NonUnicodeText()
 		{
-			var preCp = ZipStrings.CodePage;
-			try
-			{
-				Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-				foreach (var (language, filename, encoding) in StringTesting.TestSamples)
+			foreach (var (language, filename, encoding) in StringTesting.TestSamples)
+			{
+				Console.WriteLine($"{language} filename \"{filename}\" using \"{encoding}\":");
+
+				// TODO: samples of this test must be reversible
+				// Some samples can't be restored back with their encoding.
+				// test wasn't failing only because SystemDefaultCodepage is 65001 on Net.Core and
+				// old behaviour actually was using Unicode instead of user's passed codepage
+				var encoder = Encoding.GetEncoding(encoding);
+				var bytes = encoder.GetBytes(filename);
+				var restoredString = encoder.GetString(bytes);
+				if(string.CompareOrdinal(filename, restoredString) != 0)
 				{
-					Console.WriteLine($"{language} filename \"{filename}\" using \"{encoding}\":");
-
-					// TODO: samples of this test must be reversible
-					// Some samples can't be restored back with their encoding.
-					// test wasn't failing only because SystemDefaultCodepage is 65001 on Net.Core and
-					// old behaviour actually was using Unicode instead of user's passed codepage
-					var encoder = Encoding.GetEncoding(encoding);
-					var bytes = encoder.GetBytes(filename);
-					var restoredString = encoder.GetString(bytes);
-					if(string.CompareOrdinal(filename, restoredString) != 0)
-					{
-						Console.WriteLine($"Sample for language {language} with value of {filename} is skipped, because it's irreversable");
-						continue;
-					}
-
-					ZipStrings.CodePage = Encoding.GetEncoding(encoding).CodePage;
-					TestFileNames(new []{filename});
+					Console.WriteLine($"Sample for language {language} with value of {filename} is skipped, because it's irreversable");
+					continue;
 				}
-			}
-			finally
-			{
-				ZipStrings.CodePage = preCp;
+
+				TestFileNames(Encoding.GetEncoding(encoding).CodePage, new [] { filename });
 			}
 		}
 

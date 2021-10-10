@@ -80,6 +80,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 		}
 
+		internal ZipOutputStream(Stream baseOutputStream, StringCodec stringCodec) : this(baseOutputStream)
+		{
+			_stringCodec = stringCodec;
+		}
+
 		#endregion Constructors
 
 		/// <summary>
@@ -105,8 +110,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </exception>
 		public void SetComment(string comment)
 		{
-			// TODO: Its not yet clear how to handle unicode comments here.
-			byte[] commentBytes = ZipStrings.ConvertToArray(comment);
+			byte[] commentBytes = _stringCodec.ZipArchiveCommentEncoding.GetBytes(comment);
 			if (commentBytes.Length > 0xffff)
 			{
 				throw new ArgumentOutOfRangeException(nameof(comment));
@@ -392,7 +396,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// Write the local file header
 			offset += ZipFormat.WriteLocalHeader(stream, entry, out var entryPatchData, 
-				headerInfoAvailable, patchEntryHeader, streamOffset);
+				headerInfoAvailable, patchEntryHeader, streamOffset, _stringCodec);
 
 			patchData = entryPatchData;
 
@@ -652,7 +656,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private void InitializeZipCryptoPassword(string password)
 		{
 			var pkManaged = new PkzipClassicManaged();
-			byte[] key = PkzipClassic.GenerateKeys(ZipStrings.ConvertToArray(password));
+			byte[] key = PkzipClassic.GenerateKeys(ZipCryptoEncoding.GetBytes(password));
 			cryptoTransform_ = pkManaged.CreateEncryptor(key, null);
 		}
 		
@@ -765,7 +769,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			foreach (var entry in entries)
 			{
-				sizeEntries += ZipFormat.WriteEndEntry(baseOutputStream_, entry);
+				sizeEntries += ZipFormat.WriteEndEntry(baseOutputStream_, entry, _stringCodec);
 			}
 
 			ZipFormat.WriteEndOfCentralDirectory(baseOutputStream_, numEntries, sizeEntries, offset, zipComment);
@@ -795,7 +799,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					await baseOutputStream_.WriteProcToStreamAsync(ms, s =>
 					{
-						sizeEntries += ZipFormat.WriteEndEntry(s, entry);
+						sizeEntries += ZipFormat.WriteEndEntry(s, entry, _stringCodec);
 					}, ct);
 				}
 
@@ -879,6 +883,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The password to use when encrypting archive entries.
 		/// </summary>
 		private string password;
+
+		private readonly StringCodec _stringCodec = ZipStrings.GetStringCodec();
 
 		#endregion Instance Fields
 
