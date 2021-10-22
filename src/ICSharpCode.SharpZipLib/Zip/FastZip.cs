@@ -206,7 +206,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public FastZip(TimeSetting timeSetting)
 		{
 			entryFactory_ = new ZipEntryFactory(timeSetting);
-			restoreDateTimeOnExtract_ = true;
+			RestoreDateTimeOnExtract = true;
 		}
 
 		/// <summary>
@@ -216,7 +216,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public FastZip(DateTime time)
 		{
 			entryFactory_ = new ZipEntryFactory(time);
-			restoreDateTimeOnExtract_ = true;
+			RestoreDateTimeOnExtract = true;
 		}
 
 		/// <summary>
@@ -235,20 +235,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get/set a value indicating whether empty directories should be created.
 		/// </summary>
-		public bool CreateEmptyDirectories
-		{
-			get { return createEmptyDirectories_; }
-			set { createEmptyDirectories_ = value; }
-		}
+		public bool CreateEmptyDirectories { get; set; }
 
 		/// <summary>
 		/// Get / set the password value.
 		/// </summary>
-		public string Password
-		{
-			get { return password_; }
-			set { password_ = value; }
-		}
+		public string Password { get; set; }
 
 		/// <summary>
 		/// Get / set the method of encrypting entries.
@@ -265,11 +257,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <seealso cref="EntryFactory"></seealso>
 		public INameTransform NameTransform
 		{
-			get { return entryFactory_.NameTransform; }
-			set
-			{
-				entryFactory_.NameTransform = value;
-			}
+			get => entryFactory_.NameTransform;
+			set => entryFactory_.NameTransform = value;
 		}
 
 		/// <summary>
@@ -277,18 +266,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		public IEntryFactory EntryFactory
 		{
-			get { return entryFactory_; }
-			set
-			{
-				if (value == null)
-				{
-					entryFactory_ = new ZipEntryFactory();
-				}
-				else
-				{
-					entryFactory_ = value;
-				}
-			}
+			get => entryFactory_;
+			set => entryFactory_ = value ?? new ZipEntryFactory();
 		}
 
 		/// <summary>
@@ -302,48 +281,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// NOTE: Setting the size for entries before they are added is the best solution!
 		/// By default the EntryFactory used by FastZip will set the file size.
 		/// </remarks>
-		public UseZip64 UseZip64
-		{
-			get { return useZip64_; }
-			set { useZip64_ = value; }
-		}
+		public UseZip64 UseZip64 { get; set; } = UseZip64.Dynamic;
 
 		/// <summary>
 		/// Get/set a value indicating whether file dates and times should
 		/// be restored when extracting files from an archive.
 		/// </summary>
 		/// <remarks>The default value is false.</remarks>
-		public bool RestoreDateTimeOnExtract
-		{
-			get
-			{
-				return restoreDateTimeOnExtract_;
-			}
-			set
-			{
-				restoreDateTimeOnExtract_ = value;
-			}
-		}
+		public bool RestoreDateTimeOnExtract { get; set; }
 
 		/// <summary>
 		/// Get/set a value indicating whether file attributes should
 		/// be restored during extract operations
 		/// </summary>
-		public bool RestoreAttributesOnExtract
-		{
-			get { return restoreAttributesOnExtract_; }
-			set { restoreAttributesOnExtract_ = value; }
-		}
+		public bool RestoreAttributesOnExtract { get; set; }
 
 		/// <summary>
 		/// Get/set the Compression Level that will be used
 		/// when creating the zip
 		/// </summary>
-		public Deflater.CompressionLevel CompressionLevel
-		{
-			get { return compressionLevel_; }
-			set { compressionLevel_ = value; }
-		}
+		public Deflater.CompressionLevel CompressionLevel { get; set; } = CompressionLevel.DEFAULT_COMPRESSION;
 
 		/// <summary>
 		/// Reflects the opposite of the internal <see cref="StringCodec.ForceZipLegacyEncoding"/>, setting it to <c>false</c> overrides the encoding used for reading and writing zip entries
@@ -474,7 +431,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="scanner">For performing the actual file system scan</param>
 		/// <param name="leaveOpen">true to leave <paramref name="outputStream"/> open after the zip has been created, false to dispose it.</param>
 		/// <remarks>The <paramref name="outputStream"/> is closed after creation.</remarks>
-		private void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, FileSystemScanner scanner, bool leaveOpen)
+		public void CreateZip(Stream outputStream, string sourceDirectory, bool recurse, FileSystemScanner scanner, bool leaveOpen)
 		{
 			NameTransform = new ZipNameTransform(sourceDirectory);
 			sourceDirectory_ = sourceDirectory;
@@ -485,9 +442,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				outputStream_.IsStreamOwner = !leaveOpen;
 				outputStream_.NameTransform = null; // all required transforms handled by us
 
-				if (false == string.IsNullOrEmpty(password_) && EntryEncryptionMethod != ZipEncryptionMethod.None)
+				if (false == string.IsNullOrEmpty(Password) && EntryEncryptionMethod != ZipEncryptionMethod.None)
 				{
-					outputStream_.Password = password_;
+					outputStream_.Password = Password;
 				}
 
 				outputStream_.UseZip64 = UseZip64;
@@ -526,7 +483,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="fileFilter">A filter to apply to files.</param>
 		public void ExtractZip(string zipFileName, string targetDirectory, string fileFilter)
 		{
-			ExtractZip(zipFileName, targetDirectory, Overwrite.Always, null, fileFilter, null, restoreDateTimeOnExtract_);
+			ExtractZip(zipFileName, targetDirectory, Overwrite.Always, null, fileFilter, null, RestoreDateTimeOnExtract);
 		}
 
 		/// <summary>
@@ -577,13 +534,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			fileFilter_ = new NameFilter(fileFilter);
 			directoryFilter_ = new NameFilter(directoryFilter);
-			restoreDateTimeOnExtract_ = restoreDateTime;
+			RestoreDateTimeOnExtract = restoreDateTime;
 
 			using (zipFile_ = new ZipFile(inputStream, !isStreamOwner))
 			{
-				if (password_ != null)
+				if (Password != null)
 				{
-					zipFile_.Password = password_;
+					zipFile_.Password = Password;
 				}
 
 				System.Collections.IEnumerator enumerator = zipFile_.GetEnumerator();
@@ -784,7 +741,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 							}
 						}
 
-						if (restoreDateTimeOnExtract_)
+						if (RestoreDateTimeOnExtract)
 						{
 							switch (entryFactory_.Setting)
 							{
@@ -890,7 +847,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						if (continueRunning_)
 						{
 							Directory.CreateDirectory(dirName);
-							if (entry.IsDirectory && restoreDateTimeOnExtract_)
+							if (entry.IsDirectory && RestoreDateTimeOnExtract)
 							{
 								switch (entryFactory_.Setting)
 								{
@@ -986,17 +943,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private Overwrite overwrite_;
 		private ConfirmOverwriteDelegate confirmDelegate_;
 
-		private bool restoreDateTimeOnExtract_;
-		private bool restoreAttributesOnExtract_;
-		private bool createEmptyDirectories_;
 		private FastZipEvents events_;
 		private IEntryFactory entryFactory_ = new ZipEntryFactory();
 		private INameTransform extractNameTransform_;
-		private UseZip64 useZip64_ = UseZip64.Dynamic;
-		private CompressionLevel compressionLevel_ = CompressionLevel.DEFAULT_COMPRESSION;
 		private StringCodec _stringCodec = new StringCodec();
-
-		private string password_;
 
 		#endregion Instance Fields
 	}
