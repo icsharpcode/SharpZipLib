@@ -313,6 +313,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new InvalidOperationException("The Password property must be set before AES encrypted entries can be added");
 			}
 
+			entryIsPrecompressed = string.IsNullOrEmpty(Password) && method == CompressionMethod.Deflated && entry.Size >= 0 && entry.HasCrc && entry.CompressedSize >= 0;
+
 			int compressionLevel = defaultCompressionLevel;
 
 			// Clear flags that the library manages internally
@@ -322,7 +324,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			bool headerInfoAvailable;
 
 			// No need to compress - definitely no data.
-			if (entry.Size == 0)
+			if (entry.Size == 0 && !entryIsPrecompressed)
 			{
 				entry.CompressedSize = entry.Size;
 				entry.Crc = 0;
@@ -406,14 +408,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// Activate the entry.
 			curEntry = entry;
+			size = 0;
+
+			if(entryIsPrecompressed)
+				return;
+
 			crc.Reset();
 			if (method == CompressionMethod.Deflated)
 			{
 				deflater_.Reset();
 				deflater_.SetLevel(compressionLevel);
 			}
-			size = 0;
-			
 		}
 
 		/// <summary>
@@ -504,6 +509,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (curEntry == null)
 			{
 				throw new InvalidOperationException("No open entry");
+			}
+
+			if(entryIsPrecompressed) 
+			{
+				if(curEntry.CompressedSize != size) 
+				{
+					throw new ZipException($"compressed size was {size}, but {curEntry.CompressedSize} expected");
+				}
+
+				offset += size;
+				return;
 			}
 
 			long csize = size;
@@ -695,6 +711,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentException("Invalid offset/count combination");
 			}
 
+			if(entryIsPrecompressed) 
+			{
+				size += count;
+				baseOutputStream_.Write(buffer, offset, count);
+				return;
+			}
+
 			if (curEntry.AESKeySize == 0)
 			{
 				// Only update CRC if AES is not enabled
@@ -843,6 +866,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The current entry being added.
 		/// </summary>
 		private ZipEntry curEntry;
+
+		private bool entryIsPrecompressed;
 
 		private int defaultCompressionLevel = Deflater.DEFAULT_COMPRESSION;
 
