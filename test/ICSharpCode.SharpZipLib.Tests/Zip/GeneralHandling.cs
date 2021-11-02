@@ -1,5 +1,7 @@
-﻿using ICSharpCode.SharpZipLib.Tests.TestSupport;
+using ICSharpCode.SharpZipLib.Checksum;
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -381,6 +383,43 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					index += count;
 				}
 			}
+			Assert.IsTrue(ZipTesting.TestArchive(ms.ToArray()));
+		}
+
+		[Test]
+		[Category("Zip")]
+		public void StoredNonSeekablePrecompressed()
+		{
+			var data = Encoding.UTF8.GetBytes("Hello, world");
+
+			var crc = new Crc32();
+			crc.Update(data);
+
+			var compressedData = new MemoryStream();
+			using(var gz = new System.IO.Compression.DeflateStream(compressedData, System.IO.Compression.CompressionMode.Compress, true)) 
+			{
+				gz.Write(data, 0, data.Length);
+			}
+			compressedData.Position = 0;
+
+			MemoryStream ms = new MemoryStreamWithoutSeek();
+
+			using (ZipOutputStream outStream = new ZipOutputStream(ms))
+			{
+				outStream.IsStreamOwner = false;
+
+				var entry = new ZipEntry("dummyfile.tst");
+
+				entry.CompressionMethod = CompressionMethod.Deflated;
+				entry.Size = data.Length;
+				entry.Crc = (uint)crc.Value;
+				entry.CompressedSize = compressedData.Length;
+
+				outStream.PutNextEntry(entry);
+
+				compressedData.CopyTo(outStream);
+			}
+
 			Assert.IsTrue(ZipTesting.TestArchive(ms.ToArray()));
 		}
 
