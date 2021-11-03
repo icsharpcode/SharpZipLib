@@ -270,7 +270,76 @@ namespace ICSharpCode.SharpZipLib.Zip
 				WriteOutput(GetEntryEncryptionHeader(entry));
 			}
 		}
-		
+
+		/// <summary>
+		/// Starts a new passthrough Zip entry. It automatically closes the previous
+		/// entry if present.
+		/// Passthrough entry is an entry that is created from compressed data. 
+		/// It is useful to avoid recompression to save CPU resources if compressed data is already disposable.
+		/// All entry elements bar name, crc, size and compressed size are optional, but must be correct if present.
+		/// Compression should be set to Deflated.
+		/// </summary>
+		/// <param name="entry">
+		/// the entry.
+		/// </param>
+		/// <exception cref="System.ArgumentNullException">
+		/// if entry passed is null.
+		/// </exception>
+		/// <exception cref="System.IO.IOException">
+		/// if an I/O error occurred.
+		/// </exception>
+		/// <exception cref="System.InvalidOperationException">
+		/// if stream was finished.
+		/// </exception>
+		/// <exception cref="ZipException">
+		/// Crc is not set<br/>
+		/// Size is not set<br/>
+		/// CompressedSize is not set<br/>
+		/// CompressionMethod is not Deflate<br/>
+		/// Too many entries in the Zip file<br/>
+		/// Entry name is too long<br/>
+		/// Finish has already been called<br/>
+		/// </exception>
+		/// <exception cref="System.NotImplementedException">
+		/// The Compression method specified for the entry is unsupported<br/>
+		/// Entry is encrypted<br/>
+		/// </exception>
+		public void PutNextPassthroughEntry(ZipEntry entry) 
+		{
+			if(curEntry != null) 
+			{
+				CloseEntry();
+			}
+
+			if(entry.Crc < 0) 
+			{
+				throw new ZipException("Crc must be set for passthrough entry");
+			}
+
+			if(entry.Size < 0) 
+			{
+				throw new ZipException("Size must be set for passthrough entry");
+			}
+
+			if(entry.CompressedSize < 0) 
+			{
+				throw new ZipException("CompressedSize must be set for passthrough entry");
+			}
+
+			if(entry.CompressionMethod != CompressionMethod.Deflated)
+			{
+				throw new ZipException("Only Deflated entries are supported for passthrough");
+			}
+
+			if(!string.IsNullOrEmpty(Password)) 
+			{
+				throw new NotImplementedException("Encrypted passthrough entries are not supported");
+			}
+
+			PutNextEntry(baseOutputStream_, entry, 0, true);
+		}
+
+
 		private void WriteOutput(byte[] bytes) 
 			=> baseOutputStream_.Write(bytes, 0, bytes.Length);
 		
@@ -282,7 +351,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				? InitializeAESPassword(entry, Password)
 				: CreateZipCryptoHeader(entry.Crc < 0 ? entry.DosTime << 16 : entry.Crc);
 
-		internal void PutNextEntry(Stream stream, ZipEntry entry, long streamOffset = 0)
+		internal void PutNextEntry(Stream stream, ZipEntry entry, long streamOffset = 0, bool passthroughEntry = false)
 		{
 			if (entry == null)
 			{
@@ -313,7 +382,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new InvalidOperationException("The Password property must be set before AES encrypted entries can be added");
 			}
 
-			entryIsPrecompressed = string.IsNullOrEmpty(Password) && method == CompressionMethod.Deflated && entry.Size >= 0 && entry.HasCrc && entry.CompressedSize >= 0;
+			entryIsPassthrough = passthroughEntry;
 
 			int compressionLevel = defaultCompressionLevel;
 
@@ -324,7 +393,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			bool headerInfoAvailable;
 
 			// No need to compress - definitely no data.
-			if (entry.Size == 0 && !entryIsPrecompressed)
+			if (entry.Size == 0 && !entryIsPassthrough)
 			{
 				entry.CompressedSize = entry.Size;
 				entry.Crc = 0;
@@ -410,7 +479,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			curEntry = entry;
 			size = 0;
 
-			if(entryIsPrecompressed)
+			if(entryIsPassthrough)
 				return;
 
 			crc.Reset();
@@ -511,7 +580,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new InvalidOperationException("No open entry");
 			}
 
-			if(entryIsPrecompressed) 
+			if(entryIsPassthrough) 
 			{
 				if(curEntry.CompressedSize != size) 
 				{
@@ -711,14 +780,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentException("Invalid offset/count combination");
 			}
 
-			if(entryIsPrecompressed) 
-			{
-				size += count;
-				baseOutputStream_.Write(buffer, offset, count);
-				return;
-			}
-
-			if (curEntry.AESKeySize == 0)
+			if (curEntry.AESKeySize == 0 && !entryIsPassthrough)
 			{
 				// Only update CRC if AES is not enabled
 				crc.Update(new ArraySegment<byte>(buffer, offset, count));
@@ -726,22 +788,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			size += count;
 
-			switch (curMethod)
+			if(curMethod == CompressionMethod.Deflated)
 			{
-				case CompressionMethod.Deflated:
-					base.Write(buffer, offset, count);
-					break;
+				base.Write(buffer, offset, count);
+				return;
+			}
 
-				case CompressionMethod.Stored:
-					if (Password != null)
-					{
-						CopyAndEncrypt(buffer, offset, count);
-					}
-					else
-					{
-						baseOutputStream_.Write(buffer, offset, count);
-					}
-					break;
+			if (Password != null)
+			{
+				CopyAndEncrypt(buffer, offset, count);
+			}
+			else
+			{
+				baseOutputStream_.Write(buffer, offset, count);
 			}
 		}
 
@@ -867,7 +926,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		private ZipEntry curEntry;
 
-		private bool entryIsPrecompressed;
+		private bool entryIsPassthrough;
 
 		private int defaultCompressionLevel = Deflater.DEFAULT_COMPRESSION;
 

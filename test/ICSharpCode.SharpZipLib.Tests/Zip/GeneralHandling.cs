@@ -415,7 +415,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				entry.Crc = (uint)crc.Value;
 				entry.CompressedSize = compressedData.Length;
 
-				outStream.PutNextEntry(entry);
+				outStream.PutNextPassthroughEntry(entry);
 
 				compressedData.CopyTo(outStream);
 			}
