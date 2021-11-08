@@ -782,25 +782,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if (curEntry.AESKeySize == 0 && !entryIsPassthrough)
 			{
-				// Only update CRC if AES is not enabled
+				// Only update CRC if AES is not enabled and entry is not a passthrough one
 				crc.Update(new ArraySegment<byte>(buffer, offset, count));
 			}
 
 			size += count;
 
-			if(curMethod == CompressionMethod.Deflated)
+			if(curMethod == CompressionMethod.Stored || entryIsPassthrough)
 			{
-				base.Write(buffer, offset, count);
-				return;
-			}
-
-			if (Password != null)
-			{
-				CopyAndEncrypt(buffer, offset, count);
+				if (Password != null)
+				{
+					CopyAndEncrypt(buffer, offset, count);
+				}
+				else
+				{
+					baseOutputStream_.Write(buffer, offset, count);
+				}
 			}
 			else
 			{
-				baseOutputStream_.Write(buffer, offset, count);
+				base.Write(buffer, offset, count);
 			}
 		}
 
