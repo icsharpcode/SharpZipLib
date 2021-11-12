@@ -328,7 +328,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if(entry.CompressionMethod != CompressionMethod.Deflated)
 			{
-				throw new ZipException("Only Deflated entries are supported for passthrough");
+				throw new NotImplementedException("Only Deflated entries are supported for passthrough");
 			}
 
 			if(!string.IsNullOrEmpty(Password)) 
