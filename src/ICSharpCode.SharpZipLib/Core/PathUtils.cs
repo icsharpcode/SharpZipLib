@@ -26,7 +26,7 @@ namespace ICSharpCode.SharpZipLib.Core
 			var cleanPath = new string(path.Take(258)
 				.Select( (c, i) => invalidChars.Contains(c) || (i == 2 && cleanRootSep) ? '_' : c).ToArray());
 
-			var stripLength = Path.GetPathRoot(cleanPath).Length;
+			var stripLength = Path.GetPathRoot(cleanPath)?.Length ?? 0;
 			while (path.Length > stripLength && (path[stripLength] == '/' || path[stripLength] == '\\')) stripLength++;
 			return path.Substring(stripLength);
 		}
