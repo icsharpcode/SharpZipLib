@@ -1084,6 +1084,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		[Flags]
 		private enum HeaderTest
 		{
+			None = 0x0,
 			Extract = 0x01,     // Check that this header represents an entry whose data can be extracted
 			Header = 0x02,     // Check that this header contents are valid
 		}
@@ -3672,8 +3673,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </exception>
 		private long LocateEntry(ZipEntry entry)
 		{
-			return TestLocalHeader(entry, HeaderTest.Extract);
+			return TestLocalHeader(entry, SkipLocalEntryTestsOnLocate ? HeaderTest.None : HeaderTest.Extract);
 		}
+
+		/// <summary>
+		/// Skip the verification of the local header when reading an archive entry. Set this to attempt to read the
+		/// entries even if the headers should indicate that doing so would fail or produce an unexpected output. 
+		/// </summary>
+		public bool SkipLocalEntryTestsOnLocate { get; set; } = false;
 
 		private Stream CreateAndInitDecryptionStream(Stream baseStream, ZipEntry entry)
 		{
