@@ -6,6 +6,7 @@ using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
+using Does = ICSharpCode.SharpZipLib.Tests.TestSupport.Does;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -34,7 +35,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				compressedData.CopyTo(outStream);
 			}
 
-			Assert.IsTrue(ZipTesting.TestArchive(ms.ToArray()));
+			Assert.That(ms.ToArray(), Does.PassTestArchive());
 		}
 
 		private static (MemoryStream, Crc32, int) CreateDeflatedData()
