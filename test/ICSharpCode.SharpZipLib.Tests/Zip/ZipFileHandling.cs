@@ -1547,6 +1547,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		/// Refs https://github.com/icsharpcode/SharpZipLib/issues/385
 		/// Trying to add an AES Encrypted entry to ZipFile should throw as it isn't supported
 		/// </summary>
+#if false
 		[Test]
 		[Category("Zip")]
 		public void AddingAnAESEncryptedEntryShouldThrow()
@@ -1562,6 +1563,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			var exception = Assert.Throws<NotSupportedException>(() => zof.Add(new StringMemoryDataSource("foo"), entry));
 			Assert.That(exception?.Message, Is.EqualTo("Creation of AES encrypted entries is not supported"));
 		}
+#endif
 
 		/// <summary>
 		/// Test that we can add a file entry and set the name to sometihng other than the name of the file.
