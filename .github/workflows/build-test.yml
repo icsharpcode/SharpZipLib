@@ -14,11 +14,11 @@ on:
 
 jobs:
   Build:
-    runs-on: ${{ matrix.os }}-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu, windows, macos]
+        os: [ubuntu-latest, windows-2019, macos-latest]
         target: [netstandard2.0, netstandard2.1]
         include:
           - os: windows
@@ -35,6 +35,9 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.1.x'
+        
+    - name: Show .NET info
+      run: dotnet --info
 
     - name: Build library (Debug)
       run: dotnet build -c debug -f ${{ matrix.target }} ${{ env.LIB_PROJ }}
