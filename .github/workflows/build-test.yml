@@ -21,7 +21,7 @@ jobs:
         os: [ubuntu-latest, windows-2019, macos-latest]
         target: [netstandard2.0, netstandard2.1]
         include:
-          - os: windows
+          - os: windows-2019
             target: net45
     env:
       LIB_PROJ: src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
