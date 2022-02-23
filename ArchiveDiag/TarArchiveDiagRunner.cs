@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using ArchiveDiag.Tar;
 using ConLib;
 using static ConLib.PrettyConsole;
 
@@ -66,7 +67,10 @@ namespace ArchiveDiag
 
 			DumpStr("Checksum: ", block[148..156]);
 
-			DumpStr("File type: ", block[156..157]);
+			var typeflag = block[156];
+			var identifiedFlag = Enum.IsDefined(typeof(TypeFlag), typeflag) ? ((TypeFlag)typeflag).ToString("F") : "unknown";
+
+			WriteLine($"File type: {identifiedFlag} (0x{typeflag} '{(char)typeflag}')");
 			DumpStr("Linked file name: ", block[157..257]); 
 
 			return fileSize;

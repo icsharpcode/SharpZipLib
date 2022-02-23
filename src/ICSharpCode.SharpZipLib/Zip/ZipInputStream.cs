@@ -318,9 +318,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		private void ReadDataDescriptor()
 		{
-			if (inputBuffer.ReadLeInt() != ZipConstants.DataDescriptorSignature)
+			var descriptor = inputBuffer.ReadLeInt();
+			if (descriptor != ZipConstants.DataDescriptorSignature)
 			{
-				throw new ZipException("Data descriptor signature not found");
+				throw new ZipException($"Data descriptor signature not found, got: 0x{descriptor:x8} instead of 0x{ZipConstants.DataDescriptorSignature:x8}");
 			}
 
 			entry.Crc = inputBuffer.ReadLeInt() & 0xFFFFFFFFL;

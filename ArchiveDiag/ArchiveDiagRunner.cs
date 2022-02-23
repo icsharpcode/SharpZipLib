@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -58,6 +59,8 @@ namespace ArchiveDiag
 			WriteVersion<Program>();
 			WriteLine($"\n");
 
+			
+			WriteLine($"Runtime: {RuntimeInformation.FrameworkDescription} ({RuntimeInformation.OSDescription}/{RuntimeInformation.OSArchitecture})");
 			WriteLine($"File: {FileName ?? "<Unknown>"}");
 			Write($"Size: {archiveStream.Length}");
 			WriteColor(" byte(s)\n", ConCol.DarkGray);

@@ -52,7 +52,7 @@ namespace ArchiveDiag
 			var zisIterTest = false;
 			zisIterTest = PrettyConsole.DoChore("[TEST] ZipInputStream.Iterate", () => {
 				archiveStream.Seek(0, SeekOrigin.Begin);
-				using(var zis = new ZipInputStream(archiveStream)) {
+				using(var zis = new ZipInputStream(archiveStream){IsStreamOwner = false}) {
 					ZipEntry entry;
 					var startEntry = 0l;
 					var entryNum = 0;
@@ -60,7 +60,20 @@ namespace ArchiveDiag
 						entryNum++;
 						var startData = archiveStream.Position + (zis.inputBuffer.RawLength - zis.inputBuffer.Available);
 						var entryName = entry.Name;
-						zis.CloseEntry();
+
+						// PrettyConsole.WriteLine($"- Entry #{entryNum,3} @ {startEntry,8} // {zis.inputBuffer.RawLength} of {zis.inputBuffer.Available}");
+
+						// while(zis.ReadByte() >= 0) {
+						// 	Console.Write(".");
+						// }
+
+						try {
+							zis.CloseEntry();
+						} catch {
+
+							PrettyConsole.WriteLine($"Error position: {(archiveStream.CanRead ? archiveStream.Position : -1)} // {zis.inputBuffer.RawLength} of {zis.inputBuffer.Available}");
+							throw;
+						}
 						var endEntry = archiveStream.Position + (zis.inputBuffer.RawLength - zis.inputBuffer.Available);
 						var headSize = startData - startEntry;
 						var dataSize = endEntry - startData;
@@ -440,29 +453,28 @@ namespace ArchiveDiag
 			var pos = br.BaseStream.Position;
 			var csize = br.ReadInt32();
 			var usize = br.ReadInt32();
-			var crc32 = br.ReadUInt32();
 
-			br.BaseStream.Seek(-12, SeekOrigin.Current);
+			br.BaseStream.Seek(-8, SeekOrigin.Current);
 
+			// var crc64 = br.ReadUInt32();
 			var csize64 = br.ReadInt64();
 			var usize64 = br.ReadInt64();
-			var crc64 = br.ReadUInt32();
 
 			// Revert stream back to non-zip64 descriptor to not risk skipping next entry
 			br.BaseStream.Seek(-8, SeekOrigin.Current);
 
+			PrettyConsole.WriteLine($"CRC: 0x{crc:x8}");
 			PrettyConsole.WriteLine($"32-bit sizes:");
 			PrettyConsole.PushGroup("descriptor32");
 			PrettyConsole.WriteLine($"Compressed Size: {csize} (0x{csize:x8})");
 			PrettyConsole.WriteLine($"Uncompressed Size: {usize} (0x{usize:x8})");
-			PrettyConsole.WriteLine($"CRC: 0x{crc32:x8}");
 			PrettyConsole.PopGroup();
 
 			PrettyConsole.WriteLine($"64-bit sizes (Zip64):");
 			PrettyConsole.PushGroup("descriptor64");
 			PrettyConsole.WriteLine($"Compressed Size: {csize64} (0x{csize64:x16})");
 			PrettyConsole.WriteLine($"Uncompressed Size: {usize64} (0x{usize64:x16})");
-			PrettyConsole.WriteLine($"CRC: 0x{crc64:x8}");
+			// PrettyConsole.WriteLine($"CRC: 0x{crc64:x8}");
 			PrettyConsole.PopGroup();
 
 		}
