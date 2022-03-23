@@ -472,4 +472,28 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		#endregion Header Signatures
 	}
+
+	/// <summary>
+	/// GeneralBitFlags helper extensions
+	/// </summary>
+	public static class GenericBitFlagsExtensions
+	{
+		/// <summary>
+		/// Efficiently check if any of the <see cref="GeneralBitFlags">flags</see> are set without enum un-/boxing
+		/// </summary>
+		/// <param name="target"></param>
+		/// <param name="flags"></param>
+		/// <returns>Returns whether any of flags are set</returns>
+		public static bool HasAny(this GeneralBitFlags target, GeneralBitFlags flags)
+			=> ((int)target & (int)flags) != 0;
+
+		/// <summary>
+		/// Efficiently check if all the <see cref="GeneralBitFlags">flags</see> are set without enum un-/boxing
+		/// </summary>
+		/// <param name="target"></param>
+		/// <param name="flags"></param>
+		/// <returns>Returns whether the flags are all set</returns>
+		public static bool HasAll(this GeneralBitFlags target, GeneralBitFlags flags)
+			=> ((int)target & (int)flags) == (int)flags;
+	}
 }
