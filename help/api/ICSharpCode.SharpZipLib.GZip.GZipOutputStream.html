@@ -160,10 +160,10 @@ class MainClass
 {
     public static void Main(string[] args)
     {
-            using (Stream s = new GZipOutputStream(File.Create(args[0] + &quot;.gz&quot;)))
-            using (FileStream fs = File.OpenRead(args[0])) {
+            using (Stream out = new GZipOutputStream(File.Create(args[0] + &quot;.gz&quot;)))
+            using (FileStream in = File.OpenRead(args[0])) {
                 byte[] writeData = new byte[4096];
-                Streamutils.Copy(s, fs, writeData);
+                StreamUtils.Copy(in, out, writeData);
             }
         }
     }
