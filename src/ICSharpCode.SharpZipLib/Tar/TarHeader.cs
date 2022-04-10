@@ -1,5 +1,7 @@
 using System;
+using System.Buffers;
 using System.Text;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Tar
 {
@@ -235,7 +237,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public const string GNU_TMAGIC = "ustar  ";
 
-		private const long timeConversionFactor = 10000000L;           // 1 tick == 100 nanoseconds
+		private const long timeConversionFactor = 10000000L; // 1 tick == 100 nanoseconds
 		private static readonly DateTime dateTime1970 = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 
 		#endregion Constants
@@ -540,7 +542,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			int offset = 0;
 
-			name = ParseName(header, offset, NAMELEN, nameEncoding).ToString();
+			name = ParseName(header, offset, NAMELEN, nameEncoding);
 			offset += NAMELEN;
 
 			mode = (int)ParseOctal(header, offset, MODELEN);
@@ -563,21 +565,21 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			TypeFlag = header[offset++];
 
-			LinkName = ParseName(header, offset, NAMELEN, nameEncoding).ToString();
+			LinkName = ParseName(header, offset, NAMELEN, nameEncoding);
 			offset += NAMELEN;
 
-			Magic = ParseName(header, offset, MAGICLEN, nameEncoding).ToString();
+			Magic = ParseName(header, offset, MAGICLEN, nameEncoding);
 			offset += MAGICLEN;
 
 			if (Magic == "ustar")
 			{
-				Version = ParseName(header, offset, VERSIONLEN, nameEncoding).ToString();
+				Version = ParseName(header, offset, VERSIONLEN, nameEncoding);
 				offset += VERSIONLEN;
 
-				UserName = ParseName(header, offset, UNAMELEN, nameEncoding).ToString();
+				UserName = ParseName(header, offset, UNAMELEN, nameEncoding);
 				offset += UNAMELEN;
 
-				GroupName = ParseName(header, offset, GNAMELEN, nameEncoding).ToString();
+				GroupName = ParseName(header, offset, GNAMELEN, nameEncoding);
 				offset += GNAMELEN;
 
 				DevMajor = (int)ParseOctal(header, offset, DEVLEN);
@@ -586,7 +588,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				DevMinor = (int)ParseOctal(header, offset, DEVLEN);
 				offset += DEVLEN;
 
-				string prefix = ParseName(header, offset, PREFIXLEN, nameEncoding).ToString();
+				string prefix = ParseName(header, offset, PREFIXLEN, nameEncoding);
 				if (!string.IsNullOrEmpty(prefix)) Name = prefix + '/' + Name;
 			}
 
@@ -685,30 +687,31 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public override bool Equals(object obj)
 		{
 			var localHeader = obj as TarHeader;
-
+		
 			bool result;
 			if (localHeader != null)
 			{
 				result = (name == localHeader.name)
-					&& (mode == localHeader.mode)
-					&& (UserId == localHeader.UserId)
-					&& (GroupId == localHeader.GroupId)
-					&& (Size == localHeader.Size)
-					&& (ModTime == localHeader.ModTime)
-					&& (Checksum == localHeader.Checksum)
-					&& (TypeFlag == localHeader.TypeFlag)
-					&& (LinkName == localHeader.LinkName)
-					&& (Magic == localHeader.Magic)
-					&& (Version == localHeader.Version)
-					&& (UserName == localHeader.UserName)
-					&& (GroupName == localHeader.GroupName)
-					&& (DevMajor == localHeader.DevMajor)
-					&& (DevMinor == localHeader.DevMinor);
+				         && (mode == localHeader.mode)
+				         && (UserId == localHeader.UserId)
+				         && (GroupId == localHeader.GroupId)
+				         && (Size == localHeader.Size)
+				         && (ModTime == localHeader.ModTime)
+				         && (Checksum == localHeader.Checksum)
+				         && (TypeFlag == localHeader.TypeFlag)
+				         && (LinkName == localHeader.LinkName)
+				         && (Magic == localHeader.Magic)
+				         && (Version == localHeader.Version)
+				         && (UserName == localHeader.UserName)
+				         && (GroupName == localHeader.GroupName)
+				         && (DevMajor == localHeader.DevMajor)
+				         && (DevMinor == localHeader.DevMinor);
 			}
 			else
 			{
 				result = false;
 			}
+		
 			return result;
 		}
 
@@ -719,7 +722,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="userName">Value to apply as a default for userName.</param>
 		/// <param name="groupId">Value to apply as a default for groupId.</param>
 		/// <param name="groupName">Value to apply as a default for groupName.</param>
-		static internal void SetValueDefaults(int userId, string userName, int groupId, string groupName)
+		internal static void SetValueDefaults(int userId, string userName, int groupId, string groupName)
 		{
 			defaultUserId = userIdAsSet = userId;
 			defaultUser = userNameAsSet = userName;
@@ -727,7 +730,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			defaultGroupName = groupNameAsSet = groupName;
 		}
 
-		static internal void RestoreSetValues()
+		internal static void RestoreSetValues()
 		{
 			defaultUserId = userIdAsSet;
 			defaultUser = userNameAsSet;
@@ -737,7 +740,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 		// Return value that may be stored in octal or binary. Length must exceed 8.
 		//
-		static private long ParseBinaryOrOctal(byte[] header, int offset, int length)
+		private static long ParseBinaryOrOctal(byte[] header, int offset, int length)
 		{
 			if (header[offset] >= 0x80)
 			{
@@ -759,7 +762,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name = "offset">The offset into the buffer from which to parse.</param>
 		/// <param name = "length">The number of header bytes to parse.</param>
 		/// <returns>The long equivalent of the octal string.</returns>
-		static public long ParseOctal(byte[] header, int offset, int length)
+		public static long ParseOctal(byte[] header, int offset, int length)
 		{
 			if (header == null)
 			{
@@ -814,7 +817,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// The name parsed.
 		/// </returns>
 		[Obsolete("No Encoding for Name field is specified, any non-ASCII bytes will be discarded")]
-		static public StringBuilder ParseName(byte[] header, int offset, int length)
+		public static string ParseName(byte[] header, int offset, int length)
 		{
 			return ParseName(header, offset, length, null);
 		}
@@ -837,7 +840,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The name parsed.
 		/// </returns>
-		static public StringBuilder ParseName(byte[] header, int offset, int length, Encoding encoding)
+		public static string ParseName(byte[] header, int offset, int length, Encoding encoding)
 		{
 			if (header == null)
 			{
@@ -859,10 +862,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 				throw new ArgumentException("Exceeds header size", nameof(length));
 			}
 
-			var result = new StringBuilder(length);
+			var builder = StringBuilderPool.Instance.Rent();
 
 			int count = 0;
-			if(encoding == null)
+			if (encoding == null)
 			{
 				for (int i = offset; i < offset + length; ++i)
 				{
@@ -870,21 +873,25 @@ namespace ICSharpCode.SharpZipLib.Tar
 					{
 						break;
 					}
-					result.Append((char)header[i]);
+
+					builder.Append((char)header[i]);
 				}
 			}
 			else
 			{
-				for(int i = offset; i < offset + length; ++i, ++count)
+				for (int i = offset; i < offset + length; ++i, ++count)
 				{
-					if(header[i] == 0)
+					if (header[i] == 0)
 					{
 						break;
 					}
 				}
-				result.Append(encoding.GetString(header, offset, count));
+
+				builder.Append(encoding.GetString(header, offset, count));
 			}
 
+			var result = builder.ToString();
+			StringBuilderPool.Instance.Return(builder);
 			return result;
 		}
 
@@ -926,7 +933,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="length">The number of characters/bytes to add</param>
 		/// <param name="encoding">name encoding, or null for ASCII only</param>
 		/// <returns>The next free index in the <paramref name="buffer"/></returns>
-		public static int GetNameBytes(string name, int nameOffset, byte[] buffer, int bufferOffset, int length, Encoding encoding)
+		public static int GetNameBytes(string name, int nameOffset, byte[] buffer, int bufferOffset, int length,
+			Encoding encoding)
 		{
 			if (name == null)
 			{
@@ -939,14 +947,17 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 
 			int i;
-			if(encoding != null)
+			if (encoding != null)
 			{
 				// it can be more sufficient if using Span or unsafe
-				var nameArray = name.ToCharArray(nameOffset, Math.Min(name.Length - nameOffset, length));
+				ReadOnlySpan<char> nameArray = name.AsSpan().Slice(nameOffset, Math.Min(name.Length - nameOffset, length));
+				var charArray = ArrayPool<char>.Shared.Rent(nameArray.Length);
+				nameArray.CopyTo(charArray);
+
 				// it can be more sufficient if using Span(or unsafe?) and ArrayPool for temporary buffer
-				var bytes = encoding.GetBytes(nameArray, 0, nameArray.Length);
-				i = Math.Min(bytes.Length, length);
-				Array.Copy(bytes, 0, buffer, bufferOffset, i);
+				var bytesLength = encoding.GetBytes(charArray, 0, nameArray.Length, buffer, bufferOffset);
+				ArrayPool<char>.Shared.Return(charArray);
+				i = Math.Min(bytesLength, length);
 			}
 			else
 			{
@@ -1085,7 +1096,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="length">The number of ascii characters to add.</param>
 		/// <param name="encoding">String encoding, or null for ASCII only</param>
 		/// <returns>The next free index in the buffer.</returns>
-		public static int GetAsciiBytes(string toAdd, int nameOffset, byte[] buffer, int bufferOffset, int length, Encoding encoding)
+		public static int GetAsciiBytes(string toAdd, int nameOffset, byte[] buffer, int bufferOffset, int length,
+			Encoding encoding)
 		{
 			if (toAdd == null)
 			{
@@ -1098,7 +1110,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 
 			int i;
-			if(encoding == null)
+			if (encoding == null)
 			{
 				for (i = 0; i < length && nameOffset + i < toAdd.Length; ++i)
 				{
@@ -1179,8 +1191,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 		private static int GetBinaryOrOctalBytes(long value, byte[] buffer, int offset, int length)
 		{
 			if (value > 0x1FFFFFFFF)
-			{  // Octal 77777777777 (11 digits)
-			   // Put value as binary, right-justified into the buffer. Set high order bit of left-most byte.
+			{
+				// Octal 77777777777 (11 digits)
+				// Put value as binary, right-justified into the buffer. Set high order bit of left-most byte.
 				for (int pos = length - 1; pos > 0; pos--)
 				{
 					buffer[offset + pos] = (byte)value;
@@ -1294,16 +1307,16 @@ namespace ICSharpCode.SharpZipLib.Tar
 		#region Class Fields
 
 		// Values used during recursive operations.
-		static internal int userIdAsSet;
+		internal static int userIdAsSet;
 
-		static internal int groupIdAsSet;
-		static internal string userNameAsSet;
-		static internal string groupNameAsSet = "None";
+		internal static int groupIdAsSet;
+		internal static string userNameAsSet;
+		internal static string groupNameAsSet = "None";
 
-		static internal int defaultUserId;
-		static internal int defaultGroupId;
-		static internal string defaultGroupName = "None";
-		static internal string defaultUser;
+		internal static int defaultUserId;
+		internal static int defaultGroupId;
+		internal static string defaultGroupName = "None";
+		internal static string defaultUser;
 
 		#endregion Class Fields
 	}

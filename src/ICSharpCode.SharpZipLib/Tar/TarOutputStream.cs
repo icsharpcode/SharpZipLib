@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.IO;
 using System.Text;
 
@@ -50,8 +51,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 			this.outputStream = outputStream;
 			buffer = TarBuffer.CreateOutputTarBuffer(outputStream, blockFactor);
 
-			assemblyBuffer = new byte[TarBuffer.BlockSize];
-			blockBuffer = new byte[TarBuffer.BlockSize];
+			assemblyBuffer = ArrayPool<byte>.Shared.Rent(TarBuffer.BlockSize);
+			blockBuffer = ArrayPool<byte>.Shared.Rent(TarBuffer.BlockSize);
 		}
 
 		/// <summary>
@@ -70,8 +71,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 			this.outputStream = outputStream;
 			buffer = TarBuffer.CreateOutputTarBuffer(outputStream, blockFactor);
 
-			assemblyBuffer = new byte[TarBuffer.BlockSize];
-			blockBuffer = new byte[TarBuffer.BlockSize];
+			assemblyBuffer = ArrayPool<byte>.Shared.Rent(TarBuffer.BlockSize);
+			blockBuffer = ArrayPool<byte>.Shared.Rent(TarBuffer.BlockSize);
 
 			this.nameEncoding = nameEncoding;
 		}
@@ -226,6 +227,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 				isClosed = true;
 				Finish();
 				buffer.Close();
+				
+				ArrayPool<byte>.Shared.Return(assemblyBuffer);
+				ArrayPool<byte>.Shared.Return(blockBuffer);
 			}
 		}
 
@@ -354,7 +358,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			Write(new byte[] { value }, 0, 1);
 		}
-
+		
 		/// <summary>
 		/// Writes bytes to the current tar archive entry. This method
 		/// is aware of the current entry and will throw an exception if

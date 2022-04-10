@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.IO;
 using System.Text;
 
@@ -23,6 +24,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			: this(inputStream, TarBuffer.DefaultBlockFactor, null)
 		{
 		}
+
 		/// <summary>
 		/// Construct a TarInputStream with default block factor
 		/// </summary>
@@ -79,10 +81,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public override bool CanRead
 		{
-			get
-			{
-				return inputStream.CanRead;
-			}
+			get { return inputStream.CanRead; }
 		}
 
 		/// <summary>
@@ -91,10 +90,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public override bool CanSeek
 		{
-			get
-			{
-				return false;
-			}
+			get { return false; }
 		}
 
 		/// <summary>
@@ -103,10 +99,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public override bool CanWrite
 		{
-			get
-			{
-				return false;
-			}
+			get { return false; }
 		}
 
 		/// <summary>
@@ -114,10 +107,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public override long Length
 		{
-			get
-			{
-				return inputStream.Length;
-			}
+			get { return inputStream.Length; }
 		}
 
 		/// <summary>
@@ -127,14 +117,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <exception cref="NotSupportedException">Any attempt to set position</exception>
 		public override long Position
 		{
-			get
-			{
-				return inputStream.Position;
-			}
-			set
-			{
-				throw new NotSupportedException("TarInputStream Seek not supported");
-			}
+			get { return inputStream.Position; }
+			set { throw new NotSupportedException("TarInputStream Seek not supported"); }
 		}
 
 		/// <summary>
@@ -205,6 +189,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				// return -1 to indicate that no byte was read.
 				return -1;
 			}
+
 			return oneByteBuffer[0];
 		}
 
@@ -270,34 +255,34 @@ namespace ICSharpCode.SharpZipLib.Tar
 				offset += sz;
 			}
 
+			var recLen = TarBuffer.BlockSize;
+			var recBuf = ArrayPool<byte>.Shared.Rent(recLen);
+			var recBufSpan = recBuf.AsSpan();
+
 			while (numToRead > 0)
 			{
-				byte[] rec = tarBuffer.ReadBlock();
-				if (rec == null)
-				{
-					// Unexpected EOF!
-					throw new TarException("unexpected EOF with " + numToRead + " bytes unread");
-				}
+				tarBuffer.ReadBlockInt(recBuf);
 
 				var sz = (int)numToRead;
-				int recLen = rec.Length;
 
 				if (recLen > sz)
 				{
-					Array.Copy(rec, 0, buffer, offset, sz);
-					readBuffer = new byte[recLen - sz];
-					Array.Copy(rec, sz, readBuffer, 0, recLen - sz);
+					recBufSpan.Slice(0, sz).CopyTo(buffer.AsSpan().Slice(offset, sz));
+					readBuffer = ArrayPool<byte>.Shared.Rent(recLen - sz);
+					recBufSpan.Slice(sz, recLen - sz).CopyTo(readBuffer);
 				}
 				else
 				{
 					sz = recLen;
-					Array.Copy(rec, 0, buffer, offset, recLen);
+					recBufSpan.CopyTo(buffer.AsSpan().Slice(offset, recLen));
 				}
 
 				totalRead += sz;
 				numToRead -= sz;
 				offset += sz;
 			}
+
+			ArrayPool<byte>.Shared.Return(recBuf);
 
 			entryOffset += totalRead;
 
@@ -359,10 +344,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </returns>
 		public long Available
 		{
-			get
-			{
-				return entrySize - entryOffset;
-			}
+			get { return entrySize - entryOffset; }
 		}
 
 		/// <summary>
@@ -402,10 +384,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <remarks>Currently marking is not supported, the return value is always false.</remarks>
 		public bool IsMarkSupported
 		{
-			get
-			{
-				return false;
-			}
+			get { return false; }
 		}
 
 		/// <summary>
@@ -450,18 +429,15 @@ namespace ICSharpCode.SharpZipLib.Tar
 				SkipToNextEntry();
 			}
 
-			byte[] headerBuf = tarBuffer.ReadBlock();
+			byte[] headerBuf = ArrayPool<byte>.Shared.Rent(TarBuffer.BlockSize);
+			tarBuffer.ReadBlockInt(headerBuf);
 
-			if (headerBuf == null)
-			{
-				hasHitEOF = true;
-			}
-			else if (TarBuffer.IsEndOfArchiveBlock(headerBuf))
+			if (TarBuffer.IsEndOfArchiveBlock(headerBuf))
 			{
 				hasHitEOF = true;
 
 				// Read the second zero-filled block
-				tarBuffer.ReadBlock();
+				tarBuffer.ReadBlockInt(headerBuf);
 			}
 			else
 			{
@@ -471,6 +447,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 			if (hasHitEOF)
 			{
 				currentEntry = null;
+				if (readBuffer != null)
+				{
+					ArrayPool<byte>.Shared.Return(readBuffer);
+				}
 			}
 			else
 			{
@@ -482,6 +462,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					{
 						throw new TarException("Header checksum is invalid");
 					}
+
 					this.entryOffset = 0;
 					this.entrySize = header.Size;
 
@@ -496,7 +477,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 						while (numToRead > 0)
 						{
-							int numRead = this.Read(nameBuffer, 0, (numToRead > nameBuffer.Length ? nameBuffer.Length : (int)numToRead));
+							int numRead = this.Read(nameBuffer, 0,
+								(numToRead > nameBuffer.Length ? nameBuffer.Length : (int)numToRead));
 
 							if (numRead == -1)
 							{
@@ -508,16 +490,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 						}
 
 						SkipToNextEntry();
-						headerBuf = this.tarBuffer.ReadBlock();
+						this.tarBuffer.ReadBlockInt(headerBuf);
 					}
 					else if (header.TypeFlag == TarHeader.LF_GHDR)
-					{  // POSIX global extended header
-					   // Ignore things we dont understand completely for now
+					{
+						// POSIX global extended header
+						// Ignore things we dont understand completely for now
 						SkipToNextEntry();
-						headerBuf = this.tarBuffer.ReadBlock();
+						this.tarBuffer.ReadBlockInt(headerBuf);
 					}
 					else if (header.TypeFlag == TarHeader.LF_XHDR)
-					{  // POSIX extended header
+					{
+						// POSIX extended header
 						byte[] nameBuffer = new byte[TarBuffer.BlockSize];
 						long numToRead = this.entrySize;
 
@@ -525,7 +509,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 						while (numToRead > 0)
 						{
-							int numRead = this.Read(nameBuffer, 0, (numToRead > nameBuffer.Length ? nameBuffer.Length : (int)numToRead));
+							int numRead = this.Read(nameBuffer, 0,
+								(numToRead > nameBuffer.Length ? nameBuffer.Length : (int)numToRead));
 
 							if (numRead == -1)
 							{
@@ -542,28 +527,32 @@ namespace ICSharpCode.SharpZipLib.Tar
 						}
 
 						SkipToNextEntry();
-						headerBuf = this.tarBuffer.ReadBlock();
+						this.tarBuffer.ReadBlockInt(headerBuf);
 					}
 					else if (header.TypeFlag == TarHeader.LF_GNU_VOLHDR)
 					{
 						// TODO: could show volume name when verbose
 						SkipToNextEntry();
-						headerBuf = this.tarBuffer.ReadBlock();
+						this.tarBuffer.ReadBlockInt(headerBuf);
 					}
 					else if (header.TypeFlag != TarHeader.LF_NORMAL &&
-							 header.TypeFlag != TarHeader.LF_OLDNORM &&
-							 header.TypeFlag != TarHeader.LF_LINK &&
-							 header.TypeFlag != TarHeader.LF_SYMLINK &&
-							 header.TypeFlag != TarHeader.LF_DIR)
+					         header.TypeFlag != TarHeader.LF_OLDNORM &&
+					         header.TypeFlag != TarHeader.LF_LINK &&
+					         header.TypeFlag != TarHeader.LF_SYMLINK &&
+					         header.TypeFlag != TarHeader.LF_DIR)
 					{
 						// Ignore things we dont understand completely for now
 						SkipToNextEntry();
-						headerBuf = tarBuffer.ReadBlock();
+						tarBuffer.ReadBlockInt(headerBuf);
 					}
 
 					if (entryFactory == null)
 					{
 						currentEntry = new TarEntry(headerBuf, encoding);
+						if (readBuffer != null)
+						{
+							ArrayPool<byte>.Shared.Return(readBuffer);
+						}
 						if (longName != null)
 						{
 							currentEntry.Name = longName.ToString();
@@ -572,6 +561,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 					else
 					{
 						currentEntry = entryFactory.CreateEntry(headerBuf);
+						if (readBuffer != null)
+						{
+							ArrayPool<byte>.Shared.Return(readBuffer);
+						}
 					}
 
 					// Magic was checked here for 'ustar' but there are multiple valid possibilities
@@ -587,11 +580,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 					entrySize = 0;
 					entryOffset = 0;
 					currentEntry = null;
+					if (readBuffer != null)
+					{
+						ArrayPool<byte>.Shared.Return(readBuffer);
+					}
 					string errorText = string.Format("Bad header in record {0} block {1} {2}",
 						tarBuffer.CurrentRecord, tarBuffer.CurrentBlock, ex.Message);
 					throw new InvalidHeaderException(errorText);
 				}
 			}
+
+			ArrayPool<byte>.Shared.Return(headerBuf);
+
 			return currentEntry;
 		}
 
@@ -613,6 +613,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				{
 					break;
 				}
+
 				outputStream.Write(tempBuffer, 0, numRead);
 			}
 		}
@@ -624,6 +625,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 			if (numToSkip > 0)
 			{
 				Skip(numToSkip);
+			}
+
+			if (readBuffer != null)
+			{
+				ArrayPool<byte>.Shared.Return(readBuffer);
 			}
 
 			readBuffer = null;
@@ -676,6 +682,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public class EntryFactoryAdapter : IEntryFactory
 		{
 			Encoding nameEncoding;
+
 			/// <summary>
 			/// Construct standard entry factory class with ASCII name encoding
 			/// </summary>
@@ -683,6 +690,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			public EntryFactoryAdapter()
 			{
 			}
+
 			/// <summary>
 			/// Construct standard entry factory with name encoding
 			/// </summary>
@@ -691,6 +699,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			{
 				this.nameEncoding = nameEncoding;
 			}
+
 			/// <summary>
 			/// Create a <see cref="TarEntry"/> based on named
 			/// </summary>

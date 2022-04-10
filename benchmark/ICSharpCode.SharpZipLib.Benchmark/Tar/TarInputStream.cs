@@ -1,6 +1,9 @@
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 using ICSharpCode.SharpZipLib.Tar;
 
@@ -17,7 +20,8 @@ namespace ICSharpCode.SharpZipLib.Benchmark.Tar
 		{
 			using (var outputMemoryStream = new MemoryStream())
 			{
-				using (var zipOutputStream = new ICSharpCode.SharpZipLib.Tar.TarOutputStream(outputMemoryStream, Encoding.UTF8))
+				using (var zipOutputStream =
+				       new ICSharpCode.SharpZipLib.Tar.TarOutputStream(outputMemoryStream, Encoding.UTF8))
 				{
 					var tarEntry = TarEntry.CreateTarEntry("some file");
 					tarEntry.Size = 1024 * 1024;
@@ -41,13 +45,34 @@ namespace ICSharpCode.SharpZipLib.Benchmark.Tar
 		public long ReadTarInputStream()
 		{
 			using (var memoryStream = new MemoryStream(archivedData))
-			using(var zipInputStream = new ICSharpCode.SharpZipLib.Tar.TarInputStream(memoryStream, Encoding.UTF8))
+			using (var zipInputStream = new ICSharpCode.SharpZipLib.Tar.TarInputStream(memoryStream, Encoding.UTF8))
 			{
 				var entry = zipInputStream.GetNextEntry();
 
 				while (zipInputStream.Read(readBuffer, 0, readBuffer.Length) > 0)
 				{
 				}
+
+				return entry.Size;
+			}
+		}
+
+		[Benchmark]
+		public async Task<long> ReadTarInputStreamAsync()
+		{
+			using (var memoryStream = new MemoryStream(archivedData))
+			using (var zipInputStream = new ICSharpCode.SharpZipLib.Tar.TarInputStream(memoryStream, Encoding.UTF8))
+			{
+				var entry = await zipInputStream.GetNextEntryAsync(CancellationToken.None);
+#if NETCOREAPP2_1_OR_GREATER
+				while (await zipInputStream.ReadAsync(readBuffer.AsMemory()) > 0)
+				{
+				}
+#else
+				while (await zipInputStream.ReadAsync(readBuffer, 0, readBuffer.Length) > 0)
+				{
+				}
+#endif
 
 				return entry.Size;
 			}

@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Tar
@@ -207,7 +208,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			blockFactor = archiveBlockFactor;
 			recordSize = archiveBlockFactor * BlockSize;
-			recordBuffer = new byte[RecordSize];
+			recordBuffer = ArrayPool<byte>.Shared.Rent(RecordSize);
 
 			if (inputStream != null)
 			{
@@ -333,6 +334,30 @@ namespace ICSharpCode.SharpZipLib.Tar
 			Array.Copy(recordBuffer, (currentBlockIndex * BlockSize), result, 0, BlockSize);
 			currentBlockIndex++;
 			return result;
+		}
+		
+		internal void ReadBlockInt(Span<byte> buffer)
+		{
+			if (buffer.Length != BlockSize)
+			{
+				throw new ArgumentException("BUG: buffer must have length BlockSize");
+			}
+			
+			if (inputStream == null)
+			{
+				throw new TarException("TarBuffer.ReadBlock - no input stream defined");
+			}
+
+			if (currentBlockIndex >= BlockFactor)
+			{
+				if (!ReadRecord())
+				{
+					throw new TarException("Failed to read a record");
+				}
+			}
+			
+			recordBuffer.AsSpan().Slice(currentBlockIndex* BlockSize, BlockSize).CopyTo(buffer);
+			currentBlockIndex++;
 		}
 
 		/// <summary>
@@ -580,6 +605,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				}
 				inputStream = null;
 			}
+			ArrayPool<byte>.Shared.Return(recordBuffer);
 		}
 
 		#region Instance Fields
