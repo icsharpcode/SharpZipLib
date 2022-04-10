@@ -2,7 +2,6 @@
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Toolchains.CsProj;
-using ICSharpCode.SharpZipLib.Benchmark.Tar;
 
 namespace ICSharpCode.SharpZipLib.Benchmark
 {
@@ -21,12 +20,6 @@ namespace ICSharpCode.SharpZipLib.Benchmark
 		static void Main(string[] args)
 		{
 			BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
-			
-			// var output = new TarOutputStream();
-			// for (int i = 0; i < 1_000_000; i++)
-			// {
-			// 	output.WriteTarOutputStream();
-			// }
 		}
 	}
 }

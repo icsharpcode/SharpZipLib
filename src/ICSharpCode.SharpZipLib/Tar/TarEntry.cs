@@ -497,9 +497,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Fill in a TarHeader given only the entry's name.
 		/// </summary>
-		/// <param name="header">
-		/// The TarHeader to fill in.
-		/// </param>
 		/// <param name="name">
 		/// The tar entry name.
 		/// </param>

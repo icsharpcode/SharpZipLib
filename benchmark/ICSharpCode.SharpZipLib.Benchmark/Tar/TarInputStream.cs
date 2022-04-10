@@ -64,6 +64,7 @@ namespace ICSharpCode.SharpZipLib.Benchmark.Tar
 			using (var zipInputStream = new ICSharpCode.SharpZipLib.Tar.TarInputStream(memoryStream, Encoding.UTF8))
 			{
 				var entry = await zipInputStream.GetNextEntryAsync(CancellationToken.None);
+
 #if NETCOREAPP2_1_OR_GREATER
 				while (await zipInputStream.ReadAsync(readBuffer.AsMemory()) > 0)
 				{
