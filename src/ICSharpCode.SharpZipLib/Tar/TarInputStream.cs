@@ -301,24 +301,22 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			if (readBuffer != null)
 			{
-				int sz = (numToRead > readBuffer.Length) ? readBuffer.Length : (int)numToRead;
+				int sz = (numToRead > readBuffer.Memory.Length) ? readBuffer.Memory.Length : (int)numToRead;
 
-				readBuffer.AsSpan().Slice(0, sz).CopyTo(buffer.Slice(offset, sz).Span);
+				readBuffer.Memory.Slice(0, sz).CopyTo(buffer.Slice(offset, sz));
 
-				if (sz >= readBuffer.Length)
+				if (sz >= readBuffer.Memory.Length)
 				{
+					readBuffer.Dispose();
 					readBuffer = null;
 				}
 				else
 				{
-					int newLen = readBuffer.Length - sz;
-					byte[] newBuf = ArrayPool<byte>.Shared.Rent(newLen);
-					readBuffer.AsSpan().Slice(sz, newLen).CopyTo(newBuf.AsSpan().Slice(0, newLen));
-					if (readBuffer != null)
-					{
-						ArrayPool<byte>.Shared.Return(readBuffer);
-					}
-
+					int newLen = readBuffer.Memory.Length - sz;
+					var newBuf = ExactMemoryPool<byte>.Shared.Rent(newLen);
+					readBuffer.Memory.Slice(sz, newLen).CopyTo(newBuf.Memory);
+					readBuffer.Dispose();
+					
 					readBuffer = newBuf;
 				}
 
@@ -339,13 +337,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 				if (recLen > sz)
 				{
 					recBuf.AsSpan().Slice(0, sz).CopyTo(buffer.Slice(offset, sz).Span);
-					if (readBuffer != null)
-					{
-						ArrayPool<byte>.Shared.Return(readBuffer);
-					}
+					readBuffer?.Dispose();
 
-					readBuffer = ArrayPool<byte>.Shared.Rent(recLen - sz);
-					recBuf.AsSpan().Slice(sz, recLen - sz).CopyTo(readBuffer.AsSpan());
+					readBuffer = ExactMemoryPool<byte>.Shared.Rent(recLen - sz);
+					recBuf.AsSpan().Slice(sz, recLen - sz).CopyTo(readBuffer.Memory.Span);
 				}
 				else
 				{
@@ -465,7 +460,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			// properly skip over bytes via the TarBuffer...
 			//
 			var length = 8 * 1024;
-			using (var skipBuf = MemoryPool<byte>.Shared.Rent(length))
+			using (var skipBuf = ExactMemoryPool<byte>.Shared.Rent(length))
 			{
 				for (long num = skipCount; num > 0;)
 				{
@@ -568,10 +563,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			if (hasHitEOF)
 			{
 				currentEntry = null;
-				if (readBuffer != null)
-				{
-					ArrayPool<byte>.Shared.Return(readBuffer);
-				}
+				readBuffer?.Dispose();
 			}
 			else
 			{
@@ -591,7 +583,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 					if (header.TypeFlag == TarHeader.LF_GNU_LONGNAME)
 					{
-						using (var nameBuffer = MemoryPool<byte>.Shared.Rent(TarBuffer.BlockSize))
+						using (var nameBuffer = ExactMemoryPool<byte>.Shared.Rent(TarBuffer.BlockSize))
 						{
 							long numToRead = this.entrySize;
 
@@ -678,10 +670,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					if (entryFactory == null)
 					{
 						currentEntry = new TarEntry(headerBuf, encoding);
-						if (readBuffer != null)
-						{
-							ArrayPool<byte>.Shared.Return(readBuffer);
-						}
+						readBuffer?.Dispose();
 
 						if (longName != null)
 						{
@@ -691,10 +680,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					else
 					{
 						currentEntry = entryFactory.CreateEntry(headerBuf);
-						if (readBuffer != null)
-						{
-							ArrayPool<byte>.Shared.Return(readBuffer);
-						}
+						readBuffer?.Dispose();
 					}
 
 					// Magic was checked here for 'ustar' but there are multiple valid possibilities
@@ -710,10 +696,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					entrySize = 0;
 					entryOffset = 0;
 					currentEntry = null;
-					if (readBuffer != null)
-					{
-						ArrayPool<byte>.Shared.Return(readBuffer);
-					}
+					readBuffer?.Dispose();
 
 					string errorText = string.Format("Bad header in record {0} block {1} {2}",
 						tarBuffer.CurrentRecord, tarBuffer.CurrentBlock, ex.Message);
@@ -781,11 +764,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				await SkipAsync(numToSkip, ct, isAsync);
 			}
 
-			if (readBuffer != null)
-			{
-				ArrayPool<byte>.Shared.Return(readBuffer);
-			}
-
+			readBuffer?.Dispose();
 			readBuffer = null;
 		}
 
@@ -905,7 +884,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Buffer used with calls to <code>Read()</code>
 		/// </summary>
-		protected byte[] readBuffer;
+		protected IMemoryOwner<byte> readBuffer;
 
 		/// <summary>
 		/// Working buffer

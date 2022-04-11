@@ -286,18 +286,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Skip over a block on the input stream.
 		/// </summary>
-		public void SkipBlock()
-		{
-			SkipBlockAsync(CancellationToken.None, false).GetAwaiter().GetResult();
-		}
+		public void SkipBlock() => SkipBlockAsync(CancellationToken.None, false).GetAwaiter().GetResult();
 
 		/// <summary>
 		/// Skip over a block on the input stream.
 		/// </summary>
-		public Task SkipBlockAsync(CancellationToken ct)
-		{
-			return SkipBlockAsync(ct, true).AsTask();
-		}
+		public Task SkipBlockAsync(CancellationToken ct) => SkipBlockAsync(ct, true).AsTask();
 
 		private async ValueTask SkipBlockAsync(CancellationToken ct, bool isAsync)
 		{

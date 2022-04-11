@@ -1,16 +1,16 @@
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Core
 {
-	class StringBuilderPool
+	internal class StringBuilderPool
 	{
 		public static StringBuilderPool Instance { get; } = new StringBuilderPool();
-		private readonly Queue<StringBuilder> pool = new Queue<StringBuilder>();
+		private readonly ConcurrentQueue<StringBuilder> pool = new ConcurrentQueue<StringBuilder>();
 
 		public StringBuilder Rent()
 		{
-			return pool.Count > 0 ? pool.Dequeue() : new StringBuilder();
+			return pool.TryDequeue(out var builder) ? builder : new StringBuilder();
 		}
 
 		public void Return(StringBuilder builder)
