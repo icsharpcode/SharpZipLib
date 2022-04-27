@@ -1,4 +1,4 @@
-# SharpZipLib [![Build Status](https://github.com/icsharpcode/SharpZipLib/actions/workflows/build-test.yml/badge.svg?branch=master)](https://github.com/icsharpcode/SharpZipLib/actions/workflows/build-test.yml) [![NuGet Version](https://img.shields.io/nuget/v/SharpZipLib.svg)](https://www.nuget.org/packages/SharpZipLib/)
+# SharpZipLib [![Build Status](https://github.com/icsharpcode/SharpZipLib/actions/workflows/build-test.yml/badge.svg?branch=master)](https://github.com/icsharpcode/SharpZipLib/actions/workflows/build-test.yml) [![NuGet Version](https://img.shields.io/nuget/v/SharpZipLib.svg)](https://www.nuget.org/packages/SharpZipLib/) [![openupm](https://img.shields.io/npm/v/org.icsharpcode.sharpziplib?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/org.icsharpcode.sharpziplib/)
 
 Introduction
 ------------
