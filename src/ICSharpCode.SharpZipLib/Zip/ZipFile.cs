@@ -1145,12 +1145,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 					if (localFlags.HasAny(GeneralBitFlags.Descriptor))
 					{
 						// These may be valid if patched later
-						if ((size > 0) && (size != entry.Size))
+						if ((size != 0) && (size != entry.Size))
 						{
 							throw new ZipException("Size invalid for descriptor");
 						}
 
-						if ((compressedSize > 0) && (compressedSize != entry.CompressedSize))
+						if ((compressedSize != 0) && (compressedSize != entry.CompressedSize))
 						{
 							throw new ZipException("Compressed size invalid for descriptor");
 						}
