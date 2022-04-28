@@ -114,8 +114,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					ed.AddLeLong(-1);
-					ed.AddLeLong(-1);
+					// If the sizes are stored in the descriptor, the local Zip64 sizes should be 0
+					ed.AddLeLong(0);
+					ed.AddLeLong(0);
 				}
 				ed.AddNewEntry(1);
 
