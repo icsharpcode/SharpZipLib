@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Text;
+using Does = ICSharpCode.SharpZipLib.Tests.TestSupport.Does;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -383,7 +384,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					index += count;
 				}
 			}
-			Assert.IsTrue(ZipTesting.TestArchive(ms.ToArray()));
+			Assert.That(ms.ToArray(), Does.PassTestArchive());
 		}
 
 		[Test]
@@ -391,20 +392,20 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		public void StoredNonSeekableKnownSizeNoCrcEncrypted()
 		{
 			// This cant be stored directly as the crc is not known
-			const int TargetSize = 24692;
-			const string Password = "Mabutu";
+			const int targetSize = 24692;
+			const string password = "Mabutu";
 
 			MemoryStream ms = new MemoryStreamWithoutSeek();
 
 			using (ZipOutputStream outStream = new ZipOutputStream(ms))
 			{
-				outStream.Password = Password;
+				outStream.Password = password;
 				outStream.IsStreamOwner = false;
 				var entry = new ZipEntry("dummyfile.tst");
 				entry.CompressionMethod = CompressionMethod.Stored;
 
 				// The bit thats in question is setting the size before its added to the archive.
-				entry.Size = TargetSize;
+				entry.Size = targetSize;
 
 				outStream.PutNextEntry(entry);
 
@@ -413,7 +414,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				var rnd = new Random();
 
-				int size = TargetSize;
+				int size = targetSize;
 				byte[] original = new byte[size];
 				rnd.NextBytes(original);
 
@@ -429,7 +430,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					index += count;
 				}
 			}
-			Assert.IsTrue(ZipTesting.TestArchive(ms.ToArray(), Password));
+			Assert.That(ms.ToArray(), Does.PassTestArchive(password));
 		}
 
 		/// <summary>
@@ -502,10 +503,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				int extractCount = 0;
 				int extractIndex = 0;
-				ZipEntry entry;
+
 				byte[] decompressedData = new byte[100];
 
-				while ((entry = inStream.GetNextEntry()) != null)
+				while (inStream.GetNextEntry() != null)
 				{
 					extractCount = decompressedData.Length;
 					extractIndex = 0;
@@ -531,7 +532,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void BasicStoredEncrypted()
 		{
-			ExerciseZip(CompressionMethod.Stored, 0, 50000, "Rosebud", true);
+			ExerciseZip(CompressionMethod.Stored, compressionLevel: 0, size: 50000, "Rosebud", canSeek: true);
 		}
 
 		/// <summary>
@@ -542,7 +543,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void BasicStoredEncryptedNonSeekable()
 		{
-			ExerciseZip(CompressionMethod.Stored, 0, 50000, "Rosebud", false);
+			ExerciseZip(CompressionMethod.Stored, compressionLevel: 0, size: 50000, "Rosebud", canSeek: false);
 		}
 
 		/// <summary>

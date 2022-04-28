@@ -231,6 +231,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		ReservedPkware15 = 0x8000
 	}
+	
+	/// <summary>
+	/// Helpers for <see cref="GeneralBitFlags"/>
+	/// </summary>
+	public static class GeneralBitFlagsExtensions
+	{
+		/// <summary>
+		/// This is equivalent of <see cref="Enum.HasFlag"/> in .NET Core, but since the .NET FW
+		/// version is really slow (due to un-/boxing and reflection)  we use this wrapper.
+		/// </summary>
+		/// <param name="flagData"></param>
+		/// <param name="flag"></param>
+		/// <returns></returns>
+		public static bool Includes(this GeneralBitFlags flagData, GeneralBitFlags flag) => (flag & flagData) != 0;
+	}
 
 	#endregion Enumerations
 

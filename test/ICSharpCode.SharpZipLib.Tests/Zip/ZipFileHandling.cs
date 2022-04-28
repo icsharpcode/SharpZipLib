@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Does = ICSharpCode.SharpZipLib.Tests.TestSupport.Does;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -61,7 +62,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 				zipFile.CommitUpdate();
 
-				Assert.IsTrue(zipFile.TestArchive(true));
+				Assert.That(zipFile, Does.PassTestArchive());
 				Assert.AreEqual(target, zipFile.Count, "Incorrect number of entries stored");
 			}
 		}
@@ -80,7 +81,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				f.Add(m, "a.dat");
 				f.Add(m, "b.dat");
 				f.CommitUpdate();
-				Assert.IsTrue(f.TestArchive(true));
+				Assert.That(f, Does.PassTestArchive());
 			}
 
 			byte[] rawArchive = memStream.ToArray();
@@ -116,7 +117,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				f.Add(m, "a.dat");
 				f.Add(m, "b.dat");
 				f.CommitUpdate();
-				Assert.IsTrue(f.TestArchive(true));
+				Assert.That(f, Does.PassTestArchive());
 			}
 
 			byte[] rawArchive = memStream.ToArray();
@@ -211,7 +212,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					f.BeginUpdate(new MemoryArchiveStorage());
 					f.Add(m, "a.dat", CompressionMethod.Stored);
 					f.CommitUpdate();
-					Assert.IsTrue(f.TestArchive(true));
+					Assert.That(f, Does.PassTestArchive());
 				}
 
 				memStream.Seek(0, SeekOrigin.Begin);
@@ -367,7 +368,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			{
 				f.IsStreamOwner = false;
 				Assert.AreEqual(totalEntries, f.Count);
-				Assert.IsTrue(f.TestArchive(true));
+				Assert.That(f, Does.PassTestArchive());
 				f.BeginUpdate(new MemoryArchiveStorage());
 
 				for (int i = 0; i < additions; ++i)
@@ -401,7 +402,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			{
 				f.IsStreamOwner = false;
 				Assert.AreEqual(totalEntries, f.Count);
-				Assert.IsTrue(f.TestArchive(true));
+				Assert.That(f, Does.PassTestArchive());
 				f.BeginUpdate(new MemoryArchiveStorage());
 
 				for (int i = 0; i < additions; ++i)
@@ -445,7 +446,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				f.Add(new StringMemoryDataSource("Mr C"), @"c\c.dat");
 				f.Add(new StringMemoryDataSource("Mrs D was a star"), @"d\d.dat");
 				f.CommitUpdate();
-				Assert.IsTrue(f.TestArchive(true));
+				Assert.That(f, Does.PassTestArchive());
 				foreach (ZipEntry entry in f)
 				{
 					Console.WriteLine($" - {entry.Name}");
@@ -506,27 +507,27 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				f.Add(addFile2);
 				f.AddDirectory(addDirectory);
 				f.CommitUpdate();
-				Assert.IsTrue(f.TestArchive(true));
+				Assert.That(f, Does.PassTestArchive());
 			}
 
 			using (ZipFile f = new ZipFile(tempFile))
 			{
 				Assert.AreEqual(3, f.Count);
-				Assert.IsTrue(f.TestArchive(true));
+				Assert.That(f, Does.PassTestArchive());
 
 				// Delete file
 				f.BeginUpdate();
 				f.Delete(f[0]);
 				f.CommitUpdate();
 				Assert.AreEqual(2, f.Count);
-				Assert.IsTrue(f.TestArchive(true));
+				Assert.That(f, Does.PassTestArchive());
 
 				// Delete directory
 				f.BeginUpdate();
 				f.Delete(f[1]);
 				f.CommitUpdate();
 				Assert.AreEqual(1, f.Count);
-				Assert.IsTrue(f.TestArchive(true));
+				Assert.That(f, Does.PassTestArchive());
 			}
 
 			File.Delete(addFile);
@@ -632,7 +633,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					f.Add(addFile);
 					f.CommitUpdate();
 					Assert.AreEqual(1, f.Count);
-					Assert.IsTrue(f.TestArchive(true));
+					Assert.That(f, Does.PassTestArchive());
 				}
 
 				using (ZipFile f = new ZipFile(tempFile))
@@ -642,7 +643,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					f.Delete(f[0]);
 					f.CommitUpdate();
 					Assert.AreEqual(0, f.Count);
-					Assert.IsTrue(f.TestArchive(true));
+					Assert.That(f, Does.PassTestArchive());
 					f.Close();
 				}
 
@@ -667,7 +668,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			{
 				f.BeginUpdate();
 				f.CommitUpdate();
-				Assert.IsTrue(f.TestArchive(true));
+				Assert.That(f, Does.PassTestArchive());
 				f.Close();
 			}
 
@@ -692,7 +693,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				zf.BeginUpdate();
 				zf.Add(sourceFile, CompressionMethod.Stored);
 				zf.CommitUpdate();
-				Assert.IsTrue(zf.TestArchive(testData: true));
+				Assert.That(zf, Does.PassTestArchive());
 				zf.Close();
 			}
 
@@ -864,7 +865,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			using (ZipFile testFile = new ZipFile(ms))
 			{
-				Assert.IsTrue(testFile.TestArchive(true), "Unexpected error in archive detected");
+				Assert.That(testFile, Does.PassTestArchive(), "Unexpected error in archive detected");
 
 				byte[] corrupted = new byte[compressedData.Length];
 				Array.Copy(compressedData, corrupted, compressedData.Length);
@@ -875,7 +876,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			using (ZipFile testFile = new ZipFile(ms))
 			{
-				Assert.IsFalse(testFile.TestArchive(true), "Error in archive not detected");
+				Assert.That(testFile, Does.Not.PassTestArchive(), "Error in archive not detected");
 			}
 		}
 
@@ -889,7 +890,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			var ms2 = new MemoryStream(s.ToArray());
 			using (ZipFile zf = new ZipFile(ms2))
 			{
-				Assert.IsTrue(zf.TestArchive(true));
+				Assert.That(zf, Does.PassTestArchive());
 			}
 		}
 
@@ -913,10 +914,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			var ms2 = new MemoryStream(s.ToArray());
 			using (ZipFile zf = new ZipFile(ms2))
 			{
-				Assert.IsTrue(zf.TestArchive(true, TestStrategy.FindAllErrors, 
-					(status, message) => {
-						if (!string.IsNullOrWhiteSpace(message)) TestContext.Out.WriteLine(message);
-					}));
+				Assert.That(zf, Does.PassTestArchive());
 			}
 		}
 
@@ -945,7 +943,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				testFile.Add(new StringMemoryDataSource("No3"), "No3", CompressionMethod.Stored);
 				testFile.CommitUpdate();
 
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 				rawData = ms.ToArray();
 			}
 
@@ -953,14 +951,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			using (ZipFile testFile = new ZipFile(ms))
 			{
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 
 				testFile.BeginUpdate(new MemoryArchiveStorage(FileUpdateMode.Safe));
 				testFile.Password = "pwd";
 				testFile.Add(new StringMemoryDataSource("Zapata!"), "encrypttest.xml");
 				testFile.CommitUpdate();
 
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 
 				int entryIndex = testFile.FindEntry("encrypttest.xml", true);
 				Assert.IsNotNull(entryIndex >= 0);
@@ -983,12 +981,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				testFile.Add(new StringMemoryDataSource("No3"), "No3", CompressionMethod.Stored);
 				testFile.CommitUpdate();
 
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 			}
 
 			using (ZipFile testFile = new ZipFile(ms))
 			{
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 				testFile.IsStreamOwner = true;
 
 				testFile.BeginUpdate();
@@ -996,7 +994,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				testFile.Add(new StringMemoryDataSource("Zapata!"), "encrypttest.xml");
 				testFile.CommitUpdate();
 
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 
 				int entryIndex = testFile.FindEntry("encrypttest.xml", true);
 				Assert.IsNotNull(entryIndex >= 0);
@@ -1022,7 +1020,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 				f.CommitUpdate();
 
-				Assert.IsTrue(f.TestArchive(testData: true));
+				Assert.That(f, Does.PassTestArchive());
 			}
 			memStream.Seek(0, SeekOrigin.Begin);
 			using (var zf = new ZipFile(memStream))
@@ -1062,12 +1060,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				testFile.Add(new StringMemoryDataSource("No3"), "No3", CompressionMethod.Stored);
 				testFile.CommitUpdate();
 
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 			}
 
 			using (ZipFile testFile = new ZipFile(ms))
 			{
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 				Assert.AreEqual("", testFile.ZipFileComment);
 				testFile.IsStreamOwner = false;
 
@@ -1075,12 +1073,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				testFile.SetComment("Here is my comment");
 				testFile.CommitUpdate();
 
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 			}
 
 			using (ZipFile testFile = new ZipFile(ms))
 			{
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 				Assert.AreEqual("Here is my comment", testFile.ZipFileComment);
 			}
 		}
@@ -1107,24 +1105,24 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				testFile.Add(new StringMemoryDataSource("No3"), "No3", CompressionMethod.Stored);
 				testFile.CommitUpdate();
 
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 			}
 
 			using (ZipFile testFile = new ZipFile(tempFile))
 			{
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 				Assert.AreEqual("", testFile.ZipFileComment);
 
 				testFile.BeginUpdate(new DiskArchiveStorage(testFile, FileUpdateMode.Direct));
 				testFile.SetComment("Here is my comment");
 				testFile.CommitUpdate();
 
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 			}
 
 			using (ZipFile testFile = new ZipFile(tempFile))
 			{
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 				Assert.AreEqual("Here is my comment", testFile.ZipFileComment);
 			}
 			File.Delete(tempFile);
@@ -1138,24 +1136,24 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				testFile.Add(new StringMemoryDataSource("No3"), "No3", CompressionMethod.Stored);
 				testFile.CommitUpdate();
 
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 			}
 
 			using (ZipFile testFile = new ZipFile(tempFile))
 			{
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 				Assert.AreEqual("", testFile.ZipFileComment);
 
 				testFile.BeginUpdate();
 				testFile.SetComment("Here is my comment");
 				testFile.CommitUpdate();
 
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 			}
 
 			using (ZipFile testFile = new ZipFile(tempFile))
 			{
-				Assert.IsTrue(testFile.TestArchive(true));
+				Assert.That(testFile, Does.PassTestArchive());
 				Assert.AreEqual("Here is my comment", testFile.ZipFileComment);
 			}
 			File.Delete(tempFile);
@@ -1188,7 +1186,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 						  CompressionMethod.Deflated, true);
 				}
 				f.CommitUpdate();
-				Assert.IsTrue(f.TestArchive(true));
+				Assert.That(f, Does.PassTestArchive());
 
 				foreach (string name in names)
 				{
@@ -1238,7 +1236,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				using (ZipFile nested = new ZipFile(zipFile.GetInputStream(0)))
 				{
-					Assert.IsTrue(nested.TestArchive(true));
+					Assert.That(nested, Does.PassTestArchive());
 					Assert.AreEqual(1, nested.Count);
 
 					Stream nestedStream = nested.GetInputStream(0);
@@ -1628,7 +1626,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					var m2 = new StringMemoryDataSource("DeflateCompressed");
 					f.Add(m2, "b.dat", CompressionMethod.Deflated);
 					f.CommitUpdate();
-					Assert.IsTrue(f.TestArchive(true));
+					Assert.That(f, Does.PassTestArchive());
 				}
 
 				memStream.Seek(0, SeekOrigin.Begin);
@@ -1757,7 +1755,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 
 			var zipData = msw.ToArray();
-			Assert.IsTrue(ZipTesting.TestArchive(zipData));
+			Assert.That(zipData, Does.PassTestArchive());
 
 			using (var memoryStream = new MemoryStream(zipData))
 			{
@@ -1772,7 +1770,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				using (var zipFile = new ZipFile(memoryStream, leaveOpen: true))
 				{
-					Assert.That(zipFile.TestArchive(true), Is.True);
+					Assert.That(zipFile, Does.PassTestArchive());
 				}
 			}
 		}
@@ -1796,7 +1794,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 
 			var zipData = msw.ToArray();
-			Assert.IsTrue(ZipTesting.TestArchive(zipData));
+			Assert.That(zipData, Does.PassTestArchive());
 
 			using (var memoryStream = new MemoryStream())
 			{
@@ -1813,7 +1811,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				using (var zipFile = new ZipFile(memoryStream, leaveOpen: true))
 				{
-					Assert.That(zipFile.TestArchive(true), Is.True);
+					Assert.That(zipFile, Does.PassTestArchive());
 				}
 			}
 		}

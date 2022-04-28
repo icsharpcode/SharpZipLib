@@ -2,7 +2,6 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport

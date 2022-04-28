@@ -1,7 +1,9 @@
-using System;
 using ICSharpCode.SharpZipLib.Zip;
-using System.IO;
+using NUnit.Framework.Constraints;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
@@ -12,7 +14,13 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 	{
 		public static void AssertValidZip(Stream stream, string password = null, bool usesAes = true)
 		{
-			Assert.That(TestArchive(stream, password), "Archive did not pass ZipFile.TestArchive");
+			using var zipFile = new ZipFile(stream)
+			{
+				IsStreamOwner = false,
+				Password = password,
+			};
+			
+			Assert.That(zipFile, Does.PassTestArchive());
 
 			if (!string.IsNullOrEmpty(password) && usesAes)
 			{
@@ -30,37 +38,86 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 				}
 			}, "Archive could not be read by ZipInputStream");
 		}
+	}
 
-		/// <summary>
-		/// Tests the archive.
-		/// </summary>
-		/// <param name="data">The data.</param>
-		/// <param name="password">The password.</param>
-		/// <returns></returns>
-		public static bool TestArchive(byte[] data, string password = null)
+	public class TestArchiveReport
+	{
+		internal const string PassingArchive = "Passing Archive";
+		
+		readonly List<string> _messages = new List<string>();
+		public void HandleTestResults(TestStatus status, string message)
 		{
-			using var ms = new MemoryStream(data);
-			return TestArchive(new MemoryStream(data), password);
+			if (string.IsNullOrWhiteSpace(message)) return;
+			_messages.Add(message);
 		}
 
-		/// <summary>
-		/// Tests the archive.
-		/// </summary>
-		/// <param name="stream">The data.</param>
-		/// <param name="password">The password.</param>
-		/// <returns>true if archive tests ok; false otherwise.</returns>
-		public static bool TestArchive(Stream stream, string password = null)
+		public override string ToString() => _messages.Any() ? string.Join(", ", _messages) : PassingArchive;
+	}
+	
+	public class PassesTestArchiveConstraint : Constraint
+	{
+		private readonly string _password;
+		private readonly bool _testData;
+
+		public PassesTestArchiveConstraint(string password = null, bool testData = true)
 		{
-			using var zipFile = new ZipFile(stream)
-			{
-				IsStreamOwner = false,
-				Password = password,
-			};
-			
-			return zipFile.TestArchive(true, TestStrategy.FindAllErrors, (status, message) => 
-			{
-				if (!string.IsNullOrWhiteSpace(message)) TestContext.Out.WriteLine(message);
-			});
+			_password = password;
+			_testData = testData;
 		}
+
+		public override string Description => TestArchiveReport.PassingArchive;
+		
+		public override ConstraintResult ApplyTo<TActual>(TActual actual)
+		{
+			MemoryStream ms = null;
+			try
+			{
+				if (!(actual is ZipFile zipFile))
+				{
+					if (!(actual is byte[] rawArchive))
+					{
+						return new ConstraintResult(this, actual, ConstraintStatus.Failure);
+					}
+					
+					ms = new MemoryStream(rawArchive);
+					zipFile = new ZipFile(ms){Password = _password};
+				}
+
+				var report = new TestArchiveReport();
+
+				return new ConstraintResult(
+					this, report, zipFile.TestArchive(
+						_testData,
+						TestStrategy.FindAllErrors,
+						report.HandleTestResults
+					)
+					? ConstraintStatus.Success
+					: ConstraintStatus.Failure);
+			}
+			finally
+			{
+				ms?.Dispose();
+			}
+		}
+	}
+
+	public static class ZipTestingConstraintExtensions
+	{
+		public static IResolveConstraint PassTestArchive(this ConstraintExpression expression, string password = null, bool testData = true)
+		{
+			var constraint = new PassesTestArchiveConstraint(password, testData);
+			expression.Append(constraint);
+			return constraint;
+		}
+	}
+
+	/// <inheritdoc />
+	public class Does: NUnit.Framework.Does
+	{
+		public static IResolveConstraint PassTestArchive(string password = null, bool testData = true)
+			=> new PassesTestArchiveConstraint(password, testData);
+		
+		public static IResolveConstraint PassTestArchive(bool testData)
+			=> new PassesTestArchiveConstraint(password: null, testData);
 	}
 }

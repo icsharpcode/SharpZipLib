@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Does = ICSharpCode.SharpZipLib.Tests.TestSupport.Does;
 using TimeSetting = ICSharpCode.SharpZipLib.Zip.ZipEntryFactory.TimeSetting;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
@@ -40,7 +41,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					ZipEntry entry = zf[0];
 					Assert.AreEqual(tempName1, entry.Name);
 					Assert.AreEqual(1, entry.Size);
-					Assert.IsTrue(zf.TestArchive(true));
+					Assert.That(zf, Does.PassTestArchive());
 
 					zf.Close();
 				}
@@ -128,7 +129,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					var folderEntry = zipFile.GetEntry("floyd/");
 					Assert.That(folderEntry.IsDirectory, Is.True, "The entry must be a folder");
 
-					Assert.IsTrue(zipFile.TestArchive(testData: true));
+					Assert.That(zipFile, Does.PassTestArchive());
 				}
 			}
 		}
@@ -166,6 +167,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		public void Encryption(ZipEncryptionMethod encryptionMethod)
 		{
 			const string tempName1 = "a.dat";
+			const int tempSize = 1;
 
 			var target = new MemoryStream();
 
@@ -173,7 +175,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
 
 			string addFile = Path.Combine(tempFilePath, tempName1);
-			MakeTempFile(addFile, 1);
+			MakeTempFile(addFile, tempSize);
 
 			try
 			{
@@ -189,17 +191,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				using (ZipFile zf = new ZipFile(archive))
 				{
 					zf.Password = "Ahoy";
-					Assert.AreEqual(1, zf.Count);
-					ZipEntry entry = zf[0];
-					Assert.AreEqual(tempName1, entry.Name);
-					Assert.AreEqual(1, entry.Size);
-					Assert.IsTrue(zf.TestArchive(true, TestStrategy.FindFirstError, (status, message) =>
-					{
-						if(!string.IsNullOrEmpty(message)) {
-							Console.WriteLine($"{message} ({status.Entry?.Name ?? "-"})");
-						}
-					}));
-					Assert.IsTrue(entry.IsCrypted);
+					Assert.That(zf.Count, Is.EqualTo(1));
+					var entry = zf[0];
+					Assert.That(entry.Name, Is.EqualTo(tempName1));
+					Assert.That(entry.Size, Is.EqualTo(tempSize));
+					Assert.That(entry.IsCrypted);
+					
+					Assert.That(zf, Does.PassTestArchive());
 
 					switch (encryptionMethod)
 					{
@@ -363,6 +361,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		public void ReadingOfLockedDataFiles()
 		{
 			const string tempName1 = "a.dat";
+			const int tempSize = 1;
 
 			var target = new MemoryStream();
 
@@ -370,7 +369,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
 
 			string addFile = Path.Combine(tempFilePath, tempName1);
-			MakeTempFile(addFile, 1);
+			MakeTempFile(addFile, tempSize);
 
 			try
 			{
@@ -383,11 +382,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					var archive = new MemoryStream(target.ToArray());
 					using (ZipFile zf = new ZipFile(archive))
 					{
-						Assert.AreEqual(1, zf.Count);
-						ZipEntry entry = zf[0];
-						Assert.AreEqual(tempName1, entry.Name);
-						Assert.AreEqual(1, entry.Size);
-						Assert.IsTrue(zf.TestArchive(true));
+						Assert.That(zf.Count, Is.EqualTo(1));
+						var entry = zf[0];
+						Assert.That(entry.Name, Is.EqualTo(tempName1));
+						Assert.That(entry.Size, Is.EqualTo(tempSize));
+						Assert.That(zf, Does.PassTestArchive());
 
 						zf.Close();
 					}
@@ -404,6 +403,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		public void NonAsciiPasswords()
 		{
 			const string tempName1 = "a.dat";
+			const int tempSize = 1;
 
 			var target = new MemoryStream();
 
@@ -411,7 +411,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.IsNotNull(tempFilePath, "No permission to execute this test?");
 
 			string addFile = Path.Combine(tempFilePath, tempName1);
-			MakeTempFile(addFile, 1);
+			MakeTempFile(addFile, tempSize);
 
 			string password = "abc\u0066\u0393";
 			try
@@ -425,12 +425,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				using (ZipFile zf = new ZipFile(archive))
 				{
 					zf.Password = password;
-					Assert.AreEqual(1, zf.Count);
-					ZipEntry entry = zf[0];
-					Assert.AreEqual(tempName1, entry.Name);
-					Assert.AreEqual(1, entry.Size);
-					Assert.IsTrue(zf.TestArchive(true));
-					Assert.IsTrue(entry.IsCrypted);
+					Assert.That(zf.Count, Is.EqualTo(1));
+					var entry = zf[0];
+					Assert.That(entry.Name, Is.EqualTo(tempName1));
+					Assert.That(entry.Size, Is.EqualTo(tempSize));
+					Assert.That(zf, Does.PassTestArchive());
+					Assert.That(entry.IsCrypted);
 				}
 			}
 			finally
@@ -636,10 +636,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		public void CreateZipShouldLeaveOutputStreamOpenIfRequested(bool leaveOpen)
 		{
 			const string tempFileName = "a(2).dat";
+			const int tempSize = 16;
 
 			using var tempFolder = Utils.GetTempDir();
 			// Create test input file
-			tempFolder.CreateDummyFile(tempFileName, size: 16);
+			tempFolder.CreateDummyFile(tempFileName, tempSize);
 
 			// Create the zip with fast zip
 			var target = new TrackedMemoryStream();
@@ -653,11 +654,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			// Check that the file contents are correct in both cases
 			var archive = new MemoryStream(target.ToArray());
 			using var zf = new ZipFile(archive);
-			Assert.AreEqual(expected: 1, zf.Count);
+			Assert.That(zf.Count, Is.EqualTo(1));
 			var entry = zf[0];
-			Assert.AreEqual(tempFileName, entry.Name);
-			Assert.AreEqual(expected: 16, entry.Size);
-			Assert.IsTrue(zf.TestArchive(testData: true));
+			Assert.That(entry.Name, Is.EqualTo(tempFileName));
+			Assert.That(entry.Size, Is.EqualTo(tempSize));
+			Assert.That(zf, Does.PassTestArchive());
 		}
 
 		[Category("Zip")]
