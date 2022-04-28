@@ -1142,15 +1142,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 					size = localExtraData.ReadLong();
 					compressedSize = localExtraData.ReadLong();
 
-					if (localFlags.Includes(GeneralBitFlags.Descriptor))
+					if (localFlags.HasAny(GeneralBitFlags.Descriptor))
 					{
 						// These may be valid if patched later
-						if ((size != -1) && (size != entry.Size))
+						if ((size > 0) && (size != entry.Size))
 						{
 							throw new ZipException("Size invalid for descriptor");
 						}
 
-						if ((compressedSize != -1) && (compressedSize != entry.CompressedSize))
+						if ((compressedSize > 0) && (compressedSize != entry.CompressedSize))
 						{
 							throw new ZipException("Compressed size invalid for descriptor");
 						}
@@ -1181,9 +1181,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 							throw new ZipException($"Version required to extract this entry not supported ({extractVersion})");
 						}
 
-						const GeneralBitFlags notSupportedFlags = GeneralBitFlags.Patched | GeneralBitFlags.StrongEncryption |
-						                        GeneralBitFlags.EnhancedCompress | GeneralBitFlags.HeaderMasked;
-						if (localFlags.Includes(notSupportedFlags))
+						const GeneralBitFlags notSupportedFlags = GeneralBitFlags.Patched 
+																| GeneralBitFlags.StrongEncryption 
+																| GeneralBitFlags.EnhancedCompress 
+																| GeneralBitFlags.HeaderMasked;
+						if (localFlags.HasAny(notSupportedFlags))
 						{
 							throw new ZipException($"The library does not support the zip features required to extract this entry ({localFlags & notSupportedFlags:F})");
 						}
@@ -1215,21 +1217,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 					var localEncoding = _stringCodec.ZipInputEncoding(localFlags);
 
 					// Local entry flags dont have reserved bit set on.
-					if (localFlags.Includes(GeneralBitFlags.ReservedPKware4 | GeneralBitFlags.ReservedPkware14 | GeneralBitFlags.ReservedPkware15))
+					if (localFlags.HasAny(GeneralBitFlags.ReservedPKware4 | GeneralBitFlags.ReservedPkware14 | GeneralBitFlags.ReservedPkware15))
 					{
 						throw new ZipException("Reserved bit flags cannot be set.");
 					}
 
 					// Encryption requires extract version >= 20
-					if (localFlags.Includes(GeneralBitFlags.Encrypted) && extractVersion < 20)
+					if (localFlags.HasAny(GeneralBitFlags.Encrypted) && extractVersion < 20)
 					{
 						throw new ZipException($"Version required to extract this entry is too low for encryption ({extractVersion})");
 					}
 
 					// Strong encryption requires encryption flag to be set and extract version >= 50.
-					if (localFlags.Includes(GeneralBitFlags.StrongEncryption))
+					if (localFlags.HasAny(GeneralBitFlags.StrongEncryption))
 					{
-						if (!localFlags.Includes(GeneralBitFlags.Encrypted))
+						if (!localFlags.HasAny(GeneralBitFlags.Encrypted))
 						{
 							throw new ZipException("Strong encryption flag set but encryption flag is not set");
 						}
@@ -1241,13 +1243,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 
 					// Patched entries require extract version >= 27
-					if (localFlags.Includes(GeneralBitFlags.Patched) && extractVersion < 27)
+					if (localFlags.HasAny(GeneralBitFlags.Patched) && extractVersion < 27)
 					{
 						throw new ZipException($"Patched data requires higher version than ({extractVersion})");
 					}
 
 					// Central header flags match local entry flags.
-					if (!localFlags.Equals((GeneralBitFlags)entry.Flags))
+					if ((int)localFlags != entry.Flags)
 					{
 						throw new ZipException($"Central header/local header flags mismatch ({(GeneralBitFlags)entry.Flags:F} vs {localFlags:F})");
 					}
@@ -1264,7 +1266,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					}
 
 					// Strong encryption and extract version match
-					if (localFlags.Includes(GeneralBitFlags.StrongEncryption))
+					if (localFlags.HasAny(GeneralBitFlags.StrongEncryption))
 					{
 						if (extractVersion < 62)
 						{
@@ -1272,7 +1274,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						}
 					}
 
-					if (localFlags.Includes(GeneralBitFlags.HeaderMasked))
+					if (localFlags.HasAny(GeneralBitFlags.HeaderMasked))
 					{
 						if (fileTime != 0 || fileDate != 0)
 						{
@@ -1280,7 +1282,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						}
 					}
 
-					if (!localFlags.Includes(GeneralBitFlags.Descriptor))
+					if (!localFlags.HasAny(GeneralBitFlags.Descriptor))
 					{
 						if (crcValue != (uint)entry.Crc)
 						{
@@ -1350,7 +1352,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				// Size can be verified only if it is known in the local header.
 				// it will always be known in the central header.
-				if (!localFlags.Includes(GeneralBitFlags.Descriptor) ||
+				if (!localFlags.HasAny(GeneralBitFlags.Descriptor) ||
 					((size > 0 || compressedSize > 0) && entry.Size > 0))
 				{
 					if (size != 0 && size != entry.Size)
@@ -2504,7 +2506,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The descriptor size, zero if there isn't one.</returns>
 		private static int GetDescriptorSize(ZipUpdate update, bool includingSignature)
 		{
-			if (!((GeneralBitFlags)update.Entry.Flags).HasFlag(GeneralBitFlags.Descriptor)) 
+			if (!((GeneralBitFlags)update.Entry.Flags).HasAny(GeneralBitFlags.Descriptor)) 
 				return 0;
 			
 			var descriptorWithSignature = update.Entry.LocalHeaderRequiresZip64 
