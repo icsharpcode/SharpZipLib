@@ -111,11 +111,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				outStream.Close();
 			}
 
-			Assert.That(msw.ToArray(), Does.PassTestArchive());
+			var msBytes = msw.ToArray();
+			Assert.That(msBytes, Does.PassTestArchive());
 
-			msw.Position = 0;
-
-			using (var zis = new ZipInputStream(msw))
+			using (var zis = new ZipInputStream(new MemoryStream(msBytes)))
 			{
 				while (zis.GetNextEntry() != null)
 				{

@@ -177,13 +177,15 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		/// </summary>
 		/// <value></value>
 		/// <returns>true if the stream is open.</returns>
-		public override bool CanSeek
+		public override bool CanSeek => false;
+
+		/// <inheritdoc />
+		public override long Position
 		{
-			get
-			{
-				return false;
-			}
+			get => throw new NotSupportedException("Getting position is not supported");
+			set => throw new NotSupportedException("Setting position is not supported");
 		}
+
 	}
 
 	/// <summary>
