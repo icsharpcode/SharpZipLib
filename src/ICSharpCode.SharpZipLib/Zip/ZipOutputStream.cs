@@ -521,9 +521,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public async Task PutNextEntryAsync(ZipEntry entry, CancellationToken ct = default)
 		{
 			if (curEntry != null) await CloseEntryAsync(ct);
+			var position = CanPatchEntries ? baseOutputStream_.Position : -1; 
 			await baseOutputStream_.WriteProcToStreamAsync(s =>
 			{
-				PutNextEntry(s, entry, baseOutputStream_.Position);
+				PutNextEntry(s, entry, position);
 			}, ct);
 			
 			if (!entry.IsCrypted) return;
