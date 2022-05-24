@@ -126,18 +126,24 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
 		{
 			var buffer = Array.Empty<byte>();
-			if (inputCount > ZipAESStream.AUTH_CODE_LENGTH)
-			{
-				// At least one byte of data is preceeding the auth code
-				int finalBlock = inputCount - ZipAESStream.AUTH_CODE_LENGTH;
-				buffer = new byte[finalBlock];
-				TransformBlock(inputBuffer, inputOffset, finalBlock, buffer, 0);
-			}
-			else if (inputCount < ZipAESStream.AUTH_CODE_LENGTH)
-				throw new Zip.ZipException("Auth code missing from input stream");
 
-			// Read the authcode from the last 10 bytes
-			_authCode = _hmacsha1.GetHashAndReset();
+			// FIXME: When used together with `ZipAESStream`, the final block handling is done inside of it instead
+			// This should not be necessary anymore, and the entire `ZipAESStream` class should be replaced with a plain `CryptoStream`
+			if (inputCount != 0) {
+				if (inputCount > ZipAESStream.AUTH_CODE_LENGTH)
+				{
+					// At least one byte of data is preceeding the auth code
+					int finalBlock = inputCount - ZipAESStream.AUTH_CODE_LENGTH;
+					buffer = new byte[finalBlock];
+					TransformBlock(inputBuffer, inputOffset, finalBlock, buffer, 0);
+				}
+				else if (inputCount < ZipAESStream.AUTH_CODE_LENGTH)
+					throw new Zip.ZipException("Auth code missing from input stream");
+
+				// Read the authcode from the last 10 bytes
+				_authCode = _hmacsha1.GetHashAndReset();
+			}
+			
 
 			return buffer;
 		}
