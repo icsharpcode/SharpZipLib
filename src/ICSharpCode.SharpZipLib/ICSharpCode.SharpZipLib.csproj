@@ -33,8 +33,18 @@ Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.3.3 for mor
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
 	</ItemGroup>
-	 
-	 <ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+		<PackageReference Include="System.Memory" Version="4.5.4" />
+		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.2" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+		<PackageReference Include="System.Memory" Version="4.5.4" />
+		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.2" />
+	</ItemGroup>
+
+	<ItemGroup>
 	   <None Include="../../assets/sharpziplib-nuget-256x256.png">
       <Pack>True</Pack>
       <PackagePath>images</PackagePath>

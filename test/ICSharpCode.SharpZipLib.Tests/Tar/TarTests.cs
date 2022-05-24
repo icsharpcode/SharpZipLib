@@ -5,6 +5,8 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework.Internal;
 
 namespace ICSharpCode.SharpZipLib.Tests.Tar
@@ -110,12 +112,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					var offset = blockNumber % TarBuffer.BlockSize;
 					Assert.AreEqual(0, tarData[byteIndex],
 						"Trailing block data should be null iteration {0} block {1} offset {2}  index {3}",
-							factor, blockNumber, offset, byteIndex);
+						factor, blockNumber, offset, byteIndex);
 					byteIndex += 1;
 				}
 			}
 		}
-
+		
 		/// <summary>
 		/// Check that the tar trailer only contains nulls.
 		/// </summary>
@@ -843,7 +845,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		[TestCase(100, "shift-jis")]
 		[TestCase(128, "shift-jis")]
 		[Category("Tar")]
-		public void StreamWithJapaneseName(int length, string encodingName)
+		public async Task StreamWithJapaneseNameAsync(int length, string encodingName)
 		{
 			// U+3042 is Japanese Hiragana
 			// https://unicode.org/charts/PDF/U3040.pdf
@@ -859,13 +861,14 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					tarOutput.PutNextEntry(entry);
 					tarOutput.Write(data, 0, data.Length);
 				}
+
 				using(var memInput = new MemoryStream(memoryStream.ToArray()))
 				using(var inputStream = new TarInputStream(memInput, encoding))
 				{
 					var buf = new byte[64];
-					var entry = inputStream.GetNextEntry();
+					var entry = await inputStream.GetNextEntryAsync(CancellationToken.None);
 					Assert.AreEqual(entryName, entry.Name);
-					var bytesread = inputStream.Read(buf, 0, buf.Length);
+					var bytesread = await inputStream.ReadAsync(buf, 0, buf.Length, CancellationToken.None);
 					Assert.AreEqual(data.Length, bytesread);
 				}
 				File.WriteAllBytes(Path.Combine(Path.GetTempPath(), $"jpnametest_{length}_{encodingName}.tar"), memoryStream.ToArray());
