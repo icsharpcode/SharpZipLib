@@ -63,7 +63,6 @@ namespace ICSharpCode.SharpZipLib.Tar
 					
 					if (++state == END)
 					{
-						Console.WriteLine($"KEY: {headerParts[KEY]}");
 						if (!headers.ContainsKey(headerParts[KEY]))
 						{
 							headers.Add(headerParts[KEY], headerParts[VALUE]);
