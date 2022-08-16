@@ -883,36 +883,36 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		[Category("Tar")]
 		public void RootPathIsRespected()
 		{
-			using (var extractDirectory = new Utils.TempDir())
-			using (var tarFileName = new Utils.TempFile())
-			using (var tempDirectory = new Utils.TempDir())
+			using (var extractDirectory = new TempDir())
+			using (var tarFileName = new TempFile())
+			using (var tempDirectory = new TempDir())
 			{
 				tempDirectory.CreateDummyFile();
 
-				using (var tarFile = File.Open(tarFileName.Filename, FileMode.Create))
+				using (var tarFile = File.Open(tarFileName.FullName, FileMode.Create))
 				{
 					using (var tarOutputStream = TarArchive.CreateOutputTarArchive(tarFile))
 					{
-						tarOutputStream.RootPath = tempDirectory.Fullpath;
-						var entry = TarEntry.CreateEntryFromFile(tempDirectory.Fullpath);
+						tarOutputStream.RootPath = tempDirectory.FullName;
+						var entry = TarEntry.CreateEntryFromFile(tempDirectory.FullName);
 						tarOutputStream.WriteEntry(entry, true);
 					}
 				}
 
-				using (var file = File.OpenRead(tarFileName.Filename))
+				using (var file = File.OpenRead(tarFileName.FullName))
 				{
 					using (var archive = TarArchive.CreateInputTarArchive(file, Encoding.UTF8))
 					{
-						archive.ExtractContents(extractDirectory.Fullpath);
+						archive.ExtractContents(extractDirectory.FullName);
 					}
 				}
 
-				var expectationDirectory = new DirectoryInfo(tempDirectory.Fullpath);
+				var expectationDirectory = new DirectoryInfo(tempDirectory.FullName);
 				foreach (var checkFile in expectationDirectory.GetFiles("", SearchOption.AllDirectories))
 				{
 					var relativePath = checkFile.FullName.Substring(expectationDirectory.FullName.Length + 1);
-					FileAssert.Exists(Path.Combine(extractDirectory.Fullpath, relativePath));
-					FileAssert.AreEqual(checkFile.FullName, Path.Combine(extractDirectory.Fullpath, relativePath));
+					FileAssert.Exists(Path.Combine(extractDirectory.FullName, relativePath));
+					FileAssert.AreEqual(checkFile.FullName, Path.Combine(extractDirectory.FullName, relativePath));
 				}
 			}
 		}

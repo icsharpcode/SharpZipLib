@@ -659,7 +659,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 			string destFile = Path.Combine(destDir, name);
 			var destFileDir = Path.GetDirectoryName(Path.GetFullPath(destFile)) ?? "";
 
-			if (!allowParentTraversal && !destFileDir.StartsWith(destDir, StringComparison.InvariantCultureIgnoreCase))
+			var isRootDir = entry.IsDirectory && entry.Name == "";
+
+			if (!allowParentTraversal && !isRootDir && !destFileDir.StartsWith(destDir, StringComparison.InvariantCultureIgnoreCase))
 			{
 				throw new InvalidNameException("Parent traversal in paths is not allowed");
 			}
