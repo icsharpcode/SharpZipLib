@@ -36,7 +36,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <param name="original">If specified, used as the base file name for the temporary file</param>
 		/// <returns>Returns a temporary file name</returns>
-		public static string GetTempFileName(string original)
+		public static string GetTempFileName(string original = null)
 		{
 			string fileName;
 			var tempPath = Path.GetTempPath();

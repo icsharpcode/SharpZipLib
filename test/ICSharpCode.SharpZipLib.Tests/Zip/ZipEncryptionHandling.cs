@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using System.Threading.Tasks;
+using Does = ICSharpCode.SharpZipLib.Tests.TestSupport.Does;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -105,7 +106,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					}
 				}
 
-				Assert.That(zipFile.TestArchive(false), Is.True, "Encrypted archive should pass validation.");
+				Assert.That(zipFile, Does.PassTestArchive(testData: false), "Encrypted archive should pass validation.");
 			}
 		}
 

@@ -15,7 +15,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the ID for this tagged data value.
 		/// </summary>
-		short TagID { get; }
+		ushort TagID { get; }
 
 		/// <summary>
 		/// Set the contents of this instance from the data passed.
@@ -41,7 +41,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Initialise a new instance.
 		/// </summary>
 		/// <param name="tag">The tag ID.</param>
-		public RawTaggedData(short tag)
+		public RawTaggedData(ushort tag)
 		{
 			_tag = tag;
 		}
@@ -51,7 +51,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the ID for this tagged data value.
 		/// </summary>
-		public short TagID
+		public ushort TagID
 		{
 			get { return _tag; }
 			set { _tag = value; }
@@ -100,7 +100,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// The tag ID for this instance.
 		/// </summary>
-		private short _tag;
+		private ushort _tag;
 
 		private byte[] _data;
 
@@ -139,7 +139,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the ID
 		/// </summary>
-		public short TagID
+		public ushort TagID
 		{
 			get { return 0x5455; }
 		}
@@ -153,16 +153,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public void SetData(byte[] data, int index, int count)
 		{
 			using (MemoryStream ms = new MemoryStream(data, index, count, false))
-			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
 			{
 				// bit 0           if set, modification time is present
 				// bit 1           if set, access time is present
 				// bit 2           if set, creation time is present
 
-				_flags = (Flags)helperStream.ReadByte();
+				_flags = (Flags)ms.ReadByte();
 				if (((_flags & Flags.ModificationTime) != 0))
 				{
-					int iTime = helperStream.ReadLEInt();
+					int iTime = ms.ReadLEInt();
 
 					_modificationTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) +
 						new TimeSpan(0, 0, 0, iTime, 0);
@@ -173,7 +172,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				if ((_flags & Flags.AccessTime) != 0)
 				{
-					int iTime = helperStream.ReadLEInt();
+					int iTime = ms.ReadLEInt();
 
 					_lastAccessTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) +
 						new TimeSpan(0, 0, 0, iTime, 0);
@@ -181,7 +180,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				if ((_flags & Flags.CreateTime) != 0)
 				{
-					int iTime = helperStream.ReadLEInt();
+					int iTime = ms.ReadLEInt();
 
 					_createTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) +
 						new TimeSpan(0, 0, 0, iTime, 0);
@@ -196,27 +195,25 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public byte[] GetData()
 		{
 			using (MemoryStream ms = new MemoryStream())
-			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
 			{
-				helperStream.IsStreamOwner = false;
-				helperStream.WriteByte((byte)_flags);     // Flags
+				ms.WriteByte((byte)_flags);     // Flags
 				if ((_flags & Flags.ModificationTime) != 0)
 				{
 					TimeSpan span = _modificationTime - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 					var seconds = (int)span.TotalSeconds;
-					helperStream.WriteLEInt(seconds);
+					ms.WriteLEInt(seconds);
 				}
 				if ((_flags & Flags.AccessTime) != 0)
 				{
 					TimeSpan span = _lastAccessTime - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 					var seconds = (int)span.TotalSeconds;
-					helperStream.WriteLEInt(seconds);
+					ms.WriteLEInt(seconds);
 				}
 				if ((_flags & Flags.CreateTime) != 0)
 				{
 					TimeSpan span = _createTime - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 					var seconds = (int)span.TotalSeconds;
-					helperStream.WriteLEInt(seconds);
+					ms.WriteLEInt(seconds);
 				}
 				return ms.ToArray();
 			}
@@ -328,7 +325,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get the ID for this tagged data value.
 		/// </summary>
-		public short TagID
+		public ushort TagID
 		{
 			get { return 10; }
 		}
@@ -342,24 +339,23 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public void SetData(byte[] data, int index, int count)
 		{
 			using (MemoryStream ms = new MemoryStream(data, index, count, false))
-			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
 			{
-				helperStream.ReadLEInt(); // Reserved
-				while (helperStream.Position < helperStream.Length)
+				ms.ReadLEInt(); // Reserved
+				while (ms.Position < ms.Length)
 				{
-					int ntfsTag = helperStream.ReadLEShort();
-					int ntfsLength = helperStream.ReadLEShort();
+					int ntfsTag = ms.ReadLEShort();
+					int ntfsLength = ms.ReadLEShort();
 					if (ntfsTag == 1)
 					{
 						if (ntfsLength >= 24)
 						{
-							long lastModificationTicks = helperStream.ReadLELong();
+							long lastModificationTicks = ms.ReadLELong();
 							_lastModificationTime = DateTime.FromFileTimeUtc(lastModificationTicks);
 
-							long lastAccessTicks = helperStream.ReadLELong();
+							long lastAccessTicks = ms.ReadLELong();
 							_lastAccessTime = DateTime.FromFileTimeUtc(lastAccessTicks);
 
-							long createTimeTicks = helperStream.ReadLELong();
+							long createTimeTicks = ms.ReadLELong();
 							_createTime = DateTime.FromFileTimeUtc(createTimeTicks);
 						}
 						break;
@@ -367,7 +363,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					else
 					{
 						// An unknown NTFS tag so simply skip it.
-						helperStream.Seek(ntfsLength, SeekOrigin.Current);
+						ms.Seek(ntfsLength, SeekOrigin.Current);
 					}
 				}
 			}
@@ -380,15 +376,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public byte[] GetData()
 		{
 			using (MemoryStream ms = new MemoryStream())
-			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
 			{
-				helperStream.IsStreamOwner = false;
-				helperStream.WriteLEInt(0);       // Reserved
-				helperStream.WriteLEShort(1);     // Tag
-				helperStream.WriteLEShort(24);    // Length = 3 x 8.
-				helperStream.WriteLELong(_lastModificationTime.ToFileTimeUtc());
-				helperStream.WriteLELong(_lastAccessTime.ToFileTimeUtc());
-				helperStream.WriteLELong(_createTime.ToFileTimeUtc());
+				ms.WriteLEInt(0);       // Reserved
+				ms.WriteLEShort(1);     // Tag
+				ms.WriteLEShort(24);    // Length = 3 x 8.
+				ms.WriteLELong(_lastModificationTime.ToFileTimeUtc());
+				ms.WriteLELong(_lastAccessTime.ToFileTimeUtc());
+				ms.WriteLELong(_createTime.ToFileTimeUtc());
 				return ms.ToArray();
 			}
 		}

@@ -77,6 +77,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private CompressionMethod method;
 		private int flags;
 		private string password;
+		private readonly StringCodec _stringCodec = ZipStrings.GetStringCodec();
 
 		#endregion Instance Fields
 
@@ -203,9 +204,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			byte[] buffer = new byte[nameLen];
 			inputBuffer.ReadRawBuffer(buffer);
 
-			string name = ZipStrings.ConvertToStringExt(flags, buffer);
+			var entryEncoding = _stringCodec.ZipInputEncoding(flags);
+			string name = entryEncoding.GetString(buffer);
+			var unicode = entryEncoding.IsZipUnicode();
 
-			entry = new ZipEntry(name, versionRequiredToExtract, ZipConstants.VersionMadeBy, method)
+			entry = new ZipEntry(name, versionRequiredToExtract, ZipConstants.VersionMadeBy, method, unicode)
 			{
 				Flags = flags,
 			};
@@ -555,7 +558,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				// Generate and set crypto transform...
 				var managed = new PkzipClassicManaged();
-				byte[] key = PkzipClassic.GenerateKeys(ZipStrings.ConvertToArray(password));
+				byte[] key = PkzipClassic.GenerateKeys(_stringCodec.ZipCryptoEncoding.GetBytes(password));
 
 				inputBuffer.CryptoTransform = managed.CreateDecryptor(key, null);
 

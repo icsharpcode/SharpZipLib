@@ -1,12 +1,14 @@
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Core
 {
 	/// <summary>
 	/// Provides simple <see cref="Stream"/>" utilities.
 	/// </summary>
-	public sealed class StreamUtils
+	public static class StreamUtils
 	{
 		/// <summary>
 		/// Read from a <see cref="Stream"/> ensuring all the required data is read.
@@ -14,7 +16,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="stream">The stream to read.</param>
 		/// <param name="buffer">The buffer to fill.</param>
 		/// <seealso cref="ReadFully(Stream,byte[],int,int)"/>
-		static public void ReadFully(Stream stream, byte[] buffer)
+		public static void ReadFully(Stream stream, byte[] buffer)
 		{
 			ReadFully(stream, buffer, 0, buffer.Length);
 		}
@@ -29,7 +31,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <exception cref="ArgumentNullException">Required parameter is null</exception>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> and or <paramref name="count"/> are invalid.</exception>
 		/// <exception cref="EndOfStreamException">End of stream is encountered before all the data has been read.</exception>
-		static public void ReadFully(Stream stream, byte[] buffer, int offset, int count)
+		public static void ReadFully(Stream stream, byte[] buffer, int offset, int count)
 		{
 			if (stream == null)
 			{
@@ -73,7 +75,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="count">The number of bytes of data to store.</param>
 		/// <exception cref="ArgumentNullException">Required parameter is null</exception>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="offset"/> and or <paramref name="count"/> are invalid.</exception>
-		static public int ReadRequestedBytes(Stream stream, byte[] buffer, int offset, int count)
+		public static int ReadRequestedBytes(Stream stream, byte[] buffer, int offset, int count)
 		{
 			if (stream == null)
 			{
@@ -118,7 +120,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="source">The stream to source data from.</param>
 		/// <param name="destination">The stream to write data to.</param>
 		/// <param name="buffer">The buffer to use during copying.</param>
-		static public void Copy(Stream source, Stream destination, byte[] buffer)
+		public static void Copy(Stream source, Stream destination, byte[] buffer)
 		{
 			if (source == null)
 			{
@@ -169,7 +171,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="sender">The source for this event.</param>
 		/// <param name="name">The name to use with the event.</param>
 		/// <remarks>This form is specialised for use within #Zip to support events during archive operations.</remarks>
-		static public void Copy(Stream source, Stream destination,
+		public static void Copy(Stream source, Stream destination,
 			byte[] buffer, ProgressHandler progressHandler, TimeSpan updateInterval, object sender, string name)
 		{
 			Copy(source, destination, buffer, progressHandler, updateInterval, sender, name, -1);
@@ -188,7 +190,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="fixedTarget">A predetermined fixed target value to use with progress updates.
 		/// If the value is negative the target is calculated by looking at the stream.</param>
 		/// <remarks>This form is specialised for use within #Zip to support events during archive operations.</remarks>
-		static public void Copy(Stream source, Stream destination,
+		public static void Copy(Stream source, Stream destination,
 			byte[] buffer,
 			ProgressHandler progressHandler, TimeSpan updateInterval,
 			object sender, string name, long fixedTarget)
@@ -272,13 +274,22 @@ namespace ICSharpCode.SharpZipLib.Core
 				progressHandler(sender, args);
 			}
 		}
-
-		/// <summary>
-		/// Initialise an instance of <see cref="StreamUtils"></see>
-		/// </summary>
-		private StreamUtils()
+		
+		internal static async Task WriteProcToStreamAsync(this Stream targetStream, MemoryStream bufferStream, Action<Stream> writeProc, CancellationToken ct)
 		{
-			// Do nothing.
+			bufferStream.SetLength(0);
+			writeProc(bufferStream);
+			bufferStream.Position = 0;
+			await bufferStream.CopyToAsync(targetStream, 81920, ct);
+			bufferStream.SetLength(0);
+		}
+		
+		internal static async Task WriteProcToStreamAsync(this Stream targetStream, Action<Stream> writeProc, CancellationToken ct)
+		{
+			using (var ms = new MemoryStream())
+			{
+				await WriteProcToStreamAsync(targetStream, ms, writeProc, ct);
+			}
 		}
 	}
 }

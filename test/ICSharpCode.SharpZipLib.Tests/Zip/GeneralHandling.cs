@@ -1,5 +1,7 @@
-﻿using ICSharpCode.SharpZipLib.Tests.TestSupport;
+using ICSharpCode.SharpZipLib.Checksum;
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -7,6 +9,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Text;
+using Does = ICSharpCode.SharpZipLib.Tests.TestSupport.Does;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -381,7 +384,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					index += count;
 				}
 			}
-			Assert.IsTrue(ZipTesting.TestArchive(ms.ToArray()));
+			Assert.That(ms.ToArray(), Does.PassTestArchive());
 		}
 
 		[Test]
@@ -389,20 +392,20 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		public void StoredNonSeekableKnownSizeNoCrcEncrypted()
 		{
 			// This cant be stored directly as the crc is not known
-			const int TargetSize = 24692;
-			const string Password = "Mabutu";
+			const int targetSize = 24692;
+			const string password = "Mabutu";
 
 			MemoryStream ms = new MemoryStreamWithoutSeek();
 
 			using (ZipOutputStream outStream = new ZipOutputStream(ms))
 			{
-				outStream.Password = Password;
+				outStream.Password = password;
 				outStream.IsStreamOwner = false;
 				var entry = new ZipEntry("dummyfile.tst");
 				entry.CompressionMethod = CompressionMethod.Stored;
 
 				// The bit thats in question is setting the size before its added to the archive.
-				entry.Size = TargetSize;
+				entry.Size = targetSize;
 
 				outStream.PutNextEntry(entry);
 
@@ -411,7 +414,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				var rnd = new Random();
 
-				int size = TargetSize;
+				int size = targetSize;
 				byte[] original = new byte[size];
 				rnd.NextBytes(original);
 
@@ -427,7 +430,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					index += count;
 				}
 			}
-			Assert.IsTrue(ZipTesting.TestArchive(ms.ToArray(), Password));
+			Assert.That(ms.ToArray(), Does.PassTestArchive(password));
 		}
 
 		/// <summary>
@@ -500,10 +503,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				int extractCount = 0;
 				int extractIndex = 0;
-				ZipEntry entry;
+
 				byte[] decompressedData = new byte[100];
 
-				while ((entry = inStream.GetNextEntry()) != null)
+				while (inStream.GetNextEntry() != null)
 				{
 					extractCount = decompressedData.Length;
 					extractIndex = 0;
@@ -529,7 +532,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void BasicStoredEncrypted()
 		{
-			ExerciseZip(CompressionMethod.Stored, 0, 50000, "Rosebud", true);
+			ExerciseZip(CompressionMethod.Stored, compressionLevel: 0, size: 50000, "Rosebud", canSeek: true);
 		}
 
 		/// <summary>
@@ -540,7 +543,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void BasicStoredEncryptedNonSeekable()
 		{
-			ExerciseZip(CompressionMethod.Stored, 0, 50000, "Rosebud", false);
+			ExerciseZip(CompressionMethod.Stored, compressionLevel: 0, size: 50000, "Rosebud", canSeek: false);
 		}
 
 		/// <summary>
@@ -856,20 +859,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			return result;
 		}
 
-		private void CheckNameConversion(string toCheck)
-		{
-			byte[] intermediate = ZipStrings.ConvertToArray(toCheck);
-			string final = ZipStrings.ConvertToString(intermediate);
-
-			Assert.AreEqual(toCheck, final, "Expected identical result");
-		}
-
 		[Test]
 		[Category("Zip")]
-		public void NameConversion()
+		[TestCase("Hello")]
+		[TestCase("a/b/c/d/e/f/g/h/SomethingLikeAnArchiveName.txt")]
+		public void LegacyNameConversion(string name)
 		{
-			CheckNameConversion("Hello");
-			CheckNameConversion("a/b/c/d/e/f/g/h/SomethingLikeAnArchiveName.txt");
+			var encoding = new StringCodec().ZipEncoding(false);
+			byte[] intermediate = encoding.GetBytes(name);
+			string final = encoding.GetString(intermediate);
+
+			Assert.AreEqual(name, final, "Expected identical result");
 		}
 
 		[Test]
@@ -878,22 +878,22 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-			ZipStrings.CodePage = 850;
+			var codec = new StringCodec() {CodePage = 850};
 			string sample = "Hello world";
 
 			byte[] rawData = Encoding.ASCII.GetBytes(sample);
 
-			string converted = ZipStrings.ConvertToStringExt(0, rawData);
+			var converted = codec.ZipInputEncoding(0).GetString(rawData);
 			Assert.AreEqual(sample, converted);
 
-			converted = ZipStrings.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
+			converted = codec.ZipInputEncoding((int)GeneralBitFlags.UnicodeText).GetString(rawData);
 			Assert.AreEqual(sample, converted);
 
 			// This time use some greek characters
 			sample = "\u03A5\u03d5\u03a3";
 			rawData = Encoding.UTF8.GetBytes(sample);
 
-			converted = ZipStrings.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
+			converted = codec.ZipInputEncoding((int)GeneralBitFlags.UnicodeText).GetString(rawData);
 			Assert.AreEqual(sample, converted);
 		}
 
