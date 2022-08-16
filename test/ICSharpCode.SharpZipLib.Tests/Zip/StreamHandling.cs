@@ -3,7 +3,10 @@ using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Text;
 using Does = ICSharpCode.SharpZipLib.Tests.TestSupport.Does;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
@@ -14,6 +17,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	[TestFixture]
 	public class StreamHandling : ZipBase
 	{
+		private TestTraceListener Listener;
+		[SetUp]
+		public void Init() => Trace.Listeners.Add(Listener = new TestTraceListener(TestContext.Out));
+		[TearDown]
+		public void Deinit() => Trace.Listeners.Remove(Listener);
+
 		private void MustFailRead(Stream s, byte[] buffer, int offset, int count)
 		{
 			bool exception = false;
@@ -538,6 +547,43 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				{
 					zis.Read(buf, 0, buf.Length);
 				});
+			}
+		}
+		
+		[Test]
+		[Category("Zip")]
+		public void IteratingOverEntriesInDirectUpdatedArchive([Values(0x0, 0x80)] byte padding)
+		{
+			using (var tempFile = new TempFile())
+			{
+				using (var zf = ZipFile.Create(tempFile))
+				{
+					zf.BeginUpdate();
+					// Add a "large" file, where the bottom 1023 bytes will become padding
+					var contentsAndPadding = Enumerable.Repeat(padding, count: 1024).ToArray();
+					zf.Add(new MemoryDataSource(contentsAndPadding), "FirstFile", CompressionMethod.Stored);
+					// Add a second file after the first one
+					zf.Add(new StringMemoryDataSource("fileContents"), "SecondFile", CompressionMethod.Stored);
+					zf.CommitUpdate();
+				}
+
+				// Since ZipFile doesn't support UpdateCommand.Modify yet we'll have to simulate it by patching the header
+				Utils.PatchFirstEntrySize(tempFile.Open(FileMode.Open), 1);
+
+				// Iterate updated entries
+				using (var fs = File.OpenRead(tempFile))
+				using (var zis = new ZipInputStream(fs))
+				{
+					var firstEntry = zis.GetNextEntry();
+					Assert.NotNull(firstEntry);
+					Assert.AreEqual(1, firstEntry.CompressedSize);
+					Assert.AreEqual(1, firstEntry.Size);
+					
+					var secondEntry = zis.GetNextEntry();
+					Assert.NotNull(secondEntry, "Zip entry following padding not found");
+					var contents = new StreamReader(zis, Encoding.UTF8, false, 128, true).ReadToEnd();
+					Assert.AreEqual("fileContents", contents);
+				}
 			}
 		}
 	}

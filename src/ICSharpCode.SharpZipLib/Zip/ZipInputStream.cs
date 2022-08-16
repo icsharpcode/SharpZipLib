@@ -3,6 +3,7 @@ using ICSharpCode.SharpZipLib.Encryption;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace ICSharpCode.SharpZipLib.Zip
@@ -181,29 +182,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 				CloseEntry();
 			}
 
-			int header = inputBuffer.ReadLeInt();
-
-			if (header == ZipConstants.CentralHeaderSignature ||
-				header == ZipConstants.EndOfCentralDirectorySignature ||
-				header == ZipConstants.CentralHeaderDigitalSignature ||
-				header == ZipConstants.ArchiveExtraDataSignature ||
-				header == ZipConstants.Zip64CentralFileHeaderSignature)
+			if (!SkipUntilNextEntry())
 			{
-				// No more individual entries exist
 				Dispose();
 				return null;
-			}
-
-			// -jr- 07-Dec-2003 Ignore spanning temporary signatures if found
-			// Spanning signature is same as descriptor signature and is untested as yet.
-			if ((header == ZipConstants.SpanningTempSignature) || (header == ZipConstants.SpanningSignature))
-			{
-				header = inputBuffer.ReadLeInt();
-			}
-
-			if (header != ZipConstants.LocalHeaderSignature)
-			{
-				throw new ZipException("Wrong Local header signature: 0x" + String.Format("{0:X}", header));
 			}
 
 			var versionRequiredToExtract = (short)inputBuffer.ReadLeShort();
@@ -304,6 +286,54 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Reads bytes from the input stream until either a local file header signature, or another signature
+		/// indicating that no more entries should be present, is found.
+		/// </summary>
+		/// <exception cref="ZipException">Thrown if the end of the input stream is reached without any signatures found</exception>
+		/// <returns>Returns whether the found signature is for a local entry header</returns>
+		private bool SkipUntilNextEntry()
+		{
+			// First let's skip all null bytes since it's the sane padding to add when updating an entry with smaller size
+			var paddingSkipped = 0;
+			while(inputBuffer.ReadLeByte() == 0) {
+				paddingSkipped++;
+			}
+			
+			// Last byte read was not actually consumed, restore the offset
+			inputBuffer.Available += 1;
+			if(paddingSkipped > 0) {
+				Debug.WriteLine("Skipped {0} null byte(s) before reading signature", paddingSkipped);
+			}
+			
+			var offset = 0;
+			// Read initial header quad directly after the last entry
+			var header = (uint)inputBuffer.ReadLeInt();
+			do
+			{
+				switch (header)
+				{
+					case ZipConstants.CentralHeaderSignature:
+					case ZipConstants.EndOfCentralDirectorySignature:
+					case ZipConstants.CentralHeaderDigitalSignature:
+					case ZipConstants.ArchiveExtraDataSignature:
+					case ZipConstants.Zip64CentralFileHeaderSignature:
+						Debug.WriteLine("Non-entry signature found at offset {0,2}: 0x{1:x8}", offset, header);
+						// No more individual entries exist
+						return false;
+
+					case ZipConstants.LocalHeaderSignature:
+						Debug.WriteLine("Entry local header signature found at offset {0,2}: 0x{1:x8}", offset, header);
+						return true;
+					default:
+						// Current header quad did not match any signature, shift in another byte
+						header = (uint) (inputBuffer.ReadLeByte() << 24) | (header >> 8);
+						offset++;
+						break;
+				}
+			} while (true); // Loop until we either get an EOF exception or we find the next signature
+		}
+
+		/// <summary>
 		/// Read data descriptor at the end of compressed data.
 		/// </summary>
 		private void ReadDataDescriptor()
@@ -400,6 +430,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			if ((inputBuffer.Available > csize) && (csize >= 0))
 			{
+				// Buffer can contain entire entry data. Internally offsetting position inside buffer
 				inputBuffer.Available = (int)((long)inputBuffer.Available - csize);
 			}
 			else
