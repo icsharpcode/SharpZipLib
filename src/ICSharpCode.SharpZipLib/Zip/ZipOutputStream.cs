@@ -723,7 +723,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			InitializeZipCryptoPassword(Password);
 
 			byte[] cryptBuffer = new byte[ZipConstants.CryptoHeaderSize];
-			using (var rng = new RNGCryptoServiceProvider())
+			using (var rng = RandomNumberGenerator.Create())
 			{
 				rng.GetBytes(cryptBuffer);
 			}
@@ -808,11 +808,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private void CopyAndEncrypt(byte[] buffer, int offset, int count)
 		{
-			const int CopyBufferSize = 4096;
-			byte[] localBuffer = new byte[CopyBufferSize];
+			const int copyBufferSize = 4096;
+			byte[] localBuffer = new byte[copyBufferSize];
 			while (count > 0)
 			{
-				int bufferCount = (count < CopyBufferSize) ? count : CopyBufferSize;
+				int bufferCount = (count < copyBufferSize) ? count : copyBufferSize;
 
 				Array.Copy(buffer, offset, localBuffer, 0, bufferCount);
 				EncryptBlock(localBuffer, 0, bufferCount);
