@@ -372,15 +372,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 						}
 			*/
 
-			name = name.Replace(Path.DirectorySeparatorChar, '/');
-
 			// No absolute pathnames
 			// Windows (and Posix?) paths can start with UNC style "\\NetworkDrive\",
 			// so we loop on starting /'s.
-			while (name.StartsWith("/", StringComparison.Ordinal))
-			{
-				name = name.Substring(1);
-			}
+			name = name.ToTarArchivePath();
 
 			header.LinkName = String.Empty;
 			header.Name = name;
