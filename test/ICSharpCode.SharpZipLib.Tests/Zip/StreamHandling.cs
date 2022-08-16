@@ -554,11 +554,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void IteratingOverEntriesInDirectUpdatedArchive([Values(0x0, 0x80)] byte padding)
 		{
-			using (var tempFile = new Utils.TempFile())
+			using (var tempFile = new TempFile())
 			{
-				var fi = new FileInfo(tempFile.Filename);
-				
-				using (var zf = ZipFile.Create(tempFile.Filename))
+				using (var zf = ZipFile.Create(tempFile))
 				{
 					zf.BeginUpdate();
 					// Add a "large" file, where the bottom 1023 bytes will become padding
@@ -570,10 +568,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 
 				// Since ZipFile doesn't support UpdateCommand.Modify yet we'll have to simulate it by patching the header
-				Utils.PatchFirstEntrySize(fi.Open(FileMode.Open), 1);
+				Utils.PatchFirstEntrySize(tempFile.Open(FileMode.Open), 1);
 
 				// Iterate updated entries
-				using (var fs = File.OpenRead(tempFile.Filename))
+				using (var fs = File.OpenRead(tempFile))
 				using (var zis = new ZipInputStream(fs))
 				{
 					var firstEntry = zis.GetNextEntry();

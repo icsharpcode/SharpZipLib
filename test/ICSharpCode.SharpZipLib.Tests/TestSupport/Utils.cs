@@ -145,7 +145,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		public override void WriteLine(string message) => _writer.WriteLine(message);
 		public override void Write(string message) => _writer.Write(message);
-  }
+	}
 	
 	public class TempFile : FileSystemInfo, IDisposable
 	{
@@ -167,6 +167,8 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			_fileInfo.Delete();
 	    }
 
+		public FileStream Open(FileMode mode, FileAccess access) => _fileInfo.Open(mode, access);
+		public FileStream Open(FileMode mode) => _fileInfo.Open(mode);
 		public FileStream Create() => _fileInfo.Create();
 
 	    public static TempFile WithDummyData(int size, string dirPath = null, string filename = null, int seed = Utils.DefaultSeed)
