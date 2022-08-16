@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Security;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Tests.Base
@@ -16,6 +17,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 	[TestFixture]
 	public class InflaterDeflaterTestSuite
 	{
+		// Use the same random seed to guarantee all the code paths are followed
+		const int RandomSeed = 5;
+		
 		private void Inflate(MemoryStream ms, byte[] original, int level, bool zlib)
 		{
 			byte[] buf2 = new byte[original.Length];
@@ -57,20 +61,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 			return memoryStream;
 		}
 
-		private static byte[] GetRandomTestData(int size)
-		{
-			byte[] buffer = new byte[size];
-			var rnd = new Random();
-			rnd.NextBytes(buffer);
-
-			return buffer;
-		}
-
 		private void RandomDeflateInflate(int size, int level, bool zlib)
 		{
-			byte[] buffer = GetRandomTestData(size);
-
-			MemoryStream ms = Deflate(buffer, level, zlib);
+			var buffer =  Utils.GetDummyBytes(size, RandomSeed);
+			var ms = Deflate(buffer, level, zlib);
 			Inflate(ms, buffer, level, zlib);
 		}
 		
@@ -120,16 +114,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 				outStream.IsStreamOwner = false;
 				await outStream.WriteAsync(data, 0, data.Length);
 				await outStream.FlushAsync();
-				outStream.Finish();
+				await outStream.FinishAsync(CancellationToken.None);
 			}
 			return memoryStream;
 		}
 		
 		private async Task RandomDeflateInflateAsync(int size, int level, bool zlib)
 		{
-			byte[] buffer = GetRandomTestData(size);
-
-			MemoryStream ms = await DeflateAsync(buffer, level, zlib);
+			var buffer = Utils.GetDummyBytes(size, RandomSeed);
+			var ms = await DeflateAsync(buffer, level, zlib);
 			await InflateAsync(ms, buffer, level, zlib);
 		}
 		
@@ -176,24 +169,21 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 		[Category("Async")]
 		public async Task InflateDeflateZlibAsync([Range(0, 9)] int level)
 		{
-			await RandomDeflateInflateAsync(100000, level, true);
+			await RandomDeflateInflateAsync(size: 100000, level, zlib: true);
 		}
 
 		private delegate void RunCompress(byte[] buffer);
 
-		private int runLevel;
-		private bool runZlib;
-		private long runCount;
-		private readonly Random runRandom = new Random(5);
+		private int _runLevel;
+		private bool _runZlib;
 
 		private void DeflateAndInflate(byte[] buffer)
 		{
-			++runCount;
-			MemoryStream ms = Deflate(buffer, runLevel, runZlib);
-			Inflate(ms, buffer, runLevel, runZlib);
+			var ms = Deflate(buffer, _runLevel, _runZlib);
+			Inflate(ms, buffer, _runLevel, _runZlib);
 		}
 
-		private void TryVariants(RunCompress test, byte[] buffer, int index)
+		private void TryVariants(RunCompress test, byte[] buffer, Random random, int index)
 		{
 			int worker = 0;
 			while (worker <= 255)
@@ -201,33 +191,34 @@ namespace ICSharpCode.SharpZipLib.Tests.Base
 				buffer[index] = (byte)worker;
 				if (index < buffer.Length - 1)
 				{
-					TryVariants(test, buffer, index + 1);
+					TryVariants(test, buffer, random, index + 1);
 				}
 				else
 				{
 					test(buffer);
 				}
 
-				worker += runRandom.Next(256);
+				worker += random.Next(maxValue: 256);
 			}
 		}
 
 		private void TryManyVariants(int level, bool zlib, RunCompress test, byte[] buffer)
 		{
-			runLevel = level;
-			runZlib = zlib;
-			TryVariants(test, buffer, 0);
+			var random = new Random(RandomSeed);
+			_runLevel = level;
+			_runZlib = zlib;
+			TryVariants(test, buffer, random, 0);
 		}
 
 		// TODO: Fix this
-		//[Test]
-		//[Category("Base")]
-		//public void SmallBlocks()
-		//{
-		//	byte[] buffer = new byte[10];
-		//	Array.Clear(buffer, 0, buffer.Length);
-		//	TryManyVariants(0, false, new RunCompress(DeflateAndInflate), buffer);
-		//}
+		[Test]
+		[Category("Base")]
+		[Explicit("Long-running")]
+		public void SmallBlocks()
+		{
+			var buffer = new byte[10];
+			TryManyVariants(level: 0, zlib: false, DeflateAndInflate, buffer);
+		}
 
 		/// <summary>
 		/// Basic inflate/deflate test

@@ -68,7 +68,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public ZipEntryFactory()
 		{
 			nameTransform_ = new ZipNameTransform();
-			isUnicodeText_ = ZipStrings.UseUnicode;
+			isUnicodeText_ = true;
 		}
 
 		/// <summary>
@@ -162,7 +162,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
-		/// Get set a value indicating whether unidoce text should be set on.
+		/// Get set a value indicating whether unicode text should be set on.
 		/// </summary>
 		public bool IsUnicodeText
 		{
@@ -364,7 +364,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private INameTransform nameTransform_;
 		private DateTime fixedDateTime_ = DateTime.Now;
-		private TimeSetting timeSetting_;
+		private TimeSetting timeSetting_ = TimeSetting.LastWriteTime;
 		private bool isUnicodeText_;
 
 		private int getAttributes_ = -1;

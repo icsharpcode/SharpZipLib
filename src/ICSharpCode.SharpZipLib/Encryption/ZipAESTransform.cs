@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Encryption
 {
@@ -75,7 +76,11 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			_encrPos = ENCRYPT_BLOCK;
 
 			// Performs the equivalent of derive_key in Dr Brian Gladman's pwd2key.c
+#if NET472_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER
+			var pdb = new Rfc2898DeriveBytes(key, saltBytes, KEY_ROUNDS, HashAlgorithmName.SHA1);
+#else
 			var pdb = new Rfc2898DeriveBytes(key, saltBytes, KEY_ROUNDS);
+#endif
 			var rm = Aes.Create();
 			rm.Mode = CipherMode.ECB;           // No feedback from cipher for CTR mode
 			_counterNonce = new byte[_blockSize];
@@ -159,11 +164,11 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// </summary>
 		public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
 		{
-			if(inputCount > 0)
+			if (inputCount > 0)
 			{
 				throw new NotImplementedException("TransformFinalBlock is not implemented and inputCount is greater than 0");
 			}
-			return new byte[0];
+			return Empty.Array<byte>();
 		}
 
 		/// <summary>

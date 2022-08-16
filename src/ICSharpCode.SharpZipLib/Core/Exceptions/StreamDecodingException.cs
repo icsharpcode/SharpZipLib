@@ -4,8 +4,8 @@ using System.Runtime.Serialization;
 namespace ICSharpCode.SharpZipLib
 {
 	/// <summary>
-	/// Indicates that an error occured during decoding of a input stream due to corrupt
-	/// data or (unintentional) library incompability.
+	/// Indicates that an error occurred during decoding of a input stream due to corrupt
+	/// data or (unintentional) library incompatibility.
 	/// </summary>
 	[Serializable]
 	public class StreamDecodingException : SharpZipBaseException

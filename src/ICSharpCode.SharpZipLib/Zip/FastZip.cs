@@ -3,6 +3,7 @@ using ICSharpCode.SharpZipLib.Zip.Compression;
 using System;
 using System.IO;
 using static ICSharpCode.SharpZipLib.Zip.Compression.Deflater;
+using static ICSharpCode.SharpZipLib.Zip.ZipEntryFactory;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -196,6 +197,29 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Initialise a new instance of <see cref="FastZip"/> using the specified <see cref="TimeSetting"/>
+		/// </summary>
+		/// <param name="timeSetting">The <see cref="TimeSetting">time setting</see> to use when creating or extracting <see cref="ZipEntry">Zip entries</see>.</param>
+		/// <remarks>Using <see cref="TimeSetting.LastAccessTime">TimeSetting.LastAccessTime</see><see cref="TimeSetting.LastAccessTimeUtc">[Utc]</see> when
+		/// creating an archive will set the file time to the moment of reading.
+		/// </remarks>
+		public FastZip(TimeSetting timeSetting)
+		{
+			entryFactory_ = new ZipEntryFactory(timeSetting);
+			restoreDateTimeOnExtract_ = true;
+		}
+
+		/// <summary>
+		/// Initialise a new instance of <see cref="FastZip"/> using the specified <see cref="DateTime"/>
+		/// </summary>
+		/// <param name="time">The time to set all <see cref="ZipEntry.DateTime"/> values for created or extracted <see cref="ZipEntry">Zip Entries</see>.</param>
+		public FastZip(DateTime time)
+		{
+			entryFactory_ = new ZipEntryFactory(time);
+			restoreDateTimeOnExtract_ = true;
+		}
+
+		/// <summary>
 		/// Initialise a new instance of <see cref="FastZip"/>
 		/// </summary>
 		/// <param name="events">The <see cref="FastZipEvents">events</see> to use during operations.</param>
@@ -321,6 +345,29 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set { compressionLevel_ = value; }
 		}
 
+		/// <summary>
+		/// Reflects the opposite of the internal <see cref="StringCodec.ForceZipLegacyEncoding"/>, setting it to <c>false</c> overrides the encoding used for reading and writing zip entries
+		/// </summary>
+		public bool UseUnicode
+		{
+			get => !_stringCodec.ForceZipLegacyEncoding;
+			set => _stringCodec.ForceZipLegacyEncoding = !value;
+		}
+
+		/// <summary> Gets or sets the code page used for reading/writing zip file entries when unicode is disabled </summary>
+		public int LegacyCodePage
+		{
+			get => _stringCodec.CodePage;
+			set => _stringCodec.CodePage = value;
+		}
+		
+		/// <inheritdoc cref="StringCodec"/>
+		public StringCodec StringCodec
+		{
+			get => _stringCodec;
+			set => _stringCodec = value;
+		}
+
 		#endregion Properties
 
 		#region Delegates
@@ -432,7 +479,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			NameTransform = new ZipNameTransform(sourceDirectory);
 			sourceDirectory_ = sourceDirectory;
 
-			using (outputStream_ = new ZipOutputStream(outputStream))
+			using (outputStream_ = new ZipOutputStream(outputStream, _stringCodec))
 			{
 				outputStream_.SetLevel((int)CompressionLevel);
 				outputStream_.IsStreamOwner = !leaveOpen;
@@ -607,6 +654,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 					using (FileStream stream = File.Open(e.Name, FileMode.Open, FileAccess.Read, FileShare.Read))
 					{
 						ZipEntry entry = entryFactory_.MakeFileEntry(e.Name);
+						if (_stringCodec.ForceZipLegacyEncoding)
+						{
+							entry.IsUnicodeText = false;
+						}
 
 						// Set up AES encryption for the entry if required.
 						ConfigureEntryEncryption(entry);
@@ -735,7 +786,39 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 						if (restoreDateTimeOnExtract_)
 						{
-							File.SetLastWriteTime(targetName, entry.DateTime);
+							switch (entryFactory_.Setting)
+							{
+								case TimeSetting.CreateTime:
+									File.SetCreationTime(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.CreateTimeUtc:
+									File.SetCreationTimeUtc(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.LastAccessTime:
+									File.SetLastAccessTime(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.LastAccessTimeUtc:
+									File.SetLastAccessTimeUtc(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.LastWriteTime:
+									File.SetLastWriteTime(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.LastWriteTimeUtc:
+									File.SetLastWriteTimeUtc(targetName, entry.DateTime);
+									break;
+
+								case TimeSetting.Fixed:
+									File.SetLastWriteTime(targetName, entryFactory_.FixedDateTime);
+									break;
+
+								default:
+									throw new ZipException("Unhandled time setting in ExtractFileEntry");
+							}
 						}
 
 						if (RestoreAttributesOnExtract && entry.IsDOSEntry && (entry.ExternalFileAttributes != -1))
@@ -809,7 +892,39 @@ namespace ICSharpCode.SharpZipLib.Zip
 							Directory.CreateDirectory(dirName);
 							if (entry.IsDirectory && restoreDateTimeOnExtract_)
 							{
-								Directory.SetLastWriteTime(dirName, entry.DateTime);
+								switch (entryFactory_.Setting)
+								{
+									case TimeSetting.CreateTime:
+										Directory.SetCreationTime(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.CreateTimeUtc:
+										Directory.SetCreationTimeUtc(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.LastAccessTime:
+										Directory.SetLastAccessTime(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.LastAccessTimeUtc:
+										Directory.SetLastAccessTimeUtc(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.LastWriteTime:
+										Directory.SetLastWriteTime(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.LastWriteTimeUtc:
+										Directory.SetLastWriteTimeUtc(dirName, entry.DateTime);
+										break;
+
+									case TimeSetting.Fixed:
+										Directory.SetLastWriteTime(dirName, entryFactory_.FixedDateTime);
+										break;
+
+									default:
+										throw new ZipException("Unhandled time setting in ExtractEntry");
+								}
 							}
 						}
 						else
@@ -879,6 +994,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private INameTransform extractNameTransform_;
 		private UseZip64 useZip64_ = UseZip64.Dynamic;
 		private CompressionLevel compressionLevel_ = CompressionLevel.DEFAULT_COMPRESSION;
+		private StringCodec _stringCodec = new StringCodec();
 
 		private string password_;
 
