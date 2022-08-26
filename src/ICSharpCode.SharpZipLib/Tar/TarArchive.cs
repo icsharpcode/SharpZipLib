@@ -857,11 +857,33 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			if (!String.IsNullOrEmpty(rootPath))
 			{
-				if (entry.Name.StartsWith(rootPath, StringComparison.OrdinalIgnoreCase))
+				string newRootPath = rootPath;
+
+				// remove CurrentDirectory from RootPath to be consistent with TarEntry behavior
+				var currentDirectory = Directory.GetCurrentDirectory()
+					.ToTarArchivePath();
+				if (rootPath.StartsWith(currentDirectory, StringComparison.OrdinalIgnoreCase))
 				{
-					newName = entry.Name.Substring(rootPath.Length + 1);
+					if (rootPath.Length == currentDirectory.Length)
+					{
+						// if they are the same, rootPath would be empty
+						// and so the entry name is not modified
+						newRootPath = string.Empty;
+					}
+					else
+					{
+						// TarEntry would have removed the current directory from the entry name, and so do the same here
+						newRootPath = rootPath.Substring(currentDirectory.Length + 1);
+					}
+				}
+
+				if (!string.IsNullOrEmpty(newRootPath) && 
+					entry.Name.StartsWith(newRootPath, StringComparison.OrdinalIgnoreCase))
+				{
+					newName = entry.Name.Substring(newRootPath.Length + 1);
 				}
 			}
+
 
 			if (pathPrefix != null)
 			{

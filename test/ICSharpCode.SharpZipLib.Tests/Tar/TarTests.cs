@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework.Internal;
+using System.Linq;
 
 namespace ICSharpCode.SharpZipLib.Tests.Tar
 {
@@ -914,6 +915,118 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					FileAssert.Exists(Path.Combine(extractDirectory.FullName, relativePath));
 					FileAssert.AreEqual(checkFile.FullName, Path.Combine(extractDirectory.FullName, relativePath));
 				}
+			}
+		}
+
+		/// <summary>
+		///		This tests the behavior of the <see cref="TarArchive.RootPath"/> property on
+		///		extracted files.
+		/// </summary>
+		/// <param name="rootPath"></param>
+		/// <param name="setRootPathPrefix"></param>
+		/// <param name="filePathSegments"></param>
+		/// <param name="setFilePathPrefix"></param>
+		/// <param name="setCurrentDirectory"></param>
+		/// <param name="expectedFilePath"></param>
+		[Test]
+		[Category("Tar")]
+		// {workingDirectory}/temp {workingDirectory}/temp/file.txt -> "file.txt"
+		[TestCase("temp", true, new string[] { "temp", "file.txt" }, true, true, new string[] { "file.txt" })]
+		// (unset) {workingDirectory}/temp/file.txt -> "temp/file.txt"
+		[TestCase("", false, new string[] { "temp", "file.txt" }, true, true, new string[] { "temp", "file.txt" })]
+		// "temp" {workingDirectory}/temp/file.txt -> "file.txt"
+		[TestCase("temp", false, new string[] { "temp", "file.txt" }, true, true, new string[] { "file.txt" })]
+		// nonWorkDir/temp/ nonWorkDir/temp/file.txt -> "file.txt"
+		[TestCase("temp", true, new string[] { "temp", "file.txt" }, true, false, new string[] { "file.txt" })]
+		// (unset) /nonWorkDir/temp/file.txt -> "/nonWorkDir/temp/file.txt"
+		[TestCase("", true, new string[] { "temp", "file.txt" }, true, false, new string[] { "temp", "file.txt" })]
+		public void TestRootPathBehavior(string rootPath, bool setRootPathPrefix, string[] filePathSegments, bool setFilePathPrefix, bool setCurrentDirectory, string[] expectedFilePath)
+		{
+			// when overrideWorkingDirectory is false, assumption is that working directory is that of the assembly
+			// which is not the same as the temporary directory
+
+			using (var workDir = new TempDir())
+			using (var tarFileName = new TempFile())
+			using (var extractDirectory = new TempDir())
+			{
+				if (setCurrentDirectory)
+				{
+					Environment.CurrentDirectory = workDir;
+				}
+
+				if (setRootPathPrefix)
+				{
+					rootPath = Path.Combine(Environment.CurrentDirectory, rootPath);
+				}
+
+				string filePath = Path.Combine(filePathSegments);
+
+				if (setFilePathPrefix)
+				{
+					filePath = Path.Combine(Environment.CurrentDirectory, filePath);
+				}
+				else
+				{
+					filePath = Path.Combine(workDir, filePath);
+				}
+
+				//var expectDir = Path.Combine(workDir.FullName, "temp"); 
+				//Directory.CreateDirectory(expectDir);
+				//var inputFile = Path.Combine(expectDir, "file.txt");
+				Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+				File.WriteAllText(filePath, Guid.NewGuid().ToString());
+
+				// extract files under the given path
+				using (var tarFile = File.Open(tarFileName.FullName, FileMode.Create))
+				{
+					using (var tarOutputStream = TarArchive.CreateOutputTarArchive(tarFile))
+					{
+						if (rootPath != string.Empty)
+						{
+							tarOutputStream.RootPath = rootPath;
+						}
+						string assignedRootPath = tarOutputStream.RootPath;
+
+						var entry = TarEntry.CreateEntryFromFile(filePath);
+
+						// TarEntry.Name may be relative or absolute depending on if it
+						// was created under the CurrentDirectory
+						if (setCurrentDirectory)
+						{
+							Assert.AreEqual("temp/file.txt", entry.Name);
+						}
+						else
+						{
+							Assert.IsTrue(entry.Name.EndsWith("temp/file.txt"));
+						}
+
+						tarOutputStream.WriteEntry(entry, true);
+
+						// RootPath property does not change
+						Assert.AreEqual(assignedRootPath, tarOutputStream.RootPath);
+					}
+				}
+
+				using (var file = File.OpenRead(tarFileName.FullName))
+				{
+					using (var archive = TarArchive.CreateInputTarArchive(file, Encoding.UTF8))
+					{
+						archive.ExtractContents(extractDirectory.FullName);
+					}
+				}
+
+				// the resulting files must be the same as the expectation dir, should no longer have the "temp" prefix
+				var expectationDirectory = new DirectoryInfo(extractDirectory.FullName);
+				var expectedFile = expectationDirectory.GetFiles("", SearchOption.AllDirectories)
+					.First();
+
+				var expected = Path.Combine(extractDirectory.FullName, Path.Combine(expectedFilePath));
+
+				// the archive should contain the entry "testFile.txt", not "temp/testFile.txt", because
+				// the root dir is configured to "{CurrentDirectory}/tmp/"
+				// FileAssert.DoesNotExist(Path.Combine(extractDirectory.FullName, "temp", "testFile.txt"));
+				FileAssert.Exists(expected); // handle directory separators?
+				FileAssert.AreEqual(filePath, expected);
 			}
 		}
 	}
