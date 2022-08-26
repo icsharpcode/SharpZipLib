@@ -920,27 +920,37 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 
 		/// <summary>
 		///		This tests the behavior of the <see cref="TarArchive.RootPath"/> property on
-		///		extracted files.
+		///		<see cref="TarEntry"/> which are created under the <see cref="Environment.CurrentDirectory"/>.
 		/// </summary>
-		/// <param name="rootPath"></param>
-		/// <param name="setRootPathPrefix"></param>
-		/// <param name="filePathSegments"></param>
-		/// <param name="setFilePathPrefix"></param>
-		/// <param name="setCurrentDirectory"></param>
-		/// <param name="expectedFilePath"></param>
+		/// <param name="rootPath">
+		///		The value to set to the <see cref="TarArchive.RootPath"/> property.
+		///		A value of <see cref="string.Empty"/> will keep the property unset.
+		/// </param>
+		/// <param name="setRootPathPrefix">
+		///		If <c>true</c>, prefixes the <paramref name="rootPath"/> with the <see cref="Environment.CurrentDirectory"/>.
+		/// </param>
+		/// <param name="setCurrentDirectory">
+		///		If <c>true</c>, changes the <see cref="Environment.CurrentDirectory"/> to point to the
+		///		temporary working directory where the test files are created.
+		/// </param>
+		/// <param name="expectedFilePath">
+		///		The list of path segments to join, which represents the expeced path of
+		///		the file in the archive.
+		/// </param>
 		[Test]
 		[Category("Tar")]
 		// {workingDirectory}/temp {workingDirectory}/temp/file.txt -> "file.txt"
-		[TestCase("temp", true, new string[] { "temp", "file.txt" }, true, true, new string[] { "file.txt" })]
+		[TestCase("temp", true, true, new string[] { "file.txt" })]
 		// (unset) {workingDirectory}/temp/file.txt -> "temp/file.txt"
-		[TestCase("", false, new string[] { "temp", "file.txt" }, true, true, new string[] { "temp", "file.txt" })]
+		[TestCase("", false, true, new string[] { "temp", "file.txt" })]
 		// "temp" {workingDirectory}/temp/file.txt -> "file.txt"
-		[TestCase("temp", false, new string[] { "temp", "file.txt" }, true, true, new string[] { "file.txt" })]
+		[TestCase("temp", false, true, new string[] { "file.txt" })]
 		// nonWorkDir/temp/ nonWorkDir/temp/file.txt -> "file.txt"
-		[TestCase("temp", true, new string[] { "temp", "file.txt" }, true, false, new string[] { "file.txt" })]
+		[TestCase("temp", true, false, new string[] { "file.txt" })]
 		// (unset) /nonWorkDir/temp/file.txt -> "/nonWorkDir/temp/file.txt"
-		[TestCase("", true, new string[] { "temp", "file.txt" }, true, false, new string[] { "temp", "file.txt" })]
-		public void TestRootPathBehavior(string rootPath, bool setRootPathPrefix, string[] filePathSegments, bool setFilePathPrefix, bool setCurrentDirectory, string[] expectedFilePath)
+		// cannot test this case, it relies on the path of the temp dir
+		// [TestCase("", true, false, new string[] { "temp", "file.txt" })]
+		public void TestRootPathBehavior(string rootPath, bool setRootPathPrefix, bool setCurrentDirectory, string[] expectedFilePath)
 		{
 			// when overrideWorkingDirectory is false, assumption is that working directory is that of the assembly
 			// which is not the same as the temporary directory
@@ -956,27 +966,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 
 				if (setRootPathPrefix)
 				{
-					rootPath = Path.Combine(Environment.CurrentDirectory, rootPath);
+					rootPath = Path.Combine(workDir, rootPath);
 				}
 
-				string filePath = Path.Combine(filePathSegments);
+				string testFilePath = Path.Combine(workDir, "temp", "file.txt");
+				Directory.CreateDirectory(Path.Combine(workDir, "temp"));
+				File.WriteAllText(testFilePath, Guid.NewGuid().ToString());
 
-				if (setFilePathPrefix)
-				{
-					filePath = Path.Combine(Environment.CurrentDirectory, filePath);
-				}
-				else
-				{
-					filePath = Path.Combine(workDir, filePath);
-				}
-
-				//var expectDir = Path.Combine(workDir.FullName, "temp"); 
-				//Directory.CreateDirectory(expectDir);
-				//var inputFile = Path.Combine(expectDir, "file.txt");
-				Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-				File.WriteAllText(filePath, Guid.NewGuid().ToString());
-
-				// extract files under the given path
 				using (var tarFile = File.Open(tarFileName.FullName, FileMode.Create))
 				{
 					using (var tarOutputStream = TarArchive.CreateOutputTarArchive(tarFile))
@@ -985,9 +981,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 						{
 							tarOutputStream.RootPath = rootPath;
 						}
+
 						string assignedRootPath = tarOutputStream.RootPath;
 
-						var entry = TarEntry.CreateEntryFromFile(filePath);
+						var entry = TarEntry.CreateEntryFromFile(testFilePath);
 
 						// TarEntry.Name may be relative or absolute depending on if it
 						// was created under the CurrentDirectory
@@ -1015,18 +1012,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					}
 				}
 
-				// the resulting files must be the same as the expectation dir, should no longer have the "temp" prefix
 				var expectationDirectory = new DirectoryInfo(extractDirectory.FullName);
 				var expectedFile = expectationDirectory.GetFiles("", SearchOption.AllDirectories)
-					.First();
+					.First(); // should only contain a single file
 
 				var expected = Path.Combine(extractDirectory.FullName, Path.Combine(expectedFilePath));
 
-				// the archive should contain the entry "testFile.txt", not "temp/testFile.txt", because
-				// the root dir is configured to "{CurrentDirectory}/tmp/"
-				// FileAssert.DoesNotExist(Path.Combine(extractDirectory.FullName, "temp", "testFile.txt"));
-				FileAssert.Exists(expected); // handle directory separators?
-				FileAssert.AreEqual(filePath, expected);
+				// the extraced files must contain either "temp/file.txt" or "file.txt" based on test inputs
+				FileAssert.Exists(expected);
+
+				// contents of the input file must equal the extracted file
+				FileAssert.AreEqual(testFilePath, expected);
 			}
 		}
 	}
