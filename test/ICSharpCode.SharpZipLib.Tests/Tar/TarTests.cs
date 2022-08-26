@@ -4,11 +4,11 @@ using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework.Internal;
-using System.Linq;
 
 namespace ICSharpCode.SharpZipLib.Tests.Tar
 {
