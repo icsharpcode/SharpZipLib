@@ -412,7 +412,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 		}
 
-#if NETSTANDARD2_1
+#if NETSTANDARD2_1_OR_GREATER
 		/// <summary>
 		/// Calls <see cref="FinishAsync"/> and closes the underlying
 		/// stream when <see cref="IsStreamOwner"></see> is true.

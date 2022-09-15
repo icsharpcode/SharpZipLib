@@ -4,6 +4,8 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Tests.GZip
 {
@@ -386,32 +388,23 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 
 		[Test]
 		[Category("GZip")]
-		public void SmallBufferDecompression()
+		public void SmallBufferDecompression([Values(0, 1, 3)] int seed)
 		{
 			var outputBufferSize = 100000;
-			var inputBufferSize = outputBufferSize * 4;
-			var inputBuffer = Utils.GetDummyBytes(inputBufferSize, seed: 0);
-			
 			var outputBuffer = new byte[outputBufferSize];
+			var inputBuffer = Utils.GetDummyBytes(outputBufferSize * 4, seed);
 
 			using var msGzip = new MemoryStream();
-			using (var gzos = new GZipOutputStream(msGzip))
+			using (var gzos = new GZipOutputStream(msGzip){IsStreamOwner = false})
 			{
-				gzos.IsStreamOwner = false;
-				
 				gzos.Write(inputBuffer, 0, inputBuffer.Length);
-				
-				gzos.Flush();
-				gzos.Finish();
 			}
 
 			msGzip.Seek(0, SeekOrigin.Begin);
-				
-
+	
 			using (var gzis = new GZipInputStream(msGzip))
 			using (var msRaw = new MemoryStream())
 			{
-					
 				int readOut;
 				while ((readOut = gzis.Read(outputBuffer, 0, outputBuffer.Length)) > 0)
 				{
@@ -419,13 +412,10 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 				}
 
 				var resultBuffer = msRaw.ToArray();
-
 				for (var i = 0; i < resultBuffer.Length; i++)
 				{
 					Assert.AreEqual(inputBuffer[i], resultBuffer[i]);
 				}
-
-
 			}
 		}
 
