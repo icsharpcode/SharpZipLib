@@ -109,5 +109,36 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 				Assert.AreEqual("file.ext", inStream.GetFilename());
 			}
 		}
+
+		/// <summary>
+		/// Test creating an empty gzip stream using async
+		/// </summary>
+		[Test]
+		[Category("GZip")]
+		[Category("Async")]
+		public async Task EmptyGZipStreamAsync()
+		{
+#if NETCOREAPP3_1_OR_GREATER
+			await using var ms = new MemoryStream();
+			await using (var outStream = new GZipOutputStream(ms) { IsStreamOwner = false })
+			{
+				// No content
+			}
+#else
+			var ms = new MemoryStream();
+			var outStream = new GZipOutputStream(ms){ IsStreamOwner = false };
+			await outStream.FinishAsync(System.Threading.CancellationToken.None);
+			outStream.Dispose();
+
+#endif
+			ms.Seek(0, SeekOrigin.Begin);
+
+			using (var inStream = new GZipInputStream(ms))
+			using (var reader = new StreamReader(inStream))
+			{
+				var content = await reader.ReadToEndAsync();
+				Assert.IsEmpty(content);
+			}
+		}
 	}
 }
