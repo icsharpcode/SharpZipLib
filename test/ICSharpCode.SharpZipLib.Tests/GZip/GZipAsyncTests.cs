@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace ICSharpCode.SharpZipLib.Tests.GZip
 {
 	
-#if NETCOREAPP3_1_OR_GREATER
+
 	[TestFixture]
 	public class GZipAsyncTests
 	{
@@ -21,6 +21,7 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			var outputBuffer = new byte[outputBufferSize];
 			var inputBuffer = Utils.GetDummyBytes(outputBufferSize * 4, seed);
 			
+#if NETCOREAPP3_1_OR_GREATER
 			await using var msGzip = new MemoryStream();
 			await using (var gzos = new GZipOutputStream(msGzip){IsStreamOwner = false})
 			{
@@ -44,6 +45,31 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 					Assert.AreEqual(inputBuffer[i], resultBuffer[i]);
 				}
 			}
+#else
+			using var msGzip = new MemoryStream();
+			using (var gzos = new GZipOutputStream(msGzip){IsStreamOwner = false})
+			{
+				await gzos.WriteAsync(inputBuffer, 0, inputBuffer.Length);
+			}
+
+			msGzip.Seek(0, SeekOrigin.Begin);
+
+			using (var gzis = new GZipInputStream(msGzip))
+			using (var msRaw = new MemoryStream())
+			{
+				int readOut;
+				while ((readOut = gzis.Read(outputBuffer, 0, outputBuffer.Length)) > 0)
+				{
+					await msRaw.WriteAsync(outputBuffer, 0, readOut);
+				}
+
+				var resultBuffer = msRaw.ToArray();
+				for (var i = 0; i < resultBuffer.Length; i++)
+				{
+					Assert.AreEqual(inputBuffer[i], resultBuffer[i]);
+				}
+			}
+#endif
 		}
 		
 		/// <summary>
@@ -56,13 +82,23 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 		{
 			var content = "FileContents";
 
+#if NETCOREAPP3_1_OR_GREATER
 			await using var ms = new MemoryStream();
 			await using (var outStream = new GZipOutputStream(ms) { IsStreamOwner = false })
 			{
 				outStream.FileName = "/path/to/file.ext";
 				outStream.Write(Encoding.ASCII.GetBytes(content));
 			}
-
+#else
+			var ms = new MemoryStream();
+			var outStream = new GZipOutputStream(ms){ IsStreamOwner = false };
+			outStream.FileName = "/path/to/file.ext";
+			var bytes = Encoding.ASCII.GetBytes(content);
+			outStream.Write(bytes, 0, bytes.Length);
+			await outStream.FinishAsync(System.Threading.CancellationToken.None);
+			outStream.Dispose();
+			
+#endif
 			ms.Seek(0, SeekOrigin.Begin);
 
 			using (var inStream = new GZipInputStream(ms))
@@ -74,5 +110,4 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 			}
 		}
 	}
-#endif
 }
