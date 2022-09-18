@@ -361,7 +361,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			set => _stringCodec.CodePage = value;
 		}
 		
-		/// <inheritdoc cref="StringCodec"/>
+		/// <inheritdoc cref="Zip.StringCodec"/>
 		public StringCodec StringCodec
 		{
 			get => _stringCodec;
