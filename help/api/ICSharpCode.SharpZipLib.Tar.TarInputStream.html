@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class TarInputStream
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.56.7.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -80,31 +80,137 @@ using read().</p>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">TarInputStream</span></div>
+    <div class="level1"><span class="xref">System.MarshalByRefObject</span></div>
+    <div class="level2"><span class="xref">System.IO.Stream</span></div>
+    <div class="level3"><span class="xref">TarInputStream</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IDisposable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.IO.Stream.Null</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginRead(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginWrite(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Close()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CreateWaitHandle()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndRead(System.IAsyncResult)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndWrite(System.IAsyncResult)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.FlushAsync()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ObjectInvariant()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Synchronized(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CanTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.GetLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.InitializeLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.MemberwiseClone(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Tar.html">ICSharpCode.SharpZipLib.Tar</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TarInputStream : Stream</code></pre>
+    <pre><code class="lang-csharp hljs">public class TarInputStream : Stream, IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.%23ctor(Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.%23ctor(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L25">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_Stream_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(Stream)">TarInputStream(Stream)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_System_IO_Stream_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(System.IO.Stream)">TarInputStream(Stream)</h4>
   <div class="markdown level1 summary"><p>Construct a TarInputStream with default block factor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TarInputStream(Stream inputStream)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;No Encoding for Name field is specified, any non-ASCII bytes will be discarded&quot;)]
+public TarInputStream(Stream inputStream)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -117,7 +223,7 @@ using read().</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">inputStream</span></td>
         <td><p>stream to source data from</p>
 </td>
@@ -126,59 +232,20 @@ using read().</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_Stream_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.%23ctor(Stream%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L36">View Source</a>
-  </span>
-  <a id="ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_Stream_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(Stream,Encoding)">TarInputStream(Stream, Encoding)</h4>
-  <div class="markdown level1 summary"><p>Construct a TarInputStream with default block factor</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TarInputStream(Stream inputStream, Encoding nameEncoding)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">inputStream</span></td>
-        <td><p>stream to source data from</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">Encoding</span></td>
-        <td><span class="parametername">nameEncoding</span></td>
-        <td><p>The <see cref="!:Encoding"></see> used for the Name fields, or null for ASCII only</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.%23ctor(Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_System_IO_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.%23ctor(System.IO.Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L46">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(Stream,System.Int32)">TarInputStream(Stream, Int32)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_System_IO_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(System.IO.Stream,System.Int32)">TarInputStream(Stream, Int32)</h4>
   <div class="markdown level1 summary"><p>Construct a TarInputStream with user specified block factor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TarInputStream(Stream inputStream, int blockFactor)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;No Encoding for Name field is specified, any non-ASCII bytes will be discarded&quot;)]
+public TarInputStream(Stream inputStream, int blockFactor)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -191,7 +258,7 @@ using read().</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">inputStream</span></td>
         <td><p>stream to source data from</p>
 </td>
@@ -206,13 +273,13 @@ using read().</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_Stream_System_Int32_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.%23ctor(Stream%2CSystem.Int32%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_System_IO_Stream_System_Int32_System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.%23ctor(System.IO.Stream%2CSystem.Int32%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L60">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_Stream_System_Int32_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(Stream,System.Int32,Encoding)">TarInputStream(Stream, Int32, Encoding)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_System_IO_Stream_System_Int32_System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(System.IO.Stream,System.Int32,System.Text.Encoding)">TarInputStream(Stream, Int32, Encoding)</h4>
   <div class="markdown level1 summary"><p>Construct a TarInputStream with user specified block factor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -231,7 +298,7 @@ using read().</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">inputStream</span></td>
         <td><p>stream to source data from</p>
 </td>
@@ -243,9 +310,49 @@ using read().</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Encoding</span></td>
+        <td><span class="xref">System.Text.Encoding</span></td>
         <td><span class="parametername">nameEncoding</span></td>
-        <td><p>The <see cref="!:Encoding"></see> used for the Name fields, or null for ASCII only</p>
+        <td><p>The <span class="xref">System.Text.Encoding</span> used for the Name fields, or null for ASCII only</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_System_IO_Stream_System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.%23ctor(System.IO.Stream%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L36">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream__ctor_System_IO_Stream_System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.#ctor(System.IO.Stream,System.Text.Encoding)">TarInputStream(Stream, Encoding)</h4>
+  <div class="markdown level1 summary"><p>Construct a TarInputStream with default block factor</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TarInputStream(Stream inputStream, Encoding nameEncoding)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">inputStream</span></td>
+        <td><p>stream to source data from</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Text.Encoding</span></td>
+        <td><span class="parametername">nameEncoding</span></td>
+        <td><p>The <span class="xref">System.Text.Encoding</span> used for the Name fields, or null for ASCII only</p>
 </td>
       </tr>
     </tbody>
@@ -397,7 +504,7 @@ using read().</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IMemoryOwner</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="xref">System.Buffers.IMemoryOwner</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -501,6 +608,8 @@ and the amount of data already read from the current entry.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.CanRead</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_CanSeek.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.CanSeek%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -533,6 +642,8 @@ This property always returns false.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.CanSeek</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_CanWrite.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.CanWrite%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -565,6 +676,8 @@ This property always returns false.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.CanWrite</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_IsMarkSupported.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.IsMarkSupported%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -609,7 +722,7 @@ This property always returns false.</p>
   <a id="ICSharpCode_SharpZipLib_Tar_TarInputStream_IsStreamOwner_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.IsStreamOwner*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_IsStreamOwner" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.IsStreamOwner">IsStreamOwner</h4>
   <div class="markdown level1 summary"><p>Gets or sets a flag indicating ownership of underlying stream.
-When the flag is true <see cref="!:Stream.Dispose()"></see> will close the underlying stream also.</p>
+When the flag is true <span class="xref">System.IO.Stream.Dispose()</span> will close the underlying stream also.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -665,6 +778,8 @@ When the flag is true <see cref="!:Stream.Dispose()"></see> will close the under
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.Length</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_Position.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -694,6 +809,24 @@ Setting the Position is not supported and throws a NotSupportedExceptionNotSuppo
       <tr>
         <td><span class="xref">System.Int64</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.Position</span></div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td><p>Any attempt to set position</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -732,13 +865,13 @@ Setting the Position is not supported and throws a NotSupportedExceptionNotSuppo
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContents_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents(Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContents_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L730">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContents_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContents_Stream_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents(Stream)">CopyEntryContents(Stream)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContents_System_IO_Stream_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContents(System.IO.Stream)">CopyEntryContents(Stream)</h4>
   <div class="markdown level1 summary"><p>Copies the contents of the current tar archive entry directly into
 an output stream.</p>
 </div>
@@ -758,7 +891,7 @@ an output stream.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">outputStream</span></td>
         <td><p>The OutputStream into which to write the entry&apos;s data.</p>
 </td>
@@ -767,13 +900,13 @@ an output stream.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContentsAsync_Stream_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContentsAsync(Stream%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContentsAsync_System_IO_Stream_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContentsAsync(System.IO.Stream%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L720">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContentsAsync_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContentsAsync*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContentsAsync_Stream_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContentsAsync(Stream,CancellationToken)">CopyEntryContentsAsync(Stream, CancellationToken)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_CopyEntryContentsAsync_System_IO_Stream_System_Threading_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.CopyEntryContentsAsync(System.IO.Stream,System.Threading.CancellationToken)">CopyEntryContentsAsync(Stream, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Copies the contents of the current tar archive entry directly into
 an output stream.</p>
 </div>
@@ -793,13 +926,13 @@ an output stream.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">outputStream</span></td>
         <td><p>The OutputStream into which to write the entry&apos;s data.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">ct</span></td>
         <td></td>
       </tr>
@@ -815,7 +948,7 @@ an output stream.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span></td>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -854,6 +987,8 @@ The underlying stream is closed by the TarBuffer.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.Dispose(System.Boolean)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_Flush.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.Flush%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -870,21 +1005,23 @@ The underlying stream is closed by the TarBuffer.</p>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public override void Flush()</code></pre>
   </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.Flush()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_FlushAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.FlushAsync(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_FlushAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.FlushAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L139">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarInputStream_FlushAsync_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.FlushAsync*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_FlushAsync_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.FlushAsync(CancellationToken)">FlushAsync(CancellationToken)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_FlushAsync_System_Threading_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.FlushAsync(System.Threading.CancellationToken)">FlushAsync(CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Flushes the baseInputStream</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override Task FlushAsync(CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public override async Task FlushAsync(CancellationToken cancellationToken)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -897,7 +1034,7 @@ The underlying stream is closed by the TarBuffer.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td></td>
       </tr>
@@ -913,11 +1050,13 @@ The underlying stream is closed by the TarBuffer.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span></td>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.FlushAsync(System.Threading.CancellationToken)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_GetNextEntry.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.GetNextEntry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -959,13 +1098,13 @@ been reached.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_GetNextEntryAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.GetNextEntryAsync(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_GetNextEntryAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.GetNextEntryAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L519">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarInputStream_GetNextEntryAsync_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.GetNextEntryAsync*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_GetNextEntryAsync_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.GetNextEntryAsync(CancellationToken)">GetNextEntryAsync(CancellationToken)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_GetNextEntryAsync_System_Threading_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.GetNextEntryAsync(System.Threading.CancellationToken)">GetNextEntryAsync(CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Get the next entry in this tar archive. This will skip
 over any remaining data in the current entry, if there
 is one, and place the input stream at the header of the
@@ -991,7 +1130,7 @@ been reached.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">ct</span></td>
         <td></td>
       </tr>
@@ -1007,7 +1146,7 @@ been reached.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;<a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarEntry.html">TarEntry</a>&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarEntry.html">TarEntry</a>&gt;</td>
         <td><p>The next TarEntry in the archive, or null.</p>
 </td>
       </tr>
@@ -1027,7 +1166,8 @@ been reached.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int GetRecordSize()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use RecordSize property instead&quot;)]
+public int GetRecordSize()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1143,15 +1283,17 @@ entry in the archive and will deal with them appropriately</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.Read(System.Byte[], System.Int32, System.Int32)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_ReadAsync_System_Byte___System_Int32_System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.ReadAsync(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_ReadAsync_System_Byte___System_Int32_System_Int32_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.ReadAsync(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L230">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarInputStream_ReadAsync_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.ReadAsync*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_ReadAsync_System_Byte___System_Int32_System_Int32_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.ReadAsync(System.Byte[],System.Int32,System.Int32,CancellationToken)">ReadAsync(Byte[], Int32, Int32, CancellationToken)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_ReadAsync_System_Byte___System_Int32_System_Int32_System_Threading_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)">ReadAsync(Byte[], Int32, Int32, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Reads bytes from the current tar archive entry.</p>
 <p>This method is aware of the boundaries of the current
 entry in the archive and will deal with them appropriately</p>
@@ -1190,7 +1332,7 @@ entry in the archive and will deal with them appropriately</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">cancellationToken</span></td>
         <td></td>
       </tr>
@@ -1206,12 +1348,14 @@ entry in the archive and will deal with them appropriately</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
+        <td><span class="xref">System.Threading.Tasks.Task</span>&lt;<span class="xref">System.Int32</span>&gt;</td>
         <td><p>The number of bytes read, or 0 at end of stream/EOF.</p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_ReadByte.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.ReadByte%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1244,6 +1388,8 @@ entry in the archive and will deal with them appropriately</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.ReadByte()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_Reset.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.Reset%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1262,13 +1408,13 @@ entry in the archive and will deal with them appropriately</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_Seek_System_Int64_SeekOrigin_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.Seek(System.Int64%2CSeekOrigin)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_Seek_System_Int64_System_IO_SeekOrigin_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.Seek(System.Int64%2CSystem.IO.SeekOrigin)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarInputStream.cs/#L151">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarInputStream_Seek_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.Seek*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_Seek_System_Int64_SeekOrigin_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.Seek(System.Int64,SeekOrigin)">Seek(Int64, SeekOrigin)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarInputStream_Seek_System_Int64_System_IO_SeekOrigin_" data-uid="ICSharpCode.SharpZipLib.Tar.TarInputStream.Seek(System.Int64,System.IO.SeekOrigin)">Seek(Int64, SeekOrigin)</h4>
   <div class="markdown level1 summary"><p>Set the streams position.  This operation is not supported and will throw a NotSupportedException</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1293,9 +1439,9 @@ entry in the archive and will deal with them appropriately</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">SeekOrigin</span></td>
+        <td><span class="xref">System.IO.SeekOrigin</span></td>
         <td><span class="parametername">origin</span></td>
-        <td><p>The <see cref="!:SeekOrigin"></see> to start seeking from.</p>
+        <td><p>The <span class="xref">System.IO.SeekOrigin</span> to start seeking from.</p>
 </td>
       </tr>
     </tbody>
@@ -1312,6 +1458,24 @@ entry in the archive and will deal with them appropriately</p>
       <tr>
         <td><span class="xref">System.Int64</span></td>
         <td><p>The new position in the stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.Seek(System.Int64, System.IO.SeekOrigin)</span></div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td><p>Any access</p>
 </td>
       </tr>
     </tbody>
@@ -1385,6 +1549,24 @@ This operation is not supported and will throw a NotSupportedException</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.SetLength(System.Int64)</span></div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td><p>Any access</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_Write_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.Write(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1432,6 +1614,24 @@ This operation is not supported and will throw a NotSupportedException</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.Write(System.Byte[], System.Int32, System.Int32)</span></div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td><p>Any access</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarInputStream_WriteByte_System_Byte_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarInputStream.WriteByte(System.Byte)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1467,6 +1667,28 @@ This operation is not supported and will throw a NotSupportedException</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.WriteByte(System.Byte)</span></div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td><p>Any access</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
 </article>
           </div>
           

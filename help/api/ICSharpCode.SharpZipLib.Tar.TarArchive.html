@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class TarArchive
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.56.7.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -94,6 +94,34 @@ properties, this would be rather trivial.</p>
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">TarArchive</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IDisposable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Tar.html">ICSharpCode.SharpZipLib.Tar</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
@@ -198,7 +226,7 @@ properties, this would be rather trivial.</p>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarArchive_ApplyUserInfoOverrides_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.ApplyUserInfoOverrides*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_ApplyUserInfoOverrides" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.ApplyUserInfoOverrides">ApplyUserInfoOverrides</h4>
-  <div class="markdown level1 summary"><p>Get or set a value indicating if overrides defined by <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_SetUserInfo_System_Int32_System_String_System_Int32_System_String_">SetUserInfo(Int32, String, Int32, String)</a> should be applied.</p>
+  <div class="markdown level1 summary"><p>Get or set a value indicating if overrides defined by <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_SetUserInfo_System_Int32_System_String_System_Int32_System_String_">SetUserInfo</a> should be applied.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -560,17 +588,18 @@ on how to allow setting values on a per entry basis.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void CloseArchive()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Close instead&quot;)]
+public void CloseArchive()</code></pre>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarArchive.cs/#L105">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_Stream_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream)">CreateInputTarArchive(Stream)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_System_IO_Stream_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream)">CreateInputTarArchive(Stream)</h4>
   <div class="markdown level1 summary"><p>The InputStream based constructors create a TarArchive for the
 purposes of extracting or listing a tar archive. Thus, use
 these constructors when you wish to extract files from or list
@@ -579,7 +608,8 @@ the contents of an existing tar archive.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TarArchive CreateInputTarArchive(Stream inputStream)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;No Encoding for Name field is specified, any non-ASCII bytes will be discarded&quot;)]
+public static TarArchive CreateInputTarArchive(Stream inputStream)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -592,7 +622,7 @@ the contents of an existing tar archive.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">inputStream</span></td>
         <td><p>The stream to retrieve archive data from.</p>
 </td>
@@ -617,13 +647,132 @@ the contents of an existing tar archive.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_Stream_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_System_IO_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarArchive.cs/#L147">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_System_IO_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream,System.Int32)">CreateInputTarArchive(Stream, Int32)</h4>
+  <div class="markdown level1 summary"><p>Create TarArchive for reading setting block factor</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;No Encoding for Name field is specified, any non-ASCII bytes will be discarded&quot;)]
+public static TarArchive CreateInputTarArchive(Stream inputStream, int blockFactor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">inputStream</span></td>
+        <td><p>A stream containing the tar archive contents</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">blockFactor</span></td>
+        <td><p>The blocking factor to apply</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a></td>
+        <td><p>Returns a <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a> suitable for reading.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_System_IO_Stream_System_Int32_System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream%2CSystem.Int32%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarArchive.cs/#L160">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_System_IO_Stream_System_Int32_System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream,System.Int32,System.Text.Encoding)">CreateInputTarArchive(Stream, Int32, Encoding)</h4>
+  <div class="markdown level1 summary"><p>Create TarArchive for reading setting block factor</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TarArchive CreateInputTarArchive(Stream inputStream, int blockFactor, Encoding nameEncoding)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">inputStream</span></td>
+        <td><p>A stream containing the tar archive contents</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">blockFactor</span></td>
+        <td><p>The blocking factor to apply</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Text.Encoding</span></td>
+        <td><span class="parametername">nameEncoding</span></td>
+        <td><p>The <span class="xref">System.Text.Encoding</span> used for the Name fields, or null for ASCII only</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a></td>
+        <td><p>Returns a <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a> suitable for reading.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_System_IO_Stream_System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarArchive.cs/#L120">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_Stream_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream,Encoding)">CreateInputTarArchive(Stream, Encoding)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_System_IO_Stream_System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(System.IO.Stream,System.Text.Encoding)">CreateInputTarArchive(Stream, Encoding)</h4>
   <div class="markdown level1 summary"><p>The InputStream based constructors create a TarArchive for the
 purposes of extracting or listing a tar archive. Thus, use
 these constructors when you wish to extract files from or list
@@ -645,15 +794,15 @@ the contents of an existing tar archive.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">inputStream</span></td>
         <td><p>The stream to retrieve archive data from.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Encoding</span></td>
+        <td><span class="xref">System.Text.Encoding</span></td>
         <td><span class="parametername">nameEncoding</span></td>
-        <td><p>The <see cref="!:Encoding"></see> used for the Name fields, or null for ASCII only</p>
+        <td><p>The <span class="xref">System.Text.Encoding</span> used for the Name fields, or null for ASCII only</p>
 </td>
       </tr>
     </tbody>
@@ -676,131 +825,13 @@ the contents of an existing tar archive.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarArchive.cs/#L147">View Source</a>
-  </span>
-  <a id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream,System.Int32)">CreateInputTarArchive(Stream, Int32)</h4>
-  <div class="markdown level1 summary"><p>Create TarArchive for reading setting block factor</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TarArchive CreateInputTarArchive(Stream inputStream, int blockFactor)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">inputStream</span></td>
-        <td><p>A stream containing the tar archive contents</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">blockFactor</span></td>
-        <td><p>The blocking factor to apply</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a></td>
-        <td><p>Returns a <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a> suitable for reading.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_Stream_System_Int32_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream%2CSystem.Int32%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarArchive.cs/#L160">View Source</a>
-  </span>
-  <a id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateInputTarArchive_Stream_System_Int32_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateInputTarArchive(Stream,System.Int32,Encoding)">CreateInputTarArchive(Stream, Int32, Encoding)</h4>
-  <div class="markdown level1 summary"><p>Create TarArchive for reading setting block factor</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TarArchive CreateInputTarArchive(Stream inputStream, int blockFactor, Encoding nameEncoding)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">inputStream</span></td>
-        <td><p>A stream containing the tar archive contents</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">blockFactor</span></td>
-        <td><p>The blocking factor to apply</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">Encoding</span></td>
-        <td><span class="parametername">nameEncoding</span></td>
-        <td><p>The <see cref="!:Encoding"></see> used for the Name fields, or null for ASCII only</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a></td>
-        <td><p>Returns a <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a> suitable for reading.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarArchive.cs/#L205">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_Stream_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream)">CreateOutputTarArchive(Stream)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_System_IO_Stream_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream)">CreateOutputTarArchive(Stream)</h4>
   <div class="markdown level1 summary"><p>Create a TarArchive for writing to, using the default blocking factor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -819,9 +850,9 @@ the contents of an existing tar archive.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">outputStream</span></td>
-        <td><p>The <see cref="!:Stream"></see> to write to</p>
+        <td><p>The <span class="xref">System.IO.Stream</span> to write to</p>
 </td>
       </tr>
     </tbody>
@@ -844,13 +875,131 @@ the contents of an existing tar archive.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_Stream_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_System_IO_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarArchive.cs/#L216">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_System_IO_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream,System.Int32)">CreateOutputTarArchive(Stream, Int32)</h4>
+  <div class="markdown level1 summary"><p>Create a <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">tar archive</a> for writing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TarArchive CreateOutputTarArchive(Stream outputStream, int blockFactor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">outputStream</span></td>
+        <td><p>The stream to write to</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">blockFactor</span></td>
+        <td><p>The blocking factor to use for buffering.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a></td>
+        <td><p>Returns a <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a> suitable for writing.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_System_IO_Stream_System_Int32_System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream%2CSystem.Int32%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarArchive.cs/#L227">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_System_IO_Stream_System_Int32_System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream,System.Int32,System.Text.Encoding)">CreateOutputTarArchive(Stream, Int32, Encoding)</h4>
+  <div class="markdown level1 summary"><p>Create a <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">tar archive</a> for writing.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TarArchive CreateOutputTarArchive(Stream outputStream, int blockFactor, Encoding nameEncoding)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">outputStream</span></td>
+        <td><p>The stream to write to</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">blockFactor</span></td>
+        <td><p>The blocking factor to use for buffering.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Text.Encoding</span></td>
+        <td><span class="parametername">nameEncoding</span></td>
+        <td><p>The <span class="xref">System.Text.Encoding</span> used for the Name fields, or null for ASCII only</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a></td>
+        <td><p>Returns a <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a> suitable for writing.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_System_IO_Stream_System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarArchive.cs/#L180">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_Stream_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream,Encoding)">CreateOutputTarArchive(Stream, Encoding)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_System_IO_Stream_System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(System.IO.Stream,System.Text.Encoding)">CreateOutputTarArchive(Stream, Encoding)</h4>
   <div class="markdown level1 summary"><p>Create a TarArchive for writing to, using the default blocking factor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -869,133 +1018,15 @@ the contents of an existing tar archive.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">outputStream</span></td>
-        <td><p>The <see cref="!:Stream"></see> to write to</p>
+        <td><p>The <span class="xref">System.IO.Stream</span> to write to</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Encoding</span></td>
+        <td><span class="xref">System.Text.Encoding</span></td>
         <td><span class="parametername">nameEncoding</span></td>
-        <td><p>The <see cref="!:Encoding"></see> used for the Name fields, or null for ASCII only</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a></td>
-        <td><p>Returns a <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a> suitable for writing.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarArchive.cs/#L216">View Source</a>
-  </span>
-  <a id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream,System.Int32)">CreateOutputTarArchive(Stream, Int32)</h4>
-  <div class="markdown level1 summary"><p>Create a <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a> for writing.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TarArchive CreateOutputTarArchive(Stream outputStream, int blockFactor)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">outputStream</span></td>
-        <td><p>The stream to write to</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">blockFactor</span></td>
-        <td><p>The blocking factor to use for buffering.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a></td>
-        <td><p>Returns a <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a> suitable for writing.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_Stream_System_Int32_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream%2CSystem.Int32%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarArchive.cs/#L227">View Source</a>
-  </span>
-  <a id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_CreateOutputTarArchive_Stream_System_Int32_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.CreateOutputTarArchive(Stream,System.Int32,Encoding)">CreateOutputTarArchive(Stream, Int32, Encoding)</h4>
-  <div class="markdown level1 summary"><p>Create a <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a> for writing.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static TarArchive CreateOutputTarArchive(Stream outputStream, int blockFactor, Encoding nameEncoding)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><span class="parametername">outputStream</span></td>
-        <td><p>The stream to write to</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">blockFactor</span></td>
-        <td><p>The blocking factor to use for buffering.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">Encoding</span></td>
-        <td><span class="parametername">nameEncoding</span></td>
-        <td><p>The <see cref="!:Encoding"></see> used for the Name fields, or null for ASCII only</p>
+        <td><p>The <span class="xref">System.Text.Encoding</span> used for the Name fields, or null for ASCII only</p>
 </td>
       </tr>
     </tbody>
@@ -1168,7 +1199,7 @@ when the garbage collector reclaims the <a class="xref" href="ICSharpCode.SharpZ
   <a id="ICSharpCode_SharpZipLib_Tar_TarArchive_ListContents_" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.ListContents*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarArchive_ListContents" data-uid="ICSharpCode.SharpZipLib.Tar.TarArchive.ListContents">ListContents()</h4>
   <div class="markdown level1 summary"><p>Perform the &quot;list&quot; command for the archive contents.</p>
-<p>NOTE That this method uses the <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_ProgressMessageEvent">ProgressMessageEvent</a> to actually list
+<p>NOTE That this method uses the <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html#ICSharpCode_SharpZipLib_Tar_TarArchive_ProgressMessageEvent"> progress event</a> to actually list
 the contents. If the progress display event is not set, nothing will be listed!</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1230,7 +1261,8 @@ the contents. If the progress display event is not set, nothing will be listed!<
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetAsciiTranslation(bool translateAsciiFiles)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use the AsciiTranslate property&quot;)]
+public void SetAsciiTranslation(bool translateAsciiFiles)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1418,6 +1450,10 @@ child of the directory.</p>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
 </article>
           </div>
           

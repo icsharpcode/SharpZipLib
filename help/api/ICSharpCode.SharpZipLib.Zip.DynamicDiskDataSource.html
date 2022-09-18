@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DynamicDiskDataSource
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.56.7.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -79,15 +79,39 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">DynamicDiskDataSource</span></div>
   </div>
-  <div classs="implements">
+  <div class="implements">
     <h5>Implements</h5>
     <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.IDynamicDataSource.html">IDynamicDataSource</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.html">ICSharpCode.SharpZipLib.Zip</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_Zip_DynamicDiskDataSource_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DynamicDiskDataSource : object, IDynamicDataSource</code></pre>
+    <pre><code class="lang-csharp hljs">public class DynamicDiskDataSource : IDynamicDataSource</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -100,7 +124,7 @@
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_DynamicDiskDataSource_GetSource_" data-uid="ICSharpCode.SharpZipLib.Zip.DynamicDiskDataSource.GetSource*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_DynamicDiskDataSource_GetSource_ICSharpCode_SharpZipLib_Zip_ZipEntry_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.DynamicDiskDataSource.GetSource(ICSharpCode.SharpZipLib.Zip.ZipEntry,System.String)">GetSource(ZipEntry, String)</h4>
-  <div class="markdown level1 summary"><p>Get a <see cref="!:Stream"></see> providing data for an entry.</p>
+  <div class="markdown level1 summary"><p>Get a <span class="xref">System.IO.Stream</span> providing data for an entry.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -141,7 +165,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><p>Returns a stream providing data; or null if not available</p>
 </td>
       </tr>

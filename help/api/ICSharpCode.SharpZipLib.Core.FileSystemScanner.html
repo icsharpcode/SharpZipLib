@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class FileSystemScanner
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.56.7.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -79,11 +79,35 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">FileSystemScanner</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Core.html">ICSharpCode.SharpZipLib.Core</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_Core_FileSystemScanner_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class FileSystemScanner : object</code></pre>
+    <pre><code class="lang-csharp hljs">public class FileSystemScanner</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -116,7 +140,7 @@
       <tr>
         <td><a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">IScanFilter</a></td>
         <td><span class="parametername">fileFilter</span></td>
-        <td><p>The file <a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">IScanFilter</a> to apply.</p>
+        <td><p>The file <a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">filter</a> to apply.</p>
 </td>
       </tr>
     </tbody>
@@ -150,13 +174,13 @@
       <tr>
         <td><a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">IScanFilter</a></td>
         <td><span class="parametername">fileFilter</span></td>
-        <td><p>The file <a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">IScanFilter</a>  to apply.</p>
+        <td><p>The file <a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">filter</a>  to apply.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">IScanFilter</a></td>
         <td><span class="parametername">directoryFilter</span></td>
-        <td><p>The directory <a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">IScanFilter</a>  to apply.</p>
+        <td><p>The directory <a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">filter</a>  to apply.</p>
 </td>
       </tr>
     </tbody>
@@ -190,7 +214,7 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">filter</span></td>
-        <td><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Core.PathFilter.html">PathFilter</a> to apply when scanning.</p>
+        <td><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Core.PathFilter.html">file filter</a> to apply when scanning.</p>
 </td>
       </tr>
     </tbody>
@@ -224,13 +248,13 @@
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">fileFilter</span></td>
-        <td><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Core.PathFilter.html">PathFilter</a> to apply.</p>
+        <td><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Core.PathFilter.html">file filter</a> to apply.</p>
 </td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">directoryFilter</span></td>
-        <td><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Core.PathFilter.html">PathFilter</a> to apply.</p>
+        <td><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Core.PathFilter.html"> directory filter</a> to apply.</p>
 </td>
       </tr>
     </tbody>
@@ -426,7 +450,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">EventHandler</span>&lt;<a class="xref" href="ICSharpCode.SharpZipLib.Core.DirectoryEventArgs.html">DirectoryEventArgs</a>&gt;</td>
+        <td><span class="xref">System.EventHandler</span>&lt;<a class="xref" href="ICSharpCode.SharpZipLib.Core.DirectoryEventArgs.html">DirectoryEventArgs</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>

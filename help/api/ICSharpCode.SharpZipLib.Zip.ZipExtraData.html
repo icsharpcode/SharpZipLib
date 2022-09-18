@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ZipExtraData
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.56.7.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -78,6 +78,34 @@
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">ZipExtraData</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IDisposable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.html">ICSharpCode.SharpZipLib.Zip</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
@@ -722,7 +750,7 @@ Initially the result will be the index of the first byte of actual data.  The va
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipExtraData_GetData_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipExtraData.GetData*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipExtraData_GetData__1" data-uid="ICSharpCode.SharpZipLib.Zip.ZipExtraData.GetData``1">GetData&lt;T&gt;()</h4>
-  <div class="markdown level1 summary"><p>Get the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ITaggedData.html">ITaggedData</a> for a tag.</p>
+  <div class="markdown level1 summary"><p>Get the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ITaggedData.html">tagged data</a> for a tag.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -741,7 +769,7 @@ Initially the result will be the index of the first byte of actual data.  The va
     <tbody>
       <tr>
         <td><span class="xref">T</span></td>
-        <td><p>Returns a <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ITaggedData.html">ITaggedData</a> or null if none found.</p>
+        <td><p>Returns a <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ITaggedData.html">tagged value</a> or null if none found.</p>
 </td>
       </tr>
     </tbody>
@@ -803,7 +831,7 @@ Initially the result will be the index of the first byte of actual data.  The va
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipExtraData_GetStreamForTag_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipExtraData.GetStreamForTag*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipExtraData_GetStreamForTag_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipExtraData.GetStreamForTag(System.Int32)">GetStreamForTag(Int32)</h4>
-  <div class="markdown level1 summary"><p>Get a read-only <see cref="!:Stream"></see> for the associated tag.</p>
+  <div class="markdown level1 summary"><p>Get a read-only <span class="xref">System.IO.Stream</span> for the associated tag.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -838,8 +866,8 @@ Initially the result will be the index of the first byte of actual data.  The va
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
-        <td><p>Returns a <see cref="!:Stream"></see> containing tag data or null if no tag was found.</p>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><p>Returns a <span class="xref">System.IO.Stream</span> containing tag data or null if no tag was found.</p>
 </td>
       </tr>
     </tbody>
@@ -885,7 +913,7 @@ Initially the result will be the index of the first byte of actual data.  The va
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipExtraData_ReadInt_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipExtraData.ReadInt*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipExtraData_ReadInt" data-uid="ICSharpCode.SharpZipLib.Zip.ZipExtraData.ReadInt">ReadInt()</h4>
-  <div class="markdown level1 summary"><p>Read an integer in little endian form from the last <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipExtraData.html#ICSharpCode_SharpZipLib_Zip_ZipExtraData_Find_System_Int32_">Find(Int32)</a> data value.</p>
+  <div class="markdown level1 summary"><p>Read an integer in little endian form from the last <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipExtraData.html#ICSharpCode_SharpZipLib_Zip_ZipExtraData_Find_System_Int32_">found</a> data value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -917,7 +945,7 @@ Initially the result will be the index of the first byte of actual data.  The va
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipExtraData_ReadLong_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipExtraData.ReadLong*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipExtraData_ReadLong" data-uid="ICSharpCode.SharpZipLib.Zip.ZipExtraData.ReadLong">ReadLong()</h4>
-  <div class="markdown level1 summary"><p>Read a long in little endian form from the last <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipExtraData.html#ICSharpCode_SharpZipLib_Zip_ZipExtraData_Find_System_Int32_">Find(Int32)</a> data value</p>
+  <div class="markdown level1 summary"><p>Read a long in little endian form from the last <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipExtraData.html#ICSharpCode_SharpZipLib_Zip_ZipExtraData_Find_System_Int32_">found</a> data value</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -949,7 +977,7 @@ Initially the result will be the index of the first byte of actual data.  The va
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipExtraData_ReadShort_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipExtraData.ReadShort*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipExtraData_ReadShort" data-uid="ICSharpCode.SharpZipLib.Zip.ZipExtraData.ReadShort">ReadShort()</h4>
-  <div class="markdown level1 summary"><p>Read a short value in little endian form from the last <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipExtraData.html#ICSharpCode_SharpZipLib_Zip_ZipExtraData_Find_System_Int32_">Find(Int32)</a> data value.</p>
+  <div class="markdown level1 summary"><p>Read a short value in little endian form from the last <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipExtraData.html#ICSharpCode_SharpZipLib_Zip_ZipExtraData_Find_System_Int32_">found</a> data value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -1029,6 +1057,10 @@ The new entry is completed and actually added by calling <a class="xref" href="I
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipExtraData_StartNewEntry_seealso">See Also</h5>
   <div class="seealso">
       <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipExtraData.html#ICSharpCode_SharpZipLib_Zip_ZipExtraData_AddEntry_ICSharpCode_SharpZipLib_Zip_ITaggedData_">AddEntry(ITaggedData)</a></div>
+  </div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IDisposable</span>
   </div>
 </article>
           </div>

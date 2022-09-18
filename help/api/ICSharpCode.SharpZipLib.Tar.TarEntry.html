@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class TarEntry
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.56.7.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -103,11 +103,29 @@ defaults and the File is set to null.</p>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">TarEntry</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Tar.html">ICSharpCode.SharpZipLib.Tar</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_Tar_TarEntry_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TarEntry : object</code></pre>
+    <pre><code class="lang-csharp hljs">public class TarEntry</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -160,7 +178,8 @@ to null.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TarEntry(byte[] headerBuffer)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;No Encoding for Name field is specified, any non-ASCII bytes will be discarded&quot;)]
+public TarEntry(byte[] headerBuffer)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -182,13 +201,13 @@ to null.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry__ctor_System_Byte___Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.%23ctor(System.Byte%5B%5D%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry__ctor_System_Byte___System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.%23ctor(System.Byte%5B%5D%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L69">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarEntry__ctor_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.#ctor*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry__ctor_System_Byte___Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.#ctor(System.Byte[],Encoding)">TarEntry(Byte[], Encoding)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry__ctor_System_Byte___System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.#ctor(System.Byte[],System.Text.Encoding)">TarEntry(Byte[], Encoding)</h4>
   <div class="markdown level1 summary"><p>Construct an entry from an archive&apos;s header bytes. File is set
 to null.</p>
 </div>
@@ -214,9 +233,9 @@ to null.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Encoding</span></td>
+        <td><span class="xref">System.Text.Encoding</span></td>
         <td><span class="parametername">nameEncoding</span></td>
-        <td><p>The <see cref="!:Encoding"></see> used for the Name fields, or null for ASCII only</p>
+        <td><p>The <span class="xref">System.Text.Encoding</span> used for the Name fields, or null for ASCII only</p>
 </td>
       </tr>
     </tbody>
@@ -375,7 +394,7 @@ to null.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">DateTime</span></td>
+        <td><span class="xref">System.DateTime</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -553,7 +572,8 @@ in place in an entry header buffer byte array.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void AdjustEntryName(byte[] buffer, string newName)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;No Encoding for Name field is specified, any non-ASCII bytes will be discarded&quot;)]
+public static void AdjustEntryName(byte[] buffer, string newName)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -581,13 +601,13 @@ in place in an entry header buffer byte array.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_AdjustEntryName_System_Byte___System_String_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName(System.Byte%5B%5D%2CSystem.String%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_AdjustEntryName_System_Byte___System_String_System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName(System.Byte%5B%5D%2CSystem.String%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L487">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_AdjustEntryName_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_AdjustEntryName_System_Byte___System_String_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName(System.Byte[],System.String,Encoding)">AdjustEntryName(Byte[], String, Encoding)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_AdjustEntryName_System_Byte___System_String_System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.AdjustEntryName(System.Byte[],System.String,System.Text.Encoding)">AdjustEntryName(Byte[], String, Encoding)</h4>
   <div class="markdown level1 summary"><p>Convenience method that will modify an entry&apos;s name directly
 in place in an entry header buffer byte array.</p>
 </div>
@@ -619,9 +639,9 @@ in place in an entry header buffer byte array.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Encoding</span></td>
+        <td><span class="xref">System.Text.Encoding</span></td>
         <td><span class="parametername">nameEncoding</span></td>
-        <td><p>The <see cref="!:Encoding"></see> used for the Name fields, or null for ASCII only</p>
+        <td><p>The <span class="xref">System.Text.Encoding</span> used for the Name fields, or null for ASCII only</p>
 </td>
       </tr>
     </tbody>
@@ -790,7 +810,7 @@ by the header names being equal.</p>
       <tr>
         <td><span class="xref">System.Object</span></td>
         <td><span class="parametername">obj</span></td>
-        <td><p>The <see cref="!:Object"></see> to compare with the current Object.</p>
+        <td><p>The <span class="xref">System.Object</span> to compare with the current Object.</p>
 </td>
       </tr>
     </tbody>
@@ -811,6 +831,8 @@ by the header names being equal.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.Equals(System.Object)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_GetDirectoryEntries.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.GetDirectoryEntries%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -893,7 +915,7 @@ If this entry doesnt represent a directory zero entries are returned.</p>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_GetHashCode_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.GetHashCode*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_GetHashCode" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"><p>Derive a Hash value for the current <see cref="!:Object"></see></p>
+  <div class="markdown level1 summary"><p>Derive a Hash value for the current <span class="xref">System.Object</span></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -911,11 +933,13 @@ If this entry doesnt represent a directory zero entries are returned.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Int32</span></td>
-        <td><p>A Hash code for the current <see cref="!:Object"></see></p>
+        <td><p>A Hash code for the current <span class="xref">System.Object</span></p>
 </td>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.GetHashCode()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_IsDescendent_ICSharpCode_SharpZipLib_Tar_TarEntry_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.IsDescendent(ICSharpCode.SharpZipLib.Tar.TarEntry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1096,7 +1120,8 @@ starting with this entry&apos;s name.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void WriteEntryHeader(byte[] outBuffer)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;No Encoding for Name field is specified, any non-ASCII bytes will be discarded&quot;)]
+public void WriteEntryHeader(byte[] outBuffer)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1118,13 +1143,13 @@ starting with this entry&apos;s name.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_WriteEntryHeader_System_Byte___Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader(System.Byte%5B%5D%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarEntry_WriteEntryHeader_System_Byte___System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader(System.Byte%5B%5D%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarEntry.cs/#L453">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarEntry_WriteEntryHeader_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_WriteEntryHeader_System_Byte___Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader(System.Byte[],Encoding)">WriteEntryHeader(Byte[], Encoding)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarEntry_WriteEntryHeader_System_Byte___System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarEntry.WriteEntryHeader(System.Byte[],System.Text.Encoding)">WriteEntryHeader(Byte[], Encoding)</h4>
   <div class="markdown level1 summary"><p>Write an entry&apos;s header information to a header buffer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1149,9 +1174,9 @@ starting with this entry&apos;s name.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Encoding</span></td>
+        <td><span class="xref">System.Text.Encoding</span></td>
         <td><span class="parametername">nameEncoding</span></td>
-        <td><p>The <see cref="!:Encoding"></see> used for the Name fields, or null for ASCII only</p>
+        <td><p>The <span class="xref">System.Text.Encoding</span> used for the Name fields, or null for ASCII only</p>
 </td>
       </tr>
     </tbody>

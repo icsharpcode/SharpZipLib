@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ZipConstants
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.56.7.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -79,11 +79,35 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">ZipConstants</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.html">ICSharpCode.SharpZipLib.Zip</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipConstants_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class ZipConstants : object</code></pre>
+    <pre><code class="lang-csharp hljs">public static class ZipConstants</code></pre>
   </div>
   <h3 id="fields">Fields
   </h3>
@@ -100,7 +124,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int ArchiveExtraDataSignature = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int ArchiveExtraDataSignature = 117853008</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -130,7 +154,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int CENDIGITALSIG = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use CentralHeaderDigitalSignaure instead&quot;)]
+public const int CENDIGITALSIG = 84233040</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -160,7 +185,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int CENHDR = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use CentralHeaderBaseSize instead&quot;)]
+public const int CENHDR = 46</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -190,7 +216,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int CENSIG = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use CentralHeaderSignature instead&quot;)]
+public const int CENSIG = 33639248</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -220,7 +247,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int CENSIG64 = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Zip64CentralFileHeaderSignature instead&quot;)]
+public const int CENSIG64 = 101075792</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -250,7 +278,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int CentralHeaderBaseSize = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int CentralHeaderBaseSize = 46</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -280,7 +308,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int CentralHeaderDigitalSignature = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int CentralHeaderDigitalSignature = 84233040</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -310,7 +338,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int CentralHeaderSignature = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int CentralHeaderSignature = 33639248</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -340,7 +368,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int CRYPTO_HEADER_SIZE = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use CryptoHeaderSize instead&quot;)]
+public const int CRYPTO_HEADER_SIZE = 12</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -370,7 +399,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int CryptoHeaderSize = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int CryptoHeaderSize = 12</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -400,7 +429,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DataDescriptorSignature = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int DataDescriptorSignature = 134695760</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -436,7 +465,7 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DataDescriptorSize = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int DataDescriptorSize = 16</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -466,7 +495,8 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int ENDHDR = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use EndOfCentralRecordBaseSize instead&quot;)]
+public const int ENDHDR = 22</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -496,7 +526,7 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int EndOfCentralDirectorySignature = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int EndOfCentralDirectorySignature = 101010256</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -526,7 +556,7 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int EndOfCentralRecordBaseSize = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int EndOfCentralRecordBaseSize = 22</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -556,7 +586,8 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int ENDSIG = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use EndOfCentralDirectorySignature instead&quot;)]
+public const int ENDSIG = 101010256</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -586,7 +617,8 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int EXTHDR = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use DataDescriptorSize instead&quot;)]
+public const int EXTHDR = 16</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -616,7 +648,8 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int EXTSIG = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use DataDescriptorSignature instead&quot;)]
+public const int EXTSIG = 134695760</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -652,7 +685,7 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int LocalHeaderBaseSize = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int LocalHeaderBaseSize = 30</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -682,7 +715,7 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int LocalHeaderSignature = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int LocalHeaderSignature = 67324752</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -712,7 +745,8 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int LOCHDR = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use LocalHeaderBaseSize instead&quot;)]
+public const int LOCHDR = 30</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -742,7 +776,8 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int LOCSIG = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use LocalHeaderSignature instead&quot;)]
+public const int LOCSIG = 67324752</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -772,7 +807,8 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int SPANNINGSIG = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use SpanningSignature instead&quot;)]
+public const int SPANNINGSIG = 134695760</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -802,7 +838,7 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int SpanningSignature = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int SpanningSignature = 134695760</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -832,7 +868,7 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int SpanningTempSignature = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int SpanningTempSignature = 808471376</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -862,7 +898,8 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int SPANTEMPSIG = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use SpanningTempSignature instead&quot;)]
+public const int SPANTEMPSIG = 808471376</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -892,7 +929,7 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int VERSION_AES = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int VERSION_AES = 51</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -922,7 +959,8 @@ so the values are recorded after the data prefixed by this header, as well as in
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int VERSION_MADE_BY = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use VersionMadeBy instead&quot;)]
+public const int VERSION_MADE_BY = 51</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -941,7 +979,7 @@ so the values are recorded after the data prefixed by this header, as well as in
   </table>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipConstants_VERSION_MADE_BY_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This is also the Zip version for the library when comparing against the version required to extract
-for an entry.  See <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipInputStream.html#ICSharpCode_SharpZipLib_Zip_ZipInputStream_CanDecompressEntry">CanDecompressEntry</a>.</p>
+for an entry.  See <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipInputStream.html#ICSharpCode_SharpZipLib_Zip_ZipInputStream_CanDecompressEntry">ZipInputStream.CanDecompressEntry</a>.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -956,7 +994,8 @@ for an entry.  See <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipInputStr
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int VERSION_STRONG_ENCRYPTION = null</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use VersionStrongEncryption instead&quot;)]
+public const int VERSION_STRONG_ENCRYPTION = 50</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -986,7 +1025,7 @@ for an entry.  See <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipInputStr
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int VersionBZip2 = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int VersionBZip2 = 46</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1016,7 +1055,7 @@ for an entry.  See <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipInputStr
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int VersionMadeBy = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int VersionMadeBy = 51</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1050,7 +1089,7 @@ for an entry.  See <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.ht
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int VersionStrongEncryption = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int VersionStrongEncryption = 50</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1080,7 +1119,7 @@ for an entry.  See <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.ht
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int VersionZip64 = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int VersionZip64 = 45</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1110,7 +1149,7 @@ for an entry.  See <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.ht
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int Zip64CentralDirLocatorSignature = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int Zip64CentralDirLocatorSignature = 117853008</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1140,7 +1179,7 @@ for an entry.  See <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.ht
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int Zip64CentralFileHeaderSignature = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int Zip64CentralFileHeaderSignature = 101075792</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1170,7 +1209,7 @@ for an entry.  See <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.ht
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int Zip64DataDescriptorSize = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int Zip64DataDescriptorSize = 24</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1200,7 +1239,7 @@ for an entry.  See <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.ht
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int Zip64EndOfCentralDirectoryLocatorSize = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int Zip64EndOfCentralDirectoryLocatorSize = 20</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">

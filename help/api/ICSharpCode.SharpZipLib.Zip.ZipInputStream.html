@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ZipInputStream
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.56.7.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,8 +83,14 @@ It includes support for Stored and Deflated entries.
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html">InflaterInputStream</a></div>
-    <div class="level2"><span class="xref">ZipInputStream</span></div>
+    <div class="level1"><span class="xref">System.MarshalByRefObject</span></div>
+    <div class="level2"><span class="xref">System.IO.Stream</span></div>
+    <div class="level3"><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html">InflaterInputStream</a></div>
+    <div class="level4"><span class="xref">ZipInputStream</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IDisposable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -116,7 +122,7 @@ It includes support for Stored and Deflated entries.
       <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Flush">InflaterInputStream.Flush()</a>
     </div>
     <div>
-      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Seek_System_Int64_SeekOrigin_">InflaterInputStream.Seek(Int64, SeekOrigin)</a>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_Seek_System_Int64_System_IO_SeekOrigin_">InflaterInputStream.Seek(Int64, SeekOrigin)</a>
     </div>
     <div>
       <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_SetLength_System_Int64_">InflaterInputStream.SetLength(Int64)</a>
@@ -136,12 +142,114 @@ It includes support for Stored and Deflated entries.
     <div>
       <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.InflaterInputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_InflaterInputStream_csize">InflaterInputStream.csize</a>
     </div>
+    <div>
+      <span class="xref">System.IO.Stream.Null</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginRead(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginWrite(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Close()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CreateWaitHandle()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndRead(System.IAsyncResult)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndWrite(System.IAsyncResult)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.FlushAsync()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.FlushAsync(System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ObjectInvariant()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Synchronized(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CanTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.GetLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.InitializeLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.MemberwiseClone(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.html">ICSharpCode.SharpZipLib.Zip</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipInputStream_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ZipInputStream : InflaterInputStream</code></pre>
+    <pre><code class="lang-csharp hljs">public class ZipInputStream : InflaterInputStream, IDisposable</code></pre>
   </div>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipInputStream_examples"><strong>Examples</strong></h5>
   <p>This sample shows how to read a zip file</p>
@@ -184,13 +292,13 @@ class MainClass
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipInputStream.%23ctor(Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipInputStream.%23ctor(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipInputStream.cs/#L90">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_Stream_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(Stream)">ZipInputStream(Stream)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_System_IO_Stream_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(System.IO.Stream)">ZipInputStream(Stream)</h4>
   <div class="markdown level1 summary"><p>Creates a new Zip input stream, for reading a zip archive.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -209,22 +317,22 @@ class MainClass
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">baseInputStream</span></td>
-        <td><p>The underlying <see cref="!:Stream"></see> providing data.</p>
+        <td><p>The underlying <span class="xref">System.IO.Stream</span> providing data.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipInputStream.%23ctor(Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_System_IO_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipInputStream.%23ctor(System.IO.Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipInputStream.cs/#L101">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(Stream,System.Int32)">ZipInputStream(Stream, Int32)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_System_IO_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(System.IO.Stream,System.Int32)">ZipInputStream(Stream, Int32)</h4>
   <div class="markdown level1 summary"><p>Creates a new Zip input stream, for reading a zip archive.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -243,9 +351,9 @@ class MainClass
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">baseInputStream</span></td>
-        <td><p>The underlying <see cref="!:Stream"></see> providing data.</p>
+        <td><p>The underlying <span class="xref">System.IO.Stream</span> providing data.</p>
 </td>
       </tr>
       <tr>
@@ -325,7 +433,7 @@ Otherwise returns 0.</p>
   </table>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipInputStream_CanDecompressEntry_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The entry can only be decompressed if the library supports the zip features required to extract it.
-See the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_Version">Version</a> property for more details.</p>
+See the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_Version">ZipEntry Version</a> property for more details.</p>
 <p>Since <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipInputStream.html">ZipInputStream</a> uses the local headers for extraction, entries with no compression combined with the
 <a class="xref" href="ICSharpCode.SharpZipLib.Zip.GeneralBitFlags.html#ICSharpCode_SharpZipLib_Zip_GeneralBitFlags_Descriptor">Descriptor</a> flag set, cannot be extracted as the end of the entry data cannot be deduced.</p>
 </div>
@@ -376,6 +484,11 @@ See the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpC
         <td><p>Thrown if the entry size is not known.</p>
 </td>
       </tr>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Thrown if no entry is currently available.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
@@ -405,7 +518,7 @@ See the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpC
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p>A password for all encrypted <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html">ZipEntry</a> in this <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipInputStream.html">ZipInputStream</a></p>
+        <td><p>A password for all encrypted <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html">entries </a> in this <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipInputStream.html">ZipInputStream</a></p>
 </td>
       </tr>
     </tbody>
@@ -437,6 +550,11 @@ See the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpC
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>The stream is closed</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipException.html">ZipException</a></td>
         <td><p>The Zip stream ends early</p>
@@ -506,13 +624,13 @@ See the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpC
     <tbody>
       <tr>
         <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html">ZipEntry</a></td>
-        <td><p>The next <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html">ZipEntry</a> in the archive or null if there are no more entries.</p>
+        <td><p>The next <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html">entry</a> in the archive or null if there are no more entries.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipInputStream_GetNextEntry_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>If the previous entry is still open <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipInputStream.html#ICSharpCode_SharpZipLib_Zip_ZipInputStream_CloseEntry">CloseEntry()</a> is called.</p>
+  <div class="markdown level1 remarks"><p>If the previous entry is still open <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipInputStream.html#ICSharpCode_SharpZipLib_Zip_ZipInputStream_CloseEntry">CloseEntry</a> is called.</p>
 </div>
   <h5 class="exceptions">Exceptions</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -523,6 +641,11 @@ See the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpC
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>Input stream is closed</p>
+</td>
+      </tr>
       <tr>
         <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipException.html">ZipException</a></td>
         <td><p>Password is not set, password is invalid, compression method is invalid,
@@ -630,6 +753,12 @@ version required to extract is not supported</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.IO.Stream.ReadByte()</span></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
 </article>
           </div>
           

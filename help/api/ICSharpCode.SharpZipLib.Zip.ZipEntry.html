@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ZipEntry
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.56.7.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -85,11 +85,32 @@ uses an instance of this class when creating an entry in a Zip file.
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">ZipEntry</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.html">ICSharpCode.SharpZipLib.Zip</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ZipEntry : object</code></pre>
+    <pre><code class="lang-csharp hljs">public class ZipEntry</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -107,7 +128,8 @@ uses an instance of this class when creating an entry in a Zip file.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ZipEntry(ZipEntry entry)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Clone instead&quot;)]
+public ZipEntry(ZipEntry entry)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -159,6 +181,22 @@ uses an instance of this class when creating an entry in a Zip file.
         <td><p>The name for this entry. Can include directory components.
 The convention for names is &apos;unix&apos; style paths with relative names only.
 There are with no device names and path elements are separated by &apos;/&apos; characters.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>The name passed is null</p>
 </td>
       </tr>
     </tbody>
@@ -230,7 +268,7 @@ When setting, only 0 (off), 128 or 256 is supported.</p>
   </table>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_CanDecompress_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>This is based on the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_Version">Version</a> and
-whether the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCompressionMethodSupported">IsCompressionMethodSupported()</a> is supported.</p>
+whether the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCompressionMethodSupported">compression method</a> is supported.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -299,6 +337,22 @@ whether the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSh
   <div class="markdown level1 remarks"><p>A comment is only available for entries when read via the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipFile.html">ZipFile</a> class.
 The <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipInputStream.html">ZipInputStream</a> class doesn&apos;t have the comment data available.</p>
 </div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>If comment is longer than 0xffff.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_CompressedSize.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.CompressedSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -395,6 +449,22 @@ The <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipInputStream.html">ZipIn
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>Crc is not in the range 0..0xffffffffL</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_DateTime.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.DateTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -421,7 +491,7 @@ The <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipInputStream.html">ZipIn
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">DateTime</span></td>
+        <td><span class="xref">System.DateTime</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -528,6 +598,22 @@ The values of this are operating system dependent see
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>Extra data is longer than 64KB (0xffff) bytes.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.Flags%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -630,7 +716,7 @@ Bit 12-15: Unused or reserved<br></p>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_HostSystem_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.HostSystem*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_HostSystem" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.HostSystem">HostSystem</h4>
-  <div class="markdown level1 summary"><p>Gets the compatibility information for the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_ExternalFileAttributes">ExternalFileAttributes</a>
+  <div class="markdown level1 summary"><p>Gets the compatibility information for the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_ExternalFileAttributes">external file attribute</a>
 If the external file attributes are compatible with MS-DOS and can be read
 by PKZIP for DOS version 2.04g then this value will be zero.  Otherwise the value
 will be non-zero and identify the host system on which the attributes are compatible.</p>
@@ -672,7 +758,7 @@ particularly helpful as it documents a lot of peculiarities.  The document is ho
   <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCrypted_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsCrypted*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCrypted" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsCrypted">IsCrypted</h4>
   <div class="markdown level1 summary"><p>Get/Set flag indicating if entry is encrypted.
-A simple helper routine to aid interpretation of <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags">Flags</a></p>
+A simple helper routine to aid interpretation of <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags">flags</a></p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -695,7 +781,7 @@ A simple helper routine to aid interpretation of <a class="xref" href="ICSharpCo
     </tbody>
   </table>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCrypted_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This is an assistant that interprets the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags">Flags</a> property.</p>
+  <div class="markdown level1 remarks"><p>This is an assistant that interprets the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags">flags</a> property.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -834,7 +920,7 @@ encoded in <a href="http://www.unicode.org">unicode UTF8</a>.</p>
     </tbody>
   </table>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsUnicodeText_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>This is an assistant that interprets the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags">Flags</a> property.</p>
+  <div class="markdown level1 remarks"><p>This is an assistant that interprets the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags">flags</a> property.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -864,7 +950,7 @@ to store the full entry values.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>A <see cref="!:System.Boolean"></see> value of true if a local header requires Zip64 extensions; false if not.</p>
+        <td><p>A <span class="xref">System.Boolean</span> value of true if a local header requires Zip64 extensions; false if not.</p>
 </td>
       </tr>
     </tbody>
@@ -1158,7 +1244,7 @@ with the ZIP naming convention.</p>
     </tbody>
   </table>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_CleanName_System_String__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.html">ZipNameTransform</a> class is more flexible.</p>
+  <div class="markdown level1 remarks"><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.html">Zip name transform</a> class is more flexible.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -1187,7 +1273,7 @@ with the ZIP naming convention.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Object</span></td>
-        <td><p>An <see cref="!:Object"></see> that is a copy of the current instance.</p>
+        <td><p>An <span class="xref">System.Object</span> that is a copy of the current instance.</p>
 </td>
       </tr>
     </tbody>
@@ -1249,7 +1335,7 @@ with the ZIP naming convention.</p>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCompressionMethodSupported_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsCompressionMethodSupported*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCompressionMethodSupported_ICSharpCode_SharpZipLib_Zip_CompressionMethod_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsCompressionMethodSupported(ICSharpCode.SharpZipLib.Zip.CompressionMethod)">IsCompressionMethodSupported(CompressionMethod)</h4>
-  <div class="markdown level1 summary"><p>Test a <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_CompressionMethod">CompressionMethod</a> to see if this library
+  <div class="markdown level1 summary"><p>Test a <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_CompressionMethod">compression method</a> to see if this library
 supports extracting data compressed with that method</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1318,7 +1404,7 @@ supports extracting data compressed with that method</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>A <see cref="!:System.Boolean"></see> value of true if Zip64 extensions have been forced on; false if not.</p>
+        <td><p>A <span class="xref">System.Boolean</span> value of true if Zip64 extensions have been forced on; false if not.</p>
 </td>
       </tr>
     </tbody>
@@ -1355,6 +1441,8 @@ supports extracting data compressed with that method</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.ToString()</span></div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.html#ICSharpCode_SharpZipLib_Zip_ZipEntryExtensions_HasFlag_ICSharpCode_SharpZipLib_Zip_ZipEntry_ICSharpCode_SharpZipLib_Zip_GeneralBitFlags_">ZipEntryExtensions.HasFlag(ZipEntry, GeneralBitFlags)</a>

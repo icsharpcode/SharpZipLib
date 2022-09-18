@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class TarBuffer
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.56.7.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -88,11 +88,35 @@ TarBuffers are created by Tar IO Streams.
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">TarBuffer</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Tar.html">ICSharpCode.SharpZipLib.Tar</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TarBuffer : object</code></pre>
+    <pre><code class="lang-csharp hljs">public class TarBuffer</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -127,7 +151,7 @@ TarBuffers are created by Tar IO Streams.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int BlockSize = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int BlockSize = 512</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -160,7 +184,7 @@ TarBuffers are created by Tar IO Streams.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DefaultBlockFactor = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int DefaultBlockFactor = 20</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -193,7 +217,7 @@ TarBuffers are created by Tar IO Streams.
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DefaultRecordSize = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int DefaultRecordSize = 10240</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -406,13 +430,13 @@ current block before closing.</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_CloseAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.CloseAsync(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_CloseAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.CloseAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarBuffer.cs/#L626">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CloseAsync_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CloseAsync*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CloseAsync_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CloseAsync(CancellationToken)">CloseAsync(CancellationToken)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CloseAsync_System_Threading_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CloseAsync(System.Threading.CancellationToken)">CloseAsync(CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Close the TarBuffer. If this is an output buffer, also flush the
 current block before closing.</p>
 </div>
@@ -432,7 +456,7 @@ current block before closing.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">ct</span></td>
         <td></td>
       </tr>
@@ -448,20 +472,20 @@ current block before closing.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span></td>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateInputTarBuffer_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateInputTarBuffer_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarBuffer.cs/#L123">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateInputTarBuffer_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateInputTarBuffer_Stream_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(Stream)">CreateInputTarBuffer(Stream)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateInputTarBuffer_System_IO_Stream_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(System.IO.Stream)">CreateInputTarBuffer(Stream)</h4>
   <div class="markdown level1 summary"><p>Create TarBuffer for reading with default BlockFactor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -480,7 +504,7 @@ current block before closing.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">inputStream</span></td>
         <td><p>Stream to buffer</p>
 </td>
@@ -505,13 +529,13 @@ current block before closing.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateInputTarBuffer_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateInputTarBuffer_System_IO_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(System.IO.Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarBuffer.cs/#L139">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateInputTarBuffer_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateInputTarBuffer_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(Stream,System.Int32)">CreateInputTarBuffer(Stream, Int32)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateInputTarBuffer_System_IO_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateInputTarBuffer(System.IO.Stream,System.Int32)">CreateInputTarBuffer(Stream, Int32)</h4>
   <div class="markdown level1 summary"><p>Construct TarBuffer for reading inputStream setting BlockFactor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -530,7 +554,7 @@ current block before closing.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">inputStream</span></td>
         <td><p>Stream to buffer</p>
 </td>
@@ -561,13 +585,13 @@ current block before closing.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateOutputTarBuffer_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateOutputTarBuffer_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarBuffer.cs/#L164">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateOutputTarBuffer_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateOutputTarBuffer_Stream_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(Stream)">CreateOutputTarBuffer(Stream)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateOutputTarBuffer_System_IO_Stream_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(System.IO.Stream)">CreateOutputTarBuffer(Stream)</h4>
   <div class="markdown level1 summary"><p>Construct TarBuffer for writing with default BlockFactor</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -586,7 +610,7 @@ current block before closing.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">outputStream</span></td>
         <td><p>output stream for buffer</p>
 </td>
@@ -611,13 +635,13 @@ current block before closing.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateOutputTarBuffer_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateOutputTarBuffer_System_IO_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(System.IO.Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarBuffer.cs/#L180">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateOutputTarBuffer_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateOutputTarBuffer_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(Stream,System.Int32)">CreateOutputTarBuffer(Stream, Int32)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_CreateOutputTarBuffer_System_IO_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.CreateOutputTarBuffer(System.IO.Stream,System.Int32)">CreateOutputTarBuffer(Stream, Int32)</h4>
   <div class="markdown level1 summary"><p>Construct TarBuffer for writing Tar output to streams.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -636,7 +660,7 @@ current block before closing.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Stream</span></td>
+        <td><span class="xref">System.IO.Stream</span></td>
         <td><span class="parametername">outputStream</span></td>
         <td><p>Output stream to write to.</p>
 </td>
@@ -679,7 +703,8 @@ current block before closing.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int GetBlockFactor()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use BlockFactor property instead&quot;)]
+public int GetBlockFactor()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -711,7 +736,8 @@ current block before closing.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int GetCurrentBlockNum()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use CurrentBlock property instead&quot;)]
+public int GetCurrentBlockNum()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -730,7 +756,7 @@ current block before closing.</p>
     </tbody>
   </table>
   <h5 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_GetCurrentBlockNum_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The absolute block number = (<a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarBuffer.html#ICSharpCode_SharpZipLib_Tar_TarBuffer_GetCurrentRecordNum">GetCurrentRecordNum()</a> * <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarBuffer.html#ICSharpCode_SharpZipLib_Tar_TarBuffer_BlockFactor">BlockFactor</a>) + <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarBuffer.html#ICSharpCode_SharpZipLib_Tar_TarBuffer_GetCurrentBlockNum">GetCurrentBlockNum()</a>.</p>
+  <div class="markdown level1 remarks"><p>The absolute block number = (<a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarBuffer.html#ICSharpCode_SharpZipLib_Tar_TarBuffer_GetCurrentRecordNum">record number</a> * <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarBuffer.html#ICSharpCode_SharpZipLib_Tar_TarBuffer_BlockFactor">block factor</a>) + <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarBuffer.html#ICSharpCode_SharpZipLib_Tar_TarBuffer_GetCurrentBlockNum">block number</a>.</p>
 </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
@@ -746,7 +772,8 @@ current block before closing.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int GetCurrentRecordNum()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use CurrentRecord property instead&quot;)]
+public int GetCurrentRecordNum()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -778,7 +805,8 @@ current block before closing.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int GetRecordSize()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use RecordSize property instead&quot;)]
+public int GetRecordSize()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -869,7 +897,8 @@ and also partial records</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsEOFBlock(byte[] block)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use IsEndOfArchiveBlock instead&quot;)]
+public bool IsEOFBlock(byte[] block)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -955,13 +984,13 @@ and also partial records</p>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_SkipBlockAsync_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.SkipBlockAsync(CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_SkipBlockAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.SkipBlockAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarBuffer.cs/#L294">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarBuffer_SkipBlockAsync_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.SkipBlockAsync*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_SkipBlockAsync_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.SkipBlockAsync(CancellationToken)">SkipBlockAsync(CancellationToken)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_SkipBlockAsync_System_Threading_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.SkipBlockAsync(System.Threading.CancellationToken)">SkipBlockAsync(CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Skip over a block on the input stream.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -980,7 +1009,7 @@ and also partial records</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">ct</span></td>
         <td></td>
       </tr>
@@ -996,7 +1025,7 @@ and also partial records</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span></td>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -1079,67 +1108,13 @@ record size&quot; long.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_WriteBlockAsync_System_Byte___CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.WriteBlockAsync(System.Byte%5B%5D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarBuffer.cs/#L478">View Source</a>
-  </span>
-  <a id="ICSharpCode_SharpZipLib_Tar_TarBuffer_WriteBlockAsync_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.WriteBlockAsync*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_WriteBlockAsync_System_Byte___CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.WriteBlockAsync(System.Byte[],CancellationToken)">WriteBlockAsync(Byte[], CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Write a block of data to the archive.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ValueTask WriteBlockAsync(byte[] block, CancellationToken ct)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
-        <td><span class="parametername">block</span></td>
-        <td><p>The data to write to the archive.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">CancellationToken</span></td>
-        <td><span class="parametername">ct</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ValueTask</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_WriteBlockAsync_System_Byte___System_Int32_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.WriteBlockAsync(System.Byte%5B%5D%2CSystem.Int32%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_WriteBlockAsync_System_Byte___System_Int32_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.WriteBlockAsync(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarBuffer.cs/#L506">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarBuffer_WriteBlockAsync_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.WriteBlockAsync*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_WriteBlockAsync_System_Byte___System_Int32_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.WriteBlockAsync(System.Byte[],System.Int32,CancellationToken)">WriteBlockAsync(Byte[], Int32, CancellationToken)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_WriteBlockAsync_System_Byte___System_Int32_System_Threading_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.WriteBlockAsync(System.Byte[],System.Int32,System.Threading.CancellationToken)">WriteBlockAsync(Byte[], Int32, CancellationToken)</h4>
   <div class="markdown level1 summary"><p>Write an archive record to the archive, where the record may be
 inside of a larger array buffer. The buffer must be &quot;offset plus
 record size&quot; long.</p>
@@ -1172,7 +1147,7 @@ record size&quot; long.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">CancellationToken</span></td>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
         <td><span class="parametername">ct</span></td>
         <td></td>
       </tr>
@@ -1188,7 +1163,61 @@ record size&quot; long.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ValueTask</span></td>
+        <td><span class="xref">System.Threading.Tasks.ValueTask</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarBuffer_WriteBlockAsync_System_Byte___System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarBuffer.WriteBlockAsync(System.Byte%5B%5D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarBuffer.cs/#L478">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarBuffer_WriteBlockAsync_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.WriteBlockAsync*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarBuffer_WriteBlockAsync_System_Byte___System_Threading_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Tar.TarBuffer.WriteBlockAsync(System.Byte[],System.Threading.CancellationToken)">WriteBlockAsync(Byte[], CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Write a block of data to the archive.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteBlockAsync(byte[] block, CancellationToken ct)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">block</span></td>
+        <td><p>The data to write to the archive.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.ValueTask</span></td>
         <td></td>
       </tr>
     </tbody>

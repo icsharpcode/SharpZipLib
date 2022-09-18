@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class TarHeader
    | SharpZipLib Help ">
-    <meta name="generator" content="docfx 2.56.7.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -80,11 +80,29 @@ The class also holds a number of tar constants, used mostly in headers.</p>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">TarHeader</span></div>
   </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Tar.html">ICSharpCode.SharpZipLib.Tar</a></h6>
   <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
   <h5 id="ICSharpCode_SharpZipLib_Tar_TarHeader_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TarHeader : object</code></pre>
+    <pre><code class="lang-csharp hljs">public class TarHeader</code></pre>
   </div>
   <h5 id="ICSharpCode_SharpZipLib_Tar_TarHeader_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>The tar format and its POSIX successor PAX have a long history which makes for compatability
@@ -147,7 +165,7 @@ char t_mfill[12];          // 500 Filler up to 512
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int CHKSUMLEN = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int CHKSUMLEN = 8</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -177,7 +195,7 @@ char t_mfill[12];          // 500 Filler up to 512
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int CHKSUMOFS = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int CHKSUMOFS = 148</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -207,7 +225,7 @@ char t_mfill[12];          // 500 Filler up to 512
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int DEVLEN = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int DEVLEN = 8</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -237,7 +255,7 @@ char t_mfill[12];          // 500 Filler up to 512
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int GIDLEN = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int GIDLEN = 8</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -267,7 +285,7 @@ char t_mfill[12];          // 500 Filler up to 512
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int GNAMELEN = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int GNAMELEN = 32</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -297,7 +315,7 @@ char t_mfill[12];          // 500 Filler up to 512
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string GNU_TMAGIC = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const string GNU_TMAGIC = &quot;ustar  &quot;</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -327,7 +345,7 @@ char t_mfill[12];          // 500 Filler up to 512
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_ACL = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_ACL = 65</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -357,7 +375,7 @@ char t_mfill[12];          // 500 Filler up to 512
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_BLK = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_BLK = 52</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -387,7 +405,7 @@ char t_mfill[12];          // 500 Filler up to 512
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_CHR = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_CHR = 51</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -417,7 +435,7 @@ char t_mfill[12];          // 500 Filler up to 512
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_CONTIG = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_CONTIG = 55</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -447,7 +465,7 @@ char t_mfill[12];          // 500 Filler up to 512
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_DIR = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_DIR = 53</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -477,7 +495,7 @@ char t_mfill[12];          // 500 Filler up to 512
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_EXTATTR = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_EXTATTR = 69</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -507,7 +525,7 @@ char t_mfill[12];          // 500 Filler up to 512
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_FIFO = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_FIFO = 54</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -537,7 +555,7 @@ char t_mfill[12];          // 500 Filler up to 512
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_GHDR = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_GHDR = 103</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -569,7 +587,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_GNU_DUMPDIR = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_GNU_DUMPDIR = 68</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -599,7 +617,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_GNU_LONGLINK = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_GNU_LONGLINK = 75</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -629,7 +647,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_GNU_LONGNAME = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_GNU_LONGNAME = 76</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -659,7 +677,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_GNU_MULTIVOL = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_GNU_MULTIVOL = 77</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -689,7 +707,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_GNU_NAMES = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_GNU_NAMES = 78</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -719,7 +737,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_GNU_SPARSE = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_GNU_SPARSE = 83</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -749,7 +767,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_GNU_VOLHDR = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_GNU_VOLHDR = 86</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -779,7 +797,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_LINK = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_LINK = 49</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -809,7 +827,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_META = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_META = 73</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -839,7 +857,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_NORMAL = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_NORMAL = 48</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -869,7 +887,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_OLDNORM = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_OLDNORM = 0</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -899,7 +917,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_SYMLINK = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_SYMLINK = 50</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -929,7 +947,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const byte LF_XHDR = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const byte LF_XHDR = 120</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -959,7 +977,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int MAGICLEN = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int MAGICLEN = 6</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -989,7 +1007,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int MODELEN = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int MODELEN = 8</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1019,7 +1037,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int MODTIMELEN = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int MODTIMELEN = 12</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1049,7 +1067,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int NAMELEN = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int NAMELEN = 100</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1079,7 +1097,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int PREFIXLEN = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int PREFIXLEN = 155</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1109,7 +1127,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int SIZELEN = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int SIZELEN = 12</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1139,7 +1157,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const string TMAGIC = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const string TMAGIC = &quot;ustar&quot;</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1169,7 +1187,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int UIDLEN = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int UIDLEN = 8</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1199,7 +1217,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int UNAMELEN = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int UNAMELEN = 32</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1229,7 +1247,7 @@ dir at the time the dump was made</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public const int VERSIONLEN = null</code></pre>
+    <pre><code class="lang-csharp hljs">public const int VERSIONLEN = 2</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1472,6 +1490,22 @@ The default value is zero.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Thrown when attempting to set LinkName to null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_Magic.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.Magic%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1500,6 +1534,22 @@ The default value is zero.</p>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Thrown when attempting to set Magic to null.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1560,7 +1610,7 @@ The default value is zero.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">DateTime</span></td>
+        <td><span class="xref">System.DateTime</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -1568,6 +1618,22 @@ The default value is zero.</p>
   <h5 id="ICSharpCode_SharpZipLib_Tar_TarHeader_ModTime_remarks">Remarks</h5>
   <div class="markdown level1 remarks"><p>The modification time is only accurate to within a second.</p>
 </div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>Thrown when setting the date time to less than 1/1/1970.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_Name.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1599,6 +1665,22 @@ The default value is zero.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Thrown when attempting to set the property to null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_Size.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.Size%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1627,6 +1709,22 @@ The default value is zero.</p>
       <tr>
         <td><span class="xref">System.Int64</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>Thrown when setting the size to less than zero.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -1758,6 +1856,22 @@ The default is zero.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Thrown when attempting to set Version to null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -1787,7 +1901,7 @@ The default is zero.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Object</span></td>
-        <td><p>A new <see cref="!:Object"></see> that is a copy of the current instance.</p>
+        <td><p>A new <span class="xref">System.Object</span> that is a copy of the current instance.</p>
 </td>
       </tr>
     </tbody>
@@ -1842,6 +1956,8 @@ The default is zero.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.Equals(System.Object)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetAsciiBytes_System_String_System_Int32_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetAsciiBytes(System.String%2CSystem.Int32%2CSystem.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -1856,7 +1972,8 @@ The default is zero.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int GetAsciiBytes(string toAdd, int nameOffset, byte[] buffer, int bufferOffset, int length)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;No Encoding for Name field is specified, any non-ASCII bytes will be discarded&quot;)]
+public static int GetAsciiBytes(string toAdd, int nameOffset, byte[] buffer, int bufferOffset, int length)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1918,13 +2035,13 @@ The default is zero.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetAsciiBytes_System_String_System_Int32_System_Byte___System_Int32_System_Int32_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetAsciiBytes(System.String%2CSystem.Int32%2CSystem.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetAsciiBytes_System_String_System_Int32_System_Byte___System_Int32_System_Int32_System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetAsciiBytes(System.String%2CSystem.Int32%2CSystem.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarHeader.cs/#L1090">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetAsciiBytes_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetAsciiBytes*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetAsciiBytes_System_String_System_Int32_System_Byte___System_Int32_System_Int32_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetAsciiBytes(System.String,System.Int32,System.Byte[],System.Int32,System.Int32,Encoding)">GetAsciiBytes(String, Int32, Byte[], Int32, Int32, Encoding)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetAsciiBytes_System_String_System_Int32_System_Byte___System_Int32_System_Int32_System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetAsciiBytes(System.String,System.Int32,System.Byte[],System.Int32,System.Int32,System.Text.Encoding)">GetAsciiBytes(String, Int32, Byte[], Int32, Int32, Encoding)</h4>
   <div class="markdown level1 summary"><p>Add a string to a buffer as a collection of ascii bytes.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -1973,7 +2090,7 @@ The default is zero.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Encoding</span></td>
+        <td><span class="xref">System.Text.Encoding</span></td>
         <td><span class="parametername">encoding</span></td>
         <td><p>String encoding, or null for ASCII only</p>
 </td>
@@ -2028,6 +2145,8 @@ The default is zero.</p>
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.GetHashCode()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetName.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
@@ -2042,7 +2161,8 @@ The default is zero.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string GetName()</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use the Name property instead&quot;, true)]
+public string GetName()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2062,221 +2182,6 @@ The default is zero.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_StringBuilder_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder%2CSystem.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarHeader.cs/#L985">View Source</a>
-  </span>
-  <a id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_StringBuilder_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder,System.Byte[],System.Int32,System.Int32)">GetNameBytes(StringBuilder, Byte[], Int32, Int32)</h4>
-  <div class="markdown level1 summary"><p>Add an entry name to the buffer</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int GetNameBytes(StringBuilder name, byte[] buffer, int offset, int length)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">StringBuilder</span></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The name to add</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
-        <td><span class="parametername">buffer</span></td>
-        <td><p>The buffer to add to</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">offset</span></td>
-        <td><p>The offset into the buffer from which to start adding</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">length</span></td>
-        <td><p>The number of header bytes to add</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><p>The index of the next free byte in the buffer</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_StringBuilder_System_Byte___System_Int32_System_Int32_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder%2CSystem.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarHeader.cs/#L1011">View Source</a>
-  </span>
-  <a id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_StringBuilder_System_Byte___System_Int32_System_Int32_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder,System.Byte[],System.Int32,System.Int32,Encoding)">GetNameBytes(StringBuilder, Byte[], Int32, Int32, Encoding)</h4>
-  <div class="markdown level1 summary"><p>Add an entry name to the buffer</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int GetNameBytes(StringBuilder name, byte[] buffer, int offset, int length, Encoding encoding)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">StringBuilder</span></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The name to add</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
-        <td><span class="parametername">buffer</span></td>
-        <td><p>The buffer to add to</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">offset</span></td>
-        <td><p>The offset into the buffer from which to start adding</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">length</span></td>
-        <td><p>The number of header bytes to add</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">Encoding</span></td>
-        <td><span class="parametername">encoding</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><p>The index of the next free byte in the buffer</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_StringBuilder_System_Int32_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder%2CSystem.Int32%2CSystem.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarHeader.cs/#L894">View Source</a>
-  </span>
-  <a id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_StringBuilder_System_Int32_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(StringBuilder,System.Int32,System.Byte[],System.Int32,System.Int32)">GetNameBytes(StringBuilder, Int32, Byte[], Int32, Int32)</h4>
-  <div class="markdown level1 summary"><p>Add <code data-dev-comment-type="paramref" class="paramref">name</code> to the buffer as a collection of bytes</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int GetNameBytes(StringBuilder name, int nameOffset, byte[] buffer, int bufferOffset, int length)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">StringBuilder</span></td>
-        <td><span class="parametername">name</span></td>
-        <td><p>The name to add</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">nameOffset</span></td>
-        <td><p>The offset of the first character</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Byte</span>[]</td>
-        <td><span class="parametername">buffer</span></td>
-        <td><p>The buffer to add to</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">bufferOffset</span></td>
-        <td><p>The index of the first byte to add</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">length</span></td>
-        <td><p>The number of characters/bytes to add</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><p>The next free index in the <code data-dev-comment-type="paramref" class="paramref">buffer</code></p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_String_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String%2CSystem.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -2289,7 +2194,8 @@ The default is zero.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static int GetNameBytes(string name, byte[] buffer, int offset, int length)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;No Encoding for Name field is specified, any non-ASCII bytes will be discarded&quot;)]
+public static int GetNameBytes(string name, byte[] buffer, int offset, int length)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2345,13 +2251,13 @@ The default is zero.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_String_System_Byte___System_Int32_System_Int32_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String%2CSystem.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_String_System_Byte___System_Int32_System_Int32_System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String%2CSystem.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarHeader.cs/#L1050">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_String_System_Byte___System_Int32_System_Int32_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String,System.Byte[],System.Int32,System.Int32,Encoding)">GetNameBytes(String, Byte[], Int32, Int32, Encoding)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_String_System_Byte___System_Int32_System_Int32_System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String,System.Byte[],System.Int32,System.Int32,System.Text.Encoding)">GetNameBytes(String, Byte[], Int32, Int32, Encoding)</h4>
   <div class="markdown level1 summary"><p>Add an entry name to the buffer</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2394,7 +2300,7 @@ The default is zero.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Encoding</span></td>
+        <td><span class="xref">System.Text.Encoding</span></td>
         <td><span class="parametername">encoding</span></td>
         <td></td>
       </tr>
@@ -2492,13 +2398,13 @@ The default is zero.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_String_System_Int32_System_Byte___System_Int32_System_Int32_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String%2CSystem.Int32%2CSystem.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_String_System_Int32_System_Byte___System_Int32_System_Int32_System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String%2CSystem.Int32%2CSystem.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarHeader.cs/#L923">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_String_System_Int32_System_Byte___System_Int32_System_Int32_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String,System.Int32,System.Byte[],System.Int32,System.Int32,Encoding)">GetNameBytes(String, Int32, Byte[], Int32, Int32, Encoding)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_String_System_Int32_System_Byte___System_Int32_System_Int32_System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.String,System.Int32,System.Byte[],System.Int32,System.Int32,System.Text.Encoding)">GetNameBytes(String, Int32, Byte[], Int32, Int32, Encoding)</h4>
   <div class="markdown level1 summary"><p>Add <code data-dev-comment-type="paramref" class="paramref">name</code> to the buffer as a collection of bytes</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2547,9 +2453,225 @@ The default is zero.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Encoding</span></td>
+        <td><span class="xref">System.Text.Encoding</span></td>
         <td><span class="parametername">encoding</span></td>
         <td><p>name encoding, or null for ASCII only</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>The next free index in the <code data-dev-comment-type="paramref" class="paramref">buffer</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_Text_StringBuilder_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder%2CSystem.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarHeader.cs/#L985">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_Text_StringBuilder_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder,System.Byte[],System.Int32,System.Int32)">GetNameBytes(StringBuilder, Byte[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Add an entry name to the buffer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;No Encoding for Name field is specified, any non-ASCII bytes will be discarded&quot;)]
+public static int GetNameBytes(StringBuilder name, byte[] buffer, int offset, int length)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.StringBuilder</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to add</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer to add to</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The offset into the buffer from which to start adding</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">length</span></td>
+        <td><p>The number of header bytes to add</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>The index of the next free byte in the buffer</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_Text_StringBuilder_System_Byte___System_Int32_System_Int32_System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder%2CSystem.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarHeader.cs/#L1011">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_Text_StringBuilder_System_Byte___System_Int32_System_Int32_System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder,System.Byte[],System.Int32,System.Int32,System.Text.Encoding)">GetNameBytes(StringBuilder, Byte[], Int32, Int32, Encoding)</h4>
+  <div class="markdown level1 summary"><p>Add an entry name to the buffer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int GetNameBytes(StringBuilder name, byte[] buffer, int offset, int length, Encoding encoding)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.StringBuilder</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to add</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer to add to</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The offset into the buffer from which to start adding</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">length</span></td>
+        <td><p>The number of header bytes to add</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Text.Encoding</span></td>
+        <td><span class="parametername">encoding</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>The index of the next free byte in the buffer</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_Text_StringBuilder_System_Int32_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder%2CSystem.Int32%2CSystem.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarHeader.cs/#L894">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_GetNameBytes_System_Text_StringBuilder_System_Int32_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.GetNameBytes(System.Text.StringBuilder,System.Int32,System.Byte[],System.Int32,System.Int32)">GetNameBytes(StringBuilder, Int32, Byte[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Add <code data-dev-comment-type="paramref" class="paramref">name</code> to the buffer as a collection of bytes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static int GetNameBytes(StringBuilder name, int nameOffset, byte[] buffer, int bufferOffset, int length)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.StringBuilder</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to add</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">nameOffset</span></td>
+        <td><p>The offset of the first character</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer to add to</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">bufferOffset</span></td>
+        <td><p>The index of the first byte to add</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">length</span></td>
+        <td><p>The number of characters/bytes to add</p>
 </td>
       </tr>
     </tbody>
@@ -2652,7 +2774,8 @@ The default is zero.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void ParseBuffer(byte[] header)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;No Encoding for Name field is specified, any non-ASCII bytes will be discarded&quot;)]
+public void ParseBuffer(byte[] header)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2674,13 +2797,13 @@ The default is zero.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_ParseBuffer_System_Byte___Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.ParseBuffer(System.Byte%5B%5D%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_ParseBuffer_System_Byte___System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.ParseBuffer(System.Byte%5B%5D%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarHeader.cs/#L540">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarHeader_ParseBuffer_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.ParseBuffer*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_ParseBuffer_System_Byte___Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.ParseBuffer(System.Byte[],Encoding)">ParseBuffer(Byte[], Encoding)</h4>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_ParseBuffer_System_Byte___System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.ParseBuffer(System.Byte[],System.Text.Encoding)">ParseBuffer(Byte[], Encoding)</h4>
   <div class="markdown level1 summary"><p>Parse TarHeader information from a header buffer.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -2705,65 +2828,9 @@ The default is zero.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Encoding</span></td>
+        <td><span class="xref">System.Text.Encoding</span></td>
         <td><span class="parametername">nameEncoding</span></td>
-        <td><p>The <see cref="!:Encoding"></see> used for the Name field, or null for ASCII only</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_ParseName_ReadOnlySpan_System_Byte__Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.ParseName(ReadOnlySpan%7BSystem.Byte%7D%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarHeader.cs/#L844">View Source</a>
-  </span>
-  <a id="ICSharpCode_SharpZipLib_Tar_TarHeader_ParseName_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.ParseName*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_ParseName_ReadOnlySpan_System_Byte__Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.ParseName(ReadOnlySpan{System.Byte},Encoding)">ParseName(ReadOnlySpan&lt;Byte&gt;, Encoding)</h4>
-  <div class="markdown level1 summary"><p>Parse a name from a header buffer.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string ParseName(ReadOnlySpan&lt;byte&gt; header, Encoding encoding)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ReadOnlySpan</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
-        <td><span class="parametername">header</span></td>
-        <td><p>The header buffer from which to parse.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">Encoding</span></td>
-        <td><span class="parametername">encoding</span></td>
-        <td><p>name encoding, or null for ASCII only</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><p>The name parsed.</p>
+        <td><p>The <span class="xref">System.Text.Encoding</span> used for the Name field, or null for ASCII only</p>
 </td>
       </tr>
     </tbody>
@@ -2782,7 +2849,8 @@ The default is zero.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string ParseName(byte[] header, int offset, int length)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;No Encoding for Name field is specified, any non-ASCII bytes will be discarded&quot;)]
+public static string ParseName(byte[] header, int offset, int length)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2810,6 +2878,62 @@ The default is zero.</p>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">length</span></td>
         <td><p>The number of header bytes to parse.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The name parsed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_ParseName_System_ReadOnlySpan_System_Byte__System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.ParseName(System.ReadOnlySpan%7BSystem.Byte%7D%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarHeader.cs/#L844">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Tar_TarHeader_ParseName_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.ParseName*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_ParseName_System_ReadOnlySpan_System_Byte__System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.ParseName(System.ReadOnlySpan{System.Byte},System.Text.Encoding)">ParseName(ReadOnlySpan&lt;Byte&gt;, Encoding)</h4>
+  <div class="markdown level1 summary"><p>Parse a name from a header buffer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string ParseName(ReadOnlySpan&lt;byte&gt; header, Encoding encoding)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ReadOnlySpan</span>&lt;<span class="xref">System.Byte</span>&gt;</td>
+        <td><span class="parametername">header</span></td>
+        <td><p>The header buffer from which to parse.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Text.Encoding</span></td>
+        <td><span class="parametername">encoding</span></td>
+        <td><p>name encoding, or null for ASCII only</p>
 </td>
       </tr>
     </tbody>
@@ -2901,12 +3025,13 @@ The default is zero.</p>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarHeader_WriteHeader_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.WriteHeader*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_WriteHeader_System_Byte___" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.WriteHeader(System.Byte[])">WriteHeader(Byte[])</h4>
-  <div class="markdown level1 summary"><p>&apos;Write&apos; header information to buffer provided, updating the <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_Checksum">Checksum</a>.</p>
+  <div class="markdown level1 summary"><p>&apos;Write&apos; header information to buffer provided, updating the <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_Checksum">check sum</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void WriteHeader(byte[] outBuffer)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;No Encoding for Name field is specified, any non-ASCII bytes will be discarded&quot;)]
+public void WriteHeader(byte[] outBuffer)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -2928,14 +3053,14 @@ The default is zero.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_WriteHeader_System_Byte___Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.WriteHeader(System.Byte%5B%5D%2CEncoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Tar_TarHeader_WriteHeader_System_Byte___System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Tar.TarHeader.WriteHeader(System.Byte%5B%5D%2CSystem.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Tar/TarHeader.cs/#L630">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Tar_TarHeader_WriteHeader_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.WriteHeader*"></a>
-  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_WriteHeader_System_Byte___Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.WriteHeader(System.Byte[],Encoding)">WriteHeader(Byte[], Encoding)</h4>
-  <div class="markdown level1 summary"><p>&apos;Write&apos; header information to buffer provided, updating the <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_Checksum">Checksum</a>.</p>
+  <h4 id="ICSharpCode_SharpZipLib_Tar_TarHeader_WriteHeader_System_Byte___System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Tar.TarHeader.WriteHeader(System.Byte[],System.Text.Encoding)">WriteHeader(Byte[], Encoding)</h4>
+  <div class="markdown level1 summary"><p>&apos;Write&apos; header information to buffer provided, updating the <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarHeader.html#ICSharpCode_SharpZipLib_Tar_TarHeader_Checksum">check sum</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -2959,9 +3084,9 @@ The default is zero.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">Encoding</span></td>
+        <td><span class="xref">System.Text.Encoding</span></td>
         <td><span class="parametername">nameEncoding</span></td>
-        <td><p>The <see cref="!:Encoding"></see> used for the Name field, or null for ASCII only</p>
+        <td><p>The <span class="xref">System.Text.Encoding</span> used for the Name field, or null for ASCII only</p>
 </td>
       </tr>
     </tbody>
