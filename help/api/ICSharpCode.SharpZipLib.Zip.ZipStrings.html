@@ -71,7 +71,8 @@
   
   <h1 id="ICSharpCode_SharpZipLib_Zip_ZipStrings" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings" class="text-break">Class ZipStrings
   </h1>
-  <div class="markdown level0 summary"><p>This static class contains functions for encoding and decoding zip file strings</p>
+  <div class="markdown level0 summary"><p>Deprecated way of setting zip encoding provided for backwards compability.
+Use <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a> when possible.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -85,6 +86,10 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public static class ZipStrings : object</code></pre>
   </div>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>If any ZipStrings properties are being modified, it will enter a backwards compatibility mode, mimicking the
+old behaviour where a single instance was shared between all Zip* instances.</p>
+</div>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
@@ -92,12 +97,12 @@
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipStrings_CodePage.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipStrings.CodePage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/1b1ab013ce1df02d8f27cf582197759c614d9126/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L43">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L35">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipStrings_CodePage_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.CodePage*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_CodePage" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.CodePage">CodePage</h4>
-  <div class="markdown level1 summary"><p>Encoding used for string conversion. Setting this to 65001 (UTF-8) will
-also set the Language encoding flag to indicate UTF-8 encoded file names.</p>
+  <div class="markdown level1 summary"><p>Deprecated way of setting zip encoding provided for backwards compability.
+Use <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a> when possible.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -119,17 +124,21 @@ also set the Language encoding flag to indicate UTF-8 encoded file names.</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_CodePage_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If any ZipStrings properties are being modified, it will enter a backwards compatibility mode, mimicking the
+old behaviour where a single instance was shared between all Zip* instances.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipStrings_SystemDefaultCodePage.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipStrings.SystemDefaultCodePage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/1b1ab013ce1df02d8f27cf582197759c614d9126/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L67">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L47">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipStrings_SystemDefaultCodePage_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.SystemDefaultCodePage*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_SystemDefaultCodePage" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.SystemDefaultCodePage">SystemDefaultCodePage</h4>
-  <div class="markdown level1 summary"><p>Attempt to get the operating system default codepage, or failing that, to
-the fallback code page IBM 437.</p>
+  <div class="markdown level1 summary"><p>Deprecated way of setting zip encoding provided for backwards compability.
+Use <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a> when possible.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -151,17 +160,21 @@ the fallback code page IBM 437.</p>
       </tr>
     </tbody>
   </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_SystemDefaultCodePage_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If any ZipStrings properties are being modified, it will enter a backwards compatibility mode, mimicking the
+old behaviour where a single instance was shared between all Zip* instances.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipStrings_UseUnicode.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipStrings.UseUnicode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/1b1ab013ce1df02d8f27cf582197759c614d9126/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L80">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L51">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipStrings_UseUnicode_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.UseUnicode*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_UseUnicode" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.UseUnicode">UseUnicode</h4>
-  <div class="markdown level1 summary"><p>Get whether the default codepage is set to UTF-8. Setting this property to false will
-set the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICSharpCode_SharpZipLib_Zip_ZipStrings_CodePage">CodePage</a> to <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICSharpCode_SharpZipLib_Zip_ZipStrings_SystemDefaultCodePage">SystemDefaultCodePage</a></p>
+  <div class="markdown level1 summary"><p>Deprecated way of setting zip encoding provided for backwards compability.
+Use <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a> when possible.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -184,11 +197,8 @@ set the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICShar
     </tbody>
   </table>
   <h5 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_UseUnicode_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Get OEM codepage from NetFX, which parses the NLP file with culture info table etc etc.
-But sometimes it yields the special value of 1 which is nicknamed <code>CodePageNoOEM</code> in <see cref="!:Encoding"></see> sources (might also mean <code>CP_OEMCP</code>, but Encoding puts it so).
-This was observed on Ukranian and Hindu systems.
-Given this value, <see cref="!:Encoding.GetEncoding(int)"></see> throws an <see cref="!:ArgumentException"></see>.
-So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.FallbackCodePage</span>, (IBM 437 which is the default code page in a default Windows installation console.</p>
+  <div class="markdown level1 remarks"><p>If any ZipStrings properties are being modified, it will enter a backwards compatibility mode, mimicking the
+old behaviour where a single instance was shared between all Zip* instances.</p>
 </div>
   <h3 id="methods">Methods
   </h3>
@@ -197,11 +207,12 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToArray_System_Int32_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToArray(System.Int32%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/1b1ab013ce1df02d8f27cf582197759c614d9126/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L189">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L93">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToArray_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToArray*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToArray_System_Int32_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToArray(System.Int32,System.String)">ConvertToArray(Int32, String)</h4>
-  <div class="markdown level1 summary"><p>Convert a string to a byte array using <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICSharpCode_SharpZipLib_Zip_ZipStrings_CodePage">CodePage</a></p>
+  <div class="markdown level1 summary"><p>Deprecated way of setting zip encoding provided for backwards compability.
+Use <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a> when possible.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -221,14 +232,12 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">flags</span></td>
-        <td><p>The applicable <a class="xref" href="ICSharpCode.SharpZipLib.Zip.GeneralBitFlags.html">GeneralBitFlags</a></p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">str</span></td>
-        <td><p>String to convert to an array</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -243,21 +252,25 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
     <tbody>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
-        <td><p>Converted array</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToArray_System_Int32_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If any ZipStrings properties are being modified, it will enter a backwards compatibility mode, mimicking the
+old behaviour where a single instance was shared between all Zip* instances.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToArray_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToArray(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/1b1ab013ce1df02d8f27cf582197759c614d9126/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L176">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L88">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToArray_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToArray*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToArray_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToArray(System.String)">ConvertToArray(String)</h4>
-  <div class="markdown level1 summary"><p>Convert a string to a byte array using <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICSharpCode_SharpZipLib_Zip_ZipStrings_CodePage">CodePage</a></p>
+  <div class="markdown level1 summary"><p>Deprecated way of setting zip encoding provided for backwards compability.
+Use <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a> when possible.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -277,8 +290,7 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
       <tr>
         <td><span class="xref">System.String</span></td>
         <td><span class="parametername">str</span></td>
-        <td><p>String to convert to an array</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -293,21 +305,25 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
     <tbody>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
-        <td><p>Converted array</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToArray_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If any ZipStrings properties are being modified, it will enter a backwards compatibility mode, mimicking the
+old behaviour where a single instance was shared between all Zip* instances.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToString_System_Byte___.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToString(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/1b1ab013ce1df02d8f27cf582197759c614d9126/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L125">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L73">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToString_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToString*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToString_System_Byte___" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToString(System.Byte[])">ConvertToString(Byte[])</h4>
-  <div class="markdown level1 summary"><p>Convert a byte array to a string using <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICSharpCode_SharpZipLib_Zip_ZipStrings_CodePage">CodePage</a></p>
+  <div class="markdown level1 summary"><p>Deprecated way of setting zip encoding provided for backwards compability.
+Use <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a> when possible.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -327,8 +343,7 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">data</span></td>
-        <td><p>Byte array to convert</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -343,21 +358,25 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">data</code>converted to a string</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToString_System_Byte____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If any ZipStrings properties are being modified, it will enter a backwards compatibility mode, mimicking the
+old behaviour where a single instance was shared between all Zip* instances.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToString_System_Byte___System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToString(System.Byte%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/1b1ab013ce1df02d8f27cf582197759c614d9126/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L111">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L68">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToString_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToString*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToString_System_Byte___System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToString(System.Byte[],System.Int32)">ConvertToString(Byte[], Int32)</h4>
-  <div class="markdown level1 summary"><p>Convert a portion of a byte array to a string using <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICSharpCode_SharpZipLib_Zip_ZipStrings_CodePage">CodePage</a></p>
+  <div class="markdown level1 summary"><p>Deprecated way of setting zip encoding provided for backwards compability.
+Use <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a> when possible.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -377,14 +396,12 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">data</span></td>
-        <td><p>Data to convert to string</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">count</span></td>
-        <td><p>Number of bytes to convert starting from index 0</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -399,21 +416,25 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p>data[0]..data[count - 1] converted to a string</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToString_System_Byte___System_Int32__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If any ZipStrings properties are being modified, it will enter a backwards compatibility mode, mimicking the
+old behaviour where a single instance was shared between all Zip* instances.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToStringExt_System_Int32_System_Byte___.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToStringExt(System.Int32%2CSystem.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/1b1ab013ce1df02d8f27cf582197759c614d9126/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L166">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L83">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToStringExt_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToStringExt*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToStringExt_System_Int32_System_Byte___" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToStringExt(System.Int32,System.Byte[])">ConvertToStringExt(Int32, Byte[])</h4>
-  <div class="markdown level1 summary"><p>Convert a byte array to a string using <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICSharpCode_SharpZipLib_Zip_ZipStrings_CodePage">CodePage</a></p>
+  <div class="markdown level1 summary"><p>Deprecated way of setting zip encoding provided for backwards compability.
+Use <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a> when possible.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -433,14 +454,12 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">flags</span></td>
-        <td><p>The applicable general purpose bits flags</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">data</span></td>
-        <td><p>Byte array to convert</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -455,21 +474,25 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">data</code>converted to a string</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToStringExt_System_Int32_System_Byte____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If any ZipStrings properties are being modified, it will enter a backwards compatibility mode, mimicking the
+old behaviour where a single instance was shared between all Zip* instances.</p>
+</div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToStringExt_System_Int32_System_Byte___System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToStringExt(System.Int32%2CSystem.Byte%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/1b1ab013ce1df02d8f27cf582197759c614d9126/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L151">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L78">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToStringExt_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToStringExt*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToStringExt_System_Int32_System_Byte___System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.ConvertToStringExt(System.Int32,System.Byte[],System.Int32)">ConvertToStringExt(Int32, Byte[], Int32)</h4>
-  <div class="markdown level1 summary"><p>Convert a byte array to a string  using <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html#ICSharpCode_SharpZipLib_Zip_ZipStrings_CodePage">CodePage</a></p>
+  <div class="markdown level1 summary"><p>Deprecated way of setting zip encoding provided for backwards compability.
+Use <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a> when possible.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -489,20 +512,17 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">flags</span></td>
-        <td><p>The applicable general purpose bits flags</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Byte</span>[]</td>
         <td><span class="parametername">data</span></td>
-        <td><p>Byte array to convert</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
         <td><span class="parametername">count</span></td>
-        <td><p>The number of bytes to convert.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -517,8 +537,42 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td><p><code data-dev-comment-type="paramref" class="paramref">data</code>converted to a string</p>
-</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_ConvertToStringExt_System_Int32_System_Byte___System_Int32__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If any ZipStrings properties are being modified, it will enter a backwards compatibility mode, mimicking the
+old behaviour where a single instance was shared between all Zip* instances.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipStrings_GetStringCodec.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipStrings.GetStringCodec%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L31">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipStrings_GetStringCodec_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.GetStringCodec*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipStrings_GetStringCodec" data-uid="ICSharpCode.SharpZipLib.Zip.ZipStrings.GetStringCodec">GetStringCodec()</h4>
+  <div class="markdown level1 summary"><p>Returns a new <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a> instance or the shared backwards compatible instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static StringCodec GetStringCodec()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -533,7 +587,7 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
                     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipStrings.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipStrings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/1b1ab013ce1df02d8f27cf582197759c614d9126/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L21" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -553,7 +607,7 @@ So replace it with <span class="xref">ICSharpCode.SharpZipLib.Zip.ZipStrings.Fal
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2000-2019 SharpZipLib Contributors
+            Copyright © 2000-2022 SharpZipLib Contributors
             
           </div>
         </div>

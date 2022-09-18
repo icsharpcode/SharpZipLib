@@ -96,6 +96,12 @@
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.FastZipEvents.html">FastZipEvents</a></h4>
       <section><p>FastZipEvents supports all events applicable to <a class="xref" href="ICSharpCode.SharpZipLib.Zip.FastZip.html">FastZip</a> operations.</p>
 </section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.GeneralBitFlagsExtensions.html">GeneralBitFlagsExtensions</a></h4>
+      <section><p>Helpers for <a class="xref" href="ICSharpCode.SharpZipLib.Zip.GeneralBitFlags.html">GeneralBitFlags</a></p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.GenericBitFlagsExtensions.html">GenericBitFlagsExtensions</a></h4>
+      <section><p>GeneralBitFlags helper extensions</p>
+</section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.KeysRequiredEventArgs.html">KeysRequiredEventArgs</a></h4>
       <section><p>Arguments used with KeysRequiredEvent</p>
 </section>
@@ -114,6 +120,9 @@ Strips path roots and puts directory separators in the correct format (&apos;/&a
 </section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.StaticDiskDataSource.html">StaticDiskDataSource</a></h4>
       <section><p>Default implementation of a <a class="xref" href="ICSharpCode.SharpZipLib.Zip.IStaticDataSource.html">IStaticDataSource</a> for use with files stored on disk.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a></h4>
+      <section><p>Utility class for resolving the encoding used for reading and writing strings</p>
 </section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.TestStatus.html">TestStatus</a></h4>
       <section><p>Status returned by <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipTestResultHandler.html">ZipTestResultHandler</a> during testing.</p>
@@ -178,7 +187,8 @@ This class is not thread safe.
 <br>Author of the original java version : Jochen Hoenicke</p>
 </section>
       <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipStrings.html">ZipStrings</a></h4>
-      <section><p>This static class contains functions for encoding and decoding zip file strings</p>
+      <section><p>Deprecated way of setting zip encoding provided for backwards compability.
+Use <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a> when possible.</p>
 </section>
     <h3 id="interfaces">Interfaces
   </h3>
@@ -272,7 +282,7 @@ multiple <see cref="!:Stream">data sources</see> based on the parameters passed.
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2000-2019 SharpZipLib Contributors
+            Copyright © 2000-2022 SharpZipLib Contributors
             
           </div>
         </div>
