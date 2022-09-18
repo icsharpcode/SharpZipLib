@@ -35,7 +35,7 @@ jobs:
       run: choco install docfx
       
     - name: Build Documentation
-      run: docfx docs/help/docsfx.json --warningsAsErrors
+      run: docfx docs/help/docfx.json --warningsAsErrors
 
     - uses: JamesIves/github-pages-deploy-action@3.6.2
       name: Publish documentation to Github Pages
