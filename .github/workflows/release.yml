@@ -25,10 +25,17 @@ jobs:
         dotnet-version: '6.0.x'
     - name: Build project
       run: dotnet build -f netstandard2.0 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
-    - uses: nikeee/docfx-action@v1.0.0
-      name: Build Documentation
-      with:
-        args: docs/help/docfx.json
+
+#     - uses: nikeee/docfx-action@v1.0.0
+#       name: Build Documentation
+#       with:
+#         args: docs/help/docfx.json
+
+    - name: Install docfx
+      run: choco install docfx
+      
+    - name: Build Documentation
+      run: docfx docs/help/docsfx.json --warningsAsErrors
 
     - uses: JamesIves/github-pages-deploy-action@3.6.2
       name: Publish documentation to Github Pages
