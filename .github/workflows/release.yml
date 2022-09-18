@@ -19,6 +19,12 @@ jobs:
     - uses: actions/checkout@v2
       with:
         ref: ${{ github.events.inputs.tag }}
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+    - name: Build project
+      run: dotnet build -f netstandard2.0 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
     - uses: nikeee/docfx-action@v1.0.0
       name: Build Documentation
       with:
