@@ -1,0 +1,1329 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ZipOutputStream
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ZipOutputStream
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream">
+  
+  
+  <h1 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream" class="text-break">Class ZipOutputStream
+  </h1>
+  <div class="markdown level0 summary"><p>This is a DeflaterOutputStream that writes the files into a zip
+archive one after another.  It has a special method to start a new
+zip entry.  The zip entries contains information about the file name
+size, compressed size, CRC, etc.</p>
+<p>It includes support for Stored and Deflated entries.
+This class is not thread safe.
+<br>
+<br>Author of the original java version : Jochen Hoenicke</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">System.MarshalByRefObject</span></div>
+    <div class="level2"><span class="xref">System.IO.Stream</span></div>
+    <div class="level3"><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html">DeflaterOutputStream</a></div>
+    <div class="level4"><span class="xref">ZipOutputStream</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.IDisposable</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_IsStreamOwner">DeflaterOutputStream.IsStreamOwner</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_CanPatchEntries">DeflaterOutputStream.CanPatchEntries</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_cryptoTransform_">DeflaterOutputStream.cryptoTransform_</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_AESAuthCode">DeflaterOutputStream.AESAuthCode</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_ZipCryptoEncoding">DeflaterOutputStream.ZipCryptoEncoding</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_EncryptBlock_System_Byte___System_Int32_System_Int32_">DeflaterOutputStream.EncryptBlock(Byte[], Int32, Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Deflate">DeflaterOutputStream.Deflate()</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_CanRead">DeflaterOutputStream.CanRead</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_CanSeek">DeflaterOutputStream.CanSeek</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_CanWrite">DeflaterOutputStream.CanWrite</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Length">DeflaterOutputStream.Length</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Position">DeflaterOutputStream.Position</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Seek_System_Int64_System_IO_SeekOrigin_">DeflaterOutputStream.Seek(Int64, SeekOrigin)</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_SetLength_System_Int64_">DeflaterOutputStream.SetLength(Int64)</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_ReadByte">DeflaterOutputStream.ReadByte()</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Read_System_Byte___System_Int32_System_Int32_">DeflaterOutputStream.Read(Byte[], Int32, Int32)</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Dispose_System_Boolean_">DeflaterOutputStream.Dispose(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_GetAuthCodeIfAES">DeflaterOutputStream.GetAuthCodeIfAES()</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_WriteByte_System_Byte_">DeflaterOutputStream.WriteByte(Byte)</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_deflater_">DeflaterOutputStream.deflater_</a>
+    </div>
+    <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_baseOutputStream_">DeflaterOutputStream.baseOutputStream_</a>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Null</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginRead(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.BeginWrite(System.Byte[], System.Int32, System.Int32, System.AsyncCallback, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Close()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyTo(System.IO.Stream, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CopyToAsync(System.IO.Stream, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CreateWaitHandle()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Dispose()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndRead(System.IAsyncResult)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.EndWrite(System.IAsyncResult)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.FlushAsync()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.FlushAsync(System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ObjectInvariant()</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.Synchronized(System.IO.Stream)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.CanTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.ReadTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.IO.Stream.WriteTimeout</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.GetLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.InitializeLifetimeService()</span>
+    </div>
+    <div>
+      <span class="xref">System.MarshalByRefObject.MemberwiseClone(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.html">ICSharpCode.SharpZipLib.Zip</a></h6>
+  <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ZipOutputStream : DeflaterOutputStream, IDisposable</code></pre>
+  </div>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_examples"><strong>Examples</strong></h5>
+  <p>This sample shows how to create a zip file</p>
+<pre><code>using System;
+using System.IO;
+
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
+
+class MainClass
+{
+    public static void Main(string[] args)
+    {
+        string[] filenames = Directory.GetFiles(args[0]);
+        byte[] buffer = new byte[4096];
+
+        using ( ZipOutputStream s = new ZipOutputStream(File.Create(args[1])) ) {
+
+            s.SetLevel(9); // 0 - store only to 9 - means best compression
+
+            foreach (string file in filenames) {
+                ZipEntry entry = new ZipEntry(file);
+                s.PutNextEntry(entry);
+
+                using (FileStream fs = File.OpenRead(file)) {
+                    StreamUtils.Copy(fs, s, buffer);
+                }
+            }
+        }
+    }
+}</code></pre>
+
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream__ctor_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.%23ctor(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L68">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream__ctor_System_IO_Stream_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(System.IO.Stream)">ZipOutputStream(Stream)</h4>
+  <div class="markdown level1 summary"><p>Creates a new Zip output stream, writing a zip archive.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ZipOutputStream(Stream baseOutputStream)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">baseOutputStream</span></td>
+        <td><p>The output stream to which the archive contents are written.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream__ctor_System_IO_Stream_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.%23ctor(System.IO.Stream%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L78">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream__ctor_System_IO_Stream_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(System.IO.Stream,System.Int32)">ZipOutputStream(Stream, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a new Zip output stream, writing a zip archive.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ZipOutputStream(Stream baseOutputStream, int bufferSize)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">baseOutputStream</span></td>
+        <td><p>The output stream to which the archive contents are written.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">bufferSize</span></td>
+        <td><p>Size of the buffer to use.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_IsFinished.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.IsFinished%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L94">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_IsFinished_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.IsFinished*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_IsFinished" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.IsFinished">IsFinished</h4>
+  <div class="markdown level1 summary"><p>Gets a flag value of true if the central header has been added for this archive; false if it has not been added.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsFinished { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_IsFinished_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>No further entries can be added once this has been done.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_NameTransform.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.NameTransform%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L162">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_NameTransform_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.NameTransform*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_NameTransform" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.NameTransform">NameTransform</h4>
+  <div class="markdown level1 summary"><p>Used for transforming the names of entries added by <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream_PutNextEntry_ICSharpCode_SharpZipLib_Zip_ZipEntry_">PutNextEntry(ZipEntry)</a>.
+Defaults to <a class="xref" href="ICSharpCode.SharpZipLib.Zip.PathTransformer.html">PathTransformer</a>, set to null to disable transforms and use names as supplied.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public INameTransform NameTransform { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Core.INameTransform.html">INameTransform</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Password.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Password%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L168">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Password_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Password*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Password" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Password">Password</h4>
+  <div class="markdown level1 summary"><p>Get/set the password used for encryption.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Password { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Password_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>When set to null or if the password is empty no encryption is performed</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_UseZip64.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.UseZip64%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L152">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_UseZip64_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.UseZip64*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_UseZip64" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.UseZip64">UseZip64</h4>
+  <div class="markdown level1 summary"><p>Get / set a value indicating how Zip64 Extension usage is determined when adding entries.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public UseZip64 UseZip64 { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.UseZip64.html">UseZip64</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_UseZip64_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Older archivers may not understand Zip64 extensions.
+If backwards compatability is an issue be careful when adding <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_Size">entries</a> to an archive.
+Setting this property to off is workable but less desirable as in those circumstances adding a file
+larger then 4GB will fail.</p>
+</div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_CloseEntry.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.CloseEntry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L546">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_CloseEntry_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.CloseEntry*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_CloseEntry" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.CloseEntry">CloseEntry()</h4>
+  <div class="markdown level1 summary"><p>Closes the current entry, updating header and footer information as required</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void CloseEntry()</code></pre>
+  </div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipException.html">ZipException</a></td>
+        <td><p>Invalid entry field values.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.IOException</span></td>
+        <td><p>An I/O error occurs.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>No entry is active.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_CloseEntryAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.CloseEntryAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L562">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_CloseEntryAsync_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.CloseEntryAsync*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_CloseEntryAsync_System_Threading_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.CloseEntryAsync(System.Threading.CancellationToken)">CloseEntryAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Closes the current entry, updating header and footer information as required</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task CloseEntryAsync(CancellationToken ct)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipException.html">ZipException</a></td>
+        <td><p>Invalid entry field values.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.IOException</span></td>
+        <td><p>An I/O error occurs.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>No entry is active.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Finish.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Finish%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L839">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Finish_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Finish*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Finish" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Finish">Finish()</h4>
+  <div class="markdown level1 summary"><p>Finishes the stream.  This will write the central directory at the
+end of the zip file and flush the stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Finish()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Finish">DeflaterOutputStream.Finish()</a></div>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Finish_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is automatically called when the stream is closed.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.IOException</span></td>
+        <td><p>An I/O error occurs.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipException.html">ZipException</a></td>
+        <td><p>Comment exceeds the maximum length<br>
+Entry name exceeds the maximum length</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_FinishAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.FinishAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L865">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_FinishAsync_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.FinishAsync*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_FinishAsync_System_Threading_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.FinishAsync(System.Threading.CancellationToken)">FinishAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Finishes the stream.  This will write the central directory at the
+end of the zip file and flush the stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override async Task FinishAsync(CancellationToken ct)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">ct</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_FinishAsync_System_Threading_CancellationToken_">DeflaterOutputStream.FinishAsync(CancellationToken)</a></div>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_FinishAsync_System_Threading_CancellationToken__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is automatically called when the stream is closed.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.IOException</span></td>
+        <td><p>An I/O error occurs.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipException.html">ZipException</a></td>
+        <td><p>Comment exceeds the maximum length<br>
+Entry name exceeds the maximum length</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Flush.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Flush%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L902">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Flush_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Flush*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Flush" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Flush">Flush()</h4>
+  <div class="markdown level1 summary"><p>Flushes the stream by calling <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Flush">Flush</a> on the deflater stream unless
+the current compression method is <a class="xref" href="ICSharpCode.SharpZipLib.Zip.CompressionMethod.html#ICSharpCode_SharpZipLib_Zip_CompressionMethod_Stored">Stored</a>. Then it flushes the underlying output stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Flush()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Flush">DeflaterOutputStream.Flush()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_GetLevel.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.GetLevel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L140">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_GetLevel_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.GetLevel*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_GetLevel" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.GetLevel">GetLevel()</h4>
+  <div class="markdown level1 summary"><p>Get the current deflater compression level</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetLevel()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>The current compression level</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_InitializeAESPassword_ICSharpCode_SharpZipLib_Zip_ZipEntry_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.InitializeAESPassword(ICSharpCode.SharpZipLib.Zip.ZipEntry%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L699">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_InitializeAESPassword_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.InitializeAESPassword*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_InitializeAESPassword_ICSharpCode_SharpZipLib_Zip_ZipEntry_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.InitializeAESPassword(ICSharpCode.SharpZipLib.Zip.ZipEntry,System.String)">InitializeAESPassword(ZipEntry, String)</h4>
+  <div class="markdown level1 summary"><p>Initializes encryption keys based on given password.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected byte[] InitializeAESPassword(ZipEntry entry, string rawPassword)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html">ZipEntry</a></td>
+        <td><span class="parametername">entry</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">rawPassword</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_PutNextEntry_ICSharpCode_SharpZipLib_Zip_ZipEntry_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.PutNextEntry(ICSharpCode.SharpZipLib.Zip.ZipEntry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L259">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_PutNextEntry_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.PutNextEntry*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_PutNextEntry_ICSharpCode_SharpZipLib_Zip_ZipEntry_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.PutNextEntry(ICSharpCode.SharpZipLib.Zip.ZipEntry)">PutNextEntry(ZipEntry)</h4>
+  <div class="markdown level1 summary"><p>Starts a new Zip entry. It automatically closes the previous
+entry if present.
+All entry elements bar name are optional, but must be correct if present.
+If the compression method is stored and the output is not patchable
+the compression for that entry is automatically changed to deflate level 0</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PutNextEntry(ZipEntry entry)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html">ZipEntry</a></td>
+        <td><span class="parametername">entry</span></td>
+        <td><p>the entry.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>if entry passed is null.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.IOException</span></td>
+        <td><p>if an I/O error occurred.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>if stream was finished</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipException.html">ZipException</a></td>
+        <td><p>Too many entries in the Zip file<br>
+Entry name is too long<br>
+Finish has already been called<br></p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.NotImplementedException</span></td>
+        <td><p>The Compression method specified for the entry is unsupported.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_PutNextEntryAsync_ICSharpCode_SharpZipLib_Zip_ZipEntry_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.PutNextEntryAsync(ICSharpCode.SharpZipLib.Zip.ZipEntry%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L521">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_PutNextEntryAsync_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.PutNextEntryAsync*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_PutNextEntryAsync_ICSharpCode_SharpZipLib_Zip_ZipEntry_System_Threading_CancellationToken_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.PutNextEntryAsync(ICSharpCode.SharpZipLib.Zip.ZipEntry,System.Threading.CancellationToken)">PutNextEntryAsync(ZipEntry, CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Starts a new Zip entry. It automatically closes the previous
+entry if present.
+All entry elements bar name are optional, but must be correct if present.
+If the compression method is stored and the output is not patchable
+the compression for that entry is automatically changed to deflate level 0</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public async Task PutNextEntryAsync(ZipEntry entry, CancellationToken ct = default(CancellationToken))</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html">ZipEntry</a></td>
+        <td><span class="parametername">entry</span></td>
+        <td><p>the entry.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Threading.CancellationToken</span></td>
+        <td><span class="parametername">ct</span></td>
+        <td><p>The <span class="xref">System.Threading.CancellationToken</span> that can be used to cancel the operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Threading.Tasks.Task</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>if entry passed is null.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.IOException</span></td>
+        <td><p>if an I/O error occured.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>if stream was finished</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipException.html">ZipException</a></td>
+        <td><p>Too many entries in the Zip file<br>
+Entry name is too long<br>
+Finish has already been called<br></p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.NotImplementedException</span></td>
+        <td><p>The Compression method specified for the entry is unsupported.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_PutNextPassthroughEntry_ICSharpCode_SharpZipLib_Zip_ZipEntry_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.PutNextPassthroughEntry(ICSharpCode.SharpZipLib.Zip.ZipEntry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L307">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_PutNextPassthroughEntry_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.PutNextPassthroughEntry*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_PutNextPassthroughEntry_ICSharpCode_SharpZipLib_Zip_ZipEntry_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.PutNextPassthroughEntry(ICSharpCode.SharpZipLib.Zip.ZipEntry)">PutNextPassthroughEntry(ZipEntry)</h4>
+  <div class="markdown level1 summary"><p>Starts a new passthrough Zip entry. It automatically closes the previous
+entry if present.
+Passthrough entry is an entry that is created from compressed data. 
+It is useful to avoid recompression to save CPU resources if compressed data is already disposable.
+All entry elements bar name, crc, size and compressed size are optional, but must be correct if present.
+Compression should be set to Deflated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PutNextPassthroughEntry(ZipEntry entry)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html">ZipEntry</a></td>
+        <td><span class="parametername">entry</span></td>
+        <td><p>the entry.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>if entry passed is null.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.IOException</span></td>
+        <td><p>if an I/O error occurred.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>if stream was finished.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipException.html">ZipException</a></td>
+        <td><p>Crc is not set<br>
+Size is not set<br>
+CompressedSize is not set<br>
+CompressionMethod is not Deflate<br>
+Too many entries in the Zip file<br>
+Entry name is too long<br>
+Finish has already been called<br></p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.NotImplementedException</span></td>
+        <td><p>The Compression method specified for the entry is unsupported<br>
+Entry is encrypted<br></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_SetComment_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.SetComment(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L111">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_SetComment_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.SetComment*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_SetComment_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.SetComment(System.String)">SetComment(String)</h4>
+  <div class="markdown level1 summary"><p>Set the zip file comment.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetComment(string comment)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">comment</span></td>
+        <td><p>The comment text for the entire archive.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>The converted comment is longer than 0xffff bytes.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_SetLevel_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.SetLevel(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L130">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_SetLevel_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.SetLevel*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_SetLevel_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.SetLevel(System.Int32)">SetLevel(Int32)</h4>
+  <div class="markdown level1 summary"><p>Sets the compression level.  The new level will be activated
+immediately.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetLevel(int level)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">level</span></td>
+        <td><p>The new compression level (1 to 9).</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>Level specified is not supported.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Write_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Write(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L757">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Write_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Write*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipOutputStream_Write_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Write(System.Byte[],System.Int32,System.Int32)">Write(Byte[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Writes the given buffer to the current entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void Write(byte[] buffer, int offset, int count)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer containing data to write.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The offset of the first byte to write.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">count</span></td>
+        <td><p>The number of bytes to write.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_Write_System_Byte___System_Int32_System_Int32_">DeflaterOutputStream.Write(Byte[], Int32, Int32)</a></div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipException.html">ZipException</a></td>
+        <td><p>Archive size is invalid</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>No entry is active.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.IDisposable</span>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipOutputStream.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipOutputStream%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipOutputStream.cs/#L58" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2022 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

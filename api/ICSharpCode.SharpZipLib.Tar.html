@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace ICSharpCode.SharpZipLib.Tar
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace ICSharpCode.SharpZipLib.Tar
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Tar">
+  
+  <h1 id="ICSharpCode_SharpZipLib_Tar" data-uid="ICSharpCode.SharpZipLib.Tar" class="text-break">Namespace ICSharpCode.SharpZipLib.Tar
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Tar.InvalidHeaderException.html">InvalidHeaderException</a></h4>
+      <section><p>This exception is used to indicate that there is a problem
+with a TAR archive header.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarArchive.html">TarArchive</a></h4>
+      <section><p>The TarArchive class implements the concept of a
+&apos;Tape Archive&apos;. A tar archive is a series of entries, each of
+which represents a file system object. Each entry in
+the archive consists of a header block followed by 0 or more data blocks.
+Directory entries consist only of the header block, and are followed by entries
+for the directory&apos;s contents. File entries consist of a
+header followed by the number of blocks needed to
+contain the file&apos;s contents. All entries are written on
+block boundaries. Blocks are 512 bytes long.</p>
+<p>TarArchives are instantiated in either read or write mode,
+based upon whether they are instantiated with an InputStream
+or an OutputStream. Once instantiated TarArchives read/write
+mode can not be changed.</p>
+<p>There is currently no support for random access to tar archives.
+However, it seems that subclassing TarArchive, and using the
+TarBuffer.CurrentRecord and TarBuffer.CurrentBlock
+properties, this would be rather trivial.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarBuffer.html">TarBuffer</a></h4>
+      <section><p>The TarBuffer class implements the tar archive concept
+of a buffered input stream. This concept goes back to the
+days of blocked tape drives and special io devices. In the
+C# universe, the only real function that this class
+performs is to ensure that files have the correct &quot;record&quot;
+size, or other tars will complain.
+<p>
+You should never have a need to access this class directly.
+TarBuffers are created by Tar IO Streams.
+</p></p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarEntry.html">TarEntry</a></h4>
+      <section><p>This class represents an entry in a Tar archive. It consists
+of the entry&apos;s header, as well as the entry&apos;s File. Entries
+can be instantiated in one of three ways, depending on how
+they are to be used.
+<p>
+TarEntries that are created from the header bytes read from
+an archive are instantiated with the TarEntry( byte[] )
+constructor. These entries will be used when extracting from
+or listing the contents of an archive. These entries have their
+header filled in using the header bytes. They also set the File
+to null, since they reference an archive entry not a file.</p>
+<p>
+TarEntries that are created from files that are to be written
+into an archive are instantiated with the CreateEntryFromFile(string)
+pseudo constructor. These entries have their header filled in using
+the File&apos;s information. They also keep a reference to the File
+for convenience when writing entries.</p>
+<p>
+Finally, TarEntries can be constructed from nothing but a name.
+This allows the programmer to construct the entry by hand, for
+instance when only an InputStream is available for writing to
+the archive, and the header information is constructed from
+other information. In this case the header fields are set to
+defaults and the File is set to null.</p>
+<a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarEntry.html#ICSharpCode_SharpZipLib_Tar_TarEntry_TarHeader">TarHeader</a></p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarException.html">TarException</a></h4>
+      <section><p>TarException represents exceptions specific to Tar classes and code.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarExtendedHeaderReader.html">TarExtendedHeaderReader</a></h4>
+      <section><p>Reads the extended header of a Tar stream</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarHeader.html">TarHeader</a></h4>
+      <section><p>This class encapsulates the Tar Entry Header used in Tar Archives.
+The class also holds a number of tar constants, used mostly in headers.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarInputStream.html">TarInputStream</a></h4>
+      <section><p>The TarInputStream reads a UNIX tar archive as an InputStream.
+methods are provided to position at each successive entry in
+the archive, and the read each entry as a normal input stream
+using read().</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarInputStream.EntryFactoryAdapter.html">TarInputStream.EntryFactoryAdapter</a></h4>
+      <section><p>Standard entry factory class creating instances of the class TarEntry</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarOutputStream.html">TarOutputStream</a></h4>
+      <section><p>The TarOutputStream writes a UNIX tar archive as an OutputStream.
+Methods are provided to put entries, and then write their contents
+by writing to this stream using write().</p>
+</section>
+    <h3 id="interfaces">Interfaces
+  </h3>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarInputStream.IEntryFactory.html">TarInputStream.IEntryFactory</a></h4>
+      <section><p>This interface is provided, along with the method <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarInputStream.html#ICSharpCode_SharpZipLib_Tar_TarInputStream_SetEntryFactory_ICSharpCode_SharpZipLib_Tar_TarInputStream_IEntryFactory_">SetEntryFactory(TarInputStream.IEntryFactory)</a>, to allow
+the programmer to have their own <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarEntry.html">TarEntry</a> subclass instantiated for the
+entries return from <a class="xref" href="ICSharpCode.SharpZipLib.Tar.TarInputStream.html#ICSharpCode_SharpZipLib_Tar_TarInputStream_GetNextEntry">GetNextEntry()</a>.</p>
+</section>
+    <h3 id="delegates">Delegates
+  </h3>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Tar.ProgressMessageHandler.html">ProgressMessageHandler</a></h4>
+      <section><p>Used to advise clients of &apos;events&apos; while processing archives</p>
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2022 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

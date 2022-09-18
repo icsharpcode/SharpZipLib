@@ -1,0 +1,626 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class PendingBuffer
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class PendingBuffer
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer">
+  
+  
+  <h1 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer" class="text-break">Class PendingBuffer
+  </h1>
+  <div class="markdown level0 summary"><p>This class is general purpose class for writing data to a buffer.</p>
+<p>It allows you to write bits as well as bytes
+Based on DeflaterPending.java</p>
+<p>author of the original java version : Jochen Hoenicke</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">PendingBuffer</span></div>
+      <div class="level2"><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending.html">DeflaterPending</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.html">ICSharpCode.SharpZipLib.Zip.Compression</a></h6>
+  <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class PendingBuffer</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer__ctor.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L33">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer__ctor" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.#ctor">PendingBuffer()</h4>
+  <div class="markdown level1 summary"><p>construct instance using default buffer size of 4096</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PendingBuffer()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer__ctor_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.%23ctor(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L43">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer__ctor_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.#ctor(System.Int32)">PendingBuffer(Int32)</h4>
+  <div class="markdown level1 summary"><p>construct instance using specified buffer size</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PendingBuffer(int bufferSize)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">bufferSize</span></td>
+        <td><p>size to use for internal buffer</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_BitCount.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.BitCount%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L132">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_BitCount_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.BitCount*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_BitCount" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.BitCount">BitCount</h4>
+  <div class="markdown level1 summary"><p>The number of bits written to the buffer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int BitCount { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_IsFlushed.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.IsFlushed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L210">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_IsFlushed_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.IsFlushed*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_IsFlushed" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.IsFlushed">IsFlushed</h4>
+  <div class="markdown level1 summary"><p>Indicates if buffer has been flushed</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsFlushed { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_AlignToByte.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.AlignToByte%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L143">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_AlignToByte_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.AlignToByte*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_AlignToByte" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.AlignToByte">AlignToByte()</h4>
+  <div class="markdown level1 summary"><p>Align internal buffer on a byte boundary</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AlignToByte()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_Flush_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.Flush(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L226">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_Flush_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.Flush*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_Flush_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.Flush(System.Byte[],System.Int32,System.Int32)">Flush(Byte[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Flushes the pending buffer into the given output array.  If the
+output array is to small, only a partial flush is done.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Flush(byte[] output, int offset, int length)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The output array.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The offset into output array.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">length</span></td>
+        <td><p>The maximum number of bytes to store.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>The number of bytes flushed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_Reset.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.Reset%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L53">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_Reset_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.Reset*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_Reset" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.Reset">Reset()</h4>
+  <div class="markdown level1 summary"><p>Clear internal state/buffers</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Reset()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_ToByteArray.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.ToByteArray%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L257">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_ToByteArray_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.ToByteArray*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_ToByteArray" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.ToByteArray">ToByteArray()</h4>
+  <div class="markdown level1 summary"><p>Convert internal buffer to byte array.
+Buffer is empty on completion</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] ToByteArray()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>The internal buffer contents converted to a byte array.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteBits_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteBits(System.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L168">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteBits_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteBits*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteBits_System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteBits(System.Int32,System.Int32)">WriteBits(Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Write bits to internal buffer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteBits(int b, int count)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">b</span></td>
+        <td><p>source of bits</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">count</span></td>
+        <td><p>number of bits to write</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteBlock_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteBlock(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L117">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteBlock_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteBlock*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteBlock_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteBlock(System.Byte[],System.Int32,System.Int32)">WriteBlock(Byte[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Write a block of data to buffer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteBlock(byte[] block, int offset, int length)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">block</span></td>
+        <td><p>data to write</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>offset of first byte to write</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">length</span></td>
+        <td><p>number of bytes to write</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteByte_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteByte(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L64">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteByte_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteByte*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteByte_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteByte(System.Int32)">WriteByte(Int32)</h4>
+  <div class="markdown level1 summary"><p>Write a byte to buffer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteByte(int value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to write</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteInt_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteInt(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L97">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteInt_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteInt*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteInt_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteInt(System.Int32)">WriteInt(Int32)</h4>
+  <div class="markdown level1 summary"><p>write an integer LSB first</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteInt(int value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to write.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteShort_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteShort(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L81">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteShort_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteShort*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteShort_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteShort(System.Int32)">WriteShort(Int32)</h4>
+  <div class="markdown level1 summary"><p>Write a short value to buffer LSB first</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteShort(int value)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">value</span></td>
+        <td><p>The value to write.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteShortMSB_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteShortMSB(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L195">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteShortMSB_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteShortMSB*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer_WriteShortMSB_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.WriteShortMSB(System.Int32)">WriteShortMSB(Int32)</h4>
+  <div class="markdown level1 summary"><p>Write a short value to internal buffer most significant byte first</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteShortMSB(int s)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">s</span></td>
+        <td><p>value to write</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_PendingBuffer.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/PendingBuffer.cs/#L11" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2022 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

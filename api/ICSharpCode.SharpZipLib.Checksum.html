@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace ICSharpCode.SharpZipLib.Checksum
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace ICSharpCode.SharpZipLib.Checksum
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Checksum">
+  
+  <h1 id="ICSharpCode_SharpZipLib_Checksum" data-uid="ICSharpCode.SharpZipLib.Checksum" class="text-break">Namespace ICSharpCode.SharpZipLib.Checksum
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.Adler32.html">Adler32</a></h4>
+      <section><p>Computes Adler32 checksum for a stream of data. An Adler32
+checksum is not as reliable as a CRC32 checksum, but a lot faster to
+compute.</p>
+<p>The specification for Adler32 may be found in RFC 1950.
+ZLIB Compressed Data Format Specification version 3.3)</p>
+<p>From that document:</p>
+<p>&quot;ADLER32 (Adler-32 checksum)
+ This contains a checksum value of the uncompressed data
+ (excluding any dictionary data) computed according to Adler-32
+ algorithm. This algorithm is a 32-bit extension and improvement
+ of the Fletcher algorithm, used in the ITU-T X.224 / ISO 8073
+ standard.</p>
+<p> Adler-32 is composed of two sums accumulated per byte: s1 is
+ the sum of all bytes, s2 is the sum of all s1 values. Both sums
+ are done modulo 65521. s1 is initialized to 1, s2 to zero.  The
+ Adler-32 checksum is stored as s2*65536 + s1 in most-
+ significant-byte first (network) order.&quot;</p>
+<p>&quot;8.2. The Adler-32 algorithm</p>
+<p>The Adler-32 algorithm is much faster than the CRC32 algorithm yet
+still provides an extremely low probability of undetected errors.</p>
+<p>The modulo on unsigned long accumulators can be delayed for 5552
+bytes, so the modulo operation time is negligible.  If the bytes
+are a, b, c, the second sum is 3a + 2b + c + 3, and so is position
+and order sensitive, unlike the first sum, which is just a
+checksum.  That 65521 is prime is important to avoid a possible
+large class of two-byte errors that leave the check unchanged.
+(The Fletcher checksum uses 255, which is not prime and which also
+makes the Fletcher check insensitive to single byte changes 0 -
+255.)</p>
+<p>The sum s1 is initialized to 1 instead of zero to make the length
+of the sequence part of s2, so that the length does not have to be
+checked separately. (Any sequence of zeroes has a Fletcher
+checksum of zero.)&quot;</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.BZip2Crc.html">BZip2Crc</a></h4>
+      <section><p>CRC-32 with unreversed data and reversed output</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.Crc32.html">Crc32</a></h4>
+      <section><p>CRC-32 with reversed data and unreversed output</p>
+</section>
+    <h3 id="interfaces">Interfaces
+  </h3>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Checksum.IChecksum.html">IChecksum</a></h4>
+      <section><p>Interface to compute a data checksum used by checked input/output streams.
+A data checksum can be updated by one byte or with a byte array. After each
+update the value of the current checksum can be returned by calling</p>
+<pre><code>getValue</code></pre>. The complete checksum object can also be reset
+<p>so it can be used again with new data.</p>
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2022 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

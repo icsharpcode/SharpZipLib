@@ -1,0 +1,425 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class BaseArchiveStorage
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class BaseArchiveStorage
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage">
+  
+  
+  <h1 id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage" class="text-break">Class BaseArchiveStorage
+  </h1>
+  <div class="markdown level0 summary"><p>An abstract <a class="xref" href="ICSharpCode.SharpZipLib.Zip.IArchiveStorage.html">IArchiveStorage</a> suitable for extension by inheritance.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">BaseArchiveStorage</span></div>
+      <div class="level2"><a class="xref" href="ICSharpCode.SharpZipLib.Zip.DiskArchiveStorage.html">DiskArchiveStorage</a></div>
+      <div class="level2"><a class="xref" href="ICSharpCode.SharpZipLib.Zip.MemoryArchiveStorage.html">MemoryArchiveStorage</a></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.IArchiveStorage.html">IArchiveStorage</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.html">ICSharpCode.SharpZipLib.Zip</a></h6>
+  <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class BaseArchiveStorage : IArchiveStorage</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage__ctor_ICSharpCode_SharpZipLib_Zip_FileUpdateMode_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.%23ctor(ICSharpCode.SharpZipLib.Zip.FileUpdateMode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipFile.cs/#L4578">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage__ctor_ICSharpCode_SharpZipLib_Zip_FileUpdateMode_" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.#ctor(ICSharpCode.SharpZipLib.Zip.FileUpdateMode)">BaseArchiveStorage(FileUpdateMode)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.html">BaseArchiveStorage</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected BaseArchiveStorage(FileUpdateMode updateMode)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.FileUpdateMode.html">FileUpdateMode</a></td>
+        <td><span class="parametername">updateMode</span></td>
+        <td><p>The update mode.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_UpdateMode.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.UpdateMode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipFile.cs/#L4625">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_UpdateMode_" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.UpdateMode*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_UpdateMode" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.UpdateMode">UpdateMode</h4>
+  <div class="markdown level1 summary"><p>Gets the update mode applicable.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FileUpdateMode UpdateMode { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.FileUpdateMode.html">FileUpdateMode</a></td>
+        <td><p>The update mode.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_ConvertTemporaryToFinal.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.ConvertTemporaryToFinal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipFile.cs/#L4600">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_ConvertTemporaryToFinal_" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.ConvertTemporaryToFinal*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_ConvertTemporaryToFinal" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.ConvertTemporaryToFinal">ConvertTemporaryToFinal()</h4>
+  <div class="markdown level1 summary"><p>Converts the temporary <span class="xref">System.IO.Stream</span> to its final form.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Stream ConvertTemporaryToFinal()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><p>Returns a <span class="xref">System.IO.Stream</span> that can be used to read
+the final storage for the archive.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_ConvertTemporaryToFinal_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_GetTemporaryOutput">GetTemporaryOutput()</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_Dispose.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipFile.cs/#L4619">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_Dispose_" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.Dispose*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_Dispose" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.Dispose">Dispose()</h4>
+  <div class="markdown level1 summary"><p>Disposes this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract void Dispose()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_GetTemporaryOutput.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.GetTemporaryOutput%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipFile.cs/#L4592">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_GetTemporaryOutput_" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.GetTemporaryOutput*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_GetTemporaryOutput" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.GetTemporaryOutput">GetTemporaryOutput()</h4>
+  <div class="markdown level1 summary"><p>Gets a temporary output <span class="xref">System.IO.Stream</span></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Stream GetTemporaryOutput()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><p>Returns the temporary output stream.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_GetTemporaryOutput_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.html#ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_ConvertTemporaryToFinal">ConvertTemporaryToFinal()</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_MakeTemporaryCopy_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.MakeTemporaryCopy(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipFile.cs/#L4607">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_MakeTemporaryCopy_" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.MakeTemporaryCopy*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_MakeTemporaryCopy_System_IO_Stream_" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.MakeTemporaryCopy(System.IO.Stream)">MakeTemporaryCopy(Stream)</h4>
+  <div class="markdown level1 summary"><p>Make a temporary copy of a <span class="xref">System.IO.Stream</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Stream MakeTemporaryCopy(Stream stream)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>The <span class="xref">System.IO.Stream</span> to make a copy of.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><p>Returns a temporary output <span class="xref">System.IO.Stream</span> that is a copy of the input.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_OpenForDirectUpdate_System_IO_Stream_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.OpenForDirectUpdate(System.IO.Stream)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipFile.cs/#L4614">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_OpenForDirectUpdate_" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.OpenForDirectUpdate*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage_OpenForDirectUpdate_System_IO_Stream_" data-uid="ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage.OpenForDirectUpdate(System.IO.Stream)">OpenForDirectUpdate(Stream)</h4>
+  <div class="markdown level1 summary"><p>Return a stream suitable for performing direct updates on the original source.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Stream OpenForDirectUpdate(Stream stream)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">stream</span></td>
+        <td><p>The <span class="xref">System.IO.Stream</span> to open for direct update.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><p>Returns a stream suitable for direct updating.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.IArchiveStorage.html">IArchiveStorage</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_BaseArchiveStorage.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.BaseArchiveStorage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipFile.cs/#L4570" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2022 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

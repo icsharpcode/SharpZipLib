@@ -1,0 +1,592 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class DeflaterEngine
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class DeflaterEngine
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine">
+  
+  
+  <h1 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine" class="text-break">Class DeflaterEngine
+  </h1>
+  <div class="markdown level0 summary"><p>Low level compression engine for deflate algorithm which uses a 32K sliding window
+with secondary compression from Huffman/Shannon-Fano codes.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">DeflaterEngine</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.html">ICSharpCode.SharpZipLib.Zip.Compression</a></h6>
+  <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class DeflaterEngine</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine__ctor_ICSharpCode_SharpZipLib_Zip_Compression_DeflaterPending_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.%23ctor(ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/DeflaterEngine.cs/#L64">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine__ctor_ICSharpCode_SharpZipLib_Zip_Compression_DeflaterPending_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.#ctor(ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending)">DeflaterEngine(DeflaterPending)</h4>
+  <div class="markdown level1 summary"><p>Construct instance with pending buffer
+Adler calculation will be performed</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DeflaterEngine(DeflaterPending pending)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending.html">DeflaterPending</a></td>
+        <td><span class="parametername">pending</span></td>
+        <td><p>Pending buffer to use</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine__ctor_ICSharpCode_SharpZipLib_Zip_Compression_DeflaterPending_System_Boolean_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.%23ctor(ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/DeflaterEngine.cs/#L80">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine__ctor_ICSharpCode_SharpZipLib_Zip_Compression_DeflaterPending_System_Boolean_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.#ctor(ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending,System.Boolean)">DeflaterEngine(DeflaterPending, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Construct instance with pending buffer</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DeflaterEngine(DeflaterPending pending, bool noAdlerCalculation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending.html">DeflaterPending</a></td>
+        <td><span class="parametername">pending</span></td>
+        <td><p>Pending buffer to use</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">noAdlerCalculation</span></td>
+        <td><p>If no adler calculation should be performed</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_Adler.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.Adler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/DeflaterEngine.cs/#L266">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_Adler_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.Adler*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_Adler" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.Adler">Adler</h4>
+  <div class="markdown level1 summary"><p>Get current value of Adler checksum</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Adler { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_Strategy.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.Strategy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/DeflaterEngine.cs/#L288">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_Strategy_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.Strategy*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_Strategy" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.Strategy">Strategy</h4>
+  <div class="markdown level1 summary"><p>Get/set the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.DeflateStrategy.html">deflate strategy</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DeflateStrategy Strategy { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.DeflateStrategy.html">DeflateStrategy</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_TotalIn.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.TotalIn%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/DeflaterEngine.cs/#L277">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_TotalIn_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.TotalIn*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_TotalIn" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.TotalIn">TotalIn</h4>
+  <div class="markdown level1 summary"><p>Total data processed</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long TotalIn { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_Deflate_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.Deflate(System.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/DeflaterEngine.cs/#L104">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_Deflate_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.Deflate*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_Deflate_System_Boolean_System_Boolean_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.Deflate(System.Boolean,System.Boolean)">Deflate(Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Deflate drives actual compression of data</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Deflate(bool flush, bool finish)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">flush</span></td>
+        <td><p>True to flush input buffers</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">finish</span></td>
+        <td><p>Finish deflation with the current input.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Returns true if progress has been made.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_FillWindow.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.FillWindow%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/DeflaterEngine.cs/#L366">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_FillWindow_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.FillWindow*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_FillWindow" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.FillWindow">FillWindow()</h4>
+  <div class="markdown level1 summary"><p>Fill the window</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void FillWindow()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_NeedsInput.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.NeedsInput%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/DeflaterEngine.cs/#L187">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_NeedsInput_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.NeedsInput*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_NeedsInput" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.NeedsInput">NeedsInput()</h4>
+  <div class="markdown level1 summary"><p>Determines if more <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.html#ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_SetInput_System_Byte___System_Int32_System_Int32_">input</a> is needed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool NeedsInput()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Return true if input is needed via <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.html#ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_SetInput_System_Byte___System_Int32_System_Int32_">SetInput</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_Reset.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.Reset%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/DeflaterEngine.cs/#L234">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_Reset_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.Reset*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_Reset" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.Reset">Reset()</h4>
+  <div class="markdown level1 summary"><p>Reset internal state</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Reset()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_ResetAdler.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.ResetAdler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/DeflaterEngine.cs/#L258">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_ResetAdler_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.ResetAdler*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_ResetAdler" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.ResetAdler">ResetAdler()</h4>
+  <div class="markdown level1 summary"><p>Reset Adler checksum</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ResetAdler()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_SetDictionary_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.SetDictionary(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/DeflaterEngine.cs/#L198">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_SetDictionary_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.SetDictionary*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_SetDictionary_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.SetDictionary(System.Byte[],System.Int32,System.Int32)">SetDictionary(Byte[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Set compression dictionary</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetDictionary(byte[] buffer, int offset, int length)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer containing the dictionary data</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The offset in the buffer for the first byte of data</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">length</span></td>
+        <td><p>The length of the dictionary data.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_SetInput_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.SetInput(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/DeflaterEngine.cs/#L146">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_SetInput_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.SetInput*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_SetInput_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.SetInput(System.Byte[],System.Int32,System.Int32)">SetInput(Byte[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Sets input data to be deflated.  Should only be called when <pre><code>NeedsInput()</code></pre>
+returns true</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetInput(byte[] buffer, int offset, int count)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The buffer containing input data.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>The offset of the first byte of data.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">count</span></td>
+        <td><p>The number of bytes of data to use as input.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_SetLevel_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.SetLevel(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/DeflaterEngine.cs/#L304">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_SetLevel_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.SetLevel*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine_SetLevel_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.SetLevel(System.Int32)">SetLevel(Int32)</h4>
+  <div class="markdown level1 summary"><p>Set the deflate level (0-9)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetLevel(int level)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">level</span></td>
+        <td><p>The value to set the level to.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_DeflaterEngine.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/DeflaterEngine.cs/#L47" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2022 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

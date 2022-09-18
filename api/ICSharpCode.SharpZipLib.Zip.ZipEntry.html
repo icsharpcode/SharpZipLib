@@ -1,0 +1,1495 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ZipEntry
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ZipEntry
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry">
+  
+  
+  <h1 id="ICSharpCode_SharpZipLib_Zip_ZipEntry" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry" class="text-break">Class ZipEntry
+  </h1>
+  <div class="markdown level0 summary"><p>This class represents an entry in a zip archive.  This can be a file
+or a directory
+ZipFile and ZipInputStream will give you instances of this class as
+information about the members in an archive.  ZipOutputStream
+uses an instance of this class when creating an entry in a Zip file.
+<br>
+<br>Author of the original java version : Jochen Hoenicke</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">ZipEntry</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.html">ICSharpCode.SharpZipLib.Zip</a></h6>
+  <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ZipEntry</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry__ctor_ICSharpCode_SharpZipLib_Zip_ZipEntry_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.%23ctor(ICSharpCode.SharpZipLib.Zip.ZipEntry)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L230">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry__ctor_ICSharpCode_SharpZipLib_Zip_ZipEntry_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.#ctor(ICSharpCode.SharpZipLib.Zip.ZipEntry)">ZipEntry(ZipEntry)</h4>
+  <div class="markdown level1 summary"><p>Creates a deep copy of the given zip entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Clone instead&quot;)]
+public ZipEntry(ZipEntry entry)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html">ZipEntry</a></td>
+        <td><span class="parametername">entry</span></td>
+        <td><p>The entry to copy.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry__ctor_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L153">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry__ctor_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.#ctor(System.String)">ZipEntry(String)</h4>
+  <div class="markdown level1 summary"><p>Creates a zip entry with the given name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ZipEntry(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name for this entry. Can include directory components.
+The convention for names is &apos;unix&apos; style paths with relative names only.
+There are with no device names and path elements are separated by &apos;/&apos; characters.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>The name passed is null</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_AESKeySize.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.AESKeySize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L784">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_AESKeySize_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.AESKeySize*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_AESKeySize" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.AESKeySize">AESKeySize</h4>
+  <div class="markdown level1 summary"><p>For AES encrypted files returns or sets the number of bits of encryption (128, 192 or 256).
+When setting, only 0 (off), 128 or 256 is supported.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int AESKeySize { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_CanDecompress.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.CanDecompress%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L519">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_CanDecompress_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.CanDecompress*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_CanDecompress" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.CanDecompress">CanDecompress</h4>
+  <div class="markdown level1 summary"><p>Get a value indicating whether this entry can be decompressed by the library.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CanDecompress { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_CanDecompress_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is based on the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_Version">Version</a> and
+whether the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCompressionMethodSupported">compression method</a> is supported.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_CentralHeaderRequiresZip64.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.CentralHeaderRequiresZip64%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L569">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_CentralHeaderRequiresZip64_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.CentralHeaderRequiresZip64*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_CentralHeaderRequiresZip64" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.CentralHeaderRequiresZip64">CentralHeaderRequiresZip64</h4>
+  <div class="markdown level1 summary"><p>Get a value indicating whether the central directory entry requires Zip64 extensions to be stored.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool CentralHeaderRequiresZip64 { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_Comment.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.Comment%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L1002">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Comment_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Comment*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Comment" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Comment">Comment</h4>
+  <div class="markdown level1 summary"><p>Gets/Sets the entry comment.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Comment { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The comment or null if not set.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Comment_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A comment is only available for entries when read via the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipFile.html">ZipFile</a> class.
+The <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipInputStream.html">ZipInputStream</a> class doesn&apos;t have the comment data available.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>If comment is longer than 0xffff.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_CompressedSize.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.CompressedSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L693">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_CompressedSize_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.CompressedSize*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_CompressedSize" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.CompressedSize">CompressedSize</h4>
+  <div class="markdown level1 summary"><p>Gets/Sets the size of the compressed data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long CompressedSize { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><p>The compressed entry size or -1 if unknown.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_CompressionMethod.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.CompressionMethod%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L732">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_CompressionMethod_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.CompressionMethod*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_CompressionMethod" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.CompressionMethod">CompressionMethod</h4>
+  <div class="markdown level1 summary"><p>Gets/Sets the compression method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CompressionMethod CompressionMethod { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.CompressionMethod.html">CompressionMethod</a></td>
+        <td><p>The compression method for this entry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_Crc.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.Crc%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L712">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Crc_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Crc*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Crc" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Crc">Crc</h4>
+  <div class="markdown level1 summary"><p>Gets/Sets the crc of the uncompressed data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Crc { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><p>The crc value or -1 if unknown.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>Crc is not in the range 0..0xffffffffL</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_DateTime.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.DateTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L643">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_DateTime_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.DateTime*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_DateTime" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.DateTime">DateTime</h4>
+  <div class="markdown level1 summary"><p>Gets/Sets the time of last modification of the entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTime DateTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.DateTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_DateTime_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_DosTime">DosTime</a> property is updated to match this as far as possible.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_DosTime.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.DosTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L578">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_DosTime_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.DosTime*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_DosTime" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.DosTime">DosTime</h4>
+  <div class="markdown level1 summary"><p>Get/Set DosTime value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long DosTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_DosTime_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The MS-DOS date format can only represent dates between 1/1/1980 and 12/31/2107.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_ExternalFileAttributes.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.ExternalFileAttributes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L362">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_ExternalFileAttributes_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.ExternalFileAttributes*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_ExternalFileAttributes" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.ExternalFileAttributes">ExternalFileAttributes</h4>
+  <div class="markdown level1 summary"><p>Get/Set external file attributes as an integer.
+The values of this are operating system dependent see
+<a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_HostSystem">HostSystem</a> for details</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ExternalFileAttributes { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_ExtraData.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.ExtraData%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L755">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_ExtraData_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.ExtraData*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_ExtraData" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.ExtraData">ExtraData</h4>
+  <div class="markdown level1 summary"><p>Gets/Sets the extra data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] ExtraData { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>Extra data or null if not set.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>Extra data is longer than 64KB (0xffff) bytes.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.Flags%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L332">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Flags*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Flags">Flags</h4>
+  <div class="markdown level1 summary"><p>Get/Set general purpose bit flag for entry</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Flags { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>General purpose bit flag<br>
+<br>
+Bit 0: If set, indicates the file is encrypted<br>
+Bit 1-2 Only used for compression type 6 Imploding, and 8, 9 deflating<br>
+Imploding:<br>
+Bit 1 if set indicates an 8K sliding dictionary was used.  If clear a 4k dictionary was used<br>
+Bit 2 if set indicates 3 Shannon-Fanno trees were used to encode the sliding dictionary, 2 otherwise<br>
+<br>
+Deflating:<br>
+  Bit 2    Bit 1<br>
+    0        0       Normal compression was used<br>
+    0        1       Maximum compression was used<br>
+    1        0       Fast compression was used<br>
+    1        1       Super fast compression was used<br>
+<br>
+Bit 3: If set, the fields crc-32, compressed size
+and uncompressed size are were not able to be written during zip file creation
+The correct values are held in a data descriptor immediately following the compressed data. <br>
+Bit 4: Reserved for use by PKZIP for enhanced deflating<br>
+Bit 5: If set indicates the file contains compressed patch data<br>
+Bit 6: If set indicates strong encryption was used.<br>
+Bit 7-10: Unused or reserved<br>
+Bit 11: If set the name and comments for this entry are in <a href="http://www.unicode.org">unicode</a>.<br>
+Bit 12-15: Unused or reserved<br></p>
+</div>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_IsUnicodeText">IsUnicodeText</a></div>
+      <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCrypted">IsCrypted</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_HasCrc.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.HasCrc%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L268">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_HasCrc_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.HasCrc*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_HasCrc" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.HasCrc">HasCrc</h4>
+  <div class="markdown level1 summary"><p>Get a value indicating whether the entry has a CRC value available.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasCrc { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_HostSystem.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.HostSystem%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L444">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_HostSystem_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.HostSystem*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_HostSystem" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.HostSystem">HostSystem</h4>
+  <div class="markdown level1 summary"><p>Gets the compatibility information for the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_ExternalFileAttributes">external file attribute</a>
+If the external file attributes are compatible with MS-DOS and can be read
+by PKZIP for DOS version 2.04g then this value will be zero.  Otherwise the value
+will be non-zero and identify the host system on which the attributes are compatible.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int HostSystem { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_HostSystem_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The values for this as defined in the Zip File format and by others are shown below.  The values are somewhat
+misleading in some cases as they are not all used as shown.  You should consult the relevant documentation
+to obtain up to date and correct information.  The modified appnote by the infozip group is
+particularly helpful as it documents a lot of peculiarities.  The document is however a little dated.
+<table><tbody><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr></tbody></table></p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCrypted.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.IsCrypted%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L275">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCrypted_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsCrypted*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCrypted" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsCrypted">IsCrypted</h4>
+  <div class="markdown level1 summary"><p>Get/Set flag indicating if entry is encrypted.
+A simple helper routine to aid interpretation of <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags">flags</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsCrypted { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCrypted_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is an assistant that interprets the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags">flags</a> property.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_IsDirectory.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.IsDirectory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L1033">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsDirectory_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsDirectory*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsDirectory" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsDirectory">IsDirectory</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating if the entry is a directory.
+however.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDirectory { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsDirectory_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A directory is determined by an entry name with a trailing slash &apos;/&apos;.
+The external file attributes can also indicate an entry is for a directory.
+Currently only dos/windows attributes are tested in this manner.
+The trailing slash convention should always be followed.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_IsDOSEntry.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.IsDOSEntry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L383">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsDOSEntry_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsDOSEntry*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsDOSEntry" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsDOSEntry">IsDOSEntry</h4>
+  <div class="markdown level1 summary"><p>Get a value indicating this entry is for a DOS/Windows system.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDOSEntry { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_IsFile.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.IsFile%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L1044">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsFile_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsFile*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsFile" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsFile">IsFile</h4>
+  <div class="markdown level1 summary"><p>Get a value of true if the entry appears to be a file; false otherwise</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsFile { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsFile_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This only takes account of DOS/Windows attributes.  Other operating systems are ignored.
+For linux and others the result may be incorrect.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_IsUnicodeText.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.IsUnicodeText%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L286">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsUnicodeText_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsUnicodeText*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsUnicodeText" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsUnicodeText">IsUnicodeText</h4>
+  <div class="markdown level1 summary"><p>Get / set a flag indicating whether entry name and comment text are
+encoded in <a href="http://www.unicode.org">unicode UTF8</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsUnicodeText { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsUnicodeText_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is an assistant that interprets the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_Flags">flags</a> property.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_LocalHeaderRequiresZip64.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.LocalHeaderRequiresZip64%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L540">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_LocalHeaderRequiresZip64_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.LocalHeaderRequiresZip64*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_LocalHeaderRequiresZip64" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.LocalHeaderRequiresZip64">LocalHeaderRequiresZip64</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating if the entry requires Zip64 extensions
+to store the full entry values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool LocalHeaderRequiresZip64 { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>A <span class="xref">System.Boolean</span> value of true if a local header requires Zip64 extensions; false if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_Name.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L663">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Name_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Name*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Name" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Name">Name</h4>
+  <div class="markdown level1 summary"><p>Returns the entry name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Name_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The unix naming convention is followed.
+Path components in the entry should always separated by forward slashes (&apos;/&apos;).
+Dos device names like C: should also be removed.
+See the <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.html">ZipNameTransform</a> class, or <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_CleanName_System_String_">CleanName(String)</a></p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_Offset.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.Offset%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L351">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Offset_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Offset*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Offset" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Offset">Offset</h4>
+  <div class="markdown level1 summary"><p>Get/set offset for use in central header</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Offset { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_Size.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.Size%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L677">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Size_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Size*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Size" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Size">Size</h4>
+  <div class="markdown level1 summary"><p>Gets/Sets the size of the uncompressed data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long Size { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><p>The size or -1 if unknown.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Size_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Setting the size before adding an entry to an archive can help
+avoid compatibility problems with some archivers which don&apos;t understand Zip64 extensions.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_Version.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.Version%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L485">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Version_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Version*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Version" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Version">Version</h4>
+  <div class="markdown level1 summary"><p>Get minimum Zip feature version required to extract this entry</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Version { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Version_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Minimum features are defined as:<br>
+1.0 - Default value<br>
+1.1 - File is a volume label<br>
+2.0 - File is a folder/directory<br>
+2.0 - File is compressed using Deflate compression<br>
+2.0 - File is encrypted using traditional encryption<br>
+2.1 - File is compressed using Deflate64<br>
+2.5 - File is compressed using PKWARE DCL Implode<br>
+2.7 - File is a patch data set<br>
+4.5 - File uses Zip64 format extensions<br>
+4.6 - File is compressed using BZIP2 compression<br>
+5.0 - File is encrypted using DES<br>
+5.0 - File is encrypted using 3DES<br>
+5.0 - File is encrypted using original RC2 encryption<br>
+5.0 - File is encrypted using RC4 encryption<br>
+5.1 - File is encrypted using AES encryption<br>
+5.1 - File is encrypted using corrected RC2 encryption<br>
+5.1 - File is encrypted using corrected RC2-64 encryption<br>
+6.1 - File is encrypted using non-OAEP key wrapping<br>
+6.2 - Central directory encryption (not confirmed yet)<br>
+6.3 - File is compressed using LZMA<br>
+6.3 - File is compressed using PPMD+<br>
+6.3 - File is encrypted using Blowfish<br>
+6.3 - File is encrypted using Twofish<br></p>
+</div>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Version_seealso">See Also</h5>
+  <div class="seealso">
+      <div><a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_CanDecompress">CanDecompress</a></div>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_VersionMadeBy.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.VersionMadeBy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L378">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_VersionMadeBy_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.VersionMadeBy*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_VersionMadeBy" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.VersionMadeBy">VersionMadeBy</h4>
+  <div class="markdown level1 summary"><p>Get the version made by for this entry or zero if unknown.
+The value / 10 indicates the major version number, and
+the value mod 10 is the minor version number</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int VersionMadeBy { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_ZipFileIndex.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.ZipFileIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L342">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_ZipFileIndex_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.ZipFileIndex*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_ZipFileIndex" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.ZipFileIndex">ZipFileIndex</h4>
+  <div class="markdown level1 summary"><p>Get/Set index of this entry in Zip file</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long ZipFileIndex { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_ZipFileIndex_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This is only valid when the entry is part of a <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipFile.html">ZipFile</a></p>
+</div>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_CleanName_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.CleanName(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L1103">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_CleanName_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.CleanName*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_CleanName_System_String_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.CleanName(System.String)">CleanName(String)</h4>
+  <div class="markdown level1 summary"><p>Cleans a name making it conform to Zip file conventions.
+Devices names (&apos;c:&amp;apos;) and UNC share names (&apos;\server\share&apos;) are removed
+and back slashes (&apos;&amp;apos;) are converted to forward slashes (&apos;/&apos;).
+Names are made relative by trimming leading slashes which is compatible
+with the ZIP naming convention.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string CleanName(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to clean</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The &apos;cleaned&apos; name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_CleanName_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipNameTransform.html">Zip name transform</a> class is more flexible.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_Clone.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L1058">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Clone_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Clone*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_Clone" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.Clone">Clone()</h4>
+  <div class="markdown level1 summary"><p>Creates a copy of this zip entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object Clone()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>An <span class="xref">System.Object</span> that is a copy of the current instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_ForceZip64.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.ForceZip64%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L527">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_ForceZip64_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.ForceZip64*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_ForceZip64" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.ForceZip64">ForceZip64()</h4>
+  <div class="markdown level1 summary"><p>Force this entry to be recorded using Zip64 extensions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ForceZip64()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCompressionMethodSupported.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.IsCompressionMethodSupported%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L1050">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCompressionMethodSupported_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsCompressionMethodSupported*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCompressionMethodSupported" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsCompressionMethodSupported">IsCompressionMethodSupported()</h4>
+  <div class="markdown level1 summary"><p>Test entry to see if data can be extracted.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsCompressionMethodSupported()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Returns true if data can be extracted for this entry; false otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCompressionMethodSupported_ICSharpCode_SharpZipLib_Zip_CompressionMethod_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.IsCompressionMethodSupported(ICSharpCode.SharpZipLib.Zip.CompressionMethod)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L1086">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCompressionMethodSupported_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsCompressionMethodSupported*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsCompressionMethodSupported_ICSharpCode_SharpZipLib_Zip_CompressionMethod_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsCompressionMethodSupported(ICSharpCode.SharpZipLib.Zip.CompressionMethod)">IsCompressionMethodSupported(CompressionMethod)</h4>
+  <div class="markdown level1 summary"><p>Test a <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html#ICSharpCode_SharpZipLib_Zip_ZipEntry_CompressionMethod">compression method</a> to see if this library
+supports extracting data compressed with that method</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool IsCompressionMethodSupported(CompressionMethod method)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.CompressionMethod.html">CompressionMethod</a></td>
+        <td><span class="parametername">method</span></td>
+        <td><p>The compression method to test.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>Returns true if the compression method is supported; false otherwise</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_IsZip64Forced.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.IsZip64Forced%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L533">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsZip64Forced_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsZip64Forced*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_IsZip64Forced" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.IsZip64Forced">IsZip64Forced()</h4>
+  <div class="markdown level1 summary"><p>Get a value indicating whether Zip64 extensions were forced.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsZip64Forced()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>A <span class="xref">System.Boolean</span> value of true if Zip64 extensions have been forced on; false if not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry_ToString.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L1078">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_ZipEntry_ToString_" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.ToString*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_ZipEntry_ToString" data-uid="ICSharpCode.SharpZipLib.Zip.ZipEntry.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Gets a string representation of this ZipEntry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>A readable textual representation of this <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntry.html">ZipEntry</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.ToString()</span></div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.html#ICSharpCode_SharpZipLib_Zip_ZipEntryExtensions_HasFlag_ICSharpCode_SharpZipLib_Zip_ZipEntry_ICSharpCode_SharpZipLib_Zip_GeneralBitFlags_">ZipEntryExtensions.HasFlag(ZipEntry, GeneralBitFlags)</a>
+  </div>
+  <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Zip.ZipEntryExtensions.html#ICSharpCode_SharpZipLib_Zip_ZipEntryExtensions_SetFlag_ICSharpCode_SharpZipLib_Zip_ZipEntry_ICSharpCode_SharpZipLib_Zip_GeneralBitFlags_System_Boolean_">ZipEntryExtensions.SetFlag(ZipEntry, GeneralBitFlags, Boolean)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_ZipEntry.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.ZipEntry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipEntry.cs/#L127" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2022 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

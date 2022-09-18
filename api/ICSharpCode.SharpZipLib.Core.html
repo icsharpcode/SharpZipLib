@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace ICSharpCode.SharpZipLib.Core
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace ICSharpCode.SharpZipLib.Core
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Core">
+  
+  <h1 id="ICSharpCode_SharpZipLib_Core" data-uid="ICSharpCode.SharpZipLib.Core" class="text-break">Namespace ICSharpCode.SharpZipLib.Core
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.DirectoryEventArgs.html">DirectoryEventArgs</a></h4>
+      <section><p>Event arguments for directories.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.html">ExtendedPathFilter</a></h4>
+      <section><p>ExtendedPathFilter filters based on name, file size, and the last write time of the file.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.FileSystemScanner.html">FileSystemScanner</a></h4>
+      <section><p>FileSystemScanner provides facilities scanning of files and directories.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.InvalidNameException.html">InvalidNameException</a></h4>
+      <section><p>InvalidNameException is thrown for invalid names such as directory traversal paths and names with invalid characters</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.NameAndSizeFilter.html">NameAndSizeFilter</a></h4>
+      <section><p>NameAndSizeFilter filters based on name and file size.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.NameFilter.html">NameFilter</a></h4>
+      <section><p>NameFilter is a string matching class which allows for both positive and negative
+matching.
+A filter is a sequence of independant <span class="xref">System.Text.RegularExpressions.Regex</span> separated by semi-colons &apos;;&apos;.
+To include a semi-colon it may be quoted as in ;. Each expression can be prefixed by a plus &apos;+&apos; sign or
+a minus &apos;-&apos; sign to denote the expression is intended to include or exclude names.
+If neither a plus or minus sign is found include is the default.
+A given name is tested for inclusion before checking exclusions.  Only names matching an include spec
+and not matching an exclude spec are deemed to match the filter.
+An empty filter matches any name.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.PathFilter.html">PathFilter</a></h4>
+      <section><p>PathFilter filters directories and files using a form of <span class="xref">System.Text.RegularExpressions.Regex</span>
+by full path name.
+See <a class="xref" href="ICSharpCode.SharpZipLib.Core.NameFilter.html">NameFilter</a> for more detail on filtering.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.PathUtils.html">PathUtils</a></h4>
+      <section><p>PathUtils provides simple utilities for handling paths.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.ProgressEventArgs.html">ProgressEventArgs</a></h4>
+      <section><p>Event arguments during processing of a single file or directory.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.ScanEventArgs.html">ScanEventArgs</a></h4>
+      <section><p>Event arguments for scanning.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.ScanFailureEventArgs.html">ScanFailureEventArgs</a></h4>
+      <section><p>Arguments passed when scan failures are detected.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.StreamUtils.html">StreamUtils</a></h4>
+      <section><p>Provides simple <span class="xref">System.IO.Stream</span>&quot; utilities.</p>
+</section>
+    <h3 id="interfaces">Interfaces
+  </h3>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.INameTransform.html">INameTransform</a></h4>
+      <section><p>INameTransform defines how file system names are transformed for use with archives, or vice versa.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">IScanFilter</a></h4>
+      <section><p>Scanning filters support filtering of names.</p>
+</section>
+    <h3 id="delegates">Delegates
+  </h3>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.CompletedFileHandler.html">CompletedFileHandler</a></h4>
+      <section><p>Delegate invoked when a file has been completely processed.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.DirectoryFailureHandler.html">DirectoryFailureHandler</a></h4>
+      <section><p>Delegate invoked when a directory failure is detected.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.FileFailureHandler.html">FileFailureHandler</a></h4>
+      <section><p>Delegate invoked when a file failure is detected.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.ProcessFileHandler.html">ProcessFileHandler</a></h4>
+      <section><p>Delegate invoked before starting to process a file.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Core.ProgressHandler.html">ProgressHandler</a></h4>
+      <section><p>Delegate invoked during processing of a file or directory</p>
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2022 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

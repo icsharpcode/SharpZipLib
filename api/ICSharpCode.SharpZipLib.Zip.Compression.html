@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Namespace ICSharpCode.SharpZipLib.Zip.Compression
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Namespace ICSharpCode.SharpZipLib.Zip.Compression
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Zip.Compression">
+  
+  <h1 id="ICSharpCode_SharpZipLib_Zip_Compression" data-uid="ICSharpCode.SharpZipLib.Zip.Compression" class="text-break">Namespace ICSharpCode.SharpZipLib.Zip.Compression
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="markdown level0 remarks"></div>
+    <h3 id="classes">Classes
+  </h3>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Deflater.html">Deflater</a></h4>
+      <section><p>This is the Deflater class.  The deflater class compresses input
+with the deflate algorithm described in RFC 1951.  It has several
+compression levels and three different strategies described below.</p>
+<p>This class is <em>not</em> thread safe.  This is inherent in the API, due
+to the split of deflate and setInput.</p>
+<p>author of the original java version : Jochen Hoenicke</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterConstants.html">DeflaterConstants</a></h4>
+      <section><p>This class contains constants used for deflation.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterEngine.html">DeflaterEngine</a></h4>
+      <section><p>Low level compression engine for deflate algorithm which uses a 32K sliding window
+with secondary compression from Huffman/Shannon-Fano codes.</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterHuffman.html">DeflaterHuffman</a></h4>
+      <section><p>This is the DeflaterHuffman class.</p>
+<p>This class is <em>not</em> thread safe.  This is inherent in the API, due
+to the split of Deflate and SetInput.</p>
+<p>author of the original java version : Jochen Hoenicke</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.DeflaterPending.html">DeflaterPending</a></h4>
+      <section><p>This class stores the pending output of the Deflater.</p>
+<p>author of the original java version : Jochen Hoenicke</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.html">Inflater</a></h4>
+      <section><p>Inflater is used to decompress data that has been compressed according
+to the &quot;deflate&quot; standard described in rfc1951.</p>
+<p>By default Zlib (rfc1950) headers and footers are expected in the input.
+You can use constructor <pre><code> public Inflater(bool noHeader)</code></pre> passing true
+if there is no Zlib header information</p>
+<p>The usage is as following.  First you have to set some input with</p>
+<pre><code>SetInput()</code></pre>, then Inflate() it.  If inflate doesn&apos;t
+<p>inflate any bytes there may be three reasons:
+<ul>
+<li>IsNeedingInput() returns true because the input buffer is empty.
+You have to provide more input with <pre><code>SetInput()</code></pre>.
+NOTE: IsNeedingInput() also returns true when, the stream is finished.
+</li>
+<li>IsNeedingDictionary() returns true, you have to provide a preset
+   dictionary with <pre><code>SetDictionary()</code></pre>.</li>
+<li>IsFinished returns true, the inflater has finished.</li>
+</ul>
+Once the first output byte is produced, a dictionary will not be
+needed at a later stage.</p>
+<p>author of the original java version : John Leuner, Jochen Hoenicke</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.InflaterHuffmanTree.html">InflaterHuffmanTree</a></h4>
+      <section><p>Huffman tree used for inflation</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.PendingBuffer.html">PendingBuffer</a></h4>
+      <section><p>This class is general purpose class for writing data to a buffer.</p>
+<p>It allows you to write bits as well as bytes
+Based on DeflaterPending.java</p>
+<p>author of the original java version : Jochen Hoenicke</p>
+</section>
+    <h3 id="enums">Enums
+  </h3>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.Deflater.CompressionLevel.html">Deflater.CompressionLevel</a></h4>
+      <section><p>Compression Level as an enum for safer use</p>
+</section>
+      <h4><a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.DeflateStrategy.html">DeflateStrategy</a></h4>
+      <section><p>Strategies for deflater</p>
+</section>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2022 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,558 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ExtendedPathFilter
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ExtendedPathFilter
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter">
+  
+  
+  <h1 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter" class="text-break">Class ExtendedPathFilter
+  </h1>
+  <div class="markdown level0 summary"><p>ExtendedPathFilter filters based on name, file size, and the last write time of the file.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="ICSharpCode.SharpZipLib.Core.PathFilter.html">PathFilter</a></div>
+    <div class="level2"><span class="xref">ExtendedPathFilter</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">IScanFilter</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Core.html">ICSharpCode.SharpZipLib.Core</a></h6>
+  <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
+  <h5 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ExtendedPathFilter : PathFilter, IScanFilter</code></pre>
+  </div>
+  <h5 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Provides an example of how to customise filtering.</p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_ExtendedPathFilter__ctor_System_String_System_DateTime_System_DateTime_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.%23ctor(System.String%2CSystem.DateTime%2CSystem.DateTime)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L85">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter__ctor_" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter__ctor_System_String_System_DateTime_System_DateTime_" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor(System.String,System.DateTime,System.DateTime)">ExtendedPathFilter(String, DateTime, DateTime)</h4>
+  <div class="markdown level1 summary"><p>Initialise a new instance of ExtendedPathFilter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ExtendedPathFilter(string filter, DateTime minDate, DateTime maxDate)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">filter</span></td>
+        <td><p>The filter to apply.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.DateTime</span></td>
+        <td><span class="parametername">minDate</span></td>
+        <td><p>The minimum <span class="xref">System.DateTime</span> to include.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.DateTime</span></td>
+        <td><span class="parametername">maxDate</span></td>
+        <td><p>The maximum <span class="xref">System.DateTime</span> to include.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_ExtendedPathFilter__ctor_System_String_System_Int64_System_Int64_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.%23ctor(System.String%2CSystem.Int64%2CSystem.Int64)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L71">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter__ctor_" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter__ctor_System_String_System_Int64_System_Int64_" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor(System.String,System.Int64,System.Int64)">ExtendedPathFilter(String, Int64, Int64)</h4>
+  <div class="markdown level1 summary"><p>Initialise a new instance of ExtendedPathFilter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ExtendedPathFilter(string filter, long minSize, long maxSize)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">filter</span></td>
+        <td><p>The filter to apply.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">minSize</span></td>
+        <td><p>The minimum file size to include.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">maxSize</span></td>
+        <td><p>The maximum file size to include.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_ExtendedPathFilter__ctor_System_String_System_Int64_System_Int64_System_DateTime_System_DateTime_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.%23ctor(System.String%2CSystem.Int64%2CSystem.Int64%2CSystem.DateTime%2CSystem.DateTime)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L101">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter__ctor_" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter__ctor_System_String_System_Int64_System_Int64_System_DateTime_System_DateTime_" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.#ctor(System.String,System.Int64,System.Int64,System.DateTime,System.DateTime)">ExtendedPathFilter(String, Int64, Int64, DateTime, DateTime)</h4>
+  <div class="markdown level1 summary"><p>Initialise a new instance of ExtendedPathFilter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ExtendedPathFilter(string filter, long minSize, long maxSize, DateTime minDate, DateTime maxDate)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">filter</span></td>
+        <td><p>The filter to apply.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">minSize</span></td>
+        <td><p>The minimum file size to include.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><span class="parametername">maxSize</span></td>
+        <td><p>The maximum file size to include.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.DateTime</span></td>
+        <td><span class="parametername">minDate</span></td>
+        <td><p>The minimum <span class="xref">System.DateTime</span> to include.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.DateTime</span></td>
+        <td><span class="parametername">maxDate</span></td>
+        <td><p>The maximum <span class="xref">System.DateTime</span> to include.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MaxDate.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.MaxDate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L207">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MaxDate_" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.MaxDate*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MaxDate" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.MaxDate">MaxDate</h4>
+  <div class="markdown level1 summary"><p>Get/set the maximum <span class="xref">System.DateTime</span> value that will match for this filter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTime MaxDate { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.DateTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MaxDate_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Files with a LastWrite time greater than this value are excluded by the filter.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MaxSize.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.MaxSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L167">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MaxSize_" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.MaxSize*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MaxSize" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.MaxSize">MaxSize</h4>
+  <div class="markdown level1 summary"><p>Get/set the maximum size/length for a file that will match this filter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long MaxSize { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MaxSize_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The default value is <span class="xref">System.Int64.MaxValue</span></p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>value is less than zero or less than <a class="xref" href="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.html#ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MinSize">MinSize</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MinDate.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.MinDate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L185">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MinDate_" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.MinDate*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MinDate" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.MinDate">MinDate</h4>
+  <div class="markdown level1 summary"><p>Get/set the minimum <span class="xref">System.DateTime</span> value that will match for this filter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTime MinDate { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.DateTime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MinDate_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Files with a LastWrite time less than this value are excluded by the filter.</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MinSize.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.MinSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L148">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MinSize_" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.MinSize*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MinSize" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.MinSize">MinSize</h4>
+  <div class="markdown level1 summary"><p>Get/set the minimum size/length for a file that will match this filter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long MinSize { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MinSize_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The default value is zero.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>value is less than zero; greater than <a class="xref" href="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.html#ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_MaxSize">MaxSize</a></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_IsMatch_System_String_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.IsMatch(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L122">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_IsMatch_" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.IsMatch*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Core_ExtendedPathFilter_IsMatch_System_String_" data-uid="ICSharpCode.SharpZipLib.Core.ExtendedPathFilter.IsMatch(System.String)">IsMatch(String)</h4>
+  <div class="markdown level1 summary"><p>Test a filename to see if it matches the filter.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool IsMatch(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The filename to test.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>True if the filter matches, false otherwise.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="ICSharpCode.SharpZipLib.Core.PathFilter.html#ICSharpCode_SharpZipLib_Core_PathFilter_IsMatch_System_String_">PathFilter.IsMatch(String)</a></div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.FileNotFoundException</span></td>
+        <td><p>The <see paramref="fileName"></see> doesnt exist</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="ICSharpCode.SharpZipLib.Core.IScanFilter.html">IScanFilter</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Core_ExtendedPathFilter.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Core.ExtendedPathFilter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Core/PathFilter.cs/#L61" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2022 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

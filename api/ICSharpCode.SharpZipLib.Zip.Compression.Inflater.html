@@ -1,0 +1,856 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Inflater
+   | SharpZipLib Help </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Inflater
+   | SharpZipLib Help ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        <nav id="autocollapse" class="navbar navbar-default ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater">
+  
+  
+  <h1 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater" class="text-break">Class Inflater
+  </h1>
+  <div class="markdown level0 summary"><p>Inflater is used to decompress data that has been compressed according
+to the &quot;deflate&quot; standard described in rfc1951.</p>
+<p>By default Zlib (rfc1950) headers and footers are expected in the input.
+You can use constructor <pre><code> public Inflater(bool noHeader)</code></pre> passing true
+if there is no Zlib header information</p>
+<p>The usage is as following.  First you have to set some input with</p>
+<pre><code>SetInput()</code></pre>, then Inflate() it.  If inflate doesn&apos;t
+<p>inflate any bytes there may be three reasons:
+<ul>
+<li>IsNeedingInput() returns true because the input buffer is empty.
+You have to provide more input with <pre><code>SetInput()</code></pre>.
+NOTE: IsNeedingInput() also returns true when, the stream is finished.
+</li>
+<li>IsNeedingDictionary() returns true, you have to provide a preset
+   dictionary with <pre><code>SetDictionary()</code></pre>.</li>
+<li>IsFinished returns true, the inflater has finished.</li>
+</ul>
+Once the first output byte is produced, a dictionary will not be
+needed at a later stage.</p>
+<p>author of the original java version : John Leuner, Jochen Hoenicke</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">Inflater</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="ICSharpCode.SharpZipLib.Zip.Compression.html">ICSharpCode.SharpZipLib.Zip.Compression</a></h6>
+  <h6><strong>Assembly</strong>: ICSharpCode.SharpZipLib.dll</h6>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Inflater</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater__ctor.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L156">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater__ctor" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.#ctor">Inflater()</h4>
+  <div class="markdown level1 summary"><p>Creates a new inflater or RFC1951 decompressor
+RFC1950/Zlib headers and footers will be expected in the input data</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Inflater()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater__ctor_System_Boolean_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.%23ctor(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L172">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater__ctor_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.#ctor*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater__ctor_System_Boolean_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.#ctor(System.Boolean)">Inflater(Boolean)</h4>
+  <div class="markdown level1 summary"><p>Creates a new inflater.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Inflater(bool noHeader)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">noHeader</span></td>
+        <td><p>True if no RFC1950/Zlib header and footer fields are expected in the input data</p>
+<p>This is used for GZIPed/Zipped input.</p>
+<p>For compatibility with
+Sun JDK you should provide one byte of input more than needed in
+this case.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater_Adler.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Adler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L823">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_Adler_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Adler*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_Adler" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Adler">Adler</h4>
+  <div class="markdown level1 summary"><p>Gets the adler checksum.  This is either the checksum of all
+uncompressed bytes returned by inflate(), or if needsDictionary()
+returns true (and thus no output was yet produced) this is the
+adler checksum of the expected dictionary.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Adler { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>the adler checksum.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater_IsFinished.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.IsFinished%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L806">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_IsFinished_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.IsFinished*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_IsFinished" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.IsFinished">IsFinished</h4>
+  <div class="markdown level1 summary"><p>Returns true, if the inflater has finished.  This means, that no
+input is needed and no output can be produced.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsFinished { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater_IsNeedingDictionary.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.IsNeedingDictionary%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L794">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_IsNeedingDictionary_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.IsNeedingDictionary*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_IsNeedingDictionary" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.IsNeedingDictionary">IsNeedingDictionary</h4>
+  <div class="markdown level1 summary"><p>Returns true, if a preset dictionary is needed to inflate the input.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsNeedingDictionary { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater_IsNeedingInput.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.IsNeedingInput%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L783">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_IsNeedingInput_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.IsNeedingInput*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_IsNeedingInput" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.IsNeedingInput">IsNeedingInput</h4>
+  <div class="markdown level1 summary"><p>Returns true, if the input buffer is empty.
+You should then call setInput().
+NOTE: This method also returns true when the stream is finished.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsNeedingInput { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater_RemainingInput.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.RemainingInput%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L878">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_RemainingInput_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.RemainingInput*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_RemainingInput" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.RemainingInput">RemainingInput</h4>
+  <div class="markdown level1 summary"><p>Gets the number of unprocessed input bytes.  Useful, if the end of the
+stream is reached and you want to further process the bytes after
+the deflate stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int RemainingInput { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>The number of bytes of the input which have not been processed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater_TotalIn.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.TotalIn%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L862">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_TotalIn_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.TotalIn*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_TotalIn" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.TotalIn">TotalIn</h4>
+  <div class="markdown level1 summary"><p>Gets the total number of processed compressed input bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long TotalIn { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><p>The total number of bytes of processed input bytes.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater_TotalOut.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.TotalOut%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L848">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_TotalOut_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.TotalOut*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_TotalOut" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.TotalOut">TotalOut</h4>
+  <div class="markdown level1 summary"><p>Gets the total number of output bytes returned by Inflate().</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long TotalOut { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int64</span></td>
+        <td><p>the total number of output bytes.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater_Inflate_System_Byte___.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Inflate(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L678">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_Inflate_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Inflate*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_Inflate_System_Byte___" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Inflate(System.Byte[])">Inflate(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Inflates the compressed stream to the output buffer.  If this
+returns 0, you should check, whether IsNeedingDictionary(),
+IsNeedingInput() or IsFinished() returns true, to determine why no
+further output is produced.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Inflate(byte[] buffer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>the output buffer.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>The number of bytes written to the buffer, 0 if no further
+output can be produced.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>if buffer has length 0.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.FormatException</span></td>
+        <td><p>if deflated stream is invalid.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater_Inflate_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Inflate(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L715">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_Inflate_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Inflate*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_Inflate_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Inflate(System.Byte[],System.Int32,System.Int32)">Inflate(Byte[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Inflates the compressed stream to the output buffer.  If this
+returns 0, you should check, whether needsDictionary(),
+needsInput() or finished() returns true, to determine why no
+further output is produced.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Inflate(byte[] buffer, int offset, int count)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>the output buffer.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">offset</span></td>
+        <td><p>the offset in buffer where storing starts.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">count</span></td>
+        <td><p>the maximum number of bytes to output.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>the number of bytes written to the buffer, 0 if no further output can be produced.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>if count is less than 0.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>if the index and / or count are wrong.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.FormatException</span></td>
+        <td><p>if deflated stream is invalid.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater_Reset.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Reset%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L188">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_Reset_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Reset*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_Reset" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.Reset">Reset()</h4>
+  <div class="markdown level1 summary"><p>Resets the inflater so that a new stream can be decompressed.  All
+pending input and output will be discarded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Reset()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater_SetDictionary_System_Byte___.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetDictionary(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L563">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_SetDictionary_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetDictionary*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_SetDictionary_System_Byte___" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetDictionary(System.Byte[])">SetDictionary(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Sets the preset dictionary.  This should only be called, if
+needsDictionary() returns true and it should set the same
+dictionary, that was used for deflating.  The getAdler()
+function returns the checksum of the dictionary needed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetDictionary(byte[] buffer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The dictionary.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater_SetDictionary_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetDictionary(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L589">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_SetDictionary_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetDictionary*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_SetDictionary_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetDictionary(System.Byte[],System.Int32,System.Int32)">SetDictionary(Byte[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Sets the preset dictionary.  This should only be called, if
+needsDictionary() returns true and it should set the same
+dictionary, that was used for deflating.  The getAdler()
+function returns the checksum of the dictionary needed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetDictionary(byte[] buffer, int index, int count)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The dictionary.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The index into buffer where the dictionary starts.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">count</span></td>
+        <td><p>The number of bytes in the dictionary.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>No dictionary is needed.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.SharpZipBaseException.html">SharpZipBaseException</a></td>
+        <td><p>The adler checksum for the buffer is invalid</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater_SetInput_System_Byte___.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetInput(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L629">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_SetInput_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetInput*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_SetInput_System_Byte___" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetInput(System.Byte[])">SetInput(Byte[])</h4>
+  <div class="markdown level1 summary"><p>Sets the input.  This should only be called, if needsInput()
+returns true.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetInput(byte[] buffer)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>the input.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater_SetInput_System_Byte___System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetInput(System.Byte%5B%5D%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L653">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_SetInput_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetInput*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_Compression_Inflater_SetInput_System_Byte___System_Int32_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.Compression.Inflater.SetInput(System.Byte[],System.Int32,System.Int32)">SetInput(Byte[], Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Sets the input.  This should only be called, if needsInput()
+returns true.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetInput(byte[] buffer, int index, int count)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">buffer</span></td>
+        <td><p>The source of input data</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>The index into buffer where the input starts.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">count</span></td>
+        <td><p>The number of bytes of input to use.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.InvalidOperationException</span></td>
+        <td><p>No input is needed.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentOutOfRangeException</span></td>
+        <td><p>The index and/or count are wrong.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_Compression_Inflater.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.Compression.Inflater%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/Compression/Inflater.cs/#L32" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2000-2022 SharpZipLib Contributors
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
