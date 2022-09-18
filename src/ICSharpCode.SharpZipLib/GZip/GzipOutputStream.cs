@@ -188,7 +188,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		}
 		
 #if NETSTANDARD2_1_OR_GREATER
-		/// <inheritdoc cref="DeflaterOutputStream.DisposeAsync"/>
+		/// <inheritdoc cref="DeflaterOutputStream.Dispose"/>
 		public override async ValueTask DisposeAsync()
 		{
 			try
