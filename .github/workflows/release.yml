@@ -12,24 +12,21 @@ on:
         required: true
 
 jobs:
-  docfx:
+  build:
     runs-on: windows-latest
     name: Update DocFX documentation
     steps:
     - uses: actions/checkout@v2
       with:
         ref: ${{ github.events.inputs.tag }}
+        
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '6.0.x'
+        
     - name: Build project
       run: dotnet build -f netstandard2.0 src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
-
-#     - uses: nikeee/docfx-action@v1.0.0
-#       name: Build Documentation
-#       with:
-#         args: docs/help/docfx.json
 
     - name: Install docfx
       run: choco install docfx
@@ -37,16 +34,29 @@ jobs:
     - name: Build Documentation
       run: docfx docs/help/docfx.json --warningsAsErrors
 
-    - uses: JamesIves/github-pages-deploy-action@3.6.2
-      name: Publish documentation to Github Pages
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: docs/help/_site 
-        TARGET_FOLDER: help
-        CLEAN: false
-
     - name: Upload documentation as artifact
       uses: actions/upload-artifact@v2
       with:
+        name: site
         path: docs/help/_site
+
+  deploy:
+    needs: [build] # The second job must depend on the first one to complete before running and uses ubuntu-latest instead of windows.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download Artifacts 🔻 # The built project is downloaded into the 'site' folder.
+        uses: actions/download-artifact@v1
+        with:
+          name: site
+
+      - name: Publish documentation to Github Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: site
+          TARGET_FOLDER: help
+          CLEAN: false
