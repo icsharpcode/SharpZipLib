@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net45</TargetFrameworks>
-    <SignAssembly>True</SignAssembly>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
+    <IsTrimmable>true</IsTrimmable>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../assets/ICSharpCode.SharpZipLib.snk</AssemblyOriginatorKeyFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -11,8 +13,8 @@
   
   <!-- Nuget specific tags -->
   <PropertyGroup>
-    <Version>1.3.3</Version>
-    <FileVersion>$(Version).11</FileVersion>
+    <Version>1.4.0</Version>
+    <FileVersion>$(Version).12</FileVersion>
     <AssemblyVersion>$(FileVersion)</AssemblyVersion>
     <PackageId>SharpZipLib</PackageId>
     <Company>ICSharpCode</Company>
@@ -22,21 +24,16 @@
 		<PackageProjectUrl>http://icsharpcode.github.io/SharpZipLib/</PackageProjectUrl>
 		<PackageIcon>images/sharpziplib-nuget-256x256.png</PackageIcon>
     <RepositoryUrl>https://github.com/icsharpcode/SharpZipLib</RepositoryUrl>
-    <Copyright>Copyright © 2000-2021 SharpZipLib Contributors</Copyright>
+    <Copyright>Copyright © 2000-2022 SharpZipLib Contributors</Copyright>
     <PackageTags>Compression Library Zip GZip BZip2 LZW Tar</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageReleaseNotes>
-Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.3.3 for more information.</PackageReleaseNotes>
+Please see https://github.com/icsharpcode/SharpZipLib/wiki/Release-1.4.0 for more information.</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/icsharpcode/SharpZipLib</PackageProjectUrl> 
   </PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-	</ItemGroup>
-
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-		<PackageReference Include="System.Memory" Version="4.5.4" />
-		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.2" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">

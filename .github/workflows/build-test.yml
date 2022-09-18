@@ -18,11 +18,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-2019, macos-latest]
-        target: [netstandard2.0, netstandard2.1]
-        include:
-          - os: windows-2019
-            target: net45
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        target: [netstandard2.0, netstandard2.1, net6.0]
     env:
       LIB_PROJ: src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
     steps:
@@ -31,10 +28,10 @@ jobs:
         ref: ${{ github.events.inputs.tag }}
         fetch-depth: 0
 
-    - name: Setup .NET Core
+    - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1.x'
+        dotnet-version: '6.0.x'
         
     - name: Show .NET info
       run: dotnet --info
@@ -52,17 +49,17 @@ jobs:
       matrix:
         # Windows testing is combined with code coverage
         os: [ubuntu, macos]
-        target: [netcoreapp3.1]
+        target: [net6.0]
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
 
     - name: Setup .NET Core
-      if: matrix.target == 'netcoreapp3.1'
+      if: matrix.target == 'net6.0'
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1.x'
+        dotnet-version: '6.0.x'
 
     - name: Restore test dependencies
       run: dotnet restore
@@ -89,7 +86,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.1.x'
+        dotnet-version: '6.0.x'
         
     # NOTE: This is the temporary fix for https://github.com/actions/virtual-environments/issues/1090
     - name: Cleanup before restore
@@ -120,7 +117,7 @@ jobs:
 
   Pack:
     needs: [Build, Test, CodeCov]
-    runs-on: windows-2019
+    runs-on: windows-latest
     env:
       PKG_SUFFIX: ''
       PKG_PROJ: src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
@@ -135,14 +132,14 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '5.0.x'
+        dotnet-version: '6.0.x'
         
     - name: Build library for .NET Standard 2.0
       run: dotnet build -c Release -f netstandard2.0 ${{ env.PKG_PROPS }} ${{ env.PKG_PROJ }}
     - name: Build library for .NET Standard 2.1
       run: dotnet build -c Release -f netstandard2.1 ${{ env.PKG_PROPS }} ${{ env.PKG_PROJ }}
-    - name: Build library for .NET Framework 4.5
-      run: dotnet build -c Release -f net45  ${{ env.PKG_PROPS }} ${{ env.PKG_PROJ }}
+    - name: Build library for .NET 6.0
+      run: dotnet build -c Release -f net6.0  ${{ env.PKG_PROPS }} ${{ env.PKG_PROJ }}
 
     - name: Add PR suffix to package
       if: ${{ github.event_name == 'pull_request' }}
