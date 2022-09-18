@@ -14,7 +14,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    name: Update DocFX documentation
+    name: Generate DocFX documentation
     steps:
     - uses: actions/checkout@v2
       with:
@@ -43,11 +43,12 @@ jobs:
   deploy:
     needs: [build] # The second job must depend on the first one to complete before running and uses ubuntu-latest instead of windows.
     runs-on: ubuntu-latest
+    name: Update github pages docs 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Download Artifacts 🔻 # The built project is downloaded into the 'site' folder.
+      - name: Download Artifacts # The built project is downloaded into the 'site' folder.
         uses: actions/download-artifact@v1
         with:
           name: site
@@ -55,8 +56,8 @@ jobs:
       - name: Publish documentation to Github Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: site
-          TARGET_FOLDER: help
-          CLEAN: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: site
+          target-folder: help
+          clean: false
