@@ -85,57 +85,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			}
 		}
 
-		private string DescribeAttributes(FieldAttributes attributes)
-		{
-			string att = string.Empty;
-			if ((FieldAttributes.Public & attributes) != 0)
-			{
-				att = att + "Public,";
-			}
-
-			if ((FieldAttributes.Static & attributes) != 0)
-			{
-				att = att + "Static,";
-			}
-
-			if ((FieldAttributes.Literal & attributes) != 0)
-			{
-				att = att + "Literal,";
-			}
-
-			if ((FieldAttributes.HasDefault & attributes) != 0)
-			{
-				att = att + "HasDefault,";
-			}
-
-			if ((FieldAttributes.InitOnly & attributes) != 0)
-			{
-				att = att + "InitOnly,";
-			}
-
-			if ((FieldAttributes.Assembly & attributes) != 0)
-			{
-				att = att + "Assembly,";
-			}
-
-			if ((FieldAttributes.FamANDAssem & attributes) != 0)
-			{
-				att = att + "FamANDAssembly,";
-			}
-
-			if ((FieldAttributes.FamORAssem & attributes) != 0)
-			{
-				att = att + "FamORAssembly,";
-			}
-
-			if ((FieldAttributes.HasFieldMarshal & attributes) != 0)
-			{
-				att = att + "HasFieldMarshal,";
-			}
-
-			return att;
-		}
-
 		/// <summary>
 		/// Invalid passwords should be detected early if possible, seekable stream
 		/// Note: Have a 1/255 chance of failing due to CRC collision (hence retried once)
@@ -865,7 +814,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[TestCase("a/b/c/d/e/f/g/h/SomethingLikeAnArchiveName.txt")]
 		public void LegacyNameConversion(string name)
 		{
-			var encoding = new StringCodec().ZipEncoding(false);
+			var encoding = StringCodec.Default.ZipEncoding(false);
 			byte[] intermediate = encoding.GetBytes(name);
 			string final = encoding.GetString(intermediate);
 
@@ -878,22 +827,22 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-			var codec = new StringCodec() {CodePage = 850};
+			var codec = StringCodec.FromCodePage(850);
 			string sample = "Hello world";
 
 			byte[] rawData = Encoding.ASCII.GetBytes(sample);
 
-			var converted = codec.ZipInputEncoding(0).GetString(rawData);
+			var converted = codec.LegacyEncoding.GetString(rawData);
 			Assert.AreEqual(sample, converted);
 
-			converted = codec.ZipInputEncoding((int)GeneralBitFlags.UnicodeText).GetString(rawData);
+			converted = codec.ZipInputEncoding(GeneralBitFlags.UnicodeText).GetString(rawData);
 			Assert.AreEqual(sample, converted);
 
 			// This time use some greek characters
 			sample = "\u03A5\u03d5\u03a3";
 			rawData = Encoding.UTF8.GetBytes(sample);
 
-			converted = codec.ZipInputEncoding((int)GeneralBitFlags.UnicodeText).GetString(rawData);
+			converted = codec.ZipInputEncoding(GeneralBitFlags.UnicodeText).GetString(rawData);
 			Assert.AreEqual(sample, converted);
 		}
 

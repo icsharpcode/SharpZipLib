@@ -5,6 +5,7 @@ using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -102,6 +103,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 			: base(baseInputStream, new Inflater(true), bufferSize)
 		{
 			internalReader = new ReadDataHandler(ReadingNotAvailable);
+		}
+
+		/// <summary>
+		/// Creates a new Zip input stream, for reading a zip archive.
+		/// </summary>
+		/// <param name="baseInputStream">The underlying <see cref="Stream"/> providing data.</param>
+		/// <param name="stringCodec"></param>
+		public ZipInputStream(Stream baseInputStream, StringCodec stringCodec)
+			: base(baseInputStream, new Inflater(true))
+		{
+			internalReader = new ReadDataHandler(ReadingNotAvailable);
+			if (stringCodec != null)
+			{
+				_stringCodec = stringCodec;
+			}
 		}
 
 		#endregion Constructors
@@ -558,7 +574,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				// Generate and set crypto transform...
 				var managed = new PkzipClassicManaged();
+				Console.WriteLine($"Input Encoding: {_stringCodec.ZipCryptoEncoding.EncodingName}");
 				byte[] key = PkzipClassic.GenerateKeys(_stringCodec.ZipCryptoEncoding.GetBytes(password));
+				Console.WriteLine($"Input Bytes: {string.Join(", ", key.Select(b => $"{b:x2}").ToArray())}");
 
 				inputBuffer.CryptoTransform = managed.CreateDecryptor(key, null);
 

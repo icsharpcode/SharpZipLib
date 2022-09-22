@@ -358,7 +358,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public int LegacyCodePage
 		{
 			get => _stringCodec.CodePage;
-			set => _stringCodec.CodePage = value;
+			set => _stringCodec = StringCodec.FromCodePage(value);
 		}
 		
 		/// <inheritdoc cref="Zip.StringCodec"/>
@@ -579,7 +579,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			directoryFilter_ = new NameFilter(directoryFilter);
 			restoreDateTimeOnExtract_ = restoreDateTime;
 
-			using (zipFile_ = new ZipFile(inputStream, !isStreamOwner))
+			using (zipFile_ = new ZipFile(inputStream, !isStreamOwner, _stringCodec))
 			{
 				if (password_ != null)
 				{
@@ -994,8 +994,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private INameTransform extractNameTransform_;
 		private UseZip64 useZip64_ = UseZip64.Dynamic;
 		private CompressionLevel compressionLevel_ = CompressionLevel.DEFAULT_COMPRESSION;
-		private StringCodec _stringCodec = new StringCodec();
-
+		private StringCodec _stringCodec = ZipStrings.GetStringCodec();
 		private string password_;
 
 		#endregion Instance Fields

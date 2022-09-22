@@ -95,7 +95,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
-			byte[] name = stringCodec.ZipOutputEncoding.GetBytes(entry.Name);
+			byte[] name = stringCodec.ZipEncoding(entry.IsUnicodeText).GetBytes(entry.Name);
 
 			if (name.Length > 0xFFFF)
 			{

@@ -6,6 +6,7 @@ using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -80,7 +81,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 		{
 		}
 
-		internal ZipOutputStream(Stream baseOutputStream, StringCodec stringCodec) : this(baseOutputStream)
+		/// <summary>
+		/// Creates a new Zip output stream, writing a zip archive.
+		/// </summary>
+		/// <param name="baseOutputStream">The output stream to which the archive contents are written.</param>
+		/// <param name="stringCodec"></param>
+		public ZipOutputStream(Stream baseOutputStream, StringCodec stringCodec) : this(baseOutputStream)
 		{
 			_stringCodec = stringCodec;
 		}
@@ -160,7 +166,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Defaults to <see cref="PathTransformer"/>, set to null to disable transforms and use names as supplied.
 		/// </summary>
 		public INameTransform NameTransform { get; set; } = new PathTransformer();
-		
+
 		/// <summary>
 		/// Get/set the password used for encryption.
 		/// </summary>
@@ -742,7 +748,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private void InitializeZipCryptoPassword(string password)
 		{
 			var pkManaged = new PkzipClassicManaged();
+			Console.WriteLine($"Output Encoding: {ZipCryptoEncoding.EncodingName}");
 			byte[] key = PkzipClassic.GenerateKeys(ZipCryptoEncoding.GetBytes(password));
+			Console.WriteLine($"Output Bytes: {string.Join(", ", key.Select(b => $"{b:x2}").ToArray())}");
 			cryptoTransform_ = pkManaged.CreateEncryptor(key, null);
 		}
 		
@@ -969,8 +977,6 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// The password to use when encrypting archive entries.
 		/// </summary>
 		private string password;
-
-		private readonly StringCodec _stringCodec = ZipStrings.GetStringCodec();
 
 		#endregion Instance Fields
 

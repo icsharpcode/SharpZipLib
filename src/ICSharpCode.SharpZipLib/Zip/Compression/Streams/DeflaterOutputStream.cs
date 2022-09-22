@@ -205,7 +205,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		protected byte[] AESAuthCode;
 
 		/// <inheritdoc cref="StringCodec.ZipCryptoEncoding"/>
-		public Encoding ZipCryptoEncoding { get; set; } = StringCodec.DefaultZipCryptoEncoding;
+		public Encoding ZipCryptoEncoding {
+			get => _stringCodec.ZipCryptoEncoding;
+			set {
+				_stringCodec = _stringCodec.WithZipCryptoEncoding(value);
+			} 
+		}
 
 		/// <summary>
 		/// Encrypt a block of data
@@ -507,6 +512,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		protected Stream baseOutputStream_;
 
 		private bool isClosed_;
+
+		/// <inheritdoc cref="StringCodec"/>
+		protected StringCodec _stringCodec = ZipStrings.GetStringCodec();
 
 		#endregion Instance Fields
 	}

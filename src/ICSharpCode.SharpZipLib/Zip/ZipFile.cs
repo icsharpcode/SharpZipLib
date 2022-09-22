@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -504,6 +505,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="stream">The <see cref="Stream"/> to read archive data from.</param>
 		/// <param name="leaveOpen">true to leave the <see cref="Stream">stream</see> open when the ZipFile is disposed, false to dispose of it</param>
+		/// <param name="stringCodec"></param>
 		/// <exception cref="IOException">
 		/// An i/o error occurs
 		/// </exception>
@@ -516,7 +518,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ArgumentNullException">
 		/// The <see cref="Stream">stream</see> argument is null.
 		/// </exception>
-		public ZipFile(Stream stream, bool leaveOpen)
+		public ZipFile(Stream stream, bool leaveOpen, StringCodec stringCodec = null)
 		{
 			if (stream == null)
 			{
@@ -530,6 +532,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			baseStream_ = stream;
 			isStreamOwner = !leaveOpen;
+
+			if (stringCodec != null)
+			{
+				_stringCodec = stringCodec;
+			}
 
 			if (baseStream_.Length > 0)
 			{
@@ -736,14 +743,20 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public Encoding ZipCryptoEncoding
 		{
 			get => _stringCodec.ZipCryptoEncoding;
-			set => _stringCodec.ZipCryptoEncoding = value;
+			set => _stringCodec = _stringCodec.WithZipCryptoEncoding(value);
 		}
 
 		/// <inheritdoc cref="Zip.StringCodec"/>
 		public StringCodec StringCodec
 		{
-			get => _stringCodec;
-			set => _stringCodec = value;
+			set {
+				_stringCodec = value;
+				if (!isNewArchive_)
+				{
+					// Since the string codec was changed
+					ReadEntries();
+				}
+			}
 		}
 
 		#endregion Properties
@@ -1592,7 +1605,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					RunUpdates();
 				}
-				else if (commentEdited_)
+				else if (commentEdited_ && !isNewArchive_)
 				{
 					UpdateCommentOnly();
 				}

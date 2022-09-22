@@ -122,6 +122,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			data_ = data;
 		}
 
+		public static MemoryDataSource Empty => new MemoryDataSource(Array.Empty<byte>());
+
 		#endregion Constructors
 
 		#region IDataSource Members
