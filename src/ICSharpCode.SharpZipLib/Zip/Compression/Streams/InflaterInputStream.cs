@@ -325,13 +325,13 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		private int CalculateDecryptionSize(int availableBufferSize)
 		{
-			int size = DecryptionLimit ?? availableBufferSize;
-			size = Math.Min(size, availableBufferSize);
-			
-			if (DecryptionLimit.HasValue)
+			if (!DecryptionLimit.HasValue)
 			{
-				DecryptionLimit -= size;
+				return availableBufferSize;
 			}
+			
+			var size = Math.Min(DecryptionLimit.Value, availableBufferSize);
+			DecryptionLimit -= size;
 
 			return size;
 		}
