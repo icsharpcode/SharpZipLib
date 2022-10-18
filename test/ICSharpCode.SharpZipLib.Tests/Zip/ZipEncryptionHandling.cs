@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using System.Threading.Tasks;
+using ICSharpCode.SharpZipLib.Core;
 using Does = ICSharpCode.SharpZipLib.Tests.TestSupport.Does;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
@@ -12,6 +13,13 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	[TestFixture]
 	public class ZipEncryptionHandling
 	{
+		static int BufferSize = 4096;
+		// Random data that is smaller than the size of the read buffer
+		private static readonly byte[] SmallDummyData = new byte[BufferSize / 2 - 41];
+
+		// Random data that is smaller than the size of the read buffer
+		private static readonly byte[] LargeDummyData = new byte[BufferSize * 3 + 245];
+		
 		static ZipEncryptionHandling()
 		{
 			var sb = new StringBuilder();
@@ -20,8 +28,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				sb.AppendLine(Guid.NewGuid().ToString());
 			}
 
-			DummyDataString = sb.ToString();
-			DummyDataStringShort = Guid.NewGuid().ToString();
+			var random = new Random();
+			random.NextBytes(SmallDummyData);
+			random.NextBytes(LargeDummyData);
 		}
 		
 		[Test]
@@ -110,12 +119,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				{
 					if (!entry.IsFile) continue;
 
-					using (var zis = zipFile.GetInputStream(entry))
-					using (var sr = new StreamReader(zis, Encoding.UTF8))
-					{
-						var content = sr.ReadToEnd();
-						Assert.AreEqual(DummyDataString, content, "Decompressed content does not match input data");
-					}
+					using var zis = zipFile.GetInputStream(entry);
+ 					var content = ReadAllBytes(zis);
+					Assert.AreEqual(LargeDummyData, content, "Decompressed content does not match input data");
 				}
 
 				Assert.That(zipFile, Does.PassTestArchive(testData: false), "Encrypted archive should pass validation.");
@@ -151,14 +157,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 						var entry = zis.GetNextEntry();
 						int fileNumber = int.Parse(entry.Name[5].ToString());
 
-						using (var sr = new StreamReader(zis, Encoding.UTF8, leaveOpen: true, detectEncodingFromByteOrderMarks: true, bufferSize: 1024))
-						{
-							var content = sr.ReadToEnd();
+						var content = ReadAllBytes(zis);
+						var largeDataExpected = fileNumber < 3;
 
-							Assert.AreEqual(fileNumber < 3 ? DummyDataString : DummyDataStringShort, content,
-								"Decompressed content does not match input data");
-						}
-					}
+						Assert.AreEqual(largeDataExpected ? LargeDummyData : SmallDummyData, content,
+							"Decompressed content does not match input data");					}
 				}
 			}
 		}
@@ -198,14 +201,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 							continue;
 						}
 
-						using (var sr = new StreamReader(zis, Encoding.UTF8, leaveOpen: true,
-							detectEncodingFromByteOrderMarks: true, bufferSize: 1024))
-						{
-							var content = sr.ReadToEnd();
+						var content = ReadAllBytes(zis);
+						var largeDataExpected = fileNumber < 3;
 
-							Assert.AreEqual(fileNumber < 3 ? DummyDataString : DummyDataStringShort, content,
-								"Decompressed content does not match input data");
-						}
+						Assert.AreEqual(largeDataExpected ? LargeDummyData : SmallDummyData, content,
+							"Decompressed content does not match input data");	
 					}
 				}
 			}
@@ -247,13 +247,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 							continue;
 						}
 
-						using (var sr = new StreamReader(zis, Encoding.UTF8, leaveOpen: true, detectEncodingFromByteOrderMarks: true, bufferSize: 1024))
-						{
-							var content = sr.ReadToEnd();
+						var content = ReadAllBytes(zis);
+						var largeDataExpected = fileNumber < 3;
 
-							Assert.AreEqual(fileNumber < 3 ? DummyDataString : DummyDataStringShort, content,
-								"Decompressed content does not match input data");
-						}
+						Assert.AreEqual(largeDataExpected ? LargeDummyData : SmallDummyData, content,
+							"Decompressed content does not match input data");	
 					}
 				}
 			}		
@@ -280,12 +278,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				{
 					if (!entry.IsFile) continue;
 
-					using (var zis = zipFile.GetInputStream(entry))
-					using (var sr = new StreamReader(zis, Encoding.UTF8))
-					{
-						var content = sr.ReadToEnd();
-						Assert.AreEqual(DummyDataString, content, "Decompressed content does not match input data");
-					}
+					using var zis = zipFile.GetInputStream(entry);
+					var content = ReadAllBytes(zis);
+
+					Assert.AreEqual(LargeDummyData, content, "Decompressed content does not match input data");
 				}
 			}
 		}
@@ -316,12 +312,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					// Should be stored rather than deflated
 					Assert.That(entry.CompressionMethod, Is.EqualTo(CompressionMethod.Stored), "Entry should be stored");
 
-					using (var zis = zipFile.GetInputStream(entry))
-					using (var sr = new StreamReader(zis, Encoding.UTF8))
-					{
-						var content = sr.ReadToEnd();
-						Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match input data");
-					}
+					using var zis = zipFile.GetInputStream(entry);
+					var content = ReadAllBytes(zis);
+
+					Assert.AreEqual(LargeDummyData, content, "Decompressed content does not match input data");
 				}
 			}
 		}
@@ -352,12 +346,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 					using (var zis = zipFile.GetInputStream(entry))
 					{
-						using (var inputStream = zipFile.GetInputStream(entry))
-						using (var sr = new StreamReader(zis, Encoding.UTF8))
-						{
-							var content = await sr.ReadToEndAsync();
-							Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match input data");
-						}
+						using var inputStream = zipFile.GetInputStream(entry);
+						var content = ReadAllBytes(inputStream);
+
+						Assert.That(content, Is.EqualTo(LargeDummyData), "Decompressed content does not match input data");
 					}
 				}
 			}
@@ -427,11 +419,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 						ms.Seek(0, SeekOrigin.Begin);
 
-						using (var sr = new StreamReader(ms, Encoding.UTF8))
-						{
-							var content = sr.ReadToEnd();
-							Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match input data");
-						}
+						var content = ms.ToArray();
+
+						Assert.That(content, Is.EqualTo(LargeDummyData), "Decompressed content does not match input data");
 					}
 				}
 			}
@@ -485,12 +475,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 							Assert.That(originalEntry.AESKeySize, Is.EqualTo(keySize));
 
 
-							using (var zis = zipFile.GetInputStream(originalEntry))
-							using (var sr = new StreamReader(zis, Encoding.UTF8))
-							{
-								var content = sr.ReadToEnd();
-								Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match input data");
-							}
+							using var zis = zipFile.GetInputStream(originalEntry); 
+							var content = ReadAllBytes(zis);
+
+							Assert.That(content, Is.EqualTo(LargeDummyData), "Decompressed content does not match input data");
 						}
 
 						// Check the additional entry
@@ -571,8 +559,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 							using (var zis = zipFile.GetInputStream(originalEntry))
 							using (var sr = new StreamReader(zis, Encoding.UTF8))
 							{
-								var content = sr.ReadToEnd();
-								Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match input data");
+								var content = ReadAllBytes(zis);
+
+								Assert.That(content, Is.EqualTo(LargeDummyData), "Decompressed content does not match input data");
 							}
 						}
 
@@ -586,8 +575,9 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 							using (var zis = zipFile.GetInputStream(originalEntry))
 							using (var sr = new StreamReader(zis, Encoding.UTF8))
 							{
-								var content = sr.ReadToEnd();
-								Assert.That(content, Is.EqualTo(DummyDataString), "Decompressed content does not match input data");
+								var content = ReadAllBytes(zis);
+
+								Assert.That(content, Is.EqualTo(LargeDummyData), "Decompressed content does not match input data");
 							}
 						}
 					}
@@ -711,7 +701,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				zs.SetLevel(9); // 0-9, 9 being the highest level of compression
 				zs.Password = password;  // optional. Null is the same as not setting. Required if using AES.
 
-				AddEncrypedEntryToStream(zs, $"test", keySize, compressionMethod, DummyDataString);
+				AddEncrypedEntryToStream(zs, $"test", keySize, compressionMethod, LargeDummyData);
 			}
 		}
 
@@ -725,17 +715,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				for (int i = 0;  i < entryCount; i++)
 				{
-					AddEncrypedEntryToStream(zs, $"test-{i}", keySize, compressionMethod, DummyDataString);
+					AddEncrypedEntryToStream(zs, $"test-{i}", keySize, compressionMethod, LargeDummyData);
 				}
 				
 				for (int i = 0;  i < shortEntryCount; i++)
 				{
-					AddEncrypedEntryToStream(zs, $"test-{i + entryCount}", keySize, compressionMethod, DummyDataStringShort);
+					AddEncrypedEntryToStream(zs, $"test-{i + entryCount}", keySize, compressionMethod, SmallDummyData);
 				}				
 			}
 		}
 
-		private static void AddEncrypedEntryToStream(ZipOutputStream zipOutputStream, string entryName, int keySize, CompressionMethod compressionMethod, string content)
+		private static void AddEncrypedEntryToStream(ZipOutputStream zipOutputStream, string entryName, int keySize, CompressionMethod compressionMethod, byte[] content)
 		{
 			ZipEntry zipEntry = new ZipEntry(entryName)
 			{
@@ -746,9 +736,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 			zipOutputStream.PutNextEntry(zipEntry);
 
-			byte[] dummyData = Encoding.UTF8.GetBytes(content);
-
-			using (var dummyStream = new MemoryStream(dummyData))
+			using (var dummyStream = new MemoryStream(content))
 			{
 				dummyStream.CopyTo(zipOutputStream);
 			}
@@ -764,8 +752,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				SevenZipHelper.VerifyZipWith7Zip(ms, password);
 			}
 		}
-
-		private static readonly string DummyDataString;
-		private static readonly string DummyDataStringShort;
+		
+		private static byte[] ReadAllBytes(Stream input)
+		{
+			using MemoryStream ms = new MemoryStream();
+			input.CopyTo(ms);
+			return ms.ToArray();
+		}
 	}
 }
