@@ -195,7 +195,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public static async Task WriteZip64EndOfCentralDirectoryAsync(Stream stream, long noOfEntries, 
 			long sizeEntries, long centralDirOffset, CancellationToken cancellationToken)
 		{
-			await stream.WriteProcToStreamAsync(s => WriteZip64EndOfCentralDirectory(s, noOfEntries, sizeEntries, centralDirOffset), cancellationToken);
+			await stream.WriteProcToStreamAsync(s => WriteZip64EndOfCentralDirectory(s, noOfEntries, sizeEntries, centralDirOffset), cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -237,7 +237,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public static  async Task WriteEndOfCentralDirectoryAsync(Stream stream, long noOfEntries, long sizeEntries, 
 			long start, byte[] comment, CancellationToken cancellationToken) 
 			=> await stream.WriteProcToStreamAsync(s 
-				=> WriteEndOfCentralDirectory(s, noOfEntries, sizeEntries, start, comment), cancellationToken);
+				=> WriteEndOfCentralDirectory(s, noOfEntries, sizeEntries, start, comment), cancellationToken).ConfigureAwait(false);
 		
 		/// <summary>
 		/// Write the required records to end the central directory.
@@ -540,7 +540,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			
 			// Update CRC
 			stream.Seek(patchData.CrcPatchOffset, SeekOrigin.Begin);
-			await stream.WriteLEIntAsync((int)entry.Crc, ct);
+			await stream.WriteLEIntAsync((int)entry.Crc, ct).ConfigureAwait(false);
 
 			// Update Sizes
 			if (entry.LocalHeaderRequiresZip64)
@@ -553,13 +553,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 				stream.Seek(patchData.SizePatchOffset, SeekOrigin.Begin);
 
 				// Note: The order of the size fields is reversed when compared to the local header!
-				await stream.WriteLELongAsync(entry.Size, ct);
-				await stream.WriteLELongAsync(entry.CompressedSize, ct);
+				await stream.WriteLELongAsync(entry.Size, ct).ConfigureAwait(false);
+				await stream.WriteLELongAsync(entry.CompressedSize, ct).ConfigureAwait(false);
 			}
 			else
 			{
-				await stream.WriteLEIntAsync((int)entry.CompressedSize, ct);
-				await stream.WriteLEIntAsync((int)entry.Size, ct);
+				await stream.WriteLEIntAsync((int)entry.CompressedSize, ct).ConfigureAwait(false);
+				await stream.WriteLEIntAsync((int)entry.Size, ct).ConfigureAwait(false);
 			}
 
 			stream.Seek(initialPos, SeekOrigin.Begin);

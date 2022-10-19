@@ -520,15 +520,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </exception>
 		public async Task PutNextEntryAsync(ZipEntry entry, CancellationToken ct = default)
 		{
-			if (curEntry != null) await CloseEntryAsync(ct);
+			if (curEntry != null) await CloseEntryAsync(ct).ConfigureAwait(false);
 			var position = CanPatchEntries ? baseOutputStream_.Position : -1; 
 			await baseOutputStream_.WriteProcToStreamAsync(s =>
 			{
 				PutNextEntry(s, entry, position);
-			}, ct);
+			}, ct).ConfigureAwait(false);
 			
 			if (!entry.IsCrypted) return;
-			await WriteOutputAsync(GetEntryEncryptionHeader(entry));
+			await WriteOutputAsync(GetEntryEncryptionHeader(entry)).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -561,13 +561,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <inheritdoc cref="CloseEntry"/>
 		public async Task CloseEntryAsync(CancellationToken ct)
 		{
-			await baseOutputStream_.WriteProcToStreamAsync(WriteEntryFooter, ct);
+			await baseOutputStream_.WriteProcToStreamAsync(WriteEntryFooter, ct).ConfigureAwait(false);
 
 			// Patch the header if possible
 			if (patchEntryHeader)
 			{
 				patchEntryHeader = false;
-				await ZipFormat.PatchLocalHeaderAsync(baseOutputStream_, curEntry, patchData, ct);
+				await ZipFormat.PatchLocalHeaderAsync(baseOutputStream_, curEntry, patchData, ct).ConfigureAwait(false);
 			}
 
 			entries.Add(curEntry);
@@ -873,7 +873,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				if (curEntry != null)
 				{
-					await CloseEntryAsync(ct);
+					await CloseEntryAsync(ct).ConfigureAwait(false);
 				}
 
 				long numEntries = entries.Count;
@@ -884,12 +884,12 @@ namespace ICSharpCode.SharpZipLib.Zip
 					await baseOutputStream_.WriteProcToStreamAsync(ms, s =>
 					{
 						sizeEntries += ZipFormat.WriteEndEntry(s, entry, _stringCodec);
-					}, ct);
+					}, ct).ConfigureAwait(false);
 				}
 
 				await baseOutputStream_.WriteProcToStreamAsync(ms, s 
 						=> ZipFormat.WriteEndOfCentralDirectory(s, numEntries, sizeEntries, offset, zipComment),
-					ct);
+					ct).ConfigureAwait(false);
 
 				entries = null;
 			}

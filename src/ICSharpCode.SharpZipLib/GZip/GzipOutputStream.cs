@@ -186,14 +186,14 @@ namespace ICSharpCode.SharpZipLib.GZip
 				}
 			}
 		}
-		
+
 #if NETSTANDARD2_1_OR_GREATER
 		/// <inheritdoc cref="DeflaterOutputStream.Dispose"/>
 		public override async ValueTask DisposeAsync()
 		{
 			try
 			{
-				await FinishAsync(CancellationToken.None);
+				await FinishAsync(CancellationToken.None).ConfigureAwait(false);
 			}
 			finally
 			{
@@ -202,11 +202,11 @@ namespace ICSharpCode.SharpZipLib.GZip
 					state_ = OutputState.Closed;
 					if (IsStreamOwner)
 					{
-						await baseOutputStream_.DisposeAsync();
+						await baseOutputStream_.DisposeAsync().ConfigureAwait(false);
 					}
 				}
 
-				await base.DisposeAsync();
+				await base.DisposeAsync().ConfigureAwait(false);
 			}
 		}
 #endif
@@ -252,8 +252,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <inheritdoc cref="Flush"/>
 		public override async Task FlushAsync(CancellationToken ct)
 		{
-			await WriteHeaderAsync();
-			await base.FlushAsync(ct);
+			await WriteHeaderAsync().ConfigureAwait(false);
+			await base.FlushAsync(ct).ConfigureAwait(false);
 		}
 		
 		
@@ -263,15 +263,15 @@ namespace ICSharpCode.SharpZipLib.GZip
 			// If no data has been written a header should be added.
 			if (state_ == OutputState.Header)
 			{
-				await WriteHeaderAsync();
+				await WriteHeaderAsync().ConfigureAwait(false);
 			}
 
 			if (state_ == OutputState.Footer)
 			{
 				state_ = OutputState.Finished;
-				await base.FinishAsync(ct);
+				await base.FinishAsync(ct).ConfigureAwait(false);
 				var gzipFooter = GetFooter();
-				await baseOutputStream_.WriteAsync(gzipFooter, 0, gzipFooter.Length, ct);
+				await baseOutputStream_.WriteAsync(gzipFooter, 0, gzipFooter.Length, ct).ConfigureAwait(false);
 			}
 		}
 
@@ -356,7 +356,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			if (state_ != OutputState.Header) return;
 			state_ = OutputState.Footer;
 			var gzipHeader = GetHeader();
-			await baseOutputStream_.WriteAsync(gzipHeader, 0, gzipHeader.Length);
+			await baseOutputStream_.WriteAsync(gzipHeader, 0, gzipHeader.Length).ConfigureAwait(false);
 		}
 
 		#endregion Support Routines

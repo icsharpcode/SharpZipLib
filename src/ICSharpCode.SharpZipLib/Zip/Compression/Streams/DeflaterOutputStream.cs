@@ -151,7 +151,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 				EncryptBlock(buffer_, 0, len);
 
-				await baseOutputStream_.WriteAsync(buffer_, 0, len, ct);
+				await baseOutputStream_.WriteAsync(buffer_, 0, len, ct).ConfigureAwait(false);
 			}
 
 			if (!deflater_.IsFinished)
@@ -159,7 +159,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				throw new SharpZipBaseException("Can't deflate all input?");
 			}
 
-			await baseOutputStream_.FlushAsync(ct);
+			await baseOutputStream_.FlushAsync(ct).ConfigureAwait(false);
 
 			if (cryptoTransform_ != null)
 			{
@@ -425,7 +425,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 				try
 				{
-					await FinishAsync(CancellationToken.None);
+					await FinishAsync(CancellationToken.None).ConfigureAwait(false);
 					if (cryptoTransform_ != null)
 					{
 						GetAuthCodeIfAES();
@@ -437,7 +437,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				{
 					if (IsStreamOwner)
 					{
-						await baseOutputStream_.DisposeAsync();
+						await baseOutputStream_.DisposeAsync().ConfigureAwait(false);
 					}
 				}
 			}
