@@ -402,6 +402,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 				//
 				if (numBytes <= 0)
 				{
+					// Fill the rest of the buffer with 0 to clear any left over data in the shared buffer
+					for (; offset < RecordSize; offset++)
+					{
+						recordBuffer[offset] = 0;
+					}
 					break;
 				}
 

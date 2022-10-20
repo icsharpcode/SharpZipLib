@@ -1,11 +1,9 @@
 using System;
 using System.Buffers;
-using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
@@ -106,10 +104,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 
 			Assert.DoesNotThrow(() =>
 			{
-				using var inStream = new MemoryStream(Array.Empty<byte>());
-				// using var gzipStream = new GZipInputStream(inStream);
-				using var tarInputStream = new TarInputStream(inStream, Encoding.UTF8);
-				// using var tarInputStream = new TarInputStream(gzipStream, Encoding.UTF8);
+				using var emptyStream = new MemoryStream(Array.Empty<byte>());
+				using var tarInputStream = new TarInputStream(emptyStream, Encoding.UTF8);
 				while (tarInputStream.GetNextEntry() is { } tarEntry)
 				{
 				}
