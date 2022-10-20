@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace ICSharpCode.SharpZipLib.Core
 {
@@ -9,42 +12,24 @@ namespace ICSharpCode.SharpZipLib.Core
 	/// </summary>
 	public class ScanEventArgs : EventArgs
 	{
-		#region Constructors
-
 		/// <summary>
 		/// Initialise a new instance of <see cref="ScanEventArgs"/>
 		/// </summary>
 		/// <param name="name">The file or directory name.</param>
 		public ScanEventArgs(string name)
 		{
-			name_ = name;
+			Name = name;
 		}
-
-		#endregion Constructors
 
 		/// <summary>
 		/// The file or directory name for this event.
 		/// </summary>
-		public string Name
-		{
-			get { return name_; }
-		}
+		public string Name { get; }
 
 		/// <summary>
 		/// Get set a value indicating if scanning should continue or not.
 		/// </summary>
-		public bool ContinueRunning
-		{
-			get { return continueRunning_; }
-			set { continueRunning_ = value; }
-		}
-
-		#region Instance Fields
-
-		private string name_;
-		private bool continueRunning_ = true;
-
-		#endregion Instance Fields
+		public bool ContinueRunning { get; set; } = true;
 	}
 
 	/// <summary>
@@ -52,8 +37,6 @@ namespace ICSharpCode.SharpZipLib.Core
 	/// </summary>
 	public class ProgressEventArgs : EventArgs
 	{
-		#region Constructors
-
 		/// <summary>
 		/// Initialise a new instance of <see cref="ScanEventArgs"/>
 		/// </summary>
@@ -62,76 +45,37 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="target">The total number of bytes to process, 0 if not known</param>
 		public ProgressEventArgs(string name, long processed, long target)
 		{
-			name_ = name;
-			processed_ = processed;
-			target_ = target;
+			Name = name;
+			Processed = processed;
+			Target = target;
 		}
-
-		#endregion Constructors
 
 		/// <summary>
 		/// The name for this event if known.
 		/// </summary>
-		public string Name
-		{
-			get { return name_; }
-		}
+		public string Name { get; }
 
 		/// <summary>
 		/// Get set a value indicating whether scanning should continue or not.
 		/// </summary>
-		public bool ContinueRunning
-		{
-			get { return continueRunning_; }
-			set { continueRunning_ = value; }
-		}
+		public bool ContinueRunning { get; set; } = true;
 
 		/// <summary>
 		/// Get a percentage representing how much of the <see cref="Target"></see> has been processed
 		/// </summary>
 		/// <value>0.0 to 100.0 percent; 0 if target is not known.</value>
-		public float PercentComplete
-		{
-			get
-			{
-				float result;
-				if (target_ <= 0)
-				{
-					result = 0;
-				}
-				else
-				{
-					result = ((float)processed_ / (float)target_) * 100.0f;
-				}
-				return result;
-			}
-		}
+		public float PercentComplete => Target <= 0 ? 0 : ((float)Processed / (float)Target) * 100.0f;
 
 		/// <summary>
 		/// The number of bytes processed so far
 		/// </summary>
-		public long Processed
-		{
-			get { return processed_; }
-		}
+		public long Processed { get; }
 
 		/// <summary>
 		/// The number of bytes to process.
 		/// </summary>
 		/// <remarks>Target may be 0 or negative if the value isnt known.</remarks>
-		public long Target
-		{
-			get { return target_; }
-		}
-
-		#region Instance Fields
-
-		private string name_;
-		private long processed_;
-		private long target_;
-		private bool continueRunning_ = true;
-
-		#endregion Instance Fields
+		public long Target { get; }
 	}
 
 	/// <summary>
@@ -139,8 +83,6 @@ namespace ICSharpCode.SharpZipLib.Core
 	/// </summary>
 	public class DirectoryEventArgs : ScanEventArgs
 	{
-		#region Constructors
-
 		/// <summary>
 		/// Initialize an instance of <see cref="DirectoryEventArgs"></see>.
 		/// </summary>
@@ -149,26 +91,13 @@ namespace ICSharpCode.SharpZipLib.Core
 		public DirectoryEventArgs(string name, bool hasMatchingFiles)
 			: base(name)
 		{
-			hasMatchingFiles_ = hasMatchingFiles;
+			HasMatchingFiles = hasMatchingFiles;
 		}
-
-		#endregion Constructors
 
 		/// <summary>
 		/// Get a value indicating if the directory contains any matching files or not.
 		/// </summary>
-		public bool HasMatchingFiles
-		{
-			get { return hasMatchingFiles_; }
-		}
-
-		private readonly
-
-		#region Instance Fields
-
-		bool hasMatchingFiles_;
-
-		#endregion Instance Fields
+		public bool HasMatchingFiles { get; }
 	}
 
 	/// <summary>
@@ -185,9 +114,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="e">The exception to use.</param>
 		public ScanFailureEventArgs(string name, Exception e)
 		{
-			name_ = name;
-			exception_ = e;
-			continueRunning_ = true;
+			Name = name;
+			Exception = e;
 		}
 
 		#endregion Constructors
@@ -195,35 +123,17 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// The applicable name.
 		/// </summary>
-		public string Name
-		{
-			get { return name_; }
-		}
+		public string Name { get; }
 
 		/// <summary>
 		/// The applicable exception.
 		/// </summary>
-		public Exception Exception
-		{
-			get { return exception_; }
-		}
+		public Exception Exception { get; }
 
 		/// <summary>
 		/// Get / set a value indicating whether scanning should continue.
 		/// </summary>
-		public bool ContinueRunning
-		{
-			get { return continueRunning_; }
-			set { continueRunning_ = value; }
-		}
-
-		#region Instance Fields
-
-		private string name_;
-		private Exception exception_;
-		private bool continueRunning_;
-
-		#endregion Instance Fields
+		public bool ContinueRunning { get; set; } = true;
 	}
 
 	#endregion EventArgs
@@ -352,15 +262,12 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="e">The exception detected.</param>
 		private bool OnDirectoryFailure(string directory, Exception e)
 		{
-			DirectoryFailureHandler handler = DirectoryFailure;
-			bool result = (handler != null);
-			if (result)
-			{
-				var args = new ScanFailureEventArgs(directory, e);
-				handler(this, args);
-				alive_ = args.ContinueRunning;
-			}
-			return result;
+			if (DirectoryFailure == null) return false;
+			
+			var args = new ScanFailureEventArgs(directory, e);
+			DirectoryFailure(this, args);
+			alive_ = args.ContinueRunning;
+			return true;
 		}
 
 		/// <summary>
@@ -370,17 +277,12 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="e">The exception detected.</param>
 		private bool OnFileFailure(string file, Exception e)
 		{
-			FileFailureHandler handler = FileFailure;
-
-			bool result = (handler != null);
-
-			if (result)
-			{
-				var args = new ScanFailureEventArgs(file, e);
-				FileFailure(this, args);
-				alive_ = args.ContinueRunning;
-			}
-			return result;
+			if (FileFailure == null) return false;
+			
+			var args = new ScanFailureEventArgs(file, e);
+			FileFailure(this, args);
+			alive_ = args.ContinueRunning;
+			return true;
 		}
 
 		/// <summary>
@@ -389,14 +291,11 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="file">The file name.</param>
 		private void OnProcessFile(string file)
 		{
-			ProcessFileHandler handler = ProcessFile;
-
-			if (handler != null)
-			{
-				var args = new ScanEventArgs(file);
-				handler(this, args);
-				alive_ = args.ContinueRunning;
-			}
+			if (ProcessFile == null) return;
+			
+			var args = new ScanEventArgs(file);
+			ProcessFile(this, args);
+			alive_ = args.ContinueRunning;
 		}
 
 		/// <summary>
@@ -405,14 +304,10 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <param name="file">The file name</param>
 		private void OnCompleteFile(string file)
 		{
-			CompletedFileHandler handler = CompletedFile;
-
-			if (handler != null)
-			{
-				var args = new ScanEventArgs(file);
-				handler(this, args);
-				alive_ = args.ContinueRunning;
-			}
+			if (CompletedFile == null) return;
+			var args = new ScanEventArgs(file);
+			CompletedFile(this, args);
+			alive_ = args.ContinueRunning;
 		}
 
 		/// <summary>
@@ -443,39 +338,37 @@ namespace ICSharpCode.SharpZipLib.Core
 			ScanDir(directory, recurse);
 		}
 
+		/// <summary>
+		/// The method used to enumerate files in the supplied <paramref name="directory"/>
+		/// </summary>
+		/// <param name="directory"></param>
+		protected virtual IEnumerable<string> GetFiles(string directory) => Directory.EnumerateFiles(directory);
+		
+		/// <summary>
+		/// The method used to enumerate directories in the supplied <paramref name="directory"/>
+		/// </summary>
+		/// <param name="directory"></param>
+		protected virtual IEnumerable<string> GetDirectories(string directory) => Directory.EnumerateDirectories(directory);
+
 		private void ScanDir(string directory, bool recurse)
 		{
 			try
 			{
-				string[] names = System.IO.Directory.GetFiles(directory);
-				bool hasMatch = false;
-				for (int fileIndex = 0; fileIndex < names.Length; ++fileIndex)
-				{
-					if (!fileFilter_.IsMatch(names[fileIndex]))
-					{
-						names[fileIndex] = null;
-					}
-					else
-					{
-						hasMatch = true;
-					}
-				}
-
+				var names = GetFiles(directory).Where(fileFilter_.IsMatch).ToArray();
+				var hasMatch = names.Any();
+				
 				OnProcessDirectory(directory, hasMatch);
 
 				if (alive_ && hasMatch)
 				{
-					foreach (string fileName in names)
+					foreach (var fileName in names)
 					{
 						try
 						{
-							if (fileName != null)
+							OnProcessFile(fileName);
+							if (!alive_)
 							{
-								OnProcessFile(fileName);
-								if (!alive_)
-								{
-									break;
-								}
+								break;
 							}
 						}
 						catch (Exception e)
@@ -496,31 +389,29 @@ namespace ICSharpCode.SharpZipLib.Core
 				}
 			}
 
-			if (alive_ && recurse)
+			if (!alive_ || !recurse) return;
+			
+			try
 			{
-				try
+				var subDirectories = GetDirectories(directory)
+					.Where(d => d != null && directoryFilter_.IsMatch(d));
+				foreach (var fulldir in subDirectories)
 				{
-					string[] names = System.IO.Directory.GetDirectories(directory);
-					foreach (string fulldir in names)
+					ScanDir(fulldir, recurse: true);
+					if (!alive_)
 					{
-						if ((directoryFilter_ == null) || (directoryFilter_.IsMatch(fulldir)))
-						{
-							ScanDir(fulldir, true);
-							if (!alive_)
-							{
-								break;
-							}
-						}
-					}
-				}
-				catch (Exception e)
-				{
-					if (!OnDirectoryFailure(directory, e))
-					{
-						throw;
+						break;
 					}
 				}
 			}
+			catch (Exception e)
+			{
+				if (!OnDirectoryFailure(directory, e))
+				{
+					throw;
+				}
+			}
+			
 		}
 
 		#region Instance Fields
