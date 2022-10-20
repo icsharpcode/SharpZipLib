@@ -20,7 +20,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </remarks>
 	public static class ZipStrings
 	{
-		static readonly StringCodec CompatCodec = new StringCodec();
+		static StringCodec CompatCodec = StringCodec.Default;
 
 		private static bool compatibilityMode;
 		
@@ -29,7 +29,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <returns></returns>
 		public static StringCodec GetStringCodec() 
-			=> compatibilityMode ? CompatCodec : new StringCodec();
+			=> compatibilityMode ? CompatCodec : StringCodec.Default;
 
 		/// <inheritdoc cref="ZipStrings"/>
 		[Obsolete("Use ZipFile/Zip*Stream StringCodec instead")]
@@ -38,7 +38,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get => CompatCodec.CodePage;
 			set
 			{
-				CompatCodec.CodePage = value;
+				CompatCodec = new StringCodec(CompatCodec.ForceZipLegacyEncoding, Encoding.GetEncoding(value))
+				{
+					ZipArchiveCommentEncoding = CompatCodec.ZipArchiveCommentEncoding,
+					ZipCryptoEncoding = CompatCodec.ZipCryptoEncoding,
+				};
 				compatibilityMode = true;
 			}
 		}
@@ -54,7 +58,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			get => !CompatCodec.ForceZipLegacyEncoding;
 			set
 			{
-				CompatCodec.ForceZipLegacyEncoding = !value;
+				CompatCodec = new StringCodec(!value, CompatCodec.LegacyEncoding)
+				{
+					ZipArchiveCommentEncoding = CompatCodec.ZipArchiveCommentEncoding,
+					ZipCryptoEncoding = CompatCodec.ZipCryptoEncoding,
+				};
 				compatibilityMode = true;
 			}
 		}
@@ -102,25 +110,42 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// </summary>
 	public class StringCodec
 	{
-		static StringCodec()
+		internal StringCodec(bool forceLegacyEncoding, Encoding legacyEncoding)
 		{
-			try
-			{
-				var platformCodepage = Encoding.Default.CodePage;
-				SystemDefaultCodePage = (platformCodepage == 1 || platformCodepage == 2 || platformCodepage == 3 || platformCodepage == 42) ? FallbackCodePage : platformCodepage;
-			}
-			catch
-			{
-				SystemDefaultCodePage = FallbackCodePage;
-			}
-
-			SystemDefaultEncoding = Encoding.GetEncoding(SystemDefaultCodePage);
+			LegacyEncoding = legacyEncoding;
+			ForceZipLegacyEncoding = forceLegacyEncoding;
+			ZipArchiveCommentEncoding = legacyEncoding;
+			ZipCryptoEncoding = legacyEncoding;
 		}
+
+		/// <summary>
+		/// Creates a StringCodec that uses the system default encoder or UTF-8 depending on whether the zip entry Unicode flag is set
+		/// </summary>
+		public static StringCodec Default 
+			=> new StringCodec(false, SystemDefaultEncoding);
+
+		/// <summary>
+		/// Creates a StringCodec that uses an encoding from the specified code page except for zip entries with the Unicode flag
+		/// </summary>
+		public static StringCodec FromCodePage(int codePage) 
+			=> new StringCodec(false, Encoding.GetEncoding(codePage));
+
+		/// <summary>
+		/// Creates a StringCodec that uses an the specified encoding, except for zip entries with the Unicode flag
+		/// </summary>
+		public static StringCodec FromEncoding(Encoding encoding)
+			=> new StringCodec(false, encoding);
+
+		/// <summary>
+		/// Creates a StringCodec that uses the zip specification encoder or UTF-8 depending on whether the zip entry Unicode flag is set
+		/// </summary>
+		public static StringCodec WithStrictSpecEncoding()
+			=> new StringCodec(false, Encoding.GetEncoding(ZipSpecCodePage));
 
 		/// <summary>
 		/// If set, use the encoding set by <see cref="CodePage"/> for zip entries instead of the defaults
 		/// </summary>
-		public bool ForceZipLegacyEncoding { get; set; }
+		public bool ForceZipLegacyEncoding { get; internal set; }
 
 		/// <summary>
 		/// The default encoding used for ZipCrypto passwords in zip files, set to <see cref="SystemDefaultEncoding"/>
@@ -137,7 +162,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Returns <see cref="UnicodeZipEncoding"/> if <paramref name="unicode"/> is set, otherwise it returns the encoding indicated by <see cref="CodePage"/>
 		/// </summary>
-		public Encoding ZipEncoding(bool unicode) => unicode ? UnicodeZipEncoding : _legacyEncoding;
+		public Encoding ZipEncoding(bool unicode) 
+			=> unicode ? UnicodeZipEncoding : LegacyEncoding;
 
 		/// <summary>
 		/// Returns the appropriate encoding for an input <see cref="ZipEntry"/> according to <paramref name="flags"/>.
@@ -145,22 +171,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="flags"></param>
 		/// <returns></returns>
-		public Encoding ZipInputEncoding(GeneralBitFlags flags) => ZipInputEncoding((int)flags);
+		public Encoding ZipInputEncoding(GeneralBitFlags flags) 
+			=> ZipEncoding(!ForceZipLegacyEncoding && flags.HasAny(GeneralBitFlags.UnicodeText));
 
 		/// <inheritdoc cref="ZipInputEncoding(GeneralBitFlags)"/>
-		public Encoding ZipInputEncoding(int flags) => ZipEncoding(!ForceZipLegacyEncoding && (flags & (int)GeneralBitFlags.UnicodeText) != 0);
+		public Encoding ZipInputEncoding(int flags) => ZipInputEncoding((GeneralBitFlags)flags);
 
 		/// <summary>Code page encoding, used for non-unicode strings</summary>
 		/// <remarks>
 		/// The original Zip specification (https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT) states
 		/// that file names should only be encoded with IBM Code Page 437 or UTF-8.
 		/// In practice, most zip apps use OEM or system encoding (typically cp437 on Windows).
-		/// Let's be good citizens and default to UTF-8 http://utf8everywhere.org/
 		/// </remarks>
-		private Encoding _legacyEncoding = SystemDefaultEncoding;
-
-		private Encoding _zipArchiveCommentEncoding;
-		private Encoding _zipCryptoEncoding;
+		public Encoding LegacyEncoding { get; internal set; }
 
 		/// <summary>
 		/// Returns the UTF-8 code page (65001) used for zip entries with unicode flag set
@@ -171,43 +194,67 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Code page used for non-unicode strings and legacy zip encoding (if <see cref="ForceZipLegacyEncoding"/> is set).
 		/// Default value is <see cref="SystemDefaultCodePage"/>
 		/// </summary>
-		public int CodePage
-		{
-			get => _legacyEncoding.CodePage;
-			set => _legacyEncoding = (value < 4 || value > 65535 || value == 42)
-				? throw new ArgumentOutOfRangeException(nameof(value))
-				: Encoding.GetEncoding(value);
-		}
-
-		private const int FallbackCodePage = 437;
+		public int CodePage => LegacyEncoding.CodePage;
 
 		/// <summary>
-		/// Operating system default codepage, or if it could not be retrieved, the fallback code page IBM 437.
+		/// The non-unicode code page that should be used according to the zip specification
 		/// </summary>
-		public static int SystemDefaultCodePage { get; }
+		public const int ZipSpecCodePage = 437;
 
 		/// <summary>
-		/// The system default encoding, based on <see cref="SystemDefaultCodePage"/>
+		/// Operating system default codepage.
 		/// </summary>
-		public static Encoding SystemDefaultEncoding { get; }
+		public static int SystemDefaultCodePage => SystemDefaultEncoding.CodePage;
+
+		/// <summary>
+		/// The system default encoding.
+		/// </summary>
+		public static Encoding SystemDefaultEncoding => Encoding.GetEncoding(0);
 
 		/// <summary>
 		/// The encoding used for the zip archive comment. Defaults to the encoding for <see cref="CodePage"/>, since
 		/// no unicode flag can be set for it in the files.
 		/// </summary>
-		public Encoding ZipArchiveCommentEncoding
-		{
-			get => _zipArchiveCommentEncoding ?? _legacyEncoding;
-			set => _zipArchiveCommentEncoding = value;
-		}
+		public Encoding ZipArchiveCommentEncoding { get; internal set; }
 
 		/// <summary>
 		/// The encoding used for the ZipCrypto passwords. Defaults to <see cref="DefaultZipCryptoEncoding"/>.
 		/// </summary>
-		public Encoding ZipCryptoEncoding
-		{
-			get => _zipCryptoEncoding ?? DefaultZipCryptoEncoding;
-			set => _zipCryptoEncoding = value;
-		}
+		public Encoding ZipCryptoEncoding { get; internal set; }
+
+		/// <summary>
+		/// Create a copy of this StringCodec with the specified zip archive comment encoding
+		/// </summary>
+		/// <param name="commentEncoding"></param>
+		/// <returns></returns>
+		public StringCodec WithZipArchiveCommentEncoding(Encoding commentEncoding)
+			=> new StringCodec(ForceZipLegacyEncoding, LegacyEncoding)
+			{
+				ZipArchiveCommentEncoding = commentEncoding,
+				ZipCryptoEncoding = ZipCryptoEncoding
+			};
+
+		/// <summary>
+		/// Create a copy of this StringCodec with the specified zip crypto password encoding
+		/// </summary>
+		/// <param name="cryptoEncoding"></param>
+		/// <returns></returns>
+		public StringCodec WithZipCryptoEncoding(Encoding cryptoEncoding)
+			=> new StringCodec(ForceZipLegacyEncoding, LegacyEncoding)
+			{
+				ZipArchiveCommentEncoding = ZipArchiveCommentEncoding,
+				ZipCryptoEncoding = cryptoEncoding
+			};
+
+		/// <summary>
+		/// Create a copy of this StringCodec that ignores the Unicode flag when reading entries
+		/// </summary>
+		/// <returns></returns>
+		public StringCodec WithForcedLegacyEncoding()
+			=> new StringCodec(true, LegacyEncoding)
+			{
+				ZipArchiveCommentEncoding = ZipArchiveCommentEncoding,
+				ZipCryptoEncoding = ZipCryptoEncoding
+			};
 	}
 }
