@@ -1,0 +1,3 @@
+is_global = true
+global_level = 1
+dotnet_diagnostic.CA2007.severity = warning

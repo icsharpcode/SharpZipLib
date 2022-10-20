@@ -138,7 +138,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="cancellationToken"></param>
 		public override async Task FlushAsync(CancellationToken cancellationToken)
 		{
-			await inputStream.FlushAsync(cancellationToken);
+			await inputStream.FlushAsync(cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -330,7 +330,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			while (numToRead > 0)
 			{
-				await tarBuffer.ReadBlockIntAsync(recBuf, ct, isAsync);
+				await tarBuffer.ReadBlockIntAsync(recBuf, ct, isAsync).ConfigureAwait(false);
 
 				var sz = (int)numToRead;
 
@@ -379,7 +379,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public override async ValueTask DisposeAsync()
 		{
-			await tarBuffer.CloseAsync(CancellationToken.None);
+			await tarBuffer.CloseAsync(CancellationToken.None).ConfigureAwait(false);
 		}
 #endif
 
@@ -465,7 +465,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				for (long num = skipCount; num > 0;)
 				{
 					int toRead = num > length ? length : (int)num;
-					int numRead = await ReadAsync(skipBuf.Memory.Slice(0, toRead), ct, isAsync);
+					int numRead = await ReadAsync(skipBuf.Memory.Slice(0, toRead), ct, isAsync).ConfigureAwait(false);
 
 					if (numRead == -1)
 					{
@@ -542,18 +542,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			if (currentEntry != null)
 			{
-				await SkipToNextEntryAsync(ct, isAsync);
+				await SkipToNextEntryAsync(ct, isAsync).ConfigureAwait(false);
 			}
 
 			byte[] headerBuf = ArrayPool<byte>.Shared.Rent(TarBuffer.BlockSize);
-			await tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync);
+			await tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync).ConfigureAwait(false);
 
 			if (TarBuffer.IsEndOfArchiveBlock(headerBuf))
 			{
 				hasHitEOF = true;
 
 				// Read the second zero-filled block
-				await tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync);
+				await tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync).ConfigureAwait(false);
 			}
 			else
 			{
@@ -592,7 +592,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 							while (numToRead > 0)
 							{
 								var length = (numToRead > TarBuffer.BlockSize ? TarBuffer.BlockSize : (int)numToRead);
-								int numRead = await ReadAsync(nameBuffer.Memory.Slice(0, length), ct, isAsync);
+								int numRead = await ReadAsync(nameBuffer.Memory.Slice(0, length), ct, isAsync).ConfigureAwait(false);
 
 								if (numRead == -1)
 								{
@@ -607,16 +607,16 @@ namespace ICSharpCode.SharpZipLib.Tar
 							longName = longNameBuilder.ToString();
 							StringBuilderPool.Instance.Return(longNameBuilder);
 
-							await SkipToNextEntryAsync(ct, isAsync);
-							await this.tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync);
+							await SkipToNextEntryAsync(ct, isAsync).ConfigureAwait(false);
+							await this.tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync).ConfigureAwait(false);
 						}
 					}
 					else if (header.TypeFlag == TarHeader.LF_GHDR)
 					{
 						// POSIX global extended header
 						// Ignore things we dont understand completely for now
-						await SkipToNextEntryAsync(ct, isAsync);
-						await this.tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync);
+						await SkipToNextEntryAsync(ct, isAsync).ConfigureAwait(false);
+						await this.tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync).ConfigureAwait(false);
 					}
 					else if (header.TypeFlag == TarHeader.LF_XHDR)
 					{
@@ -629,7 +629,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 						while (numToRead > 0)
 						{
 							var length = (numToRead > nameBuffer.Length ? nameBuffer.Length : (int)numToRead);
-							int numRead = await ReadAsync(nameBuffer.AsMemory().Slice(0, length), ct, isAsync);
+							int numRead = await ReadAsync(nameBuffer.AsMemory().Slice(0, length), ct, isAsync).ConfigureAwait(false);
 
 							if (numRead == -1)
 							{
@@ -647,14 +647,14 @@ namespace ICSharpCode.SharpZipLib.Tar
 							longName = name;
 						}
 
-						await SkipToNextEntryAsync(ct, isAsync);
-						await this.tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync);
+						await SkipToNextEntryAsync(ct, isAsync).ConfigureAwait(false);
+						await this.tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync).ConfigureAwait(false);
 					}
 					else if (header.TypeFlag == TarHeader.LF_GNU_VOLHDR)
 					{
 						// TODO: could show volume name when verbose
-						await SkipToNextEntryAsync(ct, isAsync);
-						await this.tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync);
+						await SkipToNextEntryAsync(ct, isAsync).ConfigureAwait(false);
+						await this.tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync).ConfigureAwait(false);
 					}
 					else if (header.TypeFlag != TarHeader.LF_NORMAL &&
 					         header.TypeFlag != TarHeader.LF_OLDNORM &&
@@ -663,8 +663,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 					         header.TypeFlag != TarHeader.LF_DIR)
 					{
 						// Ignore things we dont understand completely for now
-						await SkipToNextEntryAsync(ct, isAsync);
-						await tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync);
+						await SkipToNextEntryAsync(ct, isAsync).ConfigureAwait(false);
+						await tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync).ConfigureAwait(false);
 					}
 
 					if (entryFactory == null)
@@ -736,7 +736,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			while (true)
 			{
-				int numRead = await ReadAsync(tempBuffer, ct, isAsync);
+				int numRead = await ReadAsync(tempBuffer, ct, isAsync).ConfigureAwait(false);
 				if (numRead <= 0)
 				{
 					break;
@@ -744,7 +744,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 				if (isAsync)
 				{
-					await outputStream.WriteAsync(tempBuffer, 0, numRead, ct);
+					await outputStream.WriteAsync(tempBuffer, 0, numRead, ct).ConfigureAwait(false);
 				}
 				else
 				{
@@ -761,7 +761,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			if (numToSkip > 0)
 			{
-				await SkipAsync(numToSkip, ct, isAsync);
+				await SkipAsync(numToSkip, ct, isAsync).ConfigureAwait(false);
 			}
 
 			readBuffer?.Dispose();

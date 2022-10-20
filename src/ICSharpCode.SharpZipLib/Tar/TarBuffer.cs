@@ -302,7 +302,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			if (currentBlockIndex >= BlockFactor)
 			{
-				if (!await ReadRecordAsync(ct, isAsync))
+				if (!await ReadRecordAsync(ct, isAsync).ConfigureAwait(false))
 				{
 					throw new TarException("Failed to read a record");
 				}
@@ -353,7 +353,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			if (currentBlockIndex >= BlockFactor)
 			{
-				if (!await ReadRecordAsync(ct, isAsync))
+				if (!await ReadRecordAsync(ct, isAsync).ConfigureAwait(false))
 				{
 					throw new TarException("Failed to read a record");
 				}
@@ -384,7 +384,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			while (bytesNeeded > 0)
 			{
 				long numBytes = isAsync
-					? await inputStream.ReadAsync(recordBuffer, offset, bytesNeeded, ct)
+					? await inputStream.ReadAsync(recordBuffer, offset, bytesNeeded, ct).ConfigureAwait(false)
 					: inputStream.Read(recordBuffer, offset, bytesNeeded);
 
 				//
@@ -551,7 +551,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			if (currentBlockIndex >= BlockFactor)
 			{
-				await WriteRecordAsync(CancellationToken.None, isAsync);
+				await WriteRecordAsync(CancellationToken.None, isAsync).ConfigureAwait(false);
 			}
 
 			Array.Copy(buffer, offset, recordBuffer, (currentBlockIndex * BlockSize), BlockSize);
@@ -571,8 +571,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 			if (isAsync)
 			{
-				await outputStream.WriteAsync(recordBuffer, 0, RecordSize, ct);
-				await outputStream.FlushAsync(ct);
+				await outputStream.WriteAsync(recordBuffer, 0, RecordSize, ct).ConfigureAwait(false);
+				await outputStream.FlushAsync(ct).ConfigureAwait(false);
 			}
 			else
 			{
@@ -600,12 +600,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 			{
 				int dataBytes = currentBlockIndex * BlockSize;
 				Array.Clear(recordBuffer, dataBytes, RecordSize - dataBytes);
-				await WriteRecordAsync(ct, isAsync);
+				await WriteRecordAsync(ct, isAsync).ConfigureAwait(false);
 			}
 
 			if (isAsync)
 			{
-				await outputStream.FlushAsync(ct);
+				await outputStream.FlushAsync(ct).ConfigureAwait(false);
 			}
 			else
 			{
@@ -629,14 +629,14 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			if (outputStream != null)
 			{
-				await WriteFinalRecordAsync(ct, isAsync);
+				await WriteFinalRecordAsync(ct, isAsync).ConfigureAwait(false);
 
 				if (IsStreamOwner)
 				{
 					if (isAsync)
 					{
 #if NETSTANDARD2_1_OR_GREATER
-						await outputStream.DisposeAsync();
+						await outputStream.DisposeAsync().ConfigureAwait(false);
 #else
 						outputStream.Dispose();
 #endif
@@ -656,7 +656,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					if (isAsync)
 					{
 #if NETSTANDARD2_1_OR_GREATER
-						await inputStream.DisposeAsync();
+						await inputStream.DisposeAsync().ConfigureAwait(false);
 #else
 						inputStream.Dispose();
 #endif

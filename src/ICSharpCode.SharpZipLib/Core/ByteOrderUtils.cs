@@ -80,7 +80,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <inheritdoc cref="WriteLEShort"/>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static async Task WriteLEShortAsync(this Stream stream, int value, CT ct) 
-			=> await stream.WriteAsync(SwappedBytes(value), 0, 2, ct);
+			=> await stream.WriteAsync(SwappedBytes(value), 0, 2, ct).ConfigureAwait(false);
 
 		/// <summary> Write a ushort in little endian byte order. </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -89,7 +89,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <inheritdoc cref="WriteLEUshort"/>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static async Task WriteLEUshortAsync(this Stream stream, ushort value, CT ct) 
-			=> await stream.WriteAsync(SwappedBytes(value), 0, 2, ct);
+			=> await stream.WriteAsync(SwappedBytes(value), 0, 2, ct).ConfigureAwait(false);
 
 		/// <summary> Write an int in little endian byte order. </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -98,7 +98,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <inheritdoc cref="WriteLEInt"/>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static async Task WriteLEIntAsync(this Stream stream, int value, CT ct)
-			=> await stream.WriteAsync(SwappedBytes(value), 0, 4, ct);
+			=> await stream.WriteAsync(SwappedBytes(value), 0, 4, ct).ConfigureAwait(false);
 
 		/// <summary> Write a uint in little endian byte order. </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -107,7 +107,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <inheritdoc cref="WriteLEUint"/>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static async Task WriteLEUintAsync(this Stream stream, uint value, CT ct)
-			=> await stream.WriteAsync(SwappedBytes(value), 0, 4, ct);
+			=> await stream.WriteAsync(SwappedBytes(value), 0, 4, ct).ConfigureAwait(false);
 
 		/// <summary> Write a long in little endian byte order. </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -116,7 +116,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <inheritdoc cref="WriteLELong"/>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static async Task WriteLELongAsync(this Stream stream, long value, CT ct) 
-			=> await stream.WriteAsync(SwappedBytes(value), 0, 8, ct);
+			=> await stream.WriteAsync(SwappedBytes(value), 0, 8, ct).ConfigureAwait(false);
 
 		/// <summary> Write a ulong in little endian byte order. </summary>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -125,6 +125,6 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <inheritdoc cref="WriteLEUlong"/>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static async Task WriteLEUlongAsync(this Stream stream, ulong value, CT ct)
-			=> await stream.WriteAsync(SwappedBytes(value), 0, 8, ct);
+			=> await stream.WriteAsync(SwappedBytes(value), 0, 8, ct).ConfigureAwait(false);
 	}
 }

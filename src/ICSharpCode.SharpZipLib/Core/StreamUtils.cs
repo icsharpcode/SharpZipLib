@@ -280,7 +280,7 @@ namespace ICSharpCode.SharpZipLib.Core
 			bufferStream.SetLength(0);
 			writeProc(bufferStream);
 			bufferStream.Position = 0;
-			await bufferStream.CopyToAsync(targetStream, 81920, ct);
+			await bufferStream.CopyToAsync(targetStream, 81920, ct).ConfigureAwait(false);
 			bufferStream.SetLength(0);
 		}
 		
@@ -288,7 +288,7 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			using (var ms = new MemoryStream())
 			{
-				await WriteProcToStreamAsync(targetStream, ms, writeProc, ct);
+				await WriteProcToStreamAsync(targetStream, ms, writeProc, ct).ConfigureAwait(false);
 			}
 		}
 	}

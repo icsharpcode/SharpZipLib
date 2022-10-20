@@ -192,7 +192,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public override async Task<int> ReadAsync(byte[] buffer, int offset, int count,
 			CancellationToken cancellationToken)
 		{
-			return await outputStream.ReadAsync(buffer, offset, count, cancellationToken);
+			return await outputStream.ReadAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -208,7 +208,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public override async Task FlushAsync(CancellationToken cancellationToken)
 		{
-			await outputStream.FlushAsync(cancellationToken);
+			await outputStream.FlushAsync(cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -227,10 +227,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			if (IsEntryOpen)
 			{
-				await CloseEntryAsync(cancellationToken, isAsync);
+				await CloseEntryAsync(cancellationToken, isAsync).ConfigureAwait(false);
 			}
 
-			await WriteEofBlockAsync(cancellationToken, isAsync);
+			await WriteEofBlockAsync(cancellationToken, isAsync).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -336,7 +336,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 
 				longHeader.WriteHeader(blockBuffer, nameEncoding);
 				// Add special long filename header block
-				await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync);
+				await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync).ConfigureAwait(false);
 
 				int nameCharIndex = 0;
 
@@ -349,12 +349,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 						TarBuffer.BlockSize, nameEncoding); // This func handles OK the extra char out of string length
 					nameCharIndex += TarBuffer.BlockSize;
 
-					await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync);
+					await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync).ConfigureAwait(false);
 				}
 			}
 
 			entry.WriteEntryHeader(blockBuffer, nameEncoding);
-			await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync);
+			await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync).ConfigureAwait(false);
 
 			currBytes = 0;
 
@@ -389,7 +389,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			{
 				Array.Clear(assemblyBuffer, assemblyBufferLength, assemblyBuffer.Length - assemblyBufferLength);
 
-				await buffer.WriteBlockAsync(assemblyBuffer, 0, cancellationToken, isAsync);
+				await buffer.WriteBlockAsync(assemblyBuffer, 0, cancellationToken, isAsync).ConfigureAwait(false);
 
 				currBytes += assemblyBufferLength;
 				assemblyBufferLength = 0;
@@ -507,7 +507,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					Array.Copy(assemblyBuffer, 0, blockBuffer, 0, assemblyBufferLength);
 					Array.Copy(buffer, offset, blockBuffer, assemblyBufferLength, aLen);
 
-					await this.buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync);
+					await this.buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync).ConfigureAwait(false);
 
 					currBytes += blockBuffer.Length;
 
@@ -539,7 +539,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					break;
 				}
 
-				await this.buffer.WriteBlockAsync(buffer, offset, cancellationToken, isAsync);
+				await this.buffer.WriteBlockAsync(buffer, offset, cancellationToken, isAsync).ConfigureAwait(false);
 
 				int bufferLength = blockBuffer.Length;
 				currBytes += bufferLength;
@@ -555,8 +555,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		private async Task WriteEofBlockAsync(CancellationToken cancellationToken, bool isAsync)
 		{
 			Array.Clear(blockBuffer, 0, blockBuffer.Length);
-			await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync);
-			await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync);
+			await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync).ConfigureAwait(false);
+			await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync).ConfigureAwait(false);
 		}
 
 		#region Instance Fields
