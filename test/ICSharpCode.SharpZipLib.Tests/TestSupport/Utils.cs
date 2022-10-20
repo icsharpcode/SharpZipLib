@@ -133,6 +133,15 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 				stream.Write(sizeBytes, 0, 4);
 			}
 		}
+
+		public static void FillArray(byte[] buffer, byte value)
+		{
+#if NET6_0_OR_GREATER
+			Array.Fill(buffer, value);
+#else
+			for(var i = 0; i < buffer.Length; i++) buffer[i] = value;
+#endif
+		}
 	}
 	
 	public class TestTraceListener : TraceListener
@@ -185,7 +194,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		    _fileInfo = new FileInfo(Path.Combine(dirPath, filename));
 	    }
 
-    	#region IDisposable Support
+#region IDisposable Support
 
     	private bool _disposed; // To detect redundant calls
 
@@ -213,7 +222,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
     		GC.SuppressFinalize(this);
     	}
 
-    	#endregion IDisposable Support
+#endregion IDisposable Support
 	}
   
   
@@ -245,7 +254,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
         public TempFile GetFile(string fileName) => new TempFile(FullPath, fileName);
         
-    	#region IDisposable Support
+#region IDisposable Support
 
     	private bool _disposed; // To detect redundant calls
 
@@ -272,6 +281,6 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
     		GC.SuppressFinalize(this);
     	}
 
-        #endregion IDisposable Support
+#endregion IDisposable Support
     }
 }
