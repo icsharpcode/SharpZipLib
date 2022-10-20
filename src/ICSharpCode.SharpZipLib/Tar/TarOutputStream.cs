@@ -381,7 +381,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// to the output stream before this entry is closed and the
 		/// next entry written.
 		/// </summary>
-		public void CloseEntry() => CloseEntryAsync(CancellationToken.None, true).GetAwaiter().GetResult();
+		public void CloseEntry() => CloseEntryAsync(CancellationToken.None, false).GetAwaiter().GetResult();
 
 		private async Task CloseEntryAsync(CancellationToken cancellationToken, bool isAsync)
 		{

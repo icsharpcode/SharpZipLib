@@ -531,7 +531,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>
 		/// The next TarEntry in the archive, or null.
 		/// </returns>
-		public TarEntry GetNextEntry() => GetNextEntryAsync(CancellationToken.None, true).GetAwaiter().GetResult();
+		public TarEntry GetNextEntry() => GetNextEntryAsync(CancellationToken.None, false).GetAwaiter().GetResult();
 
 		private async ValueTask<TarEntry> GetNextEntryAsync(CancellationToken ct, bool isAsync)
 		{
