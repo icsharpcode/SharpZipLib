@@ -140,10 +140,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 					}
 					tarOut.PutNextEntry(entry);
 
-					byte[] buffer = new byte[TarBuffer.BlockSize];
-
-					var r = new Random();
-					r.NextBytes(buffer);
+					byte[] buffer = Utils.GetDummyBytes(TarBuffer.BlockSize);
 
 					if (iteration > 0)
 					{

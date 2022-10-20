@@ -19,18 +19,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	[TestFixture]
 	public class GeneralHandling : ZipBase
 	{
-		private void AddRandomDataToEntry(ZipOutputStream zipStream, int size)
-		{
-			if (size > 0)
-			{
-				byte[] data = new byte[size];
-				var rnd = new Random();
-				rnd.NextBytes(data);
-
-				zipStream.Write(data, 0, data.Length);
-			}
-		}
-
 		private void ExerciseZip(CompressionMethod method, int compressionLevel,
 			int size, string password, bool canSeek)
 		{
@@ -343,57 +331,11 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		[Test]
 		[Category("Zip")]
-		public void StoredNonSeekableKnownSizeNoCrc()
+		[TestCase(21348, null)]
+		[TestCase(24692, "Mabutu")]
+		public void StoredNonSeekableKnownSizeNoCrc(int targetSize, string password)
 		{
-			// This cannot be stored directly as the crc is not be known.
-			const int TargetSize = 21348;
-			const string Password = null;
-
-			MemoryStream ms = new MemoryStreamWithoutSeek();
-
-			using (ZipOutputStream outStream = new ZipOutputStream(ms))
-			{
-				outStream.Password = Password;
-				outStream.IsStreamOwner = false;
-				var entry = new ZipEntry("dummyfile.tst");
-				entry.CompressionMethod = CompressionMethod.Stored;
-
-				// The bit thats in question is setting the size before its added to the archive.
-				entry.Size = TargetSize;
-
-				outStream.PutNextEntry(entry);
-
-				Assert.AreEqual(CompressionMethod.Deflated, entry.CompressionMethod, "Entry should be deflated");
-				Assert.AreEqual(-1, entry.CompressedSize, "Compressed size should be known");
-
-				var rnd = new Random();
-
-				int size = TargetSize;
-				byte[] original = new byte[size];
-				rnd.NextBytes(original);
-
-				// Although this could be written in one chunk doing it in lumps
-				// throws up buffering problems including with encryption the original
-				// source for this change.
-				int index = 0;
-				while (size > 0)
-				{
-					int count = (size > 0x200) ? 0x200 : size;
-					outStream.Write(original, index, count);
-					size -= 0x200;
-					index += count;
-				}
-			}
-			Assert.That(ms.ToArray(), Does.PassTestArchive());
-		}
-
-		[Test]
-		[Category("Zip")]
-		public void StoredNonSeekableKnownSizeNoCrcEncrypted()
-		{
-			// This cant be stored directly as the crc is not known
-			const int targetSize = 24692;
-			const string password = "Mabutu";
+			// This cannot be stored directly as the crc is not known.
 
 			MemoryStream ms = new MemoryStreamWithoutSeek();
 
@@ -409,19 +351,15 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				outStream.PutNextEntry(entry);
 
-				Assert.AreEqual(CompressionMethod.Deflated, entry.CompressionMethod, "Entry should be stored");
+				Assert.AreEqual(CompressionMethod.Deflated, entry.CompressionMethod, "Entry should be deflated");
 				Assert.AreEqual(-1, entry.CompressedSize, "Compressed size should be known");
 
-				var rnd = new Random();
-
-				int size = targetSize;
-				byte[] original = new byte[size];
-				rnd.NextBytes(original);
+				byte[] original = Utils.GetDummyBytes(targetSize);
 
 				// Although this could be written in one chunk doing it in lumps
 				// throws up buffering problems including with encryption the original
 				// source for this change.
-				int index = 0;
+				int index = 0, size = targetSize;
 				while (size > 0)
 				{
 					int count = (size > 0x200) ? 0x200 : size;
@@ -565,12 +503,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			outStream.PutNextEntry(entry);
 			Assert.AreEqual(0, outStream.GetLevel(), "Compression level invalid");
 
-			AddRandomDataToEntry(outStream, 100);
+			Utils.WriteDummyData(outStream, 100);
 			entry = new ZipEntry("2.tst");
 			entry.CompressionMethod = CompressionMethod.Deflated;
 			outStream.PutNextEntry(entry);
 			Assert.AreEqual(8, outStream.GetLevel(), "Compression level invalid");
-			AddRandomDataToEntry(outStream, 100);
+			Utils.WriteDummyData(outStream, 100);
 
 			outStream.Close();
 		}

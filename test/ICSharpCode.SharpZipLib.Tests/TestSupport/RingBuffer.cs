@@ -510,7 +510,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		private void Reader()
 		{
-			var r = new Random();
+			var r = new Random(Utils.DefaultSeed);
 			byte nextValue = 0;
 
 			while (readTarget_ > 0)
@@ -541,7 +541,7 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		private void Writer()
 		{
-			var r = new Random();
+			var r = new Random(Utils.DefaultSeed);
 
 			byte nextValue = 0;
 			while (writeTarget_ > 0)

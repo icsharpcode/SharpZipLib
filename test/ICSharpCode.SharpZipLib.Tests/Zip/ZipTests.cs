@@ -25,8 +25,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			original = new byte[Size];
 			if (random)
 			{
-				var rnd = new Random();
-				rnd.NextBytes(original);
+				original = Utils.GetDummyBytes(Size);
 			}
 			else
 			{
@@ -251,9 +250,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				if (size > 0)
 				{
-					var rnd = new Random();
-					original = new byte[size];
-					rnd.NextBytes(original);
+					original = Utils.GetDummyBytes(size);
 
 					// Although this could be written in one chunk doing it in lumps
 					// throws up buffering problems including with encryption the original

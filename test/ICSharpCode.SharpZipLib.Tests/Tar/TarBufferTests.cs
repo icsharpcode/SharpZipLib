@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.Tar;
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using NUnit.Framework;
 
 namespace ICSharpCode.SharpZipLib.Tests.Tar
@@ -18,9 +19,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			var writer = TarBuffer.CreateOutputTarBuffer(ms, 1);
 			writer.IsStreamOwner = false;
 
-			var block = new byte[TarBuffer.BlockSize];
-			var r = new Random();
-			r.NextBytes(block);
+			var block = Utils.GetDummyBytes(TarBuffer.BlockSize);
 
 			writer.WriteBlock(block);
 			writer.WriteBlock(block);
@@ -46,11 +45,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			var writer = TarBuffer.CreateOutputTarBuffer(ms, 1);
 			writer.IsStreamOwner = false;
 
-			var block0 = new byte[TarBuffer.BlockSize];
-			var block1 = new byte[TarBuffer.BlockSize];
-			var r = new Random();
-			r.NextBytes(block0);
-			r.NextBytes(block1);
+			var block0 = Utils.GetDummyBytes(TarBuffer.BlockSize);
+			var block1 = Utils.GetDummyBytes(TarBuffer.BlockSize);
 
 			writer.WriteBlock(block0);
 			writer.WriteBlock(block1);
@@ -72,9 +68,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			var writer = TarBuffer.CreateOutputTarBuffer(ms, 1);
 			writer.IsStreamOwner = false;
 
-			var block = new byte[TarBuffer.BlockSize];
-			var r = new Random();
-			r.NextBytes(block);
+			var block = Utils.GetDummyBytes(TarBuffer.BlockSize);
 
 			await writer.WriteBlockAsync(block, CancellationToken.None);
 			await writer.WriteBlockAsync(block, CancellationToken.None);
@@ -103,11 +97,8 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			var writer = TarBuffer.CreateOutputTarBuffer(ms, 1);
 			writer.IsStreamOwner = false;
 
-			var block0 = new byte[TarBuffer.BlockSize];
-			var block1 = new byte[TarBuffer.BlockSize];
-			var r = new Random();
-			r.NextBytes(block0);
-			r.NextBytes(block1);
+			var block0 = Utils.GetDummyBytes(TarBuffer.BlockSize);
+			var block1 = Utils.GetDummyBytes(TarBuffer.BlockSize);
 
 			await writer.WriteBlockAsync(block0, CancellationToken.None);
 			await writer.WriteBlockAsync(block1, CancellationToken.None);
