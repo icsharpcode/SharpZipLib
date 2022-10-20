@@ -15,9 +15,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		[Test]
 		public void TestRead()
 		{
-			var entryBytes = new byte[2000];
-			var r = new Random();
-			r.NextBytes(entryBytes);
+			var entryBytes = Utils.GetDummyBytes(2000);
 			using var ms = new MemoryStream();
 			using (var tos = new TarOutputStream(ms, Encoding.UTF8) { IsStreamOwner = false })
 			{
@@ -54,9 +52,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 		[Test]
 		public async Task TestReadAsync()
 		{
-			var entryBytes = new byte[2000];
-			var r = new Random();
-			r.NextBytes(entryBytes);
+			var entryBytes = Utils.GetDummyBytes(2000);
 			using var ms = new MemoryStream();
 			using (var tos = new TarOutputStream(ms, Encoding.UTF8) { IsStreamOwner = false })
 			{
