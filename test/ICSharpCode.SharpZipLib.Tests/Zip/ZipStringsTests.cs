@@ -1,26 +1,23 @@
 ﻿using ICSharpCode.SharpZipLib.Tests.TestSupport;
+using ICSharpCode.SharpZipLib.Tests.Zip;
 using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using static System.Net.WebRequestMethods;
-using Does = NUnit.Framework.Does;
+using Does = ICSharpCode.SharpZipLib.Tests.TestSupport.Does;
 
-namespace ICSharpCode.SharpZipLib.Tests.Zip
+// As there is no way to order the test namespace execution order we use a name that should be alphabetically sorted before any other namespace
+// This is because we have one test that only works when no encoding provider has been loaded which is not reversable once done.
+namespace ICSharpCode.SharpZipLib.Tests._Zip
 {
 	[TestFixture]
-	[Order(0)]
+	[Order(1)]
 	public class ZipStringsTests
 	{
 		[Test]
-		[Order(0)]
+		[Order(1)]
 		// NOTE: This test needs to be run before any test registering CodePagesEncodingProvider.Instance
 		public void TestSystemDefaultEncoding()
 		{
@@ -37,7 +34,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
-		[Order(1)]
+		[Order(2)]
 		public void TestFastZipRoundTripWithCodePage()
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -72,7 +69,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 
 		[Test]
-		[Order(1)]
+		[Order(2)]
 		public void TestZipFileRoundTripWithCodePage()
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -98,7 +95,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
-		[Order(1)]
+		[Order(2)]
 		public void TestZipStreamRoundTripWithCodePage()
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -121,7 +118,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
-		[Order(1)]
+		[Order(2)]
 		public void TestZipCryptoPasswordEncodingRoundtrip()
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -150,7 +147,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
-		[Order(1)]
+		[Order(2)]
 		public void TestZipStreamCommentEncodingRoundtrip()
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -171,7 +168,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 
 		[Test]
-		[Order(1)]
+		[Order(2)]
 		public void TestZipFileCommentEncodingRoundtrip()
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
