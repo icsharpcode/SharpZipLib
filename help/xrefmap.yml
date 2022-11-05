@@ -6945,6 +6945,12 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.DeflaterOutputStream
   nameWithType: DeflaterOutputStream.DeflaterOutputStream
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream._stringCodec
+  name: _stringCodec
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream__stringCodec
+  commentId: F:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream._stringCodec
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream._stringCodec
+  nameWithType: DeflaterOutputStream._stringCodec
 - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.AESAuthCode
   name: AESAuthCode
   href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_AESAuthCode
@@ -9855,6 +9861,19 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.CodePage
   nameWithType: StringCodec.CodePage
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.Default
+  name: Default
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_Default
+  commentId: P:ICSharpCode.SharpZipLib.Zip.StringCodec.Default
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.Default
+  nameWithType: StringCodec.Default
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.Default*
+  name: Default
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_Default_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.StringCodec.Default
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.Default
+  nameWithType: StringCodec.Default
 - uid: ICSharpCode.SharpZipLib.Zip.StringCodec.DefaultZipCryptoEncoding
   name: DefaultZipCryptoEncoding
   href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_DefaultZipCryptoEncoding
@@ -9881,6 +9900,45 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.ForceZipLegacyEncoding
   nameWithType: StringCodec.ForceZipLegacyEncoding
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.FromCodePage(System.Int32)
+  name: FromCodePage(Int32)
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_FromCodePage_System_Int32_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.StringCodec.FromCodePage(System.Int32)
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.FromCodePage(System.Int32)
+  nameWithType: StringCodec.FromCodePage(Int32)
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.FromCodePage*
+  name: FromCodePage
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_FromCodePage_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.StringCodec.FromCodePage
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.FromCodePage
+  nameWithType: StringCodec.FromCodePage
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.FromEncoding(System.Text.Encoding)
+  name: FromEncoding(Encoding)
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_FromEncoding_System_Text_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.StringCodec.FromEncoding(System.Text.Encoding)
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.FromEncoding(System.Text.Encoding)
+  nameWithType: StringCodec.FromEncoding(Encoding)
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.FromEncoding*
+  name: FromEncoding
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_FromEncoding_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.StringCodec.FromEncoding
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.FromEncoding
+  nameWithType: StringCodec.FromEncoding
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.LegacyEncoding
+  name: LegacyEncoding
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_LegacyEncoding
+  commentId: P:ICSharpCode.SharpZipLib.Zip.StringCodec.LegacyEncoding
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.LegacyEncoding
+  nameWithType: StringCodec.LegacyEncoding
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.LegacyEncoding*
+  name: LegacyEncoding
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_LegacyEncoding_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.StringCodec.LegacyEncoding
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.LegacyEncoding
+  nameWithType: StringCodec.LegacyEncoding
 - uid: ICSharpCode.SharpZipLib.Zip.StringCodec.SystemDefaultCodePage
   name: SystemDefaultCodePage
   href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_SystemDefaultCodePage
@@ -9913,6 +9971,58 @@ references:
   commentId: F:ICSharpCode.SharpZipLib.Zip.StringCodec.UnicodeZipEncoding
   fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.UnicodeZipEncoding
   nameWithType: StringCodec.UnicodeZipEncoding
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.WithForcedLegacyEncoding
+  name: WithForcedLegacyEncoding()
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_WithForcedLegacyEncoding
+  commentId: M:ICSharpCode.SharpZipLib.Zip.StringCodec.WithForcedLegacyEncoding
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.WithForcedLegacyEncoding()
+  nameWithType: StringCodec.WithForcedLegacyEncoding()
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.WithForcedLegacyEncoding*
+  name: WithForcedLegacyEncoding
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_WithForcedLegacyEncoding_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.StringCodec.WithForcedLegacyEncoding
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.WithForcedLegacyEncoding
+  nameWithType: StringCodec.WithForcedLegacyEncoding
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.WithStrictSpecEncoding
+  name: WithStrictSpecEncoding()
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_WithStrictSpecEncoding
+  commentId: M:ICSharpCode.SharpZipLib.Zip.StringCodec.WithStrictSpecEncoding
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.WithStrictSpecEncoding()
+  nameWithType: StringCodec.WithStrictSpecEncoding()
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.WithStrictSpecEncoding*
+  name: WithStrictSpecEncoding
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_WithStrictSpecEncoding_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.StringCodec.WithStrictSpecEncoding
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.WithStrictSpecEncoding
+  nameWithType: StringCodec.WithStrictSpecEncoding
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipArchiveCommentEncoding(System.Text.Encoding)
+  name: WithZipArchiveCommentEncoding(Encoding)
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_WithZipArchiveCommentEncoding_System_Text_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipArchiveCommentEncoding(System.Text.Encoding)
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipArchiveCommentEncoding(System.Text.Encoding)
+  nameWithType: StringCodec.WithZipArchiveCommentEncoding(Encoding)
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipArchiveCommentEncoding*
+  name: WithZipArchiveCommentEncoding
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_WithZipArchiveCommentEncoding_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipArchiveCommentEncoding
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipArchiveCommentEncoding
+  nameWithType: StringCodec.WithZipArchiveCommentEncoding
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipCryptoEncoding(System.Text.Encoding)
+  name: WithZipCryptoEncoding(Encoding)
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_WithZipCryptoEncoding_System_Text_Encoding_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipCryptoEncoding(System.Text.Encoding)
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipCryptoEncoding(System.Text.Encoding)
+  nameWithType: StringCodec.WithZipCryptoEncoding(Encoding)
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipCryptoEncoding*
+  name: WithZipCryptoEncoding
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_WithZipCryptoEncoding_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipCryptoEncoding
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipCryptoEncoding
+  nameWithType: StringCodec.WithZipCryptoEncoding
 - uid: ICSharpCode.SharpZipLib.Zip.StringCodec.ZipArchiveCommentEncoding
   name: ZipArchiveCommentEncoding
   href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_ZipArchiveCommentEncoding
@@ -9984,6 +10094,12 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.ZipOutputEncoding
   nameWithType: StringCodec.ZipOutputEncoding
+- uid: ICSharpCode.SharpZipLib.Zip.StringCodec.ZipSpecCodePage
+  name: ZipSpecCodePage
+  href: api/ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_ZipSpecCodePage
+  commentId: F:ICSharpCode.SharpZipLib.Zip.StringCodec.ZipSpecCodePage
+  fullName: ICSharpCode.SharpZipLib.Zip.StringCodec.ZipSpecCodePage
+  nameWithType: StringCodec.ZipSpecCodePage
 - uid: ICSharpCode.SharpZipLib.Zip.TestOperation
   name: TestOperation
   href: api/ICSharpCode.SharpZipLib.Zip.TestOperation.html
@@ -11641,12 +11757,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.Stream)
   fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(System.IO.Stream)
   nameWithType: ZipFile.ZipFile(Stream)
-- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.Stream,System.Boolean)
-  name: ZipFile(Stream, Boolean)
-  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_System_IO_Stream_System_Boolean_
-  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.Stream,System.Boolean)
-  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(System.IO.Stream, System.Boolean)
-  nameWithType: ZipFile.ZipFile(Stream, Boolean)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.Stream,System.Boolean,ICSharpCode.SharpZipLib.Zip.StringCodec)
+  name: ZipFile(Stream, Boolean, StringCodec)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_System_IO_Stream_System_Boolean_ICSharpCode_SharpZipLib_Zip_StringCodec_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.IO.Stream,System.Boolean,ICSharpCode.SharpZipLib.Zip.StringCodec)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipFile.ZipFile(System.IO.Stream, System.Boolean, ICSharpCode.SharpZipLib.Zip.StringCodec)
+  nameWithType: ZipFile.ZipFile(Stream, Boolean, StringCodec)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipFile.#ctor(System.String,ICSharpCode.SharpZipLib.Zip.StringCodec)
   name: ZipFile(String, StringCodec)
   href: api/ICSharpCode.SharpZipLib.Zip.ZipFile.html#ICSharpCode_SharpZipLib_Zip_ZipFile__ctor_System_String_ICSharpCode_SharpZipLib_Zip_StringCodec_
@@ -12217,6 +12333,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(System.IO.Stream)
   fullName: ICSharpCode.SharpZipLib.Zip.ZipInputStream.ZipInputStream(System.IO.Stream)
   nameWithType: ZipInputStream.ZipInputStream(Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.StringCodec)
+  name: ZipInputStream(Stream, StringCodec)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipInputStream.html#ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_System_IO_Stream_ICSharpCode_SharpZipLib_Zip_StringCodec_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.StringCodec)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipInputStream.ZipInputStream(System.IO.Stream, ICSharpCode.SharpZipLib.Zip.StringCodec)
+  nameWithType: ZipInputStream.ZipInputStream(Stream, StringCodec)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipInputStream.#ctor(System.IO.Stream,System.Int32)
   name: ZipInputStream(Stream, Int32)
   href: api/ICSharpCode.SharpZipLib.Zip.ZipInputStream.html#ICSharpCode_SharpZipLib_Zip_ZipInputStream__ctor_System_IO_Stream_System_Int32_
@@ -12445,6 +12567,12 @@ references:
   commentId: M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(System.IO.Stream)
   fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.ZipOutputStream(System.IO.Stream)
   nameWithType: ZipOutputStream.ZipOutputStream(Stream)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.StringCodec)
+  name: ZipOutputStream(Stream, StringCodec)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream__ctor_System_IO_Stream_ICSharpCode_SharpZipLib_Zip_StringCodec_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(System.IO.Stream,ICSharpCode.SharpZipLib.Zip.StringCodec)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.ZipOutputStream(System.IO.Stream, ICSharpCode.SharpZipLib.Zip.StringCodec)
+  nameWithType: ZipOutputStream.ZipOutputStream(Stream, StringCodec)
 - uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.#ctor(System.IO.Stream,System.Int32)
   name: ZipOutputStream(Stream, Int32)
   href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream__ctor_System_IO_Stream_System_Int32_

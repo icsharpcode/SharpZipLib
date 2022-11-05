@@ -116,7 +116,7 @@
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_UnicodeZipEncoding.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.UnicodeZipEncoding%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L168">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L191">View Source</a>
   </span>
   <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_UnicodeZipEncoding" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.UnicodeZipEncoding">UnicodeZipEncoding</h4>
   <div class="markdown level1 summary"><p>Returns the UTF-8 code page (65001) used for zip entries with unicode flag set</p>
@@ -141,6 +141,36 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_ZipSpecCodePage.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.ZipSpecCodePage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L202">View Source</a>
+  </span>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_ZipSpecCodePage" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ZipSpecCodePage">ZipSpecCodePage</h4>
+  <div class="markdown level1 summary"><p>The non-unicode code page that should be used according to the zip specification</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int ZipSpecCodePage = 437</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
@@ -148,7 +178,7 @@
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_CodePage.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.CodePage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L174">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L197">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_CodePage_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.CodePage*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_CodePage" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.CodePage">CodePage</h4>
@@ -158,7 +188,7 @@ Default value is <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.h
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int CodePage { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public int CodePage { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -177,10 +207,41 @@ Default value is <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.h
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_Default.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.Default%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L124">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_Default_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.Default*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_Default" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.Default">Default</h4>
+  <div class="markdown level1 summary"><p>Creates a StringCodec that uses the system default encoder or UTF-8 depending on whether the zip entry Unicode flag is set</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static StringCodec Default { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_DefaultZipCryptoEncoding.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.DefaultZipCryptoEncoding%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L129">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L154">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_DefaultZipCryptoEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.DefaultZipCryptoEncoding*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_DefaultZipCryptoEncoding" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.DefaultZipCryptoEncoding">DefaultZipCryptoEncoding</h4>
@@ -212,7 +273,7 @@ for greatest compability.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_ForceZipLegacyEncoding.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.ForceZipLegacyEncoding%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L123">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L148">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_ForceZipLegacyEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ForceZipLegacyEncoding*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_ForceZipLegacyEncoding" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ForceZipLegacyEncoding">ForceZipLegacyEncoding</h4>
@@ -221,7 +282,7 @@ for greatest compability.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool ForceZipLegacyEncoding { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool ForceZipLegacyEncoding { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -240,14 +301,50 @@ for greatest compability.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_LegacyEncoding.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.LegacyEncoding%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L186">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_LegacyEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.LegacyEncoding*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_LegacyEncoding" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.LegacyEncoding">LegacyEncoding</h4>
+  <div class="markdown level1 summary"><p>Code page encoding, used for non-unicode strings</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Encoding LegacyEncoding { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Encoding</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="ICSharpCode_SharpZipLib_Zip_StringCodec_LegacyEncoding_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The original Zip specification (<a href="https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT">https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT</a>) states
+that file names should only be encoded with IBM Code Page 437 or UTF-8.
+In practice, most zip apps use OEM or system encoding (typically cp437 on Windows).</p>
+</div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_SystemDefaultCodePage.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.SystemDefaultCodePage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L187">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L207">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_SystemDefaultCodePage_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.SystemDefaultCodePage*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_SystemDefaultCodePage" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.SystemDefaultCodePage">SystemDefaultCodePage</h4>
-  <div class="markdown level1 summary"><p>Operating system default codepage, or if it could not be retrieved, the fallback code page IBM 437.</p>
+  <div class="markdown level1 summary"><p>Operating system default codepage.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -274,11 +371,11 @@ for greatest compability.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_SystemDefaultEncoding.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.SystemDefaultEncoding%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L192">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L212">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_SystemDefaultEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.SystemDefaultEncoding*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_SystemDefaultEncoding" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.SystemDefaultEncoding">SystemDefaultEncoding</h4>
-  <div class="markdown level1 summary"><p>The system default encoding, based on <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html#ICSharpCode_SharpZipLib_Zip_StringCodec_SystemDefaultCodePage">SystemDefaultCodePage</a></p>
+  <div class="markdown level1 summary"><p>The system default encoding.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -305,7 +402,7 @@ for greatest compability.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_ZipArchiveCommentEncoding.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.ZipArchiveCommentEncoding%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L198">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L218">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_ZipArchiveCommentEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ZipArchiveCommentEncoding*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_ZipArchiveCommentEncoding" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ZipArchiveCommentEncoding">ZipArchiveCommentEncoding</h4>
@@ -315,7 +412,7 @@ no unicode flag can be set for it in the files.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Encoding ZipArchiveCommentEncoding { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Encoding ZipArchiveCommentEncoding { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -337,7 +434,7 @@ no unicode flag can be set for it in the files.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_ZipCryptoEncoding.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.ZipCryptoEncoding%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L207">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L223">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_ZipCryptoEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ZipCryptoEncoding*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_ZipCryptoEncoding" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ZipCryptoEncoding">ZipCryptoEncoding</h4>
@@ -346,7 +443,7 @@ no unicode flag can be set for it in the files.</p>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Encoding ZipCryptoEncoding { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Encoding ZipCryptoEncoding { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -368,7 +465,7 @@ no unicode flag can be set for it in the files.</p>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_ZipOutputEncoding.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.ZipOutputEncoding%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L135">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L160">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_ZipOutputEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ZipOutputEncoding*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_ZipOutputEncoding" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ZipOutputEncoding">ZipOutputEncoding</h4>
@@ -399,10 +496,264 @@ Unless overriden by <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCode
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_FromCodePage_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.FromCodePage(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L130">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_FromCodePage_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.FromCodePage*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_FromCodePage_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.FromCodePage(System.Int32)">FromCodePage(Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates a StringCodec that uses an encoding from the specified code page except for zip entries with the Unicode flag</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static StringCodec FromCodePage(int codePage)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">codePage</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_FromEncoding_System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.FromEncoding(System.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L136">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_FromEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.FromEncoding*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_FromEncoding_System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.FromEncoding(System.Text.Encoding)">FromEncoding(Encoding)</h4>
+  <div class="markdown level1 summary"><p>Creates a StringCodec that uses an the specified encoding, except for zip entries with the Unicode flag</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static StringCodec FromEncoding(Encoding encoding)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Encoding</span></td>
+        <td><span class="parametername">encoding</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_WithForcedLegacyEncoding.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.WithForcedLegacyEncoding%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L253">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_WithForcedLegacyEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.WithForcedLegacyEncoding*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_WithForcedLegacyEncoding" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.WithForcedLegacyEncoding">WithForcedLegacyEncoding()</h4>
+  <div class="markdown level1 summary"><p>Create a copy of this StringCodec that ignores the Unicode flag when reading entries</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StringCodec WithForcedLegacyEncoding()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_WithStrictSpecEncoding.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.WithStrictSpecEncoding%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L142">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_WithStrictSpecEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.WithStrictSpecEncoding*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_WithStrictSpecEncoding" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.WithStrictSpecEncoding">WithStrictSpecEncoding()</h4>
+  <div class="markdown level1 summary"><p>Creates a StringCodec that uses the zip specification encoder or UTF-8 depending on whether the zip entry Unicode flag is set</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static StringCodec WithStrictSpecEncoding()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_WithZipArchiveCommentEncoding_System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipArchiveCommentEncoding(System.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L230">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_WithZipArchiveCommentEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipArchiveCommentEncoding*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_WithZipArchiveCommentEncoding_System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipArchiveCommentEncoding(System.Text.Encoding)">WithZipArchiveCommentEncoding(Encoding)</h4>
+  <div class="markdown level1 summary"><p>Create a copy of this StringCodec with the specified zip archive comment encoding</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StringCodec WithZipArchiveCommentEncoding(Encoding commentEncoding)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Encoding</span></td>
+        <td><span class="parametername">commentEncoding</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_WithZipCryptoEncoding_System_Text_Encoding_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipCryptoEncoding(System.Text.Encoding)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L242">View Source</a>
+  </span>
+  <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_WithZipCryptoEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipCryptoEncoding*"></a>
+  <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_WithZipCryptoEncoding_System_Text_Encoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.WithZipCryptoEncoding(System.Text.Encoding)">WithZipCryptoEncoding(Encoding)</h4>
+  <div class="markdown level1 summary"><p>Create a copy of this StringCodec with the specified zip crypto password encoding</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StringCodec WithZipCryptoEncoding(Encoding cryptoEncoding)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Text.Encoding</span></td>
+        <td><span class="parametername">cryptoEncoding</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.html">StringCodec</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_ZipEncoding_System_Boolean_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.ZipEncoding(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L140">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L165">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_ZipEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ZipEncoding*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_ZipEncoding_System_Boolean_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ZipEncoding(System.Boolean)">ZipEncoding(Boolean)</h4>
@@ -450,7 +801,7 @@ Unless overriden by <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCode
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_ZipInputEncoding_ICSharpCode_SharpZipLib_Zip_GeneralBitFlags_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.ZipInputEncoding(ICSharpCode.SharpZipLib.Zip.GeneralBitFlags)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L148">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L174">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_ZipInputEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ZipInputEncoding*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_ZipInputEncoding_ICSharpCode_SharpZipLib_Zip_GeneralBitFlags_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ZipInputEncoding(ICSharpCode.SharpZipLib.Zip.GeneralBitFlags)">ZipInputEncoding(GeneralBitFlags)</h4>
@@ -499,7 +850,7 @@ If overridden by <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.h
     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec_ZipInputEncoding_System_Int32_.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec.ZipInputEncoding(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L151">View Source</a>
+    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L178">View Source</a>
   </span>
   <a id="ICSharpCode_SharpZipLib_Zip_StringCodec_ZipInputEncoding_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ZipInputEncoding*"></a>
   <h4 id="ICSharpCode_SharpZipLib_Zip_StringCodec_ZipInputEncoding_System_Int32_" data-uid="ICSharpCode.SharpZipLib.Zip.StringCodec.ZipInputEncoding(System.Int32)">ZipInputEncoding(Int32)</h4>
@@ -554,7 +905,7 @@ If overridden by <a class="xref" href="ICSharpCode.SharpZipLib.Zip.StringCodec.h
                     <a href="https://github.com/icsharpcode/SharpZipLib/new/master/apiSpec/new?filename=ICSharpCode_SharpZipLib_Zip_StringCodec.md&amp;value=---%0Auid%3A%20ICSharpCode.SharpZipLib.Zip.StringCodec%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/master/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L103" class="contribution-link">View Source</a>
+                    <a href="https://github.com/icsharpcode/SharpZipLib/blob/cdd0931e3c476faaf829963b2567619431c871bb/src/ICSharpCode.SharpZipLib/Zip/ZipStrings.cs/#L111" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
