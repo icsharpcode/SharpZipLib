@@ -1,5 +1,7 @@
-﻿using ICSharpCode.SharpZipLib.Tests.TestSupport;
+using ICSharpCode.SharpZipLib.Checksum;
+using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -7,6 +9,7 @@ using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security;
 using System.Text;
+using Does = ICSharpCode.SharpZipLib.Tests.TestSupport.Does;
 
 namespace ICSharpCode.SharpZipLib.Tests.Zip
 {
@@ -16,18 +19,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 	[TestFixture]
 	public class GeneralHandling : ZipBase
 	{
-		private void AddRandomDataToEntry(ZipOutputStream zipStream, int size)
-		{
-			if (size > 0)
-			{
-				byte[] data = new byte[size];
-				var rnd = new Random();
-				rnd.NextBytes(data);
-
-				zipStream.Write(data, 0, data.Length);
-			}
-		}
-
 		private void ExerciseZip(CompressionMethod method, int compressionLevel,
 			int size, string password, bool canSeek)
 		{
@@ -80,57 +71,6 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					}
 				}
 			}
-		}
-
-		private string DescribeAttributes(FieldAttributes attributes)
-		{
-			string att = string.Empty;
-			if ((FieldAttributes.Public & attributes) != 0)
-			{
-				att = att + "Public,";
-			}
-
-			if ((FieldAttributes.Static & attributes) != 0)
-			{
-				att = att + "Static,";
-			}
-
-			if ((FieldAttributes.Literal & attributes) != 0)
-			{
-				att = att + "Literal,";
-			}
-
-			if ((FieldAttributes.HasDefault & attributes) != 0)
-			{
-				att = att + "HasDefault,";
-			}
-
-			if ((FieldAttributes.InitOnly & attributes) != 0)
-			{
-				att = att + "InitOnly,";
-			}
-
-			if ((FieldAttributes.Assembly & attributes) != 0)
-			{
-				att = att + "Assembly,";
-			}
-
-			if ((FieldAttributes.FamANDAssem & attributes) != 0)
-			{
-				att = att + "FamANDAssembly,";
-			}
-
-			if ((FieldAttributes.FamORAssem & attributes) != 0)
-			{
-				att = att + "FamORAssembly,";
-			}
-
-			if ((FieldAttributes.HasFieldMarshal & attributes) != 0)
-			{
-				att = att + "HasFieldMarshal,";
-			}
-
-			return att;
 		}
 
 		/// <summary>
@@ -340,39 +280,35 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 		[Test]
 		[Category("Zip")]
-		public void StoredNonSeekableKnownSizeNoCrc()
+		[TestCase(21348, null)]
+		[TestCase(24692, "Mabutu")]
+		public void StoredNonSeekableKnownSizeNoCrc(int targetSize, string password)
 		{
-			// This cannot be stored directly as the crc is not be known.
-			const int TargetSize = 21348;
-			const string Password = null;
+			// This cannot be stored directly as the crc is not known.
 
 			MemoryStream ms = new MemoryStreamWithoutSeek();
 
 			using (ZipOutputStream outStream = new ZipOutputStream(ms))
 			{
-				outStream.Password = Password;
+				outStream.Password = password;
 				outStream.IsStreamOwner = false;
 				var entry = new ZipEntry("dummyfile.tst");
 				entry.CompressionMethod = CompressionMethod.Stored;
 
 				// The bit thats in question is setting the size before its added to the archive.
-				entry.Size = TargetSize;
+				entry.Size = targetSize;
 
 				outStream.PutNextEntry(entry);
 
 				Assert.AreEqual(CompressionMethod.Deflated, entry.CompressionMethod, "Entry should be deflated");
 				Assert.AreEqual(-1, entry.CompressedSize, "Compressed size should be known");
 
-				var rnd = new Random();
-
-				int size = TargetSize;
-				byte[] original = new byte[size];
-				rnd.NextBytes(original);
+				byte[] original = Utils.GetDummyBytes(targetSize);
 
 				// Although this could be written in one chunk doing it in lumps
 				// throws up buffering problems including with encryption the original
 				// source for this change.
-				int index = 0;
+				int index = 0, size = targetSize;
 				while (size > 0)
 				{
 					int count = (size > 0x200) ? 0x200 : size;
@@ -381,53 +317,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 					index += count;
 				}
 			}
-			Assert.IsTrue(ZipTesting.TestArchive(ms.ToArray()));
-		}
-
-		[Test]
-		[Category("Zip")]
-		public void StoredNonSeekableKnownSizeNoCrcEncrypted()
-		{
-			// This cant be stored directly as the crc is not known
-			const int TargetSize = 24692;
-			const string Password = "Mabutu";
-
-			MemoryStream ms = new MemoryStreamWithoutSeek();
-
-			using (ZipOutputStream outStream = new ZipOutputStream(ms))
-			{
-				outStream.Password = Password;
-				outStream.IsStreamOwner = false;
-				var entry = new ZipEntry("dummyfile.tst");
-				entry.CompressionMethod = CompressionMethod.Stored;
-
-				// The bit thats in question is setting the size before its added to the archive.
-				entry.Size = TargetSize;
-
-				outStream.PutNextEntry(entry);
-
-				Assert.AreEqual(CompressionMethod.Deflated, entry.CompressionMethod, "Entry should be stored");
-				Assert.AreEqual(-1, entry.CompressedSize, "Compressed size should be known");
-
-				var rnd = new Random();
-
-				int size = TargetSize;
-				byte[] original = new byte[size];
-				rnd.NextBytes(original);
-
-				// Although this could be written in one chunk doing it in lumps
-				// throws up buffering problems including with encryption the original
-				// source for this change.
-				int index = 0;
-				while (size > 0)
-				{
-					int count = (size > 0x200) ? 0x200 : size;
-					outStream.Write(original, index, count);
-					size -= 0x200;
-					index += count;
-				}
-			}
-			Assert.IsTrue(ZipTesting.TestArchive(ms.ToArray(), Password));
+			Assert.That(ms.ToArray(), Does.PassTestArchive(password));
 		}
 
 		/// <summary>
@@ -500,10 +390,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				int extractCount = 0;
 				int extractIndex = 0;
-				ZipEntry entry;
+
 				byte[] decompressedData = new byte[100];
 
-				while ((entry = inStream.GetNextEntry()) != null)
+				while (inStream.GetNextEntry() != null)
 				{
 					extractCount = decompressedData.Length;
 					extractIndex = 0;
@@ -529,7 +419,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void BasicStoredEncrypted()
 		{
-			ExerciseZip(CompressionMethod.Stored, 0, 50000, "Rosebud", true);
+			ExerciseZip(CompressionMethod.Stored, compressionLevel: 0, size: 50000, "Rosebud", canSeek: true);
 		}
 
 		/// <summary>
@@ -540,7 +430,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Zip")]
 		public void BasicStoredEncryptedNonSeekable()
 		{
-			ExerciseZip(CompressionMethod.Stored, 0, 50000, "Rosebud", false);
+			ExerciseZip(CompressionMethod.Stored, compressionLevel: 0, size: 50000, "Rosebud", canSeek: false);
 		}
 
 		/// <summary>
@@ -562,12 +452,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			outStream.PutNextEntry(entry);
 			Assert.AreEqual(0, outStream.GetLevel(), "Compression level invalid");
 
-			AddRandomDataToEntry(outStream, 100);
+			Utils.WriteDummyData(outStream, 100);
 			entry = new ZipEntry("2.tst");
 			entry.CompressionMethod = CompressionMethod.Deflated;
 			outStream.PutNextEntry(entry);
 			Assert.AreEqual(8, outStream.GetLevel(), "Compression level invalid");
-			AddRandomDataToEntry(outStream, 100);
+			Utils.WriteDummyData(outStream, 100);
 
 			outStream.Close();
 		}
@@ -856,20 +746,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			return result;
 		}
 
-		private void CheckNameConversion(string toCheck)
-		{
-			byte[] intermediate = ZipStrings.ConvertToArray(toCheck);
-			string final = ZipStrings.ConvertToString(intermediate);
-
-			Assert.AreEqual(toCheck, final, "Expected identical result");
-		}
-
 		[Test]
 		[Category("Zip")]
-		public void NameConversion()
+		[TestCase("Hello")]
+		[TestCase("a/b/c/d/e/f/g/h/SomethingLikeAnArchiveName.txt")]
+		public void LegacyNameConversion(string name)
 		{
-			CheckNameConversion("Hello");
-			CheckNameConversion("a/b/c/d/e/f/g/h/SomethingLikeAnArchiveName.txt");
+			var encoding = StringCodec.Default.ZipEncoding(false);
+			byte[] intermediate = encoding.GetBytes(name);
+			string final = encoding.GetString(intermediate);
+
+			Assert.AreEqual(name, final, "Expected identical result");
 		}
 
 		[Test]
@@ -878,22 +765,22 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-			ZipStrings.CodePage = 850;
+			var codec = StringCodec.FromCodePage(850);
 			string sample = "Hello world";
 
 			byte[] rawData = Encoding.ASCII.GetBytes(sample);
 
-			string converted = ZipStrings.ConvertToStringExt(0, rawData);
+			var converted = codec.LegacyEncoding.GetString(rawData);
 			Assert.AreEqual(sample, converted);
 
-			converted = ZipStrings.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
+			converted = codec.ZipInputEncoding(GeneralBitFlags.UnicodeText).GetString(rawData);
 			Assert.AreEqual(sample, converted);
 
 			// This time use some greek characters
 			sample = "\u03A5\u03d5\u03a3";
 			rawData = Encoding.UTF8.GetBytes(sample);
 
-			converted = ZipStrings.ConvertToStringExt((int)GeneralBitFlags.UnicodeText, rawData);
+			converted = codec.ZipInputEncoding(GeneralBitFlags.UnicodeText).GetString(rawData);
 			Assert.AreEqual(sample, converted);
 		}
 

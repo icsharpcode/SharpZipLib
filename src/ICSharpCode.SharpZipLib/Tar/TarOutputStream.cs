@@ -1,6 +1,9 @@
 using System;
+using System.Buffers;
 using System.IO;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Tar
 {
@@ -50,8 +53,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 			this.outputStream = outputStream;
 			buffer = TarBuffer.CreateOutputTarBuffer(outputStream, blockFactor);
 
-			assemblyBuffer = new byte[TarBuffer.BlockSize];
-			blockBuffer = new byte[TarBuffer.BlockSize];
+			assemblyBuffer = ArrayPool<byte>.Shared.Rent(TarBuffer.BlockSize);
+			blockBuffer = ArrayPool<byte>.Shared.Rent(TarBuffer.BlockSize);
 		}
 
 		/// <summary>
@@ -70,8 +73,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 			this.outputStream = outputStream;
 			buffer = TarBuffer.CreateOutputTarBuffer(outputStream, blockFactor);
 
-			assemblyBuffer = new byte[TarBuffer.BlockSize];
-			blockBuffer = new byte[TarBuffer.BlockSize];
+			assemblyBuffer = ArrayPool<byte>.Shared.Rent(TarBuffer.BlockSize);
+			blockBuffer = ArrayPool<byte>.Shared.Rent(TarBuffer.BlockSize);
 
 			this.nameEncoding = nameEncoding;
 		}
@@ -94,10 +97,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public override bool CanRead
 		{
-			get
-			{
-				return outputStream.CanRead;
-			}
+			get { return outputStream.CanRead; }
 		}
 
 		/// <summary>
@@ -105,10 +105,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public override bool CanSeek
 		{
-			get
-			{
-				return outputStream.CanSeek;
-			}
+			get { return outputStream.CanSeek; }
 		}
 
 		/// <summary>
@@ -116,10 +113,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public override bool CanWrite
 		{
-			get
-			{
-				return outputStream.CanWrite;
-			}
+			get { return outputStream.CanWrite; }
 		}
 
 		/// <summary>
@@ -127,10 +121,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public override long Length
 		{
-			get
-			{
-				return outputStream.Length;
-			}
+			get { return outputStream.Length; }
 		}
 
 		/// <summary>
@@ -138,14 +129,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </summary>
 		public override long Position
 		{
-			get
-			{
-				return outputStream.Position;
-			}
-			set
-			{
-				outputStream.Position = value;
-			}
+			get { return outputStream.Position; }
+			set { outputStream.Position = value; }
 		}
 
 		/// <summary>
@@ -194,6 +179,23 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 
 		/// <summary>
+		/// read bytes from the current stream and advance the position within the
+		/// stream by the number of bytes read.
+		/// </summary>
+		/// <param name="buffer">The buffer to store read bytes in.</param>
+		/// <param name="offset">The index into the buffer to being storing bytes at.</param>
+		/// <param name="count">The desired number of bytes to read.</param>
+		/// <param name="cancellationToken"></param>
+		/// <returns>The total number of bytes read, or zero if at the end of the stream.
+		/// The number of bytes may be less than the <paramref name="count">count</paramref>
+		/// requested if data is not available.</returns>
+		public override async Task<int> ReadAsync(byte[] buffer, int offset, int count,
+			CancellationToken cancellationToken)
+		{
+			return await outputStream.ReadAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
+		}
+
+		/// <summary>
 		/// All buffered data is written to destination
 		/// </summary>
 		public override void Flush()
@@ -202,16 +204,33 @@ namespace ICSharpCode.SharpZipLib.Tar
 		}
 
 		/// <summary>
+		/// All buffered data is written to destination
+		/// </summary>
+		public override async Task FlushAsync(CancellationToken cancellationToken)
+		{
+			await outputStream.FlushAsync(cancellationToken).ConfigureAwait(false);
+		}
+
+		/// <summary>
 		/// Ends the TAR archive without closing the underlying OutputStream.
 		/// The result is that the EOF block of nulls is written.
 		/// </summary>
-		public void Finish()
+		public void Finish() => FinishAsync(CancellationToken.None, false).GetAwaiter().GetResult();
+		
+		/// <summary>
+		/// Ends the TAR archive without closing the underlying OutputStream.
+		/// The result is that the EOF block of nulls is written.
+		/// </summary>
+		public Task FinishAsync(CancellationToken cancellationToken) => FinishAsync(cancellationToken, true);
+
+		private async Task FinishAsync(CancellationToken cancellationToken, bool isAsync)
 		{
 			if (IsEntryOpen)
 			{
-				CloseEntry();
+				await CloseEntryAsync(cancellationToken, isAsync).ConfigureAwait(false);
 			}
-			WriteEofBlock();
+
+			await WriteEofBlockAsync(cancellationToken, isAsync).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -226,6 +245,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 				isClosed = true;
 				Finish();
 				buffer.Close();
+
+				ArrayPool<byte>.Shared.Return(assemblyBuffer);
+				ArrayPool<byte>.Shared.Return(blockBuffer);
 			}
 		}
 
@@ -269,44 +291,70 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="entry">
 		/// The TarEntry to be written to the archive.
 		/// </param>
-		public void PutNextEntry(TarEntry entry)
+		/// <param name="cancellationToken"></param>
+		public Task PutNextEntryAsync(TarEntry entry, CancellationToken cancellationToken) =>
+			PutNextEntryAsync(entry, cancellationToken, true);
+
+		/// <summary>
+		/// Put an entry on the output stream. This writes the entry's
+		/// header and positions the output stream for writing
+		/// the contents of the entry. Once this method is called, the
+		/// stream is ready for calls to write() to write the entry's
+		/// contents. Once the contents are written, closeEntry()
+		/// <B>MUST</B> be called to ensure that all buffered data
+		/// is completely written to the output stream.
+		/// </summary>
+		/// <param name="entry">
+		/// The TarEntry to be written to the archive.
+		/// </param>
+		public void PutNextEntry(TarEntry entry) =>
+			PutNextEntryAsync(entry, CancellationToken.None, false).GetAwaiter().GetResult();
+
+		private async Task PutNextEntryAsync(TarEntry entry, CancellationToken cancellationToken, bool isAsync)
 		{
 			if (entry == null)
 			{
 				throw new ArgumentNullException(nameof(entry));
 			}
 
-			var namelen = nameEncoding != null ? nameEncoding.GetByteCount(entry.TarHeader.Name) : entry.TarHeader.Name.Length;
+			var namelen = nameEncoding != null
+				? nameEncoding.GetByteCount(entry.TarHeader.Name)
+				: entry.TarHeader.Name.Length;
 
 			if (namelen > TarHeader.NAMELEN)
 			{
 				var longHeader = new TarHeader();
 				longHeader.TypeFlag = TarHeader.LF_GNU_LONGNAME;
 				longHeader.Name = longHeader.Name + "././@LongLink";
-				longHeader.Mode = 420;//644 by default
+				longHeader.Mode = 420; //644 by default
 				longHeader.UserId = entry.UserId;
 				longHeader.GroupId = entry.GroupId;
 				longHeader.GroupName = entry.GroupName;
 				longHeader.UserName = entry.UserName;
 				longHeader.LinkName = "";
-				longHeader.Size = namelen + 1;  // Plus one to avoid dropping last char
+				longHeader.Size = namelen + 1; // Plus one to avoid dropping last char
 
 				longHeader.WriteHeader(blockBuffer, nameEncoding);
-				buffer.WriteBlock(blockBuffer);  // Add special long filename header block
+				// Add special long filename header block
+				await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync).ConfigureAwait(false);
 
 				int nameCharIndex = 0;
 
-				while (nameCharIndex < namelen + 1 /* we've allocated one for the null char, now we must make sure it gets written out */)
+				while
+					(nameCharIndex <
+					 namelen + 1 /* we've allocated one for the null char, now we must make sure it gets written out */)
 				{
 					Array.Clear(blockBuffer, 0, blockBuffer.Length);
-					TarHeader.GetAsciiBytes(entry.TarHeader.Name, nameCharIndex, this.blockBuffer, 0, TarBuffer.BlockSize, nameEncoding); // This func handles OK the extra char out of string length
+					TarHeader.GetAsciiBytes(entry.TarHeader.Name, nameCharIndex, this.blockBuffer, 0,
+						TarBuffer.BlockSize, nameEncoding); // This func handles OK the extra char out of string length
 					nameCharIndex += TarBuffer.BlockSize;
-					buffer.WriteBlock(blockBuffer);
+
+					await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync).ConfigureAwait(false);
 				}
 			}
 
 			entry.WriteEntryHeader(blockBuffer, nameEncoding);
-			buffer.WriteBlock(blockBuffer);
+			await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync).ConfigureAwait(false);
 
 			currBytes = 0;
 
@@ -322,13 +370,26 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// to the output stream before this entry is closed and the
 		/// next entry written.
 		/// </summary>
-		public void CloseEntry()
+		public Task CloseEntryAsync(CancellationToken cancellationToken) => CloseEntryAsync(cancellationToken, true);
+
+		/// <summary>
+		/// Close an entry. This method MUST be called for all file
+		/// entries that contain data. The reason is that we must
+		/// buffer data written to the stream in order to satisfy
+		/// the buffer's block based writes. Thus, there may be
+		/// data fragments still being assembled that must be written
+		/// to the output stream before this entry is closed and the
+		/// next entry written.
+		/// </summary>
+		public void CloseEntry() => CloseEntryAsync(CancellationToken.None, false).GetAwaiter().GetResult();
+
+		private async Task CloseEntryAsync(CancellationToken cancellationToken, bool isAsync)
 		{
 			if (assemblyBufferLength > 0)
 			{
 				Array.Clear(assemblyBuffer, assemblyBufferLength, assemblyBuffer.Length - assemblyBufferLength);
 
-				buffer.WriteBlock(assemblyBuffer);
+				await buffer.WriteBlockAsync(assemblyBuffer, 0, cancellationToken, isAsync).ConfigureAwait(false);
 
 				currBytes += assemblyBufferLength;
 				assemblyBufferLength = 0;
@@ -352,7 +413,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </param>
 		public override void WriteByte(byte value)
 		{
-			Write(new byte[] { value }, 0, 1);
+			var oneByteArray = ArrayPool<byte>.Shared.Rent(1);
+			oneByteArray[0] = value;
+			Write(oneByteArray, 0, 1);
+			ArrayPool<byte>.Shared.Return(oneByteArray);
 		}
 
 		/// <summary>
@@ -373,7 +437,32 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name = "count">
 		/// The number of bytes to write.
 		/// </param>
-		public override void Write(byte[] buffer, int offset, int count)
+		public override void Write(byte[] buffer, int offset, int count) =>
+			WriteAsync(buffer, offset, count, CancellationToken.None, false).GetAwaiter().GetResult();
+
+		/// <summary>
+		/// Writes bytes to the current tar archive entry. This method
+		/// is aware of the current entry and will throw an exception if
+		/// you attempt to write bytes past the length specified for the
+		/// current entry. The method is also (painfully) aware of the
+		/// record buffering required by TarBuffer, and manages buffers
+		/// that are not a multiple of recordsize in length, including
+		/// assembling records from small buffers.
+		/// </summary>
+		/// <param name = "buffer">
+		/// The buffer to write to the archive.
+		/// </param>
+		/// <param name = "offset">
+		/// The offset in the buffer from which to get bytes.
+		/// </param>
+		/// <param name = "count">
+		/// The number of bytes to write.
+		/// </param>
+		/// <param name="cancellationToken"></param>
+		public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) =>
+			WriteAsync(buffer, offset, count, cancellationToken, true);
+
+		private async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken, bool isAsync)
 		{
 			if (buffer == null)
 			{
@@ -418,7 +507,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					Array.Copy(assemblyBuffer, 0, blockBuffer, 0, assemblyBufferLength);
 					Array.Copy(buffer, offset, blockBuffer, assemblyBufferLength, aLen);
 
-					this.buffer.WriteBlock(blockBuffer);
+					await this.buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync).ConfigureAwait(false);
 
 					currBytes += blockBuffer.Length;
 
@@ -450,7 +539,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					break;
 				}
 
-				this.buffer.WriteBlock(buffer, offset);
+				await this.buffer.WriteBlockAsync(buffer, offset, cancellationToken, isAsync).ConfigureAwait(false);
 
 				int bufferLength = blockBuffer.Length;
 				currBytes += bufferLength;
@@ -463,11 +552,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Write an EOF (end of archive) block to the tar archive.
 		/// The	end of the archive is indicated	by two blocks consisting entirely of zero bytes.
 		/// </summary>
-		private void WriteEofBlock()
+		private async Task WriteEofBlockAsync(CancellationToken cancellationToken, bool isAsync)
 		{
 			Array.Clear(blockBuffer, 0, blockBuffer.Length);
-			buffer.WriteBlock(blockBuffer);
-			buffer.WriteBlock(blockBuffer);
+			await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync).ConfigureAwait(false);
+			await buffer.WriteBlockAsync(blockBuffer, 0, cancellationToken, isAsync).ConfigureAwait(false);
 		}
 
 		#region Instance Fields

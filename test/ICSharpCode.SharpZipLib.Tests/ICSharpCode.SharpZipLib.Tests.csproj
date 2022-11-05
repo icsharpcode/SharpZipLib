@@ -2,17 +2,20 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-		<TargetFrameworks>netcoreapp3.1;net46</TargetFrameworks>
+		<TargetFrameworks>net6.0;net462</TargetFrameworks>
     <ApplicationIcon />
     <StartupObject />
-		<LangVersion>8</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\assets\ICSharpCode.SharpZipLib.snk</AssemblyOriginatorKeyFile>
+    <PublicSign>true</PublicSign>
+		<LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
-    <PackageReference Include="nunit" Version="3.13.1" />
-    <PackageReference Include="nunit.console" Version="3.12.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="nunit" Version="3.13.3" />
+    <PackageReference Include="nunit.console" Version="3.15.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.4.0" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
@@ -23,6 +26,12 @@
 
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\ICSharpCode.SharpZipLib.snk">
+      <Link>ICSharpCode.SharpZipLib.snk</Link>
+    </None>
   </ItemGroup>
 
 </Project>

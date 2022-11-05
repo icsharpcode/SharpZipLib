@@ -1,6 +1,5 @@
 using System;
 using System.Security.Cryptography;
-using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Encryption
 {
@@ -9,31 +8,6 @@ namespace ICSharpCode.SharpZipLib.Encryption
 	/// </summary>
 	internal class ZipAESTransform : ICryptoTransform
 	{
-#if NET45
-		class IncrementalHash : HMACSHA1
-		{
-			bool _finalised;
-			public IncrementalHash(byte[] key) : base(key) { }
-			public static IncrementalHash CreateHMAC(string n, byte[] key) => new IncrementalHash(key);
-			public void AppendData(byte[] buffer, int offset, int count) => TransformBlock(buffer, offset, count, buffer, offset);
-			public byte[] GetHashAndReset()
-			{
-				if (!_finalised)
-				{
-					byte[] dummy = new byte[0];
-					TransformFinalBlock(dummy, 0, 0);
-					_finalised = true;
-				}
-				return Hash;
-			}
-		}
-
-		static class HashAlgorithmName
-		{
-			public static string SHA1 = null;
-		}
-#endif
-
 		private const int PWD_VER_LENGTH = 2;
 
 		// WinZip use iteration count of 1000 for PBKDF2 key generation
@@ -76,7 +50,11 @@ namespace ICSharpCode.SharpZipLib.Encryption
 			_encrPos = ENCRYPT_BLOCK;
 
 			// Performs the equivalent of derive_key in Dr Brian Gladman's pwd2key.c
+#if NET472_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER
+			var pdb = new Rfc2898DeriveBytes(key, saltBytes, KEY_ROUNDS, HashAlgorithmName.SHA1);
+#else
 			var pdb = new Rfc2898DeriveBytes(key, saltBytes, KEY_ROUNDS);
+#endif
 			var rm = Aes.Create();
 			rm.Mode = CipherMode.ECB;           // No feedback from cipher for CTR mode
 			_counterNonce = new byte[_blockSize];
@@ -133,91 +111,67 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Returns the 2 byte password verifier
 		/// </summary>
-		public byte[] PwdVerifier
-		{
-			get
-			{
-				return _pwdVerifier;
-			}
-		}
+		public byte[] PwdVerifier => _pwdVerifier;
 
 		/// <summary>
 		/// Returns the 10 byte AUTH CODE to be checked or appended immediately following the AES data stream.
 		/// </summary>
-		public byte[] GetAuthCode()
-		{
-			if (_authCode == null)
-			{
-				_authCode = _hmacsha1.GetHashAndReset();
-			}
-			return _authCode;
-		}
+		public byte[] GetAuthCode() => _authCode ?? (_authCode = _hmacsha1.GetHashAndReset());
 
 		#region ICryptoTransform Members
 
 		/// <summary>
-		/// Not implemented.
+		/// Transform final block and read auth code
 		/// </summary>
 		public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
 		{
-			if(inputCount > 0)
-			{
-				throw new NotImplementedException("TransformFinalBlock is not implemented and inputCount is greater than 0");
+			var buffer = Array.Empty<byte>();
+
+			// FIXME: When used together with `ZipAESStream`, the final block handling is done inside of it instead
+			// This should not be necessary anymore, and the entire `ZipAESStream` class should be replaced with a plain `CryptoStream`
+			if (inputCount != 0) {
+				if (inputCount > ZipAESStream.AUTH_CODE_LENGTH)
+				{
+					// At least one byte of data is preceeding the auth code
+					int finalBlock = inputCount - ZipAESStream.AUTH_CODE_LENGTH;
+					buffer = new byte[finalBlock];
+					TransformBlock(inputBuffer, inputOffset, finalBlock, buffer, 0);
+				}
+				else if (inputCount < ZipAESStream.AUTH_CODE_LENGTH)
+					throw new Zip.ZipException("Auth code missing from input stream");
+
+				// Read the authcode from the last 10 bytes
+				_authCode = _hmacsha1.GetHashAndReset();
 			}
-			return Empty.Array<byte>();
+			
+
+			return buffer;
 		}
 
 		/// <summary>
 		/// Gets the size of the input data blocks in bytes.
 		/// </summary>
-		public int InputBlockSize
-		{
-			get
-			{
-				return _blockSize;
-			}
-		}
+		public int InputBlockSize => _blockSize;
 
 		/// <summary>
 		/// Gets the size of the output data blocks in bytes.
 		/// </summary>
-		public int OutputBlockSize
-		{
-			get
-			{
-				return _blockSize;
-			}
-		}
+		public int OutputBlockSize => _blockSize;
 
 		/// <summary>
 		/// Gets a value indicating whether multiple blocks can be transformed.
 		/// </summary>
-		public bool CanTransformMultipleBlocks
-		{
-			get
-			{
-				return true;
-			}
-		}
+		public bool CanTransformMultipleBlocks => true;
 
 		/// <summary>
 		/// Gets a value indicating whether the current transform can be reused.
 		/// </summary>
-		public bool CanReuseTransform
-		{
-			get
-			{
-				return true;
-			}
-		}
+		public bool CanReuseTransform => true;
 
 		/// <summary>
 		/// Cleanup internal state.
 		/// </summary>
-		public void Dispose()
-		{
-			_encryptor.Dispose();
-		}
+		public void Dispose() => _encryptor.Dispose();
 
 		#endregion ICryptoTransform Members
 	}

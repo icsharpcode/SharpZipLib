@@ -2,6 +2,9 @@ using ICSharpCode.SharpZipLib.Encryption;
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 {
@@ -105,10 +108,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					break;
 				}
 
-				if (cryptoTransform_ != null)
-				{
-					EncryptBlock(buffer_, 0, len);
-				}
+				EncryptBlock(buffer_, 0, len);
 
 				baseOutputStream_.Write(buffer_, 0, len);
 			}
@@ -119,6 +119,47 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 
 			baseOutputStream_.Flush();
+
+			if (cryptoTransform_ != null)
+			{
+				if (cryptoTransform_ is ZipAESTransform)
+				{
+					AESAuthCode = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
+				}
+				cryptoTransform_.Dispose();
+				cryptoTransform_ = null;
+			}
+		}
+
+		/// <summary>
+		/// Finishes the stream by calling finish() on the deflater.
+		/// </summary>
+		/// <param name="ct">The <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
+		/// <exception cref="SharpZipBaseException">
+		/// Not all input is deflated
+		/// </exception>
+		public virtual async Task FinishAsync(CancellationToken ct)
+		{
+			deflater_.Finish();
+			while (!deflater_.IsFinished)
+			{
+				int len = deflater_.Deflate(buffer_, 0, buffer_.Length);
+				if (len <= 0)
+				{
+					break;
+				}
+
+				EncryptBlock(buffer_, 0, len);
+
+				await baseOutputStream_.WriteAsync(buffer_, 0, len, ct).ConfigureAwait(false);
+			}
+
+			if (!deflater_.IsFinished)
+			{
+				throw new SharpZipBaseException("Can't deflate all input?");
+			}
+
+			await baseOutputStream_.FlushAsync(ct).ConfigureAwait(false);
 
 			if (cryptoTransform_ != null)
 			{
@@ -163,6 +204,14 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		protected byte[] AESAuthCode;
 
+		/// <inheritdoc cref="StringCodec.ZipCryptoEncoding"/>
+		public Encoding ZipCryptoEncoding {
+			get => _stringCodec.ZipCryptoEncoding;
+			set {
+				_stringCodec = _stringCodec.WithZipCryptoEncoding(value);
+			} 
+		}
+
 		/// <summary>
 		/// Encrypt a block of data
 		/// </summary>
@@ -177,6 +226,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </param>
 		protected void EncryptBlock(byte[] buffer, int offset, int length)
 		{
+		    if(cryptoTransform_ is null) return;
 			cryptoTransform_.TransformBlock(buffer, 0, length, buffer, 0);
 		}
 
@@ -204,10 +254,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				{
 					break;
 				}
-				if (cryptoTransform_ != null)
-				{
-					EncryptBlock(buffer_, 0, deflateCount);
-				}
+
+				EncryptBlock(buffer_, 0, deflateCount);
 
 				baseOutputStream_.Write(buffer_, 0, deflateCount);
 			}
@@ -369,6 +417,38 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			}
 		}
 
+#if NETSTANDARD2_1_OR_GREATER
+		/// <summary>
+		/// Calls <see cref="FinishAsync"/> and closes the underlying
+		/// stream when <see cref="IsStreamOwner"></see> is true.
+		/// </summary>
+		public override async ValueTask DisposeAsync()
+		{
+			if (!isClosed_)
+			{
+				isClosed_ = true;
+
+				try
+				{
+					await FinishAsync(CancellationToken.None).ConfigureAwait(false);
+					if (cryptoTransform_ != null)
+					{
+						GetAuthCodeIfAES();
+						cryptoTransform_.Dispose();
+						cryptoTransform_ = null;
+					}
+				}
+				finally
+				{
+					if (IsStreamOwner)
+					{
+						await baseOutputStream_.DisposeAsync().ConfigureAwait(false);
+					}
+				}
+			}
+		}
+#endif
+
 		/// <summary>
 		/// Get the Auth code for AES encrypted entries
 		/// </summary>
@@ -432,6 +512,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		protected Stream baseOutputStream_;
 
 		private bool isClosed_;
+
+		/// <inheritdoc cref="StringCodec"/>
+		protected StringCodec _stringCodec = ZipStrings.GetStringCodec();
 
 		#endregion Instance Fields
 	}
