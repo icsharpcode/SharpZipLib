@@ -551,6 +551,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </exception>
 		public void CloseEntry()
 		{
+			// Note: This method will run synchronously
+			FinishCompression(null).Wait();
 			WriteEntryFooter(baseOutputStream_);
 
 			// Patch the header if possible
@@ -564,9 +566,41 @@ namespace ICSharpCode.SharpZipLib.Zip
 			curEntry = null;
 		}
 
+		private async Task FinishCompression(CancellationToken? ct)
+		{
+			// Compression handled externally
+			if (entryIsPassthrough) return;
+
+			// First finish the deflater, if appropriate
+			if (curMethod == CompressionMethod.Deflated)
+			{
+				if (size >= 0)
+				{
+					if (ct.HasValue) {
+						await base.FinishAsync(ct.Value);
+					} else {
+						base.Finish();
+					}
+				}
+				else
+				{
+					deflater_.Reset();
+				}
+			}
+			if (curMethod == CompressionMethod.Stored)
+			{
+				// This is done by Finish() for Deflated entries, but we need to do it
+				// ourselves for Stored ones
+				base.GetAuthCodeIfAES();
+			}
+
+			return;
+		}
+
 		/// <inheritdoc cref="CloseEntry"/>
 		public async Task CloseEntryAsync(CancellationToken ct)
 		{
+			await FinishCompression(ct);
 			await baseOutputStream_.WriteProcToStreamAsync(WriteEntryFooter, ct).ConfigureAwait(false);
 
 			// Patch the header if possible
@@ -600,24 +634,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			long csize = size;
 
-			// First finish the deflater, if appropriate
-			if (curMethod == CompressionMethod.Deflated)
+			if (curMethod == CompressionMethod.Deflated && size >= 0)
 			{
-				if (size >= 0)
-				{
-					base.Finish();
-					csize = deflater_.TotalOut;
-				}
-				else
-				{
-					deflater_.Reset();
-				}
-			}
-			else if (curMethod == CompressionMethod.Stored)
-			{
-				// This is done by Finish() for Deflated entries, but we need to do it
-				// ourselves for Stored ones
-				base.GetAuthCodeIfAES();
+				csize = deflater_.TotalOut;
 			}
 
 			// Write the AES Authentication Code (a hash of the compressed and encrypted data)
