@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 {
@@ -187,6 +188,77 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		}
 
 	}
+
+#if NETSTANDARD2_1 || NETCOREAPP3_0_OR_GREATER
+	/// <summary>
+	/// A <see cref="Stream"/> that does not support non-async operations.
+	/// </summary>
+	/// <remarks>
+	/// This could not be done by extending MemoryStream itself, since other instances of MemoryStream tries to us a faster (non-async) method of copying
+	///  if it detects that it's a (subclass of) MemoryStream.
+	/// </remarks>
+	public class MemoryStreamWithoutSync : Stream
+	{
+		MemoryStream _inner = new MemoryStream();
+
+		public override bool CanRead => _inner.CanRead;
+		public override bool CanSeek => _inner.CanSeek;
+		public override bool CanWrite => _inner.CanWrite;
+		public override long Length => _inner.Length;
+		public override long Position { get => _inner.Position; set => _inner.Position = value; }
+
+		public byte[] ToArray() => _inner.ToArray();
+
+		public override void Flush() => throw new NotSupportedException($"Non-async call to {nameof(Flush)}");
+		
+
+		public override void CopyTo(Stream destination, int bufferSize) => throw new NotSupportedException($"Non-async call to {nameof(CopyTo)}");
+		public override void Write(ReadOnlySpan<byte> buffer) => throw new NotSupportedException($"Non-async call to {nameof(Write)}");
+		public override int Read(Span<byte> buffer) => throw new NotSupportedException($"Non-async call to {nameof(Read)}");
+
+		public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException($"Non-async call to {nameof(Write)}");
+		public override void WriteByte(byte value) => throw new NotSupportedException($"Non-async call to {nameof(Write)}");
+
+		public override int Read(byte[] buffer, int offset, int count)  => throw new NotSupportedException($"Non-async call to {nameof(Read)}");
+		public override int ReadByte() => throw new NotSupportedException($"Non-async call to {nameof(ReadByte)}");
+
+		// Even though our mock stream is writing synchronously, this should not fail the tests
+		public override async Task CopyToAsync(Stream destination, int bufferSize, CancellationToken cancellationToken) 
+		{
+			var buf = new byte[bufferSize];
+			while(_inner.Read(buf, 0, bufferSize) > 0) {
+				await destination.WriteAsync(buf, cancellationToken);
+			}
+		}
+		public override Task FlushAsync(CancellationToken cancellationToken) => TaskFromBlocking(() => _inner.Flush());
+		public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) => TaskFromBlocking(() => _inner.Write(buffer, offset, count));
+		public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) => Task.FromResult(_inner.Read(buffer, offset, count));
+		public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) => ValueTaskFromBlocking(() => _inner.Write(buffer.Span));
+		public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) => ValueTask.FromResult(_inner.Read(buffer.Span));
+		
+		static Task TaskFromBlocking(Action action)
+		{
+			action();
+			return Task.CompletedTask;
+		}
+
+		static ValueTask ValueTaskFromBlocking(Action action)
+		{
+			action();
+			return ValueTask.CompletedTask;
+		}
+
+		public override long Seek(long offset, SeekOrigin origin)
+		{
+			return _inner.Seek(offset, origin);
+		}
+
+		public override void SetLength(long value)
+		{
+			_inner.SetLength(value);
+		}
+	}
+#endif
 
 	/// <summary>
 	/// A <see cref="Stream"/> that cannot be read but supports infinite writes.
