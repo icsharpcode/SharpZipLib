@@ -208,14 +208,17 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 
 		public byte[] ToArray() => _inner.ToArray();
 
-		public override void CopyTo(Stream destination, int bufferSize) => throw new NotSupportedException($"Non-async call to {nameof(CopyTo)}");
 		public override void Flush() => throw new NotSupportedException($"Non-async call to {nameof(Flush)}");
-
+		
+#if NETSTANDARD2_1 || NETCOREAPP3_0_OR_GREATER
+		public override void CopyTo(Stream destination, int bufferSize) => throw new NotSupportedException($"Non-async call to {nameof(CopyTo)}");
 		public override void Write(ReadOnlySpan<byte> buffer) => throw new NotSupportedException($"Non-async call to {nameof(Write)}");
+		public override int Read(Span<byte> buffer) => throw new NotSupportedException($"Non-async call to {nameof(Read)}");
+#endif
+
 		public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException($"Non-async call to {nameof(Write)}");
 		public override void WriteByte(byte value) => throw new NotSupportedException($"Non-async call to {nameof(Write)}");
 
-		public override int Read(Span<byte> buffer) => throw new NotSupportedException($"Non-async call to {nameof(Read)}");
 		public override int Read(byte[] buffer, int offset, int count)  => throw new NotSupportedException($"Non-async call to {nameof(Read)}");
 		public override int ReadByte() => throw new NotSupportedException($"Non-async call to {nameof(ReadByte)}");
 
@@ -229,10 +232,12 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 		}
 		public override Task FlushAsync(CancellationToken cancellationToken) => TaskFromBlocking(() => _inner.Flush());
 		public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) => TaskFromBlocking(() => _inner.Write(buffer, offset, count));
-		public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) => ValueTaskFromBlocking(() => _inner.Write(buffer.Span));
 		public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) => Task.FromResult(_inner.Read(buffer, offset, count));
-		public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) => ValueTask.FromResult(_inner.Read(buffer.Span));
 
+#if NETSTANDARD2_1 || NETCOREAPP3_0_OR_GREATER
+		public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) => ValueTaskFromBlocking(() => _inner.Write(buffer.Span));
+		public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) => ValueTask.FromResult(_inner.Read(buffer.Span));
+#endif
 		
 		static Task TaskFromBlocking(Action action)
 		{
