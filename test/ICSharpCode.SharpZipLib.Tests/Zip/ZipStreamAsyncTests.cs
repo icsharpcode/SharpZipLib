@@ -121,5 +121,27 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			ZipTesting.AssertValidZip(new MemoryStream(ms.ToArray()));
 		}
 
+		[Test]
+		[Category("Zip")]
+		[Category("Async")]
+		public async Task WriteZipStreamToAsyncOnlyStream ()
+		{
+			await using(var ms = new MemoryStreamWithoutSync()){
+				await using(var outStream = new ZipOutputStream(ms) { IsStreamOwner = false })
+				{
+					await outStream.PutNextEntryAsync(new ZipEntry("FirstFile"));
+					await Utils.WriteDummyDataAsync(outStream, 12);
+
+					await outStream.PutNextEntryAsync(new ZipEntry("SecondFile"));
+					await Utils.WriteDummyDataAsync(outStream, 12);
+
+					await outStream.FinishAsync(CancellationToken.None);
+					await outStream.DisposeAsync();
+				}
+
+				ZipTesting.AssertValidZip(new MemoryStream(ms.ToArray()));
+			}
+		}
+
 	}
 }
