@@ -577,7 +577,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				if (size >= 0)
 				{
 					if (ct.HasValue) {
-						await base.FinishAsync(ct.Value);
+						await base.FinishAsync(ct.Value).ConfigureAwait(false);
 					} else {
 						base.Finish();
 					}
@@ -600,7 +600,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <inheritdoc cref="CloseEntry"/>
 		public async Task CloseEntryAsync(CancellationToken ct)
 		{
-			await FinishCompression(ct);
+			await FinishCompression(ct).ConfigureAwait(false);
 			await baseOutputStream_.WriteProcToStreamAsync(WriteEntryFooter, ct).ConfigureAwait(false);
 
 			// Patch the header if possible
