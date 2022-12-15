@@ -15,7 +15,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Async")]
 		public async Task WriteZipStreamUsingAsync()
 		{
-#if NETCOREAPP3_1_OR_GREATER
+#if NETSTANDARD2_1 || NETCOREAPP3_0_OR_GREATER
 			await using var ms = new MemoryStream();
 			
 			await using (var outStream = new ZipOutputStream(ms){IsStreamOwner = false})
@@ -126,6 +126,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Category("Async")]
 		public async Task WriteZipStreamToAsyncOnlyStream ()
 		{
+#if NETSTANDARD2_1 || NETCOREAPP3_0_OR_GREATER
 			await using(var ms = new MemoryStreamWithoutSync()){
 				await using(var outStream = new ZipOutputStream(ms) { IsStreamOwner = false })
 				{
@@ -141,6 +142,10 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 
 				ZipTesting.AssertValidZip(new MemoryStream(ms.ToArray()));
 			}
+#else
+			await Task.CompletedTask;
+			Assert.Ignore("AsyncDispose is not supported");
+#endif
 		}
 
 	}
