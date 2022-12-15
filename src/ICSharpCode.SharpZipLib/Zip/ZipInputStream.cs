@@ -5,7 +5,6 @@ using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -574,9 +573,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				// Generate and set crypto transform...
 				var managed = new PkzipClassicManaged();
-				Console.WriteLine($"Input Encoding: {_stringCodec.ZipCryptoEncoding.EncodingName}");
 				byte[] key = PkzipClassic.GenerateKeys(_stringCodec.ZipCryptoEncoding.GetBytes(password));
-				Console.WriteLine($"Input Bytes: {string.Join(", ", key.Select(b => $"{b:x2}").ToArray())}");
 
 				inputBuffer.CryptoTransform = managed.CreateDecryptor(key, null);
 
