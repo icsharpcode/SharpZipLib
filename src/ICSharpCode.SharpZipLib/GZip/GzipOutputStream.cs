@@ -138,6 +138,11 @@ namespace ICSharpCode.SharpZipLib.GZip
 			}
 		}
 
+		/// <summary>
+		/// If defined, will use this time instead of the current for the output header
+		/// </summary>
+		public DateTime? ModifiedTime { get; set; }
+
 		#endregion Public API
 
 		#region Stream overrides
@@ -305,7 +310,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 		private byte[] GetHeader()
 		{
-			var modTime = (int)((DateTime.Now.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000L);  // Ticks give back 100ns intervals
+			var modifiedUtc = ModifiedTime?.ToUniversalTime() ?? DateTime.UtcNow;
+			var modTime = (int)((modifiedUtc - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks / 10000000L);  // Ticks give back 100ns intervals
 			byte[] gzipHeader = {
 				// The two magic bytes
 				GZipConstants.ID1, 
