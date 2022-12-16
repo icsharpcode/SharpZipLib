@@ -767,9 +767,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private void InitializeZipCryptoPassword(string password)
 		{
 			var pkManaged = new PkzipClassicManaged();
-			Console.WriteLine($"Output Encoding: {ZipCryptoEncoding.EncodingName}");
 			byte[] key = PkzipClassic.GenerateKeys(ZipCryptoEncoding.GetBytes(password));
-			Console.WriteLine($"Output Bytes: {string.Join(", ", key.Select(b => $"{b:x2}").ToArray())}");
 			cryptoTransform_ = pkManaged.CreateEncryptor(key, null);
 		}
 		
@@ -782,6 +780,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ZipException">Archive size is invalid</exception>
 		/// <exception cref="System.InvalidOperationException">No entry is active.</exception>
 		public override void Write(byte[] buffer, int offset, int count)
+			=> WriteSyncOrAsync(buffer, offset, count, null).Wait();
+
+		/// <inheritdoc />
+		public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken ct)
+			=> await WriteSyncOrAsync(buffer, offset, count, ct).ConfigureAwait(false);
+
+		private async Task WriteSyncOrAsync(byte[] buffer, int offset, int count, CancellationToken? ct)
 		{
 			if (curEntry == null)
 			{
@@ -816,7 +821,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			size += count;
 
-			if(curMethod == CompressionMethod.Stored || entryIsPassthrough)
+			if (curMethod == CompressionMethod.Stored || entryIsPassthrough)
 			{
 				if (Password != null)
 				{
@@ -824,12 +829,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					baseOutputStream_.Write(buffer, offset, count);
+					if (ct.HasValue)
+					{
+						await baseOutputStream_.WriteAsync(buffer, offset, count, ct.Value).ConfigureAwait(false);
+					}
+					else
+					{
+						baseOutputStream_.Write(buffer, offset, count);
+					}
 				}
 			}
 			else
 			{
-				base.Write(buffer, offset, count);
+				if (ct.HasValue)
+				{
+					await base.WriteAsync(buffer, offset, count, ct.Value).ConfigureAwait(false);
+				}
+				else
+				{
+					base.Write(buffer, offset, count);
+				}
 			}
 		}
 
