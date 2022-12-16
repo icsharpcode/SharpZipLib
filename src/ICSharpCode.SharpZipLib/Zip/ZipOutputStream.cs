@@ -552,7 +552,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public void CloseEntry()
 		{
 			// Note: This method will run synchronously
-			FinishCompression(null).Wait();
+			FinishCompressionSyncOrAsync(null).GetAwaiter().GetResult();
 			WriteEntryFooter(baseOutputStream_);
 
 			// Patch the header if possible
@@ -566,7 +566,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			curEntry = null;
 		}
 
-		private async Task FinishCompression(CancellationToken? ct)
+		private async Task FinishCompressionSyncOrAsync(CancellationToken? ct)
 		{
 			// Compression handled externally
 			if (entryIsPassthrough) return;
@@ -600,7 +600,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <inheritdoc cref="CloseEntry"/>
 		public async Task CloseEntryAsync(CancellationToken ct)
 		{
-			await FinishCompression(ct).ConfigureAwait(false);
+			await FinishCompressionSyncOrAsync(ct).ConfigureAwait(false);
 			await baseOutputStream_.WriteProcToStreamAsync(WriteEntryFooter, ct).ConfigureAwait(false);
 
 			// Patch the header if possible
@@ -767,9 +767,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private void InitializeZipCryptoPassword(string password)
 		{
 			var pkManaged = new PkzipClassicManaged();
-			Console.WriteLine($"Output Encoding: {ZipCryptoEncoding.EncodingName}");
 			byte[] key = PkzipClassic.GenerateKeys(ZipCryptoEncoding.GetBytes(password));
-			Console.WriteLine($"Output Bytes: {string.Join(", ", key.Select(b => $"{b:x2}").ToArray())}");
 			cryptoTransform_ = pkManaged.CreateEncryptor(key, null);
 		}
 		
@@ -782,6 +780,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ZipException">Archive size is invalid</exception>
 		/// <exception cref="System.InvalidOperationException">No entry is active.</exception>
 		public override void Write(byte[] buffer, int offset, int count)
+			=> WriteSyncOrAsync(buffer, offset, count, null).GetAwaiter().GetResult();
+
+		/// <inheritdoc />
+		public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken ct)
+			=> await WriteSyncOrAsync(buffer, offset, count, ct).ConfigureAwait(false);
+
+		private async Task WriteSyncOrAsync(byte[] buffer, int offset, int count, CancellationToken? ct)
 		{
 			if (curEntry == null)
 			{
@@ -816,7 +821,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			size += count;
 
-			if(curMethod == CompressionMethod.Stored || entryIsPassthrough)
+			if (curMethod == CompressionMethod.Stored || entryIsPassthrough)
 			{
 				if (Password != null)
 				{
@@ -824,12 +829,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 				else
 				{
-					baseOutputStream_.Write(buffer, offset, count);
+					if (ct.HasValue)
+					{
+						await baseOutputStream_.WriteAsync(buffer, offset, count, ct.Value).ConfigureAwait(false);
+					}
+					else
+					{
+						baseOutputStream_.Write(buffer, offset, count);
+					}
 				}
 			}
 			else
 			{
-				base.Write(buffer, offset, count);
+				if (ct.HasValue)
+				{
+					await base.WriteAsync(buffer, offset, count, ct.Value).ConfigureAwait(false);
+				}
+				else
+				{
+					base.Write(buffer, offset, count);
+				}
 			}
 		}
 

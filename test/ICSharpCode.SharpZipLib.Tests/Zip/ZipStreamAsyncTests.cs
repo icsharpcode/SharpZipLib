@@ -124,17 +124,19 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		[Test]
 		[Category("Zip")]
 		[Category("Async")]
-		public async Task WriteZipStreamToAsyncOnlyStream ()
+		[TestCase(12, Description = "Small files")]
+		[TestCase(12000, Description = "Large files")]
+        public async Task WriteZipStreamToAsyncOnlyStream (int fileSize)
 		{
 #if NETSTANDARD2_1 || NETCOREAPP3_0_OR_GREATER
 			await using(var ms = new MemoryStreamWithoutSync()){
 				await using(var outStream = new ZipOutputStream(ms) { IsStreamOwner = false })
 				{
 					await outStream.PutNextEntryAsync(new ZipEntry("FirstFile"));
-					await Utils.WriteDummyDataAsync(outStream, 12);
+					await Utils.WriteDummyDataAsync(outStream, fileSize);
 
 					await outStream.PutNextEntryAsync(new ZipEntry("SecondFile"));
-					await Utils.WriteDummyDataAsync(outStream, 12);
+					await Utils.WriteDummyDataAsync(outStream, fileSize);
 
 					await outStream.FinishAsync(CancellationToken.None);
 					await outStream.DisposeAsync();

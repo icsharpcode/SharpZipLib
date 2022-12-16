@@ -334,7 +334,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			int crcval = (footer[0] & 0xff) | ((footer[1] & 0xff) << 8) | ((footer[2] & 0xff) << 16) | (footer[3] << 24);
 			if (crcval != (int)crc.Value)
 			{
-				throw new GZipException("GZIP crc sum mismatch, theirs \"" + crcval + "\" and ours \"" + (int)crc.Value);
+				throw new GZipException($"GZIP crc sum mismatch, theirs \"{crcval:x8}\" and ours \"{(int)crc.Value:x8}\"");
 			}
 
 			// NOTE The total here is the original total modulo 2 ^ 32.

@@ -240,11 +240,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// are processed.
 		/// </summary>
 		protected void Deflate()
-		{
-			Deflate(false);
-		}
+			=> DeflateSyncOrAsync(false, null).GetAwaiter().GetResult();
 
-		private void Deflate(bool flushing)
+		private async Task DeflateSyncOrAsync(bool flushing, CancellationToken? ct)
 		{
 			while (flushing || !deflater_.IsNeedingInput)
 			{
@@ -257,7 +255,14 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 				EncryptBlock(buffer_, 0, deflateCount);
 
-				baseOutputStream_.Write(buffer_, 0, deflateCount);
+				if (ct.HasValue)
+				{
+					await baseOutputStream_.WriteAsync(buffer_, 0, deflateCount, ct.Value).ConfigureAwait(false);
+				}
+				else
+				{
+					baseOutputStream_.Write(buffer_, 0, deflateCount);
+				}
 			}
 
 			if (!deflater_.IsNeedingInput)
@@ -383,8 +388,16 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		public override void Flush()
 		{
 			deflater_.Flush();
-			Deflate(true);
+			DeflateSyncOrAsync(true, null).GetAwaiter().GetResult();
 			baseOutputStream_.Flush();
+		}
+
+		/// <inheritdoc/>
+		public override async Task FlushAsync(CancellationToken cancellationToken)
+		{
+			deflater_.Flush();
+			await DeflateSyncOrAsync(true, cancellationToken).ConfigureAwait(false);
+			await baseOutputStream_.FlushAsync(cancellationToken).ConfigureAwait(false);
 		}
 
 		/// <summary>
@@ -489,6 +502,13 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			deflater_.SetInput(buffer, offset, count);
 			Deflate();
+		}
+
+		/// <inheritdoc />
+		public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken ct)
+		{
+			deflater_.SetInput(buffer, offset, count);
+			await DeflateSyncOrAsync(false, ct).ConfigureAwait(false);
 		}
 
 		#endregion Stream Overrides

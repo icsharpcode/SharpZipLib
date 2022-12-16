@@ -138,6 +138,11 @@ namespace ICSharpCode.SharpZipLib.GZip
 			}
 		}
 
+		/// <summary>
+		/// If defined, will use this time instead of the current for the output header
+		/// </summary>
+		public DateTime? ModifiedTime { get; set; }
+
 		#endregion Public API
 
 		#region Stream overrides
@@ -149,20 +154,46 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <param name="offset">Offset of first byte in buf to write</param>
 		/// <param name="count">Number of bytes to write</param>
 		public override void Write(byte[] buffer, int offset, int count)
+			=> WriteSyncOrAsync(buffer, offset, count, null).GetAwaiter().GetResult();
+
+		private async Task WriteSyncOrAsync(byte[] buffer, int offset, int count, CancellationToken? ct)
 		{
 			if (state_ == OutputState.Header)
 			{
-				WriteHeader();
+				if (ct.HasValue)
+				{
+					await WriteHeaderAsync(ct.Value).ConfigureAwait(false);
+				}
+				else
+				{
+					WriteHeader();
+				}
 			}
 
 			if (state_ != OutputState.Footer)
-			{
 				throw new InvalidOperationException("Write not permitted in current state");
-			}
-
+			
 			crc.Update(new ArraySegment<byte>(buffer, offset, count));
-			base.Write(buffer, offset, count);
+
+			if (ct.HasValue)
+			{
+				await base.WriteAsync(buffer, offset, count, ct.Value).ConfigureAwait(false);
+			}
+			else
+			{
+				base.Write(buffer, offset, count);
+			}
 		}
+
+		/// <summary>
+		/// Asynchronously write given buffer to output updating crc
+		/// </summary>
+		/// <param name="buffer">Buffer to write</param>
+		/// <param name="offset">Offset of first byte in buf to write</param>
+		/// <param name="count">Number of bytes to write</param>
+		/// <param name="ct">The token to monitor for cancellation requests</param>
+		public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken ct) 
+			=> await WriteSyncOrAsync(buffer, offset, count, ct).ConfigureAwait(false);
 
 		/// <summary>
 		/// Writes remaining compressed output data to the output stream
@@ -187,7 +218,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 			}
 		}
 
-#if NETSTANDARD2_1_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 		/// <inheritdoc cref="DeflaterOutputStream.Dispose"/>
 		public override async ValueTask DisposeAsync()
 		{
@@ -225,6 +256,16 @@ namespace ICSharpCode.SharpZipLib.GZip
 			base.Flush();
 		}
 
+		/// <inheritdoc cref="Flush"/>
+		public override async Task FlushAsync(CancellationToken ct)
+		{
+			if (state_ == OutputState.Header)
+			{
+				await WriteHeaderAsync(ct).ConfigureAwait(false);
+			}
+			await base.FlushAsync(ct).ConfigureAwait(false);
+		}
+
 		#endregion Stream overrides
 
 		#region DeflaterOutputStream overrides
@@ -249,21 +290,13 @@ namespace ICSharpCode.SharpZipLib.GZip
 			}
 		}
 		
-		/// <inheritdoc cref="Flush"/>
-		public override async Task FlushAsync(CancellationToken ct)
-		{
-			await WriteHeaderAsync().ConfigureAwait(false);
-			await base.FlushAsync(ct).ConfigureAwait(false);
-		}
-		
-		
 		/// <inheritdoc cref="Finish"/>
 		public override async Task FinishAsync(CancellationToken ct)
 		{
 			// If no data has been written a header should be added.
 			if (state_ == OutputState.Header)
 			{
-				await WriteHeaderAsync().ConfigureAwait(false);
+				await WriteHeaderAsync(ct).ConfigureAwait(false);
 			}
 
 			if (state_ == OutputState.Footer)
@@ -305,7 +338,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 
 		private byte[] GetHeader()
 		{
-			var modTime = (int)((DateTime.Now.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000L);  // Ticks give back 100ns intervals
+			var modifiedUtc = ModifiedTime?.ToUniversalTime() ?? DateTime.UtcNow;
+			var modTime = (int)((modifiedUtc - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks / 10000000L);  // Ticks give back 100ns intervals
 			byte[] gzipHeader = {
 				// The two magic bytes
 				GZipConstants.ID1, 
@@ -351,12 +385,12 @@ namespace ICSharpCode.SharpZipLib.GZip
 			baseOutputStream_.Write(gzipHeader, 0, gzipHeader.Length);
 		}
 		
-		private async Task WriteHeaderAsync()
+		private async Task WriteHeaderAsync(CancellationToken ct)
 		{
 			if (state_ != OutputState.Header) return;
 			state_ = OutputState.Footer;
 			var gzipHeader = GetHeader();
-			await baseOutputStream_.WriteAsync(gzipHeader, 0, gzipHeader.Length).ConfigureAwait(false);
+			await baseOutputStream_.WriteAsync(gzipHeader, 0, gzipHeader.Length, ct).ConfigureAwait(false);
 		}
 
 		#endregion Support Routines
