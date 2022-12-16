@@ -153,8 +153,8 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// <param name="buffer">Buffer to write</param>
 		/// <param name="offset">Offset of first byte in buf to write</param>
 		/// <param name="count">Number of bytes to write</param>
-		public override void Write(byte[] buffer, int offset, int count) 
-			=> WriteSyncOrAsync(buffer, offset, count, null).Wait();
+		public override void Write(byte[] buffer, int offset, int count)
+			=> WriteSyncOrAsync(buffer, offset, count, null).GetAwaiter().GetResult();
 
 		private async Task WriteSyncOrAsync(byte[] buffer, int offset, int count, CancellationToken? ct)
 		{

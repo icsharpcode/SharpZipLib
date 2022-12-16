@@ -240,9 +240,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// are processed.
 		/// </summary>
 		protected void Deflate()
-		{
-			DeflateSyncOrAsync(false, null).Wait();
-		}
+			=> DeflateSyncOrAsync(false, null).GetAwaiter().GetResult();
 
 		private async Task DeflateSyncOrAsync(bool flushing, CancellationToken? ct)
 		{
@@ -390,7 +388,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		public override void Flush()
 		{
 			deflater_.Flush();
-			DeflateSyncOrAsync(true, null).Wait();
+			DeflateSyncOrAsync(true, null).GetAwaiter().GetResult();
 			baseOutputStream_.Flush();
 		}
 

@@ -552,7 +552,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public void CloseEntry()
 		{
 			// Note: This method will run synchronously
-			FinishCompression(null).Wait();
+			FinishCompressionSyncOrAsync(null).GetAwaiter().GetResult();
 			WriteEntryFooter(baseOutputStream_);
 
 			// Patch the header if possible
@@ -566,7 +566,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			curEntry = null;
 		}
 
-		private async Task FinishCompression(CancellationToken? ct)
+		private async Task FinishCompressionSyncOrAsync(CancellationToken? ct)
 		{
 			// Compression handled externally
 			if (entryIsPassthrough) return;
@@ -600,7 +600,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <inheritdoc cref="CloseEntry"/>
 		public async Task CloseEntryAsync(CancellationToken ct)
 		{
-			await FinishCompression(ct).ConfigureAwait(false);
+			await FinishCompressionSyncOrAsync(ct).ConfigureAwait(false);
 			await baseOutputStream_.WriteProcToStreamAsync(WriteEntryFooter, ct).ConfigureAwait(false);
 
 			// Patch the header if possible
@@ -780,7 +780,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ZipException">Archive size is invalid</exception>
 		/// <exception cref="System.InvalidOperationException">No entry is active.</exception>
 		public override void Write(byte[] buffer, int offset, int count)
-			=> WriteSyncOrAsync(buffer, offset, count, null).Wait();
+			=> WriteSyncOrAsync(buffer, offset, count, null).GetAwaiter().GetResult();
 
 		/// <inheritdoc />
 		public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken ct)
