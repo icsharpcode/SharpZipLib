@@ -640,7 +640,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				{
 					if (isAsync)
 					{
-#if NETSTANDARD2_1_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 						await outputStream.DisposeAsync().ConfigureAwait(false);
 #else
 						outputStream.Dispose();
@@ -660,7 +660,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 				{
 					if (isAsync)
 					{
-#if NETSTANDARD2_1_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 						await inputStream.DisposeAsync().ConfigureAwait(false);
 #else
 						inputStream.Dispose();

@@ -869,7 +869,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					}
 				}
 
-#if NETSTANDARD2_1_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 				var value = encoding.GetString(header.Slice(0, count));
 #else
 				var value = encoding.GetString(header.ToArray(), 0, count);

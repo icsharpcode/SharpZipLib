@@ -232,7 +232,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			return ReadAsync(buffer.AsMemory().Slice(offset, count), cancellationToken, true).AsTask();
 		}
 
-#if NETSTANDARD2_1_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 		/// <summary>
 		/// Reads bytes from the current tar archive entry.
 		/// 
@@ -372,7 +372,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 			}
 		}
 
-#if NETSTANDARD2_1_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
 		/// <summary>
 		/// Closes this stream. Calls the TarBuffer's close() method.
 		/// The underlying stream is closed by the TarBuffer.
