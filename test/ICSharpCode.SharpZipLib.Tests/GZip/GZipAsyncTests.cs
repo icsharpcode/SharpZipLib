@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.GZip;
@@ -7,8 +8,6 @@ using NUnit.Framework;
 
 namespace ICSharpCode.SharpZipLib.Tests.GZip
 {
-	
-
 	[TestFixture]
 	public class GZipAsyncTests
 	{
@@ -139,6 +138,49 @@ namespace ICSharpCode.SharpZipLib.Tests.GZip
 				var content = await reader.ReadToEndAsync();
 				Assert.IsEmpty(content);
 			}
+		}
+
+		[Test]
+		[Category("GZip")]
+		[Category("Async")]
+		public async Task WriteGZipStreamToAsyncOnlyStream()
+		{
+#if NETSTANDARD2_1 || NETCOREAPP3_0_OR_GREATER
+			var content = Encoding.ASCII.GetBytes("a");
+			var modTime = DateTime.UtcNow;
+
+            await using (var msAsync = new MemoryStreamWithoutSync())
+			{
+				await using (var outStream = new GZipOutputStream(msAsync) { IsStreamOwner = false })
+				{
+					outStream.ModifiedTime = modTime;
+					await outStream.WriteAsync(content);
+				}
+
+				using var msSync = new MemoryStream();
+                using (var outStream = new GZipOutputStream(msSync) { IsStreamOwner = false })
+                {
+                    outStream.ModifiedTime = modTime;
+                    outStream.Write(content);
+                }
+
+				var syncBytes = string.Join(' ', msSync.ToArray());
+				var asyncBytes = string.Join(' ', msAsync.ToArray());
+
+                Assert.AreEqual(syncBytes, asyncBytes, "Sync and Async compressed streams are not equal");
+
+                // Since GZipInputStream isn't async yet we need to read from it from a regular MemoryStream
+                using (var readStream = new MemoryStream(msAsync.ToArray()))
+				using (var inStream = new GZipInputStream(readStream))
+				using (var reader = new StreamReader(inStream))
+				{
+					Assert.AreEqual(content, await reader.ReadToEndAsync());
+				}
+			}
+#else
+			await Task.CompletedTask;
+			Assert.Ignore("AsyncDispose is not supported");
+#endif
 		}
 	}
 }
