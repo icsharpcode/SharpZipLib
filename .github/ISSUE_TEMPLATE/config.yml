@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question
+    url: https://github.com/icsharpcode/SharpZipLib/discussions/new?category=q-a
+    about: Post any questions in QA discussions instead of creating an issue
+  - name: Discuss
+    url: https://github.com/icsharpcode/SharpZipLib/discussions/new
+    about: Discuss with other community members
