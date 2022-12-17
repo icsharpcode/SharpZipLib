@@ -1,0 +1,92 @@
+name: 🐛 Bug report
+description: Create a report to help us improve
+labels: ["bug"]
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is
+    validations:
+      required: true
+
+  - type: input
+    id: reproduce-code
+    attributes:
+      description: |
+        If possible, the best way to display an issue is by making a reproducable code snippet available at jsfiddle.  
+        Create a dotnet fiddle which reproduces your issue. You can use [this template](https://p1k.se/sharpziplib-repro) or [create a new one](https://dotnetfiddle.net/).
+      placeholder: https://dotnetfiddle.net/r39r0c0d3
+      label: Reproduction Code
+
+  - type: textarea
+    id: reproduce-steps
+    attributes:
+      label: Steps to reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+ 
+  - id: expected
+    type: textarea
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+
+  - id: operating-system
+    type: dropdown
+    attributes:
+      label: Operating System
+      multiple: true
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: false
+
+  - id: framework
+    type: dropdown
+    attributes:
+      label: Framework Version
+      multiple: true
+      options:
+        - .NET 7
+        - .NET 6
+        - .NET 5
+        - .NET Core v3 and earlier
+        - .NET Framework 4.x
+        - Unity
+        - Other
+    validations:
+      required: false
+      
+  - id: tags
+    type: dropdown
+    attributes:
+      label: Tags
+      description: What areas are your issue related to?
+      multiple: true
+      options:
+        - ZIP
+        - GZip
+        - Tar
+        - BZip2
+        - Encoding
+        - Encryption
+        - Documentation
+        - Async
+        - Performance
+
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here.

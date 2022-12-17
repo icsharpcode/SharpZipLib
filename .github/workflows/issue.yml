@@ -1,0 +1,30 @@
+name: Apply labels from issue
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  Process_Issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Parse Issue Forms Body
+        id: parse
+        uses: zentered/issue-forms-body-parser@v1.4.3
+      - name: Apply labels from tags
+        uses: actions/github-script@v6
+        env:
+          PARSED_DATA: "${{ steps.parse.outputs.data }}"
+        with:
+          script: |
+            const parsed = JSON.parse(process.env["PARSED_DATA"]);
+            const tags = parsed.tags.text;
+            console.log('Parsed tags:', tags);
+            const labels = tags.split(',').map( t => t.trim().toLowerCase() );
+            console.log('Applying labels:', labels);
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels,
+            })
