@@ -1085,6 +1085,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns true if the compression method is supported; false otherwise</returns>
 		public static bool IsCompressionMethodSupported(CompressionMethod method) 
 			=> method == CompressionMethod.Deflated
+			|| method == CompressionMethod.Deflate64
 			|| method == CompressionMethod.Stored
 			|| method == CompressionMethod.BZip2;
 
