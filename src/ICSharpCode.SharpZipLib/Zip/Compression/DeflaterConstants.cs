@@ -142,5 +142,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// Internal compression engine constant
 		/// </summary>
 		public static int[] COMPR_FUNC = { 0, 1, 1, 1, 1, 2, 2, 2, 2, 2 };
+
+
+		public static int WSIZE_64 = 262144;
+		public static int WMASK_64 = 262143;
+		public static int MAX_DIST_64 = 65538;
 	}
 }

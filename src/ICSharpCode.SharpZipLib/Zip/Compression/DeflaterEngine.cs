@@ -209,10 +209,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				return;
 			}
 
-			if (length > DeflaterConstants.MAX_DIST)
+			if (length > maxDist)
 			{
-				offset += length - DeflaterConstants.MAX_DIST;
-				length = DeflaterConstants.MAX_DIST;
+				offset += length - maxDist;
+				length = maxDist;
 			}
 
 			System.Array.Copy(buffer, offset, window, strstart, length);
@@ -231,7 +231,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Reset internal state
 		/// </summary>
-		public void Reset()
+		public void Reset(bool deflate64 = false)
 		{
 			huffman.Reset();
 			adler?.Reset();
@@ -241,14 +241,37 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			prevAvailable = false;
 			matchLen = DeflaterConstants.MIN_MATCH - 1;
 
+			UpdateMode(deflate64);
+
 			for (int i = 0; i < DeflaterConstants.HASH_SIZE; i++)
 			{
 				head[i] = 0;
 			}
 
-			for (int i = 0; i < DeflaterConstants.WSIZE; i++)
+			for (int i = 0; i < windowSize; i++)
 			{
 				prev[i] = 0;
+			}
+		}
+
+		private void UpdateMode(bool deflate64)
+		{
+			if (deflate64)
+			{
+				windowSize = DeflaterConstants.WSIZE_64;
+				maxDist = DeflaterConstants.MAX_DIST_64;
+			}
+			else
+			{
+				windowSize = DeflaterConstants.WSIZE;
+				maxDist = DeflaterConstants.MAX_DIST;
+			}
+
+			var windowFullSize = windowSize * 2;
+			if (window.Length < windowFullSize)
+			{
+				Array.Resize(ref window, windowFullSize);
+				Array.Resize(ref prev, windowSize);
 			}
 		}
 
@@ -368,7 +391,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			/* If the window is almost full and there is insufficient lookahead,
 			 * move the upper half to the lower one to make room in the upper half.
 			 */
-			if (strstart >= DeflaterConstants.WSIZE + DeflaterConstants.MAX_DIST)
+			if (strstart >= windowSize + maxDist)
 			{
 				SlideWindow();
 			}
@@ -378,7 +401,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			 */
 			if (lookahead < DeflaterConstants.MIN_LOOKAHEAD && inputOff < inputEnd)
 			{
-				int more = 2 * DeflaterConstants.WSIZE - lookahead - strstart;
+				int more = 2 * windowSize - lookahead - strstart;
 
 				if (more > inputEnd - inputOff)
 				{
@@ -440,24 +463,24 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		private void SlideWindow()
 		{
-			Array.Copy(window, DeflaterConstants.WSIZE, window, 0, DeflaterConstants.WSIZE);
-			matchStart -= DeflaterConstants.WSIZE;
-			strstart -= DeflaterConstants.WSIZE;
-			blockStart -= DeflaterConstants.WSIZE;
+			Array.Copy(window, windowSize, window, 0, windowSize);
+			matchStart -= windowSize;
+			strstart -= windowSize;
+			blockStart -= windowSize;
 
 			// Slide the hash table (could be avoided with 32 bit values
 			// at the expense of memory usage).
 			for (int i = 0; i < DeflaterConstants.HASH_SIZE; ++i)
 			{
 				int m = head[i] & 0xffff;
-				head[i] = (short)(m >= DeflaterConstants.WSIZE ? (m - DeflaterConstants.WSIZE) : 0);
+				head[i] = (short)(m >= windowSize ? (m - windowSize) : 0);
 			}
 
 			// Slide the prev table.
-			for (int i = 0; i < DeflaterConstants.WSIZE; i++)
+			for (int i = 0; i < windowSize; i++)
 			{
 				int m = prev[i] & 0xffff;
-				prev[i] = (short)(m >= DeflaterConstants.WSIZE ? (m - DeflaterConstants.WSIZE) : 0);
+				prev[i] = (short)(m >= windowSize ? (m - windowSize) : 0);
 			}
 		}
 
@@ -477,7 +500,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			int scan = strstart;
 			// scanMax is the highest position that we can look at
 			int scanMax = scan + Math.Min(DeflaterConstants.MAX_MATCH, lookahead) - 1;
-			int limit = Math.Max(scan - DeflaterConstants.MAX_DIST, 0);
+			int limit = Math.Max(scan - maxDist, 0);
 
 			byte[] window = this.window;
 			short[] prev = this.prev;
@@ -624,7 +647,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			int storedLength = strstart - blockStart;
 
 			if ((storedLength >= DeflaterConstants.MAX_BLOCK_SIZE) || // Block is full
-				(blockStart < DeflaterConstants.WSIZE && storedLength >= DeflaterConstants.MAX_DIST) ||   // Block may move out of window
+				(blockStart < windowSize && storedLength >= maxDist) ||   // Block may move out of window
 				flush)
 			{
 				bool lastBlock = finish;
@@ -665,7 +688,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					return false;
 				}
 
-				if (strstart > 2 * DeflaterConstants.WSIZE - DeflaterConstants.MIN_LOOKAHEAD)
+				if (strstart > 2 * windowSize - DeflaterConstants.MIN_LOOKAHEAD)
 				{
 					/* slide window, as FindLongestMatch needs this.
 					 * This should only happen when flushing and the window
@@ -678,7 +701,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				if (lookahead >= DeflaterConstants.MIN_MATCH &&
 					(hashHead = InsertString()) != 0 &&
 					strategy != DeflateStrategy.HuffmanOnly &&
-					strstart - hashHead <= DeflaterConstants.MAX_DIST &&
+					strstart - hashHead <= maxDist &&
 					FindLongestMatch(hashHead))
 				{
 					// longestMatch sets matchStart and matchLen
@@ -768,7 +791,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					return false;
 				}
 
-				if (strstart >= 2 * DeflaterConstants.WSIZE - DeflaterConstants.MIN_LOOKAHEAD)
+				if (strstart >= 2 * windowSize - DeflaterConstants.MIN_LOOKAHEAD)
 				{
 					/* slide window, as FindLongestMatch needs this.
 					 * This should only happen when flushing and the window
@@ -785,7 +808,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 					if (strategy != DeflateStrategy.HuffmanOnly &&
 						hashHead != 0 &&
-						strstart - hashHead <= DeflaterConstants.MAX_DIST &&
+						strstart - hashHead <= maxDist &&
 						FindLongestMatch(hashHead))
 					{
 						// longestMatch sets matchStart and matchLen
@@ -940,6 +963,9 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// The adler checksum
 		/// </summary>
 		private Adler32 adler;
+
+		private int windowSize;
+		private int maxDist;
 
 		#endregion Instance Fields
 	}

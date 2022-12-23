@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using NUnit.Framework;
@@ -106,6 +107,66 @@ namespace ICSharpCode.SharpZipLib.Tests.TestSupport
 			else
 			{
 				Assert.Warn("Skipping file verification since 7za is not in path");
+			}
+		}
+
+		internal static IEnumerable<(string, byte[])> GetZipContentsWith7Zip(Stream zipStream, string password)
+		{
+			if (TryGet7zBinPath(out string path7z))
+			{
+				Console.WriteLine($"Using 7z path: \"{path7z}\"");
+
+				var inputFile = Path.GetTempFileName();
+				using var outputDir = Utils.GetTempDir();
+
+				Console.WriteLine($"Extracting \"{inputFile}\" to \"{outputDir}\"");
+
+
+				try
+				{
+					using (var fs = File.OpenWrite(inputFile))
+					{
+						zipStream.Seek(0, SeekOrigin.Begin);
+						zipStream.CopyTo(fs);
+					}
+
+					var p = Process.Start(new ProcessStartInfo(path7z, $"e -bb3 -o\"{outputDir.FullName}\" -p{password} \"{inputFile}\"")
+					{
+						RedirectStandardOutput = true,
+						RedirectStandardError = true,
+						UseShellExecute = false,
+					});
+
+					if (p == null)
+					{
+						Assert.Inconclusive("Failed to start 7z process. Skipping!");
+					}
+					if (!p.WaitForExit(2000))
+					{
+						Assert.Warn("Timed out verifying zip file!");
+					}
+
+					TestContext.Out.Write(p.StandardOutput.ReadToEnd());
+					var errors = p.StandardError.ReadToEnd();
+					Assert.IsEmpty(errors, "7z reported errors");
+					Assert.AreEqual(0, p.ExitCode, "Extracting archive failed");
+
+					foreach(var outFile in Directory.EnumerateFiles(outputDir))
+					{
+						yield return (
+							Path.GetFileName(outFile), File.ReadAllBytes(outFile)
+						);
+					}
+					
+				}
+				finally
+				{
+					File.Delete(inputFile);
+				}
+			}
+			else
+			{
+				Assert.Warn("Skipping extraction since 7za is not in path");
 			}
 		}
 	}

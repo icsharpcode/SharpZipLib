@@ -201,12 +201,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// just created with the same compression level and strategy as it
 		/// had before.
 		/// </summary>
-		public void Reset()
+		public void Reset(bool deflate64 = false)
 		{
 			state = (noZlibHeaderOrFooter ? BUSY_STATE : INIT_STATE);
 			totalOut = 0;
 			pending.Reset();
-			engine.Reset();
+			engine.Reset(deflate64);
 		}
 
 		/// <summary>

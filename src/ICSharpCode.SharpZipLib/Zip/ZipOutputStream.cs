@@ -377,7 +377,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			CompressionMethod method = entry.CompressionMethod;
 
 			// Check that the compression is one that we support
-			if (method != CompressionMethod.Deflated && method != CompressionMethod.Stored)
+			if (method != CompressionMethod.Deflated && method != CompressionMethod.Stored && method != CompressionMethod.Deflate64)
 			{
 				throw new NotImplementedException("Compression method not supported");
 			}
@@ -489,9 +489,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 				return;
 
 			crc.Reset();
-			if (method == CompressionMethod.Deflated)
+			if (method == CompressionMethod.Deflated || method == CompressionMethod.Deflate64)
 			{
-				deflater_.Reset();
+				deflater_.Reset(method == CompressionMethod.Deflate64);
 				deflater_.SetLevel(compressionLevel);
 			}
 		}
@@ -572,7 +572,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (entryIsPassthrough) return;
 
 			// First finish the deflater, if appropriate
-			if (curMethod == CompressionMethod.Deflated)
+			if (curMethod == CompressionMethod.Deflated || curMethod == CompressionMethod.Deflate64)
 			{
 				if (size >= 0)
 				{
@@ -634,7 +634,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			long csize = size;
 
-			if (curMethod == CompressionMethod.Deflated && size >= 0)
+			if ((curMethod == CompressionMethod.Deflated || curMethod == CompressionMethod.Deflate64) && size >= 0)
 			{
 				csize = deflater_.TotalOut;
 			}
