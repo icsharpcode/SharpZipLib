@@ -23,7 +23,7 @@ jobs:
     env:
       LIB_PROJ: src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         ref: ${{ github.events.inputs.tag }}
         fetch-depth: 0
@@ -79,7 +79,7 @@ jobs:
       DOTCOVER_PKG: jetbrains.dotcover.commandlinetools
       COVER_SNAPSHOT: SharpZipLib.dcvr
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
         
