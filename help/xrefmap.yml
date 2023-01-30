@@ -2131,6 +2131,19 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.GetLevel
   nameWithType: GZipOutputStream.GetLevel
+- uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.ModifiedTime
+  name: ModifiedTime
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream_ModifiedTime
+  commentId: P:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.ModifiedTime
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.ModifiedTime
+  nameWithType: GZipOutputStream.ModifiedTime
+- uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.ModifiedTime*
+  name: ModifiedTime
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream_ModifiedTime_
+  commentId: Overload:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.ModifiedTime
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.ModifiedTime
+  nameWithType: GZipOutputStream.ModifiedTime
 - uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.SetLevel(System.Int32)
   name: SetLevel(Int32)
   href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream_SetLevel_System_Int32_
@@ -2160,6 +2173,22 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.Write
   nameWithType: GZipOutputStream.Write
+- uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)
+  name: WriteAsync(Byte[], Int32, Int32, CancellationToken)
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream_WriteAsync_System_Byte___System_Int32_System_Int32_System_Threading_CancellationToken_
+  commentId: M:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)
+  name.vb: WriteAsync(Byte(), Int32, Int32, CancellationToken)
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.WriteAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)
+  fullName.vb: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.WriteAsync(System.Byte(), System.Int32, System.Int32, System.Threading.CancellationToken)
+  nameWithType: GZipOutputStream.WriteAsync(Byte[], Int32, Int32, CancellationToken)
+  nameWithType.vb: GZipOutputStream.WriteAsync(Byte(), Int32, Int32, CancellationToken)
+- uid: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.WriteAsync*
+  name: WriteAsync
+  href: api/ICSharpCode.SharpZipLib.GZip.GZipOutputStream.html#ICSharpCode_SharpZipLib_GZip_GZipOutputStream_WriteAsync_
+  commentId: Overload:ICSharpCode.SharpZipLib.GZip.GZipOutputStream.WriteAsync
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.GZip.GZipOutputStream.WriteAsync
+  nameWithType: GZipOutputStream.WriteAsync
 - uid: ICSharpCode.SharpZipLib.Lzw
   name: ICSharpCode.SharpZipLib.Lzw
   href: api/ICSharpCode.SharpZipLib.Lzw.html
@@ -7108,6 +7137,19 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Flush
   nameWithType: DeflaterOutputStream.Flush
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.FlushAsync(System.Threading.CancellationToken)
+  name: FlushAsync(CancellationToken)
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_FlushAsync_System_Threading_CancellationToken_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.FlushAsync(System.Threading.CancellationToken)
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.FlushAsync(System.Threading.CancellationToken)
+  nameWithType: DeflaterOutputStream.FlushAsync(CancellationToken)
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.FlushAsync*
+  name: FlushAsync
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_FlushAsync_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.FlushAsync
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.FlushAsync
+  nameWithType: DeflaterOutputStream.FlushAsync
 - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.GetAuthCodeIfAES
   name: GetAuthCodeIfAES()
   href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_GetAuthCodeIfAES
@@ -7231,6 +7273,22 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.Write
   nameWithType: DeflaterOutputStream.Write
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)
+  name: WriteAsync(Byte[], Int32, Int32, CancellationToken)
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_WriteAsync_System_Byte___System_Int32_System_Int32_System_Threading_CancellationToken_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)
+  name.vb: WriteAsync(Byte(), Int32, Int32, CancellationToken)
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.WriteAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)
+  fullName.vb: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.WriteAsync(System.Byte(), System.Int32, System.Int32, System.Threading.CancellationToken)
+  nameWithType: DeflaterOutputStream.WriteAsync(Byte[], Int32, Int32, CancellationToken)
+  nameWithType.vb: DeflaterOutputStream.WriteAsync(Byte(), Int32, Int32, CancellationToken)
+- uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.WriteAsync*
+  name: WriteAsync
+  href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_WriteAsync_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.WriteAsync
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.WriteAsync
+  nameWithType: DeflaterOutputStream.WriteAsync
 - uid: ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.WriteByte(System.Byte)
   name: WriteByte(Byte)
   href: api/ICSharpCode.SharpZipLib.Zip.Compression.Streams.DeflaterOutputStream.html#ICSharpCode_SharpZipLib_Zip_Compression_Streams_DeflaterOutputStream_WriteByte_System_Byte_
@@ -12810,6 +12868,22 @@ references:
   isSpec: "True"
   fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.Write
   nameWithType: ZipOutputStream.Write
+- uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)
+  name: WriteAsync(Byte[], Int32, Int32, CancellationToken)
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream_WriteAsync_System_Byte___System_Int32_System_Int32_System_Threading_CancellationToken_
+  commentId: M:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)
+  name.vb: WriteAsync(Byte(), Int32, Int32, CancellationToken)
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.WriteAsync(System.Byte[], System.Int32, System.Int32, System.Threading.CancellationToken)
+  fullName.vb: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.WriteAsync(System.Byte(), System.Int32, System.Int32, System.Threading.CancellationToken)
+  nameWithType: ZipOutputStream.WriteAsync(Byte[], Int32, Int32, CancellationToken)
+  nameWithType.vb: ZipOutputStream.WriteAsync(Byte(), Int32, Int32, CancellationToken)
+- uid: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.WriteAsync*
+  name: WriteAsync
+  href: api/ICSharpCode.SharpZipLib.Zip.ZipOutputStream.html#ICSharpCode_SharpZipLib_Zip_ZipOutputStream_WriteAsync_
+  commentId: Overload:ICSharpCode.SharpZipLib.Zip.ZipOutputStream.WriteAsync
+  isSpec: "True"
+  fullName: ICSharpCode.SharpZipLib.Zip.ZipOutputStream.WriteAsync
+  nameWithType: ZipOutputStream.WriteAsync
 - uid: ICSharpCode.SharpZipLib.Zip.ZipStrings
   name: ZipStrings
   href: api/ICSharpCode.SharpZipLib.Zip.ZipStrings.html
