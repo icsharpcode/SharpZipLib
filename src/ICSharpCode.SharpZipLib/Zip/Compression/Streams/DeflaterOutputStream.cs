@@ -392,7 +392,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			baseOutputStream_.Flush();
 		}
 
-		/// <inheritdoc/>
+		/// <summary>
+		/// Asynchronously clears all buffers for this stream, causes any buffered data to be written to the underlying device, and monitors cancellation requests.
+		/// </summary>
+		/// <param name="cancellationToken">
+		/// The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.
+		/// </param>
 		public override async Task FlushAsync(CancellationToken cancellationToken)
 		{
 			deflater_.Flush();
@@ -504,7 +509,21 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			Deflate();
 		}
 
-		/// <inheritdoc />
+		/// <summary>
+		/// Asynchronously writes a sequence of bytes to the current stream, advances the current position within this stream by the number of bytes written, and monitors cancellation requests.
+		/// </summary>
+		/// <param name="buffer">
+		/// The byte array
+		/// </param>
+		/// <param name="offset">
+		/// The offset into the byte array where to start.
+		/// </param>
+		/// <param name="count">
+		/// The number of bytes to write.
+		/// </param>
+		/// <param name="ct">
+		/// The token to monitor for cancellation requests. The default value is <see cref="CancellationToken.None"/>.
+		/// </param>
 		public override async Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken ct)
 		{
 			deflater_.SetInput(buffer, offset, count);
