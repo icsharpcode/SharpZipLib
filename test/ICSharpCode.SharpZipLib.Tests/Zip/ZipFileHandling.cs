@@ -1815,5 +1815,27 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				}
 			}
 		}
+
+		/// <summary>
+		/// Check that Zip files can be created with an empty file name
+		/// </summary>
+		[Test]
+		[Category("Zip")]
+		public void HandlesEmptyFileName()
+		{
+			using var ms = new MemoryStream();
+			using (var zos = new ZipOutputStream(ms){IsStreamOwner = false})
+			{
+				zos.PutNextEntry(new ZipEntry(String.Empty));
+				Utils.WriteDummyData(zos, 64);
+			}
+			ms.Seek(0, SeekOrigin.Begin);
+			using (var zis = new ZipInputStream(ms){IsStreamOwner = false})
+			{
+				var entry = zis.GetNextEntry();
+				Assert.That(entry.Name, Is.Empty);
+				Assert.That(zis.ReadBytes(64).Length, Is.EqualTo(64));
+			}
+		}
 	}
 }
