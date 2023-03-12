@@ -16,6 +16,9 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <returns>The path with the root removed if it was present; path otherwise.</returns>
 		public static string DropPathRoot(string path)
 		{
+			// No need to drop anything
+			if (path == string.Empty) return path;
+
 			var invalidChars = Path.GetInvalidPathChars();
 			// If the first character after the root is a ':', .NET < 4.6.2 throws
 			var cleanRootSep = path.Length >= 3 && path[1] == ':' && path[2] == ':';
