@@ -398,9 +398,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ZipException">
 		/// The file doesn't contain a valid zip archive.
 		/// </exception>
-		public ZipFile(string name) :
-			this(name, null)
-		{
+		public ZipFile(string name) : 
+			this(name, null) 
+		{ 
 
 		}
 
@@ -534,10 +534,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ArgumentNullException">
 		/// The <see cref="Stream">stream</see> argument is null.
 		/// </exception>
-		public ZipFile(Stream stream, bool leaveOpen) :
-			this(stream, leaveOpen, null)
-		{
-
+		public ZipFile(Stream stream, bool leaveOpen) : 
+			this(stream, leaveOpen, null) 
+		{ 
+		
 		}
 
 		/// <summary>
@@ -789,8 +789,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <inheritdoc cref="Zip.StringCodec"/>
 		public StringCodec StringCodec
 		{
-			set
-			{
+			set {
 				_stringCodec = value;
 				if (!isNewArchive_)
 				{
@@ -1159,7 +1158,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				bool testData = (tests & HeaderTest.Extract) != 0;
 
 				var entryAbsOffset = offsetOfFirstEntry + entry.Offset;
-
+				
 				baseStream_.Seek(entryAbsOffset, SeekOrigin.Begin);
 				var signature = (int)ReadLEUint();
 
@@ -1235,9 +1234,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 							throw new ZipException($"Version required to extract this entry not supported ({extractVersion})");
 						}
 
-						const GeneralBitFlags notSupportedFlags = GeneralBitFlags.Patched
-																| GeneralBitFlags.StrongEncryption
-																| GeneralBitFlags.EnhancedCompress
+						const GeneralBitFlags notSupportedFlags = GeneralBitFlags.Patched 
+																| GeneralBitFlags.StrongEncryption 
+																| GeneralBitFlags.EnhancedCompress 
 																| GeneralBitFlags.HeaderMasked;
 						if (localFlags.HasAny(notSupportedFlags))
 						{
@@ -1654,8 +1653,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 				{
 					// Create an empty archive if none existed originally.
 					if (entries_.Length != 0) return;
-					byte[] theComment = (newComment_ != null)
-						? newComment_.RawComment
+					byte[] theComment = (newComment_ != null) 
+						? newComment_.RawComment 
 						: _stringCodec.ZipArchiveCommentEncoding.GetBytes(comment_);
 					ZipFormat.WriteEndOfCentralDirectory(baseStream_, 0, 0, 0, theComment);
 				}
@@ -2560,15 +2559,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The descriptor size, zero if there isn't one.</returns>
 		private static int GetDescriptorSize(ZipUpdate update, bool includingSignature)
 		{
-			if (!((GeneralBitFlags)update.Entry.Flags).HasAny(GeneralBitFlags.Descriptor))
+			if (!((GeneralBitFlags)update.Entry.Flags).HasAny(GeneralBitFlags.Descriptor)) 
 				return 0;
-
-			var descriptorWithSignature = update.Entry.LocalHeaderRequiresZip64
-				? ZipConstants.Zip64DataDescriptorSize
+			
+			var descriptorWithSignature = update.Entry.LocalHeaderRequiresZip64 
+				? ZipConstants.Zip64DataDescriptorSize 
 				: ZipConstants.DataDescriptorSize;
 
-			return includingSignature
-				? descriptorWithSignature
+			return includingSignature 
+				? descriptorWithSignature 
 				: descriptorWithSignature - sizeof(int);
 		}
 
@@ -2855,7 +2854,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// Clumsy way of handling retrieving the original name and extra data length for now.
 			// TODO: Stop re-reading name and data length in CopyEntryDirect.
-
+			
 			uint nameLength = ReadLEUshort();
 			uint extraLength = ReadLEUshort();
 
@@ -2990,7 +2989,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 			finally
 			{
-				if (updateFile != baseStream_)
+				if(updateFile != baseStream_)
 					updateFile.Dispose();
 			}
 
@@ -3155,7 +3154,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				byte[] theComment = newComment_?.RawComment ?? _stringCodec.ZipArchiveCommentEncoding.GetBytes(comment_);
-				ZipFormat.WriteEndOfCentralDirectory(workFile.baseStream_, updateCount_,
+				ZipFormat.WriteEndOfCentralDirectory(workFile.baseStream_, updateCount_, 
 					sizeEntries, centralDirOffset, theComment);
 
 				endOfStream = workFile.baseStream_.Position;
@@ -3497,7 +3496,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion Reading
 
 		// NOTE this returns the offset of the first byte after the signature.
-		private long LocateBlockWithSignature(int signature, long endLocation, int minimumBlockSize, int maximumVariableData)
+		private long LocateBlockWithSignature(int signature, long endLocation, int minimumBlockSize, int maximumVariableData) 
 			=> ZipFormat.LocateBlockWithSignature(baseStream_, signature, endLocation, minimumBlockSize, maximumVariableData);
 
 		/// <summary>
@@ -3555,14 +3554,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 			}
 
 			bool isZip64 = false;
-
+			
 			// Check if zip64 header information is required.
 			bool requireZip64 = thisDiskNumber == 0xffff ||
-								startCentralDirDisk == 0xffff ||
-								entriesForThisDisk == 0xffff ||
-								entriesForWholeCentralDir == 0xffff ||
-								centralDirSize == 0xffffffff ||
-								offsetOfCentralDir == 0xffffffff;
+			                    startCentralDirDisk == 0xffff ||
+			                    entriesForThisDisk == 0xffff ||
+			                    entriesForWholeCentralDir == 0xffff ||
+			                    centralDirSize == 0xffffffff ||
+			                    offsetOfCentralDir == 0xffffffff;
 
 			// #357 - always check for the existence of the Zip64 central directory.
 			// #403 - Take account of the fixed size of the locator when searching.
@@ -3653,7 +3652,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				int extraLen = ReadLEUshort();
 				int commentLen = ReadLEUshort();
 
-
+				
 				// ReSharper disable once UnusedVariable, Currently unused but needs to be read to offset the stream
 				int diskStartNo = ReadLEUshort();
 				// ReSharper disable once UnusedVariable, Currently unused but needs to be read to offset the stream
@@ -3750,9 +3749,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 					int saltLen = entry.AESSaltLen;
 					byte[] saltBytes = new byte[saltLen];
 					int saltIn = StreamUtils.ReadRequestedBytes(baseStream, saltBytes, offset: 0, saltLen);
-
+					
 					if (saltIn != saltLen) throw new ZipException($"AES Salt expected {saltLen} git {saltIn}");
-
+					
 					byte[] pwdVerifyRead = new byte[2];
 					StreamUtils.ReadFully(baseStream, pwdVerifyRead);
 					int blockSize = entry.AESKeySize / 8;   // bits to bytes
@@ -3796,7 +3795,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private Stream CreateAndInitEncryptionStream(Stream baseStream, ZipEntry entry)
 		{
 			if (entry.Version >= ZipConstants.VersionStrongEncryption &&
-				entry.HasFlag(GeneralBitFlags.StrongEncryption)) return null;
+			    entry.HasFlag(GeneralBitFlags.StrongEncryption)) return null;
 
 			var classicManaged = new PkzipClassicManaged();
 
