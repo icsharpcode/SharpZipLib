@@ -391,6 +391,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Opens a Zip file with the given name for reading.
 		/// </summary>
 		/// <param name="name">The name of the file to open.</param>
+		/// <exception cref="ArgumentNullException">The argument supplied is null.</exception>
+		/// <exception cref="IOException">
+		/// An i/o error occurs
+		/// </exception>
+		/// <exception cref="ZipException">
+		/// The file doesn't contain a valid zip archive.
+		/// </exception>
+		public ZipFile(string name): this(name, null) { }
+
+		/// <summary>
+		/// Opens a Zip file with the given name for reading.
+		/// </summary>
+		/// <param name="name">The name of the file to open.</param>
 		/// <param name="stringCodec"></param>
 		/// <exception cref="ArgumentNullException">The argument supplied is null.</exception>
 		/// <exception cref="IOException">
@@ -399,7 +412,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ZipException">
 		/// The file doesn't contain a valid zip archive.
 		/// </exception>
-		public ZipFile(string name, StringCodec stringCodec = null)
+		public ZipFile(string name, StringCodec stringCodec)
 		{
 			name_ = name ?? throw new ArgumentNullException(nameof(name));
 
