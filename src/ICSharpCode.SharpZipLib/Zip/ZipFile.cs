@@ -391,6 +391,23 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// Opens a Zip file with the given name for reading.
 		/// </summary>
 		/// <param name="name">The name of the file to open.</param>
+		/// <exception cref="ArgumentNullException">The argument supplied is null.</exception>
+		/// <exception cref="IOException">
+		/// An i/o error occurs
+		/// </exception>
+		/// <exception cref="ZipException">
+		/// The file doesn't contain a valid zip archive.
+		/// </exception>
+		public ZipFile(string name) : 
+			this(name, null) 
+		{ 
+
+		}
+
+		/// <summary>
+		/// Opens a Zip file with the given name for reading.
+		/// </summary>
+		/// <param name="name">The name of the file to open.</param>
 		/// <param name="stringCodec"></param>
 		/// <exception cref="ArgumentNullException">The argument supplied is null.</exception>
 		/// <exception cref="IOException">
@@ -399,7 +416,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ZipException">
 		/// The file doesn't contain a valid zip archive.
 		/// </exception>
-		public ZipFile(string name, StringCodec stringCodec = null)
+		public ZipFile(string name, StringCodec stringCodec)
 		{
 			name_ = name ?? throw new ArgumentNullException(nameof(name));
 
@@ -505,6 +522,29 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="stream">The <see cref="Stream"/> to read archive data from.</param>
 		/// <param name="leaveOpen">true to leave the <see cref="Stream">stream</see> open when the ZipFile is disposed, false to dispose of it</param>
+		/// <exception cref="IOException">
+		/// An i/o error occurs
+		/// </exception>
+		/// <exception cref="ZipException">
+		/// The stream doesn't contain a valid zip archive.<br/>
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		/// The <see cref="Stream">stream</see> doesnt support seeking.
+		/// </exception>
+		/// <exception cref="ArgumentNullException">
+		/// The <see cref="Stream">stream</see> argument is null.
+		/// </exception>
+		public ZipFile(Stream stream, bool leaveOpen) : 
+			this(stream, leaveOpen, null) 
+		{ 
+		
+		}
+
+		/// <summary>
+		/// Opens a Zip file reading the given <see cref="Stream"/>.
+		/// </summary>
+		/// <param name="stream">The <see cref="Stream"/> to read archive data from.</param>
+		/// <param name="leaveOpen">true to leave the <see cref="Stream">stream</see> open when the ZipFile is disposed, false to dispose of it</param>
 		/// <param name="stringCodec"></param>
 		/// <exception cref="IOException">
 		/// An i/o error occurs
@@ -518,7 +558,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ArgumentNullException">
 		/// The <see cref="Stream">stream</see> argument is null.
 		/// </exception>
-		public ZipFile(Stream stream, bool leaveOpen, StringCodec stringCodec = null)
+		public ZipFile(Stream stream, bool leaveOpen, StringCodec stringCodec)
 		{
 			if (stream == null)
 			{
