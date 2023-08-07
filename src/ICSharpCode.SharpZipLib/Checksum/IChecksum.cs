@@ -47,5 +47,13 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		/// The chunk of data to add
 		/// </param>
 		void Update(ArraySegment<byte> segment);
+
+		/// <summary>
+		/// Adds the byte array to the data checksum.
+		/// </summary>
+		/// <param name = "data">
+		/// The chunk of data to add
+		/// </param>
+		void Update(ReadOnlySpan<byte> data);
 	}
 }

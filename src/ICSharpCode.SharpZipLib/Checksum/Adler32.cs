@@ -122,7 +122,7 @@ namespace ICSharpCode.SharpZipLib.Checksum
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
-			Update(new ArraySegment<byte>(buffer, 0, buffer.Length));
+			Update((ReadOnlySpan<byte>)buffer);
 		}
 
 		/// <summary>
@@ -133,11 +133,22 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		/// </param>
 		public void Update(ArraySegment<byte> segment)
 		{
+			Update((ReadOnlySpan<byte>)segment);
+		}
+
+		/// <summary>
+		/// Update Adler32 data checksum based on a portion of a block of data
+		/// </summary>
+		/// <param name = "data">
+		/// The chunk of data to add
+		/// </param>
+		public void Update(ReadOnlySpan<byte> data)
+		{
 			//(By Per Bothner)
 			uint s1 = checkValue & 0xFFFF;
 			uint s2 = checkValue >> 16;
-			var count = segment.Count;
-			var offset = segment.Offset;
+			var count = data.Length;
+			var offset = 0;
 			while (count > 0)
 			{
 				// We can defer the modulo operation:
@@ -151,8 +162,8 @@ namespace ICSharpCode.SharpZipLib.Checksum
 				count -= n;
 				while (--n >= 0)
 				{
-					s1 = s1 + (uint)(segment.Array[offset++] & 0xff);
-					s2 = s2 + s1;
+					s1 += (uint)(data[offset++] & 0xff);
+					s2 += s1;
 				}
 				s1 %= BASE;
 				s2 %= BASE;
