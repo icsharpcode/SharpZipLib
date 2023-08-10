@@ -825,6 +825,19 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <summary>
+		/// Gets the AES Version
+		/// 1: AE-1
+		/// 2: AE-2
+		/// </summary>
+		public int AESVersion
+		{
+			get
+			{
+				return _aesVer;
+			}
+		}
+
+		/// <summary>
 		/// AES Encryption strength for storage in extra data in entry header.
 		/// 1 is 128 bit, 2 is 192 bit, 3 is 256 bit.
 		/// </summary>
@@ -1149,7 +1162,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 		private bool forceZip64_;
 		private byte cryptoCheckValue_;
-		private int _aesVer;                            // Version number (2 = AE-2 ?). Assigned but not used.
+		private int _aesVer;                            // Version number (1 = AE-1, 2 = AE-2)
 		private int _aesEncryptionStrength;             // Encryption strength 1 = 128 2 = 192 3 = 256
 
 		#endregion Instance Fields
