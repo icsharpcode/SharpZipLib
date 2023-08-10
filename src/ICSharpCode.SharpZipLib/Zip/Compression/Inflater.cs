@@ -137,7 +137,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// True means, that the inflated stream doesn't contain a Zlib header or
 		/// footer.
 		/// </summary>
-		private bool noHeader;
+		internal bool noHeader;
 
 		private readonly StreamManipulator input;
 		private OutputWindow outputWindow;
