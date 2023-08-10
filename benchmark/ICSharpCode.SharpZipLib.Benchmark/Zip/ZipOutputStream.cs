@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using BenchmarkDotNet.Attributes;
 
@@ -16,7 +15,8 @@ namespace ICSharpCode.SharpZipLib.Benchmark.Zip
 		byte[] outputBuffer;
 		byte[] inputBuffer;
 
-		public ZipOutputStream()
+		[GlobalSetup]
+		public void GlobalSetup()
 		{
 			inputBuffer = new byte[ChunkSize];
 			outputBuffer = new byte[N];

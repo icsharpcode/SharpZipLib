@@ -1,18 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFrameworks>net6.0;netcoreapp3.1;net462</TargetFrameworks>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net462;net6.0</TargetFrameworks>
+	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="BenchmarkDotNet">
-			<Version>0.12.1</Version>
-		</PackageReference>
+		<PackageReference Include="BenchmarkDotNet" Version="0.13.7" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\ICSharpCode.SharpZipLib\ICSharpCode.SharpZipLib.csproj" />
+		<ProjectReference Include="..\..\src\ICSharpCode.SharpZipLib\ICSharpCode.SharpZipLib.csproj" />
 	</ItemGroup>
 
 </Project>
