@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 {
@@ -36,10 +37,16 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		{
 			if (windowFilled++ == WindowSize)
 			{
-				throw new InvalidOperationException("Window full");
+				ThrowWindowFull();
 			}
 			window[windowEnd++] = (byte)value;
 			windowEnd &= WindowMask;
+		}
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static void ThrowWindowFull()
+		{
+			throw new InvalidOperationException("Window full");
 		}
 
 		private void SlowRepeat(int repStart, int length, int distance)
