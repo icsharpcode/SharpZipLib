@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 {
@@ -339,7 +340,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// The InputStream to read bytes from
 		/// </param>
 		public InflaterInputStream(Stream baseInputStream)
-			: this(baseInputStream, new Inflater(), 4096)
+			: this(baseInputStream, InflaterPool.Instance.Rent(), 4096)
 		{
 		}
 
@@ -630,6 +631,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 					baseInputStream.Dispose();
 				}
 			}
+
+			if (inf is PooledInflater inflater)
+			{
+				InflaterPool.Instance.Return(inflater);
+			}
+			inf = null;
 		}
 
 		/// <summary>

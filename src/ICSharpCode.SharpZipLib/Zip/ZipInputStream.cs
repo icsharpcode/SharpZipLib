@@ -1,10 +1,11 @@
 using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Encryption;
-using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.Diagnostics;
 using System.IO;
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip.Compression;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -88,7 +89,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </summary>
 		/// <param name="baseInputStream">The underlying <see cref="Stream"/> providing data.</param>
 		public ZipInputStream(Stream baseInputStream)
-			: base(baseInputStream, new Inflater(true))
+			: base(baseInputStream, InflaterPool.Instance.Rent(true))
 		{
 			internalReader = new ReadDataHandler(ReadingNotAvailable);
 		}
@@ -99,7 +100,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="baseInputStream">The underlying <see cref="Stream"/> providing data.</param>
 		/// <param name="bufferSize">Size of the buffer.</param>
 		public ZipInputStream(Stream baseInputStream, int bufferSize)
-			: base(baseInputStream, new Inflater(true), bufferSize)
+			: base(baseInputStream, InflaterPool.Instance.Rent(true), bufferSize)
 		{
 			internalReader = new ReadDataHandler(ReadingNotAvailable);
 		}

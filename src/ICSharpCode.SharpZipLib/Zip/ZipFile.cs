@@ -314,7 +314,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	/// }
 	/// </code>
 	/// </example>
-	public class ZipFile : IEnumerable, IDisposable
+	public class ZipFile : IEnumerable<ZipEntry>, IDisposable
 	{
 		#region KeyHandling
 
@@ -810,7 +810,31 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <exception cref="ObjectDisposedException">
 		/// The Zip file has been closed.
 		/// </exception>
-		public IEnumerator GetEnumerator()
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+
+		/// <summary>
+		/// Gets an enumerator for the Zip entries in this Zip file.
+		/// </summary>
+		/// <returns>Returns an <see cref="IEnumerator"/> for this archive.</returns>
+		/// <exception cref="ObjectDisposedException">
+		/// The Zip file has been closed.
+		/// </exception>
+		IEnumerator<ZipEntry> IEnumerable<ZipEntry>.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+
+		/// <summary>
+		/// Gets an enumerator for the Zip entries in this Zip file.
+		/// </summary>
+		/// <returns>Returns an <see cref="IEnumerator"/> for this archive.</returns>
+		/// <exception cref="ObjectDisposedException">
+		/// The Zip file has been closed.
+		/// </exception>
+		public ZipEntryEnumerator GetEnumerator()
 		{
 			if (isDisposed_)
 			{
@@ -954,7 +978,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				case CompressionMethod.Deflated:
 					// No need to worry about ownership and closing as underlying stream close does nothing.
-					result = new InflaterInputStream(result, new Inflater(true));
+					result = new InflaterInputStream(result, InflaterPool.Instance.Rent(true));
 					break;
 
 				case CompressionMethod.BZip2:
@@ -4001,20 +4025,26 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// An <see cref="IEnumerator">enumerator</see> for <see cref="ZipEntry">Zip entries</see>
 		/// </summary>
-		private class ZipEntryEnumerator : IEnumerator
+		public struct ZipEntryEnumerator : IEnumerator<ZipEntry>
 		{
 			#region Constructors
 
+			/// <summary>
+			/// Constructs a new instance of <see cref="ZipEntryEnumerator"/>.
+			/// </summary>
+			/// <param name="entries">Entries to iterate.</param>
 			public ZipEntryEnumerator(ZipEntry[] entries)
 			{
 				array = entries;
+				index = -1;
 			}
 
 			#endregion Constructors
 
 			#region IEnumerator Members
 
-			public object Current
+			/// <inheritdoc />
+			public ZipEntry Current
 			{
 				get
 				{
@@ -4022,14 +4052,24 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 			}
 
+			/// <inheritdoc />
+			object IEnumerator.Current => Current;
+
+			/// <inheritdoc />
 			public void Reset()
 			{
 				index = -1;
 			}
 
+			/// <inheritdoc />
 			public bool MoveNext()
 			{
 				return (++index < array.Length);
+			}
+
+			/// <inheritdoc />
+			public void Dispose()
+			{
 			}
 
 			#endregion IEnumerator Members
@@ -4037,7 +4077,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			#region Instance Fields
 
 			private ZipEntry[] array;
-			private int index = -1;
+			private int index;
 
 			#endregion Instance Fields
 		}

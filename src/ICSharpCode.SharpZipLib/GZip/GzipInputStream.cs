@@ -4,6 +4,7 @@ using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.IO;
 using System.Text;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.GZip
 {
@@ -82,7 +83,7 @@ namespace ICSharpCode.SharpZipLib.GZip
 		/// Size of the buffer to use
 		/// </param>
 		public GZipInputStream(Stream baseInputStream, int size)
-			: base(baseInputStream, new Inflater(true), size)
+			: base(baseInputStream, InflaterPool.Instance.Rent(true), size)
 		{
 		}
 

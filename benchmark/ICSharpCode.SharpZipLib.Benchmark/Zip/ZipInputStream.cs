@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using BenchmarkDotNet.Attributes;
 
 namespace ICSharpCode.SharpZipLib.Benchmark.Zip
@@ -15,7 +14,8 @@ namespace ICSharpCode.SharpZipLib.Benchmark.Zip
 		byte[] zippedData;
 		byte[] readBuffer = new byte[4096];
 
-		public ZipInputStream()
+		[GlobalSetup]
+		public void GlobalSetup()
 		{
 			using (var memoryStream = new MemoryStream())
 			{
