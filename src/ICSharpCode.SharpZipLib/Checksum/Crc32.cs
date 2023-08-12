@@ -115,7 +115,7 @@ namespace ICSharpCode.SharpZipLib.Checksum
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
-			Update(buffer, 0, buffer.Length);
+			Update((ReadOnlySpan<byte>)buffer);
 		}
 
 		/// <summary>
@@ -126,20 +126,21 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		/// </param>
 		public void Update(ArraySegment<byte> segment)
 		{
-			Update(segment.Array, segment.Offset, segment.Count);
+			Update((ReadOnlySpan<byte>)segment);
 		}
 
 		/// <summary>
-		/// Internal helper function for updating a block of data using slicing.
+		/// Update CRC data checksum based on a portion of a block of data
 		/// </summary>
-		/// <param name="data">The array containing the data to add</param>
-		/// <param name="offset">Range start for <paramref name="data"/> (inclusive)</param>
-		/// <param name="count">The number of bytes to checksum starting from <paramref name="offset"/></param>
-		private void Update(byte[] data, int offset, int count)
+		/// <param name = "data">
+		/// The chunk of data to add
+		/// </param>
+		public void Update(ReadOnlySpan<byte> data)
 		{
-			int remainder = count % CrcUtilities.SlicingDegree;
-			int end = offset + count - remainder;
+			int remainder = data.Length % CrcUtilities.SlicingDegree;
+			int end = data.Length - remainder;
 
+			int offset = 0;
 			while (offset != end)
 			{
 				checkValue = CrcUtilities.UpdateDataForReversedPoly(data, offset, crcTable, checkValue);
@@ -158,11 +159,11 @@ namespace ICSharpCode.SharpZipLib.Checksum
 		/// we do we're not here for long, so disabling inlining here improves
 		/// performance overall.
 		/// </summary>
-		/// <param name="data">The array containing the data to add</param>
+		/// <param name="data">The span containing the data to add</param>
 		/// <param name="offset">Range start for <paramref name="data"/> (inclusive)</param>
 		/// <param name="end">Range end for <paramref name="data"/> (exclusive)</param>
 		[MethodImpl(MethodImplOptions.NoInlining)]
-		private void SlowUpdateLoop(byte[] data, int offset, int end)
+		private void SlowUpdateLoop(ReadOnlySpan<byte> data, int offset, int end)
 		{
 			while (offset != end)
 			{
