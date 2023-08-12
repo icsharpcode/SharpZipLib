@@ -17,6 +17,8 @@ namespace ICSharpCode.SharpZipLib.Benchmark.Zip
 		[GlobalSetup]
 		public async Task GlobalSetup()
 		{
+			SharpZipLibOptions.InflaterPoolSize = 4;
+
 			// large real-world test file from test262 repository
 			string commitSha = "2e4e0e6b8ebe3348a207144204cb6d7a5571c863";
 			zipFileWithLargeAmountOfEntriesPath = Path.Combine(Path.GetTempPath(), $"{commitSha}.zip");
