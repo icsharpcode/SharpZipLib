@@ -57,7 +57,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				while (!input.TryGetBits(3, ref codeLengths, MetaCodeLengthIndex[i])) yield return false;
 			}
 
-			var metaCodeTree = new InflaterHuffmanTree(codeLengths);
+			var metaCodeTree = new InflaterHuffmanTree(codeLengths.AsSpan());
 
 			// Decompress the meta tree symbols into the data table code lengths
 			int index = 0;
@@ -113,8 +113,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 			if (codeLengths[256] == 0)
 				throw new StreamDecodingException("Inflater dynamic header end-of-block code missing");
 
-			litLenTree = new InflaterHuffmanTree(new ArraySegment<byte>(codeLengths, 0, litLenCodeCount));
-			distTree = new InflaterHuffmanTree(new ArraySegment<byte>(codeLengths, litLenCodeCount, distanceCodeCount));
+			litLenTree = new InflaterHuffmanTree(codeLengths.AsSpan(0, litLenCodeCount));
+			distTree = new InflaterHuffmanTree(codeLengths.AsSpan(litLenCodeCount, distanceCodeCount));
 
 			yield return true;
 		}

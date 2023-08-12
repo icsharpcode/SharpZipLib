@@ -1,6 +1,8 @@
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression
 {
@@ -13,6 +15,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 
 		private const int MAX_BITLEN = 15;
 
+		// see InflaterHuffmanTreeTest.GenerateTrees how to generate the sequence
+		// stored in DLL's static data section so no allocation occurs
+		private static ReadOnlySpan<byte> defLitLenTreeBytes => new byte[] { 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8 };
+		private static ReadOnlySpan<byte> defDistTreeBytes => new byte[] { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 };
+
 		#endregion Constants
 
 		#region Instance Fields
@@ -24,50 +31,12 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Literal length tree
 		/// </summary>
-		public static InflaterHuffmanTree defLitLenTree;
+		public static readonly InflaterHuffmanTree defLitLenTree = new InflaterHuffmanTree(defLitLenTreeBytes);
 
 		/// <summary>
 		/// Distance tree
 		/// </summary>
-		public static InflaterHuffmanTree defDistTree;
-
-		static InflaterHuffmanTree()
-		{
-			try
-			{
-				byte[] codeLengths = new byte[288];
-				int i = 0;
-				while (i < 144)
-				{
-					codeLengths[i++] = 8;
-				}
-				while (i < 256)
-				{
-					codeLengths[i++] = 9;
-				}
-				while (i < 280)
-				{
-					codeLengths[i++] = 7;
-				}
-				while (i < 288)
-				{
-					codeLengths[i++] = 8;
-				}
-				defLitLenTree = new InflaterHuffmanTree(codeLengths);
-
-				codeLengths = new byte[32];
-				i = 0;
-				while (i < 32)
-				{
-					codeLengths[i++] = 5;
-				}
-				defDistTree = new InflaterHuffmanTree(codeLengths);
-			}
-			catch (Exception)
-			{
-				throw new SharpZipBaseException("InflaterHuffmanTree: static tree length illegal");
-			}
-		}
+		public static readonly InflaterHuffmanTree defDistTree = new InflaterHuffmanTree(defDistTreeBytes);
 
 		#region Constructors
 
@@ -77,21 +46,47 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <param name = "codeLengths">
 		/// the array of code lengths
 		/// </param>
-		public InflaterHuffmanTree(IList<byte> codeLengths)
+		public InflaterHuffmanTree(IList<byte> codeLengths) : this(ListToSpan(codeLengths))
+		{
+		}
+
+		private static ReadOnlySpan<byte> ListToSpan(IList<byte> codeLengths)
+		{
+#if NET6_0_OR_GREATER
+			if (codeLengths is List<byte> list)
+			{
+				return CollectionsMarshal.AsSpan(list);
+			}
+#endif
+			if (codeLengths is byte[] array)
+			{
+				return array;
+			}
+
+			// slow path
+			return codeLengths.ToArray();
+		}
+
+		/// <summary>
+		/// Constructs a Huffman tree from the array of code lengths.
+		/// </summary>
+		/// <param name = "codeLengths">
+		/// the array of code lengths
+		/// </param>
+		internal InflaterHuffmanTree(ReadOnlySpan<byte> codeLengths)
 		{
 			BuildTree(codeLengths);
 		}
 
 		#endregion Constructors
 
-		private void BuildTree(IList<byte> codeLengths)
+		private void BuildTree(ReadOnlySpan<byte> codeLengths)
 		{
-			int[] blCount = new int[MAX_BITLEN + 1];
-			int[] nextCode = new int[MAX_BITLEN + 1];
+			Span<int> blCount = stackalloc int[MAX_BITLEN + 1];
+			Span<int> nextCode = stackalloc int[MAX_BITLEN + 1];
 
-			for (int i = 0; i < codeLengths.Count; i++)
+			foreach (var bits in codeLengths)
 			{
-				int bits = codeLengths[i];
 				if (bits > 0)
 				{
 					blCount[bits]++;
@@ -136,20 +131,21 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				}
 			}
 
-			for (int i = 0; i < codeLengths.Count; i++)
+			for (var i = 0; i < codeLengths.Length; i++)
 			{
-				int bits = codeLengths[i];
+				var bits = codeLengths[i];
 				if (bits == 0)
 				{
 					continue;
 				}
+
 				code = nextCode[bits];
 				int revcode = DeflaterHuffman.BitReverse(code);
 				if (bits <= 9)
 				{
 					do
 					{
-						tree[revcode] = (short)((i << 4) | bits);
+						tree[revcode] = (short) ((i << 4) | bits);
 						revcode += 1 << bits;
 					} while (revcode < 512);
 				}
@@ -160,10 +156,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 					subTree = -(subTree >> 4);
 					do
 					{
-						tree[subTree | (revcode >> 9)] = (short)((i << 4) | bits);
+						tree[subTree | (revcode >> 9)] = (short) ((i << 4) | bits);
 						revcode += 1 << bits;
 					} while (revcode < treeLen);
 				}
+
 				nextCode[bits] = code + (1 << (16 - bits));
 			}
 		}
