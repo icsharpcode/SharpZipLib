@@ -206,7 +206,12 @@ namespace ICSharpCode.SharpZipLib.Tests.Tar
 			{
 				TarEntry nextEntry = tarIn.GetNextEntry();
 
-				Assert.AreEqual(nextEntry.Name, name, "Name match failure");
+				if(nextEntry.Name != name)
+				{
+					Console.WriteLine($"Expected:\n{name}\nActual:{nextEntry.Name}");
+				}
+
+				Assert.AreEqual(name, nextEntry.Name, $"Name match failure (length: {name.Length})");
 			}
 		}
 
