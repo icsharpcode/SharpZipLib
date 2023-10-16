@@ -1,9 +1,9 @@
-﻿using ICSharpCode.SharpZipLib.Zip;
+﻿using ICSharpCode.SharpZipLib.Tests.TestSupport;
+using ICSharpCode.SharpZipLib.Zip;
 using NUnit.Framework;
 using System;
 using System.IO;
 using System.Text;
-using ICSharpCode.SharpZipLib.Tests.TestSupport;
 using System.Threading.Tasks;
 using Does = ICSharpCode.SharpZipLib.Tests.TestSupport.Does;
 
@@ -117,7 +117,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		{
 			var password = "password";
 
-			using (var ms = new SingleByteReadingStream())
+			using (var ms = new MemoryStream() /* SingleByteReadingStream */)
 			{
 				WriteEncryptedZipToStream(ms, password, 256);
 				ms.Seek(0, SeekOrigin.Begin);
@@ -537,7 +537,7 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				zs.SetLevel(9); // 0-9, 9 being the highest level of compression
 				zs.Password = password;  // optional. Null is the same as not setting. Required if using AES.
 
-				for (int i = 0;  i < entryCount; i++)
+				for (int i = 0; i < entryCount; i++)
 				{
 					AddEncrypedEntryToStream(zs, $"test-{i}", keySize, compressionMethod);
 				}

@@ -1,8 +1,8 @@
+using ICSharpCode.SharpZipLib.Core;
 using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -47,7 +47,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 	{
 		// Write the local file header
 		// TODO: ZipFormat.WriteLocalHeader is not yet used and needs checking for ZipFile and ZipOuptutStream usage
-		internal static int WriteLocalHeader(Stream stream, ZipEntry entry, out EntryPatchData patchData, 
+		internal static int WriteLocalHeader(Stream stream, ZipEntry entry, out EntryPatchData patchData,
 			bool headerInfoAvailable, bool patchEntryHeader, long streamOffset, StringCodec stringCodec)
 		{
 			patchData = new EntryPatchData();
@@ -76,7 +76,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				if (patchEntryHeader)
 					patchData.CrcPatchOffset = streamOffset + stream.Position;
-				
+
 				stream.WriteLEInt(0);  // Crc
 
 				if (patchEntryHeader)
@@ -178,21 +178,28 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			long giveUpMarker = Math.Max(pos - maximumVariableData, 0);
 
-			// TODO: This loop could be optimized for speed.
+			// cache part of stream which should be searched for signature
+			byte[] cache = new byte[(int)(pos - giveUpMarker) + 4];
+			stream.Seek(giveUpMarker, SeekOrigin.Begin);
+			stream.Read(cache, 0, cache.Length);
+			MemoryStream cacheStream = new MemoryStream(cache);
+
 			do
 			{
 				if (pos < giveUpMarker)
 				{
 					return -1;
 				}
-				stream.Seek(pos--, SeekOrigin.Begin);
-			} while (stream.ReadLEInt() != signature);
+				cacheStream.Seek(pos - giveUpMarker, SeekOrigin.Begin);
+				pos--;
+			} while (cacheStream.ReadLEInt() != signature);
+			stream.Seek(pos + 5, SeekOrigin.Begin);
 
 			return stream.Position;
 		}
 
 		/// <inheritdoc cref="WriteZip64EndOfCentralDirectory"/>
-		public static async Task WriteZip64EndOfCentralDirectoryAsync(Stream stream, long noOfEntries, 
+		public static async Task WriteZip64EndOfCentralDirectoryAsync(Stream stream, long noOfEntries,
 			long sizeEntries, long centralDirOffset, CancellationToken cancellationToken)
 		{
 			await stream.WriteProcToStreamAsync(s => WriteZip64EndOfCentralDirectory(s, noOfEntries, sizeEntries, centralDirOffset), cancellationToken).ConfigureAwait(false);
@@ -234,11 +241,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 		}
 
 		/// <inheritdoc cref="WriteEndOfCentralDirectory"/>
-		public static  async Task WriteEndOfCentralDirectoryAsync(Stream stream, long noOfEntries, long sizeEntries, 
-			long start, byte[] comment, CancellationToken cancellationToken) 
-			=> await stream.WriteProcToStreamAsync(s 
+		public static async Task WriteEndOfCentralDirectoryAsync(Stream stream, long noOfEntries, long sizeEntries,
+			long start, byte[] comment, CancellationToken cancellationToken)
+			=> await stream.WriteProcToStreamAsync(s
 				=> WriteEndOfCentralDirectory(s, noOfEntries, sizeEntries, start, comment), cancellationToken).ConfigureAwait(false);
-		
+
 		/// <summary>
 		/// Write the required records to end the central directory.
 		/// </summary>
@@ -251,8 +258,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		internal static void WriteEndOfCentralDirectory(Stream stream, long noOfEntries, long sizeEntries, long start, byte[] comment)
 		{
 			if (noOfEntries >= 0xffff ||
-			    start >= 0xffffffff ||
-			    sizeEntries >= 0xffffffff)
+				start >= 0xffffffff ||
+				sizeEntries >= 0xffffffff)
 			{
 				WriteZip64EndOfCentralDirectory(stream, noOfEntries, sizeEntries, start);
 			}
@@ -459,7 +466,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			byte[] extra = ed.GetEntryData();
 
 			byte[] entryComment = !(entry.Comment is null)
-				? stringCodec.ZipOutputEncoding.GetBytes(entry.Comment) 
+				? stringCodec.ZipOutputEncoding.GetBytes(entry.Comment)
 				: Empty.Array<byte>();
 
 			if (entryComment.Length > 0xffff)
@@ -533,11 +540,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 			extraData.AddNewEntry(0x9901);
 		}
 
-		internal static async Task PatchLocalHeaderAsync(Stream stream, ZipEntry entry, 
+		internal static async Task PatchLocalHeaderAsync(Stream stream, ZipEntry entry,
 			EntryPatchData patchData, CancellationToken ct)
 		{
 			var initialPos = stream.Position;
-			
+
 			// Update CRC
 			stream.Seek(patchData.CrcPatchOffset, SeekOrigin.Begin);
 			await stream.WriteLEIntAsync((int)entry.Crc, ct).ConfigureAwait(false);
