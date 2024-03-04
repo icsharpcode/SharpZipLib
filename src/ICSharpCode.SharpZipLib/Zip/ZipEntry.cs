@@ -957,6 +957,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 			ExtendedUnixData unixData = extraData.GetData<ExtendedUnixData>();
 			if (unixData != null && unixData.Include.HasFlag(ExtendedUnixData.Flags.ModificationTime))
 				return unixData.ModificationTime;
+			OldExtendedUnixData oldUnixData = extraData.GetData<OldExtendedUnixData>();
+			if (oldUnixData != null)
+				return oldUnixData.ModificationTime;
 
 			return null;
 		}

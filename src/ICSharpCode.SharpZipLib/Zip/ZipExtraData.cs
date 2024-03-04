@@ -317,6 +317,113 @@ namespace ICSharpCode.SharpZipLib.Zip
 		#endregion Instance Fields
 	}
 
+    /// <summary>
+	/// Class representing old format for extended unix date time values.
+	/// </summary>
+	public class OldExtendedUnixData : ITaggedData
+	{
+        #region ITaggedData Members
+
+		/// <summary>
+		/// Get the ID
+		/// </summary>
+		public short TagID
+		{
+			get { return 0x5855; }
+		}
+
+		/// <summary>
+		/// Set the data from the raw values provided.
+		/// </summary>
+		/// <param name="data">The raw data to extract values from.</param>
+		/// <param name="index">The index to start extracting values from.</param>
+		/// <param name="count">The number of bytes available.</param>
+		public void SetData(byte[] data, int index, int count)
+		{
+			using (MemoryStream ms = new MemoryStream(data, index, count, false))
+			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
+			{
+				int iTime = helperStream.ReadLEInt();
+
+				_modificationTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) +
+					new TimeSpan(0, 0, 0, iTime, 0);
+
+				iTime = helperStream.ReadLEInt();
+
+				_lastAccessTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) +
+					new TimeSpan(0, 0, 0, iTime, 0);
+			}
+		}
+
+		/// <summary>
+		/// Get the binary data representing this instance.
+		/// </summary>
+		/// <returns>The raw binary data representing this instance.</returns>
+		public byte[] GetData()
+		{
+			using (MemoryStream ms = new MemoryStream())
+			using (ZipHelperStream helperStream = new ZipHelperStream(ms))
+			{
+				helperStream.IsStreamOwner = false;
+
+				TimeSpan span = _modificationTime - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+				var seconds = (int)span.TotalSeconds;
+				helperStream.WriteLEInt(seconds);
+
+				span = _lastAccessTime - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+				seconds = (int)span.TotalSeconds;
+				helperStream.WriteLEInt(seconds);
+
+				return ms.ToArray();
+			}
+		}
+
+		#endregion ITaggedData Members
+
+		/// <summary>
+		/// Get /set the Modification Time
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException"></exception>
+		public DateTime ModificationTime
+		{
+			get { return _modificationTime; }
+			set
+			{
+				if (!ExtendedUnixData.IsValidValue(value))
+				{
+					throw new ArgumentOutOfRangeException(nameof(value));
+				}
+
+				_modificationTime = value;
+			}
+		}
+
+		/// <summary>
+		/// Get / set the Access Time
+		/// </summary>
+		/// <exception cref="ArgumentOutOfRangeException"></exception>
+		public DateTime AccessTime
+		{
+			get { return _lastAccessTime; }
+			set
+			{
+				if (!ExtendedUnixData.IsValidValue(value))
+				{
+					throw new ArgumentOutOfRangeException(nameof(value));
+				}
+
+				_lastAccessTime = value;
+			}
+		}
+
+		#region Instance Fields
+
+		private DateTime _modificationTime = new DateTime(1970, 1, 1);
+		private DateTime _lastAccessTime = new DateTime(1970, 1, 1);
+
+		#endregion Instance Fields
+	}
+
 	/// <summary>
 	/// Class handling NT date time values.
 	/// </summary>
