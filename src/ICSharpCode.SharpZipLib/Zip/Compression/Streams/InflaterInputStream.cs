@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.IO;
 using System.Security.Cryptography;
 using ICSharpCode.SharpZipLib.Core;
@@ -11,7 +12,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 	/// <remarks>
 	/// The buffer supports decryption of incoming data.
 	/// </remarks>
-	public class InflaterInputBuffer
+	public class InflaterInputBuffer : IDisposable
 	{
 		#region Constructors
 
@@ -36,7 +37,16 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 			{
 				bufferSize = 1024;
 			}
-			rawData = new byte[bufferSize];
+
+			if(ArrayPool<bool>.Shared != null)
+			{
+				rawData = ArrayPool<byte>.Shared.Rent(bufferSize);
+				isRawDataOwnedByArrayPool = true;
+			}
+			else
+			{
+				rawData = new byte[bufferSize];
+			}
 			clearText = rawData;
 		}
 
@@ -270,6 +280,20 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		}
 
 		/// <summary>
+		/// Implements the dispose method of the <see cref="IDisposable"/> interface.
+		/// </summary>
+		public void Dispose()
+		{
+			if(isRawDataOwnedByArrayPool)
+			{
+				ArrayPool<byte>.Shared.Return(rawData);
+			}
+			rawData = null;
+			clearText = null;
+			internalClearText = null;
+		}
+
+		/// <summary>
 		/// Get/set the <see cref="ICryptoTransform"/> to apply to any data.
 		/// </summary>
 		/// <remarks>Set this value to null to have no transform applied.</remarks>
@@ -306,6 +330,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		private int rawLength;
 		private byte[] rawData;
+		private bool isRawDataOwnedByArrayPool = false;
 
 		private int clearTextLength;
 		private byte[] clearText;
@@ -637,6 +662,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 				InflaterPool.Instance.Return(inflater);
 			}
 			inf = null;
+
+			if(inputBuffer != null)
+			{
+				inputBuffer.Dispose();
+			}
 		}
 
 		/// <summary>
