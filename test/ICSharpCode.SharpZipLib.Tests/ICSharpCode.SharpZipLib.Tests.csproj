@@ -1,37 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
 		<TargetFrameworks>net6.0;net462</TargetFrameworks>
-    <ApplicationIcon />
-    <StartupObject />
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\assets\ICSharpCode.SharpZipLib.snk</AssemblyOriginatorKeyFile>
-    <PublicSign>true</PublicSign>
+		<ApplicationIcon />
+		<StartupObject />
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>..\..\assets\ICSharpCode.SharpZipLib.snk</AssemblyOriginatorKeyFile>
+		<PublicSign>true</PublicSign>
 		<LangVersion>8.0</LangVersion>
-  </PropertyGroup>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
-    <PackageReference Include="nunit" Version="3.13.3" />
-    <PackageReference Include="nunit.console" Version="3.16.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
+		<PackageReference Include="nunit" Version="3.14.0" />
+		<PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
+		<PackageReference Include="System.ValueTuple" Version="4.5.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\ICSharpCode.SharpZipLib\ICSharpCode.SharpZipLib.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\ICSharpCode.SharpZipLib\ICSharpCode.SharpZipLib.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\assets\ICSharpCode.SharpZipLib.snk">
-      <Link>ICSharpCode.SharpZipLib.snk</Link>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\assets\ICSharpCode.SharpZipLib.snk" Link="ICSharpCode.SharpZipLib.snk" />
+	</ItemGroup>
 
 </Project>

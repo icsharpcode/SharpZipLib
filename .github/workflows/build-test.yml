@@ -19,17 +19,17 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        target: [netstandard2.0, netstandard2.1, net6.0]
+        target: [netstandard2.0, netstandard2.1, net6.0, net462]
     env:
       LIB_PROJ: src/ICSharpCode.SharpZipLib/ICSharpCode.SharpZipLib.csproj
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         ref: ${{ github.events.inputs.tag }}
         fetch-depth: 0
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '6.0.x'
         
@@ -51,13 +51,13 @@ jobs:
         os: [ubuntu, macos]
         target: [net6.0]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
     - name: Setup .NET Core
       if: matrix.target == 'net6.0'
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '6.0.x'
 
@@ -73,44 +73,37 @@ jobs:
       
   CodeCov:
     name: Code Coverage
-    runs-on: windows-2019
+    runs-on: windows-latest
     env:
-      DOTCOVER_VER: 2021.1.2
-      DOTCOVER_PKG: jetbrains.dotcover.commandlinetools
+      DOTCOVER_VER: 2024.1.4
+      DOTCOVER_PKG: JetBrains.dotCover.CommandLineTools
       COVER_SNAPSHOT: SharpZipLib.dcvr
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
         
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '6.0.x'
         
-    # NOTE: This is the temporary fix for https://github.com/actions/virtual-environments/issues/1090
-    - name: Cleanup before restore
-      run: dotnet clean ICSharpCode.SharpZipLib.sln && dotnet nuget locals all --clear
-   
     - name: Install codecov
-      run: nuget install -o tools -version ${{env.DOTCOVER_VER}} ${{env.DOTCOVER_PKG}}
-   
-    - name: Add dotcover to path
-      run: echo "$(pwd)\tools\${{env.DOTCOVER_PKG}}.${{env.DOTCOVER_VER}}\tools" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      run: dotnet tool install ${{env.DOTCOVER_PKG}} --global --version ${{env.DOTCOVER_VER}}
    
     - name: Run tests with code coverage
-      run: dotcover dotnet --output=${{env.COVER_SNAPSHOT}} --filters=-:ICSharpCode.SharpZipLib.Tests -- test -c release
+      run: dotnet-dotCover dotnet --output=${{env.COVER_SNAPSHOT}} --filters=-:ICSharpCode.SharpZipLib.Tests -- test -c Release
    
     - name: Create code coverage report
-      run: dotcover report --source=${{env.COVER_SNAPSHOT}} --reporttype=detailedxml --output=dotcover-report.xml
+      run: dotnet-dotCover report --source=${{env.COVER_SNAPSHOT}} --reporttype=detailedxml --output=dotcover-report.xml
   
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1.2.2
+      uses: codecov/codecov-action@v4
       with:
         files: dotcover-report.xml
         
     - name: Upload coverage snapshot artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: Code coverage snapshot
         path: ${{env.COVER_SNAPSHOT}}
@@ -124,22 +117,18 @@ jobs:
       PKG_PROPS: '/p:ContinuousIntegrationBuild=true /p:EmbedUntrackedSources=true'
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         ref: ${{ github.events.inputs.tag }}
         fetch-depth: 0
       
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '6.0.x'
         
-    - name: Build library for .NET Standard 2.0
-      run: dotnet build -c Release -f netstandard2.0 ${{ env.PKG_PROPS }} ${{ env.PKG_PROJ }}
-    - name: Build library for .NET Standard 2.1
-      run: dotnet build -c Release -f netstandard2.1 ${{ env.PKG_PROPS }} ${{ env.PKG_PROJ }}
-    - name: Build library for .NET 6.0
-      run: dotnet build -c Release -f net6.0  ${{ env.PKG_PROPS }} ${{ env.PKG_PROJ }}
+    - name: Build library
+      run: dotnet build -c Release ${{ env.PKG_PROPS }} ${{ env.PKG_PROJ }}
 
     - name: Add PR suffix to package
       if: ${{ github.event_name == 'pull_request' }}
@@ -159,7 +148,7 @@ jobs:
       run: dotnet pack ${{ env.PKG_PROJ }} -c Release --output dist ${{ env.PKG_PROPS }} /p:Version=${{ env.PKG_VERSION }}
 
     - name: Upload nuget package artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: Nuget package
         path: dist/*.nupkg

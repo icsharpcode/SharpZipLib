@@ -16,12 +16,12 @@ jobs:
     runs-on: windows-latest
     name: Generate DocFX documentation
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         ref: ${{ github.events.inputs.tag }}
         
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '6.0.x'
         
@@ -35,7 +35,7 @@ jobs:
       run: docfx docs/help/docfx.json --warningsAsErrors
 
     - name: Upload documentation as artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: site
         path: docs/help/_site
@@ -46,10 +46,10 @@ jobs:
     name: Update github pages docs 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Download Artifacts # The built project is downloaded into the 'site' folder.
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4
         with:
           name: site
 
