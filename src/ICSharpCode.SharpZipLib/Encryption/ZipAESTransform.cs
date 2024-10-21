@@ -6,7 +6,7 @@ namespace ICSharpCode.SharpZipLib.Encryption
 	/// <summary>
 	/// Transforms stream using AES in CTR mode
 	/// </summary>
-	internal class ZipAESTransform : ICryptoTransform
+	internal sealed class ZipAESTransform : ICryptoTransform
 	{
 		private const int PWD_VER_LENGTH = 2;
 

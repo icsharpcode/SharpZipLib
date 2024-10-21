@@ -3,7 +3,7 @@ using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Core
 {
-	internal class StringBuilderPool
+	internal sealed class StringBuilderPool
 	{
 		public static StringBuilderPool Instance { get; } = new StringBuilderPool();
 		private readonly ConcurrentQueue<StringBuilder> pool = new ConcurrentQueue<StringBuilder>();

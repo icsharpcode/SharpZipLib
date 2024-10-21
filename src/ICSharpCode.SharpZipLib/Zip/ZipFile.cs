@@ -2679,9 +2679,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 		private int FindExistingUpdate(ZipEntry entry)
 		{
 			int result = -1;
-			if (updateIndex_.ContainsKey(entry.Name))
+			if (updateIndex_.TryGetValue(entry.Name, out int value))
 			{
-				result = (int)updateIndex_[entry.Name];
+				result = value;
 			}
 			/*
 						// This is slow like the coming of the next ice age but takes less storage and may be useful
@@ -2705,9 +2705,9 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			string convertedName = !isEntryName ? GetTransformedFileName(fileName) : fileName;
 
-			if (updateIndex_.ContainsKey(convertedName))
+			if (updateIndex_.TryGetValue(convertedName, out int value))
 			{
-				result = (int)updateIndex_[convertedName];
+				result = value;
 			}
 
 			/*
@@ -3030,7 +3030,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Class used to sort updates.
 		/// </summary>
-		private class UpdateComparer : IComparer<ZipUpdate>
+		private sealed class UpdateComparer : IComparer<ZipUpdate>
 		{
 			/// <summary>
 			/// Compares two objects and returns a value indicating whether one is
@@ -3252,7 +3252,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Represents a pending update to a Zip file.
 		/// </summary>
-		private class ZipUpdate
+		private sealed class ZipUpdate
 		{
 			#region Constructors
 
@@ -3911,7 +3911,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Represents a string from a <see cref="ZipFile"/> which is stored as an array of bytes.
 		/// </summary>
-		private class ZipString
+		private sealed class ZipString
 		{
 			#region Constructors
 
@@ -4086,7 +4086,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// An <see cref="UncompressedStream"/> is a stream that you can write uncompressed data
 		/// to and flush, but cannot read, seek or do anything else to.
 		/// </summary>
-		private class UncompressedStream : Stream
+		private sealed class UncompressedStream : Stream
 		{
 			#region Constructors
 
@@ -4241,7 +4241,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// A <see cref="PartialInputStream"/> is an <see cref="InflaterInputStream"/>
 		/// whose data is only a part or subsection of a file.
 		/// </summary>
-		private class PartialInputStream : Stream
+		private sealed class PartialInputStream : Stream
 		{
 			#region Constructors
 

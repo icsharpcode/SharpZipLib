@@ -60,7 +60,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		private static short[] staticDCodes;
 		private static byte[] staticDLength;
 
-		private class Tree
+		private sealed class Tree
 		{
 			#region Instance Fields
 
