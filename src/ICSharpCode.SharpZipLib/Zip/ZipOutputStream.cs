@@ -766,7 +766,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="password">The password.</param>
 		private void InitializeZipCryptoPassword(string password)
 		{
-			var pkManaged = new PkzipClassicManaged();
+			using var pkManaged = new PkzipClassicManaged();
 			byte[] key = PkzipClassic.GenerateKeys(ZipCryptoEncoding.GetBytes(password));
 			cryptoTransform_ = pkManaged.CreateEncryptor(key, null);
 		}

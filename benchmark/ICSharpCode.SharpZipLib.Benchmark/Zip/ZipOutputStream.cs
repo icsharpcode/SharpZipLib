@@ -27,7 +27,7 @@ namespace ICSharpCode.SharpZipLib.Benchmark.Zip
 		{
 			using (var memoryStream = new MemoryStream(outputBuffer))
 			{
-				var zipOutputStream = new SharpZipLib.Zip.ZipOutputStream(memoryStream);
+				using var zipOutputStream = new SharpZipLib.Zip.ZipOutputStream(memoryStream);
 				zipOutputStream.PutNextEntry(new SharpZipLib.Zip.ZipEntry("0"));
 
 				for (int i = 0; i < ChunkCount; i++)

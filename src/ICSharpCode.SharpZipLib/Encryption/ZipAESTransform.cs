@@ -51,11 +51,11 @@ namespace ICSharpCode.SharpZipLib.Encryption
 
 			// Performs the equivalent of derive_key in Dr Brian Gladman's pwd2key.c
 #if NET472_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER
-			var pdb = new Rfc2898DeriveBytes(key, saltBytes, KEY_ROUNDS, HashAlgorithmName.SHA1);
+			using var pdb = new Rfc2898DeriveBytes(key, saltBytes, KEY_ROUNDS, HashAlgorithmName.SHA1);
 #else
-			var pdb = new Rfc2898DeriveBytes(key, saltBytes, KEY_ROUNDS);
+			using var pdb = new Rfc2898DeriveBytes(key, saltBytes, KEY_ROUNDS);
 #endif
-			var rm = Aes.Create();
+			using var rm = Aes.Create();
 			rm.Mode = CipherMode.ECB;           // No feedback from cipher for CTR mode
 			_counterNonce = new byte[_blockSize];
 			byte[] key1bytes = pdb.GetBytes(_blockSize);
@@ -171,7 +171,11 @@ namespace ICSharpCode.SharpZipLib.Encryption
 		/// <summary>
 		/// Cleanup internal state.
 		/// </summary>
-		public void Dispose() => _encryptor.Dispose();
+		public void Dispose()
+		{
+			_encryptor.Dispose();
+			_hmacsha1.Dispose();
+		}
 
 		#endregion ICryptoTransform Members
 	}

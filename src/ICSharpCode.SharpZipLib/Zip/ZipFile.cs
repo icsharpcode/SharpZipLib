@@ -863,7 +863,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			// TODO: This will be slow as the next ice age for huge archives!
 			for (int i = 0; i < entries_.Length; i++)
 			{
-				if (string.Compare(name, entries_[i].Name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal) == 0)
+				if (string.Equals(name, entries_[i].Name, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
 				{
 					return i;
 				}
@@ -1208,7 +1208,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				byte[] extraData = new byte[extraDataLength];
 				StreamUtils.ReadFully(baseStream_, extraData);
 
-				var localExtraData = new ZipExtraData(extraData);
+				using var localExtraData = new ZipExtraData(extraData);
 
 				// Extra data / zip64 checks
 				if (localExtraData.Find(headerID: 1))
@@ -2249,7 +2249,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ZipException("Entry name too long.");
 			}
 
-			var ed = new ZipExtraData(entry.ExtraData);
+			using var ed = new ZipExtraData(entry.ExtraData);
 
 			if (entry.LocalHeaderRequiresZip64)
 			{
@@ -2360,7 +2360,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			WriteLEShort(name.Length);
 
 			// Central header extra data is different to local header version so regenerate.
-			var ed = new ZipExtraData(entry.ExtraData);
+			using var ed = new ZipExtraData(entry.ExtraData);
 
 			if (entry.CentralHeaderRequiresZip64)
 			{
@@ -3795,7 +3795,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			{
 				if (entry.Version < ZipConstants.VersionStrongEncryption || !entry.HasFlag(GeneralBitFlags.StrongEncryption))
 				{
-					var classicManaged = new PkzipClassicManaged();
+					using var classicManaged = new PkzipClassicManaged();
 
 					OnKeysRequired(entry.Name);
 					if (HaveKeys == false)
@@ -3821,7 +3821,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 			if (entry.Version >= ZipConstants.VersionStrongEncryption &&
 			    entry.HasFlag(GeneralBitFlags.StrongEncryption)) return null;
 
-			var classicManaged = new PkzipClassicManaged();
+			using var classicManaged = new PkzipClassicManaged();
 
 			OnKeysRequired(entry.Name);
 			if (HaveKeys == false)

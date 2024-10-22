@@ -27,7 +27,7 @@ namespace ICSharpCode.SharpZipLib.Benchmark.Tar
 					tarEntry.Size = 1024 * 1024;
 					zipOutputStream.PutNextEntry(tarEntry);
 
-					var rng = RandomNumberGenerator.Create();
+					using var rng = RandomNumberGenerator.Create();
 					var inputBuffer = new byte[1024];
 					rng.GetBytes(inputBuffer);
 
