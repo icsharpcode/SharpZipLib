@@ -55,6 +55,17 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 		}
 
 		[Test]
+		public void TransformDirectory_NameIsReservedName_ThrowsInvalidNameException()
+		{
+			var wnt = new WindowsNameTransform();
+			const string Reserved = "COM1";
+			var e = Assert.Throws<InvalidNameException>(() => wnt.TransformDirectory(Reserved));
+
+			// This second assert is to differentiate between the reserved name exception and the parent traversal in paths not allowed exception
+			Assert.That(e.Message, Does.Contain("https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file#naming-conventions"));
+		}
+
+		[Test]
 		public void LengthBoundaryOk()
 		{
 			var wnt = new WindowsNameTransform();
