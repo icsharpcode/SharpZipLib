@@ -1,7 +1,6 @@
 using ICSharpCode.SharpZipLib.Core;
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ICSharpCode.SharpZipLib.Zip
@@ -141,6 +140,10 @@ namespace ICSharpCode.SharpZipLib.Zip
 						pathBase += Path.DirectorySeparatorChar;
 					}
 
+					// https://github.com/dotnet/runtime/issues/78834
+					// For older Windows versions, Path.GetFullPath will alter paths with reserved names to escape them
+					// e.g. Path.GetFullPath("COM3") gives "\\.\COM3"
+					// This is not the case for newer versions of Windows, so we need to check for this ourselves
 					if (!_allowParentTraversal && !Path.GetFullPath(name).StartsWith(pathBase, StringComparison.InvariantCultureIgnoreCase))
 					{
 						throw new InvalidNameException("Parent traversal in paths is not allowed");
@@ -228,6 +231,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				name = builder.ToString();
 			}
 
+			if (IsReservedName(name))
+			{
+				throw new InvalidNameException($"\"{name}\" is a Windows reserved filename. See https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file#naming-conventions for more information.");
+			}
+
 			// Check for names greater than MaxPath characters.
 			// TODO: Were is CLR version of MaxPath defined?  Can't find it in Environment.
 			if (name.Length > MaxPath)
@@ -261,6 +269,34 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				_replacementChar = value;
 			}
+		}
+
+
+		/// <summary>
+		/// Checks if the given name is a reserved name in Windows.
+		/// </summary>
+		/// <param name="name">The name to check.</param>
+		/// <returns>True if the name is reserved; otherwise, false.</returns>
+		/// <remarks>
+		/// <para>Microsoft changed the OS behavior for legacy DOS device names in recent versions of Windows.</para>
+		/// <para>In older versions of Windows, the file extension would be considered for checking if the path is a legacy DOS device name:</para>
+		/// <list type="bullet">
+		/// <item><description>Path.GetFullPath("COM3") gives \\.\COM3</description></item>
+		/// <item><description>Path.GetFullPath("COM3.txt") gives \\.\COM3.txt</description></item>
+		/// <item><description>Path.GetFullPath("C:\COM3") gives \\.\COM3</description></item>
+		/// </list>
+		/// <para>In newer versions of Windows, the file extension is ignored for checking if the path is a legacy DOS device name:</para>
+		/// <list type="bullet">
+		/// <item><description>Path.GetFullPath("COM3") gives \\.\COM3</description></item>
+		/// <item><description>Path.GetFullPath("COM3.txt") gives COM3.txt</description></item>
+		/// <item><description>Path.GetFullPath("C:\COM3") gives C:\COM3</description></item>
+		/// </list>
+		/// <para>Therefore, we can detect if the path is a legacy DOS device name by checking if the full path starts with \\.\ or \\?\.</para>
+		/// </remarks>
+		internal static bool IsReservedName(string name)
+		{
+			var fullPathName = Path.GetFullPath(name);
+			return fullPathName.StartsWith(@"\\.\", StringComparison.Ordinal) || fullPathName.StartsWith(@"\\?\", StringComparison.Ordinal);
 		}
 	}
 }
