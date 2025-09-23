@@ -580,6 +580,7 @@ namespace ICSharpCode.SharpZipLib.Tar
 					this.entrySize = header.Size;
 
 					string longName = null;
+					long longSize = -1;
 
 					if (header.TypeFlag == TarHeader.LF_GNU_LONGNAME)
 					{
@@ -646,6 +647,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 						{
 							longName = name;
 						}
+						if (xhr.Headers.TryGetValue("size", out string size))
+						{
+							if (!long.TryParse(size, out longSize))
+							{
+								longSize = -1;
+							}
+						}
 
 						await SkipToNextEntryAsync(ct, isAsync).ConfigureAwait(false);
 						await this.tarBuffer.ReadBlockIntAsync(headerBuf, ct, isAsync).ConfigureAwait(false);
@@ -675,6 +683,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 						if (longName != null)
 						{
 							currentEntry.Name = longName;
+						}
+						if (longSize != -1)
+						{
+							currentEntry.Size = longSize;
 						}
 					}
 					else
