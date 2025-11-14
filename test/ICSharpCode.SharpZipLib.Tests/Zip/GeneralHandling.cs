@@ -832,5 +832,53 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 				Assert.AreEqual(checkTime.DateTime, uno.DateTime);
 			}
 		}
+
+		[Test]
+		[Category("Zip")]
+		[Category("Encryption")]
+		public void ReadingEncryptedZipWithDirectories()
+		{
+			var ms = new MemoryStream();
+			using (ZipOutputStream outStream = new ZipOutputStream(ms))
+			{
+				outStream.IsStreamOwner = false;
+				outStream.Password = "testPassword123";
+				outStream.SetLevel(5);
+
+				var entry = new ZipEntry("Folder/");
+				outStream.PutNextEntry(entry);
+
+				entry = new ZipEntry("Folder/File.txt");
+				outStream.PutNextEntry(entry);
+				byte[] fileData = Encoding.UTF8.GetBytes("This is some test data");
+				outStream.Write(fileData, 0, fileData.Length);
+			}
+
+			ms.Seek(0, SeekOrigin.Begin);
+			using (ZipFile zipFile = new ZipFile(ms))
+			{
+				zipFile.BeginUpdate();
+				zipFile.IsStreamOwner = false;
+				zipFile.Password = "testPassword123";
+				zipFile.AddDirectory("Folder2/");
+				zipFile.Add(new MemoryDataSource(Encoding.UTF8.GetBytes("Test content")), "Folder2/File2.txt");
+				zipFile.CommitUpdate();
+			}
+
+			ms.Seek(0, SeekOrigin.Begin);
+			using (var inStream = new ZipInputStream(ms))
+			{
+				inStream.IsStreamOwner = false;
+				inStream.Password = "testPassword123";
+				ZipEntry fileEntry = inStream.GetNextEntry();
+				Assert.AreEqual("Folder/", fileEntry.Name);
+				fileEntry = inStream.GetNextEntry();
+				Assert.AreEqual("Folder/File.txt", fileEntry.Name);
+				fileEntry = inStream.GetNextEntry();
+				Assert.AreEqual("Folder2/", fileEntry.Name);
+				fileEntry = inStream.GetNextEntry();
+				Assert.AreEqual("Folder2/File2.txt", fileEntry.Name);
+			}
+		}
 	}
 }
