@@ -118,7 +118,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			bsBuff = 0;
 			Initialize();
 			InitBlock();
-			SetupBlock();
+			if (!streamEnd)
+			{
+				SetupBlock();
+			}
 		}
 
 		/// <summary>
@@ -351,7 +354,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			if (magic1 != 'B' || magic2 != 'Z' || magic3 != 'h' || magic4 < '1' || magic4 > '9')
 			{
 				streamEnd = true;
-				return;
+				throw new BZip2Exception("BZip2 input stream bad header");
 			}
 
 			SetDecompressStructureSizes(magic4 - '0');
@@ -469,7 +472,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			return result;
 		}
 
-		private void RecvDecodingTables()
+		private int RecvDecodingTables()
 		{
 			char[][] len = new char[BZip2Constants.GroupCount][];
 			for (int i = 0; i < BZip2Constants.GroupCount; ++i)
@@ -504,11 +507,24 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 
 			MakeMaps();
+			if (nInUse == 0)
+			{
+				throw new BZip2Exception("Bzip data error");
+			}
 			int alphaSize = nInUse + 2;
 
 			//--- Now the selectors ---
 			int nGroups = BsR(3);
+			if (nGroups < 2 || nGroups > BZip2Constants.GroupCount)
+			{
+				throw new BZip2Exception("Bzip data error");
+			}
+
 			int nSelectors = BsR(15);
+			if (nSelectors < 1 || nSelectors > BZip2Constants.MaximumSelectors)
+			{
+				throw new BZip2Exception("Bzip data error");
+			}
 
 			for (int i = 0; i < nSelectors; i++)
 			{
@@ -516,6 +532,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				while (BsR(1) == 1)
 				{
 					j++;
+					if (j >= nGroups)
+					{
+						throw new BZip2Exception("Bzip data error");
+					}
 				}
 				selectorMtf[i] = (byte)j;
 			}
@@ -546,8 +566,16 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				int curr = BsR(5);
 				for (int i = 0; i < alphaSize; i++)
 				{
-					while (BsR(1) == 1)
+					while (true)
 					{
+						if (curr < 1 || curr > 20)
+						{
+							throw new BZip2Exception("Bzip data error");
+						}
+						if (BsR(1) == 0)
+						{
+							break;
+						}
 						if (BsR(1) == 0)
 						{
 							curr++;
@@ -574,6 +602,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				HbCreateDecodeTables(limit[t], baseArray[t], perm[t], len[t], minLen, maxLen, alphaSize);
 				minLens[t] = minLen;
 			}
+
+			return nSelectors;
 		}
 
 		private void GetAndMoveToFrontDecode()
@@ -584,10 +614,51 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			int limitLast = BZip2Constants.BaseBlockSize * blockSize100k;
 			origPtr = BsGetIntVS(24);
 
-			RecvDecodingTables();
+			int nSelectors = RecvDecodingTables();
+			int alphaSize = nInUse + 2;
 			int EOB = nInUse + 1;
 			int groupNo = -1;
 			int groupPos = 0;
+
+			int DecodeNextSym()
+			{
+				if (groupPos == 0)
+				{
+					groupNo++;
+					if (groupNo >= nSelectors)
+					{
+						throw new BZip2Exception("Bzip data error");
+					}
+					groupPos = BZip2Constants.GroupSize;
+				}
+
+				groupPos--;
+				int zt = selector[groupNo];
+				int zn = minLens[zt];
+				int zvec = BsR(zn);
+
+				while (zvec > limit[zt][zn])
+				{
+					if (zn >= 20)
+					{ // the longest code
+						throw new BZip2Exception("Bzip data error");
+					}
+					zn++;
+					while (bsLive < 1)
+					{
+						FillBuffer();
+					}
+					int zj = (bsBuff >> (bsLive - 1)) & 1;
+					bsLive--;
+					zvec = (zvec << 1) | zj;
+				}
+				int idx = zvec - baseArray[zt][zn];
+				if (idx < 0 || idx >= alphaSize)
+				{
+					throw new BZip2Exception("Bzip data error");
+				}
+				return perm[zt][idx];
+			}
 
 			/*--
 			Setting up the unzftab entries here is not strictly
@@ -607,38 +678,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 			last = -1;
 
-			if (groupPos == 0)
-			{
-				groupNo++;
-				groupPos = BZip2Constants.GroupSize;
-			}
-
-			groupPos--;
-			int zt = selector[groupNo];
-			int zn = minLens[zt];
-			int zvec = BsR(zn);
-			int zj;
-
-			while (zvec > limit[zt][zn])
-			{
-				if (zn > 20)
-				{ // the longest code
-					throw new BZip2Exception("Bzip data error");
-				}
-				zn++;
-				while (bsLive < 1)
-				{
-					FillBuffer();
-				}
-				zj = (bsBuff >> (bsLive - 1)) & 1;
-				bsLive--;
-				zvec = (zvec << 1) | zj;
-			}
-			if (zvec - baseArray[zt][zn] < 0 || zvec - baseArray[zt][zn] >= BZip2Constants.MaximumAlphaSize)
-			{
-				throw new BZip2Exception("Bzip data error");
-			}
-			nextSym = perm[zt][zvec - baseArray[zt][zn]];
+			nextSym = DecodeNextSym();
 
 			while (true)
 			{
@@ -662,35 +702,21 @@ namespace ICSharpCode.SharpZipLib.BZip2
 							s += (1 + 1) * n;
 						}
 
+						if (s >= limitLast)
+						{
+							BlockOverrun();
+						}
+
 						n <<= 1;
-
-						if (groupPos == 0)
-						{
-							groupNo++;
-							groupPos = BZip2Constants.GroupSize;
-						}
-
-						groupPos--;
-
-						zt = selector[groupNo];
-						zn = minLens[zt];
-						zvec = BsR(zn);
-
-						while (zvec > limit[zt][zn])
-						{
-							zn++;
-							while (bsLive < 1)
-							{
-								FillBuffer();
-							}
-							zj = (bsBuff >> (bsLive - 1)) & 1;
-							bsLive--;
-							zvec = (zvec << 1) | zj;
-						}
-						nextSym = perm[zt][zvec - baseArray[zt][zn]];
+						nextSym = DecodeNextSym();
 					} while (nextSym == BZip2Constants.RunA || nextSym == BZip2Constants.RunB);
 
 					s++;
+					if (last + s >= limitLast)
+					{
+						BlockOverrun();
+					}
+
 					byte ch = seqToUnseq[yy[0]];
 					unzftab[ch] += s;
 
@@ -701,10 +727,6 @@ namespace ICSharpCode.SharpZipLib.BZip2
 						s--;
 					}
 
-					if (last >= limitLast)
-					{
-						BlockOverrun();
-					}
 					continue;
 				}
 				else
@@ -742,28 +764,7 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 					yy[0] = tmp;
 
-					if (groupPos == 0)
-					{
-						groupNo++;
-						groupPos = BZip2Constants.GroupSize;
-					}
-
-					groupPos--;
-					zt = selector[groupNo];
-					zn = minLens[zt];
-					zvec = BsR(zn);
-					while (zvec > limit[zt][zn])
-					{
-						zn++;
-						while (bsLive < 1)
-						{
-							FillBuffer();
-						}
-						zj = (bsBuff >> (bsLive - 1)) & 1;
-						bsLive--;
-						zvec = (zvec << 1) | zj;
-					}
-					nextSym = perm[zt][zvec - baseArray[zt][zn]];
+					nextSym = DecodeNextSym();
 					continue;
 				}
 			}
@@ -771,6 +772,16 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		private void SetupBlock()
 		{
+			if (streamEnd || tt == null || ll8 == null)
+			{
+				return;
+			}
+
+			if (origPtr < 0 || origPtr > last || origPtr >= tt.Length)
+			{
+				throw new BZip2Exception("Bzip data error");
+			}
+
 			int[] cftab = new int[257];
 
 			cftab[0] = 0;
@@ -1001,6 +1012,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		private static void HbCreateDecodeTables(int[] limit, int[] baseArray, int[] perm, char[] length, int minLen, int maxLen, int alphaSize)
 		{
+			if (minLen < 1 || maxLen >= BZip2Constants.MaximumCodeLength || minLen > maxLen || alphaSize > BZip2Constants.MaximumAlphaSize)
+			{
+				throw new BZip2Exception("Bzip data error");
+			}
+
 			int pp = 0;
 
 			for (int i = minLen; i <= maxLen; ++i)
