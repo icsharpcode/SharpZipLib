@@ -158,8 +158,14 @@ namespace ICSharpCode.SharpZipLib.Zip
 				// bit 1           if set, access time is present
 				// bit 2           if set, creation time is present
 
-				_flags = (Flags)ms.ReadByte();
-				if (((_flags & Flags.ModificationTime) != 0))
+				int flagByte = ms.ReadByte();
+				if (flagByte == -1)
+				{
+					return;
+				}
+
+				_flags = (Flags)flagByte;
+				if (((_flags & Flags.ModificationTime) != 0) && (ms.Length - ms.Position >= 4))
 				{
 					int iTime = ms.ReadLEInt();
 
@@ -170,7 +176,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 					if (count <= 5) return;
 				}
 
-				if ((_flags & Flags.AccessTime) != 0)
+				if (((_flags & Flags.AccessTime) != 0) && (ms.Length - ms.Position >= 4))
 				{
 					int iTime = ms.ReadLEInt();
 
@@ -178,7 +184,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 						new TimeSpan(0, 0, 0, iTime, 0);
 				}
 
-				if ((_flags & Flags.CreateTime) != 0)
+				if (((_flags & Flags.CreateTime) != 0) && (ms.Length - ms.Position >= 4))
 				{
 					int iTime = ms.ReadLEInt();
 
