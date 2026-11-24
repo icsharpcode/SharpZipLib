@@ -511,5 +511,22 @@ namespace ICSharpCode.SharpZipLib.Tests.Zip
 			Assert.AreEqual(0x5455, unixData.TagID, "TagID mismatch");
 			Assert.AreEqual(modTime, unixData.ModificationTime, "Unix mod time incorrect");
 		}
+
+		[Test]
+		[Category("Zip")]
+		public void ExtendedUnixData_SetData_EmptyOrTruncatedDoesNotThrow()
+		{
+			var unixData = new ExtendedUnixData();
+			var data = new byte[] { 1, 2, 3, 4 };
+
+			Assert.DoesNotThrow(() => unixData.SetData(data, 0, 0));
+			Assert.DoesNotThrow(() => unixData.SetData(data, 4, 0));
+			Assert.AreEqual((ExtendedUnixData.Flags)0, unixData.Include);
+
+			// Central-header UT field with AccessTime flag set but no timestamp bytes
+			var centralHeaderOnlyFlags = new byte[] { (byte)ExtendedUnixData.Flags.AccessTime };
+			Assert.DoesNotThrow(() => unixData.SetData(centralHeaderOnlyFlags, 0, centralHeaderOnlyFlags.Length));
+			Assert.AreEqual(ExtendedUnixData.Flags.AccessTime, unixData.Include);
+		}
 	}
 }
